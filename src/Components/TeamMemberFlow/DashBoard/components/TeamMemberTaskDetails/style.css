@@ -1,0 +1,576 @@
+.team-member-task-details {
+  padding: 48px 48px 95px;
+  object-fit: contain;
+  /* opacity: 0.73; */
+  border-radius: 36px;
+  box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
+  background-color: #ffffff;
+  position: relative;
+}
+.topRightBg{
+  position: fixed;
+  right: -375px;
+  top: -800px;
+}
+.team-member-task-details .all-companies-title {
+  opacity: 0.6;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.team-member-task-details .red-title {
+  /* width: 60px;
+    height: 20px;
+    margin: 35px 12px 0.5px 16px; */
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #f22727;
+  width: 100%;
+  margin-bottom: 18px;
+}
+.team-member-task-details .companies-sub-title {
+  font-family: Poppins;
+  font-size: 24px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+}
+.team-member-task-details .all-companies-sub-title img {
+  width: 13px;
+  height: 13px;
+  margin-top: 3px;
+}
+.team-member-task-details .all-companies-sub-title {
+  margin: 0 0 1.5px 0px;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+  display: flex;
+}
+.team-member-task-details .all-companies-nse-label {
+  width: 25px;
+  height: 14px;
+  object-fit: contain;
+  border-radius: 2px;
+  background-color: #f1f3ff;
+  font-size: 10px;
+  font-weight: normal;
+  /* opacity: 0.53; */
+  margin: 3px 11px;
+  /* line-height: 25px; */
+  font-family: Poppins;
+  /* padding: 1px 5px; */
+  color: #b3abc4;
+  font-stretch: normal;
+  font-style: normal;
+  /* line-height: normal; */
+  letter-spacing: normal;
+  text-align: center;
+}
+.team-member-task-details .circle-name {
+  width: 20px;
+  height: 20px;
+  /* margin: 14.5px 8px 16px 82px; */
+  padding: 5px 4px 4px;
+  object-fit: contain;
+  border-radius: 8px;
+  background-color: #eae8ff;
+  margin-right: 10px;
+}
+.team-member-task-details .circle-text {
+  width: 12px;
+  height: 11px;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 8px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.16px;
+  text-align: center;
+  color: #b3abc4;
+}
+.team-member-task-details .circle-front-text {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+  cursor: pointer;
+}
+.team-member-task-details .task-list-grid {
+  margin-bottom: 15px;
+  width: 100%;
+}
+.team-member-task-details .red-week {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #f22727;
+}
+.team-member-task-details .top-counter-grid {
+  margin: 0px 0px 0px;
+  border-radius: 12px;
+  display: flex;
+  width: 100%;
+  padding: 0px 0px;
+  margin-bottom: 50px;
+}
+.team-member-task-details .top-counter-title {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #808191;
+  margin-bottom: 10px;
+  display: flex;
+  margin-right: 32px;
+}
+.team-member-task-details .text-count {
+  float: left;
+  margin-top: 5px;
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+}
+.team-member-task-details .task-progress-grid {
+  display: flex;
+  margin-left: 50px;
+}
+.team-member-task-details .black-day {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #1b1d21;
+}
+.team-member-task-details .right-arrow-week {
+  width: 16px;
+  height: 16px;
+  /* margin: 16.5px 16px 18px 36px; */
+  object-fit: contain;
+  margin-left: 51px;
+}
+.team-member-task-details .right-arrow-week img {
+  vertical-align: inherit;
+  border-style: none;
+}
+
+.team-member-task-details .action-title {
+  /* width: 83px;
+    height: 20px;
+    margin: 35.5px 197px 16px 16px; */
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #202020;
+  margin-bottom: 18px;
+}
+.team-member-task-details span.badge.badge-primary {
+  /* margin: 0 93px 0 225px; */
+  padding: 2px 12px 1px 13px;
+  border-radius: 2px;
+  background-color: #fff7ed;
+  font-family: Poppins;
+  font-size: 9px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 21px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  color: #d2a741;
+}
+.team-member-task-details .badge-blue {
+  /* margin: 0 93px 0 225px; */
+  padding: 2px 12px 1px 13px;
+  border-radius: 2px;
+  background-color: #edffed;
+  font-family: Poppins;
+  font-size: 9px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 21px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  color: #41d290;
+}
+.team-member-task-details .pink-label-text {
+  width: 74px;
+  height: 15px;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 9px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 21px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  color: #ef5d5d;
+}
+.team-member-task-details .take-action {
+  margin-top: 25px;
+  margin-bottom: 34px;
+}
+
+.team-member-task-details .upcoming-title {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #202020;
+  display: flex;
+}
+.team-member-task-details .black-circle {
+  width: 16px;
+  height: 16px;
+  background-color: #202020;
+  margin-left: 8px;
+  border-radius: 50%;
+}
+.team-member-task-details .black-circle-text {
+  font-family: Poppins;
+  font-size: 8px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 17px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #ffffff;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+.team-member-task-details .upcoming-title .arrowDown {
+  width: 8px;
+  height: 4.9px;
+  margin-left: 17px;
+  /* background-color: #000000; */
+  margin-top: 7px;
+}
+.team-member-task-details .upcoming-btn {
+  display: flex;
+  margin-bottom: 27px;
+}
+.team-member-task-details .complete-title {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #41d290;
+  display: flex;
+}
+.team-member-task-details .complete-title .arrowDown {
+  width: 8px;
+  height: 4.9px;
+  margin-left: 17px;
+  /* background-color: #000000; */
+  margin-top: 7px;
+}
+.team-member-task-details .green-circle {
+  width: 16px;
+  height: 16px;
+  background-color: #41d290;
+  margin-left: 8px;
+  border-radius: 50%;
+}
+.team-member-task-details .green-circle-text {
+  font-family: Poppins;
+  font-size: 8px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 17px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #ffffff;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+.team-member-task-details .upcoming-grid {
+  width: 100%;
+}
+
+/* <!------------------------------> */
+/* .task-details-veiw {
+    padding: 48px 48px 95px;
+    object-fit: contain;
+    opacity: 0.73;
+    border-radius: 36px;
+    box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
+    background-color: #ffffff;
+}
+.task-details-title{
+    opacity: 0.6;
+    font-family: Poppins;
+    font-size: 10px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #2c2738;
+}
+.task-details-sub-title{
+    font-family: Poppins;
+  font-size: 24px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  color: #2c2738;
+  display: inline-flex;
+}
+.task-close-icon {
+    position: absolute;
+    right: 67px;
+    top: 40px;
+}
+.border-header{
+    width: 798px;
+    height: 1px;
+    margin: 28px 14px 37px 2px;
+    object-fit: contain;
+    background-color: #eee8fc;
+    position: relative;
+}
+.approved-label {
+    width: 131px;
+    height: 24px;
+    border-radius: 2px;
+    background-color: #fcf3cd;
+    position: absolute;
+    top: -11px;
+    left: 0px;
+}
+.approved-text{
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #f8c102;
+    line-height: 26px;
+}
+.nse-label{
+    width: 36px;
+    height: 23px;
+    object-fit: contain;
+    border-radius: 2px;
+    background-color: #f1f3ff;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.53;
+    margin: 7px 14px;
+    line-height: 25px;
+    font-family: Poppins;   
+    color: #2c2738;
+    font-stretch: normal;
+    font-style: normal;    
+    letter-spacing: normal;
+    text-align: center;
+}
+.file-title{
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #2c2738;
+}
+.task-details-file-grid {
+    border-bottom: 2px solid #eee8fc;
+    position: relative;
+    margin: 25px 0px;
+}
+.file-title-progress{
+    width: 40px;
+    position: absolute;
+    height: 2px;
+    border-radius: 1px;
+    background-color: #0049c6;
+}
+.holding-list-normal-title{
+    opacity: 0.64;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0.24px;
+    text-align: left;
+    color: #575757;
+}
+.holding-list-bold-title{
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0.24px;
+    color: #2c2738;
+  }
+
+  .task-detail-data {
+    margin: 20px 0px;
+}
+.file-upload-title {
+    font-family: Poppins;
+    font-size: 15px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0.01px;
+    text-align: left;
+    color: #1b1d21;
+    margin-bottom: 12px;
+    display: flex;
+}
+.file-upload-title img{
+    margin-right: 10px;
+}
+.file-download-title {
+    font-family: Poppins;
+    font-size: 13px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 24px;
+    letter-spacing: 0.02px;
+    text-align: left;
+    color: #6c5dd3;
+    text-transform: uppercase;
+}
+.reject-task {
+    border-radius: 4px !important;
+    background-color: #ef5d5d !important;
+    width: 131px;
+    height: 43px;
+    text-transform: uppercase !important;
+    text-align: center;
+}
+.approve-task {
+    border-radius: 4px !important;
+    background-color: #7fba7a !important;
+    width: 131px;
+    height: 43px;
+    text-transform: uppercase !important;
+    text-align: center;
+}
+.btn-toolbar.text-center.well {
+    margin-top: 30px;
+}
+.text-right-grid {
+    float: right;
+    margin-top: 3px;
+    font-family: Poppins;
+    font-size: 20px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 14px;
+    letter-spacing: 0.01px;
+    text-align: right;
+    color: #2c2738;
+}
+.cicrcle-name{
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 10px;
+    background-color: #f1f3ff;
+    opacity: 0.53;
+    font-family: Poppins;
+    font-size: 10px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 10px;
+    letter-spacing: 0px;
+    text-align: center;
+    color: #2c2738;
+    padding: 2px 3px;
+    margin-right: 5px;
+} */

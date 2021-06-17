@@ -1,0 +1,435 @@
+.right-side-grid{
+    width: 100%;
+    height: 416px;
+    margin:44px 64px 40px 0px;
+    object-fit: contain;
+}
+
+.right-comp-calender{
+    /* background-image: url("../../../assets/Images/calender1.png"); */
+    width: 100%;
+    height: 416px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 8px 36px 0 rgb(0 0 0 / 8%);
+    background-color: #ffffff;
+}
+.calender-header{
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    border-top-left-radius: 8px;
+    box-shadow: 0 0 16px 0 rgb(0 0 0 / 8%);
+    background-color: #897ddc;
+    border-top-right-radius: 8px;
+}
+.calender-data {
+    position: relative;
+    z-index: 999;
+    width: 100%;
+    display: flex;
+}
+.border-box{
+    border-right: 1px solid #e1dfdf;
+    flex: 0 0 22%;
+    height: 320px;
+    max-width: 22% !important;
+}
+.calender-data .border-box:first-child{
+    flex: 0 0 17%;
+    height: 320px;
+    max-width: 17% !important;
+}
+.calender-data .border-box:last-child{
+    border: inherit;
+}
+.rightComp-calender-title{
+    /* width: 218px;
+    height: 23px; */
+    opacity: 0.8;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffffff;
+    padding:24px 24px 24px 24px;
+}
+.two-label-grid {
+    position: absolute;
+    width: 100%;
+    top: 8%;
+}
+.two-label-grid-mobile {
+    position: absolute;
+    width: 100%;
+    bottom: 16%;
+}
+.month-strip{
+    width: 100%;
+    padding: 0px 0px 0px 0px;
+    display: inline-flex;
+}
+.nse-icon-text{
+    line-height: 55px;
+}
+.compliance-Blue-Label-Left {
+    width: 102.5%;
+    padding:0px 0px 0px 40px;
+    display: inline-flex;
+    position: relative;
+    z-index: 999;
+}
+.compliance-Blue-Label-Left-mobile {
+    width: 102.5%;
+    padding:0px 0px 0px 40px;
+    display: inline-flex;
+    position: relative;
+    z-index: 999;
+}
+.middle-label-grid {
+    position: absolute;
+    top: 37%;
+    width: 100%;
+}
+.bottom-label-grid{
+    position: absolute;
+    top:66%;
+    width: 100%;
+    right: 10px;
+}
+.compliance-bse-middle-label{
+    width: 100%;
+    padding: 0px 64px 0px 150px;
+    display: inline-block;
+    position: relative;
+    z-index: 999;
+}
+.compliance-bottom-label{
+    width: 100%;
+    padding: 0px 59px 36px 0px;
+    display: inline-block; 
+    position: relative;
+    z-index: 999; 
+}
+.alignright {
+	float: right;
+}
+.month-strip .month-title:first-child {
+    flex: 0 0 17%;
+    /* height: 320px; */
+    text-align: left;
+    max-width: 17% !important;
+    padding-left: 24px;
+    opacity: 0.56;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #0c0060;
+}
+.month-strip .month-title:last-child {
+    flex: 0 0 17%;
+    /* height: 320px; */
+    text-align: right;
+    max-width: 17% !important;
+    opacity: 0.56;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #0c0060;
+}
+.month-strip .month-title {
+    flex: 0 0 22%;
+    max-width: 22% !important;
+    text-align: center;
+    opacity: 0.56;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
+    color: #0c0060;
+}
+span.dueBtn {
+    /* width: 58px; */
+    /* height: 16px; */
+    vertical-align: middle;
+    margin-left: 5px;
+    object-fit: contain;
+    border-radius: 8px;
+    background-color: #ef5d5d;
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
+    padding: 1px 7px;
+    font-weight: 600;
+    font-stretch: normal; 
+    font-style: normal; 
+    /* line-height: normal; */
+    letter-spacing: 0.13px;
+    /* text-align: left; */
+    color: #ffffff;
+}
+.nse-title{
+  float: left;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #2c2738;
+}
+.nse-blue-btn{
+    background-image: url("../../../assets/Images/Compliancedemo/blueLabel.png");
+    width: 261px;
+    height: 56px;
+    object-fit: contain;
+    float: left;
+    mix-blend-mode: multiply;
+    border-radius: 8px;
+    background-blend-mode: multiply;
+    padding: 0px 19px;
+    margin-bottom: 30px;
+    position: absolute;
+    /* background-image: linear-gradient(to bottom, #d8f7ff, #d8f7ff); */
+}
+.assign-title {
+    width: 51px;
+    height: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    float: right;
+    color: #6c5dd3;
+    
+  }
+.nse-purple-btn{
+    background-image: url("../../../assets/Images/Compliancedemo/purpleCdsl.png");
+    width: 261px;
+    height: 56px;
+    margin-bottom: 30px;
+    object-fit: contain;
+    /* margin-left: 19%; */
+    float: right;
+    mix-blend-mode: multiply;
+    border-radius: 8px;
+    background-blend-mode: multiply;
+    padding: 0px 19px;
+    /* background-image: linear-gradient(to bottom, #d8f7ff, #d8f7ff); */
+}
+.pista-label-btn{
+    background-image: url("../../../assets/Images/Compliancedemo/pistaLabelBtn.png");
+    width: 261px;
+    height: 56px;
+    margin-bottom:30px;
+    object-fit: contain;
+    /* margin-left: 19%; */
+    float: left;
+    mix-blend-mode: multiply;
+    border-radius: 8px;
+    background-blend-mode: multiply;
+    padding: 0px 19px;
+    /* background-image: linear-gradient(to bottom, #d8f7ff, #d8f7ff);*/
+}
+.calender-last-Btn{
+    background-image: url("../../../assets/Images/Compliancedemo/lightCream.png");
+    width: 261px;
+    height: 56px;
+    margin-bottom: 42px;
+    object-fit: contain;
+    /* margin-left: 19%; */
+    float: right;
+    mix-blend-mode: multiply;
+    border-radius: 8px;
+    background-blend-mode: multiply;
+    padding: 0px 19px;
+    /* background-image: linear-gradient(to bottom, #d8f7ff, #d8f7ff); */
+}
+
+@media (max-width:980px){
+    .right-side-grid {
+        width: 100%;
+        height: 422px;
+        margin: 84px 58px 46px 0px;
+        object-fit: contain;
+    }
+}
+@media (max-width:767px){
+
+    .compliance-Blue-Label-Left {
+        display: block;
+    }
+    .right-comp-calender {
+        width: 264px;
+        height: 291px;
+    }
+
+    .nse-purple-btn {
+        float: inherit;
+    }
+    .right-side-grid {
+        margin: 0 auto;
+        width: 264px;
+        height:291px;
+    }
+    .compliance-Blue-Label-Left-mobile {
+        position: absolute;
+        right: 204px;
+        top: auto;
+        padding: 0px;
+        width: auto;
+    }
+    .compliance-bse-middle-label {
+        padding:0px 64px 0px 87px;
+    }
+    .compliance-bottom-label {
+        position: absolute;
+        width: auto;
+        left: 37px;
+        top: auto;
+        padding: 0px;
+    }
+    .nse-purple-btn {
+        width: 171px;
+        height: 27px;
+        position: absolute;
+        top: 96px;
+        left: 15px;
+        padding: 0px 0px 0px 12px;
+    }
+    .nse-icon-text {
+        line-height: 28px;
+    }
+    .pista-label-btn {
+        width: 160px;
+        height: 27px;
+        position: absolute;
+        top: -15px;
+        left: 98px;
+        padding: 0px 0px 0px 12px;
+    }
+    span.dueBtn {
+        margin-left: 24px;
+    }
+    .middle-label-grid {
+        position: absolute;
+        top: 30%;
+        width: 100%;
+    }
+    .bottom-label-grid {
+        position: absolute;
+        top: 52%;
+        width: 100%;
+        right: 10px;
+    }
+    .calender-last-Btn {
+        width: 180px;
+        height: 27px;
+        top: 50px;
+        padding: 0px 0px 0px 12px;
+        position: absolute;
+        left: 91px;
+    }
+    .nse-blue-btn {
+        width: 195px;
+        height: 27px;
+        padding: 0px 10px 0px 12px;
+        position: absolute;
+        left: -9px;
+        top: 0px;
+    }
+    .two-label-grid-mobile {
+        position: absolute;
+        width: 100%;
+        bottom: 25%;
+    }
+    .nse-title {
+        float: left;
+        font-family: 'Poppins', sans-serif;
+        font-size: 10px;
+    }
+    .nse-icon-text img {
+        width: 20px;
+        height: 20px;
+    }
+    .assign-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 10px;
+    }
+    .month-strip .month-title:first-child {
+        font-size: 8px;
+        flex: 0 0 29%;
+        max-width: 25% !important;
+        padding-left: 17px;
+    }
+    .month-strip .month-title {
+        font-size: 8px;
+        flex: 0 0 24%;
+        max-width: 23% !important;
+    }
+    .month-strip .month-title:last-child {
+        font-size: 8px;
+        flex: 0 0 0%;
+        max-width: 0% !important;    
+    }
+    .rightComp-calender-title {
+        font-size: 13px;
+        padding: 14px 24px 15px 24px;
+    }
+    .calender-header {
+        width: 100%;
+        height: 77px;
+    }
+    .rightComp-calender-title {
+        font-size: 11px;
+    }
+    .calender-data .border-box:first-child {
+        flex: 0 0 25%;
+        height: 214px;
+        max-width: 25% !important;
+    }
+    .border-box {
+        border-right: 1px solid #e1dfdf;
+        flex: 0 0 23%;
+        height: 214px;
+        max-width: 23% !important;
+    }
+   
+}
+
+@media (max-width:360px){
+    .rightComp-calender-title {
+        font-size: 11px;
+    }
+    
+    
+}
+
+@media (max-width:320px){
+    .calender-last-Btn {
+        width: 180px;
+        height: 27px;
+        top: 50px;
+        padding: 0px 0px 0px 12px;
+        position: absolute;
+        left: 56px;
+    }
+}

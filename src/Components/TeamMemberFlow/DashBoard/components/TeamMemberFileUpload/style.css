@@ -1,0 +1,307 @@
+.file-upload-view {
+  padding: 48px 48px 95px;
+  object-fit: contain;
+  opacity: 1;
+  border-radius: 36px;
+  margin: 24px 24px 24px 22px;
+  box-shadow: 0 3px 36px 0 rgb(67 0 255 / 8%);
+  background-color: #ffffff;
+ position: relative;
+}
+.file-upload-title-top {
+  opacity: 0.6;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.file-upload-sub-title {
+  font-family: Poppins;
+  font-size: 24px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  color: #2c2738;
+  display: inline-flex;
+}
+.file-upload-close-icon {
+  position: absolute;
+  right: 81px;
+  top: 66px;
+  cursor: pointer;
+}
+.file-upload-border-header {
+  width: 798px;
+  height: 1px;
+  margin: 28px 14px 37px 2px;
+  object-fit: contain;
+  background-color: #eee8fc;
+  position: relative;
+}
+.file-approved-label {
+  width: auto;
+  height: 24px;
+  border-radius: 2px;
+  background-color: #7fba7a ;
+  position: absolute;
+  top: -11px;
+  left: 0px;
+}
+.file-approved-text {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+  line-height: 26px;
+  padding: 1px 2px;
+}
+.file-nse-label {
+  width: 36px;
+  height: 23px;
+  object-fit: contain;
+  border-radius: 2px;
+  background-color: #f1f3ff;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.53;
+  margin: 7px 14px;
+  line-height: 25px;
+  font-family: Poppins;
+  color: #2c2738;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: center;
+}
+.file-upload-title-file {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.file-upload-file-grid {
+  border-bottom: 2px solid #eee8fc;
+  position: relative;
+  margin: 25px 0px;
+}
+.file-upload-title-progress {
+  width: 40px;
+  position: absolute;
+  height: 2px;
+  border-radius: 1px;
+  background-color: #0049c6;
+}
+.today-list-normal-title {
+  opacity: 0.64;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  margin-bottom: 16px;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+.today-list-bold-title {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  color: #2c2738;
+}
+
+.today-detail-data {
+  margin: 20px 0px;
+}
+
+.file-upload-title-text {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 24px;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+  text-transform: uppercase;
+}
+.mark-complete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px !important;
+  background-color: #7fba7a !important;
+  width: 155px;
+  height: 43px;
+  text-transform: uppercase !important;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  color: #ffffff;
+}
+.mark-complete:hover {
+  background-color: #7fba7a !important;
+  color: #fff !important;
+}
+.mark-complete:focus {
+  outline: 0;
+  box-shadow: inherit;
+}
+.btn-toolbar.text-center.well {
+  margin-top: 30px;
+}
+.text-right-grid {
+  float: right;
+  margin-top: 3px;
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: 0.01px;
+  text-align: right;
+  color: #2c2738;
+}
+.cicrcle-name {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 10px;
+  background-color: #f1f3ff;
+  opacity: 0.53;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 10px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #2c2738;
+  padding: 2px 3px;
+  margin-right: 5px;
+}
+.file-grid-data {
+  display: block;
+  position: relative;
+  margin-bottom: 15px;
+}
+.file-upload-box {
+  width: 437px;
+  height: 201px;
+  border: dashed 1px rgb(27 29 33 / 34%);
+  /* /* margin: 24px 0px 0px 0;
+    padding: 24px 69px 28px 68px; */
+  /* opacity: 0.34; 
+    border: solid 1px #1b1d21;
+    /* background-color: #1b1d21; 
+    border-width: 2px;
+    border-style: dashed;
+    position: relative; */
+}
+.image-display {
+  /* position: absolute;
+  top: 24px; */
+  margin: 24px auto;
+  /* left: 60px; */
+  text-align: center;
+}
+.image-display img {
+  margin-bottom: 24.3px;
+  width: 64px;
+  height: 42.7px;
+}
+.image-display .drag-drop-title {
+  font-family: Poppins;
+  font-size: 19px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  margin-bottom: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #2c2738;
+}
+.file-upload-blue {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: center;
+  color: #6c5dd3;
+  text-transform: uppercase;
+}
+.report-text {
+  margin: 0 0 4px;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #1b1d21;
+}
+.upload-date {
+  margin: 4px 97px 0 0;
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+
+
+
+.bottom-logo-strip-dashboard-btn {
+  position: absolute;
+  bottom: 48px;
+  max-width: 83%;
+  width: 100%;
+}
+
+.check-mark {
+  background-color: #fff;
+  height: 15px;
+  width: 15px;
+  clip-path: polygon(1% 69%, 13% 57%, 26% 75%, 71% 31%, 81% 43%, 25% 100%);
+  margin: 0 3px 3px 0;
+}

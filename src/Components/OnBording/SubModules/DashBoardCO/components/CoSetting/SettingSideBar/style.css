@@ -1,0 +1,118 @@
+
+.setting-side-bar {
+  padding: 35px 0px;
+  width: 100%;
+}
+.setting-side-bar .log-out{
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #ef5d5d;
+  position: absolute;
+    bottom: 10px;
+    padding: 0px 20px;
+}
+.setting-side-bar .log-out img{
+  margin-right: 10px;
+}
+.setting-side-bar .setting-title{
+  font-family: Poppins;
+  font-size: 24px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  padding: 0px 20px;
+}
+.menu-items{
+  margin-top: 40px;
+}
+
+.menu-items ul{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.menu-items ul li {
+  padding: 18px 20px;
+  border-top: 1px solid #eee8fc;
+  cursor: pointer;
+  border-right: 3px solid transparent;
+}
+.active-class{
+  border-right: 3px solid #7a73ff !important;
+  background-color: #EFEEFF;
+  color: #6c5dd3;
+}
+
+
+.menu-items ul li:last-child {
+  border-bottom: 1px solid #eee8fc;
+}
+.menu-items ul li span{
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #1b1d21;
+}
+.get-main-settingCo {
+  padding-bottom: 60px;
+  position: relative;
+  height: 93vh;
+}
+.get-main-settingCo .bottom-logo-strip-settingCo {
+  position: absolute;
+  bottom: 20px;
+  max-width: 83%;
+  width: 100%;
+}
+
+.setting-side-bar .mobile-top-pyd-setting {
+  padding: 34px 20px 32px;
+}
+
+@media screen and (max-width: 767px) {
+  .right-bg {
+    display: none;
+  }
+  .get-main-settingCo .menu-items ul li {
+    padding: 18px 0px;
+    border-top: 1px solid #eee8fc;
+    cursor: pointer;
+    border-right: 3px solid transparent;
+    margin: 0px 20px;
+  }
+  .un-active-class {
+  border-right: none !important;
+  background-color:transparent !important;
+  /* color: #6c5dd3 ; */
+}
+.get-main-settingCo {
+  padding-bottom: 60px;
+  position: relative;
+  height: auto;
+}
+}
+
+@media (max-width: 767px) {
+  /* div#navigationBar\ mobile-navigation-drower{
+      margin: 0 43.6px 0 20px;
+} */
+  .setting-side-bar {
+    padding: 0px 15px;
+  }
+}

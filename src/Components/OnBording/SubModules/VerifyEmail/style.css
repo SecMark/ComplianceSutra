@@ -1,0 +1,235 @@
+/* header css  start*/
+
+.get-started-header {
+  padding-top: 40px;
+}
+.header_logo {
+  object-fit: contain;
+}
+.header_logo img {
+  width: 32px;
+}
+.header_logo a:hover {
+  text-decoration: none;
+}
+.header_logo .camp {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.04;
+  letter-spacing: normal;
+  text-align: left;
+  position: relative;
+  color: #1b1d21;
+  top: 3px;
+  left: 6px;
+}
+.header .testLabelRight {
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+}
+.header .testing-label {
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: right;
+  color: #000000;
+  margin-bottom: 0px;
+}
+/* header css  end*/
+
+.verify-email {
+  margin-top: 40px;
+  height: calc(100% - 0px);
+}
+.verify-email img {
+  margin-bottom: 32px;
+  width: 64px;
+  height: 64px;
+}
+.verify-email .verify-title {
+  width: 574px;
+  font-size: 33px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  margin-bottom: 16px;
+  font-family: "Poppins", sans-serif;
+}
+.verify-email .form_wrapper {
+  max-width: 358px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.verify-link {
+  object-fit: contain;
+  opacity: 0.82;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: rgb(44 39 56 / 82%);
+  margin-bottom: 0px;
+}
+.verify-link span {
+  color: #2c2738;
+  opacity:inherit;
+}
+/* login section */
+
+/* bottom logo */
+.bottom-logo-strip-verify {
+  position: absolute;
+  bottom: 20px;
+  max-width: 83%;
+  width: 100%;
+}
+
+.bottom-logo-strip-verify .text-right {
+  float: right;
+  margin-top: 13px;
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: 600;
+  font-stretch: normal;
+  padding-top: 0px;
+  margin-top: 0px;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: 0.01px;
+  text-align: right;
+  color: #2c2738;
+  padding-top: 0px;
+}
+.bottom-logo-strip-verify .contact-spacing {
+  margin-right: 22px;
+}
+.bottom-logo-strip-verify .bottom_logo a {
+  text-decoration: none;
+}
+.bottom-logo-strip-verify .bottom_logo .powerBy {
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -1px;
+  text-align: left;
+  color: #11142d;
+}
+.bottom-logo-strip-verify .login-link {
+  opacity: 0.8;
+  font-family: Poppins;
+  font-size: 11px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+}
+.bottom-logo-strip-verify .account-link {
+  opacity: 0.8;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  margin-bottom: 0px;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+  padding-top: 10px;
+}
+
+.bottom-logo-strip-verify .powerBy {
+  font-family: Poppins;
+  font-size: 11px;
+  font-weight: 200;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 3.36;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #aeaeae;
+  margin-right: 8px;
+}
+.bottom-logo-strip-verify .login-link-black {
+  opacity: 0.8;
+  font-family: Poppins;
+  font-size: 11px;
+  font-weight: 700;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #000;
+}
+.bottom-logo-strip-verify .account-link-black {
+  opacity: 0.8;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  margin-bottom: 0px;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #443c56;
+}
+/* bottom logo */
+
+.blank-mobile {
+  width: 100%!important;
+  height: 5px;
+}
+
+
+  @media screen and (max-width: 767px) {
+    .left-fixed {
+        display: none;
+    }
+    .verify-email-main .bottom-logo-strip-verify {
+      max-width: 100%;
+    }
+    .padding-right {
+        padding-left: 4%;
+    }
+    .input-front-forget-link{
+        display: block;
+    }
+    .verify-email .verify-title {
+      width: 324px;
+      font-size: 23px;
+    }
+    .verify-link {
+      width: 324px;
+    }
+    .bottom-logo-strip-verify .account-link-black {
+      margin-bottom: 32px;
+    }
+  }
+  @media screen and (max-width: 320px){
+    .verify-email .verify-title {
+        font-size: 23px;
+    }
+  }

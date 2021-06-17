@@ -1,0 +1,313 @@
+/* header css  start*/
+.get-main {
+  height: 100vh;
+  padding-bottom: 60px;
+  position: relative;
+}
+.get-started-header {
+  padding-top: 40px;
+}
+.header_logo {
+  object-fit: contain;
+}
+.header_logo img {
+  width: 32px;
+}
+.header_logo a:hover {
+  text-decoration: none;
+}
+.header_logo .camp {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.04;
+  letter-spacing: normal;
+  text-align: left;
+  position: relative;
+  color: #1b1d21;
+  top: 3px;
+  left: 6px;
+}
+
+.header .testLabelRight {
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+}
+.header .testing-label {
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: right;
+  color: #000000;
+  margin-bottom: 0px;
+}
+/* header css  end*/
+.wrapper_login {
+  margin-top: 64px;
+  /* height: calc(100% - 0px); */
+}
+.Resend-OTP-in {
+  margin: 2px 12px 2px 0;
+  opacity: 0.6;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-bottom: 1rem;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #1b1d21;
+}
+.second{
+  margin: 0 0 0 12px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  opacity: initial;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #1b1d21;
+}
+.mobile-change{
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #6c5dd3;
+  margin-left: 10px;
+}
+.wrapper_login .login_title {
+  font-size: 33px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  margin-bottom: 15px;
+  position: relative;
+  font-family: "Poppins", sans-serif;
+}
+.form-group.smallBtn {
+  margin-bottom: 16px;
+}
+
+.smallBtn .form-control {
+  width: 261px;
+  height: 40px;
+  /* margin: 24px 20px 24px 0; */
+  /* padding: 11px 133px 10px 24px; */
+  border-radius: 8px;
+  border: solid 1px #e4e4e4;
+  background-color: #ffffff;
+  /* margin-bottom: 48px; */
+}
+.smallBtn .form-control::placeholder{
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #aeaeae;
+}
+.verify-otp .common-button {
+  border-radius: 4px !important;
+  background-color: #6c5dd3 !important;
+  height: 43px;
+  text-transform: uppercase !important;
+  width: 106px;
+  text-align: center;
+  margin-top: 32px;
+}
+
+.right-back-arrow {
+  position: absolute;
+  left: -60.5px;
+  width: 48px;
+  height: 48px;
+}
+
+.send-otp .disc-text {
+  opacity: 0.7;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+  width: 438px;
+}
+.send-otp .common-button {
+  margin-top: 32px;
+}
+.send-otp .change {
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #6c5dd3;
+  padding-left: 15px;
+  cursor: pointer;
+}
+.send-otp .will-send-text {
+  margin: 30px 0px 16px;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.verify-otp .disc-text {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+  margin-bottom: 0px;
+}
+.verify-otp .will-send-text {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+  margin-bottom: 24px;
+}
+.verify-otp .change {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #6c5dd3;
+  padding-left: 15px;
+  cursor: pointer;
+}
+.verify-otp .resend {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+  padding-left: 15px;
+  cursor: pointer;
+  opacity: 1;
+}
+.verify-otp .resend-text {
+  opacity: 0.6;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #1b1d21;
+}
+/* bottom logo */
+
+.bottom-logo-strip {
+  position: absolute;
+  bottom: 20px;
+  max-width: 83%;
+  width: 100%;
+}
+
+.powerBy {
+  font-family: Poppins;
+  font-size: 11px;
+  font-weight: 200;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 3.36;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #aeaeae;
+}
+.count-text-sec{
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 16px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #1b1d21;
+  margin-bottom:0px;
+}
+/* bottom logo */
+
+.get-main .mobile-steper-stripe {
+  top: 0px;
+}
+.input-mobile-box-otp{
+  font-weight: 400;
+    font-size: 13px;
+    border-left: 0px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+@media screen and (max-width: 767px) {
+  .send-otp .disc-text {
+    width: 100%;
+  }
+  .otp-mobile-py .container{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  
+  .send-otp .change {
+    padding-left: 0px;
+  }
+  .space-mobile{
+    height:5px;
+  }
+
+}

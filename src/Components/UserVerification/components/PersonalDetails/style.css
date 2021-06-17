@@ -1,0 +1,13 @@
+.countryCode-sucess {
+    color: #000000 !important;
+    opacity: 1 !important;
+}
+.cutom-add-whatsappflag {
+    position: absolute;
+    left: 0 !important;
+    z-index: 1 !important;
+    width: 1rem;
+    height: 1.25rem;
+    opacity: 1 !important;
+    top: 0px !important;
+}
