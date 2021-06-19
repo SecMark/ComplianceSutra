@@ -16,6 +16,7 @@
     "connected-react-router": "^6.9.1",
     "history": "^4.9.0",
     "moment": "^2.29.1",
+    "multiselect-react-dropdown": "^1.7.0",
     "node-sass": "^5.0.0",
     "react": "^17.0.1",
     "react-app-polyfill": "^2.0.0",
