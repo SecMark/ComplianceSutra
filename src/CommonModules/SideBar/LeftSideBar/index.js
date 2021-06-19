@@ -6,6 +6,9 @@ import SideBaruser from "../../../assets/Icons/sideBaruser.png";
 
 import sidebarActive from "../../../assets/Icons/sidebar-active.png";
 import sidebarRightActive from "../../../assets/Icons/task_alt_black_24dp (1).png";
+import dashboardBlackActive from "../../../assets/Icons/dashboard_black.png";
+import dashboardGreyActive from "../../../assets/Icons/dashboard_grey.png";
+
 import sidebarBell from "../../../assets/Icons/sidebarBell.png";
 import sidebarBellActive from "../../../assets/Icons/bellSelected.png";
 import settingActive from "../../../assets/Icons/activeSetting.png";
@@ -78,14 +81,14 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           >
             <img
               style={{ cursor: "pointer" }}
-              title="Tasks"
+              title="ComplianceHistory"
               onClick={() => onMenuClick("complianceHistory")}
               src={
                 !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "complianceHistory"
-                  ? sidebarActive
-                  : sidebarRightActive
+                  ? dashboardBlackActive
+                  : dashboardGreyActive
               }
               alt="sidebar Active"
             />

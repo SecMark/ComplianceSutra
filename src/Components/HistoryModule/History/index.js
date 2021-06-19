@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import check from "../../../assets/Icons/check.png";
-import uncheck from "../../../assets/Icons/uncheck.png";
+import filter from "../../../assets/Icons/Filters.png";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
+import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
 import "./style.css";
 
 const History = (props) => {
@@ -11,20 +12,29 @@ const History = (props) => {
       <div className="history-container">
         <div className="row">
           <div className="col-md-5">
-            <p className="main-title">Compliance History</p>
-            <span>
+            <h2 className="main-title">
+              Compliance History <img src={filter} />
+            </h2>
+
+            <span className="SbPara">
               Get your historical compliance task you have completed at one
               place
             </span>
-            <div className="form-group">
-              <label htmlFor="from">From:</label>
-              <input type="text" className="form-control" />
+            <div style={{ marginTop: "20px" }}>
+              <label htmlFor="from" className="mb-2">
+                From:
+              </label>
+              <Datepicker name="from" />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="to">To:</label>
-              <input type="text" className="form-control" />
+            <div style={{ marginTop: "20px" }}>
+              <label htmlFor="to" className="mb-2">
+                To:
+              </label>
+              <Datepicker name="to" />
             </div>
+
+            <div className="form-group"></div>
           </div>
         </div>
       </div>

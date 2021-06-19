@@ -1,6 +1,7 @@
 .side-bar {
   display: flex;
-  height: 100vh;
+    width: 64px;
+    background-color: #f6f9fb;
 }
 .side-bar .right-side {
   width: 100%;

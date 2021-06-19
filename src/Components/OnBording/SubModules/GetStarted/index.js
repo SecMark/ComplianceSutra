@@ -82,7 +82,7 @@ const onSubmit = () => {
           {/* <SideBarInputControl /> */}
         </div>
       </div>
-      <div className="col-12 padding-right">
+      <div className="col-12 padding-right loginRight">
         <img
           className="bottom-right-bg"
           src={RightImageBg}
@@ -150,7 +150,7 @@ const onSubmit = () => {
                     />
                     <label className="custom-control-label btn-top-label alink-hover" htmlFor="customCheck">I agree to all the <a href="#" className="landing-terms-condition"><b>Terms and Conditions</b></a></label>
                   </div> */}
-                   <div className="custom-control custom-checkbox" >
+                   <div className="custom-control custom-checkbox statedCheckboxWrap" >
                     <input id="magicBtn" type="checkbox"
                       className="custom-control-input"
                       style={{ width: "1rem", height: "1.25rem"}}
