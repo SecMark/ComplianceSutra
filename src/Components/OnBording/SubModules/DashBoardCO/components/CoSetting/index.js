@@ -99,7 +99,7 @@ function CoSetting({ history }) {
             ref={sideBarChild}
           >
             <MobileLeftSidebar
-              className="d-block d-sm-none"
+              className="d-block d-md-none"
               close={() => closeMobileSidebar()}
             />
           </div>

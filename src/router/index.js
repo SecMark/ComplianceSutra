@@ -25,31 +25,32 @@ import YouAreDone from "../Components/OnBording/SubModules/YourAreDone";
 // import NewPasswordComtech from "../Components/NewPasswordComtech";
 import Governance from "../Components/OnBording/SubModules/Governance";
 
-import CoPersonal from '../Components/OnBording/SubModules/DashBoardCO/components/CoSetting/CoPersonal/index';
+import CoPersonal from "../Components/OnBording/SubModules/DashBoardCO/components/CoSetting/CoPersonal/index";
 import PersonalDetailsTM from "../Components/TeamMemberFlow/VerificationFlow/components/PersonalDetails";
-import Login from '../Components/Authectication/components/Login';
-import ForgotPassword from '../Components/Authectication/components/ForgotPassword';
-import ChangePassword from '../Components/Authectication/components/ChangePassword';
-import RedirectToDashboard from '../Components/OnBording/SubModules/redirectToLogin'
-import InvitationMemberFlow from "../Components/OnBording/SubModules/IniviteFlowMember"
+import Login from "../Components/Authectication/components/Login";
+import ForgotPassword from "../Components/Authectication/components/ForgotPassword";
+import ChangePassword from "../Components/Authectication/components/ChangePassword";
+import RedirectToDashboard from "../Components/OnBording/SubModules/redirectToLogin";
+import InvitationMemberFlow from "../Components/OnBording/SubModules/IniviteFlowMember";
 import Notification from "../Components/OnBording/SubModules/DashBoardCO/components/notification";
 //import CoManagment from "../Components/OnBording/SubModules/DashBoardCO/components/HeadCOManagement";
 import CoSetting from "../Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
-import UserProfileVerifcation from "../Components/UserVerification/components/PersonalDetails"
+import UserProfileVerifcation from "../Components/UserVerification/components/PersonalDetails";
 import UserOTPVerifcation from "../Components/UserVerification/components/OTPVerification";
 import UserVerificationProcess from "../Components/UserVerification/components";
-
+import History from "../Components/HistoryModule/History";
 
 export default function AppRouter() {
   const checkHeader = () => {
-    
-    if (window.location.includes === '/compliance-demo-end"' ||
-      window.location.includes === '/') {
+    if (
+      window.location.includes === '/compliance-demo-end"' ||
+      window.location.includes === "/"
+    ) {
       document.body.style.backgroundColor = "white";
       return true;
     }
     return false;
-  }
+  };
   return (
     <div>
       <>
@@ -102,50 +103,52 @@ export default function AppRouter() {
           />
           <Route exact path="/sign-up-request" component={SIGNUPPOP} />
           <Route exact path="/otp-verification-co" component={VerifyOTPCO} />
-          <Route
-            exact
-            path="/dashboard"
-            component={DashBoardCO}
-          />
+          <Route exact path="/dashboard" component={DashBoardCO} />
           <Route
             exact
             path="/personal-details-team-member"
             component={PersonalDetailsTM}
           />
-           <Route
-            exact
-            path="/login"
-            component={Login}
-          />
+          <Route exact path="/login" component={Login} />
 
-          <Route
-            exact
-            path="/forgot-password"
-            component={ForgotPassword}
-          />
-          <Route
-            exact
-            path="/change-password"
-            component={ChangePassword}
-          />
+          <Route exact path="/forgot-password" component={ForgotPassword} />
+          <Route exact path="/change-password" component={ChangePassword} />
 
-          <Route
-            exact
-            path="/governance"
-            component={Governance}
-          />
+          <Route exact path="/governance" component={Governance} />
 
           <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
-          <Route exact path="/redirect-dashboard" component={RedirectToDashboard} />
+          <Route
+            exact
+            path="/redirect-dashboard"
+            component={RedirectToDashboard}
+          />
 
-          <Route exact path="/invitation-member" component={InvitationMemberFlow} />
+          <Route
+            exact
+            path="/invitation-member"
+            component={InvitationMemberFlow}
+          />
           <Route exact path="/notifications" component={Notification} />
           {/* <Route exact path="/co-managment" component={CoManagment}/> */}
           <Route exact path="/settings" component={CoSetting} />
 
-          <Route exact path="/user-details-verification" component={UserProfileVerifcation} />
-          <Route exact path="/otp-verification" component={UserOTPVerifcation} />
-          <Route exact path="/user-verification-process" component={UserVerificationProcess} />
+          <Route
+            exact
+            path="/user-details-verification"
+            component={UserProfileVerifcation}
+          />
+          <Route
+            exact
+            path="/otp-verification"
+            component={UserOTPVerifcation}
+          />
+          <Route
+            exact
+            path="/user-verification-process"
+            component={UserVerificationProcess}
+          />
+
+          <Route exact path="/compliance-history" component={History} />
         </div>
       </>
     </div>

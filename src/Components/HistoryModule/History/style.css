@@ -1,0 +1,18 @@
+.history-side-bar {
+  display: flex;
+}
+.history-container {
+  object-fit: contain;
+  border-radius: 36px;
+  box-shadow: 0 3px 36px 0 rgb(67 0 255 / 8%);
+  background-color: #ffffff;
+  position: relative;
+  height: 94vh;
+  margin: 20px 20px 20px 2.5vw;
+  padding: 48px 0;
+  width: 100%;
+}
+
+.history-container .row {
+  margin: 0px 15px 0px 30px;
+}
