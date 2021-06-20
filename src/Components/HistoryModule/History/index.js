@@ -1,15 +1,16 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 // import check from "../../../assets/Icons/check.png";
 import filter from "../../../assets/Icons/Filters.png";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
 import reducer from "./reducer";
+import diffInDate from "../../../CommonModules/sharedComponents/Datepicker/utils";
 import MultiSelectDropdown from "../../../CommonModules/sharedComponents/Dropdown/index";
 import "./style.css";
 
 const initialState = {
-  from: "",
-  to: "",
+  from: [],
+  to: [],
   companies: [
     { name: "Google", id: 1, selected: false },
     { name: "Facebook", id: 2, selected: false },
@@ -25,6 +26,10 @@ const initialState = {
 };
 const History = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [timeDiff, setTimeDiff] = useState(0);
+  useEffect(() => {
+    setTimeDiff(diffInDate(state.from, state.to));
+  }, [state]);
   return (
     <div className="history-side-bar">
       <LeftSideBar />
@@ -43,14 +48,27 @@ const History = (props) => {
               <label htmlFor="from" className="mb-2">
                 From:
               </label>
-              <Datepicker name="from" />
+              <Datepicker
+                name="from"
+                dispatch={dispatch}
+                actionType="SELECT_FROM_DATE"
+              />
             </div>
 
             <div style={{ marginTop: "20px" }}>
               <label htmlFor="to" className="mb-2">
-                To:
+                To:{" "}
+                {timeDiff > 365 && (
+                  <span style={{ color: "red" }}>
+                    You can't choose more than 1 year!
+                  </span>
+                )}
               </label>
-              <Datepicker name="to" />
+              <Datepicker
+                name="to"
+                dispatch={dispatch}
+                actionType="SELECT_TO_DATE"
+              />
             </div>
             <MultiSelectDropdown
               options={state.companies}
