@@ -5,12 +5,16 @@ import "./style.css";
 
 const Datepicker = ({ name, picker }) => {
   const [value, setValue] = React.useState(null);
+  const handleFilteValues = (date, dateString) => {
+    console.log(dateString);
+  };
 
   return (
     <DatePicker
       style={{ width: "100%", color: "#000" }}
       format="D MMMM Y"
       name={name}
+      onChange={handleFilteValues}
     />
   );
 };

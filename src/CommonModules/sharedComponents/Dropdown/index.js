@@ -13,6 +13,7 @@ function MultiSelectDropdown({
 }) {
   const [selectTitle, setSelectTitle] = useState(inputTitle);
   const [isOpen, setIsOpen] = useState(false);
+
   useEffect(() => {
     const numOfSelected = options.filter(
       (option) => option.selected === true
@@ -23,6 +24,7 @@ function MultiSelectDropdown({
       setSelectTitle(inputTitle);
     }
   }, [options]);
+
   return (
     <>
       <div
@@ -31,7 +33,7 @@ function MultiSelectDropdown({
           setIsOpen(!isOpen);
         }}
       >
-        <label htmlFor="lable-title">{lableTitle}:</label>
+        <label htmlFor="lable-title" className="mb-2">{lableTitle}:</label>
         <div className="form-control select-container" id="lable-title">
           <span className="select-title">{selectTitle}</span>
           <span

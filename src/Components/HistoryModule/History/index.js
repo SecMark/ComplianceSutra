@@ -1,18 +1,26 @@
-import React, { useState } from "react";
-import check from "../../../assets/Icons/check.png";
+import React, { useReducer, useState } from "react";
 import filter from "../../../assets/Icons/Filters.png";
-import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
-import React, { useState, useReducer } from "react";
 import reducer from "./reducer";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import MultiSelectDropdown from "../../../CommonModules/sharedComponents/Dropdown/index";
 import "./style.css";
+import { useDispatch } from "react-redux";
+import { setFilter } from "../redux/actions";
+import { useHistory } from "react-router";
 
 const initialState = {
   from: "",
   to: "",
   companies: [
+    { name: "Google", id: 1, selected: false },
+    { name: "Facebook", id: 2, selected: false },
+    { name: "Walmart", id: 3, selected: false },
+    { name: "Amazon", id: 4, selected: false },
+    { name: "Google", id: 1, selected: false },
+    { name: "Facebook", id: 2, selected: false },
+    { name: "Walmart", id: 3, selected: false },
+    { name: "Amazon", id: 4, selected: false },
     { name: "Google", id: 1, selected: false },
     { name: "Facebook", id: 2, selected: false },
     { name: "Walmart", id: 3, selected: false },
@@ -27,6 +35,23 @@ const initialState = {
 };
 const History = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const history = useHistory();
+  const filterDispatch = useDispatch();
+
+
+
+  const setFilterAndNavigateToHistoryList = () => {
+    const filterPayload = {
+      from: "123",
+      to: "123",
+      selectedCompany: "123",
+      selectedLicenses: "123",
+    };
+    filterDispatch(setFilter(filterPayload));
+    history.push("/compliance-history-list");
+  };
+
   return (
     <div className="history-side-bar">
       <LeftSideBar />
@@ -45,7 +70,7 @@ const History = (props) => {
               <label htmlFor="from" className="mb-2">
                 From:
               </label>
-              <Datepicker name="from" />
+              <Datepicker name="from"/>
             </div>
 
             <div style={{ marginTop: "20px" }}>
@@ -68,6 +93,9 @@ const History = (props) => {
               dispatchType="SELECT_LICENSE_TOGGLE"
               dispatch={dispatch}
             />
+            <button onClick={setFilterAndNavigateToHistoryList}>
+              View History
+            </button>
           </div>
         </div>
       </div>

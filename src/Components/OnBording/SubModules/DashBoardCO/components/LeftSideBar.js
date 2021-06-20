@@ -3,6 +3,8 @@ import "./style.css";
 // import SideBarBg from "../../../../assets/Images/Onboarding/side-bar-bg.png";
 import sideBarlogo from "../../../../../assets/Icons/sideBarlogo.png";
 import SideBaruser from "../../../../../assets/Icons/sideBaruser.png";
+import dashboardBlackActive from "../../../../../assets/Icons/dashboard_black.png";
+import dashboardGreyActive from "../../../../../assets/Icons/dashboard_grey.png";
 import taskIcon from "../../../../../assets/Icons/taskIcon.png";
 import btnicon from "../../../../../assets/Icons/btn-icon.png";
 import siderBarbtnArrow from "../../../../../assets/Icons/siderBarbtnArrow.png";
@@ -62,8 +64,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/notifications");
     } else if (currentActiveMenu === "settings") {
       history.push("/settings");
-    }
-    else if (currentActiveMenu === "complianceHistory") {
+    } else if (currentActiveMenu === "complianceHistory") {
       history.push("/compliance-history");
     }
   };
@@ -99,8 +100,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                 !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "complianceHistory"
-                  ? sidebarActive
-                  : sidebarRightActive
+                  ? dashboardBlackActive
+                  : dashboardGreyActive
               }
               alt="sidebar Active"
             />

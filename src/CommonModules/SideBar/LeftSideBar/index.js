@@ -53,6 +53,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/settings");
     } else if (currentActiveMenu === "complianceHistory") {
       history.push("/compliance-history");
+    } else if (currentActiveMenu == "complianceHistoryList") {
+      history.push("/compliance-history-list");
     }
   };
 
@@ -93,6 +95,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Active"
             />
           </div>
+
           <div
             className={
               !openProfile &&
@@ -133,6 +136,30 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                 !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "notfications"
+                  ? sidebarBellActive
+                  : sidebarBell
+              }
+              alt="sidebar Bell"
+            />
+          </div>
+
+          <div
+            className={
+              !openProfile &&
+              state &&
+              state.adminMenu.currentMenu === "complianceHistoryList"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="complianceHistoryList"
+              onClick={() => onMenuClick("complianceHistoryList")}
+              src={
+                !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "complianceHistoryList"
                   ? sidebarBellActive
                   : sidebarBell
               }
