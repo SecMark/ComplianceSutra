@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import check from "../../../assets/Icons/check.png";
 import uncheck from "../../../assets/Icons/uncheck.png";
 import "./style.css";

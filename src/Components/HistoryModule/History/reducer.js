@@ -27,6 +27,16 @@ const reducer = (state, action) => {
         ],
       };
 
+    case "SELECT_FROM_DATE":
+      return {
+        ...state,
+        from: action.payload,
+      };
+    case "SELECT_TO_DATE":
+      return {
+        ...state,
+        to: action.payload,
+      };
     default:
       return state;
   }
