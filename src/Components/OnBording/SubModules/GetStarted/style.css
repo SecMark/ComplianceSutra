@@ -381,3 +381,16 @@ label.custom-control-label.btn-top-label {
       font-size: 23px;
   }
 }
+.loginRight {
+  background: #fff;
+}
+
+.statedCheckboxWrap {
+  display: flex;
+  align-items: center;
+  margin: 15px 0 0;
+}
+ 
+.statedCheckboxWrap input {
+  margin: 0 10px 0 0;
+}

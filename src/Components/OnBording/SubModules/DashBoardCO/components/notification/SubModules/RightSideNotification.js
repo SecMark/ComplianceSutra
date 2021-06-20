@@ -180,7 +180,7 @@ function NotificationGrid(props) {
                <div id="sideBarChild" className="leftSideBarFixed">
                   <MobileLeftSidebar className="d-block d-sm-none" close={() => closeMobileSidebar()} />
                </div></div>}
-         <div className="mobile-head mobile-top-pyd d-block d-sm-none">
+         <div className="mobile-head mobile-top-pyd d-block d-md-none">
             <div className="d-flex">
                <div className="w-25"><img style={{ cursor: "pointer" }} onClick={() => { openHBMenu() }} src={togglemobile} alt="toggle mobile" /></div>
                <div className="w-75"> <img className="mobile-logo" src={sideBarlogo} /> </div>

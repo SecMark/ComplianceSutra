@@ -33,10 +33,11 @@
     height: 100vh;
 }
 .side-bar .left-bar{
-    width: 6vw;
-    background-color: #f6f9fb;
+    width: 100%;
     padding-top: 30px;
+    padding-left: 0;
     position: relative;
+    background: transparent;
 }
 
 .side-bar .left-bar .logo{
