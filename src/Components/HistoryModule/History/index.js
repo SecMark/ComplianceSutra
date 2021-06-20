@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import check from "../../../assets/Icons/check.png";
+import React, { useState, useReducer } from "react";
+// import check from "../../../assets/Icons/check.png";
 import filter from "../../../assets/Icons/Filters.png";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
-import React, { useState, useReducer } from "react";
 import reducer from "./reducer";
-import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import MultiSelectDropdown from "../../../CommonModules/sharedComponents/Dropdown/index";
 import "./style.css";
 
