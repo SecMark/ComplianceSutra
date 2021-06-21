@@ -250,6 +250,30 @@ function PersonalDetails({ history }) {
       })
   }
 
+  const validateMobileNumber = (e) => {
+    var countrycode = values.countryCode.replace("+", "")
+    let payload =
+    {
+      loginID: countrycode + "|" + e.target.value,
+      loginty: "AdminMobile"
+    }
+    api
+      .post("/api/availabilityCheck", payload)
+      .then(function (response) {
+        if (response && response.data && response.data.Status === "True") {
+          let inputKey = "mobileNumErr"
+          setErrors({ ...errors, [inputKey]: "true" })
+        }
+        else {
+          let inputKey = "mobileNumErr"
+          setErrors({ ...errors, [inputKey]: "false" })
+        }
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+
   const validateCountryCode = (e) => {
     let strr = e.target.value
     let str = strr.replace(/\D/g, "")
@@ -269,11 +293,9 @@ function PersonalDetails({ history }) {
       .then(function (response) {
         // handle success
         if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true)
           let inputKey = "countryCodeErr"
           setErrors({ ...errors, [inputKey]: "" })
         } else {
-          setCountryCode(false)
           // setErrors(errors);
           let inputKey = "countryCodeErr"
           setErrors({ ...errors, [inputKey]: "true" })
@@ -308,8 +330,8 @@ function PersonalDetails({ history }) {
                   <div className="col-lg-12">
                     <div className="header_logo">
                       {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                        <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
-                        <span className="camp">COMPLIANCE SUTRA</span>
+                      <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
+                      <span className="camp">COMPLIANCE SUTRA</span>
                       {/* </a> */}
                     </div>
                   </div>
@@ -359,11 +381,11 @@ function PersonalDetails({ history }) {
                               className={
                                 "form-control plus-pin" +
                                 (values.countryCode !== "" &&
-                                errors.countryCodeErr === "true"
+                                  errors.countryCodeErr === "true"
                                   ? " invalid-plus-pin"
                                   : " ") +
                                 (values.countryCode !== "" &&
-                                errors.countryCodeErr === ""
+                                  errors.countryCodeErr === ""
                                   ? " countryCode-sucess"
                                   : " ")
                               }
@@ -382,14 +404,14 @@ function PersonalDetails({ history }) {
                               className={
                                 "form-control " +
                                 (values.mobileNumber !== "" &&
-                                values.mobileNumber.length < 10
+                                  values.mobileNumber.length < 10
                                   ? " mobile-input-invalid-control"
                                   : " ") +
                                 " dropdown-phone" +
                                 ((isValidate && values.mobileNumber === "") ||
-                                (isValidate &&
-                                  values.mobileNumber !== "" &&
-                                  values.mobileNumber.length < 10)
+                                  (isValidate &&
+                                    values.mobileNumber !== "" &&
+                                    values.mobileNumber.length < 10)
                                   ? " input-error"
                                   : "") +
                                 (values.mobileNumber.length == 10
@@ -401,6 +423,7 @@ function PersonalDetails({ history }) {
                               value={values.mobileNumber}
                               onChange={onChangeHandler("mobileNumber")}
                               onKeyPress={(e) => handleKeyDown(e)}
+                              onBlur={(e) => validateMobileNumber(e)}
                             />
                           </div>
                           {/* {
@@ -411,6 +434,11 @@ function PersonalDetails({ history }) {
                           </p>
                         )
                       } */}
+                          {errors.mobileNumErr == "true" && (
+                            <p className="input-error-message">
+                              Mobile number already Registered
+                            </p>
+                          )}
                           {values.countryCode != "" &&
                             errors.countryCodeErr == "true" && (
                               <p className="input-error-message">
@@ -539,15 +567,15 @@ function PersonalDetails({ history }) {
                                 values.confirmPassword !== values.password &&
                                 " input-error") +
                               ((isValidate && values.password === "") ||
-                              (values.password !== "" &&
-                                errors.passwordErr !== "")
+                                (values.password !== "" &&
+                                  errors.passwordErr !== "")
                                 ? "input-error"
                                 : "") +
                               (values.password !== ""
                                 ? " input-not-blank"
                                 : " ") +
                               (values.password !== "" &&
-                              errors.passwordErr === ""
+                                errors.passwordErr === ""
                                 ? " password-success "
                                 : " ")
                             }
@@ -633,19 +661,19 @@ function PersonalDetails({ history }) {
                                 values.confirmPassword !== values.password &&
                                 " input-error") +
                               ((isValidate && values.confirmPassword === "") ||
-                              (values.confirmPassword !== "" &&
-                                errors.confirmPasswordErr !== "")
+                                (values.confirmPassword !== "" &&
+                                  errors.confirmPasswordErr !== "")
                                 ? "input-error" +
-                                  (values.confirmPassword !== values.password &&
-                                    " input-error ")
+                                (values.confirmPassword !== values.password &&
+                                  " input-error ")
                                 : "") +
                               "" +
                               (values.confirmPassword !== ""
                                 ? " input-not-blank"
                                 : " ") +
                               (values.confirmPassword !== "" &&
-                              errors.confirmPasswordErr === "" &&
-                              values.confirmPassword === values.password
+                                errors.confirmPasswordErr === "" &&
+                                values.confirmPassword === values.password
                                 ? " password-success "
                                 : "")
                             }
@@ -934,6 +962,7 @@ function PersonalDetails({ history }) {
                         errors.passwordErr !== "" ||
                         errors.confirmPasswordErr !== "" ||
                         errors.countryCodeErr === "true" ||
+                        errors.mobileNumErr === "" ||
                         values.mobileNumber.length < 10
                       }
                       style={{ width: 134 }}

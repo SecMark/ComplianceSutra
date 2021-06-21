@@ -373,7 +373,7 @@ function CoSettingRightGrid({ handleClose, history }) {
                   : "")
               }
               value={values.emailId}
-              placeholder="Enter your email id"
+              placeholder="Enter your email"
               id="email"
               onChange={onChangeHandler("emailId")}
             />
