@@ -2,3 +2,6 @@
   height: 30px !important;
 }
 
+.ant-picker-input > input {
+  font-weight: 500 !important;
+}

@@ -3,6 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  background: #fafafa;
 }
 .dropdown-container {
   position: relative;
@@ -31,7 +32,13 @@
 }
 .select-title {
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 500;
+  color: #d9d9d9;
+}
+.select-title-active {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #000000;
 }
 .dropdown-item {
   justify-content: space-between;
@@ -41,3 +48,4 @@
   font-weight: 500;
   color: rgb(72, 72, 72);
 }
+

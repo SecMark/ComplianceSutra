@@ -33,14 +33,16 @@ const HistoryList = (props) => {
                   <th className="tw-30">Approver</th>
                   <th className="tw-30">Due Date</th>
                   <th className="tw-30">status</th>
-                  <th className="tw-30">Download</th>
+                  <th className="tw-30" align="center">
+                    Download
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>1 June 2021</td>
-                  <td>Enchanment Supervisor</td>
-                  <td>B&K solutions</td>
+                  <td className="task-detail">1 June 2021</td>
+                  <td className="task-name">Enchanment Supervisor</td>
+                  <td className="task-detail">B&K solutions</td>
                   <td>
                     {" "}
                     <div className="holding-list-bold-title-background">
@@ -55,7 +57,61 @@ const HistoryList = (props) => {
                       <div className="nameCirle">Jatin </div>
                     </div>
                   </td>
-                  <td>4 june 2021</td>
+                  <td className="task-detail">4 june 2021</td>
+                  <td>
+                    <button className="on-time">On Time</button>
+                  </td>
+                  <td>
+                    <img src={download} />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td className="task-detail">1 June 2021</td>
+                  <td className="task-name">Enchanment Supervisor</td>
+                  <td className="task-detail">B&K solutions</td>
+                  <td>
+                    {" "}
+                    <div className="holding-list-bold-title-background">
+                      <span className="circle-dp">JM</span>{" "}
+                      <div className="nameCirle">Jatin </div>
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div className="holding-list-bold-title-background">
+                      <span className="circle-dp">JM</span>{" "}
+                      <div className="nameCirle">Jatin </div>
+                    </div>
+                  </td>
+                  <td className="task-detail">4 june 2021</td>
+                  <td>
+                    <button className="pending">Pending</button>
+                  </td>
+                  <td>
+                    <img src={download} />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td className="task-detail">1 June 2021</td>
+                  <td className="task-name">Enchanment Supervisor</td>
+                  <td className="task-detail">B&K solutions</td>
+                  <td>
+                    {" "}
+                    <div className="holding-list-bold-title-background">
+                      <span className="circle-dp">JM</span>{" "}
+                      <div className="nameCirle">Jatin </div>
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div className="holding-list-bold-title-background">
+                      <span className="circle-dp">JM</span>{" "}
+                      <div className="nameCirle">Jatin </div>
+                    </div>
+                  </td>
+                  <td className="task-detail">4 june 2021</td>
                   <td>
                     <button className="delayed">Delayed</button>
                   </td>

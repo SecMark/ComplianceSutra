@@ -9,6 +9,9 @@ import sidebarRightActive from "../../../assets/Icons/task_alt_black_24dp (1).pn
 import dashboardBlackActive from "../../../assets/Icons/dashboard_black.png";
 import dashboardGreyActive from "../../../assets/Icons/dashboard_grey.png";
 
+import historyListActive from "../../../assets/Icons/history_active.png";
+import historyListInActive from "../../../assets/Icons/history_unactive.png";
+
 import sidebarBell from "../../../assets/Icons/sidebarBell.png";
 import sidebarBellActive from "../../../assets/Icons/bellSelected.png";
 import settingActive from "../../../assets/Icons/activeSetting.png";
@@ -22,8 +25,10 @@ import { withRouter } from "react-router-dom";
 import { actions as adminMenuActions } from "../Redux/actions";
 import { useOuterClick } from "../../../Components/OnBording/SubModules/AssignTask/utils";
 import { actions as loginActions } from "../../../Components/Authectication/redux/actions";
+
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
+  console.log(state);
   const dispatch = useDispatch();
 
   const [openProfile, setOpenProfile] = useState(false);
@@ -53,7 +58,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/settings");
     } else if (currentActiveMenu === "complianceHistory") {
       history.push("/compliance-history");
-    } else if (currentActiveMenu == "complianceHistoryList") {
+    } else if (currentActiveMenu === "complianceHistoryList") {
       history.push("/compliance-history-list");
     }
   };
@@ -160,8 +165,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                 !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "complianceHistoryList"
-                  ? sidebarBellActive
-                  : sidebarBell
+                  ? historyListActive
+                  : historyListInActive
               }
               alt="sidebar Bell"
             />

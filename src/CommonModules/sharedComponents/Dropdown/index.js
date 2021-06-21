@@ -10,7 +10,10 @@ function MultiSelectDropdown({
   dispatchType,
   dispatch,
 }) {
-  const [selectTitle, setSelectTitle] = useState(inputTitle);
+  const [selectTitle, setSelectTitle] = useState({
+    selected: false,
+    title: inputTitle,
+  });
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -18,9 +21,17 @@ function MultiSelectDropdown({
       (option) => option.selected === true
     ).length;
     if (numOfSelected > 0) {
-      setSelectTitle(numOfSelected + " Selected");
+      setSelectTitle({
+        ...selectTitle,
+        selected: true,
+        title: `${numOfSelected}  Selected`,
+      });
     } else {
-      setSelectTitle(inputTitle);
+      setSelectTitle({
+        ...selectTitle,
+        selected: false,
+        title: `${inputTitle}`,
+      });
     }
   }, [options]);
 
@@ -32,9 +43,17 @@ function MultiSelectDropdown({
           setIsOpen(!isOpen);
         }}
       >
-        <label htmlFor="lable-title" className="mb-2">{lableTitle}:</label>
+        <label htmlFor="lable-title" className="mb-2">
+          {lableTitle}:
+        </label>
         <div className="form-control select-container" id="lable-title">
-          <span className="select-title">{selectTitle}</span>
+          <span
+            className={
+              selectTitle.selected ? "select-title-active" : "select-title"
+            }
+          >
+            {selectTitle.title}
+          </span>
           <span
             style={{
               transform: isOpen ? "rotate(0deg)" : "rotate(180deg)",
