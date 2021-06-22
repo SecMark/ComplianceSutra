@@ -49,6 +49,7 @@ h2.main-title img {
   margin-top: 30px;
   padding: 6px 25px;
   font-size: 12px;
+  border-radius: 0.3rem;
 }
 .filter-button-active {
   border: none;
@@ -58,4 +59,5 @@ h2.main-title img {
   margin-top: 30px;
   padding: 6px 25px;
   font-size: 12px;
+  border-radius: 0.3rem;
 }

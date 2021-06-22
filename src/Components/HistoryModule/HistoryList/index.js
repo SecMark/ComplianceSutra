@@ -1,5 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
+import closeIcon from "../../../assets/Icons/closeIcon.png";
+import HistoryFilterFormJs from "../HistoryFilterForm.js";
 import filter from "../../../assets/Icons/Filters.png";
 import download from "../../../assets/Icons/download.png";
 import "./style.css";
@@ -9,6 +11,7 @@ import moment from "moment";
 import { clearState, getHistoryList } from "../redux/actions";
 
 const HistoryList = (props) => {
+  const [isShowFilter, setIsShowFilter] = useState(false);
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -45,12 +48,45 @@ const HistoryList = (props) => {
 
   return (
     <div className="history-side-bar">
+      <div
+        className={`filter-popup ${isShowFilter && "popup-open"}`}
+        style={{
+          boxShadow: isShowFilter
+            ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
+            : "none",
+        }}
+      >
+        <div className="container" style={{ width: "300px" }}>
+          <div className="popup-header d-flex align-items-center my-5">
+            <img
+              src={closeIcon}
+              alt="close-icon"
+              onClick={() => setIsShowFilter(!isShowFilter)}
+              style={{
+                marginRight: "2rem",
+                cursor: "pointer",
+              }}
+            />
+            <h3 style={{ marginBottom: "0px" }}>Filters</h3>
+          </div>
+          <HistoryFilterFormJs />
+        </div>
+      </div>
+
       <LeftSideBar />
       <div className="history-container">
         <div className="row">
-          <h2 className="main-title">
-            Compliance History <img src={filter} className="history-filter" />
-          </h2>
+          <div className="history-header">
+            <h2 className="main-title">
+              Compliance History <img src={filter} className="history-filter" />
+            </h2>
+            <button
+              className="filter-toggle"
+              onClick={() => setIsShowFilter(!isShowFilter)}
+            >
+              Filter
+            </button>
+          </div>
           <div className="scroll-personal-grid d-md-block d-sm-block table-responsive mt-4">
             <table className="table co-company-details-tbl table_legenda">
               <thead>
