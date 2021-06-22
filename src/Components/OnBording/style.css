@@ -37,6 +37,7 @@
 .on-boarding .side-bar {
   height: 100%;
   max-width: 30vw;
+  background: transparent;
 }
 .side-bar-image-outer {
   display: flex;

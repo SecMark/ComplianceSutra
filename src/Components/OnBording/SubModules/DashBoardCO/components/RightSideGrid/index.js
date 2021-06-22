@@ -1130,7 +1130,7 @@ function RightSideGrid({
             </div>
           )}
 
-          <div className="mobile-head d-block d-sm-none">
+          <div className="mobile-head d-block d-md-none">
             <div className="d-flex">
               <div
                 className="w-25"

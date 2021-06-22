@@ -254,8 +254,9 @@ function PersonalDetails({ history }) {
     var countrycode = values.countryCode.replace("+", "")
     let payload =
     {
-      loginID: countrycode + "|" + e.target.value,
-      loginty: "AdminMobile"
+      loginID: e.target.value,
+      loginty: "AdminMobile",
+      countrycode: countrycode
     }
     api
       .post("/api/availabilityCheck", payload)
