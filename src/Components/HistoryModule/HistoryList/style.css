@@ -1,0 +1,137 @@
+.history-filter {
+  cursor: pointer;
+}
+.history-header {
+  width: 100%;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.filter-toggle {
+  border: none;
+  color: #fff;
+  background: #6c5dd3;
+  font-family: "Poppins";
+  padding: 6px 25px;
+  font-size: 12px;
+  border-radius: 0.3rem;
+}
+
+.filter-popup {
+  width: 400px;
+  height: 100vh;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  position: absolute;
+  right: -450px;
+  top: 0;
+  z-index: 1;
+  background-color: white;
+  transition: all 500ms ease;
+  /* box-shadow: 1px 1px 1px 9999px rgba(0, 0, 0, 0.7); */
+}
+.popup-open {
+  right: 0;
+}
+.popup-overlay {
+  opacity: 0.5;
+}
+.delayed {
+  border: none;
+  font-size: 12px;
+  color: #f8c102;
+  background: #fef2ca;
+  text-transform: uppercase;
+}
+
+.on-time {
+  border: none;
+  font-size: 12px;
+  color: #7fba7a;
+  background: #e4f1e4;
+  text-transform: uppercase;
+}
+
+.pending {
+  border: none;
+  font-size: 12px;
+  color: #ef5d5d;
+  background: #fcdede;
+  text-transform: uppercase;
+}
+
+.task-name {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+
+.task-detail {
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #b5b5b5;
+}
+
+.holding-list-bold-title-background {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  margin-bottom: 16px;
+  font-style: normal;
+  line-height: 28px;
+  color: #575757;
+  height: 30px;
+  margin-bottom: 0px;
+  border-radius: 4px;
+}
+
+.circle-dp {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  float: left;
+  border-radius: 8px;
+  background-color: #eae8ff;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 8px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.16px;
+  text-align: center;
+  color: #b3abc4;
+  padding: 5px 5px 4px;
+  margin-right: 6px;
+  margin-top: -1px;
+}
+
+.nameCirle {
+  overflow-wrap: break-word;
+  line-height: 19px;
+}
+
+th {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #807d88;
+}
