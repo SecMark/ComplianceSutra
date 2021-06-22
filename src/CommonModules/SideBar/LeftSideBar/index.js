@@ -28,7 +28,7 @@ import { actions as loginActions } from "../../../Components/Authectication/redu
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
-  console.log(state);
+  
   const dispatch = useDispatch();
 
   const [openProfile, setOpenProfile] = useState(false);

@@ -50,3 +50,12 @@ h2.main-title img {
   padding: 6px 25px;
   font-size: 12px;
 }
+.filter-button-active {
+  border: none;
+  color: #fff;
+  background: #6c5dd3;
+  margin-top: 10p;
+  margin-top: 30px;
+  padding: 6px 25px;
+  font-size: 12px;
+}

@@ -1,13 +1,48 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import filter from "../../../assets/Icons/Filters.png";
 import download from "../../../assets/Icons/download.png";
 import "./style.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import constant from "../../../CommonModules/sharedComponents/constants/constant";
+import moment from "moment";
+import { clearState, getHistoryList } from "../redux/actions";
 
 const HistoryList = (props) => {
   const state = useSelector((state) => state);
-  console.log("state", state);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const historyListPayload = {
+      entityid: constant.historyEntityId,
+      userID: state.auth.loginInfo?.UserID,
+      usertype: state.auth.loginInfo?.UserType,
+
+      entityList: state.HistoryReducer.companyList
+        .filter((company) => company.selected === true)
+        .map((company) => company.EntityGroupID)
+        .join(","),
+
+      licList: state.HistoryReducer.licenseList
+        .filter((list) => list.selected === true)
+        .map((list) => list.LicenseCode)
+        .join(","),
+
+      startDate:
+        state.HistoryReducer.from &&
+        moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
+          "YYYY-MM-DD"
+        ),
+      endDate:
+        state.HistoryReducer.to &&
+        moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
+          "YYYY-MM-DD"
+        ),
+    };
+    dispatch(getHistoryList(historyListPayload));
+    dispatch(clearState());
+  }, []);
+
   return (
     <div className="history-side-bar">
       <LeftSideBar />
@@ -39,86 +74,42 @@ const HistoryList = (props) => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="task-detail">1 June 2021</td>
-                  <td className="task-name">Enchanment Supervisor</td>
-                  <td className="task-detail">B&K solutions</td>
-                  <td>
-                    {" "}
-                    <div className="holding-list-bold-title-background">
-                      <span className="circle-dp">JM</span>{" "}
-                      <div className="nameCirle">Jatin </div>
-                    </div>
-                  </td>
-                  <td>
-                    {" "}
-                    <div className="holding-list-bold-title-background">
-                      <span className="circle-dp">JM</span>{" "}
-                      <div className="nameCirle">Jatin </div>
-                    </div>
-                  </td>
-                  <td className="task-detail">4 june 2021</td>
-                  <td>
-                    <button className="on-time">On Time</button>
-                  </td>
-                  <td>
-                    <img src={download} />
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="task-detail">1 June 2021</td>
-                  <td className="task-name">Enchanment Supervisor</td>
-                  <td className="task-detail">B&K solutions</td>
-                  <td>
-                    {" "}
-                    <div className="holding-list-bold-title-background">
-                      <span className="circle-dp">JM</span>{" "}
-                      <div className="nameCirle">Jatin </div>
-                    </div>
-                  </td>
-                  <td>
-                    {" "}
-                    <div className="holding-list-bold-title-background">
-                      <span className="circle-dp">JM</span>{" "}
-                      <div className="nameCirle">Jatin </div>
-                    </div>
-                  </td>
-                  <td className="task-detail">4 june 2021</td>
-                  <td>
-                    <button className="pending">Pending</button>
-                  </td>
-                  <td>
-                    <img src={download} />
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="task-detail">1 June 2021</td>
-                  <td className="task-name">Enchanment Supervisor</td>
-                  <td className="task-detail">B&K solutions</td>
-                  <td>
-                    {" "}
-                    <div className="holding-list-bold-title-background">
-                      <span className="circle-dp">JM</span>{" "}
-                      <div className="nameCirle">Jatin </div>
-                    </div>
-                  </td>
-                  <td>
-                    {" "}
-                    <div className="holding-list-bold-title-background">
-                      <span className="circle-dp">JM</span>{" "}
-                      <div className="nameCirle">Jatin </div>
-                    </div>
-                  </td>
-                  <td className="task-detail">4 june 2021</td>
-                  <td>
-                    <button className="delayed">Delayed</button>
-                  </td>
-                  <td>
-                    <img src={download} />
-                  </td>
-                </tr>
+                {state.HistoryReducer.historyList.length !== 0 ? (
+                  state.HistoryReducer.historyList.map((list) => (
+                    <tr>
+                      <td className="task-detail">
+                        {moment(list.Completed).format("DD MMMM YYYY")}
+                      </td>
+                      <td className="task-name">{list.TaskName}</td>
+                      <td className="task-detail">{list.EntityName}</td>
+                      <td>
+                        {" "}
+                        <div className="holding-list-bold-title-background">
+                          <span className="circle-dp">JM</span>{" "}
+                          <div className="nameCirle">Jatin </div>
+                        </div>
+                      </td>
+                      <td>
+                        {" "}
+                        <div className="holding-list-bold-title-background">
+                          <span className="circle-dp">JM</span>{" "}
+                          <div className="nameCirle">Jatin </div>
+                        </div>
+                      </td>
+                      <td className="task-detail">
+                        {moment(list.EndDate).format("DD MMMM YYYY")}
+                      </td>
+                      <td>
+                        <button className="on-time">On Time</button>
+                      </td>
+                      <td>
+                        <img src={download} />
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>Compliance History not found</tr>
+                )}
               </tbody>
             </table>
           </div>

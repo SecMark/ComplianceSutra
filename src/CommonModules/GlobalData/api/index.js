@@ -1,6 +1,11 @@
-import api from '../../../apiServices';
+import axios from "axios";
+import api from "../../../apiServices";
 
-const getCountryCodeList = (payload) => api.post('/api/Loginsuccess', payload);
+const getCountryCodeList = (payload) => api.post("/api/Loginsuccess", payload);
+
+const getTaskReport = (payload) => api.post("api/getTaskReport", payload);
+
 export default {
-    getCountryCodeList
+  getCountryCodeList,
+  getTaskReport,
 };

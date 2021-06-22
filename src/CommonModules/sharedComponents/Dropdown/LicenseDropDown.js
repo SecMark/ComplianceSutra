@@ -1,58 +1,48 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import check from "../../../assets/Icons/check.png";
 import uncheck from "../../../assets/Icons/uncheck.png";
+import {
+  selectLicenseToggle,
+  setLicenseList,
+} from "../../../Components/HistoryModule/redux/actions";
 import "./style.css";
 
-function MultiSelectDropdown({
-  lableTitle,
-  options,
-  inputTitle,
-  dispatchType,
-  dispatch,
-}) {
-  const [selectTitle, setSelectTitle] = useState({
-    selected: false,
-    title: inputTitle,
-  });
+function MultiSelectLicenseDropdown({ lableTitle, options, dispatch }) {
   const [isOpen, setIsOpen] = useState(false);
+  const state = useSelector((state) => state);
+  const actionDispatch = useDispatch();
 
   useEffect(() => {
-    const numOfSelected = options.filter(
-      (option) => option.selected === true
-    ).length;
-    if (numOfSelected > 0) {
-      setSelectTitle({
-        ...selectTitle,
-        selected: true,
-        title: `${numOfSelected}  Selected`,
-      });
-    } else {
-      setSelectTitle({
-        ...selectTitle,
-        selected: false,
-        title: `${inputTitle}`,
-      });
+    if (state.HistoryReducer.numberOfSelectedLicense === 0) {
+      console.log('dsfasd')
+      actionDispatch(setLicenseList([]));
     }
-  }, [options]);
+  }, [state.HistoryReducer.numberOfSelectedLicense]);
 
   return (
     <>
-      <div
-        className="form-group mt-3"
-        onClick={(e) => {
-          setIsOpen(!isOpen);
-        }}
-      >
+      <div className="form-group mt-3">
         <label htmlFor="lable-title" className="mb-2">
           {lableTitle}:
         </label>
-        <div className="form-control select-container" id="lable-title">
+        <div
+          className="form-control select-container"
+          id="lable-title"
+          onClick={(e) => {
+            setIsOpen(!isOpen);
+          }}
+        >
           <span
             className={
-              selectTitle.selected ? "select-title-active" : "select-title"
+              state.HistoryReducer.numberOfSelectedLicense !== 0
+                ? "select-title-active"
+                : "select-title"
             }
           >
-            {selectTitle.title}
+            {state.HistoryReducer.numberOfSelectedLicense !== 0
+              ? `${state.HistoryReducer.numberOfSelectedLicense} selected`
+              : "select license"}
           </span>
           <span
             style={{
@@ -67,19 +57,21 @@ function MultiSelectDropdown({
             }}
           ></span>
         </div>
-        <div className="dropdown-container" onBlur={() => setIsOpen(false)}>
+        <div className="dropdown-container" onBlur={() => setIsOpen(true)}>
           <div className={`dropdown ${isOpen && "dropdown--open"}`}>
             {options.map((option) => {
-              const id = option.id;
+              const id = option.LicenseID;
               return (
                 <div
                   className="dropdown-item d-flex"
                   key={id}
                   onClick={() => {
-                    dispatch({ type: dispatchType, payload: id });
+                    dispatch(selectLicenseToggle(id));
                   }}
                 >
-                  <span className="dropdown-item__title">{option.name}</span>
+                  <span className="dropdown-item__title">
+                    {option.LicenseCode}
+                  </span>
                   <span className="dropdown-item--selected">
                     {option.selected ? (
                       <img src={check} />
@@ -97,4 +89,4 @@ function MultiSelectDropdown({
   );
 }
 
-export default MultiSelectDropdown;
+export default MultiSelectLicenseDropdown;
