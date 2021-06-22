@@ -12,6 +12,7 @@ import {
   GET_HISTORY_LIST,
   SET_HISTORY_LIST,
   CLEAR_STATE,
+  CLEAR_LICENSE_LIST,
 } from "./types";
 
 export const setFilter = (payload) => {
@@ -94,6 +95,12 @@ export const setSuccess = (payload) => {
   return {
     type: SET_SUCCESS,
     payload,
+  };
+};
+
+export const clearLincenseList = () => {
+  return {
+    type: CLEAR_LICENSE_LIST,
   };
 };
 

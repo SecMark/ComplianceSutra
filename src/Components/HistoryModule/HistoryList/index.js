@@ -13,35 +13,53 @@ const HistoryList = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const historyListPayload = {
-      entityid: constant.historyEntityId,
-      userID: state.auth.loginInfo?.UserID,
-      usertype: state.auth.loginInfo?.UserType,
+    if (
+      state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
+      state.HistoryReducer.numberOfSelectedLicense !== 0 &&
+      state.HistoryReducer.from !== "" &&
+      state.HistoryReducer.to !== ""
+    ) {
+      const historyListPayload = {
+        entityid: constant.historyEntityId,
+        userID: state.auth.loginInfo?.UserID,
+        usertype: state.auth.loginInfo?.UserType,
 
-      entityList: state.HistoryReducer.companyList
-        .filter((company) => company.selected === true)
-        .map((company) => company.EntityGroupID)
-        .join(","),
+        entityList: state.HistoryReducer.companyList
+          .filter((company) => company.selected === true)
+          .map((company) => company.EntityGroupID)
+          .join(","),
 
-      licList: state.HistoryReducer.licenseList
-        .filter((list) => list.selected === true)
-        .map((list) => list.LicenseCode)
-        .join(","),
+        licList: state.HistoryReducer.licenseList
+          .filter((list) => list.selected === true)
+          .map((list) => list.LicenseCode)
+          .join(","),
 
-      startDate:
-        state.HistoryReducer.from &&
-        moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
-          "YYYY-MM-DD"
-        ),
-      endDate:
-        state.HistoryReducer.to &&
-        moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
-          "YYYY-MM-DD"
-        ),
-    };
-    dispatch(getHistoryList(historyListPayload));
-    dispatch(clearState());
+        startDate:
+          state.HistoryReducer.from &&
+          moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+        endDate:
+          state.HistoryReducer.to &&
+          moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+      };
+      dispatch(getHistoryList(historyListPayload));
+      dispatch(clearState());
+    }
   }, []);
+
+  const getNameInitials = (name) => {
+    if (name != undefined) {
+      let initials = "";
+      initials = name
+        .split(" ")
+        .map((n) => n[0])
+        .join("");
+      return initials.toUpperCase();
+    }
+  };
 
   return (
     <div className="history-side-bar">
@@ -85,22 +103,38 @@ const HistoryList = (props) => {
                       <td>
                         {" "}
                         <div className="holding-list-bold-title-background">
-                          <span className="circle-dp">JM</span>{" "}
-                          <div className="nameCirle">Jatin </div>
+                          <span className="circle-dp">
+                            {getNameInitials(list.AprovalAssignedTo)}
+                          </span>{" "}
+                          <div className="nameCirle">
+                            {list.AprovalAssignedTo}{" "}
+                          </div>
                         </div>
                       </td>
                       <td>
                         {" "}
                         <div className="holding-list-bold-title-background">
-                          <span className="circle-dp">JM</span>{" "}
-                          <div className="nameCirle">Jatin </div>
+                          <span className="circle-dp">
+                            {getNameInitials(list.AssignedTo)}
+                          </span>{" "}
+                          <div className="nameCirle"> {list.AssignedTo} </div>
                         </div>
                       </td>
                       <td className="task-detail">
                         {moment(list.EndDate).format("DD MMMM YYYY")}
                       </td>
                       <td>
-                        <button className="on-time">On Time</button>
+                        <button
+                          className={
+                            list.Status === "Pending"
+                              ? list.Status === "Delayed"
+                                ? "delayed"
+                                : "on-time"
+                              : "pending"
+                          }
+                        >
+                          {list.Status}
+                        </button>
                       </td>
                       <td>
                         <img src={download} />

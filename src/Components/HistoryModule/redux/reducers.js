@@ -11,6 +11,7 @@ import {
   SELECT_TO_DATE,
   SET_HISTORY_LIST,
   CLEAR_STATE,
+  CLEAR_LICENSE_LIST,
 } from "./types";
 
 const intialState = {
@@ -118,6 +119,9 @@ const reducer = (state = intialState, { type, payload }) => {
         ...state,
         to: payload,
       };
+
+    case CLEAR_LICENSE_LIST:
+      return { ...state, licenseList: [], numberOfSelectedLicense: 0 };
 
     case CLEAR_STATE:
       return {

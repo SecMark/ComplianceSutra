@@ -5,6 +5,7 @@ import diffInDate from "../../../CommonModules/sharedComponents/Datepicker/utils
 import { actions as adminMenuActions } from "../../../CommonModules/SideBar/Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  clearLincenseList,
   getCompanyList,
   getLicenseList,
   setLicenseList,
@@ -20,37 +21,43 @@ const HistoryFilterForm = (props) => {
   const [timeDiff, setTimeDiff] = useState(0);
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
 
-  const sagaState = useSelector((state) => state);
+  const state = useSelector((state) => state);
   const history = useHistory();
   const actionDispatch = useDispatch();
 
   useEffect(() => {
     const companyRequestPayload = {
-      userID: sagaState.auth.loginInfo?.UserID,
+      userID: state.auth.loginInfo?.UserID,
       entityid: constant.companyEntityId,
-      usertype: sagaState.auth.loginInfo?.UserType,
+      usertype: state.auth.loginInfo?.UserType,
     };
     actionDispatch(getCompanyList(companyRequestPayload));
-  }, [sagaState.auth.loginInfo?.UserID]);
+  }, [state.auth.loginInfo?.UserID]);
 
   useEffect(() => {
     setTimeDiff(
-      diffInDate(sagaState.HistoryReducer.from, sagaState.HistoryReducer.to)
+      diffInDate(state.HistoryReducer.from, state.HistoryReducer.to)
     );
-  }, [sagaState.HistoryReducer]);
+  }, [state.HistoryReducer]);
 
   useEffect(() => {
     if (
-      sagaState.HistoryReducer.numberOfSelectedCompanies !== 0 &&
-      sagaState.HistoryReducer.numberOfSelectedLicense !== 0 &&
-      sagaState.HistoryReducer.from !== "" &&
-      sagaState.HistoryReducer.to !== ""
+      state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
+      state.HistoryReducer.numberOfSelectedLicense !== 0 &&
+      state.HistoryReducer.from !== "" &&
+      state.HistoryReducer.to !== ""
     ) {
       setIsAllInputFilled(true);
     } else {
       setIsAllInputFilled(false);
     }
-  }, [sagaState.HistoryReducer]);
+  }, [state.HistoryReducer]);
+
+  useEffect(() => {
+    if (state.HistoryReducer.numberOfSelectedCompanies === 0) {
+      actionDispatch(clearLincenseList());
+    }
+  }, [state.HistoryReducer.numberOfSelectedCompanies]);
 
   const setFilterAndNavigateToHistoryList = () => {
     actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
@@ -87,13 +94,13 @@ const HistoryFilterForm = (props) => {
         />
       </div>
       <MultiSelectCompanyDropdown
-        options={sagaState.HistoryReducer.companyList}
+        options={state.HistoryReducer.companyList}
         lableTitle="Company"
         inputTitle="Select Company"
         dispatch={actionDispatch}
       />
       <MultiSelectLicenseDropdown
-        options={sagaState.HistoryReducer.licenseList}
+        options={state.HistoryReducer.licenseList}
         lableTitle="License"
         inputTitle="Select License"
         dispatch={actionDispatch}

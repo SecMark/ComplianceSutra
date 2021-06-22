@@ -11,14 +11,6 @@ import "./style.css";
 function MultiSelectLicenseDropdown({ lableTitle, options, dispatch }) {
   const [isOpen, setIsOpen] = useState(false);
   const state = useSelector((state) => state);
-  const actionDispatch = useDispatch();
-
-  useEffect(() => {
-    if (state.HistoryReducer.numberOfSelectedLicense === 0) {
-      console.log('dsfasd')
-      actionDispatch(setLicenseList([]));
-    }
-  }, [state.HistoryReducer.numberOfSelectedLicense]);
 
   return (
     <>
@@ -30,7 +22,11 @@ function MultiSelectLicenseDropdown({ lableTitle, options, dispatch }) {
           className="form-control select-container"
           id="lable-title"
           onClick={(e) => {
-            setIsOpen(!isOpen);
+            if (options.length === 0) {
+              setIsOpen(false);
+            } else {
+              setIsOpen(!isOpen);
+            }
           }}
         >
           <span
@@ -57,33 +53,35 @@ function MultiSelectLicenseDropdown({ lableTitle, options, dispatch }) {
             }}
           ></span>
         </div>
-        <div className="dropdown-container" onBlur={() => setIsOpen(true)}>
-          <div className={`dropdown ${isOpen && "dropdown--open"}`}>
-            {options.map((option) => {
-              const id = option.LicenseID;
-              return (
-                <div
-                  className="dropdown-item d-flex"
-                  key={id}
-                  onClick={() => {
-                    dispatch(selectLicenseToggle(id));
-                  }}
-                >
-                  <span className="dropdown-item__title">
-                    {option.LicenseCode}
-                  </span>
-                  <span className="dropdown-item--selected">
-                    {option.selected ? (
-                      <img src={check} />
-                    ) : (
-                      <img src={uncheck} />
-                    )}
-                  </span>
-                </div>
-              );
-            })}
+        {options.length !== 0 && (
+          <div className="dropdown-container" onBlur={() => setIsOpen(false)}>
+            <div className={`dropdown ${isOpen && "dropdown--open"}`}>
+              {options.map((option) => {
+                const id = option.LicenseID;
+                return (
+                  <div
+                    className="dropdown-item d-flex"
+                    key={id}
+                    onClick={() => {
+                      dispatch(selectLicenseToggle(id));
+                    }}
+                  >
+                    <span className="dropdown-item__title">
+                      {option.LicenseCode}
+                    </span>
+                    <span className="dropdown-item--selected">
+                      {option.selected ? (
+                        <img src={check} />
+                      ) : (
+                        <img src={uncheck} />
+                      )}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
