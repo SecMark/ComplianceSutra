@@ -25,7 +25,6 @@ function* fetchLicenseList(action) {
   try {
     const { data, status } = yield call(api.getTaskReport, action.payload);
     if (status === 200) {
-      yield put(setSuccess(true));
       yield put(setLicenseList(data));
     } else {
     }
@@ -37,12 +36,14 @@ function* fetchLicenseList(action) {
 function* fetchHistoryList(action) {
   try {
     const { data, status } = yield call(api.getTaskReport, action.payload);
+
     if (status === 200) {
-      yield put(setSuccess(true));
       yield put(setHistoryList(data));
-    } else {
-    }
+      yield put(setSuccess(true));
+    } 
   } catch (e) {
+    yield put(setHistoryList([]));
+    yield put(setSuccess(true));
     console.log(e.message);
   }
 }

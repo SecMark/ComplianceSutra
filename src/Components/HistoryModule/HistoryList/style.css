@@ -125,8 +125,8 @@
   line-height: 19px;
 }
 
-th {
-  font-size: 10px;
+.table th {
+  font-size: 12px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -134,4 +134,12 @@ th {
   letter-spacing: 0.02px;
   text-align: left;
   color: #807d88;
+  text-transform: uppercase;
+}
+
+.no-data{
+  border-bottom: 1px solid;
+}
+.no-data p {
+  font-size: 10p;
 }
