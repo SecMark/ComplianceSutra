@@ -30,6 +30,7 @@ const HistoryFilterForm = (props) => {
       entityid: constant.companyEntityId,
       usertype: state.auth.loginInfo?.UserType,
     };
+    actionDispatch(clearState());
     actionDispatch(getCompanyList(companyRequestPayload));
   }, [state.auth.loginInfo?.UserID]);
 
