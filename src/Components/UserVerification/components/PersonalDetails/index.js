@@ -228,24 +228,29 @@ function PersonalDetails({ history }) {
       })
       .catch(function (error) {
         if (error) {
-
         }
       });
   }
 
-  const checkAvaibility = (e) => {
-    var payload = {
-      loginID: values.countryCode.replace("+", "") + "|" + e.target.value,
-      loginty: "AdminMobile"
+
+  const validateMobileNumber = (e) => {
+    var countrycode = values.countryCode.replace("+", "")
+    let payload =
+    {
+      loginID: e.target.value,
+      loginty: "AdminMobile",
+      countrycode: countrycode
     }
     api
-      .post("/api/CountryCodeCheck", payload)
+      .post("/api/availabilityCheck", payload)
       .then(function (response) {
         if (response && response.data && response.data.Status === "True") {
-          errors.mobileNumErr = "true";
+          let inputKey = "mobileNumErr"
+          setErrors({ ...errors, [inputKey]: "true" })
         }
         else {
-          errors.mobileNumErr = "false"
+          let inputKey = "mobileNumErr"
+          setErrors({ ...errors, [inputKey]: "false" })
         }
       })
       .catch(function (error) {
@@ -337,6 +342,7 @@ function PersonalDetails({ history }) {
                               type="text"
                               className={
                                 "form-control " +
+                                (errors.mobileNumErr == "true" ? 'invalid-plus-pin' : '') +
                                 (
                                   values.mobileNumber !== "" &&
                                     values.mobileNumber.length < 10 ?
@@ -355,7 +361,7 @@ function PersonalDetails({ history }) {
                               value={values.mobileNumber}
                               onChange={onChangeHandler("mobileNumber")}
                               onKeyPress={(e) => handleKeyDown(e)}
-                              onBlur={(e) => checkAvaibility(e)}
+                              onBlur={(e) => validateMobileNumber(e)}
                             />
 
                           </div>
@@ -367,18 +373,16 @@ function PersonalDetails({ history }) {
                           </p>
                         )
                       } */}
+                          {errors.mobileNumErr == "true" && (
+                            <p className="input-error-message">
+                              Mobile number already Registered
+                            </p>
+                          )}
                           {
                             values.countryCode !== "" &&
                             errors.countryCodeErr === "true" && (
                               <p className="input-error-message">
                                 Country code is invalid
-                              </p>
-                            )
-                          }
-                          {
-                            errors.mobileNumErr === "true" && (
-                              <p className="input-error-message">
-                                Mobile number already registered
                               </p>
                             )
                           }

@@ -53,9 +53,8 @@ function RightSideGrid({
 }) {
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
-
   const [errors, setErrors] = useState({
-    emailErr: "",
+    emailErr: null,
   })
   const [completedDate, setCompletedDate] = useState("")
 
@@ -73,7 +72,6 @@ function RightSideGrid({
   const [allUserBackup, setAllUserBackup] = useState([])
 
   const [selectedUser, setSelectedUser] = useState("")
-
 
   const [currentTaskData, setCurrentTaskData] = useState([])
   const [currentDropDown, setCurrentDropDown] = useState("")
@@ -97,8 +95,6 @@ function RightSideGrid({
     state.taskReport &&
     state.taskReport.taskReportById &&
     state.taskReport.taskReportById.taskReportById
-
-  const isEmail = true
 
   useEffect(() => {
     if (taskList != undefined && taskList.length > 0) {
@@ -510,6 +506,22 @@ function RightSideGrid({
     }
   }
 
+  const handleValidEmail = (name, value) => {
+    if (name === "email") {
+      const re = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(\.\w{2,})\s*$/
+      console.log(!re.test(value))
+      if (!re.test(value)) {
+        setErrors({emailErr:true})
+      }
+      else {
+        setErrors({emailErr:false})
+      }
+    }
+    else {
+      setErrors({emailErr:false})
+    }
+  }
+
   const handleAppSearch = (searchText) => {
     setEmailAvaliableCheck(false)
     setSelectedUser(searchText)
@@ -529,21 +541,6 @@ function RightSideGrid({
           }
         })
       setAllUser(temp)
-    }
-  }
-
-  const handleValidEmail = (name, value) => {
-    if (name === "email") {
-      const re = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(\.\w{2,10})\s*$/
-      if (value && !re.test(value)) {
-        errors.emailErr = true;
-      }
-      else {
-        errors.emailErr = false;
-      }
-    }
-    else {
-      errors.emailErr = false;
     }
   }
 
@@ -596,48 +593,44 @@ function RightSideGrid({
   }
 
   const handleCheckEmailAvailability = (event) => {
-    if (!errors.emailErr) {
-      axios
-        .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-          loginID: selectedUser,
-          loginty: "AdminEmail",
-        })
-        .then((response) => {
-          console.log("inside resposnse => ", response)
-          if (response && response.data && response.data.Status === "True") {
-            setEmailAvaliableCheck(true)
-          } else {
-            setEmailAvaliableCheck(false)
-            handleApproveTask(event)
-          }
-        })
-        .catch((err) => {
-          console.log("error =>  ", err)
-        })
-    }
+    axios
+      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
+        loginID: selectedUser,
+        loginty: "AdminEmail",
+      })
+      .then((response) => {
+        console.log("inside resposnse => ", response)
+        if (response && response.data && response.data.Status === "True") {
+          setEmailAvaliableCheck(true)
+        } else {
+          setEmailAvaliableCheck(false)
+          handleApproveTask(event)
+        }
+      })
+      .catch((err) => {
+        console.log("error =>  ", err)
+      })
   }
 
   const handleCheckAssignToEmailAvailability = (event) => {
     console.log("selectedUser => ", selectedUser)
-    if (!errors.emailErr) {
-      axios
-        .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-          loginID: selectedUser,
-          loginty: "AdminEmail",
-        })
-        .then((response) => {
-          console.log("inside resposnse => ", response)
-          if (response && response.data && response.data.Status === "True") {
-            setEmailAvaliableCheck(true)
-          } else {
-            setEmailAvaliableCheck(false)
-            handleAssignToTask(event)
-          }
-        })
-        .catch((err) => {
-          console.log("error =>  ", err)
-        })
-    }
+    axios
+      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
+        loginID: selectedUser,
+        loginty: "AdminEmail",
+      })
+      .then((response) => {
+        console.log("inside resposnse => ", response)
+        if (response && response.data && response.data.Status === "True") {
+          setEmailAvaliableCheck(true)
+        } else {
+          setEmailAvaliableCheck(false)
+          handleAssignToTask(event)
+        }
+      })
+      .catch((err) => {
+        console.log("error =>  ", err)
+      })
   }
 
   const handleKeyDown = (event) => {
@@ -648,11 +641,13 @@ function RightSideGrid({
   }
 
   const handleAssignKeyDown = (e) => {
-    if (e.key === "Enter") {
-      console.log("1234")
-      handleCheckAssignToEmailAvailability(e)
-      // handleAssignToTask(e)
+    if(errors.emailErr === false){
+      if (e.key === "Enter") {
+        console.log("1234")
+        handleCheckAssignToEmailAvailability(e);
+      }
     }
+
   }
   const handleAssignToTask = (e) => {
     let id = getTaskById.TaskId
@@ -1920,6 +1915,7 @@ function RightSideGrid({
                                                   handleAppSearch(
                                                     e.target.value
                                                   )
+
                                                 }
                                                 onKeyUp={(e) => handleValidEmail('email', e.target.value)}
                                               />
