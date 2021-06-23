@@ -251,6 +251,7 @@ function PersonalDetails({ history }) {
   }
 
   const validateMobileNumber = (e) => {
+    
     var countrycode = values.countryCode.replace("+", "")
     let payload =
     {
