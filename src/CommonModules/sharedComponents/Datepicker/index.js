@@ -13,7 +13,6 @@ const Datepicker = ({ name, picker, dispatch, actionType }) => {
         return parseInt(n);
       }
     });
-    console.log(dateArr);
     dispatch({ type: actionType, payload: dateArr });
   };
   return (
