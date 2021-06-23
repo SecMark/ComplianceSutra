@@ -40,6 +40,7 @@ import UserOTPVerifcation from "../Components/UserVerification/components/OTPVer
 import UserVerificationProcess from "../Components/UserVerification/components";
 import HistoryList from "../Components/HistoryModule/HistoryList";
 import HistoryFilter from "../Components/HistoryModule/HistoryFilter";
+import NewRegulation from "../Components/NewRegulationModule/NewRegulations";
 
 export default function AppRouter() {
   const checkHeader = () => {
@@ -155,6 +156,7 @@ export default function AppRouter() {
             path="/compliance-history-list"
             component={HistoryList}
           />
+          <Route exact path="/new-regulations" component={NewRegulation} />
         </div>
       </>
     </div>

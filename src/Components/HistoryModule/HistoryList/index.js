@@ -19,7 +19,7 @@ const HistoryList = (props) => {
   useEffect(() => {
     setIsShowFilter(false);
     dispatch(setSuccess(false));
-  },[state.HistoryReducer.isSuccess])
+  }, [state.HistoryReducer.isSuccess]);
 
   const getNameInitials = (name) => {
     if (name != undefined) {
@@ -48,8 +48,8 @@ const HistoryList = (props) => {
               src={closeIcon}
               alt="close-icon"
               onClick={() => {
-                dispatch(clearState())
-                setIsShowFilter(!isShowFilter)
+                dispatch(clearState());
+                setIsShowFilter(!isShowFilter);
               }}
               style={{
                 marginRight: "2rem",
@@ -77,30 +77,22 @@ const HistoryList = (props) => {
             </button>
           </div>
           <div className="scroll-personal-grid d-md-block d-sm-block table-responsive mt-4">
-          {state.HistoryReducer.historyList.length !== 0 ? (
-            <table className="table co-company-details-tbl table_legenda">
-              <thead>
-                <tr>
-                  <th clscope="col">
-                    Complete on
-                  </th>
-                  <th scope="col">
-                    Task Name
-                  </th>
-                  <th scope="col">
-                    Company
-                  </th>
-                  <th>Assigned To</th>
-                  <th>Approver</th>
-                  <th>Due Date</th>
-                  <th>status</th>
-                  <th>
-                    Download
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {state.HistoryReducer.historyList.map((list) => (
+            {state.HistoryReducer.historyList.length !== 0 ? (
+              <table className="table co-company-details-tbl table_legenda">
+                <thead>
+                  <tr>
+                    <th clscope="col">Complete on</th>
+                    <th scope="col">Task Name</th>
+                    <th scope="col">Company</th>
+                    <th>Assigned To</th>
+                    <th>Approver</th>
+                    <th>Due Date</th>
+                    <th>status</th>
+                    <th>Download</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {state.HistoryReducer.historyList.map((list) => (
                     <tr>
                       <td className="task-detail">
                         {moment(list.Completed).format("DD MMMM YYYY")}
@@ -148,11 +140,11 @@ const HistoryList = (props) => {
                       </td>
                     </tr>
                   ))}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
             ) : (
               <div className="no-data">
-              <p>Compliance History not found! Select filter.</p>
+                <p>Compliance History not found! Select filter.</p>
               </div>
             )}
           </div>
@@ -161,6 +153,5 @@ const HistoryList = (props) => {
     </div>
   );
 };
-
 
 export default withRouter(HistoryList);
