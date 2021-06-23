@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MobileLeftSidebar from "../components/MobileLeftSidebar/index";
 import "./style.css";
 // import SideBarBg from "../../../../assets/Images/Onboarding/side-bar-bg.png";
 import sideBarlogo from "../../../../../assets/Icons/sideBarlogo.png";
@@ -36,6 +37,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { actions as loginActions } from "../../../../Authectication/redux/actions";
 import { withRouter } from "react-router-dom";
 import { actions as adminMenuActions } from "../MenuRedux/actions";
+import { isMobile } from "react-device-detect";
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -46,6 +48,15 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       setOpenProfile(false);
     }
   });
+
+  const closeMobileSidebar = () => {
+    const drawerParent = document.getElementById("sideBarParent");
+    const drawerChild = document.getElementById("sideBarChild");
+    if (drawerParent) {
+      drawerParent.classList.remove("overlay");
+      drawerChild.style.left = "-100%";
+    }
+  };
 
   const onLogoutClick = () => {
     dispatch(adminMenuActions.setCurrentMenu("taskList"));

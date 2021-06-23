@@ -88,7 +88,7 @@ function CoSetting({ history }) {
     setShowHBMenu(false);
   };
 
- // console.log(state.adminMenu);
+  // console.log(state.adminMenu);
   return (
     <div className="row co-setting">
       {isMobile && (
