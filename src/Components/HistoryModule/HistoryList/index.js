@@ -18,7 +18,7 @@ import { withRouter } from "react-router";
 
 const HistoryList = (props) => {
   const [isShowFilter, setIsShowFilter] = useState(false);
-  const [isShowMobileOptions, setIsShowMobileOptions] = useState(false);
+  const [isShowMobileOptionsId, setIsShowMobileOptionsId] = useState(null);
   const [isShowMobileRowData, setIsShowMobileRowData] = useState(false);
   const [mobileRowData, setMobileRowData] = useState({});
   const [navigationHideShow, setNavigationHideShow] = useState(false);
@@ -38,6 +38,8 @@ const HistoryList = (props) => {
       drawerChild.current.style.left = "0%";
     }
   };
+
+  console.log(state.HistoryReducer.historyList);
 
   const closeMobileSidebar = () => {
     // // const drawerParent = document.getElementById("sideBarParent");
@@ -60,6 +62,10 @@ const HistoryList = (props) => {
     setIsShowFilter(false);
     dispatch(setSuccess(false));
   }, [state.HistoryReducer.isSuccess]);
+
+  useEffect(() => {
+    console.log(isShowMobileOptionsId, mobileRowData);
+  }, [isShowMobileOptionsId, mobileRowData]);
 
   const getNameInitials = (name) => {
     if (name != undefined) {
@@ -136,58 +142,71 @@ const HistoryList = (props) => {
       {isMobile ? (
         <div className="history-container-mobile">
           {/* View More Data pop up */}
-          {isShowMobileRowData && (
+          {isShowMobileRowData && isShowMobileOptionsId && (
             <div className="view-more-data--popup">
               <div className="view-more-data--container">
                 <h3 style={{ width: "80%" }}>{mobileRowData.TaskName}</h3>
-                <button
+                {/* <button
                   className="close--data-popup"
                   onClick={() => setIsShowMobileRowData(!isShowMobileRowData)}
                 >
+                
                   close
-                </button>
+                </button> */}
+                <img
+                  className="close--data-popup"
+                  src={closeIcon}
+                  alt="close-icon"
+                  onClick={() => {
+                    setIsShowMobileOptionsId(null);
+                    setMobileRowData({});
+                    setIsShowMobileRowData(!isShowMobileRowData);
+                  }}
+                />
                 {/* list.EntityName for company */}
                 {/* list.AprovalAssignedTo for Assigned To */}
                 {/* list.AssignedTo for Approver */}
                 {/* moment(list.EndDate).format("DD MMMM YYYY") for Due Date */}
                 {/* <img src={download} /> for Download */}
                 <div className="data-field">
-                  <span className="task-detail">Company</span>
+                  <span className="task-detail">COMPANY</span>
                   <p>{mobileRowData?.EntityName}</p>
                   {/* <p>Google</p> */}
                 </div>
                 <div className="data-field">
-                  <span className="task-detail">Assigned To</span>
-                  <p>
+                  <span className="task-detail">ASSIGNED TO</span>
+                  <p className="d-flex align-items-center">
                     <span className="circle-dp">
                       {getNameInitials(mobileRowData?.AprovalAssignedTo)}
                     </span>{" "}
-                    {mobileRowData?.AprovalAssignedTo}
+                    <span>{mobileRowData?.AprovalAssignedTo}</span>
                   </p>
                   {/* <p>
                     <span className="circle-dp">AK</span> Ashu Kumar
                   </p> */}
                 </div>
                 <div className="data-field">
-                  <span className="task-detail">Approver</span>
-                  <p>
+                  <span className="task-detail">APPROVER</span>
+                  <p className="d-flex align-items-center">
                     <span className="circle-dp">
                       {getNameInitials(mobileRowData?.AssignedTo)}
                     </span>{" "}
-                    {mobileRowData?.AssignedTo}
+                    <span>{mobileRowData?.AssignedTo}</span>
                   </p>
                   {/* <p>
                     <span className="circle-dp">JM</span> Jatin Mehta
                   </p> */}
                 </div>
                 <div className="data-field">
-                  <span className="task-detail">Due Date</span>
+                  <span className="task-detail">DUE DATE</span>
                   <p>{moment(mobileRowData.EndDate).format("DD MMMM YYYY")}</p>
                   {/* <p>12 8 2001</p> */}
                 </div>
                 <div className="data-field">
-                  <img src={download} />
-                  <p className="download-btn-mobile">Download File</p>
+                  <button className="download-btn-mobile mt-4">
+                    <img src={download} style={{ marginRight: "1rem" }} />
+                    DOWNLOAD FILES
+                  </button>
                 </div>
               </div>
             </div>
@@ -218,75 +237,82 @@ const HistoryList = (props) => {
               </div>
             )}
             <div className=" table-header-mobile d-flex justify-content-between align-items-center mt-3">
-              <h3>Compliance History</h3>
+              <h3 className="mb-0">Compliance History</h3>
               <img src={filter} alt="filter" />
             </div>
-            <table className="table co-company-details-tbl table_legenda mt-3">
-              <thead>
-                <tr>
-                  <th>Complete on</th>
-                  {/* <th scope="col">Task Name</th>
-                        <th scope="col">Company</th>
-                        <th>Assigned To</th>
-                        <th>Approver</th>
-                        <th>Due Date</th> */}
-                  <th>status</th>
-                  {/* <th>Download</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                {state.HistoryReducer.historyList.map((list) => (
+            {state.HistoryReducer.historyList.length !== 0 ? (
+              <table className="table co-company-details-tbl table_legenda mt-3">
+                <thead>
                   <tr>
-                    <td className="task-name td-mobile">
-                      {list.TaskName}
-                      <br />
-                      <span className="task-detail">
-                        {moment(list.Completed).format("DD MMMM YYYY")}
-                      </span>
-                    </td>
-                    <td className="d-flex justify-content-between td-mobile">
-                      <button
-                        className={
-                          list.Status === "Pending"
-                            ? list.Status === "Delayed"
-                              ? "delayed"
-                              : "on-time"
-                            : "pending"
-                        }
-                      >
-                        {list.Status}
-                      </button>
-                      <div className="data-options">
-                        <img
-                          src={threeDots}
-                          alt="options"
-                          onClick={() =>
-                            setIsShowMobileOptions(!isShowMobileOptions)
-                          }
-                        />
-                        {isShowMobileOptions && (
-                          <div className="more-options">
-                            {/* View More Logic Here */}
-                            <span
-                              onClick={() => {
-                                setMobileRowData(list);
-                                setIsShowMobileRowData(!isShowMobileRowData);
-                              }}
-                            >
-                              View More
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </td>
+                    <th>Complete on</th>
+                    {/* <th scope="col">Task Name</th>
+                       <th scope="col">Company</th>
+                       <th>Assigned To</th>
+                       <th>Approver</th>
+                       <th>Due Date</th> */}
+                    <th>status</th>
+                    {/* <th>Download</th> */}
                   </tr>
-                ))}
-
-                {/* Dummy Data */}
-
-                {/* Dummy Data Ends Here */}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {state.HistoryReducer.historyList.map((list) => (
+                    <tr>
+                      <td className="task-name td-mobile">
+                        {list.TaskName}
+                        <br />
+                        <span className="task-detail">
+                          {moment(list.Completed).format("DD MMMM YYYY")}
+                        </span>
+                      </td>
+                      <td className="d-flex justify-content-between td-mobile">
+                        <button
+                          className={
+                            list.Status === "Pending"
+                              ? list.Status === "Delayed"
+                                ? "delayed"
+                                : "on-time"
+                              : "pending"
+                          }
+                        >
+                          {list.Status}
+                        </button>
+                        <div className="data-options">
+                          <img
+                            src={threeDots}
+                            alt="options"
+                            onClick={() => {
+                              if (isShowMobileOptionsId === list.TaskId) {
+                                setIsShowMobileOptionsId(null);
+                                setMobileRowData({});
+                                return;
+                              }
+                              setIsShowMobileOptionsId(list.TaskId);
+                              setMobileRowData(list);
+                            }}
+                          />
+                          {isShowMobileOptionsId === list?.TaskId && (
+                            <div className="more-options">
+                              {/* View More Logic Here */}
+                              <span
+                                onClick={() => {
+                                  setIsShowMobileRowData(!isShowMobileRowData);
+                                }}
+                              >
+                                View More
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="no-data">
+                <p>Compliance History not found! Please set filters.</p>
+              </div>
+            )}
           </div>
         </div>
       ) : (

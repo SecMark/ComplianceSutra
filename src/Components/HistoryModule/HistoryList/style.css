@@ -137,7 +137,8 @@
 }
 
 .no-data {
-  border-bottom: 1px solid;
+  margin-top: 2rem;
+  color: #575757;
 }
 .no-data p {
   font-size: 10p;
@@ -162,6 +163,8 @@
   box-shadow: 1px 1px 5px rgb(194, 191, 191);
   padding: 0.6rem 0.5rem;
   border-radius: 0.3rem;
+  background-color: white;
+  z-index: 2;
 }
 .td-mobile {
   border: none;
@@ -172,9 +175,9 @@
   bottom: 0;
   left: 0;
   width: 100vw;
-  z-index: 1;
+  z-index: 3;
   background-color: rgb(255, 255, 255);
-  height: 60vh;
+  height: 70vh;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   padding: 2rem 1rem;
@@ -187,4 +190,17 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
+}
+.data-field {
+  margin: 0.5rem 0;
+}
+.data-field > p {
+  color: #575757;
+}
+.download-btn-mobile {
+  color: #6c5dd3;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
 }
