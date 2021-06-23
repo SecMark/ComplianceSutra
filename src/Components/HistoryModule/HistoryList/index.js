@@ -1,14 +1,15 @@
 import React, { useEffect, useReducer, useState } from "react";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
-import HistoryFilterFormJs from "../HistoryFilterForm.js";
+import HistoryFilterForm from "../HistoryFilterForm.js";
 import filter from "../../../assets/Icons/Filters.png";
 import download from "../../../assets/Icons/download.png";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import moment from "moment";
-import { clearState, getHistoryList } from "../redux/actions";
+import { clearState, getHistoryList, setSuccess } from "../redux/actions";
+import { withRouter } from "react-router";
 
 const HistoryList = (props) => {
   const [isShowFilter, setIsShowFilter] = useState(false);
@@ -16,42 +17,9 @@ const HistoryList = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (
-      state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
-      state.HistoryReducer.numberOfSelectedLicense !== 0 &&
-      state.HistoryReducer.from !== "" &&
-      state.HistoryReducer.to !== ""
-    ) {
-      const historyListPayload = {
-        entityid: constant.historyEntityId,
-        userID: state.auth.loginInfo?.UserID,
-        usertype: state.auth.loginInfo?.UserType,
-
-        entityList: state.HistoryReducer.companyList
-          .filter((company) => company.selected === true)
-          .map((company) => company.EntityGroupID)
-          .join(","),
-
-        licList: state.HistoryReducer.licenseList
-          .filter((list) => list.selected === true)
-          .map((list) => list.LicenseCode)
-          .join(","),
-
-        startDate:
-          state.HistoryReducer.from &&
-          moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
-            "YYYY-MM-DD"
-          ),
-        endDate:
-          state.HistoryReducer.to &&
-          moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
-            "YYYY-MM-DD"
-          ),
-      };
-      dispatch(getHistoryList(historyListPayload));
-      dispatch(clearState());
-    }
-  }, []);
+    setIsShowFilter(false);
+    dispatch(setSuccess(false));
+  },[state.HistoryReducer.isSuccess])
 
   const getNameInitials = (name) => {
     if (name != undefined) {
@@ -79,7 +47,10 @@ const HistoryList = (props) => {
             <img
               src={closeIcon}
               alt="close-icon"
-              onClick={() => setIsShowFilter(!isShowFilter)}
+              onClick={() => {
+                dispatch(clearState())
+                setIsShowFilter(!isShowFilter)
+              }}
               style={{
                 marginRight: "2rem",
                 cursor: "pointer",
@@ -87,7 +58,7 @@ const HistoryList = (props) => {
             />
             <h3 style={{ marginBottom: "0px" }}>Filters</h3>
           </div>
-          <HistoryFilterFormJs />
+          <HistoryFilterForm />
         </div>
       </div>
 
@@ -106,30 +77,30 @@ const HistoryList = (props) => {
             </button>
           </div>
           <div className="scroll-personal-grid d-md-block d-sm-block table-responsive mt-4">
+          {state.HistoryReducer.historyList.length !== 0 ? (
             <table className="table co-company-details-tbl table_legenda">
               <thead>
                 <tr>
-                  <th className="tw-20" clscope="col">
+                  <th clscope="col">
                     Complete on
                   </th>
-                  <th className="tw-30" scope="col">
+                  <th scope="col">
                     Task Name
                   </th>
-                  <th className="tw-20" scope="col">
+                  <th scope="col">
                     Company
                   </th>
-                  <th className="tw-30">Assigned To</th>
-                  <th className="tw-30">Approver</th>
-                  <th className="tw-30">Due Date</th>
-                  <th className="tw-30">status</th>
-                  <th className="tw-30" align="center">
+                  <th>Assigned To</th>
+                  <th>Approver</th>
+                  <th>Due Date</th>
+                  <th>status</th>
+                  <th>
                     Download
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {state.HistoryReducer.historyList.length !== 0 ? (
-                  state.HistoryReducer.historyList.map((list) => (
+                {state.HistoryReducer.historyList.map((list) => (
                     <tr>
                       <td className="task-detail">
                         {moment(list.Completed).format("DD MMMM YYYY")}
@@ -172,16 +143,18 @@ const HistoryList = (props) => {
                           {list.Status}
                         </button>
                       </td>
-                      <td>
+                      <td align="left">
                         <img src={download} />
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>Compliance History not found</tr>
-                )}
+                  ))}
               </tbody>
             </table>
+            ) : (
+              <div className="no-data">
+              <p>Compliance History not found! Select filter.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -189,4 +162,5 @@ const HistoryList = (props) => {
   );
 };
 
-export default HistoryList;
+
+export default withRouter(HistoryList);

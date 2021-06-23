@@ -1,21 +1,20 @@
-import React, { useState, useReducer, useEffect } from "react";
-import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
-import reducer from "./reducer";
+import React, { useState, useEffect } from "react";
+import Datepicker from "../../../CommonModules/sharedComponents/Datepicker"
 import diffInDate from "../../../CommonModules/sharedComponents/Datepicker/utils";
 import { actions as adminMenuActions } from "../../../CommonModules/SideBar/Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 import {
   clearLincenseList,
+  clearState,
   getCompanyList,
-  getLicenseList,
-  setLicenseList,
+  getHistoryList,
 } from "../redux/actions";
 import { useHistory, withRouter } from "react-router";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
-
-import "./style.css";
 import MultiSelectLicenseDropdown from "../../../CommonModules/sharedComponents/Dropdown/LicenseDropDown";
 import MultiSelectCompanyDropdown from "../../../CommonModules/sharedComponents/Dropdown/CompanyDropDown";
+import "./style.css";
 
 const HistoryFilterForm = (props) => {
   const [timeDiff, setTimeDiff] = useState(0);
@@ -31,6 +30,7 @@ const HistoryFilterForm = (props) => {
       entityid: constant.companyEntityId,
       usertype: state.auth.loginInfo?.UserType,
     };
+    actionDispatch(clearState());
     actionDispatch(getCompanyList(companyRequestPayload));
   }, [state.auth.loginInfo?.UserID]);
 
@@ -46,6 +46,7 @@ const HistoryFilterForm = (props) => {
       state.HistoryReducer.numberOfSelectedLicense !== 0 &&
       state.HistoryReducer.from !== "" &&
       state.HistoryReducer.to !== ""
+  
     ) {
       setIsAllInputFilled(true);
     } else {
@@ -60,10 +61,43 @@ const HistoryFilterForm = (props) => {
   }, [state.HistoryReducer.numberOfSelectedCompanies]);
 
   const setFilterAndNavigateToHistoryList = () => {
-    actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
-    history.push("/compliance-history-list");
-  };
+    if (
+      state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
+      state.HistoryReducer.numberOfSelectedLicense !== 0 &&
+      state.HistoryReducer.from !== "" &&
+      state.HistoryReducer.to !== ""
+    ) {
+    const historyListPayload = {
+      entityid: constant.historyEntityId,
+      userID: state.auth.loginInfo?.UserID,
+      usertype: state.auth.loginInfo?.UserType,
 
+      entityList: state.HistoryReducer.companyList
+        .filter((company) => company.selected === true)
+        .map((company) => company.EntityGroupID)
+        .join(","),
+
+      licList: state.HistoryReducer.licenseList
+        .filter((list) => list.selected === true)
+        .map((list) => list.LicenseCode)
+        .join(","),
+
+      startDate:
+        state.HistoryReducer.from &&
+        moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
+          "YYYY-MM-DD"
+        ),
+      endDate:
+        state.HistoryReducer.to &&
+        moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
+          "YYYY-MM-DD"
+        ),
+    };
+    actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
+    actionDispatch(getHistoryList(historyListPayload));
+    history.push("/compliance-history-list");  
+   }
+  }
   return (
     <>
       <div style={{ marginTop: "20px" }}>
@@ -80,18 +114,17 @@ const HistoryFilterForm = (props) => {
       <div style={{ marginTop: "20px" }}>
         <label htmlFor="to" className="mb-2">
           To:{" "}
-          {timeDiff > 365 && (
-            <span style={{ color: "red" }}>
-              You can't choose more than 1 year!
-            </span>
-          )}
         </label>
-
         <Datepicker
           name="to"
           dispatch={actionDispatch}
           actionType="SELECT_TO_DATE"
         />
+          {timeDiff > 365 && (
+            <span style={{ color: "red" }}>
+              Range Cannot be more than 1 year
+            </span>
+          )}
       </div>
       <MultiSelectCompanyDropdown
         options={state.HistoryReducer.companyList}
@@ -105,7 +138,7 @@ const HistoryFilterForm = (props) => {
         inputTitle="Select License"
         dispatch={actionDispatch}
       />
-      {isAllInputFilled ? (
+      {isAllInputFilled && timeDiff < 365 ? (
         <button
           onClick={setFilterAndNavigateToHistoryList}
           className="filter-button-active"

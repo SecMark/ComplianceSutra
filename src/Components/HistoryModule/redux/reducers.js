@@ -126,17 +126,13 @@ const reducer = (state = intialState, { type, payload }) => {
     case CLEAR_STATE:
       return {
         ...state,
-        from: "",
-        to: "",
         selectedCompany: "",
         selectedLicenses: "",
-        companyList: [],
         licenseList: [],
         isLoading: false,
         isSuccess: false,
         numberOfSelectedCompanies: 0,
         numberOfSelectedLicense: 0,
-        historyList: [],
       };
 
     default:
