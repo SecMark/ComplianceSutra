@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import MobileLeftSidebar from "../../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
@@ -11,44 +11,37 @@ import threeDots from "../../../assets/Icons/threeDots.PNG";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { isMobile } from "react-device-detect";
-import constant from "../../../CommonModules/sharedComponents/constants/constant";
+// import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import moment from "moment";
 import { clearState, getHistoryList, setSuccess } from "../redux/actions";
 import { withRouter } from "react-router";
 
 const HistoryList = (props) => {
-  const [isShowFilter, setIsShowFilter] = useState(false);
-  const [isShowMobileOptionsId, setIsShowMobileOptionsId] = useState(null);
-  const [isShowMobileRowData, setIsShowMobileRowData] = useState(false);
-  const [mobileRowData, setMobileRowData] = useState({});
-  const [navigationHideShow, setNavigationHideShow] = useState(false);
+  // state for mobile design
+  const [isShowMobileOptionsId, setIsShowMobileOptionsId] = useState(null); // For showing options on single row
+  const [isShowMobileRowData, setIsShowMobileRowData] = useState(false); // For showing Row Data
+  const [mobileRowData, setMobileRowData] = useState({}); // Single Row data
   const sideBarParent = useRef(null);
   const sideBarChild = useRef(null);
-  const [showHB, setShowHBMenu] = useState(false);
-  const state = useSelector((state) => state);
-  const dispatch = useDispatch();
+  const [showHB, setShowHBMenu] = useState(false); // For showing Hamburger Menu
+  const [isShowMobileFilter, setIsShowMobileFilter] = useState(false);
+  // state for desktop design
+  const [isShowFilter, setIsShowFilter] = useState(false); // Show filter popup
+  const [navigationHideShow, setNavigationHideShow] = useState(false);
+  const state = useSelector((state) => state); // state
+  const dispatch = useDispatch(); // dispatch
 
   const onHBMenu = () => {
     setNavigationHideShow(true);
     const drawerParent = sideBarParent;
     const drawerChild = sideBarChild;
-    console.log(drawerParent, "drawerParent");
     if (drawerParent) {
       drawerParent.current.classList.add("overlay");
       drawerChild.current.style.left = "0%";
     }
   };
 
-  console.log(state.HistoryReducer.historyList);
-
   const closeMobileSidebar = () => {
-    // // const drawerParent = document.getElementById("sideBarParent");
-    // // const drawerChild = document.getElementById("sideBarChild");
-    // // console.log(drawerParent,"drawerParent")
-    // // if (drawerParent) {
-    // //     drawerParent.classList.add("overlay");
-    // //     drawerChild.style.left = "0%";
-    // // }
     const drawerParent = document.getElementById("sideBarParent");
     const drawerChild = document.getElementById("sideBarChild");
     if (drawerParent) {
@@ -63,10 +56,6 @@ const HistoryList = (props) => {
     dispatch(setSuccess(false));
   }, [state.HistoryReducer.isSuccess]);
 
-  useEffect(() => {
-    console.log(isShowMobileOptionsId, mobileRowData);
-  }, [isShowMobileOptionsId, mobileRowData]);
-
   const getNameInitials = (name) => {
     if (name != undefined) {
       let initials = "";
@@ -78,49 +67,6 @@ const HistoryList = (props) => {
     }
   };
 
-  // return (
-  //   <div className="row history-list">
-  //     {showHB === false && (
-  //       <div className=" d-block d-sm-none pad-ms p-4">
-  //         <div className="d-flex">
-  //           <div
-  //             className="w-25"
-  //             style={{ cursor: "pointer" }}
-  //             onClick={() => {
-  //               onHBMenu();
-  //             }}
-  //           >
-  //             <img src={togglemobile} alt="toggle mobile" />
-  //           </div>
-  //           <div className="w-75 pr-4">
-  //             {" "}
-  //             <img
-  //               className="mobile-logo"
-  //               src={sideBarlogo}
-  //               alt="sideBarlogo"
-  //             />{" "}
-  //           </div>
-  //         </div>
-  //       </div>
-  //     )}
-  //     {isMobile ? (
-  //       <div id="sideBarParent" className="" ref={sideBarParent}>
-  //         <div
-  //           id="sideBarChild"
-  //           className="leftSideBarFixed"
-  //           ref={sideBarChild}
-  //         >
-  //           <MobileLeftSidebar
-  //             className="d-block d-md-none"
-  //             close={() => closeMobileSidebar()}
-  //           />
-  //         </div>
-  //       </div>
-  //     ) : (
-  //       <LeftSideBar />
-  //     )}
-  //   </div>
-  // );
   return (
     <div className="history-side-bar">
       {isMobile ? (
@@ -131,7 +77,7 @@ const HistoryList = (props) => {
             ref={sideBarChild}
           >
             <MobileLeftSidebar
-              className="d-block d-md-none"
+              className="d-block d-lg-none"
               close={() => closeMobileSidebar()}
             />
           </div>
@@ -141,37 +87,40 @@ const HistoryList = (props) => {
       )}
       {isMobile ? (
         <div className="history-container-mobile">
+          {/* Filter pop-up for mobile */}
+          {isShowMobileFilter && (
+            <div className="filter-popup-mobile">
+              <div className="container filter-popup-mobile--container">
+                <div className="d-flex align-items-center justify-content-between mb-5">
+                  <h2 style={{ margin: "0" }}>Fiters</h2>
+                  <img
+                    src={closeIcon}
+                    alt="close-icon"
+                    onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
+                  />
+                </div>
+                <HistoryFilterForm />
+              </div>
+            </div>
+          )}
           {/* View More Data pop up */}
           {isShowMobileRowData && isShowMobileOptionsId && (
             <div className="view-more-data--popup">
               <div className="view-more-data--container">
                 <h3 style={{ width: "80%" }}>{mobileRowData.TaskName}</h3>
-                {/* <button
-                  className="close--data-popup"
-                  onClick={() => setIsShowMobileRowData(!isShowMobileRowData)}
-                >
-                
-                  close
-                </button> */}
                 <img
                   className="close--data-popup"
                   src={closeIcon}
                   alt="close-icon"
                   onClick={() => {
-                    setIsShowMobileOptionsId(null);
-                    setMobileRowData({});
-                    setIsShowMobileRowData(!isShowMobileRowData);
+                    setIsShowMobileOptionsId(null); // Resetting Mobile Options Id
+                    setMobileRowData({}); // Resetting Row Data
+                    setIsShowMobileRowData(!isShowMobileRowData); // Toggling isShowMobileRowData
                   }}
                 />
-                {/* list.EntityName for company */}
-                {/* list.AprovalAssignedTo for Assigned To */}
-                {/* list.AssignedTo for Approver */}
-                {/* moment(list.EndDate).format("DD MMMM YYYY") for Due Date */}
-                {/* <img src={download} /> for Download */}
                 <div className="data-field">
                   <span className="task-detail">COMPANY</span>
                   <p>{mobileRowData?.EntityName}</p>
-                  {/* <p>Google</p> */}
                 </div>
                 <div className="data-field">
                   <span className="task-detail">ASSIGNED TO</span>
@@ -181,9 +130,6 @@ const HistoryList = (props) => {
                     </span>{" "}
                     <span>{mobileRowData?.AprovalAssignedTo}</span>
                   </p>
-                  {/* <p>
-                    <span className="circle-dp">AK</span> Ashu Kumar
-                  </p> */}
                 </div>
                 <div className="data-field">
                   <span className="task-detail">APPROVER</span>
@@ -193,14 +139,10 @@ const HistoryList = (props) => {
                     </span>{" "}
                     <span>{mobileRowData?.AssignedTo}</span>
                   </p>
-                  {/* <p>
-                    <span className="circle-dp">JM</span> Jatin Mehta
-                  </p> */}
                 </div>
                 <div className="data-field">
                   <span className="task-detail">DUE DATE</span>
                   <p>{moment(mobileRowData.EndDate).format("DD MMMM YYYY")}</p>
-                  {/* <p>12 8 2001</p> */}
                 </div>
                 <div className="data-field">
                   <button className="download-btn-mobile mt-4">
@@ -211,14 +153,13 @@ const HistoryList = (props) => {
               </div>
             </div>
           )}
-
           {/* View more data ends here */}
-          <div className="d-block d-md-none mobile-head">
+          <div className="d-block mobile-head">
             {showHB === false && (
               // <div className=" d-block d-sm-none pad-ms">
-              <div className="d-flex">
+              <div className="d-flex justify-content-between">
                 <div
-                  className="w-25"
+                  className=""
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     onHBMenu();
@@ -226,7 +167,7 @@ const HistoryList = (props) => {
                 >
                   <img src={togglemobile} alt="toggle mobile" />
                 </div>
-                <div className="w-75 pr-4">
+                <div className="pr-4">
                   {" "}
                   <img
                     className="mobile-logo"
@@ -238,20 +179,18 @@ const HistoryList = (props) => {
             )}
             <div className=" table-header-mobile d-flex justify-content-between align-items-center mt-3">
               <h3 className="mb-0">Compliance History</h3>
-              <img src={filter} alt="filter" />
+              <img
+                src={filter}
+                alt="filter"
+                onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
+              />
             </div>
             {state.HistoryReducer.historyList.length !== 0 ? (
               <table className="table co-company-details-tbl table_legenda mt-3">
                 <thead>
                   <tr>
                     <th>Complete on</th>
-                    {/* <th scope="col">Task Name</th>
-                       <th scope="col">Company</th>
-                       <th>Assigned To</th>
-                       <th>Approver</th>
-                       <th>Due Date</th> */}
                     <th>status</th>
-                    {/* <th>Download</th> */}
                   </tr>
                 </thead>
                 <tbody>
