@@ -25,7 +25,7 @@ import Dropdown from "react-dropdown"
 import { toast } from "react-toastify"
 import "react-responsive-modal/styles.css"
 import { isEmail } from "../../../../AssignTask/utils"
-
+import { ReAssignTasksPopUp } from '../../../../../../ReAssignModule/ReAssignPopUp';
 var _ = require("lodash")
 
 function CoManagment({ handleClose }) {
@@ -142,7 +142,9 @@ function CoManagment({ handleClose }) {
   const [currentIndex, setCurrentIndex] = useState("")
 
   const handleChangeInput = (e) => {}
-
+  const [showReAssignTasks, setShowReAssignTasks] = useState(false);
+  const [memberDetail, setMemberDetail] = useState('');
+  
   useEffect(() => {
     getSettingData()
     setFilterOption(filterOptions[0])
@@ -445,7 +447,7 @@ function CoManagment({ handleClose }) {
   }
 
   const openPopup = (index) => {
-    setOpenPopupIndex(index)
+    setOpenPopupIndex(index);
   }
   const changeRole = (key) => {
     setOpenPopupIndex("")
@@ -689,6 +691,12 @@ function CoManagment({ handleClose }) {
         })
     }
   }
+  const showReAssign = () => {
+    setShowReAssignTasks(!showReAssignTasks);
+    setOpenPopupIndex("");
+  }
+  console.log('openPopupIndex', openPopupIndex);
+  console.log('showReAssignTasks', showReAssignTasks);
   return (
     <div className="co-team-member">
       {visible && _createDelectActionModal(openPopupIndex)}
@@ -961,6 +969,14 @@ function CoManagment({ handleClose }) {
                             >
                               Change role
                             </div>
+                            
+                            <div
+                              style={{ cursor: "pointer" }}
+                              onClick={() => showReAssign(item)}
+                              className="change-role"
+                            >
+                              Re-Assign Tasks
+                            </div>
                             <div
                               style={{ cursor: "pointer" }}
                               onClick={() => setVisible(true)}
@@ -981,7 +997,7 @@ function CoManagment({ handleClose }) {
           </div>
         </div>
       </div>
-
+      {showReAssignTasks &&<ReAssignTasksPopUp showReAssignTasks={showReAssignTasks} setShowReAssignTasks={showReAssign} teamMemberDetail={memberDetail} />}
       <div id="moreDetailsParent" className="">
         <div id="moreDetailsChild" className="bottomBarFixedMoreDetails">
           <div className="change-role-mobile">
@@ -1360,6 +1376,13 @@ function CoManagment({ handleClose }) {
                                 className="change-role"
                               >
                                 Change role
+                              </div>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() => showReAssign(item)}
+                                className="change-role"
+                              >
+                                Re-Assign Tasks
                               </div>
                               <div
                                 style={{ cursor: "pointer" }}

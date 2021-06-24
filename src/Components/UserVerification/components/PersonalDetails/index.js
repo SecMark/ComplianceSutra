@@ -139,6 +139,13 @@ function PersonalDetails({ history }) {
         setErrors({ ...errors, [inputKey]: "" });
       }
     }
+    if (event.target.value && event.target.value.length === 10) {
+      console.log('10');
+      validateMobileNumber(event);
+    } else {
+      let inputKey = "mobileNumErr"
+      setErrors({ ...errors, [inputKey]: "" })
+    }
     setValues({ ...values, [name]: event.target.value });
   }
 
@@ -250,7 +257,7 @@ function PersonalDetails({ history }) {
         }
         else {
           let inputKey = "mobileNumErr"
-          setErrors({ ...errors, [inputKey]: "false" })
+          setErrors({ ...errors, [inputKey]: "" })
         }
       })
       .catch(function (error) {
@@ -361,7 +368,7 @@ function PersonalDetails({ history }) {
                               value={values.mobileNumber}
                               onChange={onChangeHandler("mobileNumber")}
                               onKeyPress={(e) => handleKeyDown(e)}
-                              onBlur={(e) => validateMobileNumber(e)}
+                              // onBlur={(e) => validateMobileNumber(e)}
                             />
 
                           </div>
@@ -373,7 +380,7 @@ function PersonalDetails({ history }) {
                           </p>
                         )
                       } */}
-                          {errors.mobileNumErr == "true" && (
+                          {errors.mobileNumErr !== "" && (
                             <p className="input-error-message">
                               Mobile number already Registered
                             </p>

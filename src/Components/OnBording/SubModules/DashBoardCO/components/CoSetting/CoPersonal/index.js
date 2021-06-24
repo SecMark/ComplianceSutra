@@ -134,7 +134,8 @@ function CoSettingRightGrid({ handleClose, history }) {
       values.emailId === "" ||
       !validator.isEmail(values.emailId) ||
       values.designation === "" ||
-      values.countrycode === ""
+      values.countrycode === "" ||
+      values.mobileNumErr !== ""
     ) {
       setIsValidate(true)
       isSubmit = false
@@ -223,7 +224,7 @@ function CoSettingRightGrid({ handleClose, history }) {
         }
         else {
           let inputKey = "mobileNumErr"
-          setErrors({ ...errors, [inputKey]: "false" })
+          setErrors({ ...errors, [inputKey]: "" })
         }
       })
       .catch(function (error) {
@@ -294,6 +295,13 @@ function CoSettingRightGrid({ handleClose, history }) {
       if (!mobileNumberReg.test(Number(event.target.value))) {
         return ""
       }
+    }
+    if (event.target.value && event.target.value.length === 10) {
+      console.log('10');
+      validateMobileNumber(event);
+    } else {
+      let inputKey = "mobileNumErr"
+      setErrors({ ...errors, [inputKey]: "" })
     }
     setValuesChanged(true)
     setValues({ ...values, [name]: event.target.value })
@@ -505,10 +513,9 @@ function CoSettingRightGrid({ handleClose, history }) {
                 placeholder="Enter your mobile no"
                 id="mobile"
                 onChange={onChangeHandler("mobileNo")}
-                onBlur={(e) => validateMobileNumber(e)}
                 maxLength="10"
               />
-              {errors.mobileNumErr == "true" && (
+              {errors.mobileNumErr !== "" && (
                 <p className="input-error-message">
                   Mobile number already Registered
                 </p>

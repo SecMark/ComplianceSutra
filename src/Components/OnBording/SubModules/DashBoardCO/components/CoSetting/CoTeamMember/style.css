@@ -689,7 +689,7 @@
 .co-team-member .three-dot-tooltip{
   width: 142px;
   z-index: 999999;
-  height: 90px;
+  height: 135px;
   object-fit: contain;
   border-radius: 4px;
   right: 61px;
@@ -1214,7 +1214,7 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
   .co-team-member .three-dot-tooltip {
     width: 142px;
     z-index: 999999;
-    height: 140px;
+    height: 180px;
     object-fit: contain;
     border-radius: 4px;
     right: 5px;

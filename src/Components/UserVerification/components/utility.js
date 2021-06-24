@@ -42,7 +42,8 @@ export const isEmail = (email) => {
       values.confirmPassword === "" ||
       values.confirmPassword !== values.password ||
       !values.confirmPassword ||
-      values.confirmPassword === ""
+      values.confirmPassword === "" ||
+      values.mobileNumErr !== ""
     ) {
       return true;
     }

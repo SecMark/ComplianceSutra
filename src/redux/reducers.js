@@ -11,6 +11,7 @@ import users from "../Components/UserVerification/redux/reducers";
 import adminMenu from "../Components/OnBording/SubModules/DashBoardCO/MenuRedux/reducers";
 import NotificationRedu from "../Components/OnBording/SubModules/DashBoardCO/components/notification/Redux/Reducers/NotificationRedu";
 import HistoryReducer from "../Components/HistoryModule/redux/reducers";
+import ReAssignTasksReducer from "../Components/ReAssignModule/redux/reducers";
 const createRootReducer = (history) =>
   combineReducers({
     router: connectRouter(history),
@@ -23,6 +24,7 @@ const createRootReducer = (history) =>
     adminMenu,
     NotificationRedu,
     HistoryReducer,
+    ReAssignTasksReducer,
   });
 
 export default createRootReducer;

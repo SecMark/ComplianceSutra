@@ -644,9 +644,7 @@ function RightSideGrid({
     if(errors.emailErr === false){
       if (e.key === "Enter") {
         console.log("1234")
-        handleCheckAssignToEmailAvailability(e)
-        
-        // handleAssignToTask(e)
+        handleCheckAssignToEmailAvailability(e);
       }
     }
 

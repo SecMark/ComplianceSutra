@@ -21,6 +21,7 @@ const HistoryFilterForm = (props) => {
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
 
   const state = useSelector((state) => state);
+  console.log(state);
   const history = useHistory();
   const actionDispatch = useDispatch();
 

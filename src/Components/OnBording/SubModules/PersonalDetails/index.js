@@ -69,13 +69,6 @@ function PersonalDetails({ history }) {
       }
     }
 
-    if (name === "mobileNumber") {
-      let inputKey = "mobileNumErr"
-      // console.log(event.target.value);
-      if (event.target.value > 0 && event.target.value < 9) {
-      } else if (event.target.value == 10) {
-      }
-    }
     const mobileNumberReg = /^[0-9]{0,10}$/
     // let passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
     let passwordRE =
@@ -165,6 +158,13 @@ function PersonalDetails({ history }) {
         setErrors({ ...errors, [inputKey]: "" })
       }
     }
+    if (event.target.value && event.target.value.length === 10) {
+      console.log('10');
+      validateMobileNumber(event);
+    } else {
+      let inputKey = "mobileNumErr"
+      setErrors({ ...errors, [inputKey]: "" })
+    }
     setValues({ ...values, [name]: event.target.value })
   }
 
@@ -251,6 +251,7 @@ function PersonalDetails({ history }) {
   }
 
   const validateMobileNumber = (e) => {
+    
     var countrycode = values.countryCode.replace("+", "")
     let payload =
     {
@@ -267,7 +268,7 @@ function PersonalDetails({ history }) {
         }
         else {
           let inputKey = "mobileNumErr"
-          setErrors({ ...errors, [inputKey]: "false" })
+          setErrors({ ...errors, [inputKey]: "" })
         }
       })
       .catch(function (error) {
@@ -424,7 +425,7 @@ function PersonalDetails({ history }) {
                               value={values.mobileNumber}
                               onChange={onChangeHandler("mobileNumber")}
                               onKeyPress={(e) => handleKeyDown(e)}
-                              onBlur={(e) => validateMobileNumber(e)}
+                              // onBlur={(e) => validateMobileNumber(e)}
                             />
                           </div>
                           {/* {
@@ -435,7 +436,7 @@ function PersonalDetails({ history }) {
                           </p>
                         )
                       } */}
-                          {errors.mobileNumErr == "true" && (
+                          {errors.mobileNumErr != "" && (
                             <p className="input-error-message">
                               Mobile number already Registered
                             </p>
@@ -963,7 +964,7 @@ function PersonalDetails({ history }) {
                         errors.passwordErr !== "" ||
                         errors.confirmPasswordErr !== "" ||
                         errors.countryCodeErr === "true" ||
-                        errors.mobileNumErr === "" ||
+                        errors.mobileNumErr === "true" ||
                         values.mobileNumber.length < 10
                       }
                       style={{ width: 134 }}
