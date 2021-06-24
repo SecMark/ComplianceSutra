@@ -53,7 +53,7 @@ const onSubmit = () => {
   setIsValidate(false);
   setIsEmailExist(false)
   if (checkBoxState === true) {
-
+      
       dispatch(
         emailActions.verifyEmailRequest({
           LoginID: values.loginID,
@@ -66,6 +66,7 @@ const onSubmit = () => {
       setTimeout(() => {
       console.log("state.complianceOfficer.isVerifiedEmail => ",state.complianceOfficer.isVerifiedEmail);
         let status = state.complianceOfficer.isVerifiedEmail;
+        console.log(status)
 
     }, [100]);
 
@@ -107,7 +108,7 @@ const onSubmit = () => {
                 <p className="login_title">Get Started!</p>
                 <div className="form_wrapper">
                   <div className="form-group">
-                    <label htmlFor="Company Email">Company Email</label>
+                    <label htmlFor="Company Email">Email</label>
                     <input
                       type="text"
                       className={
@@ -121,7 +122,7 @@ const onSubmit = () => {
                           + ( values.loginID !== "" && isEmail(values.loginID) ? " activeForm-control" : "")
                           + (!isEmail(values.loginID) && values.loginID !== "" ? "  input-error" : " ")
                         }
-                      placeholder="Enter your company email"
+                      placeholder="Enter your email"
                       value={values.loginID}
                       onChange={onChangeHandler("loginID")}
                     />
@@ -135,7 +136,7 @@ const onSubmit = () => {
                           Please enter valid email address
                         </p>
                       )}
-                      {isEmailExist && isEmailExist === true && (
+                      {isEmailExist && isEmailExist !== true && (
                           <p className="input-error-message">
                             Email already exists please login
                           </p>

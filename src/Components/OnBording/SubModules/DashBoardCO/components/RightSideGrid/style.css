@@ -7,6 +7,7 @@
   position: relative;
   height: 94vh;
   margin: 20px 20px 20px 7%;
+  z-index:2000;
 }
 .all-companies-title {
   opacity: 0.6;
@@ -336,6 +337,7 @@
   max-height: calc(100vh - 40px);
   overflow: auto;
   animation: mymove 1s;
+  z-index:10000 !important;
 }
 .new-side-bar {
   position: fixed;
