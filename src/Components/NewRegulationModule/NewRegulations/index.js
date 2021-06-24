@@ -5,12 +5,45 @@ import closeIcon from "../../../assets/Icons/closeIcon.png";
 import filterImage from "../../../assets/Icons/filter_background.png";
 import { withRouter } from "react-router";
 import { ImSearch } from "react-icons/im";
-import { GrFormClose } from "react-icons/gr";
 
 import "./style.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getUpdates } from "../redux/actions";
+import Loading from "../../../CommonModules/sharedComponents/Loader";
+import moment from "moment";
+import NewRegulationDetail from "../NewRegulationDetail";
 
 const NewRegulations = (props) => {
   const [isShowFilter, setIsShowFilter] = useState(false);
+  const [isShowRegulationDetail, setIsShowRegulationDetail] = useState(false);
+  const [newRegulationDetail, setNewRegulationDetail] = useState({});
+
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const { isSuccess, isLoading, updateList } = state.UpdatesReducer;
+
+  useEffect(() => {
+    const payload = { UserID: state.auth.loginInfo?.UserID };
+    dispatch(getUpdates(payload));
+  }, [state.auth.loginInfo?.UserID]);
+
+  const changeShowRegulationDetail = () => {
+    setIsShowRegulationDetail(!isShowRegulationDetail);
+  };
+
+  const fetchAndSetNewRegulationDetail = (updatesId) => {
+    setNewRegulationDetail({});
+    console.log(updateList);
+    const getNewRegulationDetailById = updateList.find(
+      ({ id }) => id === updatesId
+    );
+    setNewRegulationDetail({
+      ...newRegulationDetail,
+      getNewRegulationDetailById,
+    });
+    setIsShowRegulationDetail(!isShowRegulationDetail);
+  };
+
   return (
     <div className="new-regulation-side-bar">
       <div
@@ -42,6 +75,11 @@ const NewRegulations = (props) => {
         </div>
       </div>
 
+      <NewRegulationDetail
+        isShowRegulationDetail={isShowRegulationDetail}
+        changeShowRegulationDetail={changeShowRegulationDetail}
+        newRegulationDetail={newRegulationDetail}
+      />
       <LeftSideBar />
       <div className="new-regulation-container">
         <div className="row">
@@ -68,7 +106,7 @@ const NewRegulations = (props) => {
               </div>
             </div>
 
-            <div className="BadgesWrapper">
+            {/* <div className="BadgesWrapper">
               <div className="BadgesDiv">
                 <span>Stock Broking</span>
                 <div className="CloseBadge">
@@ -124,60 +162,63 @@ const NewRegulations = (props) => {
                 </div>
               </div>
             </div>
+             */}
+
             <div>
-              <div className="title">
-                <h1>Latest Updates</h1>
-                <div className="list">
-                  <h2 className="new-regulation-title">
-                    Settlement of Running Account of Client’s Funds lying with
-                    Trading Member (TM)
-                  </h2>
-                  <div className="description">
-                    <p className="description-text">
-                      SEBI has issued revised guidelines on Settlement of
-                      Running Trading...
-                    </p>
-                    <span className="date">24th Dec</span>
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <>
+                  <div className="title">
+                    <h1>Latest Updates</h1>
+                    {updateList.map((updates) => (
+                      <div className="list">
+                        <h2
+                          className="new-regulation-title"
+                          onClick={() =>
+                            fetchAndSetNewRegulationDetail(updates.id)
+                          }
+                        >
+                          {updates.Title}
+                        </h2>
+                        <div className="description">
+                          <p className="description-text">
+                            SEBI has issued revised guidelines on Settlement of
+                            Running Trading...
+                          </p>
+                          <span className="date">
+                            {moment(updates.Submissiondate).format("Do MMM")}
+                          </span>
+                        </div>
+                        <button className="license-code">
+                          {updates.Regbodies}
+                        </button>
+                        <span className="license-number">
+                          {updates.CircularNo}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                  <button className="license-code">MCX</button>
-                  <span className="license-number">NSE/CML/48670</span>
-                </div>
-
-                <div className="list">
-                  <h2 className="new-regulation-title">
-                    Settlement of Running Account of Client’s Funds lying with
-                    Trading Member (TM)
-                  </h2>
-                  <div className="description">
-                    <p className="description-text">
-                      SEBI has issued revised guidelines on Settlement of
-                      Running Trading...
-                    </p>
-                    <span className="date">24th Dec</span>
+                  <div className="title">
+                    <h1>This Month</h1>
+                    <div className="list">
+                      <h2 className="new-regulation-title">
+                        Settlement of Running Account of Client’s Funds lying
+                        with Trading Member (TM)
+                      </h2>
+                      <div className="description">
+                        <p className="description-text">
+                          SEBI has issued revised guidelines on Settlement of
+                          Running Trading...
+                        </p>
+                        <span className="date">24th Dec</span>
+                      </div>
+                      <button className="license-code">MCX</button>
+                      <span className="license-number">NSE/CML/48670</span>
+                    </div>
                   </div>
-                  <button className="license-code">MCX</button>
-                  <span className="license-number">NSE/CML/48670</span>
-                </div>
-              </div>
-
-              <div className="title">
-                <h1>This Month</h1>
-                <div className="list">
-                  <h2 className="new-regulation-title">
-                    Settlement of Running Account of Client’s Funds lying with
-                    Trading Member (TM)
-                  </h2>
-                  <div className="description">
-                    <p className="description-text">
-                      SEBI has issued revised guidelines on Settlement of
-                      Running Trading...
-                    </p>
-                    <span className="date">24th Dec</span>
-                  </div>
-                  <button className="license-code">MCX</button>
-                  <span className="license-number">NSE/CML/48670</span>
-                </div>
-              </div>
+                </>
+              )}
             </div>
           </div>
         </div>

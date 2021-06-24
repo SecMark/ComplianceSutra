@@ -19,6 +19,8 @@ const persistConfig = {
     "auth",
     "users",
     "adminMenu",
+    "HistoryReducer",
+    "UpdatesReducer"
   ],
 }
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

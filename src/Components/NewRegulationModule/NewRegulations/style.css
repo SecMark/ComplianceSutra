@@ -19,6 +19,19 @@
   cursor: pointer;
 }
 
+.detail-popup {
+  width: 500px;
+  height: 100vh;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  position: absolute;
+  right: -450px;
+  top: 0;
+  z-index: 1;
+  background-color: white;
+  transition: all 500ms ease;
+}
+
 .new-regulation-container .row {
   margin: 0px 15px 0px 30px;
 }
@@ -281,6 +294,85 @@ p.description-text {
 
 .BadgesDiv:last-child span {
   max-width: 100%;
+}
+
+.tags {
+  display: flex;
+  justify-content: space-between;
+}
+.tags-button {
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #f8c102;
+  border-radius: 2px;
+  background-color: #fcf3cd;
+  margin-right: 10px;
+  padding: 2px;
+}
+
+.download-file {
+  border: none;
+  border-radius: 4px;
+  background-color: #6c5dd3;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: right;
+  color: #ffffff;
+}
+
+.new-regulation-side-bar .detail-popup {
+  max-width: 880px;
+  width: 100%;
+  right: -880px;
+}
+
+.new-regulation-side-bar .detail-popup.popup-open {
+  right: 0;
+}
+
+.new-regulation-side-bar .detail-popup .popup-header {
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+}
+
+.CloseSidebar {
+  margin: 0 0 20px;
+}
+
+.SidebarFooter {
+  flex-shrink: 0;
+}
+.SidebarContent {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.TopContent {
+  flex: 1 0 auto;
+}
+
+.new-regulation-side-bar .detail-popup.popup-open .container {
+  flex-direction: column;
+  height: 100%;
+  display: flex;
+}
+
+.tag-buttons {
+  display: flex;
+  flex-flow: row wrap;
 }
 
 @media (max-width: 767px) {

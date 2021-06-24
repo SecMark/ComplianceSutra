@@ -17,7 +17,7 @@ function MainApp() {
   console.warn = () => { };
   const browserHistory = createHashHistory();
   const userID = state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID
-console.log(userID)
+
   useEffect(() => {
 
     const interval = setInterval(() => {
