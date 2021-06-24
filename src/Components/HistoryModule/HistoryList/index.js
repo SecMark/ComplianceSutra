@@ -89,17 +89,18 @@ const HistoryList = (props) => {
         <div className="history-container-mobile">
           {/* Filter pop-up for mobile */}
           {isShowMobileFilter && (
-            <div className="filter-popup-mobile">
-              <div className="container filter-popup-mobile--container">
-                <div className="d-flex align-items-center justify-content-between mb-5">
-                  <h2 style={{ margin: "0" }}>Fiters</h2>
-                  <img
-                    src={closeIcon}
-                    alt="close-icon"
-                    onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
-                  />
+            <div className="filter-popup-mobile d-block d-lg-none">
+              <div className="filter-popup-mobile--container">
+                <img
+                  src={closeIcon}
+                  alt="close-icon"
+                  className="close--filter-popup-mobile"
+                  onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
+                />
+                <div className="filter-popup-mobile--wrapper">
+                  <h2 style={{ marginBottom: "3rem" }}>Fiters</h2>
+                  <HistoryFilterForm />
                 </div>
-                <HistoryFilterForm />
               </div>
             </div>
           )}

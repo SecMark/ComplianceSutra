@@ -189,10 +189,7 @@
 .filter-popup-mobile--container {
   position: relative;
 }
-.filter-popup-mobile--container {
-  min-width: 200px;
-  max-width: 400px;
-}
+
 .close--data-popup {
   position: absolute;
   top: 1rem;
@@ -212,6 +209,33 @@
   border: none;
 }
 
+.close--filter-popup-mobile {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+}
+
 .filter-popup-mobile {
   height: 80vh;
+}
+
+@media (max-width: 575.98px) {
+  .filter-popup-mobile--wrapper {
+    width: 90%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .filter-popup-mobile--wrapper {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .filter-popup-mobile--wrapper {
+    width: 70%;
+    margin: auto;
+  }
 }
