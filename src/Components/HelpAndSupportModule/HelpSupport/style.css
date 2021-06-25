@@ -11,15 +11,19 @@
   /* padding: 48px 0; */
   /* width: 100%; */
   position: relative;
-  max-width: calc(100% - 64px);
-  width: auto !important;
+  width: 64em !important;
   height: 712px;
   margin: 0 24px 24px 0;
-  padding: 32px 32px 342px;
+  padding: 32px 32px;
   object-fit: contain;
   border-radius: 36px;
   box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
   background-color: #ffffff;
+}
+
+.help-container iframe{
+  height:100%;
+  width:100%;
 }
 
 .help-container .row {

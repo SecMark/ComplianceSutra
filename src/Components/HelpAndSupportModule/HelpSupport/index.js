@@ -1,18 +1,26 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useReducer, useEffect, useCallback } from "react";
 import { withRouter } from "react-router";
 //import LeftSideBar from "src\Components\OnBording\SubModules\DashBoardCO\components\LeftSideBar.js";
 import LeftSideBar from "../../OnBording/SubModules/DashBoardCO/components/LeftSideBar.js";
 import HelpSideBar from "../HelpSupportSidebar";
 import "./style.css";
-const HelpSupport = (props) => {
+const HelpSupport = () => {
+
+  const [value, setState] = useState(null);
+  useEffect(() => {
+    console.log(value);
+  }, [value]);
+
+
   return (
     <div className="help-side-bar">
       <LeftSideBar />
-      <HelpSideBar />
+      <HelpSideBar onChange={setState} />
       <div className="row m-4">
         <div className="col-12">
           <div className="help-container">
-            <div className="help-container-title">
+            <iframe src={value}></iframe>
+            {/* <div className="help-container-title">
               What is Settlement Scheme 2020 all about?
             </div>
             <div className="help-container-text">
@@ -22,7 +30,7 @@ const HelpSupport = (props) => {
 
               However, amidst the disruption caused by the pandemic, Sebi received many representations seeking extension of the period of the scheme, the regulator said in a public notice issued late on Saturday.
 
-            </div>
+            </div> */}
           </div>
         </div>
 

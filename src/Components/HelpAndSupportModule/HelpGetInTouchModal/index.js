@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown"
@@ -9,6 +10,12 @@ import MultiSelectCompanyDropdown from "../../../CommonModules/sharedComponents/
 function HelpGetInTouchModal(props) {
 
   const actionDispatch = useDispatch();
+  const categoryList =     [
+    { type: 'Category1', value: '1' },
+    { type: 'Category2', value: '2' },
+    { type: 'Category3', value: '3' },
+    { type: 'Category3', value: '3' },
+  ]
 
 
 
@@ -39,7 +46,7 @@ function HelpGetInTouchModal(props) {
       <Modal.Body className="border border-white">
         <div>
           <MultiSelectCompanyDropdown
-            options={['']}
+            options={categoryList}
             lableTitle=""
             inputTitle="Choose catergory"
             dispatch={actionDispatch}

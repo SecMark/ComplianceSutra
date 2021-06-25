@@ -25,7 +25,7 @@ function MultiSelectCompanyDropdown({
         <label htmlFor="lable-title" className="mb-2">
           {lableTitle}
         </label>
-        <div style={{padding: "0.8em"}}
+        <div style={{ padding: "0.8em" }}
           className="form-control select-container"
           id="lable-title"
           onClick={(e) => {
@@ -59,7 +59,7 @@ function MultiSelectCompanyDropdown({
         <div className="dropdown-container p-4" onBlur={() => setIsOpen(true)}>
           <div className={`dropdown ${isOpen && "dropdown--open"}`}>
             {options.map((option) => {
-              const id = option.EntityGroupID;
+              const id = option.value;
               return (
                 <div
                   className="dropdown-item d-flex"
@@ -69,14 +69,14 @@ function MultiSelectCompanyDropdown({
 
                     const selectedCompanies = options
                       .filter((list) => list.selected === true)
-                      .map((list) => list.EntityGroupID)
+                      .map((list) => list.value)
                       .join(",");
 
                     //const licenseRequestPayload = {
-                      // userID: sagaState.auth.loginInfo?.UserID,
-                      // entityid: constant.licenseEntityId,
-                      // usertype: sagaState.auth.loginInfo?.UserType,
-                      // entityList: selectedCompanies,
+                    // userID: sagaState.auth.loginInfo?.UserID,
+                    // entityid: constant.licenseEntityId,
+                    // usertype: sagaState.auth.loginInfo?.UserType,
+                    // entityList: selectedCompanies,
                     //};
 
                     if (selectedCompanies !== "") {
