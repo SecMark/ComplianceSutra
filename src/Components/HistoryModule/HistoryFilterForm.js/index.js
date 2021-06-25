@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Datepicker from "../../../CommonModules/sharedComponents/Datepicker"
+import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
 import diffInDate from "../../../CommonModules/sharedComponents/Datepicker/utils";
 import { actions as adminMenuActions } from "../../../CommonModules/SideBar/Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,9 +35,7 @@ const HistoryFilterForm = (props) => {
   }, [state.auth.loginInfo?.UserID]);
 
   useEffect(() => {
-    setTimeDiff(
-      diffInDate(state.HistoryReducer.from, state.HistoryReducer.to)
-    );
+    setTimeDiff(diffInDate(state.HistoryReducer.from, state.HistoryReducer.to));
   }, [state.HistoryReducer]);
 
   useEffect(() => {
@@ -46,7 +44,6 @@ const HistoryFilterForm = (props) => {
       state.HistoryReducer.numberOfSelectedLicense !== 0 &&
       state.HistoryReducer.from !== "" &&
       state.HistoryReducer.to !== ""
-  
     ) {
       setIsAllInputFilled(true);
     } else {
@@ -67,37 +64,37 @@ const HistoryFilterForm = (props) => {
       state.HistoryReducer.from !== "" &&
       state.HistoryReducer.to !== ""
     ) {
-    const historyListPayload = {
-      entityid: constant.historyEntityId,
-      userID: state.auth.loginInfo?.UserID,
-      usertype: state.auth.loginInfo?.UserType,
+      const historyListPayload = {
+        entityid: constant.historyEntityId,
+        userID: state.auth.loginInfo?.UserID,
+        usertype: state.auth.loginInfo?.UserType,
 
-      entityList: state.HistoryReducer.companyList
-        .filter((company) => company.selected === true)
-        .map((company) => company.EntityGroupID)
-        .join(","),
+        entityList: state.HistoryReducer.companyList
+          .filter((company) => company.selected === true)
+          .map((company) => company.EntityGroupID)
+          .join(","),
 
-      licList: state.HistoryReducer.licenseList
-        .filter((list) => list.selected === true)
-        .map((list) => list.LicenseCode)
-        .join(","),
+        licList: state.HistoryReducer.licenseList
+          .filter((list) => list.selected === true)
+          .map((list) => list.LicenseCode)
+          .join(","),
 
-      startDate:
-        state.HistoryReducer.from &&
-        moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
-          "YYYY-MM-DD"
-        ),
-      endDate:
-        state.HistoryReducer.to &&
-        moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
-          "YYYY-MM-DD"
-        ),
-    };
-    actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
-    actionDispatch(getHistoryList(historyListPayload));
-    history.push("/compliance-history-list");  
-   }
-  }
+        startDate:
+          state.HistoryReducer.from &&
+          moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+        endDate:
+          state.HistoryReducer.to &&
+          moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+      };
+      actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
+      actionDispatch(getHistoryList(historyListPayload));
+      history.push("/compliance-history-list");
+    }
+  };
   return (
     <>
       <div style={{ marginTop: "20px" }}>
@@ -108,6 +105,7 @@ const HistoryFilterForm = (props) => {
           name="from"
           dispatch={actionDispatch}
           actionType="SELECT_FROM_DATE"
+          pageName="historyCompliance"
         />
       </div>
 
@@ -119,12 +117,11 @@ const HistoryFilterForm = (props) => {
           name="to"
           dispatch={actionDispatch}
           actionType="SELECT_TO_DATE"
+          pageName="historyCompliance"
         />
-          {timeDiff > 365 && (
-            <span style={{ color: "red" }}>
-              Range Cannot be more than 1 year
-            </span>
-          )}
+        {timeDiff > 365 && (
+          <span style={{ color: "red" }}>Range Cannot be more than 1 year</span>
+        )}
       </div>
       <MultiSelectCompanyDropdown
         options={state.HistoryReducer.companyList}

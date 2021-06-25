@@ -6,8 +6,8 @@ const NewRegulationDetail = ({
   changeShowRegulationDetail,
   newRegulationDetail,
 }) => {
-  const { id, Title, Submissiondate } =
-    newRegulationDetail.getNewRegulationDetailById;
+  const detail =
+    newRegulationDetail && newRegulationDetail?.getNewRegulationDetailById;
   return (
     <div
       className={`filter-popup detail-popup ${
@@ -34,7 +34,7 @@ const NewRegulationDetail = ({
               />
             </div>
             <div className="SidebarContent">
-              <h1> {Title}</h1>
+              <h1> {detail?.Title}</h1>
               <span>
                 NISM through its website has informed that it has extended the
                 validity of certificates of all those NISM certificate holders

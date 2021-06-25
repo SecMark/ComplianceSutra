@@ -11,7 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUpdates } from "../redux/actions";
 import Loading from "../../../CommonModules/sharedComponents/Loader";
 import moment from "moment";
+
 import NewRegulationDetail from "../NewRegulationDetail";
+import NewRegulationFilter from "../NewRegulationFilter";
+import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
+import NewRegulationSearchResult from "../NewRegulationSearchResult";
 
 const NewRegulations = (props) => {
   const [isShowFilter, setIsShowFilter] = useState(false);
@@ -33,15 +37,38 @@ const NewRegulations = (props) => {
 
   const fetchAndSetNewRegulationDetail = (updatesId) => {
     setNewRegulationDetail({});
-    console.log(updateList);
-    const getNewRegulationDetailById = updateList.find(
-      ({ id }) => id === updatesId
-    );
-    setNewRegulationDetail({
-      ...newRegulationDetail,
-      getNewRegulationDetailById,
-    });
+
+    if (updateList.length > 0) {
+      const getNewRegulationDetailById = updateList.find(
+        ({ id }) => id === updatesId
+      );
+      setNewRegulationDetail({
+        ...newRegulationDetail,
+        getNewRegulationDetailById,
+      });
+    }
     setIsShowRegulationDetail(!isShowRegulationDetail);
+  };
+
+  const getHighlightedText = (text, highlight) => {
+    const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+    return (
+      <span>
+        {" "}
+        {parts.map((part, i) => (
+          <span
+            key={i}
+            style={
+              part.toLowerCase() === highlight.toLowerCase()
+                ? { fontWeight: "bold" }
+                : {}
+            }
+          >
+            {part}
+          </span>
+        ))}{" "}
+      </span>
+    );
   };
 
   return (
@@ -72,6 +99,8 @@ const NewRegulations = (props) => {
             />
             <h3 style={{ marginBottom: "0px" }}>Filters</h3>
           </div>
+
+          <NewRegulationFilter />
         </div>
       </div>
 
@@ -164,14 +193,17 @@ const NewRegulations = (props) => {
             </div>
              */}
 
+            <NewRegulationSearchResult />
+
             <div>
               {isLoading ? (
                 <Loading />
               ) : (
-                <>
-                  <div className="title">
-                    <h1>Latest Updates</h1>
-                    {updateList.map((updates) => (
+                <div className="title">
+                  {updateList.length === 0 ? (
+                    <NoResultFound text="No detail found" />
+                  ) : (
+                    updateList.map((updates) => (
                       <div className="list">
                         <h2
                           className="new-regulation-title"
@@ -197,27 +229,9 @@ const NewRegulations = (props) => {
                           {updates.CircularNo}
                         </span>
                       </div>
-                    ))}
-                  </div>
-                  <div className="title">
-                    <h1>This Month</h1>
-                    <div className="list">
-                      <h2 className="new-regulation-title">
-                        Settlement of Running Account of Client’s Funds lying
-                        with Trading Member (TM)
-                      </h2>
-                      <div className="description">
-                        <p className="description-text">
-                          SEBI has issued revised guidelines on Settlement of
-                          Running Trading...
-                        </p>
-                        <span className="date">24th Dec</span>
-                      </div>
-                      <button className="license-code">MCX</button>
-                      <span className="license-number">NSE/CML/48670</span>
-                    </div>
-                  </div>
-                </>
+                    ))
+                  )}
+                </div>
               )}
             </div>
           </div>
