@@ -299,8 +299,7 @@ const HistoryList = (props) => {
                 </button>
               </div>
               <div className="scroll-personal-grid d-md-block d-sm-block table-responsive mt-4">
-                {/* {state.HistoryReducer.historyList.length !== 0 ? ( */}
-                {1 !== 0 ? (
+                {state.HistoryReducer.historyList.length !== 0 ? (
                   <table className="table co-company-details-tbl table_legenda">
                     <thead>
                       <tr>
@@ -315,7 +314,7 @@ const HistoryList = (props) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {/* {state.HistoryReducer.historyList.map((list) => (
+                      {state.HistoryReducer.historyList.map((list) => (
                         <tr>
                           <td className="task-detail">
                             {moment(list.Completed).format("DD MMMM YYYY")}
@@ -365,10 +364,10 @@ const HistoryList = (props) => {
                             <img src={download} />
                           </td>
                         </tr>
-                      ))} */}
+                      ))}
 
                       {/* --------|||| Table for testing ||||--------- */}
-                      <tr>
+                      {/* <tr>
                         <td className="task-detail">12 08 2001</td>
                         <td className="task-name">
                           Enhanced supervision reporting
@@ -395,7 +394,7 @@ const HistoryList = (props) => {
                         <td align="left">
                           <img src={download} />
                         </td>
-                      </tr>
+                      </tr> */}
                       {/* -------- Table for testing --------- */}
                     </tbody>
                   </table>
