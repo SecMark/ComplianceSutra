@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import "./style.css"
 import api from "../../../../../../../apiServices"
 import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png"
@@ -27,7 +27,25 @@ import "react-responsive-modal/styles.css"
 import { isEmail } from "../../../../AssignTask/utils"
 import { ReAssignTasksPopUp } from '../../../../../../ReAssignModule/ReAssignPopUp';
 var _ = require("lodash")
-
+function useOnClickOutside(ref, handler) {
+  useEffect(
+    () => {
+      const listener = (event) => {
+        if (!ref.current || ref.current.contains(event.target)) {
+          return;
+        }
+        handler(event);
+      };
+      document.addEventListener("mousedown", listener);
+      document.addEventListener("touchstart", listener);
+      return () => {
+        document.removeEventListener("mousedown", listener);
+        document.removeEventListener("touchstart", listener);
+      };
+    },
+    [ref, handler]
+  );
+}
 function CoManagment({ handleClose }) {
   const options = [
     { value: "4", label: "Team Member" },
@@ -135,10 +153,11 @@ function CoManagment({ handleClose }) {
     },
   ])
   const [isValidEmail, setIsValidEmail] = useState(true)
-  const innerRef = useOuterClick((e) => {
-    if (openPopupIndex !== "") setOpenPopupIndex("")
-  })
-
+  // const innerRef = useOuterClick((e) => {
+  //   if (openPopupIndex !== "") setOpenPopupIndex("")
+  // })
+  const ref = useRef();
+  useOnClickOutside(ref, () => setOpenPopupIndex(""));
   const [currentIndex, setCurrentIndex] = useState("")
 
   const handleChangeInput = (e) => {}
@@ -148,7 +167,7 @@ function CoManagment({ handleClose }) {
   useEffect(() => {
     getSettingData()
     setFilterOption(filterOptions[0])
-  }, [])
+  }, []);
   // useEffect(() => {
   //     dispatch(adminMenuActions.setActiveTabInSetting("team-member"))
   // }, [])
@@ -691,12 +710,15 @@ function CoManagment({ handleClose }) {
         })
     }
   }
-  const showReAssign = () => {
-    setShowReAssignTasks(!showReAssignTasks);
+  const showReAssign = (item) => {
+    setMemberDetail(item);
+    setShowReAssignTasks(true);
     setOpenPopupIndex("");
   }
-  console.log('openPopupIndex', openPopupIndex);
-  console.log('showReAssignTasks', showReAssignTasks);
+  const closeReAssign = () => {
+    setShowReAssignTasks(false);
+  }
+  
   return (
     <div className="co-team-member">
       {visible && _createDelectActionModal(openPopupIndex)}
@@ -955,7 +977,7 @@ function CoManagment({ handleClose }) {
                           )}
 
                         {openPopupIndex !== "" && openPopupIndex === index && (
-                          <div ref={innerRef} className="three-dot-tooltip">
+                          <div ref={ref} className="three-dot-tooltip">
                             <div
                               className="change-role"
                               onClick={() => MoreDetails(item)}
@@ -997,7 +1019,7 @@ function CoManagment({ handleClose }) {
           </div>
         </div>
       </div>
-      {showReAssignTasks &&<ReAssignTasksPopUp showReAssignTasks={showReAssignTasks} setShowReAssignTasks={showReAssign} teamMemberDetail={memberDetail} />}
+      {showReAssignTasks &&<ReAssignTasksPopUp showReAssignTasks={showReAssignTasks} setShowReAssignTasks={closeReAssign} teamMemberDetail={memberDetail} />}
       <div id="moreDetailsParent" className="">
         <div id="moreDetailsChild" className="bottomBarFixedMoreDetails">
           <div className="change-role-mobile">
@@ -1368,7 +1390,7 @@ function CoManagment({ handleClose }) {
                           />
                         </div>
                         {openPopupIndex !== "" && openPopupIndex === index && (
-                          <div className="last-td" ref={innerRef}>
+                          <div className="last-td" ref={ref}>
                             <div className="three-dot-tooltip">
                               <div
                                 style={{ cursor: "pointer" }}

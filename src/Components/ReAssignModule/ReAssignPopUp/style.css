@@ -1,5 +1,8 @@
 .re-assign-modal-header {
-  border-bottom: 1px solid #dee2e6 !important;
+  border-bottom: 0px solid #dee2e6 !important;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+  padding-bottom: 0 !important;
 }
 .re-assign-modal-header h4{
   margin-bottom: 0px;
@@ -11,9 +14,6 @@
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
-  color: #000;
-  text-shadow: 0 1px 0 #fff;
-  opacity: .5;
 }
 .re-assign-modal-header .close .sr-only {
   position: absolute;
@@ -33,7 +33,7 @@
   margin-top: 2rem;
 }
 .search-assign-box .form-group {
-  width: 55%;
+  width: 65%;
 }
 .search-assign-box span.or-devider {
   margin: 0px 16px;
@@ -46,32 +46,70 @@
   background-color: #6c5dd3;
   color: #fff;
   width: 40%;
+  font-size: 13px;
 }
 .search-assign-box .reassign-to-me-btn:hover {
   color: #fff;
 }
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  font-size: 13px;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  font-size: 13px;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  font-size: 13px;
+}
+:-moz-placeholder { /* Firefox 18- */
+  font-size: 13px;
+}
+input[type=radio] {
+  /* padding: 0.7em;
+  -webkit-appearance: none;
+  outline: 0.15em solid #b7b6b6;
+  outline-style: auto; */
+  cursor: pointer;
+  width: 1.25em; height: 1.25em;
+  border-radius: 4px;
+}
+
+input[type="radio"] {
+	width: 1.25em; height: 1.25em;
+}	
+input[type="radio"] {	
+	border-radius: 4px;
+}
+input[type="radio"]:checked {
+	background-image: url("data:image/svg+xml,%3Csvg height='32' width='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m11.4 21.5-5.93-5.93-2.01 2.01 7.94 7.94 17.1-17.1-2.01-2.01z' fill='%23fff'/%3E%3C/svg%3E");
+	background-size: 80% 80%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: #6c5dd3;
+	border-color: #6c5dd3;
+}
 .bottom-border-header {
   width: 100%;
-  height: 1px;
+  height: 2px;
   background-color: #dedede;
   margin-top: 24px;
 }
 .bottom-border-header-sec {
   width: 100%;
-  height: 1px;
+  height: 2px;
   background-color: #dedede;
+  margin-top: 16px;
 }
 .re-assign-email-list-box {
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 330px;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
 }
 .re-assign-email-list-row {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   padding: 0px 10px;
   cursor: pointer;
   align-items: center;
@@ -89,6 +127,8 @@
   text-align: center;
   color: #2c2738;
   font-size: 10px;
+  font-weight: 500;
+  opacity: 0.6;
 }
 .re-assign-email-list-row .name-of-emailers {
   object-fit: contain;
@@ -101,12 +141,11 @@
   letter-spacing: 0px;
   text-align: left;
   margin-right: 7px;
-  color: #1b1d21;
+  color: #000;
   white-space: nowrap;
 }
 .re-assign-email-list-row .last-email {
   object-fit: contain;
-  opacity: 0.61;
   font-family: Poppins;
   font-size: 11px;
   font-weight: 300;
@@ -115,15 +154,12 @@
   line-height: normal;
   letter-spacing: 0px;
   text-align: left;
-  color: #1b1d21;
+  color: #000;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.re-assign-modal-footer {
-  justify-content: flex-start !important;
-  border-top: 0px solid #dee2e6 !important;
-}
+
 .re-assign-modal-footer .btn-link {
   text-decoration: none
 }
@@ -148,15 +184,16 @@
   height: 20px;
   object-fit: contain;
   border-radius: 10px;
-  opacity: 0.75;
+  opacity: 0.8;
   background-color: #f1f3ff;
   left: 11px;
   top: 10px;
   margin-right: 12px;
   line-height: 20px;
   text-align: center;
-  color: #1b1d21;
+  color: #000;
   font-size: 10px;
+  font-weight: 500;
 }
 .re-assign-email-header-row .close-btn {
   object-fit: contain;
@@ -175,8 +212,8 @@
 .re-assign-email-header-row .last-email {
   object-fit: contain;
   font-family: Poppins;
-  font-size: 11px;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 500;
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
@@ -193,6 +230,11 @@
   max-height: calc(100vh - 210px);
   overflow-y: auto;
 }
+.checkbox-list {
+  margin-left: 4px;
+  margin-right: 16px;
+  margin-top: 5px;
+}
 .re-assign-email-list-row .checkbox-list .form-check {
   min-height: 1rem !important;
 }
@@ -207,15 +249,16 @@
   display: flex;
   padding-top: 12px;
   padding-bottom: 12px;
-  cursor: pointer;
   align-items: center;
 }
 .re-assign-checkbox-list-row-name {
   font-weight: 600;
+  font-size: 14px;
 }
 .re-assign-checkbox-list-row-caption {
   color: #7d7d7d;
   padding-left: 6px;
+  font-size: 14px;
 }
 .ant-picker-dropdown {
   z-index: 9999 !important;
@@ -233,3 +276,83 @@
   background-color: #6c5dd3 !important;
   border-color: #6c5dd3 !important;
 }
+.re-assign-modal-content {
+  border-radius: 8px !important;
+}
+.re-assign-modal-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.re-assign-modal-header-content h4{
+  font-size: 20px;
+}
+.date-picker-box {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.date-picker-box label {
+  width: 55px;
+  font-size: 14px;
+}
+.date-picker-box .ant-picker {
+  border-radius: 4px;
+  padding: 7px 10px;
+}
+.date-picker-box .ant-picker .ant-picker-suffix {
+  color: #000;
+}
+@media screen and (max-width: 767px) and (min-width:300px) {
+  .re-assign-modal-footer {
+    display: block !important;
+    border-top: 0px solid #dee2e6 !important;
+    padding: 1.5rem !important;
+  }
+  .re-assign-modal-footer button {
+    width: 100%;
+  }
+  .re-assign-modal-footer > * {
+    margin: 0rem !important;
+  }
+  .re-assign-modal-body {
+    padding: 0 1.5rem !important;
+  }
+  .re-assign-checkbox-list-row-name, .re-assign-checkbox-list-row-caption {
+    font-size: 10px;
+  }
+  .re-assign-modal-prefix {
+    padding-right: 0px !important;
+  }
+  .re-assign-modal-dialog {
+    margin: 0px !important;
+    min-height: 100% !important;
+  }
+  .search-assign-box {
+    display: block;
+    margin-top: 1.5rem;
+  }
+  .search-assign-box .form-group {
+    width: 100%;
+  }
+  .search-assign-box .or-devider {
+    display: block;
+    text-align: center;
+    margin: 8px 16px !important;
+    font-weight: 500 !important;
+  }
+  .search-assign-box .reassign-to-me-btn {
+    width: 100%;
+  }
+  .date-picker-box .form-group {
+    width: 100%;
+  }
+}
+@media (min-width:767px) {
+  .re-assign-modal-footer {
+    justify-content: flex-start !important;
+    border-top: 0px solid #dee2e6 !important;
+  }
+} 
