@@ -92,7 +92,7 @@ div#navigationBar\ mobile-navigation-drower .taskList-mobile img {
   transition: 1s;
   background-color: rgba(0, 0, 0, 0.48);
 }
-@media (max-width: 959px) {
+@media (max-width: 991.98px) {
   div#navigationBar\ mobile-navigation-drower {
     margin: 0 43.6px 0 0px;
   }
