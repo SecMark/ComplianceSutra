@@ -2,11 +2,11 @@ export default {
   companyEntityId: "C",
   licenseEntityId: "L",
   historyEntityId: "H",
-  errMsg: {
-    errDueToGreaterDate:
+  errorMessage: {
+    errorDueToGreaterDate:
       "Date cannot be later than current date. Please change the selected date.",
-    errDueToRange:
+    errorDueToRange:
       "Range Cannot be more than 1 year. Please change the selected date.",
-    errDueToReverseDate: "Date should be after ",
+    errorDueToReverseDate: "Date should be after ",
   },
 };

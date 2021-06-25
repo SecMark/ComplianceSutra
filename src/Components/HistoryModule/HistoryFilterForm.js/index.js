@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
 import {
-  diffInDate,
+  differenceInDate,
   isSameOrAfterToday,
 } from "../../../CommonModules/sharedComponents/Datepicker/utils";
 import { actions as adminMenuActions } from "../../../CommonModules/SideBar/Redux/actions";
@@ -20,7 +20,7 @@ import MultiSelectCompanyDropdown from "../../../CommonModules/sharedComponents/
 import "./style.css";
 
 const HistoryFilterForm = (props) => {
-  const [timeDiff, setTimeDiff] = useState(0);
+  const [differenceInDays, setDifferenceInDays] = useState(0);
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
 
   const state = useSelector((state) => state);
@@ -38,7 +38,9 @@ const HistoryFilterForm = (props) => {
   }, [state.auth.loginInfo?.UserID]);
 
   useEffect(() => {
-    setTimeDiff(diffInDate(state.HistoryReducer.from, state.HistoryReducer.to));
+    setDifferenceInDays(
+      differenceInDate(state.HistoryReducer.from, state.HistoryReducer.to)
+    );
   }, [state.HistoryReducer.from, state.HistoryReducer.to]);
 
   useEffect(() => {
@@ -49,7 +51,7 @@ const HistoryFilterForm = (props) => {
       isSameOrAfterToday(state.HistoryReducer.from) &&
       state.HistoryReducer.to !== "" &&
       isSameOrAfterToday(state.HistoryReducer.to) &&
-      timeDiff <= 365
+      differenceInDays <= 365
     ) {
       setIsAllInputFilled(true);
     } else {
@@ -103,7 +105,7 @@ const HistoryFilterForm = (props) => {
   };
   return (
     <>
-      <div style={{ marginTop: "20px" }}>
+      <div className="spacing">
         <label htmlFor="from" className="mb-2">
           From:
         </label>
@@ -115,12 +117,12 @@ const HistoryFilterForm = (props) => {
         {isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
           !isSameOrAfterToday(state.HistoryReducer.from) && (
             <p style={{ color: "red", fontSize: "0.8rem" }}>
-              * <small>{constant.errMsg.errDueToGreaterDate}</small>
+              * <small>{constant.errorMessage.errorDueToGreaterDate}</small>
             </p>
           )}
       </div>
 
-      <div style={{ marginTop: "20px" }}>
+      <div className="spacing">
         <label htmlFor="to" className="mb-2">
           To:{" "}
         </label>
@@ -129,13 +131,23 @@ const HistoryFilterForm = (props) => {
           dispatch={actionDispatch}
           actionType="SELECT_TO_DATE"
         />
-        <p style={{ color: "red", fontSize: "0.8rem" }}>
-          {timeDiff > 365 && (
-            <small>{"* " + constant.errMsg.errDueToGreaterDate}</small>
+        <p className="warning">
+          {differenceInDays > 365 && (
+            <>
+              <small>
+                {"* " + constant.errorMessage.errorDueToGreaterDate}
+              </small>
+              <br />
+            </>
           )}
           {isSameOrAfterToday(state.HistoryReducer.to) !== undefined &&
             !isSameOrAfterToday(state.HistoryReducer.to) && (
-              <small>{"* " + constant.errMsg.errDueToGreaterDate}</small>
+              <>
+                <small>
+                  {"* " + constant.errorMessage.errorDueToGreaterDate}
+                </small>
+                <br />
+              </>
             )}
           {state.HistoryReducer.from.length !== 0 &&
             state.HistoryReducer.to.length !== 0 &&
@@ -156,7 +168,7 @@ const HistoryFilterForm = (props) => {
             ) && (
               <small>
                 {"* " +
-                  constant.errMsg.errDueToReverseDate +
+                  constant.errorMessage.errorDueToReverseDate +
                   moment(
                     state.HistoryReducer.from.join("-"),
                     "DD-MM-YYYY"
@@ -179,7 +191,7 @@ const HistoryFilterForm = (props) => {
         inputTitle="Select License"
         dispatch={actionDispatch}
       />
-      {isAllInputFilled && timeDiff < 365 ? (
+      {isAllInputFilled && differenceInDays < 365 ? (
         <button
           onClick={setFilterAndNavigateToHistoryList}
           className="filter-button-active"
