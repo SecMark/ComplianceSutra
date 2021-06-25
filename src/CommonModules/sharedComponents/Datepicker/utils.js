@@ -1,4 +1,5 @@
-const getDiffInDate = (a, b) => {
+import moment from "moment";
+const diffInDate = (a, b) => {
   if (a.length !== 0 && b.length !== 0) {
     const date1 = new Date(`${a[1]}/${a[0]}/${a[2]}`);
     const date2 = new Date(`${b[1]}/${b[0]}/${b[2]}`);
@@ -9,4 +10,12 @@ const getDiffInDate = (a, b) => {
   return 0;
 };
 
-export default getDiffInDate;
+const isSameOrAfterToday = (d) => {
+  const td = moment().format("YYYY-MM-DD");
+  if (d.length !== 0) {
+    const dt = moment(d.join("-"), "DD-MM-YYYY").format("YYYY-MM-DD");
+    return moment(td).isSameOrAfter(dt);
+  }
+};
+
+export { diffInDate, isSameOrAfterToday };

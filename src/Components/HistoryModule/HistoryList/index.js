@@ -158,7 +158,7 @@ const HistoryList = (props) => {
           <div className="d-block mobile-head">
             {showHB === false && (
               // <div className=" d-block d-sm-none pad-ms">
-              <div className="d-flex justify-content-between">
+              <div className="d-flex justify-content-between d-lg-none">
                 <div
                   className=""
                   style={{ cursor: "pointer" }}
@@ -299,7 +299,8 @@ const HistoryList = (props) => {
                 </button>
               </div>
               <div className="scroll-personal-grid d-md-block d-sm-block table-responsive mt-4">
-                {state.HistoryReducer.historyList.length !== 0 ? (
+                {/* {state.HistoryReducer.historyList.length !== 0 ? ( */}
+                {1 !== 0 ? (
                   <table className="table co-company-details-tbl table_legenda">
                     <thead>
                       <tr>
@@ -314,7 +315,7 @@ const HistoryList = (props) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {state.HistoryReducer.historyList.map((list) => (
+                      {/* {state.HistoryReducer.historyList.map((list) => (
                         <tr>
                           <td className="task-detail">
                             {moment(list.Completed).format("DD MMMM YYYY")}
@@ -364,7 +365,38 @@ const HistoryList = (props) => {
                             <img src={download} />
                           </td>
                         </tr>
-                      ))}
+                      ))} */}
+
+                      {/* --------|||| Table for testing ||||--------- */}
+                      <tr>
+                        <td className="task-detail">12 08 2001</td>
+                        <td className="task-name">
+                          Enhanced supervision reporting
+                        </td>
+                        <td className="task-detail">Google, Inc</td>
+                        <td>
+                          {" "}
+                          <div className="holding-list-bold-title-background">
+                            <span className="circle-dp">JM</span>{" "}
+                            <div className="nameCirle">Jatin Mehta</div>
+                          </div>
+                        </td>
+                        <td>
+                          {" "}
+                          <div className="holding-list-bold-title-background">
+                            <span className="circle-dp">AK</span>{" "}
+                            <div className="nameCirle"> Ashu Kumar</div>
+                          </div>
+                        </td>
+                        <td className="task-detail">12 08 2001</td>
+                        <td>
+                          <button className="on-time">On-Time</button>
+                        </td>
+                        <td align="left">
+                          <img src={download} />
+                        </td>
+                      </tr>
+                      {/* -------- Table for testing --------- */}
                     </tbody>
                   </table>
                 ) : (

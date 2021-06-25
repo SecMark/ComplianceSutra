@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Datepicker from "../../../CommonModules/sharedComponents/Datepicker"
-import diffInDate from "../../../CommonModules/sharedComponents/Datepicker/utils";
+import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
+import {
+  diffInDate,
+  isSameOrAfterToday,
+} from "../../../CommonModules/sharedComponents/Datepicker/utils";
 import { actions as adminMenuActions } from "../../../CommonModules/SideBar/Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -35,18 +38,18 @@ const HistoryFilterForm = (props) => {
   }, [state.auth.loginInfo?.UserID]);
 
   useEffect(() => {
-    setTimeDiff(
-      diffInDate(state.HistoryReducer.from, state.HistoryReducer.to)
-    );
-  }, [state.HistoryReducer]);
+    setTimeDiff(diffInDate(state.HistoryReducer.from, state.HistoryReducer.to));
+  }, [state.HistoryReducer.from, state.HistoryReducer.to]);
 
   useEffect(() => {
     if (
       state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
       state.HistoryReducer.numberOfSelectedLicense !== 0 &&
       state.HistoryReducer.from !== "" &&
-      state.HistoryReducer.to !== ""
-  
+      isSameOrAfterToday(state.HistoryReducer.from) &&
+      state.HistoryReducer.to !== "" &&
+      isSameOrAfterToday(state.HistoryReducer.to) &&
+      timeDiff <= 365
     ) {
       setIsAllInputFilled(true);
     } else {
@@ -67,37 +70,37 @@ const HistoryFilterForm = (props) => {
       state.HistoryReducer.from !== "" &&
       state.HistoryReducer.to !== ""
     ) {
-    const historyListPayload = {
-      entityid: constant.historyEntityId,
-      userID: state.auth.loginInfo?.UserID,
-      usertype: state.auth.loginInfo?.UserType,
+      const historyListPayload = {
+        entityid: constant.historyEntityId,
+        userID: state.auth.loginInfo?.UserID,
+        usertype: state.auth.loginInfo?.UserType,
 
-      entityList: state.HistoryReducer.companyList
-        .filter((company) => company.selected === true)
-        .map((company) => company.EntityGroupID)
-        .join(","),
+        entityList: state.HistoryReducer.companyList
+          .filter((company) => company.selected === true)
+          .map((company) => company.EntityGroupID)
+          .join(","),
 
-      licList: state.HistoryReducer.licenseList
-        .filter((list) => list.selected === true)
-        .map((list) => list.LicenseCode)
-        .join(","),
+        licList: state.HistoryReducer.licenseList
+          .filter((list) => list.selected === true)
+          .map((list) => list.LicenseCode)
+          .join(","),
 
-      startDate:
-        state.HistoryReducer.from &&
-        moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
-          "YYYY-MM-DD"
-        ),
-      endDate:
-        state.HistoryReducer.to &&
-        moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
-          "YYYY-MM-DD"
-        ),
-    };
-    actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
-    actionDispatch(getHistoryList(historyListPayload));
-    history.push("/compliance-history-list");  
-   }
-  }
+        startDate:
+          state.HistoryReducer.from &&
+          moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+        endDate:
+          state.HistoryReducer.to &&
+          moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+      };
+      actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
+      actionDispatch(getHistoryList(historyListPayload));
+      history.push("/compliance-history-list");
+    }
+  };
   return (
     <>
       <div style={{ marginTop: "20px" }}>
@@ -109,6 +112,12 @@ const HistoryFilterForm = (props) => {
           dispatch={actionDispatch}
           actionType="SELECT_FROM_DATE"
         />
+        {isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
+          !isSameOrAfterToday(state.HistoryReducer.from) && (
+            <p style={{ color: "red", fontSize: "0.8rem" }}>
+              * <small>{constant.errMsg.errDueToGreaterDate}</small>
+            </p>
+          )}
       </div>
 
       <div style={{ marginTop: "20px" }}>
@@ -120,11 +129,43 @@ const HistoryFilterForm = (props) => {
           dispatch={actionDispatch}
           actionType="SELECT_TO_DATE"
         />
+        <p style={{ color: "red", fontSize: "0.8rem" }}>
           {timeDiff > 365 && (
-            <span style={{ color: "red" }}>
-              Range Cannot be more than 1 year
-            </span>
+            <small>{"* " + constant.errMsg.errDueToGreaterDate}</small>
           )}
+          {isSameOrAfterToday(state.HistoryReducer.to) !== undefined &&
+            !isSameOrAfterToday(state.HistoryReducer.to) && (
+              <small>{"* " + constant.errMsg.errDueToGreaterDate}</small>
+            )}
+          {state.HistoryReducer.from.length !== 0 &&
+            state.HistoryReducer.to.length !== 0 &&
+            moment(
+              state.HistoryReducer.from[2] +
+                "-" +
+                state.HistoryReducer.from[1] +
+                "-" +
+                state.HistoryReducer.from[0] +
+                "-"
+            ).isAfter(
+              state.HistoryReducer.to[2] +
+                "-" +
+                state.HistoryReducer.to[1] +
+                "-" +
+                state.HistoryReducer.to[0] +
+                "-"
+            ) && (
+              <small>
+                {"* " +
+                  constant.errMsg.errDueToReverseDate +
+                  moment(
+                    state.HistoryReducer.from.join("-"),
+                    "DD-MM-YYYY"
+                  ).format("DD-MM-YYYY") +
+                  "."}
+              </small>
+            )}
+        </p>
+        {}
       </div>
       <MultiSelectCompanyDropdown
         options={state.HistoryReducer.companyList}
