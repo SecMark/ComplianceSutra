@@ -9,6 +9,9 @@ import sidebarRightActive from "../../../assets/Icons/task_alt_black_24dp (1).pn
 import dashboardBlackActive from "../../../assets/Icons/dashboard_black.png";
 import dashboardGreyActive from "../../../assets/Icons/dashboard_grey.png";
 
+import helpsupportInactive from '../../../assets/Icons/helpsupport_inactive.png';
+import helpsupportActive from '../../../assets/Icons/helpsupport_inactive.png';
+
 import historyListActive from "../../../assets/Icons/history_active.png";
 import historyListInActive from "../../../assets/Icons/history_unactive.png";
 
@@ -28,7 +31,7 @@ import { actions as loginActions } from "../../../Components/Authectication/redu
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
-  
+
   const dispatch = useDispatch();
 
   const [openProfile, setOpenProfile] = useState(false);
@@ -60,6 +63,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/compliance-history");
     } else if (currentActiveMenu === "complianceHistoryList") {
       history.push("/compliance-history-list");
+    } else if (currentActiveMenu === "helpsupport") {
+      history.push("/compliance-helpsupport");
     }
   };
 
@@ -80,8 +85,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           <div
             className={
               !openProfile &&
-              state &&
-              state.adminMenu.currentMenu === "complianceHistory"
+                state &&
+                state.adminMenu.currentMenu === "complianceHistory"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
@@ -92,8 +97,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               onClick={() => onMenuClick("complianceHistory")}
               src={
                 !openProfile &&
-                state &&
-                state.adminMenu.currentMenu === "complianceHistory"
+                  state &&
+                  state.adminMenu.currentMenu === "complianceHistory"
                   ? dashboardBlackActive
                   : dashboardGreyActive
               }
@@ -104,8 +109,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           <div
             className={
               !openProfile &&
-              state &&
-              state.adminMenu.currentMenu === "taskList"
+                state &&
+                state.adminMenu.currentMenu === "taskList"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
@@ -116,8 +121,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               onClick={() => onMenuClick("taskList")}
               src={
                 !openProfile &&
-                state &&
-                state.adminMenu.currentMenu === "taskList"
+                  state &&
+                  state.adminMenu.currentMenu === "taskList"
                   ? sidebarActive
                   : sidebarRightActive
               }
@@ -127,8 +132,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           <div
             className={
               !openProfile &&
-              state &&
-              state.adminMenu.currentMenu === "notfications"
+                state &&
+                state.adminMenu.currentMenu === "notfications"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
@@ -139,8 +144,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               onClick={() => onMenuClick("notfications")}
               src={
                 !openProfile &&
-                state &&
-                state.adminMenu.currentMenu === "notfications"
+                  state &&
+                  state.adminMenu.currentMenu === "notfications"
                   ? sidebarBellActive
                   : sidebarBell
               }
@@ -151,8 +156,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           <div
             className={
               !openProfile &&
-              state &&
-              state.adminMenu.currentMenu === "complianceHistoryList"
+                state &&
+                state.adminMenu.currentMenu === "complianceHistoryList"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
@@ -163,8 +168,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               onClick={() => onMenuClick("complianceHistoryList")}
               src={
                 !openProfile &&
-                state &&
-                state.adminMenu.currentMenu === "complianceHistoryList"
+                  state &&
+                  state.adminMenu.currentMenu === "complianceHistoryList"
                   ? historyListActive
                   : historyListInActive
               }
@@ -174,11 +179,12 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
         </div>
         <div className="devider-line"></div>
         <div className="second-icon-list">
+
           <div
             className={
               !openProfile &&
-              state &&
-              state.adminMenu.currentMenu === "settings"
+                state &&
+                state.adminMenu.currentMenu === "settings"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
@@ -189,10 +195,33 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               onClick={() => onMenuClick("settings")}
               src={
                 !openProfile &&
-                state &&
-                state.adminMenu.currentMenu === "settings"
+                  state &&
+                  state.adminMenu.currentMenu === "settings"
                   ? settingActive
                   : sidebarSettingIcon
+              }
+              alt="sidebar Setting Icon"
+            />
+          </div>
+          <div
+            className={
+              !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "helpsupport"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="Help and Support"
+              onClick={() => onMenuClick("helpsupport")}
+              src={
+                !openProfile &&
+                  state &&
+                  state.adminMenu.currentMenu === "helpsupport"
+                  ? helpsupportActive
+                  : helpsupportInactive
               }
               alt="sidebar Setting Icon"
             />

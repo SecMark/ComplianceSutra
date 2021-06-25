@@ -5,6 +5,8 @@ import sideBarlogo from "../../../../../assets/Icons/sideBarlogo.png";
 import SideBaruser from "../../../../../assets/Icons/sideBaruser.png";
 import dashboardBlackActive from "../../../../../assets/Icons/dashboard_black.png";
 import dashboardGreyActive from "../../../../../assets/Icons/dashboard_grey.png";
+import helpsupportInactive from '../../../../../assets/Icons/helpsupport_inactive.png';
+import helpsupportActive from '../../../../../assets/Icons/helpsupport_inactive.png';
 import taskIcon from "../../../../../assets/Icons/taskIcon.png";
 import btnicon from "../../../../../assets/Icons/btn-icon.png";
 import siderBarbtnArrow from "../../../../../assets/Icons/siderBarbtnArrow.png";
@@ -66,157 +68,184 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/settings");
     } else if (currentActiveMenu === "complianceHistory") {
       history.push("/compliance-history");
-    }
-  };
+    } else if (currentActiveMenu === "helpsupport") {
+    history.push("/compliance-helpsupport");
+  }
+};
 
-  const onEditProfileClick = () => {
-    dispatch(adminMenuActions.setCurrentMenu("settings"));
-    dispatch(adminMenuActions.setActiveTabInSetting("personal"));
-    setOpenProfile(false);
-    history.push("/settings");
-  };
+const onEditProfileClick = () => {
+  dispatch(adminMenuActions.setCurrentMenu("settings"));
+  dispatch(adminMenuActions.setActiveTabInSetting("personal"));
+  setOpenProfile(false);
+  history.push("/settings");
+};
 
-  return (
-    <div className="side-bar">
-      <div className="left-bar">
-        <div className="logo">
-          <img src={sideBarlogo} alt="sideBarlogo" />
-        </div>
-        <div className="first-icon-list">
-          <div
-            className={
-              !openProfile &&
+return (
+  <div className="side-bar">
+    <div className="left-bar">
+      <div className="logo">
+        <img src={sideBarlogo} alt="sideBarlogo" />
+      </div>
+
+      <div className="first-icon-list">
+        <div
+          className={
+            !openProfile &&
               state &&
               state.adminMenu.currentMenu === "complianceHistory"
-                ? "taskIcon-active"
-                : "taskIcon"
-            }
-          >
-            <img
-              style={{ cursor: "pointer" }}
-              title="Tasks"
-              onClick={() => onMenuClick("complianceHistory")}
-              src={
-                !openProfile &&
+              ? "taskIcon-active"
+              : "taskIcon"
+          }
+        >
+          <img
+            style={{ cursor: "pointer" }}
+            title="Tasks"
+            onClick={() => onMenuClick("complianceHistory")}
+            src={
+              !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "complianceHistory"
-                  ? dashboardBlackActive
-                  : dashboardGreyActive
-              }
-              alt="sidebar Active"
-            />
-          </div>
-          <div
-            className={
-              !openProfile &&
+                ? dashboardBlackActive
+                : dashboardGreyActive
+            }
+            alt="sidebar Active"
+          />
+        </div>
+        <div
+          className={
+            !openProfile &&
               state &&
               state.adminMenu.currentMenu === "taskList"
-                ? "taskIcon-active"
-                : "taskIcon"
-            }
-          >
-            <img
-              style={{ cursor: "pointer" }}
-              title="Tasks"
-              onClick={() => onMenuClick("taskList")}
-              src={
-                !openProfile &&
+              ? "taskIcon-active"
+              : "taskIcon"
+          }
+        >
+          <img
+            style={{ cursor: "pointer" }}
+            title="Tasks"
+            onClick={() => onMenuClick("taskList")}
+            src={
+              !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "taskList"
-                  ? sidebarActive
-                  : sidebarRightActive
-              }
-              alt="sidebar Active"
-            />
-          </div>
-          <div
-            className={
-              !openProfile &&
+                ? sidebarActive
+                : sidebarRightActive
+            }
+            alt="sidebar Active"
+          />
+        </div>
+        <div
+          className={
+            !openProfile &&
               state &&
               state.adminMenu.currentMenu === "notfications"
-                ? "taskIcon-active"
-                : "taskIcon"
-            }
-          >
-            <img
-              style={{ cursor: "pointer" }}
-              title="Notfications"
-              onClick={() => onMenuClick("notfications")}
-              src={
-                !openProfile &&
+              ? "taskIcon-active"
+              : "taskIcon"
+          }
+        >
+          <img
+            style={{ cursor: "pointer" }}
+            title="Notfications"
+            onClick={() => onMenuClick("notfications")}
+            src={
+              !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "notfications"
-                  ? sidebarBellActive
-                  : sidebarBell
-              }
-              alt="sidebar Bell"
-            />
-          </div>
+                ? sidebarBellActive
+                : sidebarBell
+            }
+            alt="sidebar Bell"
+          />
         </div>
-        <div className="devider-line"></div>
-        <div className="second-icon-list">
-          <div
-            className={
-              !openProfile &&
+      </div>
+      <div className="devider-line"></div>
+      <div className="second-icon-list">
+        <div
+          className={
+            !openProfile &&
               state &&
               state.adminMenu.currentMenu === "settings"
-                ? "taskIcon-active"
-                : "taskIcon"
-            }
-          >
-            <img
-              style={{ cursor: "pointer" }}
-              title="Settings"
-              onClick={() => onMenuClick("settings")}
-              src={
-                !openProfile &&
+              ? "taskIcon-active"
+              : "taskIcon"
+          }
+        >
+          <img
+            style={{ cursor: "pointer" }}
+            title="Settings"
+            onClick={() => onMenuClick("settings")}
+            src={
+              !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "settings"
-                  ? settingActive
-                  : sidebarSettingIcon
-              }
-              alt="sidebar Setting Icon"
-            />
-          </div>
-          <div className={openProfile ? "taskIcon-active" : "taskIcon"}>
-            <img
-              style={{ cursor: "pointer" }}
-              title="Profile"
-              onClick={() => setOpenProfile(true)}
-              src={openProfile ? userActive : SideBaruser}
-              alt="sidbar User"
-            />
-            {openProfile && (
-              <div ref={openProfileRef} className="edit-link">
-                <div className="edit-option-box">
-                  <div
-                    onClick={() => onEditProfileClick()}
-                    style={{ cursor: "pointer" }}
-                    className="edit-label-option"
-                  >
-                    <img src={editpen} alt="edit" /> Edit Profile
-                  </div>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    onClick={() => onLogoutClick()}
-                    className="logout-label-option border-0"
-                  >
-                    <img src={LogoutIcon} alt="logout Icon" /> Logout
-                  </div>
+                ? settingActive
+                : sidebarSettingIcon
+            }
+            alt="sidebar Setting Icon"
+          />
+        </div>
+        <div
+          className={
+            !openProfile &&
+              state &&
+              state.adminMenu.currentMenu === "helpsupport"
+              ? "taskIcon-active"
+              : "taskIcon"
+          }
+        >
+          <img
+            style={{ cursor: "pointer" }}
+            title="Help and Support"
+            onClick={() => onMenuClick("helpsupport")}
+            src={
+              !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "helpsupport"
+                ? helpsupportActive
+                : helpsupportInactive
+            }
+            alt="sidebar Setting Icon"
+          />
+        </div>
+        <div className={openProfile ? "taskIcon-active" : "taskIcon"}>
+          <img
+            style={{ cursor: "pointer" }}
+            title="Profile"
+            onClick={() => setOpenProfile(true)}
+            src={openProfile ? userActive : SideBaruser}
+            alt="sidbar User"
+          />
+
+          {openProfile && (
+            <div ref={openProfileRef} className="edit-link">
+              <div className="edit-option-box">
+                <div
+                  onClick={() => onEditProfileClick()}
+                  style={{ cursor: "pointer" }}
+                  className="edit-label-option"
+                >
+                  <img src={editpen} alt="edit" /> Edit Profile
+                </div>
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => onLogoutClick()}
+                  className="logout-label-option border-0"
+                >
+                  <img src={LogoutIcon} alt="logout Icon" /> Logout
                 </div>
               </div>
-            )}
-          </div>
-          {/* <div className="taskIcon">
+            </div>
+          )}
+        </div>
+        {/* <div className="taskIcon">
             <img src={taskIcon} alt="taskIcon" />
           </div> */}
-        </div>
-        {/* <div className="user">
+      </div>
+      {/* <div className="user">
           <img src={SideBaruser} alt="SideBaruser" />
         </div> */}
-      </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default withRouter(LeftSideBar);

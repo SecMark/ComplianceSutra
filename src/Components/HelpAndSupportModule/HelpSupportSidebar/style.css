@@ -1,0 +1,196 @@
+.helpsupport-side-bar {
+    padding: 35px 0px;
+    width: 100%;
+    background-color: #ffffff;
+    /* 
+    width: 1366px;
+    height: 768px;
+    */
+}
+
+.modalstitle {
+    height: 33px !important;
+    font-family: Poppins, medium !important;
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    font-stretch: normal !important;
+    font-style: normal !important;
+    line-height: 1.33 !important;
+    letter-spacing: normal !important;
+    text-align: left !important;
+    color: #2c2738 !important;
+}
+
+.arrowIcon {
+    position: relative;
+    height: 16px;
+    margin: 0 0 0 14px;
+    padding: 4px 5.3px 4px 5.7px;
+}
+.getintouch {
+    width: 30px;
+    height: 30px;
+    background-color: #6c5dd3;
+    float: right;
+    color: white;
+    text-align: center;
+    font-size: 1.8em !important;
+    border-radius: 5em;
+    line-height: 1.3em;
+    cursor: pointer;
+}
+
+.helpsupport-side-bar .log-out {
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #ef5d5d;
+    position: absolute;
+    bottom: 10px;
+    padding: 0px 20px;
+}
+.helpsupport-side-bar .log-out img {
+    margin-right: 10px;
+}
+.helpsupport-side-bar .helpsupport-title {
+    /* font-family: Poppins;
+    font-size: 24px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0.01px;
+    text-align: left;
+    color: #2c2738;
+    padding: 0px 20px; */
+    font-family: Poppins;
+    font-size: 24px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0.01px;
+    text-align: left;
+    color: #2c2738;
+}
+.helptsupport-cotitle {
+    opacity: 0.5;
+    font-family: Poppins, medium;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #2c2738;
+}
+.helptsupport_menu-items {
+    margin-top: 40px;
+}
+
+.helptsupport_menu-items ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+.helptsupport_menu-items ul li {
+    /* padding: 18px 20px; */
+    border-top: 1px solid #eee8fc;
+    cursor: pointer;
+    border-right: 3px solid transparent;
+
+    margin: 8px 0;
+    padding: 19px 10px;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px 0 rgba(176, 176, 176, 0.16);
+    background-color: #ffffff;
+}
+.active-class {
+    border-right: 3px solid #7a73ff !important;
+    background-color: #efeeff;
+    color: #6c5dd3;
+}
+
+.helptsupport_menu-items ul li:last-child {
+    border-bottom: 1px solid #eee8fc;
+}
+.helptsupport_menu-items ul li span {
+    /* opacity: 0.5;
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #1b1d21; */
+
+    width: 274px;
+    height: 15px;
+    margin: 1px 14px 0 0;
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #2c2738;
+}
+.get-main-helpsupportCo {
+    padding-bottom: 60px;
+    position: relative;
+    height: 93vh;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.get-main-helpsupportCo .bottom-logo-strip-helpsupportCo {
+    position: absolute;
+    bottom: 20px;
+    max-width: 83%;
+    width: 100%;
+}
+
+.helpsupport-side-bar .mobile-top-pyd-helpsupport {
+    padding: 34px 20px 32px;
+}
+
+@media screen and (max-width: 767px) {
+    .right-bg {
+        display: none;
+    }
+    .get-main-helpsupportCo .menu-items ul li {
+        padding: 18px 0px;
+        border-top: 1px solid #eee8fc;
+        cursor: pointer;
+        border-right: 3px solid transparent;
+        margin: 0px 20px;
+    }
+    .un-active-class {
+        border-right: none !important;
+        background-color: transparent !important;
+        /* color: #6c5dd3 ; */
+    }
+    .get-main-helpsupportCo {
+        padding-bottom: 60px;
+        position: relative;
+        height: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    /* div#navigationBar\ mobile-navigation-drower{
+        margin: 0 43.6px 0 20px;
+  } */
+    .helpsupport-side-bar {
+        padding: 0px 15px;
+    }
+}

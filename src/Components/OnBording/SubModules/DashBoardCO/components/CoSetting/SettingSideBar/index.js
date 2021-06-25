@@ -19,28 +19,28 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
   const userDetails = state && state.auth && state.auth.loginInfo
 
   const onLogoutClick = () => {
-        dispatch(loginActions.createLogoutAction())
-        history.push("/login")
+    dispatch(loginActions.createLogoutAction())
+    history.push("/login")
+  }
+  const closeMobileSidebar = () => {
+    setNavigationHideShow(false)
+    const drawerParent = document.getElementById("sideBarParent");
+    const drawerChild = document.getElementById("sideBarChild");
+    // if (drawerParent) {
+    //     drawerParent.classList.remove("overlay");
+    //     drawerChild.style.left = "-100%";
+    // }
+  }
+  const openHBMenu = () => {
+    const drawerParent = document.getElementById("sideBarParent");
+    const drawerChild = document.getElementById("sideBarChild");
+    console.log(drawerParent, "drawerParent")
+    if (drawerParent) {
+      drawerParent.classList.add("overlay");
+      drawerChild.style.left = "0%";
     }
-    const closeMobileSidebar = () => {
-        setNavigationHideShow(false)
-        const drawerParent = document.getElementById("sideBarParent");
-        const drawerChild = document.getElementById("sideBarChild");
-        // if (drawerParent) {
-        //     drawerParent.classList.remove("overlay");
-        //     drawerChild.style.left = "-100%";
-        // }
-    }
-    const openHBMenu = () => {
-        const drawerParent = document.getElementById("sideBarParent");
-        const drawerChild = document.getElementById("sideBarChild");
-        console.log(drawerParent,"drawerParent")
-        if (drawerParent) {
-            drawerParent.classList.add("overlay");
-            drawerChild.style.left = "0%";
-        }
-        //  setNavigationHideShow(!navigationHideShow)
-    }
+    //  setNavigationHideShow(!navigationHideShow)
+  }
 
   const tabChange = (index) => {
     handleTabChange(index)
@@ -60,21 +60,21 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
     } else {
     }
   }
-    return (
-        <div className="setting-side-bar">
-            {isMobile && <div id="sideBarParent" className="">
-                <div id="sideBarChild" className="leftSideBarFixed">
-                    <MobileLeftSidebar className="d-block d-sm-none" close={() => closeMobileSidebar()} />
-                </div>
-            </div>}
-            {/* <div className="mobile-head-setting mobile-top-pyd-setting d-block d-sm-none">
+  return (
+    <div className="setting-side-bar">
+      {isMobile && <div id="sideBarParent" className="">
+        <div id="sideBarChild" className="leftSideBarFixed">
+          <MobileLeftSidebar className="d-block d-sm-none" close={() => closeMobileSidebar()} />
+        </div>
+      </div>}
+      {/* <div className="mobile-head-setting mobile-top-pyd-setting d-block d-sm-none">
                
             </div> */}
       <div className="get-main-settingCo">
         <p className="setting-title">Settings</p>
         <div className="menu-items">
           {(userDetails && userDetails.UserType == 4) ||
-          userDetails.UserType == 5 ? (
+            userDetails.UserType == 5 ? (
             <ul>
               <li
                 onClick={() => tabChange(0)}

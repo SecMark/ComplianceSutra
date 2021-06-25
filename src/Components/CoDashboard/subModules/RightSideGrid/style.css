@@ -5,6 +5,7 @@
   border-radius: 36px;
   box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
   background-color: #ffffff;
+  z-index: 2000 !important;
 }
 .all-companies-task-grid .take-action {
   margin-bottom: 34px;

@@ -576,6 +576,9 @@ function Governance({ history }) {
                   onChange={(e) => {
                     handleAssignTaskEmail(e, index, item)
                   }}
+                  onKeyPress={(e) => {
+                    
+                  }}
                   value={item && item[index] && item[index].email}
                 />
                 {assignTaskEmail &&

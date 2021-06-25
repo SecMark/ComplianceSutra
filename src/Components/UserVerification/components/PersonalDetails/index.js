@@ -56,7 +56,7 @@ function PersonalDetails({ history }) {
     }
     if (name === "countryCode") {
       const re = /[\d\+]+/;
-    
+
       if (event.target.value && !re.test(event.target.value)) {
         return "";
       }
@@ -199,7 +199,7 @@ function PersonalDetails({ history }) {
     }
 
   };
-    
+
 
   const validateCountryCode = (e) => {
     let strr = e.target.value;
@@ -231,6 +231,33 @@ function PersonalDetails({ history }) {
         }
       });
   }
+
+
+  const validateMobileNumber = (e) => {
+    var countrycode = values.countryCode.replace("+", "")
+    let payload =
+    {
+      loginID: e.target.value,
+      loginty: "AdminMobile",
+      countrycode: countrycode
+    }
+    api
+      .post("/api/availabilityCheck", payload)
+      .then(function (response) {
+        if (response && response.data && response.data.Status === "True") {
+          let inputKey = "mobileNumErr"
+          setErrors({ ...errors, [inputKey]: "true" })
+        }
+        else {
+          let inputKey = "mobileNumErr"
+          setErrors({ ...errors, [inputKey]: "false" })
+        }
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+
   return (
     <div className="row">
       <div className="col-3 col-sm-4 col-md-4 col-xl-3 left-fixed">
@@ -253,8 +280,8 @@ function PersonalDetails({ history }) {
                   <div className="col-lg-12">
                     <div className="header_logo">
                       {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                        <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
-                        <span className="camp">COMPLIANCE SUTRA</span>
+                      <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
+                      <span className="camp">COMPLIANCE SUTRA</span>
                       {/* </a> */}
                     </div>
                   </div>
@@ -315,6 +342,7 @@ function PersonalDetails({ history }) {
                               type="text"
                               className={
                                 "form-control " +
+                                (errors.mobileNumErr == "true" ? 'invalid-plus-pin' : '') +
                                 (
                                   values.mobileNumber !== "" &&
                                     values.mobileNumber.length < 10 ?
@@ -333,6 +361,7 @@ function PersonalDetails({ history }) {
                               value={values.mobileNumber}
                               onChange={onChangeHandler("mobileNumber")}
                               onKeyPress={(e) => handleKeyDown(e)}
+                              onBlur={(e) => validateMobileNumber(e)}
                             />
 
                           </div>
@@ -344,6 +373,11 @@ function PersonalDetails({ history }) {
                           </p>
                         )
                       } */}
+                          {errors.mobileNumErr == "true" && (
+                            <p className="input-error-message">
+                              Mobile number already Registered
+                            </p>
+                          )}
                           {
                             values.countryCode !== "" &&
                             errors.countryCodeErr === "true" && (
@@ -457,19 +491,19 @@ function PersonalDetails({ history }) {
                           )}
                           {values.password !== "" && errors && errors.passwordErr !== "" && <p className="input-error-message">
                             Password is invalid
-                </p>}
+                          </p>}
 
-                          <ul className="Instruction" style={{marginTop:30}}>
+                          <ul className="Instruction" style={{ marginTop: 30 }}>
                             <li>
                               <div className={passwordState.minlength === false ? "error" : "green-dot"} ></div>At least 8-16 characters—the more characters, the better
-                    </li>
+                            </li>
                             <li>
                               <div className={passwordState.uppercaseandlowercase === false ? "error" : "green-dot"}></div>A mixture of both uppercase and lowercase
-                      letters
-                    </li>
+                              letters
+                            </li>
                             <li>
                               <div className={passwordState.alphabetsandigit === false ? "error" : "green-dot"}></div>A mixture of letters and numbers
-                    </li>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -479,7 +513,7 @@ function PersonalDetails({ history }) {
                           <input
                             type="password"
                             className={
-                              "form-control " + (values.password !== values.confirmPassword && " input-error ") + 
+                              "form-control " + (values.password !== values.confirmPassword && " input-error ") +
                               ((isValidate && values.confirmPassword === "") ||
                                 (
                                   values.confirmPassword !== "" &&
@@ -487,7 +521,7 @@ function PersonalDetails({ history }) {
                                 ? "input-error"
                                 : "") + "" + (values.confirmPassword !== "" ? " input-not-blank" : " ")
                               + (values.confirmPassword !== "" && errors.confirmPassword === " password-success" ? " " : " ") +
-                              (values.confirmPassword  && values.password && values.confirmPassword === values.password ? " password-success" : "")
+                              (values.confirmPassword && values.password && values.confirmPassword === values.password ? " password-success" : "")
 
                             }
                             id="ConfirmPassword"
@@ -499,7 +533,7 @@ function PersonalDetails({ history }) {
                           />
                           {values.confirmPassword !== "" && errors && errors.confirmPasswordErr !== "" && <p className="input-error-message">
                             Confirm password is invalid
-                </p>}
+                          </p>}
                           {isValidate && values.confirmPassword === "" && (
                             <p className="input-error-message">
                               Please enter confirm password
@@ -726,8 +760,8 @@ function PersonalDetails({ history }) {
                   </div>
                   <div className="col-6 text-right d-none d-sm-block">
                     {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                      <span className="powerBy">Powered by</span>
-                      <img className="header_logo footer-logo-secmark" src={secmark} alt="SECMARK" title="SECMARK" />
+                    <span className="powerBy">Powered by</span>
+                    <img className="header_logo footer-logo-secmark" src={secmark} alt="SECMARK" title="SECMARK" />
                     {/* </a> */}
                   </div>
                 </div>
