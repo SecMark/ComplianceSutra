@@ -134,9 +134,7 @@ const HistoryFilterForm = (props) => {
         <p className="warning">
           {differenceInDays > 365 && (
             <>
-              <small>
-                {"* " + constant.errorMessage.errorDueToGreaterDate}
-              </small>
+              <small>{"* " + constant.errorMessage.errorDueToRange}</small>
               <br />
             </>
           )}
