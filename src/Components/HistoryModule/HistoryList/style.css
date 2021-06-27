@@ -218,7 +218,14 @@
 .filter-popup-mobile {
   height: 80vh;
 }
-
+.filter-wrapper-mobile {
+  height: 60vh;
+  overflow-y: auto;
+}
+.filter-wrapper-desktop {
+  height: 70vh;
+  overflow-y: auto;
+}
 @media (max-width: 575.98px) {
   .filter-popup-mobile--wrapper {
     width: 90%;

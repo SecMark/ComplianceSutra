@@ -99,7 +99,9 @@ const HistoryList = (props) => {
                 />
                 <div className="filter-popup-mobile--wrapper">
                   <h2 style={{ marginBottom: "3rem" }}>Fiters</h2>
-                  <HistoryFilterForm />
+                  <div className="filter-wrapper-mobile">
+                    <HistoryFilterForm />
+                  </div>
                 </div>
               </div>
             </div>
@@ -281,7 +283,9 @@ const HistoryList = (props) => {
                 />
                 <h3 style={{ marginBottom: "0px" }}>Filters</h3>
               </div>
-              <HistoryFilterForm />
+              <div className="filter-wrapper-desktop">
+                <HistoryFilterForm />
+              </div>
             </div>
           </div>
           <div className="history-container">
