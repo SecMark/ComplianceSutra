@@ -35,16 +35,11 @@ const NewRegulationDetail = ({
             </div>
             <div className="SidebarContent">
               <h1> {detail?.Title}</h1>
-              <span>
-                NISM through its website has informed that it has extended the
-                validity of certificates of all those NISM certificate holders
-                who could not appear or attend or enroll for certification
-                examinations or CPE / eCPE programmes and as such, could not
-                renew / are not in a position to renew their certificates,
-                during of March 15, 2020 to June 30, 2021 till July 1, 2021, (or
-                any time period based on future developments / the Government
-                directions). For more information click on the below link:
-              </span>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: detail?.Gist,
+                }}
+              ></span>
             </div>
           </div>
 

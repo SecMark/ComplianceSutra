@@ -6,7 +6,6 @@ import filterImage from "../../../assets/Icons/filter_background.png";
 import { withRouter } from "react-router";
 import { ImSearch } from "react-icons/im";
 
-import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getUpdates } from "../redux/actions";
 import Loading from "../../../CommonModules/sharedComponents/Loader";
@@ -17,6 +16,9 @@ import NewRegulationFilter from "../NewRegulationFilter";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
 import NewRegulationSearchResult from "../NewRegulationSearchResult";
 
+import "./style.css";
+import NewRegulationSearchBadge from "../NewRegulationSearchBadge";
+
 const NewRegulations = (props) => {
   const [isShowFilter, setIsShowFilter] = useState(false);
   const [isShowRegulationDetail, setIsShowRegulationDetail] = useState(false);
@@ -24,7 +26,8 @@ const NewRegulations = (props) => {
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const { isSuccess, isLoading, updateList } = state.UpdatesReducer;
+  const { isSuccess, isLoading, updateList, isFilterApplied, isSearch } =
+    state.UpdatesReducer;
 
   useEffect(() => {
     const payload = { UserID: state.auth.loginInfo?.UserID };
@@ -109,6 +112,7 @@ const NewRegulations = (props) => {
         changeShowRegulationDetail={changeShowRegulationDetail}
         newRegulationDetail={newRegulationDetail}
       />
+
       <LeftSideBar />
       <div className="new-regulation-container">
         <div className="row">
@@ -134,76 +138,19 @@ const NewRegulations = (props) => {
                 />
               </div>
             </div>
+            {isFilterApplied && <NewRegulationSearchBadge />}
 
-            {/* <div className="BadgesWrapper">
-              <div className="BadgesDiv">
-                <span>Stock Broking</span>
-                <div className="CloseBadge">
-                  <GrFormClose />
-                </div>
-              </div>
-              <div className="BadgesDiv">
-                <span>Stock Broking</span>
-                <div className="CloseBadge">
-                  <GrFormClose />
-                </div>
-              </div>
-              <div className="BadgesDiv">
-                <span>Stock Broking</span>
-                <div className="CloseBadge">
-                  <GrFormClose />
-                </div>
-              </div>
-              <div className="BadgesDiv">
-                <span>Stock Broking</span>
-                <div className="CloseBadge">
-                  <GrFormClose />
-                </div>
-              </div>
-              <div className="BadgesDiv">
-                <span>Stock Broking</span>
-                <div className="CloseBadge">
-                  <GrFormClose />
-                </div>
-              </div>
-              <div className="BadgesDiv">
-                <span>Stock Broking</span>
-                <div className="CloseBadge">
-                  <GrFormClose />
-                </div>
-              </div>
-              <div className="BadgesDiv">
-                <span>Stock Broking</span>
-                <div className="CloseBadge">
-                  <GrFormClose />
-                </div>
-              </div>
-              <div className="BadgesDiv">
-                <span>Stock Broking</span>
-                <div className="CloseBadge">
-                  <GrFormClose />
-                </div>
-              </div>
-              <div className="BadgesDiv">
-                <span>Reset all</span>
-                <div className="CloseBadge">
-                  <GrFormClose />
-                </div>
-              </div>
-            </div>
-             */}
-
-            <NewRegulationSearchResult />
+            {isSearch && <NewRegulationSearchResult />}
 
             <div>
               {isLoading ? (
                 <Loading />
               ) : (
                 <div className="title">
-                  {updateList.length === 0 ? (
+                  {updateList?.length === 0 ? (
                     <NoResultFound text="No detail found" />
                   ) : (
-                    updateList.map((updates) => (
+                    updateList?.map((updates) => (
                       <div className="list">
                         <h2
                           className="new-regulation-title"
@@ -214,10 +161,7 @@ const NewRegulations = (props) => {
                           {updates.Title}
                         </h2>
                         <div className="description">
-                          <p className="description-text">
-                            SEBI has issued revised guidelines on Settlement of
-                            Running Trading...
-                          </p>
+                          <p className="description-text">{updates.Gist}</p>
                           <span className="date">
                             {moment(updates.Submissiondate).format("Do MMM")}
                           </span>

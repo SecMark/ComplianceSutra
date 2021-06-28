@@ -4,6 +4,7 @@ import { DatePicker } from "antd";
 import "./style.css";
 
 const Datepicker = ({ name, picker, dispatch, actionType, pageName }) => {
+  
   const onChangeHandler = (date, dateString) => {
     const months = date?._locale?._months;
     const dateArr = dateString.split(" ").map((n, index) => {
@@ -14,6 +15,7 @@ const Datepicker = ({ name, picker, dispatch, actionType, pageName }) => {
       }
     });
     dispatch({ type: actionType, payload: dateArr });
+    console.log("hello there");
   };
   return (
     <div className="form-group">
