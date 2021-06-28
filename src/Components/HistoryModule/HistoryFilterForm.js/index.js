@@ -40,7 +40,7 @@ const HistoryFilterForm = (props) => {
   useEffect(() => {
     if (state.HistoryReducer.companyList.length !== 0) {
       const priorDates = state.HistoryReducer.companyList.map((item) =>
-        moment(item.EndDate).format("DD-MM-YYYY")
+        moment(item.EndDate).format("YYYY-MM-DD")
       );
       const priorDate = priorDates.reduce((prev, curr) => {
         if (moment(prev).isAfter(curr)) {
@@ -59,15 +59,19 @@ const HistoryFilterForm = (props) => {
 
   useEffect(() => {
     if (
-      state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
-      state.HistoryReducer.numberOfSelectedLicense !== 0 &&
-      state.HistoryReducer.from !== "" &&
-      isSameOrAfterToday(state.HistoryReducer.from) &&
-      state.HistoryReducer.to !== "" &&
-      isSameOrAfterToday(state.HistoryReducer.to) &&
-      differenceInDays <= 365 &&
-      priorDate !== "" &&
-      moment(state.HistoryReducer.from.join("-")).isAfter(priorDate)
+      state.HistoryReducer.numberOfSelectedCompanies !== 0 ||
+      state.HistoryReducer.numberOfSelectedLicense !== 0 ||
+      (state.HistoryReducer.from !== "" &&
+        isSameOrAfterToday(state.HistoryReducer.from) &&
+        state.HistoryReducer.to !== "" &&
+        isSameOrAfterToday(state.HistoryReducer.to) &&
+        differenceInDays <= 365 &&
+        priorDate !== "" &&
+        moment(
+          moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+            "YYYY-MM-DD"
+          )
+        ).isSameOrAfter(priorDate))
     ) {
       setIsAllInputFilled(true);
     } else {
@@ -139,7 +143,11 @@ const HistoryFilterForm = (props) => {
             )}
           {priorDate !== "" &&
             state.HistoryReducer.from.length !== 0 &&
-            moment(state.HistoryReducer.from.join("-")).isBefore(priorDate) && (
+            moment(
+              moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+                "YYYY-MM-DD"
+              )
+            ).isBefore(priorDate) && (
               <small>{"* " + constant.errorMessage.errorDueToPriorDate}</small>
             )}
         </p>
