@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import AppRouter from "./router";
 import { useDispatch, useSelector } from "react-redux";
-import { createHashHistory } from 'history';
+import { createHashHistory } from "history";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import api from "../src/apiServices"
+import api from "../src/apiServices";
+import Terms from "./Components/Terms&Conditions/Terms";
 import CoSetting from "./Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
 function App() {
   return <MainApp />;
@@ -13,33 +14,32 @@ function App() {
 function MainApp() {
   // eslint-disable-next-line
   const state = useSelector((state) => state);
-  console.warn = (message, ...args) => { };
-  console.warn = () => { };
+  console.warn = (message, ...args) => {};
+  console.warn = () => {};
   const browserHistory = createHashHistory();
-  const userID = state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID
-console.log(userID)
+  const userID =
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+  console.log(userID);
   useEffect(() => {
-
     const interval = setInterval(() => {
       try {
         if (userID) {
           changeSettingFlagAPICall();
         }
-      }
-      catch (err) { }
-    }, 60000)
+      } catch (err) {}
+    }, 60000);
 
     return () => clearInterval(interval);
-  }, [])
-
+  }, []);
 
   const changeSettingFlagAPICall = () => {
     const payload = {
       userID: userID,
-    }
-    api.post("/api/Notifications", payload)
+    };
+    api
+      .post("/api/Notifications", payload)
       .then(function (response) {
-        var date1 = new Date();//current time
+        var date1 = new Date(); //current time
         if (response && response.data && response.data[0]) {
           let notification = response && response.data && response.data[0];
           var notificationDateTime = notification.date;
@@ -49,9 +49,8 @@ console.log(userID)
           if (timeDiff < 45000) {
             if (notification && notification.Comment) {
               var text = notification.Comment.replace(/(<([^>]+)>)/g, "");
-              toast.success(text)
+              toast.success(text);
             }
-
           }
         } else {
         }
@@ -60,12 +59,10 @@ console.log(userID)
         if (error) {
         }
       });
-  }
+  };
   return (
     <>
-      <ToastContainer
-      autoClose={5000}
-       hideProgressBar={true} />
+      <ToastContainer autoClose={5000} hideProgressBar={true} />
       <Router history={browserHistory}>
         <Switch>
           <Route component={AppRouter} />

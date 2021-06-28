@@ -40,6 +40,7 @@ import UserOTPVerifcation from "../Components/UserVerification/components/OTPVer
 import UserVerificationProcess from "../Components/UserVerification/components";
 import HistoryList from "../Components/HistoryModule/HistoryList";
 import HistoryFilter from "../Components/HistoryModule/HistoryFilter";
+import Terms from "../Components/Terms&Conditions/Terms";
 
 export default function AppRouter() {
   const checkHeader = () => {

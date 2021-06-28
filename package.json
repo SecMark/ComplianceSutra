@@ -30,6 +30,7 @@
     "react-dropdown-select": "^4.7.4",
     "react-dropzone": "^11.3.2",
     "react-js-stepper": "^1.2.6",
+    "react-modal": "^3.14.3",
     "react-redux": "^7.2.2",
     "react-responsive-carousel": "^3.2.18",
     "react-responsive-modal": "^6.0.1",
