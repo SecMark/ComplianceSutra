@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
-import diffInDate from "../../../CommonModules/sharedComponents/Datepicker/utils";
+import {
+  differenceInDate,
+  isSameOrAfterToday,
+} from "../../../CommonModules/sharedComponents/Datepicker/utils";
 import { actions as adminMenuActions } from "../../../CommonModules/SideBar/Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -17,8 +20,9 @@ import MultiSelectCompanyDropdown from "../../../CommonModules/sharedComponents/
 import "./style.css";
 
 const HistoryFilterForm = (props) => {
-  const [timeDiff, setTimeDiff] = useState(0);
+  const [differenceInDays, setDifferenceInDays] = useState(0);
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
+  const [priorDate, setPriorDate] = useState("");
 
   const state = useSelector((state) => state);
   const history = useHistory();
@@ -33,17 +37,37 @@ const HistoryFilterForm = (props) => {
     actionDispatch(clearState());
     actionDispatch(getCompanyList(companyRequestPayload));
   }, [state.auth.loginInfo?.UserID]);
-
   useEffect(() => {
-    setTimeDiff(diffInDate(state.HistoryReducer.from, state.HistoryReducer.to));
-  }, [state.HistoryReducer]);
+    if (state.HistoryReducer.companyList.length !== 0) {
+      const priorDates = state.HistoryReducer.companyList.map((item) =>
+        moment(item.EndDate).format("DD-MM-YYYY")
+      );
+      const priorDate = priorDates.reduce((prev, curr) => {
+        if (moment(prev).isAfter(curr)) {
+          return curr;
+        }
+        return prev;
+      });
+      setPriorDate(priorDate);
+    }
+  }, [state.HistoryReducer.companyList]);
+  useEffect(() => {
+    setDifferenceInDays(
+      differenceInDate(state.HistoryReducer.from, state.HistoryReducer.to)
+    );
+  }, [state.HistoryReducer.from, state.HistoryReducer.to]);
 
   useEffect(() => {
     if (
       state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
       state.HistoryReducer.numberOfSelectedLicense !== 0 &&
       state.HistoryReducer.from !== "" &&
-      state.HistoryReducer.to !== ""
+      isSameOrAfterToday(state.HistoryReducer.from) &&
+      state.HistoryReducer.to !== "" &&
+      isSameOrAfterToday(state.HistoryReducer.to) &&
+      differenceInDays <= 365 &&
+      priorDate !== "" &&
+      moment(state.HistoryReducer.from.join("-")).isAfter(priorDate)
     ) {
       setIsAllInputFilled(true);
     } else {
@@ -97,7 +121,7 @@ const HistoryFilterForm = (props) => {
   };
   return (
     <>
-      <div style={{ marginTop: "20px" }}>
+      <div className="spacing">
         <label htmlFor="from" className="mb-2">
           From:
         </label>
@@ -107,9 +131,22 @@ const HistoryFilterForm = (props) => {
           actionType="SELECT_FROM_DATE"
           pageName="historyCompliance"
         />
+        <p style={{ color: "red", fontSize: "0.8rem" }}>
+          {isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
+            !isSameOrAfterToday(state.HistoryReducer.from) && (
+              <small>
+                {"* " + constant.errorMessage.errorDueToGreaterDate}
+              </small>
+            )}
+          {priorDate !== "" &&
+            state.HistoryReducer.from.length !== 0 &&
+            moment(state.HistoryReducer.from.join("-")).isBefore(priorDate) && (
+              <small>{"* " + constant.errorMessage.errorDueToPriorDate}</small>
+            )}
+        </p>
       </div>
 
-      <div style={{ marginTop: "20px" }}>
+      <div className="spacing">
         <label htmlFor="to" className="mb-2">
           To:{" "}
         </label>
@@ -119,9 +156,51 @@ const HistoryFilterForm = (props) => {
           actionType="SELECT_TO_DATE"
           pageName="historyCompliance"
         />
-        {timeDiff > 365 && (
-          <span style={{ color: "red" }}>Range Cannot be more than 1 year</span>
-        )}
+        <p className="warning">
+          {differenceInDays > 365 && (
+            <>
+              <small>{"* " + constant.errorMessage.errorDueToRange}</small>
+              <br />
+            </>
+          )}
+          {isSameOrAfterToday(state.HistoryReducer.to) !== undefined &&
+            !isSameOrAfterToday(state.HistoryReducer.to) && (
+              <>
+                <small>
+                  {"* " + constant.errorMessage.errorDueToGreaterDate}
+                </small>
+                <br />
+              </>
+            )}
+          {state.HistoryReducer.from.length !== 0 &&
+            state.HistoryReducer.to.length !== 0 &&
+            moment(
+              state.HistoryReducer.from[2] +
+                "-" +
+                state.HistoryReducer.from[1] +
+                "-" +
+                state.HistoryReducer.from[0] +
+                "-"
+            ).isAfter(
+              state.HistoryReducer.to[2] +
+                "-" +
+                state.HistoryReducer.to[1] +
+                "-" +
+                state.HistoryReducer.to[0] +
+                "-"
+            ) && (
+              <small>
+                {"* " +
+                  constant.errorMessage.errorDueToReverseDate +
+                  moment(
+                    state.HistoryReducer.from.join("-"),
+                    "DD-MM-YYYY"
+                  ).format("DD-MM-YYYY") +
+                  "."}
+              </small>
+            )}
+        </p>
+        {}
       </div>
       <MultiSelectCompanyDropdown
         options={state.HistoryReducer.companyList}
@@ -135,7 +214,7 @@ const HistoryFilterForm = (props) => {
         inputTitle="Select License"
         dispatch={actionDispatch}
       />
-      {isAllInputFilled && timeDiff < 365 ? (
+      {isAllInputFilled && differenceInDays <= 365 ? (
         <button
           onClick={setFilterAndNavigateToHistoryList}
           className="filter-button-active"

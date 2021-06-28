@@ -3,14 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 
 import SideBarInputControl from "../components/LeftSideBar";
 import RighSider from "../components/RightSideGrid";
+import HistoryFilter from "../../../../../Components/HistoryModule/HistoryFilter/index";
+import HistoryList from "../../../../../Components/HistoryModule/HistoryList/index";
 import Cobg from "../../../../../assets/Images/Onboarding/co-bg.png";
 import { actions as taskReportActions } from "../redux/actions";
 import { toast } from "react-toastify";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import ComplianceOfficerSetting from "../components/CoSetting";
 import Notifications from "../components/notification";
 import MobileSettingSideBar from "./CoSetting/MobileSettingSideBar";
-import {actions as adminMenuActions} from "../MenuRedux/actions"
+import { actions as adminMenuActions } from "../MenuRedux/actions";
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -45,14 +47,12 @@ function Dashboard({ history }) {
     state.complianceOfficer.personalInfo.data[0][0] &&
     state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
     state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0]; 
+    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
 
-  const userID = state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID
+  const userID =
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
 
-  const userDetails = 
-    state &&
-    state.auth &&
-    state.auth.loginInfo;
+  const userDetails = state && state.auth && state.auth.loginInfo;
 
   const companyName =
     state &&
@@ -60,11 +60,11 @@ function Dashboard({ history }) {
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.formDataPersonalData &&
     state.complianceOfficer.personalInfo.formDataPersonalData.entityName;
-    useEffect(() => {
-      if (userID === undefined) {
-        history.push("/login")
-      }
-    }, [])
+  useEffect(() => {
+    if (userID === undefined) {
+      history.push("/login");
+    }
+  }, []);
   useEffect(() => {
     // if (entityID) {
     //   dispatch(
@@ -73,30 +73,28 @@ function Dashboard({ history }) {
     //     })
     //   );
     // } else {
-      // toast.error("something went wrong !!!");
-      // history.push("/")
+    // toast.error("something went wrong !!!");
+    // history.push("/")
     // }
 
     dispatch(
-      taskReportActions.taskReportRequest(
-        {
-          entityid: "",
-          // userID: 20243,
-          userID : userDetails.UserID,
-          usertype: userDetails.UserType
-        }
-      ),
-    )
+      taskReportActions.taskReportRequest({
+        entityid: "",
+        // userID: 20243,
+        userID: userDetails.UserID,
+        usertype: userDetails.UserType,
+      })
+    );
   }, [state.adminMenu.currentMenu]);
 
-  useEffect(()=>{
-    if(window.location.href.includes("dashboard") && state.adminMenu.currentMenu!=="taskList"){
+  useEffect(() => {
+    if (
+      window.location.href.includes("dashboard") &&
+      state.adminMenu.currentMenu !== "taskList"
+    ) {
       dispatch(adminMenuActions.setCurrentMenu("taskList"));
     }
-   
-  },[])
-
-
+  }, []);
 
   return (
     <div className="row co-dashboard">
@@ -106,7 +104,6 @@ function Dashboard({ history }) {
           <SideBarInputControl
             isTaskListOpen={isTaskListOpen}
             setIsTaskListOpen={setIsTaskListOpen}
-
           />
         </div>
       </div>
@@ -121,11 +118,12 @@ function Dashboard({ history }) {
             taskList={taskList}
             companyName={companyName}
             user={userDetails}
-          />)}
+          />
+        )}
 
         {state && state.adminMenu.currentMenu === "notfications" && (
-          <Notifications />)
-        }
+          <Notifications />
+        )}
         {state && state.adminMenu.currentMenu === "settings" && (
           <>
             <div className="d-none d-sm-block">
@@ -134,8 +132,15 @@ function Dashboard({ history }) {
             {/* <div className="d-block d-sm-none">
             </div> */}
           </>
-        )
-        }
+        )}
+        {state && state.adminMenu.currentMenu === "complianceHistory" && (
+          // {History Filter}
+          <HistoryFilter />
+        )}
+        {state && state.adminMenu.currentMenu === "complianceHistoryList" && (
+          // {History List}
+          <HistoryList />
+        )}
       </div>
     </div>
   );

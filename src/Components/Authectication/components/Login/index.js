@@ -191,7 +191,7 @@ function Login({ history }) {
                           : " countryCode-sucess   ") +
                         (errors.emailErr == "" && " activeForm-control")
                       }
-                      placeholder="Enter your company email"
+                      placeholder="Enter your email"
                       value={values.LoginId}
                       onChange={onChangeHandler("LoginId")}
                     />

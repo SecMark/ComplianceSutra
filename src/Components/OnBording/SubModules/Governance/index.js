@@ -519,6 +519,7 @@ function Governance({ history }) {
   }
 
   const renderCompanyRow = (item, index) => {
+    console.log(item, index)
     return (
       <div key={index} className="col-12 row">
         <div className="col-8 col-md-3 col-sm-3 col-xl-3 pl-0">

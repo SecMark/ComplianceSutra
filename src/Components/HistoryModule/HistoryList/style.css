@@ -31,6 +31,7 @@
   transition: all 500ms ease;
   /* box-shadow: 1px 1px 1px 9999px rgba(0, 0, 0, 0.7); */
 }
+
 .popup-open {
   right: 0;
 }
@@ -44,7 +45,6 @@
   background: #fef2ca;
   text-transform: uppercase;
 }
-
 .on-time {
   border: none;
   font-size: 12px;
@@ -137,9 +137,112 @@
   text-transform: uppercase;
 }
 
-.no-data{
-  border-bottom: 1px solid;
+.no-data {
+  margin-top: 2rem;
+  color: #575757;
 }
 .no-data p {
   font-size: 10p;
+}
+
+.history-container-mobile {
+  width: 100%;
+  min-height: 100vh;
+  background-color: white;
+}
+.mobile-head {
+  padding: 40px 20px 0px;
+}
+.data-options {
+  position: relative;
+}
+.more-options {
+  position: absolute;
+  top: 40px;
+  left: -105px;
+  width: 120px;
+  box-shadow: 1px 1px 5px rgb(194, 191, 191);
+  padding: 0.6rem 0.5rem;
+  border-radius: 0.3rem;
+  background-color: white;
+  z-index: 2;
+}
+.td-mobile {
+  border: none;
+}
+
+.view-more-data--popup,
+.filter-popup-mobile {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 3;
+  background-color: rgb(255, 255, 255);
+  height: 70vh;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 2rem 1rem;
+  box-shadow: 0px 0px 0px 9999px rgba(0, 0, 0, 0.7);
+}
+.view-more-data--container,
+.filter-popup-mobile--container {
+  position: relative;
+}
+
+.close--data-popup {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.data-field {
+  margin: 0.5rem 0;
+}
+.data-field > p {
+  color: #575757;
+}
+.download-btn-mobile {
+  color: #6c5dd3;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
+}
+
+.close--filter-popup-mobile {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+}
+
+.filter-popup-mobile {
+  height: 80vh;
+}
+.filter-wrapper-mobile {
+  height: 60vh;
+  overflow-y: auto;
+}
+.filter-wrapper-desktop {
+  height: 70vh;
+  overflow-y: auto;
+}
+@media (max-width: 575.98px) {
+  .filter-popup-mobile--wrapper {
+    width: 90%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .filter-popup-mobile--wrapper {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .filter-popup-mobile--wrapper {
+    width: 70%;
+    margin: auto;
+  }
 }

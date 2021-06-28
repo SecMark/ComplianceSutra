@@ -1,45 +1,45 @@
-import React, { useState, useEffect, useCallback } from "react"
-import "./style.css"
-import Modal from "react-awesome-modal"
-import closeBlack from "../../../../../../assets/Icons/closeBlack.png"
-import fileIcon from "../../../../../../assets/Icons/fileIcon.png"
-import sideBarlogo from "../../../../../../assets/Icons/sideBarlogo.png"
-import togglemobile from "../../../../../../assets/Icons/togglemobile.png"
-import keyboardArrowRightBlack from "../../../../../../assets/Icons/keyboardArrowRightBlack.png"
-import downArrow from "../../../../../../assets/Icons/downArrow.png"
-import inputRightArrow from "../../../../../../assets/Icons/inputRightArrow.png"
-import sidebarSettingIcon from "../../../../../../assets/Icons/sidebarSettingIcon.png"
-import editpen from "../../../../../../assets/Icons/editpen.png"
-import mobileTopArrow from "../../../../../../assets/Icons/mobileTopArrow.png"
-import LogoutIcon from "../../../../../../assets/Icons/LogoutIcon.png"
-import sidebarAccountCircle from "../../../../../../assets/Icons/sidebarAccountCircle.png"
-import taskIcon from "../../../../../../assets/Icons/taskIcon.png"
-import sidebarBell from "../../../../../../assets/Icons/sidebarBell.png"
-import upArrow from "../../../../../../assets/Icons/topArrowAccordian.png"
-import RedLine from "../../../../../../assets/Icons/RedLine.png"
-import {isMobile} from "react-device-detect"
-import assignIconCircle from "../../../../../../assets/Icons/assignIconCircle.png"
-import viewAllArow from "../../../../../../assets/Icons/viewAllArow.png"
-import viewAllArowTop from "../../../../../../assets/Icons/viewAllArowTop.png"
-import sidebarCheckIcon from "../../../../../../assets/Icons/sidebarCheckIcon.png"
-import closeIconGray from "../../../../../../assets/Icons/closeIconGray.png"
-import searchIcon from "../../../../../../assets/Icons/searchIcon.png"
-import fileUploadIcon from "../../../../../../assets/Icons/fileUploadIcon.png"
-import completeTaskIcon from "../../../../../../assets/Icons/emailVerify.png"
-import { toast } from "react-toastify"
-import moment from "moment"
-import Dropzone from "react-dropzone"
-import { useOuterClick } from "./outerClick.js"
-import TaskDetailsView from "./TaskDetailView"
-import {BACKEND_BASE_URL} from "../../../../../../apiServices/baseurl"
-import { useSelector, useDispatch, connect } from "react-redux"
-import { actions as taskReportActions } from "../../redux/actions"
-import MobileLeftSidebar from "../MobileLeftSidebar"
-import axios, { post } from "axios"
-import { withRouter } from "react-router-dom"
-import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png"
+import React, { useState, useEffect, useCallback } from "react";
+import "./style.css";
+import Modal from "react-awesome-modal";
+import closeBlack from "../../../../../../assets/Icons/closeBlack.png";
+import fileIcon from "../../../../../../assets/Icons/fileIcon.png";
+import sideBarlogo from "../../../../../../assets/Icons/sideBarlogo.png";
+import togglemobile from "../../../../../../assets/Icons/togglemobile.png";
+import keyboardArrowRightBlack from "../../../../../../assets/Icons/keyboardArrowRightBlack.png";
+import downArrow from "../../../../../../assets/Icons/downArrow.png";
+import inputRightArrow from "../../../../../../assets/Icons/inputRightArrow.png";
+import sidebarSettingIcon from "../../../../../../assets/Icons/sidebarSettingIcon.png";
+import editpen from "../../../../../../assets/Icons/editpen.png";
+import mobileTopArrow from "../../../../../../assets/Icons/mobileTopArrow.png";
+import LogoutIcon from "../../../../../../assets/Icons/LogoutIcon.png";
+import sidebarAccountCircle from "../../../../../../assets/Icons/sidebarAccountCircle.png";
+import taskIcon from "../../../../../../assets/Icons/taskIcon.png";
+import sidebarBell from "../../../../../../assets/Icons/sidebarBell.png";
+import upArrow from "../../../../../../assets/Icons/topArrowAccordian.png";
+import RedLine from "../../../../../../assets/Icons/RedLine.png";
+import { isMobile } from "react-device-detect";
+import assignIconCircle from "../../../../../../assets/Icons/assignIconCircle.png";
+import viewAllArow from "../../../../../../assets/Icons/viewAllArow.png";
+import viewAllArowTop from "../../../../../../assets/Icons/viewAllArowTop.png";
+import sidebarCheckIcon from "../../../../../../assets/Icons/sidebarCheckIcon.png";
+import closeIconGray from "../../../../../../assets/Icons/closeIconGray.png";
+import searchIcon from "../../../../../../assets/Icons/searchIcon.png";
+import fileUploadIcon from "../../../../../../assets/Icons/fileUploadIcon.png";
+import completeTaskIcon from "../../../../../../assets/Icons/emailVerify.png";
+import { toast } from "react-toastify";
+import moment from "moment";
+import Dropzone from "react-dropzone";
+import { useOuterClick } from "./outerClick.js";
+import TaskDetailsView from "./TaskDetailView";
+import { BACKEND_BASE_URL } from "../../../../../../apiServices/baseurl";
+import { useSelector, useDispatch, connect } from "react-redux";
+import { actions as taskReportActions } from "../../redux/actions";
+import MobileLeftSidebar from "../MobileLeftSidebar";
+import axios, { post } from "axios";
+import { withRouter } from "react-router-dom";
+import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png";
 
-import TextareaAutosize from "react-textarea-autosize"
+import TextareaAutosize from "react-textarea-autosize";
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
@@ -51,111 +51,111 @@ function RightSideGrid({
   history,
   NotificationRedu,
 }) {
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const [completedDate, setCompletedDate] = useState("")
+  const [completedDate, setCompletedDate] = useState("");
 
-  const [showFiles, setShowFiles] = useState(true)
-  const [showComments, setShowComments] = useState(false)
-  const [showHtoDoIt, setShowHtoDoIt] = useState(false)
+  const [showFiles, setShowFiles] = useState(true);
+  const [showComments, setShowComments] = useState(false);
+  const [showHtoDoIt, setShowHtoDoIt] = useState(false);
 
-  const [approverDropDown, setApproverDropDown] = useState("")
-  const [inputComment, setInputComment] = useState("")
-  const [rejectTaskInput, setRejectTaskInputComment] = useState("")
-  const [uploadFile, setUploadFile] = useState()
-  const [visibleRejectTaskModal, setVisibleRejectTaskModal] = useState(false)
+  const [approverDropDown, setApproverDropDown] = useState("");
+  const [inputComment, setInputComment] = useState("");
+  const [rejectTaskInput, setRejectTaskInputComment] = useState("");
+  const [uploadFile, setUploadFile] = useState();
+  const [visibleRejectTaskModal, setVisibleRejectTaskModal] = useState(false);
 
-  const [allUser, setAllUser] = useState([])
-  const [allUserBackup, setAllUserBackup] = useState([])
+  const [allUser, setAllUser] = useState([]);
+  const [allUserBackup, setAllUserBackup] = useState([]);
 
-  const [selectedUser, setSelectedUser] = useState("")
+  const [selectedUser, setSelectedUser] = useState("");
 
-  const [currentTaskData, setCurrentTaskData] = useState([])
-  const [currentDropDown, setCurrentDropDown] = useState("")
-  const [fileList, setFileList] = useState([])
-  const [searchBoxShow, setsearchBoxShow] = useState(false)
+  const [currentTaskData, setCurrentTaskData] = useState([]);
+  const [currentDropDown, setCurrentDropDown] = useState("");
+  const [fileList, setFileList] = useState([]);
+  const [searchBoxShow, setsearchBoxShow] = useState(false);
 
-  const [searchBoxShowMobile, setsearchBoxShowMobile] = useState(false)
-  const [navigationHideShow, setNavigationHideShow] = useState(false)
-  const [taskData, setTaskData] = useState([])
-  const [taskDataBackup, setTaskDataBackup] = useState([])
-  const [expandedFlags, setExpandedFlags] = useState([])
-  const [rowCount, setRowCount] = useState([])
-  const [searchValue, setSearchValue] = useState("")
-  const [searchData, setSearchData] = useState([])
-  const [showUserToolTip, setShowUserToolTip] = useState("")
-  const [today, setToday] = useState(new Date())
-  const [emailAvaliableCheck, setEmailAvaliableCheck] = useState(false)
+  const [searchBoxShowMobile, setsearchBoxShowMobile] = useState(false);
+  const [navigationHideShow, setNavigationHideShow] = useState(false);
+  const [taskData, setTaskData] = useState([]);
+  const [taskDataBackup, setTaskDataBackup] = useState([]);
+  const [expandedFlags, setExpandedFlags] = useState([]);
+  const [rowCount, setRowCount] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchData, setSearchData] = useState([]);
+  const [showUserToolTip, setShowUserToolTip] = useState("");
+  const [today, setToday] = useState(new Date());
+  const [emailAvaliableCheck, setEmailAvaliableCheck] = useState(false);
 
   const getTaskById =
     state &&
     state.taskReport &&
     state.taskReport.taskReportById &&
-    state.taskReport.taskReportById.taskReportById
+    state.taskReport.taskReportById.taskReportById;
 
   useEffect(() => {
     if (taskList != undefined && taskList.length > 0) {
-      let tempArr = []
-      let tempRowCount = {}
+      let tempArr = [];
+      let tempRowCount = {};
       taskList.map((item) => {
         if (item.Details.length >= 1 && item.Details[0].TaskId != 0) {
-          tempArr.push({ ...item })
-          tempRowCount[item.Status.trim()] = 4
+          tempArr.push({ ...item });
+          tempRowCount[item.Status.trim()] = 4;
         }
-      })
-      let sortedArray = tempArr.sort((a, b) => a.ORD - b.ORD)
-      setRowCount(tempRowCount)
-      setTaskData(sortedArray)
-      setTaskDataBackup(sortedArray)
+      });
+      let sortedArray = tempArr.sort((a, b) => a.ORD - b.ORD);
+      setRowCount(tempRowCount);
+      setTaskData(sortedArray);
+      setTaskDataBackup(sortedArray);
     }
-  }, [taskList])
+  }, [taskList]);
 
   useEffect(() => {
     const ApproverUsers =
       state &&
       state.taskReport &&
       state.taskReport.getUserByRole &&
-      state.taskReport.getUserByRole.getUserByRole
+      state.taskReport.getUserByRole.getUserByRole;
 
     if (ApproverUsers != undefined) {
-      let temp = []
+      let temp = [];
       ApproverUsers &&
         ApproverUsers.length > 0 &&
         ApproverUsers.forEach((obj1) => {
           obj1 &&
             obj1.GEN_Users &&
             obj1.GEN_Users.forEach((obj2) => {
-              temp.push(obj2)
-            })
-        })
-      setAllUser(temp)
-      setAllUserBackup(temp)
+              temp.push(obj2);
+            });
+        });
+      setAllUser(temp);
+      setAllUserBackup(temp);
     }
-  }, [state.taskReport.getUserByRole])
+  }, [state.taskReport.getUserByRole]);
 
   useEffect(() => {
-    const getTaskId = getTaskById
+    const getTaskId = getTaskById;
     if (getTaskId) {
-      const taskId = getTaskById.TaskId
+      const taskId = getTaskById.TaskId;
 
       const payload = {
         taskID: taskId,
         actionFlag: 0,
-      }
+      };
       axios
         .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
         .then((response) => {
-          let fileData = response.data
-          setFileList(fileData)
+          let fileData = response.data;
+          setFileList(fileData);
         })
-        .catch((error) => {})
+        .catch((error) => {});
     }
-  }, [getTaskById, uploadFile])
+  }, [getTaskById, uploadFile]);
 
   useEffect(() => {
-    var today = new Date()
-    var dd = String(today.getDate()).padStart(2, "0")
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
     const monthNames = [
       "January",
       "February",
@@ -169,83 +169,83 @@ function RightSideGrid({
       "October",
       "November",
       "December",
-    ]
+    ];
 
-    const mm = monthNames[today.getMonth()]
-    var yyyy = today.getFullYear()
-    today = dd + " " + mm + " " + yyyy
-    setToday(today)
-  }, [getTaskById])
+    const mm = monthNames[today.getMonth()];
+    var yyyy = today.getFullYear();
+    today = dd + " " + mm + " " + yyyy;
+    setToday(today);
+  }, [getTaskById]);
 
   const innerSearch = useOuterClick((e) => {
     if (searchBoxShow) {
-      setsearchBoxShow(false)
-      setSearchValue("")
+      setsearchBoxShow(false);
+      setSearchValue("");
     }
-  })
+  });
 
   const innerSearchMobile = useOuterClick((e) => {
     if (searchBoxShowMobile) {
-      setsearchBoxShowMobile(false)
-      setSearchValue("")
+      setsearchBoxShowMobile(false);
+      setSearchValue("");
     }
-  })
+  });
 
   const innerRef = useOuterClick((e) => {
     if (
       (currentDropDown !== "open" && !e.target.id.includes("assignBtn")) ||
       (currentDropDown === "open" && e.target.id == "")
     ) {
-      setCurrentDropDown("")
-      setSelectedUser("")
+      setCurrentDropDown("");
+      setSelectedUser("");
     }
-  })
+  });
 
   const approverDropDownRef = useOuterClick((e) => {
     if (approverDropDown === "openapproverdropdown") {
-      setApproverDropDown("")
-      setSelectedUser("")
+      setApproverDropDown("");
+      setSelectedUser("");
     }
-  })
+  });
 
-  const userDetails = state && state.auth && state.auth.loginInfo
+  const userDetails = state && state.auth && state.auth.loginInfo;
 
   const getCommentsbyId =
     state &&
     state.taskReport &&
     state.taskReport.getTaskCommentByRole &&
-    state.taskReport.getTaskCommentByRole.getTaskCommentByRole
+    state.taskReport.getTaskCommentByRole.getTaskCommentByRole;
 
   const getInitials = (str) => {
-    var initials = " "
+    var initials = " ";
     if (str != "" && str) {
       var names = str.split(" "),
-        initials = names[0].substring(0, 1).toUpperCase()
+        initials = names[0].substring(0, 1).toUpperCase();
       if (names.length > 1) {
-        initials += names[names.length - 1].substring(0, 1).toUpperCase()
+        initials += names[names.length - 1].substring(0, 1).toUpperCase();
       }
     }
-    return initials
-  }
+    return initials;
+  };
 
   const getAllFile = () => {
     if (getTaskById != undefined) {
-      const taskId = getTaskById.TaskId
+      const taskId = getTaskById.TaskId;
       const payload = {
         taskID: taskId,
         actionFlag: 0,
-      }
+      };
       axios
         .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
         .then((response) => {
-          let fileData = response.data
-          setFileList(fileData)
+          let fileData = response.data;
+          setFileList(fileData);
         })
         .catch((error) => {
-          console.log("error => ", error)
-        })
+          console.log("error => ", error);
+        });
     }
-  }
+  };
 
   const deleteFile = (file) => {
     if (userDetails.UserType === 4) {
@@ -253,7 +253,7 @@ function RightSideGrid({
         taskID: 0,
         TaskFileId: file.TaskFileId,
         actionFlag: 3,
-      }
+      };
       axios
         .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
         .then((response) => {
@@ -263,18 +263,18 @@ function RightSideGrid({
             response.data[0] &&
             response.data[0].Status === "Deleted"
           ) {
-            getAllFile()
-            toast.success("File deleted successfully")
+            getAllFile();
+            toast.success("File deleted successfully");
           } else {
-            toast.error("Error in the deleting file !!!")
+            toast.error("Error in the deleting file !!!");
           }
         })
-        .catch((error) => {})
+        .catch((error) => {});
     }
-  }
+  };
 
   const submitModal = () => {
-    let id = getTaskById.TaskId
+    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -285,7 +285,7 @@ function RightSideGrid({
         loginID: userDetails.UserID,
         userDetails: userDetails,
       })
-    )
+    );
     dispatch(
       taskReportActions.postTaskCommentByTaskID({
         actionFlag: 1, //Action Flag
@@ -293,14 +293,14 @@ function RightSideGrid({
         comment: rejectTaskInput,
         commentBy: user.UserID, //UserID
       })
-    )
-    setRejectTaskInputComment("")
-    setVisibleRejectTaskModal(false)
-    toast.success("Task rejected successfully")
-  }
+    );
+    setRejectTaskInputComment("");
+    setVisibleRejectTaskModal(false);
+    toast.success("Task rejected successfully");
+  };
 
   const teamMemberMarkComplete = () => {
-    let taskId = getTaskById.TaskId
+    let taskId = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: taskId,
@@ -311,14 +311,14 @@ function RightSideGrid({
         userDetails: userDetails,
         loginID: userDetails.UserID,
       })
-    )
-    toast.success("Mark completed  successfully")
-  }
+    );
+    toast.success("Mark completed  successfully");
+  };
 
   const handleChangeRejectTaskComment = (e) => {
-    e.preventDefault()
-    setRejectTaskInputComment(e.target.value)
-  }
+    e.preventDefault();
+    setRejectTaskInputComment(e.target.value);
+  };
 
   const renderRejectTaskModal = () => {
     return (
@@ -366,37 +366,40 @@ function RightSideGrid({
           </div>
         </div>
       </Modal>
-    )
-  }
+    );
+  };
 
   useEffect(() => {
-    let task_id = NotificationRedu &&  NotificationRedu.NotificationRedu && NotificationRedu.NotificationRedu.task_id
+    let task_id =
+      NotificationRedu &&
+      NotificationRedu.NotificationRedu &&
+      NotificationRedu.NotificationRedu.task_id;
     if (task_id) {
-      getSelectTaskDetails()
+      getSelectTaskDetails();
     }
-  }, [])
+  }, []);
 
   const getSelectTaskDetails = (e) => {
-    setShowFiles(true)
-    setShowComments(false)
-    setExpandedFlags([])
-    setCurrentTaskData(e)
-    let taskID = null
-    let task_id = NotificationRedu.NotificationRedu.task_id
+    setShowFiles(true);
+    setShowComments(false);
+    setExpandedFlags([]);
+    setCurrentTaskData(e);
+    let taskID = null;
+    let task_id = NotificationRedu.NotificationRedu.task_id;
 
     if (task_id !== null && e === undefined) {
-      taskID = task_id
+      taskID = task_id;
     } else {
-      taskID = e.TaskId
+      taskID = e.TaskId;
     }
     dispatch(
       taskReportActions.taskReportByIdRequest({
         taskID: taskID,
       })
-    )
+    );
 
-    setIsTaskListOpen(true)
-  }
+    setIsTaskListOpen(true);
+  };
 
   const getApproveUsers = () => {
     dispatch(
@@ -405,8 +408,8 @@ function RightSideGrid({
         ecoUserId: "",
         coUserType: 5,
       })
-    )
-  }
+    );
+  };
 
   const getUserDetail = (e) => {
     dispatch(
@@ -415,12 +418,12 @@ function RightSideGrid({
         ecoUserId: "",
         coUserType: 4,
       })
-    )
-  }
+    );
+  };
 
   const handleChange = (e) => {
-    setInputComment(e.target.value)
-  }
+    setInputComment(e.target.value);
+  };
 
   const submitComment = () => {
     dispatch(
@@ -430,86 +433,86 @@ function RightSideGrid({
         comment: inputComment,
         commentBy: user.UserID, //UserID
       })
-    )
-    setInputComment("")
-  }
+    );
+    setInputComment("");
+  };
 
   const getComments = () => {
-    setShowFiles(false)
-    setShowComments(true)
-    setShowHtoDoIt(false)
+    setShowFiles(false);
+    setShowComments(true);
+    setShowHtoDoIt(false);
 
     dispatch(
       taskReportActions.taskCommentsByTaskIdRequest({
         taskid: getTaskById.TaskId,
       })
-    )
-  }
+    );
+  };
 
   const getUpload = (file) => {
-    const url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData.TaskId}`
-    var formData = []
-    formData = new FormData()
+    const url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData.TaskId}`;
+    var formData = [];
+    formData = new FormData();
     for (var i = 0; i < file.length; i++) {
-      formData.append("file", file[i])
+      formData.append("file", file[i]);
     }
     const config = {
       headers: {
         "content-type": "multipart/form-data",
       },
-    }
-    return post(url, formData, config)
-  }
+    };
+    return post(url, formData, config);
+  };
 
   const handleSelectUploadFile = (file) => {
-    const _fileList = (fileList && fileList[0] && fileList[0].Files) || []
-    var isPresent = false
-    let fileArray = []
+    const _fileList = (fileList && fileList[0] && fileList[0].Files) || [];
+    var isPresent = false;
+    let fileArray = [];
     file.forEach((file) => {
       isPresent = _fileList.some(function (el) {
-        return el.FileName === file.name
-      })
+        return el.FileName === file.name;
+      });
       if (!isPresent) {
-        fileArray.push(file)
+        fileArray.push(file);
       } else {
         toast.error(
           `File ${file.name} is already uploaded. Please rename it and upload`
-        )
-        return ""
+        );
+        return "";
       }
-    })
+    });
     getUpload(fileArray).then((response) => {
-      toast.success("File Upload Successfully")
-      setUploadFile("")
-      getAllFile()
-    })
-  }
+      toast.success("File Upload Successfully");
+      setUploadFile("");
+      getAllFile();
+    });
+  };
 
   const ApprovDisplay = (e) => {
-    setApproverDropDown("openapproverdropdown")
+    setApproverDropDown("openapproverdropdown");
     if (approverDropDown == "") {
-      getApproveUsers()
-      setEmailAvaliableCheck(false)
-      setSelectedUser("")
+      getApproveUsers();
+      setEmailAvaliableCheck(false);
+      setSelectedUser("");
     }
-  }
+  };
 
   const AssignDisplay = () => {
     // setCurrentDropDown("open")
     if (currentDropDown === "open") {
-      setCurrentDropDown("")
+      setCurrentDropDown("");
     } else {
-      setCurrentDropDown("open")
-      getUserDetail()
+      setCurrentDropDown("open");
+      getUserDetail();
     }
-  }
+  };
 
   const handleAppSearch = (searchText) => {
-    setEmailAvaliableCheck(false)
-    setSelectedUser(searchText)
-    let temp = []
+    setEmailAvaliableCheck(false);
+    setSelectedUser(searchText);
+    let temp = [];
     if (searchText == "") {
-      setAllUser(allUserBackup)
+      setAllUser(allUserBackup);
     } else {
       allUserBackup &&
         allUserBackup.length > 0 &&
@@ -519,15 +522,15 @@ function RightSideGrid({
             (item.UserName &&
               item.UserName.toLowerCase().includes(searchText.toLowerCase()))
           ) {
-            temp.push(item)
+            temp.push(item);
           }
-        })
-      setAllUser(temp)
+        });
+      setAllUser(temp);
     }
-  }
+  };
 
   const handleAppTask = (getTaskById) => {
-    let taskId = getTaskById.TaskId
+    let taskId = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: taskId,
@@ -538,14 +541,14 @@ function RightSideGrid({
         loginID: userDetails.UserID,
         userDetails: userDetails,
       })
-    )
+    );
 
-    toast.success("Task approved !!!")
-  }
+    toast.success("Task approved !!!");
+  };
 
   const handleChooseApprove = (data) => {
-    let approvEmail = data.EmailID
-    let id = getTaskById.TaskId
+    let approvEmail = data.EmailID;
+    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -555,12 +558,12 @@ function RightSideGrid({
         isApproved: 0,
         loginID: userDetails.UserID,
       })
-    )
-  }
+    );
+  };
 
   const onAssignTaskClick = (data) => {
-    let assignEmail = data.EmailID
-    let id = getTaskById.TaskId
+    let assignEmail = data.EmailID;
+    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -571,8 +574,8 @@ function RightSideGrid({
         userDetails: userDetails,
         loginID: userDetails.UserID,
       })
-    )
-  }
+    );
+  };
 
   const handleCheckEmailAvailability = (event) => {
     axios
@@ -581,56 +584,56 @@ function RightSideGrid({
         loginty: "AdminEmail",
       })
       .then((response) => {
-        console.log("inside resposnse => ", response)
+        console.log("inside resposnse => ", response);
         if (response && response.data && response.data.Status === "True") {
-          setEmailAvaliableCheck(true)
+          setEmailAvaliableCheck(true);
         } else {
-          setEmailAvaliableCheck(false)
-          handleApproveTask(event)
+          setEmailAvaliableCheck(false);
+          handleApproveTask(event);
         }
       })
       .catch((err) => {
-        console.log("error =>  ", err)
-      })
-  }
+        console.log("error =>  ", err);
+      });
+  };
 
   const handleCheckAssignToEmailAvailability = (event) => {
-    console.log("selectedUser => ", selectedUser)
+    console.log("selectedUser => ", selectedUser);
     axios
       .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
         loginID: selectedUser,
         loginty: "AdminEmail",
       })
       .then((response) => {
-        console.log("inside resposnse => ", response)
+        console.log("inside resposnse => ", response);
         if (response && response.data && response.data.Status === "True") {
-          setEmailAvaliableCheck(true)
+          setEmailAvaliableCheck(true);
         } else {
-          setEmailAvaliableCheck(false)
-          handleAssignToTask(event)
+          setEmailAvaliableCheck(false);
+          handleAssignToTask(event);
         }
       })
       .catch((err) => {
-        console.log("error =>  ", err)
-      })
-  }
+        console.log("error =>  ", err);
+      });
+  };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      handleCheckEmailAvailability(event)
+      handleCheckEmailAvailability(event);
       // handleApproveTask(event);
     }
-  }
+  };
 
   const handleAssignKeyDown = (e) => {
     if (e.key === "Enter") {
-      console.log("1234")
-      handleCheckAssignToEmailAvailability(e)
+      console.log("1234");
+      handleCheckAssignToEmailAvailability(e);
       // handleAssignToTask(e)
     }
-  }
+  };
   const handleAssignToTask = (e) => {
-    let id = getTaskById.TaskId
+    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -640,12 +643,12 @@ function RightSideGrid({
         isApproved: 0,
         loginID: userDetails.UserID,
       })
-    )
-    setSelectedUser("")
-  }
+    );
+    setSelectedUser("");
+  };
 
   const handleApproveTask = (e) => {
-    let id = getTaskById.TaskId
+    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -655,12 +658,12 @@ function RightSideGrid({
         isApproved: 0,
         loginID: userDetails.UserID,
       })
-    )
-    setSelectedUser("")
-  }
+    );
+    setSelectedUser("");
+  };
 
   const AssignTaskToMe = (e) => {
-    let id = getTaskById.TaskId
+    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -671,12 +674,12 @@ function RightSideGrid({
         userDetails: userDetails,
         loginID: userDetails.UserID,
       })
-    )
-    setSelectedUser("")
-  }
+    );
+    setSelectedUser("");
+  };
 
   const approvTaskToMe = (e) => {
-    let id = getTaskById.TaskId
+    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -686,14 +689,14 @@ function RightSideGrid({
         isApproved: 0,
         loginID: userDetails.UserID,
       })
-    )
-  }
+    );
+  };
 
   const clearSearch = () => {
-    setsearchBoxShow(false)
-    setsearchBoxShowMobile(false)
-    setSearchValue("")
-  }
+    setsearchBoxShow(false);
+    setsearchBoxShowMobile(false);
+    setSearchValue("");
+  };
 
   const _handleApproveTaskOnCheckBoxClick = (taskId) => {
     dispatch(
@@ -705,7 +708,7 @@ function RightSideGrid({
         invitee: "",
         loginID: userDetails.UserID,
       })
-    )
+    );
     setTimeout(() => {
       dispatch(
         taskReportActions.taskReportRequest({
@@ -713,54 +716,54 @@ function RightSideGrid({
           userID: userDetails.UserID,
           usertype: userDetails.UserType,
         })
-      )
-    }, 1000)
-  }
+      );
+    }, 1000);
+  };
 
   const closeMobileSidebar = () => {
     const drawerParent = document.getElementById("sideBarParent");
-      const drawerChild = document.getElementById("sideBarChild");
-      if (drawerParent) {
-         drawerParent.classList.remove("overlay");
-         drawerChild.style.left = "-100%";
-      }
-  }
+    const drawerChild = document.getElementById("sideBarChild");
+    if (drawerParent) {
+      drawerParent.classList.remove("overlay");
+      drawerChild.style.left = "-100%";
+    }
+  };
 
   const showLessMore = (status, count) => {
-    let tempRowCnt = { ...rowCount }
-    tempRowCnt[status.trim()] = count
-    setRowCount(tempRowCnt)
-  }
+    let tempRowCnt = { ...rowCount };
+    tempRowCnt[status.trim()] = count;
+    setRowCount(tempRowCnt);
+  };
 
   const handleExpandList = (flag, index) => {
-    let tempExtend = [...expandedFlags]
+    let tempExtend = [...expandedFlags];
     if (flag === "show") {
-      tempExtend.push(index)
+      tempExtend.push(index);
     } else {
-      tempExtend = tempExtend.filter((item) => item !== index)
+      tempExtend = tempExtend.filter((item) => item !== index);
     }
-    setExpandedFlags(tempExtend)
-  }
+    setExpandedFlags(tempExtend);
+  };
 
   const getDayDate = (date, flag) => {
-    var today = new Date()
-    var dateObj = new Date(date)
-    const yesterday = new Date()
-    yesterday.setDate(today.getDate() - 1)
+    var today = new Date();
+    var dateObj = new Date(date);
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
     if (dateObj.toLocaleDateString() == today.toLocaleDateString()) {
-      return "Today"
+      return "Today";
     } else if (dateObj.toLocaleDateString() == yesterday.toLocaleDateString()) {
-      return "Yesterday"
+      return "Yesterday";
     } else {
       return flag === 1
         ? moment(date).format("DD MMM YYYY")
-        : moment(date).format("DD MMM")
+        : moment(date).format("DD MMM");
     }
-  }
+  };
 
   const handleSearch = (searchText) => {
-    setSearchValue(searchText)
-    let tempArr = []
+    setSearchValue(searchText);
+    let tempArr = [];
     if (searchText != "") {
       taskList &&
         taskList.forEach((obj1) => {
@@ -768,14 +771,14 @@ function RightSideGrid({
             if (
               obj2.TaskName.toLowerCase().includes(searchText.toLowerCase())
             ) {
-              let task = { Status: obj1.Status, data: obj2 }
-              tempArr.push(task)
+              let task = { Status: obj1.Status, data: obj2 };
+              tempArr.push(task);
             }
-          })
-        })
-      setSearchData(tempArr)
+          });
+        });
+      setSearchData(tempArr);
     }
-  }
+  };
 
   const renderTaskList = (task, Status, listType) => {
     return (
@@ -1018,8 +1021,8 @@ function RightSideGrid({
           </div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   const renderSidebarTaskList = (task, Status, listType) => {
     return (
@@ -1076,18 +1079,17 @@ function RightSideGrid({
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
-  const onHBMenu = () =>{
+  const onHBMenu = () => {
     const drawerParent = document.getElementById("sideBarParent");
       const drawerChild = document.getElementById("sideBarChild");
       if (drawerParent) {
          drawerParent.classList.add("overlay");
          drawerChild.style.left = "0%";
       }
-
-  }
+  };
 
   return (
     <>
@@ -1111,7 +1113,7 @@ function RightSideGrid({
                 className="w-25"
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  onHBMenu ()
+                  onHBMenu();
                 }}
               >
                 <img src={togglemobile} alt="toggle mobile" />
@@ -1247,7 +1249,7 @@ function RightSideGrid({
               >
                 {searchData.length > 0 &&
                   searchData.map((task) => {
-                    return <>{renderTaskList(task.data, task.Status, 2)}</>
+                    return <>{renderTaskList(task.data, task.Status, 2)}</>;
                   })}
               </div>
             )}
@@ -1277,7 +1279,7 @@ function RightSideGrid({
                             onClick={() => {
                               expandedFlags.includes(index)
                                 ? handleExpandList("hide", index)
-                                : handleExpandList("show", index)
+                                : handleExpandList("show", index);
                             }}
                           >
                             <div
@@ -1325,7 +1327,7 @@ function RightSideGrid({
                           ).map((task) => {
                             return (
                               <>{renderTaskList(task, item.Status.trim(), 1)}</>
-                            )
+                            );
                           })}
                         {item.Status.trim() != "overdue" &&
                           (item.Status.trim() === "Pending"
@@ -1344,7 +1346,7 @@ function RightSideGrid({
                                       1
                                     )}
                                   </>
-                                )
+                                );
                               })}
                               <div>
                                 {item.Details.length > 4 && (
@@ -1388,7 +1390,7 @@ function RightSideGrid({
                       </div>
                     </div>
                   </>
-                )
+                );
               })}
           </div>
         </div>
@@ -1489,7 +1491,7 @@ function RightSideGrid({
                             <>
                               {renderSidebarTaskList(task.data, task.Status, 2)}
                             </>
-                          )
+                          );
                         })}
                     </div>
                   )}
@@ -1524,7 +1526,7 @@ function RightSideGrid({
                                 onClick={() => {
                                   expandedFlags.includes(index)
                                     ? handleExpandList("hide", index)
-                                    : handleExpandList("show", index)
+                                    : handleExpandList("show", index);
                                 }}
                               >
                                 <div
@@ -1578,7 +1580,7 @@ function RightSideGrid({
                                       1
                                     )}
                                   </>
-                                )
+                                );
                               })}
 
                             {item.Status.trim() != "overdue" &&
@@ -1598,7 +1600,7 @@ function RightSideGrid({
                                           1
                                         )}
                                       </>
-                                    )
+                                    );
                                   })}
                                   <div>
                                     {item.Details.length > 4 && (
@@ -1645,7 +1647,7 @@ function RightSideGrid({
                               )}
                           </div>
                         </>
-                      )
+                      );
                     })}
                 </div>
               </div>
@@ -1667,8 +1669,8 @@ function RightSideGrid({
                     <div
                       className="task-close-icon"
                       onClick={() => {
-                        setIsTaskListOpen(false)
-                        setExpandedFlags([])
+                        setIsTaskListOpen(false);
+                        setExpandedFlags([]);
                       }}
                     >
                       <img src={closeBlack} alt="Arrow close" />
@@ -1881,9 +1883,12 @@ function RightSideGrid({
                                       <div className="">
                                         <div className="tool-tip-head">
                                           <div className="add-Email border-bottom">
-                                            <div class="form-group" style={{width:"100%"}}>
+                                            <div
+                                              class="form-group"
+                                              style={{ width: "100%" }}
+                                            >
                                               <input
-                                                style={{width:"100%"}}
+                                                style={{ width: "100%" }}
                                                 type="text"
                                                 class="form-control"
                                                 placeholder="Enter name or email"
@@ -1911,8 +1916,20 @@ function RightSideGrid({
                                                   </div>
                                                 )}
                                             </div>
-                                            <span className="or-devider" style={{display:"none"}}>or </span>
-                                            <button class="btn save-details assign-me"style={{display:"none"}} value="4" onClick={(e) => AssignTaskToMe(e)}>Assign to me</button>
+                                            <span
+                                              className="or-devider"
+                                              style={{ display: "none" }}
+                                            >
+                                              or{" "}
+                                            </span>
+                                            <button
+                                              class="btn save-details assign-me"
+                                              style={{ display: "none" }}
+                                              value="4"
+                                              onClick={(e) => AssignTaskToMe(e)}
+                                            >
+                                              Assign to me
+                                            </button>
                                           </div>
                                         </div>
                                         <div
@@ -2059,9 +2076,12 @@ function RightSideGrid({
                                       <div className="">
                                         <div className="tool-tip-head">
                                           <div className="add-Email border-bottom">
-                                            <div class="form-group" style={{width:"100%"}}> 
+                                            <div
+                                              class="form-group"
+                                              style={{ width: "100%" }}
+                                            >
                                               <input
-                                                style={{width:"100%"}}
+                                                style={{ width: "100%" }}
                                                 type="text"
                                                 class="form-control"
                                                 placeholder="Enter name or email"
@@ -2089,8 +2109,21 @@ function RightSideGrid({
                                                   </div>
                                                 )}
                                             </div>
-                                            <span className="or-devider" style={{display:"none"}}> or</span>
-                                            <button class="btn save-details assign-me" value="5" onClick={(e) => approvTaskToMe(e)}style={{display:"none"}}>Assign to me</button>
+                                            <span
+                                              className="or-devider"
+                                              style={{ display: "none" }}
+                                            >
+                                              {" "}
+                                              or
+                                            </span>
+                                            <button
+                                              class="btn save-details assign-me"
+                                              value="5"
+                                              onClick={(e) => approvTaskToMe(e)}
+                                              style={{ display: "none" }}
+                                            >
+                                              Assign to me
+                                            </button>
                                           </div>
                                         </div>
                                         <div
@@ -2252,9 +2285,9 @@ function RightSideGrid({
                         <div
                           className="file-title pointer"
                           onClick={() => {
-                            setShowFiles(true)
-                            setShowComments(false)
-                            setShowHtoDoIt(false)
+                            setShowFiles(true);
+                            setShowComments(false);
+                            setShowHtoDoIt(false);
                           }}
                         >
                           Files
@@ -2263,9 +2296,9 @@ function RightSideGrid({
                         <div
                           className="file-title unActiveText-color pointer"
                           onClick={() => {
-                            setShowFiles(true)
-                            setShowComments(false)
-                            setShowHtoDoIt(false)
+                            setShowFiles(true);
+                            setShowComments(false);
+                            setShowHtoDoIt(false);
                           }}
                         >
                           Files
@@ -2300,7 +2333,8 @@ function RightSideGrid({
                 </div>
                 {showFiles && (
                   <div className="file-grid-data">
-                    {user && user.UserType && user.UserType === 4 || user && user.UserType && user.UserType === 3 ?  (
+                    {(user && user.UserType && user.UserType === 4) ||
+                    (user && user.UserType && user.UserType === 3) ? (
                       <>
                         {getTaskById &&
                         getTaskById.Status &&
@@ -2308,7 +2342,8 @@ function RightSideGrid({
                         getTaskById &&
                         getTaskById.Status &&
                         getTaskById.TaskStatus === 0 ? (
-                          user && user.UserType && user.UserType === 4 || user && user.UserType && user.UserType === 3 ? (
+                          (user && user.UserType && user.UserType === 4) ||
+                          (user && user.UserType && user.UserType === 3) ? (
                             <>
                               {" "}
                               <div className="row">
@@ -2636,9 +2671,9 @@ function RightSideGrid({
         <TaskDetailsView />
       </div>
     </>
-  )
+  );
 }
 const mapStateToProps = (state) => ({
   NotificationRedu: state,
-})
-export default connect(mapStateToProps)(withRouter(RightSideGrid))
+});
+export default connect(mapStateToProps)(withRouter(RightSideGrid));

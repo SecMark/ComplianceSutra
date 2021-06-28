@@ -23,13 +23,20 @@ function CoSettingRightGrid({ handleClose, history }) {
     mobileNo: "",
     countrycode: "",
   })
-
+  const [errors, setErrors] = useState({
+    passwordErr: "",
+    confirmPasswordErr: "",
+    mobileNumErr: "",
+    countryCodeErr: "",
+    designationErr: "",
+  })
   const [valuesChanged, setValuesChanged] = useState(false)
   const [verifyModalHideShow, setVerifyModalHideShow] = useState(false)
   const [verifyPassword, setVerifyPassword] = useState({
     password: "",
     passwordError: "",
   })
+  const [countryCode, setCountryCode] = useState("+91")
   const loggedUser = state && state.auth && state.auth.loginInfo
   const [userInfoBackup, setUserInfoBackup] = useState(null)
   useEffect(() => {
@@ -196,6 +203,69 @@ function CoSettingRightGrid({ handleClose, history }) {
     } else {
       handleClose()
     }
+  }
+
+  //Mobile number validation function
+  const validateMobileNumber = (e) => {
+    var countrycode = values.countryCode.replace("+", "")
+    let payload =
+    {
+      loginID: e.target.value,
+      loginty: "AdminMobile",
+      countrycode: countrycode
+    }
+    api
+      .post("/api/availabilityCheck", payload)
+      .then(function (response) {
+        if (response && response.data && response.data.Status === "True") {
+          let inputKey = "mobileNumErr"
+          setErrors({ ...errors, [inputKey]: "true" })
+        }
+        else {
+          let inputKey = "mobileNumErr"
+          setErrors({ ...errors, [inputKey]: "false" })
+        }
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+
+  //Country code validate function
+  const validateCountryCode = (e) => {
+    let strr = e.target.value
+    let str = strr.replace(/\D/g, "")
+    console.log("str => ", strr)
+
+    if (str === "") {
+      str = "91"
+    }
+    // str = str.substring(1);
+    // console.log("str =",str);
+    let payload = {
+      cntryCode: str,
+    }
+    console.log(payload)
+    api
+      .post("/api/CountryCodeCheck", payload)
+      .then(function (response) {
+        // handle success
+        if (response && response.data && response.data.Status === "True") {
+          setCountryCode(true)
+          let inputKey = "countryCodeErr"
+          setErrors({ ...errors, [inputKey]: "" })
+        } else {
+          setCountryCode(false)
+          // setErrors(errors);
+          let inputKey = "countryCodeErr"
+          setErrors({ ...errors, [inputKey]: "true" })
+        }
+      })
+      .catch(function (error) {
+        if (error) {
+          // setIsCompanyNameValid(false);
+        }
+      })
   }
 
   const handleFinalSubmit = () => {
@@ -368,7 +438,7 @@ function CoSettingRightGrid({ handleClose, history }) {
               className={
                 "form-control right-input-row " +
                 (isValidate &&
-                (values.emailId === "" || !validator.isEmail(values.emailId))
+                  (values.emailId === "" || !validator.isEmail(values.emailId))
                   ? "input-error"
                   : "")
               }
@@ -408,6 +478,7 @@ function CoSettingRightGrid({ handleClose, history }) {
                 placeholder="+91"
                 id="countrycode"
                 onChange={onChangeHandler("countrycode")}
+                onBlur={(e) => validateCountryCode(e)}
                 maxLength="3"
                 max="999"
                 min="0"
@@ -426,7 +497,7 @@ function CoSettingRightGrid({ handleClose, history }) {
                 className={
                   "form-control right-input-row contact-input-box" +
                   (isValidate &&
-                  (values.mobileNo === "" || values.mobileNo.length < 10)
+                    (values.mobileNo === "" || values.mobileNo.length < 10)
                     ? "input-error"
                     : "")
                 }
@@ -434,8 +505,20 @@ function CoSettingRightGrid({ handleClose, history }) {
                 placeholder="Enter your mobile no"
                 id="mobile"
                 onChange={onChangeHandler("mobileNo")}
+                onBlur={(e) => validateMobileNumber(e)}
                 maxLength="10"
               />
+              {errors.mobileNumErr == "true" && (
+                <p className="input-error-message">
+                  Mobile number already Registered
+                </p>
+              )}
+              {values.countryCode != "" &&
+                errors.countryCodeErr == "true" && (
+                  <p className="input-error-message">
+                    Invalid country code
+                  </p>
+                )}
               {isValidate && values.mobileNo === "" && (
                 <p className="input-error-message absPosition">
                   Mobile number is required
