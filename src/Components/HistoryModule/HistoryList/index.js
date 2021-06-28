@@ -52,6 +52,7 @@ const HistoryList = (props) => {
   };
 
   useEffect(() => {
+    setIsShowMobileFilter(false);
     setIsShowFilter(false);
     dispatch(setSuccess(false));
   }, [state.HistoryReducer.isSuccess]);
@@ -88,24 +89,26 @@ const HistoryList = (props) => {
       {isMobile ? (
         <div className="history-container-mobile">
           {/* Filter pop-up for mobile */}
-          {isShowMobileFilter && (
-            <div className="filter-popup-mobile d-block d-lg-none">
-              <div className="filter-popup-mobile--container">
-                <img
-                  src={closeIcon}
-                  alt="close-icon"
-                  className="close--filter-popup-mobile"
-                  onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
-                />
-                <div className="filter-popup-mobile--wrapper">
-                  <h2 style={{ marginBottom: "3rem" }}>Fiters</h2>
-                  <div className="filter-wrapper-mobile">
-                    <HistoryFilterForm />
-                  </div>
+          <div
+            className={`filter-popup-mobile ${
+              isShowMobileFilter && "d-block"
+            } d-lg-none`}
+          >
+            <div className="filter-popup-mobile--container">
+              <img
+                src={closeIcon}
+                alt="close-icon"
+                className="close--filter-popup-mobile"
+                onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
+              />
+              <div className="filter-popup-mobile--wrapper">
+                <h2 style={{ marginBottom: "3rem" }}>Fiters</h2>
+                <div className="filter-wrapper-mobile">
+                  <HistoryFilterForm />
                 </div>
               </div>
             </div>
-          )}
+          </div>
           {/* View More Data pop up */}
           {isShowMobileRowData && isShowMobileOptionsId && (
             <div className="view-more-data--popup">
