@@ -53,7 +53,7 @@
   display: flex;
   justify-content: space-between;
   box-shadow: 0 -3px 36px 0 rgba(67, 0, 255, 0.08);
-  width: 100%;
+  width: 99%;
 }
 .Footer p {
   height: 5vh;
