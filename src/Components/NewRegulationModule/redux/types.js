@@ -14,3 +14,5 @@ export const SET_ISSUER = "SET_ISSUER";
 export const SET_TO_DATE = "SET_TO_DATE";
 export const SET_FROM_DATE = "SET_FROM_DATE";
 export const SET_IS_FILTER = "SET_IS_FILTER";
+export const CLEAR_FILTER = "CLEAR_FILTER";
+export const SET_FILTER_PAYLOAD = "SET_FILTER_PAYLOAD";

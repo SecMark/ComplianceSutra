@@ -1,4 +1,5 @@
 import {
+  CLEAR_FILTER,
   IS_LOADING,
   IS_SUCCESS,
   SET_FROM_DATE,
@@ -65,6 +66,17 @@ const reducer = (state = initailState, { type, payload }) => {
 
     case IS_LOADING:
       return { ...state, isLoading: payload };
+
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        from: "",
+        to: "",
+        industry: "",
+        issuer: "",
+        topic: "",
+        isFilterApplied: false,
+      };
 
     default:
       return state;

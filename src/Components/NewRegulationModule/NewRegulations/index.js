@@ -7,7 +7,7 @@ import { withRouter } from "react-router";
 import { ImSearch } from "react-icons/im";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getUpdates } from "../redux/actions";
+import { clearFilter, getUpdates } from "../redux/actions";
 import Loading from "../../../CommonModules/sharedComponents/Loader";
 import moment from "moment";
 
@@ -29,6 +29,11 @@ const NewRegulations = (props) => {
   const { isSuccess, isLoading, updateList, isFilterApplied, isSearch } =
     state.UpdatesReducer;
 
+  //clear filter
+  useEffect(() => {
+    dispatch(clearFilter());
+  }, []);
+  
   useEffect(() => {
     const payload = { UserID: state.auth.loginInfo?.UserID };
     dispatch(getUpdates(payload));

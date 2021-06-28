@@ -13,6 +13,7 @@ import {
   GET_ISSUER_LIST,
   GET_TOPIC_LIST,
   GET_UPDATES,
+  SET_FILTER_PAYLOAD,
 } from "./types";
 
 function* fetchUpdates(action) {
@@ -27,10 +28,10 @@ function* fetchUpdates(action) {
       yield put(setLoading(false));
       yield put(setSuccess(false));
     }
-  } catch (e) {
+  } catch (error) {
     yield put(setLoading(false));
     yield put(setSuccess(false));
-    console.log(e.message);
+    console.log(error.message);
   }
 }
 
@@ -46,10 +47,10 @@ function* fetchIndustryList(action) {
       yield put(setLoading(false));
       yield put(setSuccess(false));
     }
-  } catch (e) {
+  } catch (error) {
     yield put(setLoading(false));
     yield put(setSuccess(false));
-    console.log(e.message);
+    console.log(error.message);
   }
 }
 
@@ -65,10 +66,10 @@ function* fetchIssuerList(action) {
       yield put(setLoading(false));
       yield put(setSuccess(false));
     }
-  } catch (e) {
+  } catch (error) {
     yield put(setLoading(false));
     yield put(setSuccess(false));
-    console.log(e.message);
+    console.log(error.message);
   }
 }
 
@@ -84,18 +85,37 @@ function* fetchTopicList(action) {
       yield put(setLoading(false));
       yield put(setSuccess(false));
     }
-  } catch (e) {
+  } catch (error) {
     yield put(setLoading(false));
     yield put(setSuccess(false));
-    console.log(e.message);
+    console.log(error.message);
   }
 }
 
+function* fetchFilterIndustryList(action) {
+  try {
+    const { data, status } = yield call(api.getUpdates, action.payload);
+    if (status === 200) {
+      yield put(setLoading(false));
+      yield put(setSuccess(true));
+      yield put(setUpdates(data));
+    } else {
+      yield put(setLoading(false));
+      yield put(setSuccess(false));
+    }
+  } catch (error) {
+    yield put(setLoading(false));
+    yield put(setSuccess(false));
+    yield put(setUpdates([]));
+    console.log(error.message);
+  }
+}
 function* updatesSaga() {
   yield takeLatest(GET_UPDATES, fetchUpdates);
   yield takeLatest(GET_INDUSTRY_LIST, fetchIndustryList);
   yield takeLatest(GET_ISSUER_LIST, fetchIssuerList);
   yield takeLatest(GET_TOPIC_LIST, fetchTopicList);
+  yield takeLatest(SET_FILTER_PAYLOAD, fetchFilterIndustryList);
 }
 
 export default updatesSaga;

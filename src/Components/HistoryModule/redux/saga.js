@@ -16,8 +16,8 @@ function* fetchCompanyList(action) {
       yield put(setCompanyList(data));
     } else {
     }
-  } catch (e) {
-    console.log(e.message);
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
@@ -28,8 +28,8 @@ function* fetchLicenseList(action) {
       yield put(setLicenseList(data));
     } else {
     }
-  } catch (e) {
-    console.log(e.message);
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
@@ -41,10 +41,10 @@ function* fetchHistoryList(action) {
       yield put(setHistoryList(data));
       yield put(setSuccess(true));
     } 
-  } catch (e) {
+  } catch (error) {
     yield put(setHistoryList([]));
     yield put(setSuccess(true));
-    console.log(e.message);
+    console.log(error.message);
   }
 }
 

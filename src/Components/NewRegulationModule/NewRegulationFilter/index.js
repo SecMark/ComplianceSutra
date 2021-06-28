@@ -7,10 +7,13 @@ import {
   getIndustryList,
   getIssuerList,
   getTopicList,
+  setFilterPayload,
   setIndustry,
+  setIsFilter,
   setIssuer,
   setTopic,
 } from "../redux/actions";
+import moment from "moment";
 
 import "./style.css";
 
@@ -18,6 +21,7 @@ const NewRegulationFilter = ({ label }) => {
   const [listOfIndustries, setListOfIndustry] = useState([]);
   const [listOfIssuers, setListOfIssuers] = useState([]);
   const [listOfTopic, setListOfTopic] = useState([]);
+  const [isAllInputFilled, setIsAllInputFilled] = useState(false);
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -71,8 +75,39 @@ const NewRegulationFilter = ({ label }) => {
     setListOfTopic([...setArrayOfObjectInList]);
   }, [state.auth.loginInfo?.UserID]);
 
+  useEffect(() => {
+    if (
+      state.UpdatesReducer.from !== "" &&
+      state.UpdatesReducer.to !== "" &&
+      state.UpdatesReducer.industry !== "" &&
+      state.UpdatesReducer.issuer !== "" &&
+      state.UpdatesReducer.topic !== ""
+    ) {
+      setIsAllInputFilled(true);
+    } else {
+      setIsAllInputFilled(false);
+    }
+  }, [state.UpdatesReducer]);
+
   const getResultByFilter = () => {
-    console.log(state.UpdatesReducer);
+    const filterRequestPayload = {
+      userID: state.auth.loginInfo?.UserID,
+      industry: state.UpdatesReducer.industry,
+      topic: state.UpdatesReducer.topic,
+      regbodies: state.UpdatesReducer.issuer,
+      submissionfrom: moment(
+        state.UpdatesReducer.from.join("-"),
+        "DD-M-YYYY"
+      ).format("YYYY-MM-DD"),
+      submissionto: moment(
+        state.UpdatesReducer.to.join("-"),
+        "DD-M-YYYY"
+      ).format("YYYY-MM-DD"),
+      flag: constant.filterFlag,
+    };
+
+    dispatch(setFilterPayload(filterRequestPayload));
+    dispatch(setIsFilter(true));
   };
 
   return (
@@ -129,9 +164,15 @@ const NewRegulationFilter = ({ label }) => {
         />
       </div>
 
-      <button className="view-updates-active" onClick={getResultByFilter}>
-        View Updates
-      </button>
+      {isAllInputFilled ? (
+        <button className="view-updates-active" onClick={getResultByFilter}>
+          View Updates
+        </button>
+      ) : (
+        <button className="view-updates" onClick={getResultByFilter}>
+          View Updates
+        </button>
+      )}
     </div>
   );
 };

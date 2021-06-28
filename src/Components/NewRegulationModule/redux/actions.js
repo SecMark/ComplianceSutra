@@ -1,15 +1,18 @@
 import {
+  CLEAR_FILTER,
   GET_INDUSTRY_LIST,
   GET_ISSUER_LIST,
   GET_TOPIC_LIST,
   GET_UPDATES,
   IS_LOADING,
   IS_SUCCESS,
+  SET_FILTER_PAYLOAD,
   SET_FROM_DATE,
   SET_INDUSTRY,
   SET_INDUSTRY_LIST,
   SET_ISSUER,
   SET_ISSUER_LIST,
+  SET_IS_FILTER,
   SET_TOPIC,
   SET_TOPIC_LIST,
   SET_TO_DATE,
@@ -123,7 +126,19 @@ export const setLoading = (payload) => {
 
 export const setIsFilter = (payload) => {
   return {
-    type: SET_ISSUER_LIST,
+    type: SET_IS_FILTER,
+    payload,
+  };
+};
+export const clearFilter = () => {
+  return {
+    type: CLEAR_FILTER,
+  };
+};
+
+export const setFilterPayload = (payload) => {
+  return {
+    type: SET_FILTER_PAYLOAD,
     payload,
   };
 };

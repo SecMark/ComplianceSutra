@@ -1,67 +1,60 @@
+import moment from "moment";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
+import { useDispatch, useSelector } from "react-redux";
+import { clearFilter, getUpdates } from "../redux/actions";
 
 import "./style.css";
 
-function NewRegulationSearchBadge(props) {
+const NewRegulationSearchBadge = (props) => {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const { industry, issuer, topic, from, to } = state.UpdatesReducer;
+
+  const clearFilterPayload = () => {
+    dispatch(clearFilter());
+    const payload = { UserID: state.auth.loginInfo?.UserID };
+    dispatch(getUpdates(payload));
+  };
   return (
     <div className="BadgesWrapper">
       <div className="BadgesDiv">
-        <span>Stock Broking</span>
+        <span>{issuer}</span>
         <div className="CloseBadge">
           <GrFormClose />
         </div>
       </div>
       <div className="BadgesDiv">
-        <span>Stock Broking</span>
+        <span>{industry}</span>
         <div className="CloseBadge">
           <GrFormClose />
         </div>
       </div>
       <div className="BadgesDiv">
-        <span>Stock Broking</span>
+        <span>{topic}</span>
         <div className="CloseBadge">
           <GrFormClose />
         </div>
       </div>
       <div className="BadgesDiv">
-        <span>Stock Broking</span>
+        <span>
+          {moment(from.join("-"), "DD-MM-YYYY").format("MMM Do YYYY") +
+            " to " +
+            moment(to.join("-"), "DD-MM-YYYY").format("MMM Do YYYY")}
+        </span>
         <div className="CloseBadge">
           <GrFormClose />
         </div>
       </div>
+
       <div className="BadgesDiv">
-        <span>Stock Broking</span>
-        <div className="CloseBadge">
-          <GrFormClose />
-        </div>
-      </div>
-      <div className="BadgesDiv">
-        <span>Stock Broking</span>
-        <div className="CloseBadge">
-          <GrFormClose />
-        </div>
-      </div>
-      <div className="BadgesDiv">
-        <span>Stock Broking</span>
-        <div className="CloseBadge">
-          <GrFormClose />
-        </div>
-      </div>
-      <div className="BadgesDiv">
-        <span>Stock Broking</span>
-        <div className="CloseBadge">
-          <GrFormClose />
-        </div>
-      </div>
-      <div className="BadgesDiv">
-        <span>Reset all</span>
+        <span onClick={clearFilterPayload}>Reset all</span>
         <div className="CloseBadge">
           <GrFormClose />
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default NewRegulationSearchBadge;

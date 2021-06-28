@@ -11,4 +11,5 @@ export default {
     errorDueToReverseDate: "Date should be after ",
     errorDueToPriorDate: "Date should not be prior to date of registration.",
   },
+  filterFlag: "A",
 };
