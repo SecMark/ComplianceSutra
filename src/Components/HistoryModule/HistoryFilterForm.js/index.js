@@ -22,6 +22,7 @@ import "./style.css";
 const HistoryFilterForm = (props) => {
   const [differenceInDays, setDifferenceInDays] = useState(0);
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
+  const [priorDate, setPriorDate] = useState("");
 
   const state = useSelector((state) => state);
   const history = useHistory();
@@ -36,7 +37,20 @@ const HistoryFilterForm = (props) => {
     actionDispatch(clearState());
     actionDispatch(getCompanyList(companyRequestPayload));
   }, [state.auth.loginInfo?.UserID]);
-
+  useEffect(() => {
+    if (state.HistoryReducer.companyList.length !== 0) {
+      const priorDates = state.HistoryReducer.companyList.map((item) =>
+        moment(item.EndDate).format("DD-MM-YYYY")
+      );
+      const priorDate = priorDates.reduce((prev, curr) => {
+        if (moment(prev).isAfter(curr)) {
+          return curr;
+        }
+        return prev;
+      });
+      setPriorDate(priorDate);
+    }
+  }, [state.HistoryReducer.companyList]);
   useEffect(() => {
     setDifferenceInDays(
       differenceInDate(state.HistoryReducer.from, state.HistoryReducer.to)
@@ -51,7 +65,9 @@ const HistoryFilterForm = (props) => {
       isSameOrAfterToday(state.HistoryReducer.from) &&
       state.HistoryReducer.to !== "" &&
       isSameOrAfterToday(state.HistoryReducer.to) &&
-      differenceInDays <= 365
+      differenceInDays <= 365 &&
+      priorDate !== "" &&
+      moment(state.HistoryReducer.from.join("-")).isAfter(priorDate)
     ) {
       setIsAllInputFilled(true);
     } else {
@@ -114,12 +130,19 @@ const HistoryFilterForm = (props) => {
           dispatch={actionDispatch}
           actionType="SELECT_FROM_DATE"
         />
-        {isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
-          !isSameOrAfterToday(state.HistoryReducer.from) && (
-            <p style={{ color: "red", fontSize: "0.8rem" }}>
-              * <small>{constant.errorMessage.errorDueToGreaterDate}</small>
-            </p>
-          )}
+        <p style={{ color: "red", fontSize: "0.8rem" }}>
+          {isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
+            !isSameOrAfterToday(state.HistoryReducer.from) && (
+              <small>
+                {"* " + constant.errorMessage.errorDueToGreaterDate}
+              </small>
+            )}
+          {priorDate !== "" &&
+            state.HistoryReducer.from.length !== 0 &&
+            moment(state.HistoryReducer.from.join("-")).isBefore(priorDate) && (
+              <small>{"* " + constant.errorMessage.errorDueToPriorDate}</small>
+            )}
+        </p>
       </div>
 
       <div className="spacing">
@@ -189,7 +212,7 @@ const HistoryFilterForm = (props) => {
         inputTitle="Select License"
         dispatch={actionDispatch}
       />
-      {isAllInputFilled && differenceInDays < 365 ? (
+      {isAllInputFilled && differenceInDays <= 365 ? (
         <button
           onClick={setFilterAndNavigateToHistoryList}
           className="filter-button-active"
