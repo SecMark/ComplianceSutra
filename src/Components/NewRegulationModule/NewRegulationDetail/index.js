@@ -20,37 +20,34 @@ const NewRegulationDetail = ({
       }}
     >
       <div className="container">
-        <div className="popup-header d-flex my-5">
-          <div className="TopContent">
-            <div className="CloseSidebar">
-              <img
-                src={closeIcon}
-                alt="close-icon"
-                onClick={changeShowRegulationDetail}
-                style={{
-                  marginRight: "2rem",
-                  cursor: "pointer",
-                }}
-              />
-            </div>
-            <div className="SidebarContent">
-              <h1> {detail?.Title}</h1>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: detail?.Gist,
-                }}
-              ></span>
-            </div>
-          </div>
-
-          <div className="SidebarFooter">
-            <p>Tags</p>
+        <img
+          src={closeIcon}
+          alt="close-icon"
+          onClick={changeShowRegulationDetail}
+          style={{
+            position: "absolute",
+            top: "0",
+            left: "0",
+            cursor: "pointer",
+          }}
+        />
+        <h3>{detail?.Title}</h3>
+        <div className="detail-popup-main-content">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: detail?.Gist,
+            }}
+          />
+        </div>
+        <div className="detail-popup-main-footer">
+          <p>Tags:</p>
+          <div className="detail-popup-main-footer-labels">
             <div className="tags">
-              <div className="tag-buttons">
-                <buton className="tags-button">Stock Marketing</buton>
-                <buton className="tags-button">Stock Marketing</buton>
-                <buton className="tags-button">Stock Marketing</buton>
-              </div>
+              <buton className="tags-button">Stock Marketing</buton>
+              <buton className="tags-button">Stock Marketing</buton>
+              <buton className="tags-button">Stock Marketing</buton>
+            </div>
+            <div className="download-button-container">
               <button className="download-file">Download File</button>
             </div>
           </div>
