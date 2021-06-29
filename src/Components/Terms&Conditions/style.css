@@ -1,0 +1,98 @@
+.Main {
+  width: 75vw;
+  padding-left: 1.5rem;
+  background-color: #fff;
+  margin: 1rem 12.5vw;
+  height: 95vh;
+  border-radius: 36px;
+  z-index: 1;
+}
+.Header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.Content {
+  padding: 3rem 0 2rem 1rem;
+  width: 100%;
+}
+.Container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 75vh;
+  text-align: initial;
+  padding-right: 2rem;
+}
+#Line {
+  background-color: #eaeaea;
+  height: 1px;
+  width: 95%;
+  margin: 0 auto;
+}
+.Header button {
+  background-color: #fff;
+  border: none;
+  color: black;
+  font-size: 25px;
+}
+.Header p {
+  font-size: 33px;
+  margin-bottom: 0;
+}
+.Desc {
+  margin: 5vh auto;
+  color: #2c2738;
+  opacity: 0.7;
+  font-size: 15px;
+}
+.Footer {
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 -3px 36px 0 rgba(67, 0, 255, 0.08);
+  width: 99%;
+}
+.Footer p {
+  height: 5vh;
+  font-size: 13px;
+  margin: 5vh;
+  color: #2c2738;
+  opacity: 0.7;
+  display: inline;
+}
+.ButtonClass {
+  width: 30vw;
+  display: flex;
+  justify-content: space-evenly;
+}
+.ButtonClass button {
+  background-color: #fff;
+  border: none;
+  height: 6vh;
+  margin: 3vh;
+  color: #6c5dd3;
+  font-weight: 500;
+  padding: 1vh 2vh;
+}
+#Agree {
+  background-color: #6c5dd3;
+  color: #fff;
+  border-radius: 7px;
+}
+.Container::-webkit-scrollbar {
+  width: 12px;
+}
+.Container::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+  margin-top: 60px;
+}
+.Container::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 10px;
+}
+.Container::-webkit-scrollbar-track {
+  box-shadow: none;
+}
