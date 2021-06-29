@@ -14,6 +14,7 @@ import {
   GET_TOPIC_LIST,
   GET_UPDATES,
   SET_FILTER_PAYLOAD,
+  SET_SEARCH,
 } from "./types";
 
 function* fetchUpdates(action) {
@@ -110,12 +111,33 @@ function* fetchFilterIndustryList(action) {
     console.log(error.message);
   }
 }
+
+function* setSearchTextAndFetchIndustryList(action) {
+  try {
+    const { data, status } = yield call(api.getUpdates, action.payload);
+    if (status === 200) {
+      yield put(setLoading(false));
+      yield put(setSuccess(true));
+      yield put(setUpdates(data));
+    } else {
+      yield put(setLoading(false));
+      yield put(setSuccess(false));
+    }
+  } catch (error) {
+    yield put(setLoading(false));
+    yield put(setSuccess(false));
+    yield put(setUpdates([]));
+    console.log(error.message);
+  }
+}
+
 function* updatesSaga() {
   yield takeLatest(GET_UPDATES, fetchUpdates);
   yield takeLatest(GET_INDUSTRY_LIST, fetchIndustryList);
   yield takeLatest(GET_ISSUER_LIST, fetchIssuerList);
   yield takeLatest(GET_TOPIC_LIST, fetchTopicList);
   yield takeLatest(SET_FILTER_PAYLOAD, fetchFilterIndustryList);
+  yield takeLatest(SET_SEARCH, setSearchTextAndFetchIndustryList);
 }
 
 export default updatesSaga;

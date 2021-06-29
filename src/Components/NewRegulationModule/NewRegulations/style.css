@@ -30,6 +30,7 @@
   z-index: 1;
   background-color: white;
   transition: all 500ms ease;
+  overflow-y: scroll;
 }
 
 .new-regulation-container .row {
@@ -105,6 +106,18 @@ h2.main-title img {
   color: #2c2738;
 }
 
+.description-text-search-active {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #b2b2b2;
+}
+
 .license-code {
   border: none;
   border-radius: 2px;
@@ -125,6 +138,18 @@ h2.main-title img {
   color: #575757;
 }
 
+.new-regulation-title-search-active {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #b2b2b2;
+}
+
 .license-number {
   font-family: Poppins;
   font-size: 10px;
@@ -138,6 +163,19 @@ h2.main-title img {
   margin-bottom: 10px;
 }
 
+.license-number-active {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #b2b2b2;
+  margin-bottom: 10px;
+}
+
 .date {
   font-size: 12px;
   font-weight: 500;
@@ -147,6 +185,17 @@ h2.main-title img {
   letter-spacing: 0.24px;
   text-align: right;
   color: #202020;
+}
+
+.date-search-active {
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: right;
+  color: #b2b2b2;
 }
 
 h2.new-regulation-title {
@@ -175,6 +224,26 @@ p.description-text {
   letter-spacing: 0.2px;
   text-align: left;
   color: #2c2738;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  max-width: calc(100% - 100px);
+}
+
+p.description-text-search-active {
+  margin: 4px 0 10px;
+  object-fit: contain;
+  opacity: 0.7;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #b2b2b2;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -248,7 +317,7 @@ p.description-text {
   border-radius: 2px;
   background-color: #fcf3cd;
   margin-right: 10px;
-  padding: 2px;
+  padding: 4px;
 }
 
 .download-file {
@@ -264,6 +333,7 @@ p.description-text {
   letter-spacing: 0.01px;
   text-align: right;
   color: #ffffff;
+  padding: 4px 6px;
 }
 
 .new-regulation-side-bar .detail-popup {
@@ -288,6 +358,7 @@ p.description-text {
 
 .SidebarFooter {
   flex-shrink: 0;
+  margin-top: -10px;
 }
 .SidebarContent {
   display: flex;

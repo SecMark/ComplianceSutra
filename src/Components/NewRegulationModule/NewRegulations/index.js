@@ -7,7 +7,12 @@ import { withRouter } from "react-router";
 import { ImSearch } from "react-icons/im";
 
 import { useDispatch, useSelector } from "react-redux";
-import { clearFilter, getUpdates } from "../redux/actions";
+import {
+  clearFilter,
+  getUpdates,
+  setIsSearch,
+  setSearchText,
+} from "../redux/actions";
 import Loading from "../../../CommonModules/sharedComponents/Loader";
 import moment from "moment";
 
@@ -23,6 +28,7 @@ const NewRegulations = (props) => {
   const [isShowFilter, setIsShowFilter] = useState(false);
   const [isShowRegulationDetail, setIsShowRegulationDetail] = useState(false);
   const [newRegulationDetail, setNewRegulationDetail] = useState({});
+  const [searchValue, setSearchValue] = useState("");
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -35,14 +41,17 @@ const NewRegulations = (props) => {
   }, []);
 
   useEffect(() => {
-    const payload = { UserID: state.auth.loginInfo?.UserID };
-    dispatch(getUpdates(payload));
+    fetchAndSetUpdates();
   }, [state.auth.loginInfo?.UserID]);
 
   useEffect(() => {
     setIsShowFilter(false);
   }, [isSuccess]);
 
+  const fetchAndSetUpdates = () => {
+    const payload = { UserID: state.auth.loginInfo?.UserID };
+    dispatch(getUpdates(payload));
+  };
   const changeShowRegulationDetail = () => {
     setIsShowRegulationDetail(!isShowRegulationDetail);
   };
@@ -62,6 +71,23 @@ const NewRegulations = (props) => {
     setIsShowRegulationDetail(!isShowRegulationDetail);
   };
 
+  const setSeachTextAndFetchIndustryList = (event) => {
+    const { value } = event.target;
+    if (value !== "") {
+      const searchPayload = {
+        UserID: state.auth.loginInfo?.UserID,
+        flag: value,
+      };
+      setSearchValue(value);
+      dispatch(setSearchText(searchPayload));
+      dispatch(setIsSearch(true));
+    } else {
+      setSearchValue("");
+      dispatch(setIsSearch(false));
+      fetchAndSetUpdates();
+    }
+  };
+
   const getHighlightedText = (text, highlight) => {
     const parts = text.split(new RegExp(`(${highlight})`, "gi"));
     return (
@@ -72,7 +98,7 @@ const NewRegulations = (props) => {
             key={i}
             style={
               part.toLowerCase() === highlight.toLowerCase()
-                ? { fontWeight: "bold" }
+                ? { fontWeight: "bold", color: "#000" }
                 : {}
             }
           >
@@ -144,6 +170,7 @@ const NewRegulations = (props) => {
                   type="text"
                   className="form-control"
                   placeholder="Search for updates"
+                  onChange={setSeachTextAndFetchIndustryList}
                 />
               </div>
             </div>
@@ -162,24 +189,52 @@ const NewRegulations = (props) => {
                     updateList?.map((updates) => (
                       <div className="list">
                         <h2
-                          className="new-regulation-title"
+                          className={
+                            state.UpdatesReducer.isSearch
+                              ? "new-regulation-title-search-active"
+                              : "new-regulation-title"
+                          }
                           onClick={() =>
                             fetchAndSetNewRegulationDetail(updates.id)
                           }
                         >
-                          {updates.Title}
+                          {updates?.Title &&
+                            getHighlightedText(updates.Title, searchValue)}
                         </h2>
                         <div className="description">
-                          <p className="description-text">{updates.Gist}</p>
-                          <span className="date">
-                            {moment(updates.Submissiondate).format("Do MMM")}
+                          <p
+                            className={
+                              state.UpdatesReducer.isSearch
+                                ? "description-text-search-active"
+                                : "description-text"
+                            }
+                          >
+                            {updates?.Gist &&
+                              getHighlightedText(updates.Gist, searchValue)}
+                          </p>
+                          <span
+                            className={
+                              state.UpdatesReducer.isSearch
+                                ? "date-search-active"
+                                : "date"
+                            }
+                          >
+                            {updates?.Submissiondate &&
+                              moment(updates.Submissiondate).format("Do MMM")}
                           </span>
                         </div>
                         <button className="license-code">
-                          {updates.Regbodies}
+                          {updates?.Regbodies && updates.Regbodies}
                         </button>
-                        <span className="license-number">
-                          {updates.CircularNo}
+                        <span
+                          className={
+                            state.UpdatesReducer.isSearch
+                              ? "license-number-active"
+                              : "license-number"
+                          }
+                        >
+                          {updates?.CircularNo &&
+                            getHighlightedText(updates.CircularNo, searchValue)}
                         </span>
                       </div>
                     ))
