@@ -1,4 +1,5 @@
 import {
+  CLEAR_BADGE,
   CLEAR_FILTER,
   IS_LOADING,
   IS_SUCCESS,

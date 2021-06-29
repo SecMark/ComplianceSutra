@@ -2,7 +2,7 @@ import moment from "moment";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
-import { clearFilter, getUpdates } from "../redux/actions";
+import { clearFilter, getUpdates, setIsFilter } from "../redux/actions";
 
 import "./style.css";
 
@@ -12,9 +12,9 @@ const NewRegulationSearchBadge = (props) => {
   const { industry, issuer, topic, from, to } = state.UpdatesReducer;
 
   const clearFilterPayload = () => {
-    dispatch(clearFilter());
     const payload = { UserID: state.auth.loginInfo?.UserID };
     dispatch(getUpdates(payload));
+    dispatch(setIsFilter(false));
   };
   return (
     <div className="BadgesWrapper">

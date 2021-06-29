@@ -1,4 +1,5 @@
 import {
+  CLEAR_BADGE,
   CLEAR_FILTER,
   GET_INDUSTRY_LIST,
   GET_ISSUER_LIST,
@@ -140,5 +141,11 @@ export const setFilterPayload = (payload) => {
   return {
     type: SET_FILTER_PAYLOAD,
     payload,
+  };
+};
+
+export const clearBadge = () => {
+  return {
+    type: CLEAR_BADGE,
   };
 };

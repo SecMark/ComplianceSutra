@@ -33,11 +33,15 @@ const NewRegulations = (props) => {
   useEffect(() => {
     dispatch(clearFilter());
   }, []);
-  
+
   useEffect(() => {
     const payload = { UserID: state.auth.loginInfo?.UserID };
     dispatch(getUpdates(payload));
   }, [state.auth.loginInfo?.UserID]);
+
+  useEffect(() => {
+    setIsShowFilter(false);
+  }, [isSuccess]);
 
   const changeShowRegulationDetail = () => {
     setIsShowRegulationDetail(!isShowRegulationDetail);
