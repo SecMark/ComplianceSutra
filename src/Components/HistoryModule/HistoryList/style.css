@@ -189,7 +189,9 @@
 .filter-popup-mobile--container {
   position: relative;
 }
-
+.filter-popup-mobile {
+  display: none;
+}
 .close--data-popup {
   position: absolute;
   top: 1rem;
