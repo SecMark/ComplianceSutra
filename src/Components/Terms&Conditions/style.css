@@ -41,7 +41,7 @@
   color: black;
   font-size: 25px;
 }
-.Header p {
+.Header h3 {
   font-size: 33px;
   margin-bottom: 0;
 }
@@ -55,10 +55,12 @@
   display: flex;
   justify-content: space-between;
   box-shadow: 0 -3px 36px 0 rgba(67, 0, 255, 0.08);
-  width: 99%;
+  width: 75vw;
+  margin-left: -2.5rem;
+  border-radius: 6px;
 }
 .Footer p {
-  height: 5vh;
+  height: 6vh;
   font-size: 13px;
   margin: 5vh;
   color: #2c2738;
@@ -97,4 +99,92 @@
 }
 .Container::-webkit-scrollbar-track {
   box-shadow: none;
+}
+
+/* MOBILE VIEW */
+
+@media screen and (max-width: 1100px) {
+  .Main {
+    width: 80vw;
+    height: 98vh;
+  }
+  .Desc {
+    font-size: 14px;
+  }
+  .Footer p {
+    display: none;
+  }
+  .Header h3 {
+    font-size: 26px;
+  }
+  .Container {
+    height: 78vh;
+  }
+  .Footer {
+    width: 75vw;
+    height: 8%;
+    display: flex;
+    justify-content: center;
+    margin-left: -1.5rem;
+  }
+  .ButtonClass {
+    width: 75vw;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .Container {
+    height: 80vh;
+  }
+}
+@media screen and (max-width: 540px) {
+  .Main {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+  .Content {
+    padding: 0;
+  }
+  .Desc {
+    font-size: 12px;
+  }
+  .Header {
+    padding: 1rem 0px 1px 0rem;
+  }
+  .Header h3 {
+    font-size: 20px;
+  }
+
+  .Container {
+    height: 90vh;
+    padding-right: 1rem;
+  }
+  .Footer {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin-left: -2rem;
+  }
+  .ButtonClass {
+    width: 95vw;
+  }
+  .ButtonClass button {
+    width: 60%;
+    height: auto;
+    margin: 1rem 2rem;
+  }
+  #Agree {
+    width: 70vw;
+    margin: 1rem 0;
+    height: 3rem;
+  }
+}
+@media screen and (max-width: 380px) {
+  .Container {
+    height: 85vh;
+  }
+  #Agree {
+    height: 3.4rem;
+  }
 }

@@ -10,7 +10,7 @@ const Terms = ({ show, setShow, closeShow }) => {
           <div className="Content">
             <div className="Container">
               <div className="Header">
-                <p>Terms & Conditions</p>
+                <h3>Terms & Conditions</h3>
                 <button onClick={setShow}>
                   <img src={cross} alt="" />
                 </button>
@@ -212,11 +212,13 @@ const Terms = ({ show, setShow, closeShow }) => {
             </div>
             <div id="Line"></div>
             <div className="Footer">
-              <p>Last Updated : 24th May 2021</p>
+              <p>
+                Last Updated : <b>24th May 2021</b>
+              </p>
               <div className="ButtonClass">
-                <button>Disagree</button>
+                <button>DISAGREE</button>
                 <button id="Agree" onClick={setShow}>
-                  Agree & Continue
+                  AGREE & CONTINUE
                 </button>
               </div>
             </div>
