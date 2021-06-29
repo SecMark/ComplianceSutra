@@ -1,7 +1,7 @@
 .searchable {
   width: 274px !important;
 }
-label {
+.filter-form label {
   margin-top: 15px;
   font-family: Poppins;
   font-size: 12px;
