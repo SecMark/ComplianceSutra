@@ -74,8 +74,6 @@
     ]
   },
   "devDependencies": {
-    "file-loader": "^6.2.0",
-    "html-loader": "^2.1.2",
-    "webpack": "^4.44.2"
+    "file-loader": "^6.2.0"
   }
 }
