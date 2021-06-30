@@ -151,6 +151,7 @@ const HistoryFilterForm = (props) => {
           name="from"
           dispatch={actionDispatch}
           actionType="SELECT_FROM_DATE"
+          pageName="historyCompliance"
         />
         <p style={{ color: "red", fontSize: "0.8rem" }}>
           {isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
@@ -179,6 +180,7 @@ const HistoryFilterForm = (props) => {
           name="to"
           dispatch={actionDispatch}
           actionType="SELECT_TO_DATE"
+          pageName="historyCompliance"
         />
         <p className="warning">
           {differenceInDays > 365 && (

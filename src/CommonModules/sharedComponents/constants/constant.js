@@ -2,6 +2,7 @@ export default {
   companyEntityId: "C",
   licenseEntityId: "L",
   historyEntityId: "H",
+  flag: "1",
   errorMessage: {
     errorDueToGreaterDate:
       "Date cannot be later than current date. Please change the selected date.",
@@ -10,4 +11,5 @@ export default {
     errorDueToReverseDate: "Date should be after ",
     errorDueToPriorDate: "Date should not be prior to date of registration.",
   },
+  filterFlag: "A",
 };
