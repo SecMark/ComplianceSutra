@@ -20,6 +20,7 @@ import SIGNUPPOP from "../Components/TeamMemberFlow/index";
 import CompanyDetails from "../Components/OnBording/SubModules/CompanyDetails";
 import VerifyOTPCO from "../Components/OnBording/SubModules/VerifyOTP";
 import YouAreDone from "../Components/OnBording/SubModules/YourAreDone";
+import Help from "../Components/HelpSection/Help";
 // import loginComtech from "../Components/LoginComtech";
 // import ForgotPasswordComtech from "../Components/ForgotPasswordComtech";
 // import NewPasswordComtech from "../Components/NewPasswordComtech";
@@ -150,6 +151,7 @@ export default function AppRouter() {
           />
 
           <Route exact path="/compliance-history" component={HistoryFilter} />
+          <Route exact path="/help" component={Help} />
           <Route
             exact
             path="/compliance-history-list"

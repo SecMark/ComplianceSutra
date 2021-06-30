@@ -28,7 +28,7 @@ import { actions as loginActions } from "../../../Components/Authectication/redu
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
-  
+
   const dispatch = useDispatch();
 
   const [openProfile, setOpenProfile] = useState(false);
@@ -172,7 +172,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             />
           </div>
         </div>
-        <div className="devider-line"></div>
+        <div className="devider-line">Help</div>
         <div className="second-icon-list">
           <div
             className={
