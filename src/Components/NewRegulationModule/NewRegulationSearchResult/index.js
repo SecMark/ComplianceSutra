@@ -4,7 +4,8 @@ import "./style.css";
 function NewRegulationSearchResult(props) {
   return (
     <div className="search-result">
-      <h2 className="search-title">Search Result</h2>
+      <h2 className="search-title">Search Results</h2>
+      <hr className="seractTitleHr" />
     </div>
   );
 }

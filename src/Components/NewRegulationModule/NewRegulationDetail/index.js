@@ -1,4 +1,5 @@
 import React from "react";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
 
 const NewRegulationDetail = ({
@@ -43,12 +44,17 @@ const NewRegulationDetail = ({
           <p>Tags:</p>
           <div className="detail-popup-main-footer-labels">
             <div className="tags">
-              <buton className="tags-button">Stock Marketing</buton>
-              <buton className="tags-button">Stock Marketing</buton>
-              <buton className="tags-button">Stock Marketing</buton>
-            </div>
-            <div className="download-button-container">
-              <button className="download-file">Download File</button>
+              <div className="tag-buttons">
+                <buton className="tags-button">{detail?.Industry}</buton>
+                <buton className="tags-button">{detail?.Topic}</buton>
+                <buton className="tags-button">{detail?.Regbodies}</buton>
+              </div>
+              <a
+                href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${detail?.id}&flag=downloadtaskfiles&file=${detail?.c_file}`}
+                className="download-file"
+              >
+                Download File
+              </a>
             </div>
           </div>
         </div>

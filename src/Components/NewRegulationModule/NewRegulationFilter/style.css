@@ -2,7 +2,7 @@
   /* width: 274px !important; */
   width: 100%;
 }
-label {
+.filter-form label {
   margin-top: 15px;
   font-family: Poppins;
   font-size: 12px;

@@ -7,6 +7,7 @@ import {
   getIndustryList,
   getIssuerList,
   getTopicList,
+  setBadges,
   setFilterPayload,
   setIndustry,
   setIsFilter,
@@ -38,7 +39,7 @@ const NewRegulationFilter = ({ label }) => {
     //get issuer list.
     dispatch(getIndustryList(industryListRequestPayload));
     //set industry list for searchable dropdown.
-    const setArrayOfObjectInList = industryList.map((item) => {
+    const setArrayOfObjectInList = industryList?.map((item) => {
       return { value: item.Industry, label: item.Industry };
     });
     setListOfIndustry([...setArrayOfObjectInList]);
@@ -106,6 +107,20 @@ const NewRegulationFilter = ({ label }) => {
       flag: constant.filterFlag,
     };
 
+    const setBagdesPayload = {
+      industry: state.UpdatesReducer.industry,
+      topic: state.UpdatesReducer.topic,
+      issuer: state.UpdatesReducer.issuer,
+      fromAndToDate: `${moment(
+        state.UpdatesReducer.from.join("-"),
+        "DD-M-YYYY"
+      ).format("MMM Do YYYY")} to ${moment(
+        state.UpdatesReducer.to.join("-"),
+        "DD-M-YYYY"
+      ).format("MMM Do YYYY")}`,
+    };
+
+    dispatch(setBadges(setBagdesPayload));
     dispatch(setFilterPayload(filterRequestPayload));
     dispatch(setIsFilter(true));
   };

@@ -7,6 +7,8 @@ import {
   GET_UPDATES,
   IS_LOADING,
   IS_SUCCESS,
+  REMOVE_BADGES,
+  SET_BADGES,
   SET_FILTER_PAYLOAD,
   SET_FROM_DATE,
   SET_INDUSTRY,
@@ -14,10 +16,13 @@ import {
   SET_ISSUER,
   SET_ISSUER_LIST,
   SET_IS_FILTER,
+  SET_IS_SEARCH,
+  SET_SEARCH,
   SET_TOPIC,
   SET_TOPIC_LIST,
   SET_TO_DATE,
   SET_UPDATES,
+  UPDATE_FILTER,
 } from "./types";
 
 export const setUpdates = (payload) => {
@@ -147,5 +152,40 @@ export const setFilterPayload = (payload) => {
 export const clearBadge = () => {
   return {
     type: CLEAR_BADGE,
+  };
+};
+
+export const setSearchText = (payload) => {
+  return {
+    type: SET_SEARCH,
+    payload,
+  };
+};
+
+export const setIsSearch = (payload) => {
+  return {
+    type: SET_IS_SEARCH,
+    payload,
+  };
+};
+
+export const setBadges = (payload) => {
+  return {
+    type: SET_BADGES,
+    payload,
+  };
+};
+
+export const removeBadge = (payload) => {
+  return {
+    type: REMOVE_BADGES,
+    payload,
+  };
+};
+
+export const updateFilter = (payload) => {
+  return {
+    type: UPDATE_FILTER,
+    payload,
   };
 };
