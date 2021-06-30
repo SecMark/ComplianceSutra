@@ -321,12 +321,24 @@ const NewRegulations = (props) => {
                             );
                           }}
                         >
-                          <h2 className="new-regulation-title">
+                          <h2
+                            className={
+                              state.UpdatesReducer.isSearch
+                                ? "new-regulation-title-search-active"
+                                : "new-regulation-title"
+                            }
+                          >
                             {updates?.Title &&
                               getHighlightedText(updates.Title, searchValue)}
                           </h2>
                           <div className="description">
-                            <p className="description-text">
+                            <p
+                              className={
+                                state.UpdatesReducer.isSearch
+                                  ? "description-text-search-active"
+                                  : "description-text"
+                              }
+                            >
                               {" "}
                               {updates?.Gist_Text &&
                                 getHighlightedText(
@@ -340,7 +352,13 @@ const NewRegulations = (props) => {
                               <button className="license-code">
                                 {updates?.Regbodies && updates.Regbodies}
                               </button>
-                              <span className="license-number">
+                              <span
+                                className={
+                                  state.UpdatesReducer.isSearch
+                                    ? "license-number-active"
+                                    : "license-number"
+                                }
+                              >
                                 {updates?.CircularNo &&
                                   getHighlightedText(
                                     updates.CircularNo,
