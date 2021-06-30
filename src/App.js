@@ -17,9 +17,9 @@ function MainApp() {
   console.warn = (message, ...args) => {};
   console.warn = () => {};
   const browserHistory = createHashHistory();
-  const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
-  console.log(userID);
+
+  const userID = state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID
+
   useEffect(() => {
     const interval = setInterval(() => {
       try {

@@ -86,13 +86,31 @@ const HistoryFilterForm = (props) => {
   }, [state.HistoryReducer.numberOfSelectedCompanies]);
 
   const setFilterAndNavigateToHistoryList = () => {
+    let historyListPayload = {};
+    if (state.HistoryReducer.from !== "" && state.HistoryReducer.to !== "") {
+      historyListPayload = {
+        entityid: constant.historyEntityId,
+        userID: state.auth.loginInfo?.UserID,
+        usertype: state.auth.loginInfo?.UserType,
+        startDate:
+          state.HistoryReducer.from &&
+          moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+        endDate:
+          state.HistoryReducer.to &&
+          moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+      };
+    }
     if (
       state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
       state.HistoryReducer.numberOfSelectedLicense !== 0 &&
       state.HistoryReducer.from !== "" &&
       state.HistoryReducer.to !== ""
     ) {
-      const historyListPayload = {
+      historyListPayload = {
         entityid: constant.historyEntityId,
         userID: state.auth.loginInfo?.UserID,
         usertype: state.auth.loginInfo?.UserType,
@@ -118,10 +136,10 @@ const HistoryFilterForm = (props) => {
             "YYYY-MM-DD"
           ),
       };
-      actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
-      actionDispatch(getHistoryList(historyListPayload));
-      history.push("/compliance-history-list");
     }
+    actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
+    actionDispatch(getHistoryList(historyListPayload));
+    history.push("/compliance-history-list");
   };
   return (
     <>
@@ -133,6 +151,7 @@ const HistoryFilterForm = (props) => {
           name="from"
           dispatch={actionDispatch}
           actionType="SELECT_FROM_DATE"
+          pageName="historyCompliance"
         />
         <p style={{ color: "red", fontSize: "0.8rem" }}>
           {isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
@@ -161,6 +180,7 @@ const HistoryFilterForm = (props) => {
           name="to"
           dispatch={actionDispatch}
           actionType="SELECT_TO_DATE"
+          pageName="historyCompliance"
         />
         <p className="warning">
           {differenceInDays > 365 && (

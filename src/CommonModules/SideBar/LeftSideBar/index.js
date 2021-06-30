@@ -8,6 +8,7 @@ import sidebarActive from "../../../assets/Icons/sidebar-active.png";
 import sidebarRightActive from "../../../assets/Icons/task_alt_black_24dp (1).png";
 import dashboardBlackActive from "../../../assets/Icons/dashboard_black.png";
 import dashboardGreyActive from "../../../assets/Icons/dashboard_grey.png";
+import updateActive from "../../../assets/Icons/update_active.png";
 
 import historyListActive from "../../../assets/Icons/history_active.png";
 import historyListInActive from "../../../assets/Icons/history_unactive.png";
@@ -60,6 +61,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/compliance-history");
     } else if (currentActiveMenu === "complianceHistoryList") {
       history.push("/compliance-history-list");
+    } else if (currentActiveMenu === "newRegulations") {
+      history.push("/new-regulations");
     }
   };
 
@@ -167,6 +170,30 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                 state.adminMenu.currentMenu === "complianceHistoryList"
                   ? historyListActive
                   : historyListInActive
+              }
+              alt="sidebar Bell"
+            />
+          </div>
+
+          <div
+            className={
+              !openProfile &&
+              state &&
+              state.adminMenu.currentMenu === "newRegulations"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="complianceHistoryList"
+              onClick={() => onMenuClick("newRegulations")}
+              src={
+                !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "newRegulations"
+                  ? updateActive
+                  : updateActive
               }
               alt="sidebar Bell"
             />
