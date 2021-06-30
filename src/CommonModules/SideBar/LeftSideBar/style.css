@@ -180,7 +180,7 @@
   display: flex;
 }
 .first-icon-list {
-  margin-top: 144px;
+  padding-top: 48px !important;
 }
 .devider-line {
   width: 48px;

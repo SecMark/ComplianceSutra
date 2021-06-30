@@ -38,6 +38,7 @@ import MobileLeftSidebar from "../MobileLeftSidebar";
 import axios, { post } from "axios";
 import { withRouter } from "react-router-dom";
 import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png";
+import { BsCheckCircle, BsClock } from "react-icons/bs";
 
 import TextareaAutosize from "react-textarea-autosize";
 function RightSideGrid({
@@ -87,6 +88,8 @@ function RightSideGrid({
   const [showUserToolTip, setShowUserToolTip] = useState("");
   const [today, setToday] = useState(new Date());
   const [emailAvaliableCheck, setEmailAvaliableCheck] = useState(false);
+
+  const [activeView, setActiveView] = useState("status");
 
   const getTaskById =
     state &&
@@ -1084,11 +1087,11 @@ function RightSideGrid({
 
   const onHBMenu = () => {
     const drawerParent = document.getElementById("sideBarParent");
-      const drawerChild = document.getElementById("sideBarChild");
-      if (drawerParent) {
-         drawerParent.classList.add("overlay");
-         drawerChild.style.left = "0%";
-      }
+    const drawerChild = document.getElementById("sideBarChild");
+    if (drawerParent) {
+      drawerParent.classList.add("overlay");
+      drawerChild.style.left = "0%";
+    }
   };
 
   return (
@@ -1097,13 +1100,13 @@ function RightSideGrid({
       {!isTaskListOpen && (
         <div className="all-companies-task-grid ">
           {isMobile && (
-             <div id="sideBarParent" className="">
-             <div id="sideBarChild" className="leftSideBarFixed">
-            <MobileLeftSidebar
-              className="d-block d-sm-none"
-              close={() => closeMobileSidebar()}
-            />
-            </div>
+            <div id="sideBarParent" className="">
+              <div id="sideBarChild" className="leftSideBarFixed">
+                <MobileLeftSidebar
+                  className="d-block d-sm-none"
+                  close={() => closeMobileSidebar()}
+                />
+              </div>
             </div>
           )}
 
@@ -1128,54 +1131,64 @@ function RightSideGrid({
               </div>
             </div>
           </div>
+          {/* statistics start */}
+          <div className="statistics-container">
+            <div className="statistics-title">
+              <span>This Month</span>
+              <h3>Things are on track!</h3>
+            </div>
+            <div className="statistics-detail">
+              <div className="complete">
+                <div className="complete-icon">
+                  <BsCheckCircle />
+                </div>
+                <div className="complete-statistics">
+                  <span>Completed</span>
+                  <h3>24</h3>
+                </div>
+              </div>
+              <div className="scheduled">
+                <div className="scheduled-icon">
+                  <BsClock />
+                </div>
+                <div className="scheduled-statistics">
+                  <span>Scheduled</span>
+                  <h3>24</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* statistics end*/}
+
           <div className="d-flex mobile-height">
             <div className="companies-sub-title w-25 d-none d-sm-block">
               Tasks
             </div>
             {!searchBoxShowMobile && (
-              <div className="companies-sub-title w-25 d-block d-sm-none">
-                Tasks
-              </div>
+              <>
+                <div className="companies-sub-title w-25 d-block d-sm-none">
+                  Tasks
+                </div>
+              </>
             )}
             <div className="w-75 d-none d-sm-block">
-              {!searchBoxShow && (
-                <div
-                  className="only-search-icon"
-                  onClick={() => setsearchBoxShow(true)}
-                >
-                  <img src={searchIcon} alt="sidebar Check Icon" />
+              <div className="searchBox d-none d-sm-block" ref={innerSearch}>
+                <div className="input-group form-group search-group">
+                  <img
+                    className="IconGray"
+                    src={searchIcon}
+                    alt="search Icon"
+                  />
+                  <input
+                    className="form-control search-control"
+                    type="text"
+                    placeholder="Search for team, licenses, Companies etc"
+                    onChange={(e) => handleSearch(e.target.value)}
+                    value={searchValue}
+                  />
                 </div>
-              )}
-              {searchBoxShow && (
-                <div className="searchBox d-none d-sm-block" ref={innerSearch}>
-                  <div className="input-group form-group">
-                    <img
-                      className="IconGray"
-                      src={searchIcon}
-                      alt="search Icon"
-                    />
-                    <input
-                      className="form-control mozilla-py"
-                      type="text"
-                      placeholder="Search Tasks"
-                      onChange={(e) => handleSearch(e.target.value)}
-                      value={searchValue}
-                    />
-                    <span className="input-group-append">
-                      <button
-                        className="btn border-start-0 border-top-0 border-bottom-0 border-0 ms-n5"
-                        type="button"
-                      >
-                        <img
-                          src={closeIconGray}
-                          alt="close Icon"
-                          onClick={() => clearSearch()}
-                        />
-                      </button>
-                    </span>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
             <div
               className={
@@ -1230,9 +1243,62 @@ function RightSideGrid({
               <div className="file-title">Search Results: </div>
             )}
             {searchValue === "" && (
-              <div>
-                <div className="file-title">List</div>
-                <div className="file-title-progress"></div>
+              <div className="task-container">
+                <div className="task-view">
+                  <div>
+                    <div className="file-title">Lists</div>
+                    <div className="file-title-progress"></div>
+                  </div>
+                  <div>
+                    <div className="file-title-inactive">Calender</div>
+                  </div>
+                  <div>
+                    <div className="file-title-inactive">Board</div>
+                  </div>
+                </div>
+                <div className="View-by">
+                  <button className="view">View By</button>
+                  <button
+                    className={
+                      activeView === "status"
+                        ? "view-by-button-active"
+                        : "view-by-button"
+                    }
+                    onClick={() => setActiveView("status")}
+                  >
+                    Status
+                  </button>
+                  <button
+                    className={
+                      activeView === "license"
+                        ? "view-by-button-active"
+                        : "view-by-button"
+                    }
+                    onClick={() => setActiveView("license")}
+                  >
+                    License
+                  </button>
+                  <button
+                    className={
+                      activeView === "company"
+                        ? "view-by-button-active"
+                        : "view-by-button"
+                    }
+                    onClick={() => setActiveView("company")}
+                  >
+                    Company
+                  </button>
+                  <button
+                    className={
+                      activeView === "team"
+                        ? "view-by-button-active"
+                        : "view-by-button"
+                    }
+                    onClick={() => setActiveView("team")}
+                  >
+                    Team
+                  </button>
+                </div>
               </div>
             )}
           </div>
