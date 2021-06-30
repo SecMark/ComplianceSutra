@@ -39,7 +39,7 @@ const NewRegulationFilter = ({ label }) => {
     //get issuer list.
     dispatch(getIndustryList(industryListRequestPayload));
     //set industry list for searchable dropdown.
-    const setArrayOfObjectInList = industryList.map((item) => {
+    const setArrayOfObjectInList = industryList?.map((item) => {
       return { value: item.Industry, label: item.Industry };
     });
     setListOfIndustry([...setArrayOfObjectInList]);
