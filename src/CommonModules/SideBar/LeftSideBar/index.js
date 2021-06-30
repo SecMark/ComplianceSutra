@@ -199,7 +199,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             />
           </div>
         </div>
-        <div className="devider-line"></div>
+        <div className="devider-line">Help</div>
         <div className="second-icon-list">
           <div
             className={

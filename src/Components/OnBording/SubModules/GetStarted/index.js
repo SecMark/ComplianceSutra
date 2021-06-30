@@ -6,7 +6,7 @@ import secmark from "../../../../assets/Images/secmark.png";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../SideBar";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { isEmail } from "../../utils.js";
 import { actions as emailActions } from "../../../OnBording/redux/actions";
 import { toast } from "react-toastify";
@@ -179,6 +179,9 @@ function GetStart({ history }) {
                         </Modal>
                         Terms & Conditions
                       </button>
+                      {/* <button>
+                        <Link to="/help">Help</Link>
+                      </button> */}
                     </label>
                   </div>
 

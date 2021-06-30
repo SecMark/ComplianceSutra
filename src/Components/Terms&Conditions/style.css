@@ -51,6 +51,12 @@
   opacity: 0.7;
   font-size: 15px;
 }
+.List {
+  color: #2c2738;
+  opacity: 0.7;
+  font-size: 15px;
+  margin: 1vh auto;
+}
 .Footer {
   display: flex;
   justify-content: space-between;
