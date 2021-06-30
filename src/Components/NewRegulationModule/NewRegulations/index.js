@@ -79,6 +79,7 @@ const NewRegulations = (props) => {
 
   useEffect(() => {
     setIsShowFilter(false);
+    setIsShowMobileFilter(false);
   }, [isSuccess]);
 
   const fetchAndSetUpdates = () => {
@@ -354,9 +355,9 @@ const NewRegulations = (props) => {
                               }
                             >
                               {" "}
-                              {updates?.Gist_Text &&
+                              {updates?.GistText &&
                                 getHighlightedText(
-                                  updates?.Gist_Text,
+                                  updates?.GistText,
                                   searchValue
                                 )}
                             </p>
@@ -505,9 +506,9 @@ const NewRegulations = (props) => {
                                       : "description-text"
                                   }
                                 >
-                                  {updates?.Gist_Text &&
+                                  {updates?.GistText &&
                                     getHighlightedText(
-                                      updates.Gist_Text,
+                                      updates.GistText,
                                       searchValue
                                     )}
                                 </p>

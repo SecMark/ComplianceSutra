@@ -15,6 +15,7 @@ import { isMobile } from "react-device-detect";
 import moment from "moment";
 import { clearState, getHistoryList, setSuccess } from "../redux/actions";
 import { withRouter } from "react-router";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 
 const HistoryList = (props) => {
   // state for mobile design
@@ -317,7 +318,7 @@ const HistoryList = (props) => {
                         <th>Approver</th>
                         <th>Due Date</th>
                         <th>status</th>
-                        <th>Download</th>
+                        <th style={{ textAlign: "center" }}>Download</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -357,18 +358,23 @@ const HistoryList = (props) => {
                           <td>
                             <button
                               className={
-                                list.Status === "Pending"
-                                  ? list.Status === "Delayed"
-                                    ? "delayed"
-                                    : "on-time"
-                                  : "pending"
+                                list.Status === "PENDING"
+                                  ? "pending"
+                                  : list.Status === "ON TIME"
+                                  ? "on-time"
+                                  : "delayed"
                               }
                             >
                               {list.Status}
                             </button>
                           </td>
-                          <td align="left">
-                            <img src={download} />
+                          <td style={{ textAlign: "center" }}>
+                            <a
+                              href={`${BACKEND_BASE_URL}//viewfiles.ashx?id=${list?.TaskId}&flag=downloadtaskfiles&file=${list?.c_file}`}
+                            >
+                              {" "}
+                              <img src={download} />{" "}
+                            </a>
                           </td>
                         </tr>
                       ))}
