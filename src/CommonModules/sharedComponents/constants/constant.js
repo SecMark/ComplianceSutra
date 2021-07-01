@@ -12,4 +12,8 @@ export default {
     errorDueToPriorDate: "Date should not be prior to date of registration.",
   },
   filterFlag: "A",
+  status: "status",
+  license: "license",
+  company: "company",
+  team: "team",
 };

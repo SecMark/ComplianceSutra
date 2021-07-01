@@ -41,6 +41,7 @@ import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png";
 import { BsCheckCircle, BsClock } from "react-icons/bs";
 
 import TextareaAutosize from "react-textarea-autosize";
+import constant from "../../../../../../CommonModules/sharedComponents/constants/constant";
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
@@ -89,7 +90,7 @@ function RightSideGrid({
   const [today, setToday] = useState(new Date());
   const [emailAvaliableCheck, setEmailAvaliableCheck] = useState(false);
 
-  const [activeView, setActiveView] = useState("status");
+  const [activeView, setActiveView] = useState(constant.status);
 
   const getTaskById =
     state &&
@@ -1260,41 +1261,41 @@ function RightSideGrid({
                   <button className="view">View By</button>
                   <button
                     className={
-                      activeView === "status"
+                      activeView === constant.status
                         ? "view-by-button-active"
                         : "view-by-button"
                     }
-                    onClick={() => setActiveView("status")}
+                    onClick={() => setActiveView(constant.status)}
                   >
                     Status
                   </button>
                   <button
                     className={
-                      activeView === "license"
+                      activeView === constant.license
                         ? "view-by-button-active"
                         : "view-by-button"
                     }
-                    onClick={() => setActiveView("license")}
+                    onClick={() => setActiveView(constant.license)}
                   >
                     License
                   </button>
                   <button
                     className={
-                      activeView === "company"
+                      activeView === constant.company
                         ? "view-by-button-active"
                         : "view-by-button"
                     }
-                    onClick={() => setActiveView("company")}
+                    onClick={() => setActiveView(constant.company)}
                   >
                     Company
                   </button>
                   <button
                     className={
-                      activeView === "team"
+                      activeView === constant.team
                         ? "view-by-button-active"
                         : "view-by-button"
                     }
-                    onClick={() => setActiveView("team")}
+                    onClick={() => setActiveView(constant.team)}
                   >
                     Team
                   </button>
