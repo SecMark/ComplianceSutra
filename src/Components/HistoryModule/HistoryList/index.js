@@ -15,6 +15,7 @@ import { isMobile } from "react-device-detect";
 import moment from "moment";
 import { clearState, getHistoryList, setSuccess } from "../redux/actions";
 import { withRouter } from "react-router";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 
 const HistoryList = (props) => {
   // state for mobile design
@@ -52,6 +53,7 @@ const HistoryList = (props) => {
   };
 
   useEffect(() => {
+    setIsShowMobileFilter(false);
     setIsShowFilter(false);
     dispatch(setSuccess(false));
   }, [state.HistoryReducer.isSuccess]);
@@ -88,24 +90,26 @@ const HistoryList = (props) => {
       {isMobile ? (
         <div className="history-container-mobile">
           {/* Filter pop-up for mobile */}
-          {isShowMobileFilter && (
-            <div className="filter-popup-mobile d-block d-lg-none">
-              <div className="filter-popup-mobile--container">
-                <img
-                  src={closeIcon}
-                  alt="close-icon"
-                  className="close--filter-popup-mobile"
-                  onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
-                />
-                <div className="filter-popup-mobile--wrapper">
-                  <h2 style={{ marginBottom: "3rem" }}>Fiters</h2>
-                  <div className="filter-wrapper-mobile">
-                    <HistoryFilterForm />
-                  </div>
+          <div
+            className={`filter-popup-mobile ${
+              isShowMobileFilter && "d-block"
+            } d-lg-none`}
+          >
+            <div className="filter-popup-mobile--container">
+              <img
+                src={closeIcon}
+                alt="close-icon"
+                className="close--filter-popup-mobile"
+                onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
+              />
+              <div className="filter-popup-mobile--wrapper">
+                <h2 style={{ marginBottom: "3rem" }}>Fiters</h2>
+                <div className="filter-wrapper-mobile">
+                  <HistoryFilterForm />
                 </div>
               </div>
             </div>
-          )}
+          </div>
           {/* View More Data pop up */}
           {isShowMobileRowData && isShowMobileOptionsId && (
             <div className="view-more-data--popup">
@@ -314,7 +318,7 @@ const HistoryList = (props) => {
                         <th>Approver</th>
                         <th>Due Date</th>
                         <th>status</th>
-                        <th>Download</th>
+                        <th style={{ textAlign: "center" }}>Download</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -354,18 +358,23 @@ const HistoryList = (props) => {
                           <td>
                             <button
                               className={
-                                list.Status === "Pending"
-                                  ? list.Status === "Delayed"
-                                    ? "delayed"
-                                    : "on-time"
-                                  : "pending"
+                                list.Status === "PENDING"
+                                  ? "pending"
+                                  : list.Status === "ON TIME"
+                                  ? "on-time"
+                                  : "delayed"
                               }
                             >
                               {list.Status}
                             </button>
                           </td>
-                          <td align="left">
-                            <img src={download} />
+                          <td style={{ textAlign: "center" }}>
+                            <a
+                              href={`${BACKEND_BASE_URL}//viewfiles.ashx?id=${list?.TaskId}&flag=downloadtaskfiles&file=${list?.c_file}`}
+                            >
+                              {" "}
+                              <img src={download} />{" "}
+                            </a>
                           </td>
                         </tr>
                       ))}

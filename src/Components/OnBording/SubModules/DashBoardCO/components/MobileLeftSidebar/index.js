@@ -20,6 +20,7 @@ import dashboardBlackActive from "../../../../../../assets/Icons/dashboard_black
 import dashboardGreyActive from "../../../../../../assets/Icons/dashboard_grey.png";
 import historyActive from "../../../../../../assets/Icons/history_active.png";
 import historyInactive from "../../../../../../assets/Icons/history_unactive.png";
+import updateActive from "../../../../../../assets/Icons/update_active.png";
 
 import "./style.css";
 
@@ -52,6 +53,8 @@ function MobileLeftSidebar({ history, close }) {
       history.push("/compliance-history");
     } else if (currentActiveMenu === "complianceHistoryList") {
       history.push("/compliance-history-list");
+    } else if (currentActiveMenu === "newRegulations") {
+      history.push("/new-regulations");
     }
   };
 
@@ -171,6 +174,30 @@ function MobileLeftSidebar({ history, close }) {
               alt="sideBarlogo"
             />{" "}
             History List
+          </div>
+          <div
+            onClick={() => onMenuClick("newRegulations")}
+            className={
+              !openProfile &&
+              state &&
+              state.adminMenu.currentMenu === "newRegulations"
+                ? "taskList-mobile"
+                : "inactiveMobile"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="newRegulations"
+              src={
+                !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "newRegulations"
+                  ? updateActive
+                  : updateActive
+              }
+              alt="sidebar Bell"
+            />{" "}
+            Regulations
           </div>
         </div>
         <div className="devider-line"></div>
