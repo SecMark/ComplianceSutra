@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../src/apiServices";
 import CoSetting from "./Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
-import Help from "./Components/HelpSection/Help";
+
 function App() {
   return <MainApp />;
 }
