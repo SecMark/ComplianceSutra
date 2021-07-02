@@ -1,39 +1,40 @@
-import React, { useState, useEffect } from "react"
-import "./style.css"
-import api from "../../../../../../../apiServices"
-import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png"
-import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png"
-import redCheck from "../../../../../../../assets/Icons/redCheck.png"
-import grayCheck from "../../../../../../../assets/Icons/grayCheck.png"
-import greenCheck from "../../../../../../../assets/Icons/greenCheck.png"
-import closeBlack from "../../../../../../../assets/Icons/closeBlack.png"
-import changeRoleClose from "../../../../../../../assets/Icons/changeRoleClose.png"
-import dropDownIcon from "../../../../../../../assets/Icons/dropDownIcon.png"
-import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png"
-import smallClose from "../../../../../../../assets/Icons/smallClose.png"
-import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png"
-import threeDots from "../../../../../../../assets/Icons/threeDots.PNG"
-import teamSearch from "../../../../../../../assets/Icons/teamSearch.png"
-import closeIconGray from "../../../../../../../assets/Icons/closeIconGray.png"
-import searchIcon from "../../../../../../../assets/Icons/searchIcon.png"
-import circleDot from "../../../../../../../assets/Icons/circleDot.png"
-import { actions as teamactions } from "../../../redux/actions"
-import { useDispatch, useSelector } from "react-redux"
-import { useOuterClick } from "../../RightSideGrid/outerClick"
-import { Modal } from "react-responsive-modal"
-import Dropdown from "react-dropdown"
-import { toast } from "react-toastify"
-import "react-responsive-modal/styles.css"
-import { isEmail } from "../../../../AssignTask/utils"
+import React, { useState, useEffect } from "react";
+import "./style.css";
+import ReAssignTasksModal from "../../../../../../ReAssignTasks";
+import api from "../../../../../../../apiServices";
+import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
+import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
+import redCheck from "../../../../../../../assets/Icons/redCheck.png";
+import grayCheck from "../../../../../../../assets/Icons/grayCheck.png";
+import greenCheck from "../../../../../../../assets/Icons/greenCheck.png";
+import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
+import changeRoleClose from "../../../../../../../assets/Icons/changeRoleClose.png";
+import dropDownIcon from "../../../../../../../assets/Icons/dropDownIcon.png";
+import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
+import smallClose from "../../../../../../../assets/Icons/smallClose.png";
+import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
+import threeDots from "../../../../../../../assets/Icons/threeDots.PNG";
+import teamSearch from "../../../../../../../assets/Icons/teamSearch.png";
+import closeIconGray from "../../../../../../../assets/Icons/closeIconGray.png";
+import searchIcon from "../../../../../../../assets/Icons/searchIcon.png";
+import circleDot from "../../../../../../../assets/Icons/circleDot.png";
+import { actions as teamactions } from "../../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useOuterClick } from "../../RightSideGrid/outerClick";
+import { Modal } from "react-responsive-modal";
+import Dropdown from "react-dropdown";
+import { toast } from "react-toastify";
+import "react-responsive-modal/styles.css";
+import { isEmail } from "../../../../AssignTask/utils";
 
-var _ = require("lodash")
+var _ = require("lodash");
 
 function CoManagment({ handleClose }) {
   const options = [
     { value: "4", label: "Team Member" },
     { value: "3", label: "Compliance Officer" },
     { value: "5", label: "Approver" },
-  ]
+  ];
 
   const filterOptions = [
     { value: "0", label: "None" },
@@ -42,45 +43,45 @@ function CoManagment({ handleClose }) {
     { value: "3", label: "CO" },
     { value: "az", label: "A > Z" },
     { value: "za", label: "Z > A" },
-  ]
+  ];
 
   const optionsInputBoxRole = [
     { value: "4", label: "Team Member" },
     { value: "3", label: "Compliance Officer" },
     { value: "5", label: "Approver" },
-  ]
+  ];
 
   const roleOptionMobile = [
     { value: "4", label: "Team Member" },
     { value: "3", label: "Compliance Officer" },
     { value: "5", label: "Approver" },
-  ]
+  ];
 
-  let defaultFilterOptions = filterOptions[0]
-  let defaultOption = options[0]
+  let defaultFilterOptions = filterOptions[0];
+  let defaultOption = options[0];
 
-  let defaultoptionsInputBoxRole = optionsInputBoxRole[0]
-  const [addNew, setAddNew] = useState(false)
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
+  let defaultoptionsInputBoxRole = optionsInputBoxRole[0];
+  const [addNew, setAddNew] = useState(false);
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const [showMobileFilter, setShowMobileFilter] = useState(false)
-  const [alreadyExist, setAlreadyExist] = useState(false)
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const [alreadyExist, setAlreadyExist] = useState(false);
 
-  const auth = state && state.auth
+  const auth = state && state.auth;
 
-  const [searchText, setSearchText] = useState("")
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [searchText, setSearchText] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [inputTeamMember, setInputTeamMember] = useState({
     fullName: "",
     email: "",
     role: [],
-  })
-  const [isValidate, setIsValidate] = useState(false)
+  });
+  const [isValidate, setIsValidate] = useState(false);
 
-  const [roleTitle, setRoleTitle] = useState("")
+  const [roleTitle, setRoleTitle] = useState("");
 
-  const [teamMemberData, setMemberData] = useState([])
+  const [teamMemberData, setMemberData] = useState([]);
 
   const [fields, setFields] = useState([
     {
@@ -94,15 +95,15 @@ function CoManagment({ handleClose }) {
       mobileNuber: "",
       showAcceptDelectIcon: false,
     },
-  ])
+  ]);
 
-  const [isSearchOpenMobile, setIsSearchOpenMobile] = useState(false)
+  const [isSearchOpenMobile, setIsSearchOpenMobile] = useState(false);
 
-  const [role, setRole] = useState([])
-  const [filterOption, setFilterOption] = useState("")
+  const [role, setRole] = useState([]);
+  const [filterOption, setFilterOption] = useState("");
 
-  const [visible, setVisible] = useState(false)
-  const [openPopupIndex, setOpenPopupIndex] = useState("")
+  const [visible, setVisible] = useState(false);
+  const [openPopupIndex, setOpenPopupIndex] = useState("");
   const [fieldArray, setFieldsArray] = useState([
     {
       id: "",
@@ -116,9 +117,9 @@ function CoManagment({ handleClose }) {
       mobileNuber: "",
       showAcceptDelectIcon: false,
     },
-  ])
+  ]);
 
-  const [currentRow, setCurrentRow] = useState([])
+  const [currentRow, setCurrentRow] = useState([]);
 
   const [fieldArrayBackup, setFieldsArrayBackup] = useState([
     {
@@ -133,20 +134,24 @@ function CoManagment({ handleClose }) {
       mobileNuber: "",
       showAcceptDelectIcon: false,
     },
-  ])
-  const [isValidEmail, setIsValidEmail] = useState(true)
+  ]);
+  const [isValidEmail, setIsValidEmail] = useState(true);
   const innerRef = useOuterClick((e) => {
-    if (openPopupIndex !== "") setOpenPopupIndex("")
-  })
+    if (openPopupIndex !== "") setOpenPopupIndex("");
+  });
 
-  const [currentIndex, setCurrentIndex] = useState("")
+  const [currentIndex, setCurrentIndex] = useState("");
 
-  const handleChangeInput = (e) => {}
+  const [isShowReAssignModal, setIsShowReAssignModal] = useState(false);
+  const [isShowReAssignModalMobile, setIsShowReAssignModalMobile] =
+    useState(false);
+
+  const handleChangeInput = (e) => {};
 
   useEffect(() => {
-    getSettingData()
-    setFilterOption(filterOptions[0])
-  }, [])
+    getSettingData();
+    setFilterOption(filterOptions[0]);
+  }, []);
   // useEffect(() => {
   //     dispatch(adminMenuActions.setActiveTabInSetting("team-member"))
   // }, [])
@@ -165,63 +170,63 @@ function CoManagment({ handleClose }) {
       fullName: "",
       emailID: "",
       // mobile: "",
-    }
+    };
     api
       .post("/api/CoSettings", payload)
       .then(function (response) {
         if (response && response.data && response.data.length > 0) {
-          setMemberData(response.data)
+          setMemberData(response.data);
         } else {
         }
       })
       .catch(function (error) {
         if (error) {
         }
-      })
-  }
+      });
+  };
 
   const mobileFilterRef = useOuterClick((e) => {
     if (showMobileFilter === true) {
-      setShowMobileFilter(false)
+      setShowMobileFilter(false);
     }
-  })
+  });
 
   const changeRoleMobile = (item, index) => {
     fields &&
       fields[openPopupIndex] &&
-      setRoleTitle(fields[openPopupIndex].role)
-    setCurrentIndex(index)
-    const drawerParent = document.getElementById("drawerParent")
-    const drawerChild = document.getElementById("drawerChild")
+      setRoleTitle(fields[openPopupIndex].role);
+    setCurrentIndex(index);
+    const drawerParent = document.getElementById("drawerParent");
+    const drawerChild = document.getElementById("drawerChild");
     if (drawerParent) {
-      drawerParent.classList.add("overlayChangeRole")
-      drawerChild.style.bottom = "0%"
+      drawerParent.classList.add("overlayChangeRole");
+      drawerChild.style.bottom = "0%";
     }
-    setCurrentRow(item)
-  }
+    setCurrentRow(item);
+  };
   const closeChangeRole = () => {
-    const drawerParent = document.getElementById("drawerParent")
-    const drawerChild = document.getElementById("drawerChild")
+    const drawerParent = document.getElementById("drawerParent");
+    const drawerChild = document.getElementById("drawerChild");
     if (drawerParent) {
-      drawerParent.classList.remove("overlayChangeRole")
-      drawerChild.style.bottom = "-100%"
+      drawerParent.classList.remove("overlayChangeRole");
+      drawerChild.style.bottom = "-100%";
     }
-    setCurrentRow([])
-  }
+    setCurrentRow([]);
+  };
 
   const getInitials = (name) => {
-    const nameArray = name ? name.split(" ") : " "
+    const nameArray = name ? name.split(" ") : " ";
     if (nameArray.length > 1) {
       return `${nameArray[0].slice(0, 1)}${nameArray[nameArray.length - 1]
         .slice(0, 1)
-        .toUpperCase()}`
+        .toUpperCase()}`;
     } else {
-      return `${nameArray[0].slice(0, 2).toUpperCase()}`
+      return `${nameArray[0].slice(0, 2).toUpperCase()}`;
     }
-  }
+  };
 
   useEffect(() => {
-    let fieldArray = []
+    let fieldArray = [];
     if (teamMemberData && teamMemberData.length > 0) {
       teamMemberData.map((item, index) => {
         let obj = {
@@ -237,17 +242,17 @@ function CoManagment({ handleClose }) {
           email: item.EmailID,
           mobileNuber: item.Mobile,
           showAcceptDelectIcon: false,
-        }
-        fieldArray.push(obj)
-      })
-      setFields(fieldArray)
-      setFieldsArray(fieldArray)
-      setFieldsArrayBackup(fieldArray)
+        };
+        fieldArray.push(obj);
+      });
+      setFields(fieldArray);
+      setFieldsArray(fieldArray);
+      setFieldsArrayBackup(fieldArray);
     }
-  }, [teamMemberData])
+  }, [teamMemberData]);
 
   const onDeletePress = (index) => {
-    setOpenPopupIndex("")
+    setOpenPopupIndex("");
     const payload = {
       gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
       settingType: 6,
@@ -261,54 +266,56 @@ function CoManagment({ handleClose }) {
       fullName: "",
       emailID: "",
       // mobile: "",
-    }
+    };
     api
       .post("/api/CoSettings", payload)
       .then(function (response) {
         if (response && response.data && response.data.length > 0) {
           if (response.data[0].Status === "Updated") {
-            toast.success("Deleted records sucessfully")
-            getSettingData()
-            setVisible(false)
-            setOpenPopupIndex("")
+            toast.success("Deleted records sucessfully");
+            getSettingData();
+            setVisible(false);
+            setOpenPopupIndex("");
           }
         } else {
-          toast.error("Something went wrong !!!")
-          setVisible(false)
-          setOpenPopupIndex("")
+          toast.error("Something went wrong !!!");
+          setVisible(false);
+          setOpenPopupIndex("");
         }
       })
       .catch(function (error) {
         if (error) {
         }
-      })
-  }
+      });
+  };
 
   const _createDelectActionModal = (index) => {
-        return (<div className="deletemodal">
-            <Modal
-                blockScroll={false}
-                classNames={{
-                    overlayAnimationIn: '',
-                    overlayAnimationOut: '',
-                    modalAnimationIn: '',
-                    modalAnimationOut: '',
-                    modal: 'customModal',
-                }}
-                open={visible}
-                center={true}
-                showCloseIcon={false}
-                onClose={() => setVisible(false)}
-                //modalId="governance"
-                styles={{ width: 373, height: 210, overflow: 'hidden' }}
-                onOverlayClick={() => setVisible(false)}
-            >
-                <div className="model-design-delete-company big-height">
-                    <div className="delete-record-title">Delete company record?</div>
-                    <div className="delete-desc">
-                        Are you sure you want to delete the record of
-                        &nbsp;team member&nbsp;? All assigned tasks will be deleted. You will have to re-assign those tasks to other members.
-              re-assign those tasks to other members.
+    return (
+      <div className="deletemodal">
+        <Modal
+          blockScroll={false}
+          classNames={{
+            overlayAnimationIn: "",
+            overlayAnimationOut: "",
+            modalAnimationIn: "",
+            modalAnimationOut: "",
+            modal: "customModal",
+          }}
+          open={visible}
+          center={true}
+          showCloseIcon={false}
+          onClose={() => setVisible(false)}
+          //modalId="governance"
+          styles={{ width: 373, height: 210, overflow: "hidden" }}
+          onOverlayClick={() => setVisible(false)}
+        >
+          <div className="model-design-delete-company big-height">
+            <div className="delete-record-title">Delete company record?</div>
+            <div className="delete-desc">
+              Are you sure you want to delete the record of &nbsp;team
+              member&nbsp;? All assigned tasks will be deleted. You will have to
+              re-assign those tasks to other members. re-assign those tasks to
+              other members.
             </div>
             <div className="last-two-model-btn" style={{ marginTop: 20 }}>
               <button
@@ -327,14 +334,14 @@ function CoManagment({ handleClose }) {
           </div>
         </Modal>
       </div>
-    )
-  }
+    );
+  };
   const handleSearchInputChange = (e) => {
-    setSearchText(e.target.value)
-    const filterData = [...fieldArray]
+    setSearchText(e.target.value);
+    const filterData = [...fieldArray];
     if (e.target.value !== "") {
-      let data = []
-      let value = e.target.value
+      let data = [];
+      let value = e.target.value;
 
       data = filterData.filter((field) => {
         return (
@@ -342,128 +349,128 @@ function CoManagment({ handleClose }) {
           field.role.toLowerCase().includes(value.toLowerCase()) ||
           field.fullName.toLowerCase().includes(value.toLowerCase()) ||
           field.mobileNuber.toLowerCase().includes(value.toLowerCase())
-        )
-      })
+        );
+      });
 
-      setFields(data)
+      setFields(data);
     } else {
-      setFields(filterData)
+      setFields(filterData);
     }
-  }
+  };
 
   const onClickSearchMobileIcon = () => {
-    const element = document.getElementById("searchBox")
+    const element = document.getElementById("searchBox");
     if (element) {
-      element.classList.remove("searchBoxMobile")
+      element.classList.remove("searchBoxMobile");
     }
-    const filterArray = [...fieldArray]
+    const filterArray = [...fieldArray];
     if (isSearchOpenMobile) {
-      setFields(filterArray)
-      setIsSearchOpenMobile(false)
+      setFields(filterArray);
+      setIsSearchOpenMobile(false);
     } else {
-      setIsSearchOpenMobile(true)
+      setIsSearchOpenMobile(true);
     }
 
-    setSearchText("")
-  }
+    setSearchText("");
+  };
   const onClickSearchIcon = () => {
-    const filterArray = [...fieldArray]
+    const filterArray = [...fieldArray];
     if (isSearchOpen) {
-      setFields(filterArray)
-      setIsSearchOpen(false)
+      setFields(filterArray);
+      setIsSearchOpen(false);
     } else {
-      setIsSearchOpen(true)
+      setIsSearchOpen(true);
     }
-    setSearchText("")
-  }
+    setSearchText("");
+  };
 
   const _filterBy = (filterOption, mobileFilter) => {
-    let data = []
+    let data = [];
     if (mobileFilter === undefined) {
-      setFilterOption(filterOption)
+      setFilterOption(filterOption);
       if (filterOption.value === "za") {
         data = _.values(fieldArray).sort((a, b) =>
           b.fullName.localeCompare(a.fullName)
-        )
-        setFields(data)
+        );
+        setFields(data);
       } else if (filterOption.value === "az") {
         data = _.values(fieldArray).sort((a, b) =>
           a.fullName.localeCompare(b.fullName)
-        )
-        setFields(data)
+        );
+        setFields(data);
       } else if (filterOption.value === "0") {
-        const list = [...fieldArrayBackup]
-        setFields(list)
+        const list = [...fieldArrayBackup];
+        setFields(list);
       } else if (filterOption.value === "3") {
         data = fieldArray.filter(function (item) {
-          return item.UserType === parseInt(filterOption.value)
-        })
-        setFields(data)
+          return item.UserType === parseInt(filterOption.value);
+        });
+        setFields(data);
       } else if (filterOption.value === "4") {
         data = fieldArray.filter(function (item) {
-          return item.UserType === parseInt(filterOption.value)
-        })
-        setFields(data)
+          return item.UserType === parseInt(filterOption.value);
+        });
+        setFields(data);
       } else if (filterOption.value === "5") {
         data = fieldArray.filter(function (item) {
-          return item.UserType === parseInt(filterOption.value)
-        })
-        setFields(data)
+          return item.UserType === parseInt(filterOption.value);
+        });
+        setFields(data);
       }
     } else {
-      setShowMobileFilter(false)
+      setShowMobileFilter(false);
       if (filterOption === "za") {
         data = _.values(fieldArray).sort((a, b) =>
           b.fullName.localeCompare(a.fullName)
-        )
-        setFields(data)
+        );
+        setFields(data);
       } else if (filterOption === "az") {
         data = _.values(fieldArray).sort((a, b) =>
           a.fullName.localeCompare(b.fullName)
-        )
-        setFields(data)
+        );
+        setFields(data);
       } else if (filterOption === "0") {
-        const list = [...fieldArrayBackup]
-        setFields(list)
+        const list = [...fieldArrayBackup];
+        setFields(list);
       } else if (filterOption === "3") {
         data = fieldArray.filter(function (item) {
-          return item.UserType === parseInt(filterOption)
-        })
-        setFields(data)
+          return item.UserType === parseInt(filterOption);
+        });
+        setFields(data);
       } else if (filterOption === "4") {
         data = fieldArray.filter(function (item) {
-          return item.UserType === parseInt(filterOption)
-        })
-        setFields(data)
+          return item.UserType === parseInt(filterOption);
+        });
+        setFields(data);
       } else if (filterOption === "5") {
         data = fieldArray.filter(function (item) {
-          return item.UserType === parseInt(filterOption)
-        })
-        setFields(data)
+          return item.UserType === parseInt(filterOption);
+        });
+        setFields(data);
       }
     }
-  }
+  };
 
   const openPopup = (index) => {
-    setOpenPopupIndex(index)
-  }
+    setOpenPopupIndex(index);
+  };
   const changeRole = (key) => {
-    setOpenPopupIndex("")
-    const list = [...fields]
-    list[key].showAcceptDelectIcon = true
-    setFields(list)
-  }
+    setOpenPopupIndex("");
+    const list = [...fields];
+    list[key].showAcceptDelectIcon = true;
+    setFields(list);
+  };
 
   const onConfirmChangeRole = (data, key, dropDown) => {
-    let userType = 0
+    let userType = 0;
     if (key !== "") {
       userType =
         fields &&
         fields[key] &&
         fields[key].roleDropDown &&
-        fields[key].roleDropDown.value
+        fields[key].roleDropDown.value;
     } else if (key === "" && dropDown) {
-      userType = dropDown.value
+      userType = dropDown.value;
     }
     const payload = {
       gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
@@ -478,160 +485,160 @@ function CoManagment({ handleClose }) {
       fullName: "",
       emailID: "",
       // mobile: "",
-    }
+    };
     if (userType) {
       api
         .post("/api/CoSettings", payload)
         .then(function (response) {
           if (response && response.data && response.data.length > 0) {
             if (response.data[0].Status === "Updated") {
-              toast.success("User role changed sucessfully")
-              getSettingData()
+              toast.success("User role changed sucessfully");
+              getSettingData();
             }
           } else {
-            toast.error("Something went wrong !!!")
+            toast.error("Something went wrong !!!");
           }
         })
         .catch(function (error) {
           if (error) {
           }
-        })
+        });
     }
-  }
+  };
 
   const cancelCheckIcon = (key) => {
-    const list = [...fields]
-    list[key].showAcceptDelectIcon = false
-    setFields(list)
-  }
+    const list = [...fields];
+    list[key].showAcceptDelectIcon = false;
+    setFields(list);
+  };
   const onChangeRoleDropDown = (data, key) => {
-    defaultOption = data
-    onClickRoleDropDown(data, key)
-  }
+    defaultOption = data;
+    onClickRoleDropDown(data, key);
+  };
 
   const onClickRoleDropDown = (data, index) => {
-    const list = [...fields]
-    list[index].roleDropDown = data
-    setFields(list)
-  }
+    const list = [...fields];
+    list[index].roleDropDown = data;
+    setFields(list);
+  };
 
   const handleChangeInputBoxRole = (value) => {
-    setInputTeamMember({ ...inputTeamMember, ["role"]: value })
-  }
+    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
+  };
 
   const handleChangeInputBoxRoleMobile = (value) => {
-    setInputTeamMember({ ...inputTeamMember, ["role"]: value })
-    onConfirmChangeRole(currentRow, openPopupIndex, value)
-    closeChangeRole()
-  }
+    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
+    onConfirmChangeRole(currentRow, openPopupIndex, value);
+    closeChangeRole();
+  };
 
   const handleChangeRoleMobile = (value) => {
-    setInputTeamMember({ ...inputTeamMember, ["role"]: value })
-  }
+    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
+  };
   const onChangeHandler = (name) => (e) => {
-    setIsValidEmail(true)
-    setAlreadyExist(false)
-    const { name, value } = e.target
+    setIsValidEmail(true);
+    setAlreadyExist(false);
+    const { name, value } = e.target;
     if (name === "fullName") {
-      const re = /^[a-z|A-Z_ ]*$/
+      const re = /^[a-z|A-Z_ ]*$/;
       if (e.target.value && !re.test(e.target.value)) {
-        return ""
+        return "";
       }
     }
-    setInputTeamMember({ ...inputTeamMember, [name]: e.target.value })
-  }
+    setInputTeamMember({ ...inputTeamMember, [name]: e.target.value });
+  };
 
   const onValidateEmail = async (e) => {
     if (isEmail(e.target.value)) {
-      let email = e.target.value
+      let email = e.target.value;
 
-      let emailAssign = teamMemberData.find((item) => item.EmailID === email)
+      let emailAssign = teamMemberData.find((item) => item.EmailID === email);
 
       if (emailAssign === undefined) {
-        setAlreadyExist(false)
+        setAlreadyExist(false);
         let payload = {
           loginID: e.target.value,
           pwd: "",
           rememberme: 0,
           loginty: "AdminEmail",
-        }
+        };
         await api
           .post("/api/availabilityCheck", payload)
           .then(function (response) {
             if (response && response.data && response.data.Status === "True") {
-              setIsValidEmail(false)
+              setIsValidEmail(false);
             } else {
-              setIsValidEmail(true)
+              setIsValidEmail(true);
             }
           })
           .catch(function (error) {
             if (error) {
             }
-          })
+          });
       } else {
-        setAlreadyExist(true)
+        setAlreadyExist(true);
       }
     }
-  }
+  };
   const checkButtonDisabled = () => {
-    let isNext = true
+    let isNext = true;
     if (
       inputTeamMember.fullName === "" ||
       inputTeamMember.email === "" ||
       inputTeamMember.role.length === 0 ||
       !isEmail(inputTeamMember.email)
     ) {
-      isNext = false
-      return isNext
+      isNext = false;
+      return isNext;
     }
-    return isNext
-  }
+    return isNext;
+  };
   const onAddNewMemberMobile = () => {
-    const drawerParent = document.getElementById("drawerParentAddNew")
-    const drawerChild = document.getElementById("drawerChildAddNew")
+    const drawerParent = document.getElementById("drawerParentAddNew");
+    const drawerChild = document.getElementById("drawerChildAddNew");
     if (drawerParent) {
-      drawerParent.classList.add("overlayAccount")
-      drawerChild.style.bottom = "0%"
+      drawerParent.classList.add("overlayAccount");
+      drawerChild.style.bottom = "0%";
     }
-  }
+  };
 
   const closeMemberMobilePOP = () => {
-    const drawerParent = document.getElementById("drawerParentAddNew")
-    const drawerChild = document.getElementById("drawerChildAddNew")
+    const drawerParent = document.getElementById("drawerParentAddNew");
+    const drawerChild = document.getElementById("drawerChildAddNew");
     if (drawerParent) {
-      drawerParent.classList.remove("overlayAccount")
-      drawerChild.style.bottom = "-100%"
+      drawerParent.classList.remove("overlayAccount");
+      drawerChild.style.bottom = "-100%";
     }
-  }
+  };
   const MoreDetails = (item) => {
-    setCurrentRow(item)
-    const drawerParent = document.getElementById("moreDetailsParent")
-    const drawerChild = document.getElementById("moreDetailsChild")
+    setCurrentRow(item);
+    const drawerParent = document.getElementById("moreDetailsParent");
+    const drawerChild = document.getElementById("moreDetailsChild");
     if (drawerParent) {
-      drawerParent.classList.add("overlayMoreDetails")
-      drawerChild.style.bottom = "0%"
+      drawerParent.classList.add("overlayMoreDetails");
+      drawerChild.style.bottom = "0%";
     }
-  }
+  };
 
   const closeMoreDetails = () => {
-    const drawerParent = document.getElementById("moreDetailsParent")
-    const drawerChild = document.getElementById("moreDetailsChild")
+    const drawerParent = document.getElementById("moreDetailsParent");
+    const drawerChild = document.getElementById("moreDetailsChild");
     if (drawerParent) {
-      drawerParent.classList.remove("overlayMoreDetails")
-      drawerChild.style.bottom = "-100%"
+      drawerParent.classList.remove("overlayMoreDetails");
+      drawerChild.style.bottom = "-100%";
     }
-    setCurrentRow([])
-  }
+    setCurrentRow([]);
+  };
 
   const serachOpenMobile = () => {
-    setIsSearchOpenMobile(true)
-    const element = document.getElementById("searchBox")
+    setIsSearchOpenMobile(true);
+    const element = document.getElementById("searchBox");
     if (element) {
-      element.classList.add("searchBoxMobile")
+      element.classList.add("searchBoxMobile");
     }
-  }
+  };
   const onsubmit = (str) => {
-    setIsValidate(true)
+    setIsValidate(true);
     if (
       inputTeamMember.fullName === "" ||
       inputTeamMember.email === "" ||
@@ -639,10 +646,10 @@ function CoManagment({ handleClose }) {
       inputTeamMember.role.length === 0 ||
       !isValidEmail
     ) {
-      return ""
+      return "";
     }
-    let _userRole = inputTeamMember.role
-    setIsValidate(false)
+    let _userRole = inputTeamMember.role;
+    setIsValidate(false);
     const payload = {
       gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
       settingType: 6,
@@ -656,41 +663,51 @@ function CoManagment({ handleClose }) {
       fullName: inputTeamMember.fullName,
       emailID: inputTeamMember.email,
       // mobile: ""
-    }
+    };
     if (_userRole) {
       api
         .post("/api/CoSettings", payload)
         .then(function (response) {
           if (response && response.data) {
             if (response.data.Status === false) {
-              toast.error("Something went wrong !!!")
+              toast.error("Something went wrong !!!");
             } else {
-              toast.success("The invitation has been sent through email")
+              toast.success("The invitation has been sent through email");
               setTimeout(() => {
-                setAddNew(false)
+                setAddNew(false);
                 setInputTeamMember({
                   fullName: "",
                   email: "",
                   role: [],
-                })
-              }, 800)
-              getSettingData()
+                });
+              }, 800);
+              getSettingData();
               if (str && str === "mobile") {
-                closeMemberMobilePOP()
+                closeMemberMobilePOP();
               }
             }
           } else {
-            toast.error("Something went wrong !!!")
+            toast.error("Something went wrong !!!");
           }
         })
         .catch(function (error) {
           if (error) {
           }
-        })
+        });
     }
-  }
+  };
   return (
     <div className="co-team-member">
+      <ReAssignTasksModal
+        data={fieldArray}
+        openModal={isShowReAssignModal}
+        setShowModal={setIsShowReAssignModal}
+      />
+      <ReAssignTasksModal
+        data={fieldArray}
+        openModal={isShowReAssignModalMobile}
+        setShowModal={setIsShowReAssignModalMobile}
+      />
       {visible && _createDelectActionModal(openPopupIndex)}
       <div className="d-none d-sm-block">
         <div className="d-flex">
@@ -769,7 +786,7 @@ function CoManagment({ handleClose }) {
                   className="close-icon-personal"
                   src={closeBlack}
                   onClick={() => {
-                    handleClose(true)
+                    handleClose(true);
                   }}
                   alt="close Black"
                 />
@@ -810,7 +827,7 @@ function CoManagment({ handleClose }) {
                   add new +
                 </div>
               </div>
-              <div className="col-8 col-sm-12 col-md-12 col-xl-12 pl-0">
+              {/* <div className="col-8 col-sm-12 col-md-12 col-xl-12 pl-0">
                 {!isSearchOpenMobile && (
                   <div className="">
                     <img
@@ -909,7 +926,7 @@ function CoManagment({ handleClose }) {
                     )}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="col-12 pl-0 pr-0">
               <div className="line-after-heaing"></div>
@@ -961,6 +978,17 @@ function CoManagment({ handleClose }) {
                             >
                               Change role
                             </div>
+                            <div
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                setIsShowReAssignModalMobile(true);
+                                setOpenPopupIndex("");
+                              }}
+                              className="change-role"
+                            >
+                              Re-Assign
+                            </div>
+
                             <div
                               style={{ cursor: "pointer" }}
                               onClick={() => setVisible(true)}
@@ -1165,12 +1193,12 @@ function CoManagment({ handleClose }) {
               </button>
               <div
                 onClick={() => {
-                  closeMemberMobilePOP()
+                  closeMemberMobilePOP();
                   setInputTeamMember({
                     fullName: "",
                     email: "",
                     role: [],
-                  })
+                  });
                 }}
                 className="discard-label-link"
               >
@@ -1187,11 +1215,22 @@ function CoManagment({ handleClose }) {
     </caption> */}
           <thead>
             <tr>
-              <th className="tw-30" clscope="col">Full name</th>
-              <th className="tw-20" scope="col"> role </th>
-              <th className="tw-30" scope="col">Email-ID</th>
-              <th className="tw-15" scope="col">Mobile No.</th>
-              <th className="tw-8" scope="col">&nbsp;</th>
+              <th className="tw-30" clscope="col">
+                Full name
+              </th>
+              <th className="tw-20" scope="col">
+                {" "}
+                role{" "}
+              </th>
+              <th className="tw-30" scope="col">
+                Email-ID
+              </th>
+              <th className="tw-15" scope="col">
+                Mobile No.
+              </th>
+              <th className="tw-8" scope="col">
+                &nbsp;
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -1285,12 +1324,12 @@ function CoManagment({ handleClose }) {
                   <div
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                      setAddNew(false)
+                      setAddNew(false);
                       setInputTeamMember({
                         fullName: "",
                         email: "",
                         role: [],
-                      })
+                      });
                     }}
                     className="cancelLink"
                   >
@@ -1307,7 +1346,7 @@ function CoManagment({ handleClose }) {
                     <td>
                       <div className="holding-list-bold-title-background">
                         <span className="circle-dp">{item.initialsName}</span>{" "}
-                        <div className="nameCirle"> {item.fullName}{" "}</div>
+                        <div className="nameCirle"> {item.fullName} </div>
                       </div>
                     </td>
                   )}
@@ -1360,6 +1399,16 @@ function CoManagment({ handleClose }) {
                                 className="change-role"
                               >
                                 Change role
+                              </div>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                  setIsShowReAssignModal(true);
+                                  setOpenPopupIndex("");
+                                }}
+                                className="change-role"
+                              >
+                                Re-Assign Tasks
                               </div>
                               <div
                                 style={{ cursor: "pointer" }}
@@ -1582,7 +1631,7 @@ function CoManagment({ handleClose }) {
                 </div>
             </div> */}
     </div>
-  )
+  );
 }
 
-export default CoManagment
+export default CoManagment;
