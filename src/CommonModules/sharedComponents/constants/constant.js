@@ -9,7 +9,7 @@ export default {
     errorDueToRange:
       "Range Cannot be more than 1 year. Please change the selected date.",
     errorDueToReverseDate: "Date should be after ",
-    errorDueToPriorDate: "Date should not be prior to date of registration.",
+    errorDueToPriorDate: "Date should not be prior to date of registration",
   },
   filterFlag: "A",
 };
