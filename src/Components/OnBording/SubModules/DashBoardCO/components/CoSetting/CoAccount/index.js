@@ -5,9 +5,8 @@ import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import { useDispatch, useSelector } from "react-redux";
 import { actions as coActions } from "../../../redux/actions";
 import { isMobile } from "react-device-detect";
-import cross from "../../../../../../../assets/Icons/closeIcon1.png";
-import { AiFillCheckCircle, AiOutlineInfo } from "react-icons/ai";
-import { HiMinusSm, HiPlus } from "react-icons/hi";
+import PaymentSection from "../../../../../../PaymentModule/PaymentSection";
+
 function CoAccount({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -16,8 +15,6 @@ function CoAccount({ handleClose }) {
   const [licenseDrawerHideShow, setLicenseDrawerHideShow] = useState(false);
   const [isSliderCheck, setIsSliderCheck] = useState(false);
   const [showAddLiceOption, setShowAddLiceOption] = useState(false);
-  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
-  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
   const loggedUser =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
@@ -185,87 +182,30 @@ function CoAccount({ handleClose }) {
     setIsSliderCheck(!isSliderCheck);
   };
 
+  const openLicenseDrawer = () => {
+    let fieldObj = {
+      selectedLicenseArray: [],
+    };
+    setFields(fieldObj);
+    setLicenseDrawerHideShow(true);
+    if (!isMobile) {
+      const drawerParent = document.getElementById("drawerParent");
+      const drawerChild = document.getElementById("drawerChild");
+      if (drawerParent) {
+        drawerParent.classList.add("overlay");
+        drawerChild.style.right = "0px";
+      }
+    } else {
+      const drawerParent = document.getElementById("drawerParentMobile");
+      const drawerChild = document.getElementById("drawerChildMobile");
+      if (drawerParent) {
+        drawerParent.classList.add("overlayAccount");
+        drawerChild.style.bottom = "0%";
+      }
+    }
+  };
   return (
     <div className="co-account ">
-      {isAddUserModalOpen && (
-        <div className="modal-container">
-          <div className="modal-main">
-            <div className="modal-content">
-              <div className="modal-body-container">
-                <div className="header">
-                  <h3>Add User</h3>
-                  <img
-                    src={cross}
-                    alt=""
-                    onClick={() => setIsAddUserModalOpen(!isAddUserModalOpen)}
-                  />
-                </div>
-                <div className="select-section">
-                  <button className="info-button">
-                    <AiOutlineInfo />
-                  </button>
-                  <span className="select-user">
-                    you can only select users in a batch of 5
-                  </span>
-                </div>
-                <div className="counter-buttons">
-                  <button className="counter">
-                    <HiMinusSm />
-                  </button>
-                  <h2 className="counter-count">25</h2>
-                  <button className="counter">
-                    <HiPlus />
-                  </button>
-                </div>
-
-                <div className="account-info">
-                  <div>
-                    <span>Amount to pay</span>
-                    <h3>₹5,000</h3>
-                  </div>
-                  <button className="procced-buy">Procceed to buy</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isUpgradeModalOpen && (
-        <div className="modal-upgrade-container">
-          <div className="modal-upgrade-main">
-            <div className="modal-upgrade-content">
-              <div className="modal--upgrade-body-container">
-                <div className="upgrade-header">
-                  <h3>Your trial has ended</h3>
-                </div>
-                <div className="upgrade-benefits">
-                  <h3>Upgrade now to get following benefits!</h3>
-                </div>
-              </div>
-              <div className="add-multiple-users">
-                <AiFillCheckCircle />
-                <p>Add multiple number of users</p>
-              </div>
-              <div className="add-multiple-users">
-                <AiFillCheckCircle />
-                <p>Expert review service</p>
-              </div>
-              <div className="add-multiple-users">
-                <AiFillCheckCircle />
-                <p>Flexible payment options. Cancel anytime</p>
-              </div>
-              <div className="add-multiple-users">
-                <AiFillCheckCircle />
-                <p>Cancel anytime</p>
-              </div>
-              <div>
-                <button className="upgrade-now-button">Upgrade now</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       {!isMobile && (
         <div id="drawerParent" className="">
           <div id="drawerChild" className="sideBarFixed">
@@ -364,49 +304,8 @@ function CoAccount({ handleClose }) {
                 </label>
               </div>
             </div>
-            <div className="col-md-10 col-sm-10 payment-detail">
-              <h2 className="payment-plan">Payment plan</h2>
-              <button
-                className="upgrade-button"
-                onClick={() => setIsUpgradeModalOpen(!isUpgradeModalOpen)}
-              >
-                upgrade now
-              </button>
-            </div>
-            <div className="col-md-10 col-sm-6 payment-detail-plan">
-              <h2 className="payment-type">Type of plan</h2>
-              <h2 className="payment-trail">30 Days Free Trail</h2>
-            </div>
-            <div className="col-md-10 col-sm-10 payment-detail-plan">
-              <h2 className="payment-type">Trail ends</h2>
-              <h2 className="payment-trail">24 July 2021</h2>
-            </div>
-            <div className="col-md-10 col-sm-10 payment-detail-plan">
-              <h2 className="payment-type">No. of users</h2>
-              <div className="add-user-container">
-                <button
-                  className="add-users-button"
-                  onClick={() => setIsAddUserModalOpen(true)}
-                >
-                  Add Users
-                </button>
-                <h2 className="payment-trail">5</h2>
-              </div>
-            </div>
-            <div className="col-10 payment-detail-plan">
-              <h2 className="payment-type">Your Licenses</h2>
-              <div className="edit-container">
-                <button className="edit-button">Edit License</button>
-                <h2 className="payment-trail">5</h2>
-              </div>
-            </div>
-            <div className="col-10 payment-detail-plan">
-              <h2 className="payment-type">Payment Method</h2>
-              <div className="edit-container">
-                <button className="edit-button">Change</button>
-                <h2 className="payment-trail">**** **** 9999</h2>
-              </div>
-            </div>
+
+            <PaymentSection openLicenseDrawer={openLicenseDrawer} />
           </div>
         </div>
       </div>
