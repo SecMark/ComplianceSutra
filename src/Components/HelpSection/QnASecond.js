@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-const QnASecond = ({ question, answer, setshowAnswer }) => {
-  useEffect(() => {
-    return () => {
-      setshowAnswer(false);
-    };
-  }, []);
+const QnASecond = ({ questionDetail }) => {
+  console.log(questionDetail);
+
   return (
     <div className="Right">
       <div className="Container">
-        <h6>{question}</h6>
-        <p>{answer}</p>
+        <h6>{questionDetail?.question}</h6>
+        <p>{questionDetail?.answer}</p>
       </div>
     </div>
   );

@@ -5,9 +5,13 @@ import LeftSideBar from "../../CommonModules/SideBar/LeftSideBar";
 import "./style.css";
 const Help = () => {
   const [questionDetail, setQuestionDetail] = useState({});
-  const fetchAnswer = (questionId) => {
-    const getId = HelpData.questions.find(({ id }) => id === questionId);
-    setQuestionDetail(getId);
+  const fetchAnswer = (ID, questionID) => {
+    console.log(ID, questionID);
+    const getAnswersById = HelpData.find(({ id }) => id === ID);
+    const getAnwerDetail = getAnswersById.questions.find(
+      ({ questionId }) => questionId === questionID
+    );
+    setQuestionDetail(getAnwerDetail);
   };
 
   return (
@@ -19,7 +23,7 @@ const Help = () => {
             <h4>Help & Support</h4>
             <span>?</span>
           </div>
-          {HelpData.map((e) => {
+          {/* {HelpData.map((e) => {
             return (
               <div className="Element">
                 <h6 id="Title">{e.title}</h6>
@@ -41,8 +45,32 @@ const Help = () => {
                 </button>
               </div>
             );
-          })}
+          })} */}
         </div>
+        {HelpData.map((e) => {
+          return (
+            <div className="Element">
+              <h6 id="Title">{e.title}</h6>
+              {e.questions.map((q) => {
+                return (
+                  <div>
+                    <QuestionAnswer
+                      id={e.id}
+                      questionId={q.questionId}
+                      question={q.question}
+                      answer={q.answer}
+                      questionDetail={questionDetail}
+                      fetchAnswer={fetchAnswer}
+                    />
+                  </div>
+                );
+              })}
+              <button className="ViewMore">
+                View More({e.questions.length - 2} More)
+              </button>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
