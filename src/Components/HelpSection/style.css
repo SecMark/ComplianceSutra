@@ -1,9 +1,11 @@
+.Parent {
+  display: flex;
+}
 .Main {
   display: flex;
   margin: 0;
-  margin-left: 7%;
   padding: 0;
-  width: 93vw;
+  width: 95vw;
   height: 100vh;
   justify-content: space-between;
   border-radius: 0;

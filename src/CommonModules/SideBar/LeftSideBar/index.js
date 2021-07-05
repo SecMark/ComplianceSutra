@@ -63,6 +63,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/compliance-history-list");
     } else if (currentActiveMenu === "newRegulations") {
       history.push("/new-regulations");
+    } else if (currentActiveMenu === "Help") {
+      history.push("/help");
     }
   };
 
@@ -153,9 +155,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
 
           <div
             className={
-              !openProfile &&
-              state &&
-              state.adminMenu.currentMenu === "complianceHistoryList"
+              !openProfile && state && state.adminMenu.currentMenu === "Help"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
@@ -213,9 +213,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             title="ComplianceHistory"
             onClick={() => onMenuClick("Help")}
             src={
-              !openProfile &&
-              state &&
-              state.adminMenu.currentMenu === "complianceHistory"
+              !openProfile && state && state.adminMenu.currentMenu === "Help"
                 ? dashboardBlackActive
                 : dashboardGreyActive
             }
