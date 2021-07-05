@@ -9,10 +9,14 @@ const QuestionAnswer = ({
   questionDetail,
   id,
   questionId,
+  viewMore,
+  showMoreHandler,
+  active,
 }) => {
   const [showAnswer, setshowAnswer] = useState(false);
 
-  const handleClick = () => {
+  // const checkActive = active ? "Active" : "";
+  const AnswerHandler = () => {
     setshowAnswer(!showAnswer);
     fetchAnswer(id, questionId);
   };
@@ -20,10 +24,11 @@ const QuestionAnswer = ({
   const answerStyles = showAnswer ? "showAnswer" : "noAnswer";
   return (
     <div className="QnA">
-      <div className="question" onClick={handleClick}>
+      <div className="question" onClick={AnswerHandler}>
         <p>{question}</p>
         <button>{">"}</button>
       </div>
+
       <div className={`${answerStyles} QnASecond`}>
         <QnASecond
           question={question}

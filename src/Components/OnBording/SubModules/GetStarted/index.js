@@ -179,9 +179,6 @@ function GetStart({ history }) {
                         </Modal>
                         Terms & Conditions
                       </button>
-                      <h3>
-                        <Link to="/help">Help</Link>
-                      </h3>
                     </label>
                   </div>
 
