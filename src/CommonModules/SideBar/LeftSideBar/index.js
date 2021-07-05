@@ -199,7 +199,29 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             />
           </div>
         </div>
-        <div className="devider-line">Help</div>
+        <div
+          className={
+            !openProfile &&
+            state &&
+            state.adminMenu.currentMenu === "complianceHistory"
+              ? "taskIcon-active"
+              : "taskIcon"
+          }
+        >
+          <img
+            style={{ cursor: "pointer" }}
+            title="ComplianceHistory"
+            onClick={() => onMenuClick("Help")}
+            src={
+              !openProfile &&
+              state &&
+              state.adminMenu.currentMenu === "complianceHistory"
+                ? dashboardBlackActive
+                : dashboardGreyActive
+            }
+            alt="sidebar Active"
+          />
+        </div>
         <div className="second-icon-list">
           <div
             className={
