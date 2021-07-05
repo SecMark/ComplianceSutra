@@ -4,9 +4,13 @@ import QuestionAnswer from "./QuestionAnswer";
 import "./style.css";
 const Help = () => {
   const [questionDetail, setQuestionDetail] = useState({});
-  const fetchAnswer = (questionId) => {
-    const getId = HelpData.questions.find(({ id }) => id === questionId);
-    setQuestionDetail(getId);
+  const fetchAnswer = (ID, questionID) => {
+    console.log(ID, questionID);
+    const getAnswersById = HelpData.find(({ id }) => id === ID);
+    const getAnwerDetail = getAnswersById.questions.find(
+      ({ questionId }) => questionId === questionID
+    );
+    setQuestionDetail(getAnwerDetail);
   };
 
   return (
@@ -24,7 +28,8 @@ const Help = () => {
                 return (
                   <div>
                     <QuestionAnswer
-                      id={q.id}
+                      id={e.id}
+                      questionId={q.questionId}
                       question={q.question}
                       answer={q.answer}
                       questionDetail={questionDetail}

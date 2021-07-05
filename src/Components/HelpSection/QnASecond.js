@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-const QnASecond = ({ question, answer, setshowAnswer }) => {
+const QnASecond = ({ question, answer, setshowAnswer, questionDetail }) => {
+  console.log(questionDetail);
   useEffect(() => {
     return () => {
       setshowAnswer(false);
@@ -9,8 +10,8 @@ const QnASecond = ({ question, answer, setshowAnswer }) => {
   return (
     <div className="Right">
       <div className="Container">
-        <h6>{question}</h6>
-        <p>{answer}</p>
+        <h6>{questionDetail?.question}</h6>
+        <p>{questionDetail?.answer}</p>
       </div>
     </div>
   );
