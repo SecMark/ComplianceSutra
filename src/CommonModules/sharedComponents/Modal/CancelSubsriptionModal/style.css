@@ -10,7 +10,7 @@
 .modal-subscription-main {
   width: 100%;
   background-color: #fff;
-  margin: 10rem auto;
+  margin: 30vh auto;
   border-radius: 8px;
   z-index: 1;
   max-width: 400px;
@@ -95,4 +95,11 @@
   background: none;
   border: none;
   text-transform: uppercase;
+}
+@media screen and (max-width: 767px) {
+  .modal-subscription-main {
+    width: 90%;
+    padding: 20px;
+    margin: 35vh atuo;
+  }
 }

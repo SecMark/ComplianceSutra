@@ -25,7 +25,7 @@
   overflow-y: auto;
   height: calc(100vh - 200px);
   overflow-x: hidden;
-  padding-right: 30%;
+  padding-right: 0%;
 }
 .co-account .border-header {
   width: 100%;
@@ -286,6 +286,10 @@ p {
 }
 
 /* header css  end*/
+
+p.grey-text {
+  color: grey;
+}
 
 .choose-licenses .choose-licenses-title {
   padding: 37px 32px 0px;
@@ -840,9 +844,10 @@ div#contentGeneral:last-child {
     border-radius: inherit;
     box-shadow: inherit;
     background-color: #ffffff;
-    position: relative;
-    height: 94vh;
+    position: absolute;
+    height: 100vh;
     margin: 0px;
+    top: 0;
     padding-right: 20px;
   }
 
@@ -995,5 +1000,9 @@ div#contentGeneral:last-child {
     right: -47px;
     overflow: hidden;
     z-index: 99;
+  }
+  p.grey-text {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
   }
 }

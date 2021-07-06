@@ -14,7 +14,7 @@
   border-radius: 8px;
   z-index: 1;
   max-width: 600px;
-  max-height: 315px;
+  min-height: 315px;
   padding: 20px 30px;
   border: 5px solid;
   border-image-slice: 1;
@@ -88,7 +88,7 @@
   text-align: right;
 }
 
-.upgrade-button-container button{
+.upgrade-button-container button {
   padding: 12px 24px;
   object-fit: contain;
   border-radius: 4px;
@@ -104,4 +104,12 @@
   text-align: right;
   color: #ffffff;
   border: none;
+}
+
+@media screen and (max-width: 767px) {
+  .upgrade-button-container button {
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+  }
 }

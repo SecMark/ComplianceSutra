@@ -248,7 +248,10 @@ function CoAccount({ handleClose }) {
       <div className="scroll-sction">
         <div className="channel-div">
           <div className="row pl-0">
-            <div className="col-7">
+            <div className="col-12">
+              <p className="grey-text">Services</p>
+            </div>
+            <div className="col-9 col-md-7 col-sm-7">
               <div className="acc-div">
                 <div className="licences-toggle">
                   <p className="normaltext">

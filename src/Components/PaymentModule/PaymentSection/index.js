@@ -9,7 +9,7 @@ function PaymentSection({ openLicenseDrawer }) {
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [isCancelSubscriptionModalOpen, setIsCancelSubscriptionModalOpen] =
-    useState(false);
+    useState(true);
 
   const closeAddUserModal = () => {
     setIsAddUserModalOpen(!isAddUserModalOpen);
@@ -32,13 +32,13 @@ function PaymentSection({ openLicenseDrawer }) {
       <div className="col-md-10 col-sm-10 payment-detail">
         <h2 className="payment-plan">Payment plan</h2>
         <button
-          className="upgrade-button"
+          className="upgrade-button d-none d-md-block"
           onClick={() => setIsUpgradeModalOpen(!isUpgradeModalOpen)}
         >
           upgrade now
         </button>
       </div>
-      <div className="col-md-10 col-sm-6 payment-detail-plan">
+      <div className="col-md-10 col-sm-10 payment-detail-plan">
         <h2 className="payment-type">Type of plan</h2>
         <h2 className="payment-trail">30 Days Free Trail</h2>
       </div>
@@ -58,7 +58,7 @@ function PaymentSection({ openLicenseDrawer }) {
           <h2 className="payment-trail">5</h2>
         </div>
       </div>
-      <div className="col-10 payment-detail-plan">
+      <div className="col-sm-10 col-md-10 payment-detail-plan">
         <h2 className="payment-type">Your Licenses</h2>
         <div className="edit-container">
           <button className="edit-button" onClick={() => openLicenseDrawer()}>
@@ -67,12 +67,20 @@ function PaymentSection({ openLicenseDrawer }) {
           <h2 className="payment-trail">5</h2>
         </div>
       </div>
-      <div className="col-10 payment-detail-plan">
+      <div className="col-sm-10 col-md-10 payment-detail-plan">
         <h2 className="payment-type">Payment Method</h2>
         <div className="edit-container">
           <button className="edit-button">Change</button>
           <h2 className="payment-trail">**** **** 9999</h2>
         </div>
+      </div>
+      <div className="payment-detail-plan col-sm-6 col-md-10 d-block mx-auto">
+        <button
+          className="upgrade-button w-100 d-block d-md-none text-center"
+          onClick={() => setIsUpgradeModalOpen(!isUpgradeModalOpen)}
+        >
+          upgrade now
+        </button>
       </div>
     </>
   );
