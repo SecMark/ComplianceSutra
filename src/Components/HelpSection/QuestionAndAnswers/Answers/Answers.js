@@ -1,11 +1,12 @@
 import React from "react";
-import bgReactangle from "../../assets/Images/Rectangle 18.png";
-const QnASecond = ({ questionDetail }) => {
+import bgReactangle from "../../../../assets/Images/Rectangle 18.png";
+import "../../style.css";
+const Answers = ({ questionDetail }) => {
   console.log(questionDetail);
 
   return (
     <div className="Right">
-      <div className="Container">
+      <div className="ContainerHelp">
         <h6>{questionDetail?.question}</h6>
         <p>{questionDetail?.answer}</p>
       </div>
@@ -16,4 +17,4 @@ const QnASecond = ({ questionDetail }) => {
   );
 };
 
-export default QnASecond;
+export default Answers;

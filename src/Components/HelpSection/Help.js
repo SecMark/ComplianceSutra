@@ -1,23 +1,19 @@
 import React, { useState } from "react";
 import HelpData from "../../HelpData/Help.json";
-import QuestionAnswer from "./QuestionAnswer";
+import QuestionAnswer from "./QuestionAndAnswers/QuestionAnswer";
 import LeftSideBar from "../../CommonModules/SideBar/LeftSideBar";
 import logo from "../../assets/Images/LoginDemo/header-logo.png";
 import menu from "../../assets/Icons/togglemobile.png";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { RiArrowUpSLine } from "react-icons/ri";
+import constant from "../../CommonModules/sharedComponents/constants/constant";
 
 import "./style.css";
 const Help = () => {
   const [questionDetail, setQuestionDetail] = useState({});
   const [showMore, setshowMore] = useState(false);
-  const [itemsToShow, setitemsToShow] = useState(3);
-  // const [active, setActive] = useState(false);
-
-  // const activeHandler = () => {
-  //   setActive(!active);
-  // };
+  const [itemsToShow, setitemsToShow] = useState(constant.NumberOfItemsHelp);
 
   const fetchAnswer = (ID, questionID) => {
     console.log(ID, questionID);
@@ -26,15 +22,13 @@ const Help = () => {
       ({ questionId }) => questionId === questionID
     );
     setQuestionDetail(getAnwerDetail);
-    // activeHandler();
   };
-  // const viewMore = itemsToShow > 3 ? "noView" : "ViewMore";
   const showMoreHandler = () => {
-    if (itemsToShow === 3) {
+    if (itemsToShow === constant.NumberOfItemsHelp) {
       setitemsToShow(questionDetail.length);
       setshowMore(true);
     } else {
-      setitemsToShow(3);
+      setitemsToShow(constant.NumberOfItemsHelp);
       setshowMore(false);
     }
   };
@@ -49,8 +43,8 @@ const Help = () => {
 
         <img src={logo} alt="" />
       </div>
-      <div className="Main">
-        <div className="Header">
+      <div className="MainHelp">
+        <div className="HeaderHelp">
           <h4>Help & Support</h4>
           <span>
             <BsFillQuestionCircleFill
@@ -59,28 +53,26 @@ const Help = () => {
           </span>
         </div>
         <div className="Left"></div>
-        {HelpData.map((e) => {
+        {HelpData.map((questionList) => {
           return (
             <div className="Element">
-              <h6 id="Title">{e.title}</h6>
-              {e.questions.slice(0, itemsToShow).map((q) => {
+              <h6 id="Title">{questionList.title}</h6>
+              {questionList.questions.slice(0, itemsToShow).map((question) => {
                 return (
                   <div>
                     <QuestionAnswer
-                      id={e.id}
-                      questionId={q.questionId}
-                      question={q.question}
-                      answer={q.answer}
+                      id={questionList.id}
+                      questionId={question.questionId}
+                      question={question.question}
+                      answer={question.answer}
                       questionDetail={questionDetail}
                       fetchAnswer={fetchAnswer}
                       showMoreHandler={showMoreHandler}
-                      // viewMore={viewMore}
-                      // active={active}
                     />
                   </div>
                 );
               })}
-              {e.questions.length > 3 ? (
+              {questionList.questions.length > constant.NumberOfItemsHelp ? (
                 <div>
                   <button className="ViewMore" onClick={showMoreHandler}>
                     {showMore ? (
@@ -90,7 +82,12 @@ const Help = () => {
                       </div>
                     ) : (
                       <div>
-                        <span>View All ({e.questions.length - 3} More)</span>
+                        <span>
+                          View All (
+                          {questionList.questions.length -
+                            constant.NumberOfItemsHelp}{" "}
+                          More)
+                        </span>
                         <RiArrowDownSLine />
                       </div>
                     )}

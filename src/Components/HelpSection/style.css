@@ -2,7 +2,7 @@
   display: flex;
   height: 100vh;
 }
-.Main {
+.MainHelp {
   display: flex;
   margin: 0;
   padding: 0;
@@ -13,6 +13,7 @@
   flex-direction: column;
   overflow-y: scroll;
   overflow-x: hidden;
+  background-color: #fff;
 }
 
 .noView {
@@ -30,7 +31,9 @@
   flex-direction: row;
   margin-left: auto;
   cursor: pointer;
+  align-items: center;
 }
+
 .noAnswer {
   display: none;
 }
@@ -47,13 +50,14 @@
   overflow-y: scroll;
   color: #2c2738;
 }
-.Header {
+.HeaderHelp {
   display: flex;
   padding: 1rem 1.5rem;
   width: 100%;
   align-items: flex-start;
+  justify-content: space-between;
 }
-.Header h4 {
+.HeaderHelp h4 {
   padding-bottom: -0.6rem;
 }
 .Element {
@@ -84,38 +88,35 @@
   margin: 1rem 0;
   padding: 0 0.8rem;
   line-height: 1.5rem;
+  cursor: pointer;
 }
 .question button {
   border: none;
   background-color: #fff;
   cursor: pointer;
+  width: 10%;
+}
+.question:hover {
+  box-shadow: 0 3px 6px 0 rgba(176, 176, 176, 0.16);
+  background-color: #f7f4fe;
+}
+.QuestionButton {
+  padding: 0 1rem;
+}
+.QuestionButtonMobile {
+  display: none;
 }
 .SidebarMobile {
   display: none;
 }
 
-.Active {
-  box-shadow: 0 3px 6px 0 rgba(176, 176, 176, 0.16);
-  width: 100%;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  margin-left: auto;
-  background-color: #f7f4fe;
-}
-
-.Active button {
-  border: none;
-  background-color: #f7f4fe;
-}
 .Right {
   width: 57vw;
   height: 90vh;
   margin: 2rem -5rem 2rem 8rem;
   border-radius: 36px;
 }
-.Container {
+.ContainerHelp {
   display: flex;
   flex-direction: column;
   align-items: initial;
@@ -123,13 +124,13 @@
   height: 90vh;
   background-color: #fff;
   border-radius: 36px;
-  box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
+  box-shadow: 0 3px 36px 0 rgba(68, 0, 255, 0.151);
 }
-.Container h6 {
+.ContainerHelp h6 {
   font-size: 24px;
   margin-bottom: 2rem;
 }
-.Container p {
+.ContainerHelp p {
   font-size: 14px;
   opacity: 0.7;
   line-height: 2rem;
@@ -144,10 +145,7 @@
   top: 80%;
   left: 35%;
 }
-.QnA {
-  cursor: pointer;
-  /* position: relative; */
-}
+
 .noAnswer {
   display: none;
 }
@@ -156,7 +154,7 @@
   display: block;
 }
 
-.QnASecond {
+.AnswersTrue {
   position: absolute;
   top: 0;
   right: 100px;
@@ -168,19 +166,25 @@
     flex-direction: column;
     background-color: #fff;
   }
-  .Header {
+  .HeaderHelp {
     width: 100%;
     height: 8rem;
-    z-index: 1;
   }
-  .Main {
+  .MainHelp {
     width: 100vw;
   }
-  .QnASecond {
+  .AnswersTrue {
     position: relative;
     top: 0;
     right: 100px;
     scroll: none;
+  }
+  .QuestionButton {
+    display: none;
+  }
+  .QuestionButtonMobile {
+    display: inline-block;
+    padding: 0 1rem;
   }
   .Right {
     width: 95%;
@@ -188,8 +192,7 @@
     height: auto;
     margin-left: 6.5rem;
   }
-  .Container {
-    scroll: none;
+  .ContainerHelp {
     height: 90vh;
     background-color: #fff;
     border-radius: 0;
@@ -197,10 +200,10 @@
     padding: 0;
     height: auto;
   }
-  .Container h6 {
+  .ContainerHelp h6 {
     display: none;
   }
-  .Container p {
+  .ContainerHelp p {
     font-size: 10px;
     line-height: 1.8;
   }
@@ -216,6 +219,9 @@
   }
   .ViewMore {
     width: 100%;
-    padding: 0 5rem;
+    padding: 0 20%;
+  }
+  #bgRectangle img {
+    display: none;
   }
 }

@@ -12,4 +12,6 @@ export default {
     errorDueToPriorDate: "Date should not be prior to date of registration.",
   },
   filterFlag: "A",
+
+  NumberOfItemsHelp: 3,
 };

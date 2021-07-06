@@ -12,7 +12,8 @@ import updateActive from "../../../assets/Icons/update_active.png";
 
 import historyListActive from "../../../assets/Icons/history_active.png";
 import historyListInActive from "../../../assets/Icons/history_unactive.png";
-
+import HelpBlackActive from "../../../assets/Icons/HelpBlackActive.png";
+import HelpGreyActive from "../../../assets/Icons/HelpGreyActive.png";
 import sidebarBell from "../../../assets/Icons/sidebarBell.png";
 import sidebarBellActive from "../../../assets/Icons/bellSelected.png";
 import settingActive from "../../../assets/Icons/activeSetting.png";
@@ -26,7 +27,6 @@ import { withRouter } from "react-router-dom";
 import { actions as adminMenuActions } from "../Redux/actions";
 import { useOuterClick } from "../../../Components/OnBording/SubModules/AssignTask/utils";
 import { actions as loginActions } from "../../../Components/Authectication/redux/actions";
-import Helplogo from "../../../assets/Icons/contact_support_black_24dp.png";
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
@@ -213,12 +213,11 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             style={{ cursor: "pointer" }}
             title="Help"
             onClick={() => onMenuClick("Help")}
-            // src={
-            //   !openProfile && state && state.adminMenu.currentMenu === "Help"
-            //     ? dashboardBlackActive
-            //     : dashboardGreyActive
-            // }
-            src={Helplogo}
+            src={
+              !openProfile && state && state.adminMenu.currentMenu === "Help"
+                ? HelpBlackActive
+                : HelpGreyActive
+            }
             alt="sidebar Active"
           />
         </div>
