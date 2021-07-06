@@ -145,6 +145,8 @@ function CoManagment({ handleClose }) {
   const [isShowReAssignModal, setIsShowReAssignModal] = useState(false);
   const [isShowReAssignModalMobile, setIsShowReAssignModalMobile] =
     useState(false);
+  const [reAssignUserType, setReAssignUserType] = useState(null);
+  const [reAssignUserId, setReAssignUserId] = useState(null);
 
   const handleChangeInput = (e) => {};
 
@@ -224,7 +226,6 @@ function CoManagment({ handleClose }) {
       return `${nameArray[0].slice(0, 2).toUpperCase()}`;
     }
   };
-
   useEffect(() => {
     let fieldArray = [];
     if (teamMemberData && teamMemberData.length > 0) {
@@ -702,11 +703,15 @@ function CoManagment({ handleClose }) {
         data={fieldArray}
         openModal={isShowReAssignModal}
         setShowModal={setIsShowReAssignModal}
+        userType={reAssignUserType}
+        userId={reAssignUserId}
       />
       <ReAssignTasksModal
         data={fieldArray}
         openModal={isShowReAssignModalMobile}
         setShowModal={setIsShowReAssignModalMobile}
+        userType={reAssignUserType}
+        userId={reAssignUserId}
       />
       {visible && _createDelectActionModal(openPopupIndex)}
       <div className="d-none d-sm-block">
@@ -957,7 +962,15 @@ function CoManagment({ handleClose }) {
                             <img
                               className="three-dot"
                               style={{ cursor: "pointer" }}
-                              onClick={() => openPopup(index)}
+                              onClick={() => {
+                                setReAssignUserType(
+                                  fieldArray.filter(
+                                    (users) => users.id === item.id
+                                  )[0].UserType
+                                );
+                                setReAssignUserId(item.id);
+                                openPopup(index);
+                              }}
                               src={threeDots}
                               alt="three Dots Icon"
                             />
@@ -1381,7 +1394,15 @@ function CoManagment({ handleClose }) {
                       <td className="pl-0">
                         <div
                           style={{ cursor: "pointer" }}
-                          onClick={() => openPopup(index)}
+                          onClick={() => {
+                            setReAssignUserType(
+                              fieldArray.filter(
+                                (users) => users.id === item.id
+                              )[0].UserType
+                            );
+                            setReAssignUserId(item.id);
+                            openPopup(index);
+                          }}
                           className="aaaa float-right"
                         >
                           <img
