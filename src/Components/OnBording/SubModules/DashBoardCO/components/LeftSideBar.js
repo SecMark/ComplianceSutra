@@ -71,7 +71,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       if (isTaskListOpen) {
         setIsTaskListOpen(false);
       }
-    } else if (currentActiveMenu === "notfications") {
+    } else if (currentActiveMenu === "notifications") {
       history.push("/notifications");
     } else if (currentActiveMenu === "settings") {
       history.push("/settings");
@@ -144,19 +144,19 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             className={
               !openProfile &&
               state &&
-              state.adminMenu.currentMenu === "notfications"
+              state.adminMenu.currentMenu === "notifications"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
           >
             <img
               style={{ cursor: "pointer" }}
-              title="Notfications"
-              onClick={() => onMenuClick("notfications")}
+              title="Notifications"
+              onClick={() => onMenuClick("notifications")}
               src={
                 !openProfile &&
                 state &&
-                state.adminMenu.currentMenu === "notfications"
+                state.adminMenu.currentMenu === "notifications"
                   ? sidebarBellActive
                   : sidebarBell
               }

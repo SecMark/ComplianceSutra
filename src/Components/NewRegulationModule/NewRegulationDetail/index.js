@@ -50,7 +50,7 @@ const NewRegulationDetail = ({
                 <buton className="tags-button">{detail?.Regbodies}</buton>
               </div>
               <a
-                href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${detail?.id}&flag=downloadtaskfiles&file=${detail?.c_file}`}
+                href={`${detail?.FileLOcation}${detail?.c_file}`}
                 className="download-file"
               >
                 Download File
