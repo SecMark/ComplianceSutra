@@ -21,6 +21,8 @@ import dashboardGreyActive from "../../../../../../assets/Icons/dashboard_grey.p
 import historyActive from "../../../../../../assets/Icons/history_active.png";
 import historyInactive from "../../../../../../assets/Icons/history_unactive.png";
 import updateActive from "../../../../../../assets/Icons/update_active.png";
+import HelpBlackActive from "../../../../../../assets/Icons/HelpBlackActive.png";
+import HelpGreyActive from "../../../../../../assets/Icons/HelpGreyActive.png";
 
 import "./style.css";
 
@@ -55,6 +57,8 @@ function MobileLeftSidebar({ history, close }) {
       history.push("/compliance-history-list");
     } else if (currentActiveMenu === "newRegulations") {
       history.push("/new-regulations");
+    } else if (currentActiveMenu === "Help") {
+      history.push("/help");
     }
   };
 

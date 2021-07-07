@@ -12,7 +12,8 @@ import updateActive from "../../../assets/Icons/update_active.png";
 
 import historyListActive from "../../../assets/Icons/history_active.png";
 import historyListInActive from "../../../assets/Icons/history_unactive.png";
-
+import HelpBlackActive from "../../../assets/Icons/HelpBlackActive.png";
+import HelpGreyActive from "../../../assets/Icons/HelpGreyActive.png";
 import sidebarBell from "../../../assets/Icons/sidebarBell.png";
 import sidebarBellActive from "../../../assets/Icons/bellSelected.png";
 import settingActive from "../../../assets/Icons/activeSetting.png";
@@ -63,6 +64,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/compliance-history-list");
     } else if (currentActiveMenu === "newRegulations") {
       history.push("/new-regulations");
+    } else if (currentActiveMenu === "Help") {
+      history.push("/help");
     }
   };
 
@@ -199,7 +202,25 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             />
           </div>
         </div>
-        <div className="devider-line">Help</div>
+        <div
+          className={
+            !openProfile && state && state.adminMenu.currentMenu === "Help"
+              ? "taskIcon-active"
+              : "taskIcon"
+          }
+        >
+          <img
+            style={{ cursor: "pointer" }}
+            title="Help"
+            onClick={() => onMenuClick("Help")}
+            src={
+              !openProfile && state && state.adminMenu.currentMenu === "Help"
+                ? HelpBlackActive
+                : HelpGreyActive
+            }
+            alt="sidebar Active"
+          />
+        </div>
         <div className="second-icon-list">
           <div
             className={
