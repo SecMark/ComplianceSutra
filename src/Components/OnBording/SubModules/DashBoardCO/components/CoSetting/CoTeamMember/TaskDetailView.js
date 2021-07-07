@@ -8,6 +8,7 @@ import sidebarCheckIcon from "../../../../../../assets/Icons/sidebarCheckIcon.pn
 import completeTaskIcon from "../../../../../../assets/Icons/emailVerify.png";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useEffect } from "react";
 
 function TaskDetailsView({
   isTaskListOpen,
@@ -17,7 +18,6 @@ function TaskDetailsView({
   taskList,
   companyName,
 }) {
-
   const [selectedTask, setSelectedTask] = useState(null);
   const [completedTaskList, setCompletedTaskList] = useState([]);
   const [completedDate, setCompletedDate] = useState("");
@@ -32,6 +32,10 @@ function TaskDetailsView({
       return `${nameArray[0].slice(0, 1)}`;
     }
   };
+  console.log(selectedTask);
+  useEffect(() => {
+    console.log(selectedTask);
+  }, [selecte]);
   return (
     <>
       {isTaskListOpen && (

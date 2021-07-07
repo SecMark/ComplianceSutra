@@ -1,3 +1,4 @@
+  
 export default {
   companyEntityId: "C",
   licenseEntityId: "L",
