@@ -16,4 +16,12 @@ export default {
   license: "license",
   company: "company",
   team: "team",
+  list: "list",
+  calender: "calender",
+  board: "board",
+  day: "day",
+  month: "month",
+  week: "week",
+  increment: "increment",
+  decrement: "decrement",
 };

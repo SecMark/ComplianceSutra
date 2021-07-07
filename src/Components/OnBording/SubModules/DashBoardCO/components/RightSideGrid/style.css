@@ -5,7 +5,7 @@
   box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
   background-color: #ffffff;
   position: relative;
-  height: 100vh;
+  height: 100%;
   margin: 20px 20px 20px 7%;
   z-index: 2000;
 }
@@ -520,6 +520,7 @@
   text-align: left;
   color: #2c2738;
   margin-right: 50px;
+  cursor: pointer;
 }
 
 .file-title-inactive {
@@ -534,6 +535,7 @@
   text-align: left;
   color: #575757;
   margin-right: 50px;
+  cursor: pointer;
 }
 .task-details-file-grid {
   border-bottom: 2px solid #eee8fc;
@@ -546,6 +548,15 @@
   height: 2px;
   border-radius: 1px;
   background-color: #7a73ff;
+}
+.w-40 {
+  width: 40px;
+}
+.w-70 {
+  width: 70px;
+}
+.w-50 {
+  width: 50px;
 }
 .holding-list-normal-title {
   opacity: 0.64;

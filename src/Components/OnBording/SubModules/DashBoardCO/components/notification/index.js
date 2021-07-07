@@ -25,7 +25,7 @@ function Notification({history}) {
 
   return (
     <div className="row co-dashboard">
-      <div className=" zleft-fixed ">
+      <div className="left-fixed ">
         <div className="on-boarding">
           <SideBarInputControl />
         </div>
