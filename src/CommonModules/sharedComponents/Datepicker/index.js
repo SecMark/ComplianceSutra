@@ -12,7 +12,6 @@ const Datepicker = ({
   pageName,
   value,
 }) => {
-  console.log("From datepicker value: ", value);
   const onChangeHandler = (date, dateString) => {
     const months = date?._locale?._months;
     const dateArr = dateString.split(" ").map((n, index) => {
@@ -27,9 +26,9 @@ const Datepicker = ({
   };
   return (
     <div className="form-group">
-      {value.length === 3 ? (
+      {value && value.length === 3 ? (
         <DatePicker
-          defaultValue={moment(value.join("-"), "DD-MM-YYYY")}
+          defaultValue={moment(value?.join("-"), "DD-MM-YYYY")}
           style={{ width: "100%", color: "#000", border: "1px solid #ced4da" }}
           format="DD MMMM Y"
           name={name}
