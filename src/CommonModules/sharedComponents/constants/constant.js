@@ -10,6 +10,20 @@ export default {
       "Range Cannot be more than 1 year. Please change the selected date.",
     errorDueToReverseDate: "Date should be after ",
     errorDueToPriorDate: "Date should not be prior to date of registration.",
+    errorDueToPreviousDate: "Date should be after today's date.",
+    errorDueToMoreThanOneYearDateFromToday:
+      "Date should be less than 1 year from today's date.",
   },
   filterFlag: "A",
+  ReAssignFilterTypes: {
+    migrateAllTasksInDateRange: "MIGRATE_ALL_TASKS_IN_DATE_RANGE",
+    migrateAllTasksOfParticularDate: "MIGRATE_ALL_TASKS_OF_PARTICULAR_DATE",
+    migrateAllTasksForever: "MIGRATE_ALL_TASKS_FOREVER",
+  },
+  ReAssignFlags: ["0", "1", "2"],
+  ReAssignMessages: {
+    individualTaskSuccess: "Task successfully re-assigned to ",
+    success: "Tasks successfully re-assigned to ",
+    error: "An error occured! Please try again.",
+  },
 };
