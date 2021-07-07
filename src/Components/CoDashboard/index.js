@@ -14,7 +14,7 @@ function CoDashboard() {
       </div>
 
       <div className="col-12 pd-right co-bg">
-        <img className="right-bg" src={Cobg} alt="" />
+        {/* <img className="right-bg" src={Cobg} alt="" /> */}
         <RightSideGrid />
       </div>
     </div>

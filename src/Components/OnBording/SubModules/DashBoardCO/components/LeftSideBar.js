@@ -26,6 +26,8 @@ import { withRouter } from "react-router-dom";
 import { actions as adminMenuActions } from "../MenuRedux/actions";
 import { useOuterClick } from "../../../../OnBording/SubModules/AssignTask/utils";
 import { actions as loginActions } from "../../../../Authectication/redux/actions";
+import HelpBlackActive from "../../../../../assets/Icons/HelpBlackActive.png";
+import HelpGreyActive from "../../../../../assets/Icons/HelpGreyActive.png";
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
@@ -63,6 +65,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/compliance-history-list");
     } else if (currentActiveMenu === "newRegulations") {
       history.push("/new-regulations");
+    } else if (currentActiveMenu === "Help") {
+      history.push("/help");
     }
   };
 
@@ -224,6 +228,27 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Setting Icon"
             />
           </div>
+
+          <div
+            className={
+              !openProfile && state && state.adminMenu.currentMenu === "Help"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="Help"
+              onClick={() => onMenuClick("Help")}
+              src={
+                !openProfile && state && state.adminMenu.currentMenu === "Help"
+                  ? HelpBlackActive
+                  : HelpGreyActive
+              }
+              alt="sidebar Active"
+            />
+          </div>
+
           <div className={openProfile ? "taskIcon-active" : "taskIcon"}>
             <img
               style={{ cursor: "pointer" }}
