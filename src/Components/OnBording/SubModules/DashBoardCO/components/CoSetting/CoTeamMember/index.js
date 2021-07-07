@@ -700,14 +700,12 @@ function CoManagment({ handleClose }) {
   return (
     <div className="co-team-member">
       <ReAssignTasksModal
-        data={fieldArray}
         openModal={isShowReAssignModal}
         setShowModal={setIsShowReAssignModal}
         userType={reAssignUserType}
         userId={reAssignUserId}
       />
       <ReAssignTasksModal
-        data={fieldArray}
         openModal={isShowReAssignModalMobile}
         setShowModal={setIsShowReAssignModalMobile}
         userType={reAssignUserType}

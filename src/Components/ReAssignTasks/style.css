@@ -124,6 +124,7 @@ button.re-assign {
 .warnings {
   color: red;
   font-size: 0.7rem;
+  margin-top: 0.5rem;
 }
 
 /* Small devices (landscape phones, 576px and up) */
