@@ -202,25 +202,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             />
           </div>
         </div>
-        <div
-          className={
-            !openProfile && state && state.adminMenu.currentMenu === "Help"
-              ? "taskIcon-active"
-              : "taskIcon"
-          }
-        >
-          <img
-            style={{ cursor: "pointer" }}
-            title="Help"
-            onClick={() => onMenuClick("Help")}
-            src={
-              !openProfile && state && state.adminMenu.currentMenu === "Help"
-                ? HelpBlackActive
-                : HelpGreyActive
-            }
-            alt="sidebar Active"
-          />
-        </div>
+        <div className="devider-line"></div>
         <div className="second-icon-list">
           <div
             className={
@@ -245,6 +227,27 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Setting Icon"
             />
           </div>
+
+          <div
+            className={
+              !openProfile && state && state.adminMenu.currentMenu === "Help"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="Help"
+              onClick={() => onMenuClick("Help")}
+              src={
+                !openProfile && state && state.adminMenu.currentMenu === "Help"
+                  ? HelpBlackActive
+                  : HelpGreyActive
+              }
+              alt="sidebar Active"
+            />
+          </div>
+
           <div className={openProfile ? "taskIcon-active" : "taskIcon"}>
             <img
               style={{ cursor: "pointer" }}

@@ -58,22 +58,44 @@ const HistoryFilterForm = (props) => {
   }, [state.HistoryReducer.from, state.HistoryReducer.to]);
 
   useEffect(() => {
+    console.log(state.HistoryReducer);
+    console.log(
+      moment(
+        moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+          "YYYY-MM-DD"
+        )
+      ).isSameOrAfter(priorDate)
+    );
     if (
-      state.HistoryReducer.numberOfSelectedCompanies !== 0 ||
-      state.HistoryReducer.numberOfSelectedLicense !== 0 ||
-      (state.HistoryReducer.from !== "" &&
-        isSameOrAfterToday(state.HistoryReducer.from) &&
-        state.HistoryReducer.to !== "" &&
-        isSameOrAfterToday(state.HistoryReducer.to) &&
-        differenceInDays <= 365 &&
-        priorDate !== "" &&
-        moment(
-          moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
-            "YYYY-MM-DD"
-          )
-        ).isSameOrAfter(priorDate))
+      state.HistoryReducer.from.length !== 1 &&
+      isSameOrAfterToday(state.HistoryReducer.from) &&
+      state.HistoryReducer.to.length !== 1 &&
+      isSameOrAfterToday(state.HistoryReducer.to) &&
+      differenceInDays <= 365 &&
+      priorDate !== "" &&
+      moment(
+        moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+          "YYYY-MM-DD"
+        )
+      ).isSameOrAfter(priorDate) &&
+      moment(
+        moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+          "YYYY-MM-DD"
+        )
+      ).isSameOrBefore(
+        moment(state.HistoryReducer.to.join("-"), "DD-MM-YYYY").format(
+          "YYYY-MM-DD"
+        )
+      )
     ) {
-      setIsAllInputFilled(true);
+      if (
+        state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
+        state.HistoryReducer.numberOfSelectedLicense !== 0
+      ) {
+        setIsAllInputFilled(true);
+      } else {
+        setIsAllInputFilled(true);
+      }
     } else {
       setIsAllInputFilled(false);
     }
@@ -87,7 +109,10 @@ const HistoryFilterForm = (props) => {
 
   const setFilterAndNavigateToHistoryList = () => {
     let historyListPayload = {};
-    if (state.HistoryReducer.from !== "" && state.HistoryReducer.to !== "") {
+    if (
+      state.HistoryReducer.from.length !== 1 &&
+      state.HistoryReducer.to.length !== 1
+    ) {
       historyListPayload = {
         entityid: constant.historyEntityId,
         userID: state.auth.loginInfo?.UserID,
@@ -107,8 +132,8 @@ const HistoryFilterForm = (props) => {
     if (
       state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
       state.HistoryReducer.numberOfSelectedLicense !== 0 &&
-      state.HistoryReducer.from !== "" &&
-      state.HistoryReducer.to !== ""
+      state.HistoryReducer.from.length !== 1 &&
+      state.HistoryReducer.to.length !== 1
     ) {
       historyListPayload = {
         entityid: constant.historyEntityId,
@@ -148,26 +173,33 @@ const HistoryFilterForm = (props) => {
           From:
         </label>
         <Datepicker
+          value={state.HistoryReducer.from}
           name="from"
           dispatch={actionDispatch}
           actionType="SELECT_FROM_DATE"
           pageName="historyCompliance"
         />
         <p style={{ color: "red", fontSize: "0.8rem" }}>
-          {isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
+          {state.HistoryReducer.from.length !== 1 &&
+            isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
             !isSameOrAfterToday(state.HistoryReducer.from) && (
               <small>
                 {"* " + constant.errorMessage.errorDueToGreaterDate}
               </small>
             )}
           {priorDate !== "" &&
-            state.HistoryReducer.from.length !== 0 &&
+            state.HistoryReducer.from.length !== 1 &&
             moment(
               moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
                 "YYYY-MM-DD"
               )
             ).isBefore(priorDate) && (
-              <small>{"* " + constant.errorMessage.errorDueToPriorDate}</small>
+              <small>
+                {"* " +
+                  constant.errorMessage.errorDueToPriorDate +
+                  " " +
+                  moment(priorDate, "YYYY-MM-DD").format("D MMMM Y")}
+              </small>
             )}
         </p>
       </div>
@@ -177,6 +209,7 @@ const HistoryFilterForm = (props) => {
           To:{" "}
         </label>
         <Datepicker
+          value={state.HistoryReducer.to}
           name="to"
           dispatch={actionDispatch}
           actionType="SELECT_TO_DATE"
@@ -189,7 +222,8 @@ const HistoryFilterForm = (props) => {
               <br />
             </>
           )}
-          {isSameOrAfterToday(state.HistoryReducer.to) !== undefined &&
+          {state.HistoryReducer.to.length !== 1 &&
+            isSameOrAfterToday(state.HistoryReducer.to) !== undefined &&
             !isSameOrAfterToday(state.HistoryReducer.to) && (
               <>
                 <small>
@@ -198,8 +232,8 @@ const HistoryFilterForm = (props) => {
                 <br />
               </>
             )}
-          {state.HistoryReducer.from.length !== 0 &&
-            state.HistoryReducer.to.length !== 0 &&
+          {state.HistoryReducer.from.length !== 1 &&
+            state.HistoryReducer.to.length !== 1 &&
             moment(
               state.HistoryReducer.from[2] +
                 "-" +
@@ -240,7 +274,17 @@ const HistoryFilterForm = (props) => {
         inputTitle="Select License"
         dispatch={actionDispatch}
       />
-      {isAllInputFilled && differenceInDays <= 365 ? (
+      {isAllInputFilled &&
+      differenceInDays <= 365 &&
+      moment(
+        moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+          "YYYY-MM-DD"
+        )
+      ).isSameOrBefore(
+        moment(state.HistoryReducer.to.join("-"), "DD-MM-YYYY").format(
+          "YYYY-MM-DD"
+        )
+      ) ? (
         <button
           onClick={setFilterAndNavigateToHistoryList}
           className="filter-button-active"

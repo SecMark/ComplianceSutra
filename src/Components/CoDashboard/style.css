@@ -22,7 +22,7 @@
 }
 .co-dashboard .left-fixed {
   position: fixed;
-  z-index: 9;
+  width: auto;
 }
 .co-dashboard .side-inner {
   width: 100%;
