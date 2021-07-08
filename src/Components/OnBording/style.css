@@ -29,7 +29,6 @@
 .left-fixed {
   position: fixed;
   z-index: 9;
-  width: 7vw;
 }
 .padding-right {
   padding-left: 25%;
