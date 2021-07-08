@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 
-function CancelSubscriptionModal({ closeModal, setIsPaidMember }) {
+function DeActivateAccountModal({ closeModal }) {
   const close = () => {
     closeModal();
   };
@@ -11,28 +11,29 @@ function CancelSubscriptionModal({ closeModal, setIsPaidMember }) {
         <div className="modal-subscription-content">
           <div className="modal--subscription-body-container">
             <div className="subscription-header">
-              <h3>Cancel subscription?</h3>
+              <h3>De-activate account?</h3>
             </div>
             <div className="subscription-confirm">
               <h3>
-                This will cancel your subscription. Are you sure you want to
-                continue?
+                When your accout is deactivated, you'll be logged out. Your team
+                members won't be able to access the tool until and unless you
+                log back into your account and reactivate it.
               </h3>
             </div>
           </div>
 
           <div className="confirm-buttons">
             <button className="cancel-button" onClick={close}>
-              Cancel
+              CANCEL
             </button>
             <button
               className="delete-button"
               onClick={() => {
-                setIsPaidMember(false);
+                // setIsDeactivatedAccount(true);
                 close();
               }}
             >
-              Delete
+              DEACTIVATE
             </button>
           </div>
         </div>
@@ -41,4 +42,4 @@ function CancelSubscriptionModal({ closeModal, setIsPaidMember }) {
   );
 }
 
-export default CancelSubscriptionModal;
+export default DeActivateAccountModal;

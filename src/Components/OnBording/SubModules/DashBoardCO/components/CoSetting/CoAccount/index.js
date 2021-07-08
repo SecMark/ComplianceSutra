@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actions as coActions } from "../../../redux/actions";
 import { isMobile } from "react-device-detect";
 import PaymentSection from "../../../../../../PaymentModule/PaymentSection";
+import UpgradeYourAccount from "../../../../../../PaymentModule/UpgradeYourAccount";
 
 function CoAccount({ handleClose }) {
   const state = useSelector((state) => state);
@@ -15,7 +16,9 @@ function CoAccount({ handleClose }) {
   const [licenseDrawerHideShow, setLicenseDrawerHideShow] = useState(false);
   const [isSliderCheck, setIsSliderCheck] = useState(false);
   const [showAddLiceOption, setShowAddLiceOption] = useState(false);
-
+  const [isUpgradeYourAccountOpen, setIsUpgradeYourAccountOpen] =
+    useState(false);
+  const [isPaidMember, setIsPaidMember] = useState(false);
   const loggedUser =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
 
@@ -228,90 +231,111 @@ function CoAccount({ handleClose }) {
           </div>
         </div>
       )}
-      <div className="d-flex">
-        <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
-          <div className="personal-mgt-title">Account</div>
-        </div>
-        <div className="col-2 col-sm-12 col-md-12 col-xl-12 d-block d-sm-none">
-          <img
-            className="close-icon-personal"
-            src={closeBlack}
-            alt="close Black"
-            onClick={() => {
-              handleClose(true);
-            }}
-          />
-        </div>
-      </div>
-
-      <div class="border-header d-none d-sm-block"></div>
-      <div className="scroll-sction">
-        <div className="channel-div">
-          <div className="row pl-0">
-            <div className="col-12">
-              <p className="grey-text">Services</p>
+      {!isUpgradeYourAccountOpen ? (
+        <>
+          <div className="d-flex">
+            <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
+              <div className="personal-mgt-title">Account</div>
             </div>
-            <div className="col-9 col-md-7 col-sm-7">
-              <div className="acc-div">
-                <div className="licences-toggle">
-                  <p className="normaltext">
-                    COMPLIANCE SUTRA Expert &nbsp;
-                    <span className="d-none d-sm-block">
-                      {" "}
-                      License Review
-                    </span>{" "}
-                    <span className="review">{flagCount}</span>
-                  </p>
-                  <p className="normaltext d-block d-sm-none">
-                    {" "}
-                    License Review{" "}
-                  </p>
-                </div>
-                {isSliderCheck && isMobile && (
-                  <p
-                    style={{
-                      cursor: "pointer",
-                      opacity: isSliderCheck > 0 ? 1 : 0.7,
-                    }}
-                    onClick={() => onAddLicenseLabelClick()}
-                    className="add-remove"
-                  >
-                    Add/remove licenses
-                  </p>
-                )}
-                {isSliderCheck && !isMobile && (
-                  <p
-                    style={{
-                      cursor: "pointer",
-                      opacity: isSliderCheck > 0 ? 1 : 0.7,
-                    }}
-                    onClick={() => onAddLicenseLabelClick()}
-                    className="add-remove"
-                  >
-                    Add/remove licenses
-                  </p>
-                )}
-              </div>
+            <div className="col-2 col-sm-12 col-md-12 col-xl-12 d-block d-sm-none">
+              <img
+                className="close-icon-personal"
+                src={closeBlack}
+                alt="close Black"
+                onClick={() => {
+                  handleClose(false);
+                }}
+              />
             </div>
-            <div className="col-3">
-              <div className="check-box-acc">
-                <label class="switch" id="licenses">
-                  <input
-                    htmlFor="licenses"
-                    id="licenseSetting"
-                    type="checkbox"
-                    checked={isSliderCheck}
-                    onClick={(e) => onSliderChange()}
-                  />
-                  <span class="slider round"></span>
-                </label>
-              </div>
-            </div>
-
-            <PaymentSection openLicenseDrawer={openLicenseDrawer} />
           </div>
-        </div>
-      </div>
+
+          <div class="border-header d-none d-sm-block"></div>
+          <div className="scroll-sction">
+            <div className="channel-div">
+              <div className="row pl-0">
+                <div className="col-12">
+                  <p className="grey-text">Services</p>
+                </div>
+                <div className="col-9 col-md-7 col-sm-7">
+                  <div className="acc-div">
+                    <div className="licences-toggle">
+                      <p className="normaltext">
+                        COMPLIANCE SUTRA Expert &nbsp;
+                        <span className="d-none d-sm-block">
+                          {" "}
+                          License Review
+                        </span>{" "}
+                        <span className="review">{flagCount}</span>
+                      </p>
+                      <p className="normaltext d-block d-sm-none">
+                        {" "}
+                        License Review{" "}
+                      </p>
+                    </div>
+                    {isSliderCheck && isMobile && (
+                      <p
+                        style={{
+                          cursor: "pointer",
+                          opacity: isSliderCheck > 0 ? 1 : 0.7,
+                        }}
+                        onClick={() => onAddLicenseLabelClick()}
+                        className="add-remove"
+                      >
+                        Add/remove licenses
+                      </p>
+                    )}
+                    {isSliderCheck && !isMobile && (
+                      <p
+                        style={{
+                          cursor: "pointer",
+                          opacity: isSliderCheck > 0 ? 1 : 0.7,
+                        }}
+                        onClick={() => onAddLicenseLabelClick()}
+                        className="add-remove"
+                      >
+                        Add/remove licenses
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="col-3">
+                  <div className="check-box-acc">
+                    <label class="switch" id="licenses">
+                      <input
+                        htmlFor="licenses"
+                        id="licenseSetting"
+                        type="checkbox"
+                        checked={isSliderCheck}
+                        onClick={(e) => onSliderChange()}
+                      />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <PaymentSection
+                  openLicenseDrawer={openLicenseDrawer}
+                  setUpgradeYourPlan={setIsUpgradeYourAccountOpen}
+                  isPaidMember={isPaidMember}
+                  setIsPaidMember={setIsPaidMember}
+                />
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <UpgradeYourAccount
+            handleClose={handleClose}
+            setUpgradeYourAccount={setIsUpgradeYourAccountOpen}
+            onAddLicenseLabelClick={onAddLicenseLabelClick}
+            isSliderCheck={isSliderCheck}
+            flagCount={flagCount}
+            onSliderChange={onSliderChange}
+            setIsPaidMember={setIsPaidMember}
+          />
+        </>
+      )}
     </div>
   );
 }

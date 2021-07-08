@@ -2,7 +2,7 @@ import React from "react";
 import { AiFillCheckCircle, AiOutlineInfo } from "react-icons/ai";
 import "./style.css";
 
-function UpgradePlanModal(props) {
+function UpgradePlanModal({ setUpgradeYourPlan }) {
   return (
     <div className="modal-upgrade-container">
       <div className="modal-upgrade-main">
@@ -32,7 +32,12 @@ function UpgradePlanModal(props) {
             <p>Cancel anytime</p>
           </div>
           <div class="upgrade-button-container">
-            <button className="upgrade-now-button">Upgrade now</button>
+            <button
+              className="upgrade-now-button"
+              onClick={() => setUpgradeYourPlan(true)}
+            >
+              Upgrade now
+            </button>
           </div>
         </div>
       </div>

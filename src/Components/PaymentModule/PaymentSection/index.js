@@ -2,15 +2,26 @@ import React, { useState } from "react";
 import AddUserModal from "../../../CommonModules/sharedComponents/Modal/AddUserModal";
 import UpgradePlanModal from "../../../CommonModules/sharedComponents/Modal/UpgradePlanModal";
 import CancelSubscriptionModal from "../../../CommonModules/sharedComponents/Modal/CancelSubsriptionModal";
+import DeActivateAccountModal from "../../../CommonModules/sharedComponents/Modal/DeActivateAccountModal";
 
 import "./style.css";
 
-function PaymentSection({ openLicenseDrawer }) {
+function PaymentSection({
+  openLicenseDrawer,
+  setUpgradeYourPlan,
+  isPaidMember,
+  setIsPaidMember,
+}) {
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [isCancelSubscriptionModalOpen, setIsCancelSubscriptionModalOpen] =
-    useState(true);
+    useState(false);
+  const [isDeactivatedAccountModalOpen, setIsDeactivatedAccountModalOpen] =
+    useState(false);
 
+  const closeDeActivatedModal = () => {
+    setIsDeactivatedAccountModalOpen(!isDeactivatedAccountModalOpen);
+  };
   const closeAddUserModal = () => {
     setIsAddUserModalOpen(!isAddUserModalOpen);
   };
@@ -22,25 +33,53 @@ function PaymentSection({ openLicenseDrawer }) {
   return (
     <>
       {isAddUserModalOpen && <AddUserModal closeModal={closeAddUserModal} />}
-
-      {isUpgradeModalOpen && <UpgradePlanModal />}
+      {isDeactivatedAccountModalOpen && (
+        <DeActivateAccountModal closeModal={closeDeActivatedModal} />
+      )}
+      {isUpgradeModalOpen && (
+        <UpgradePlanModal setUpgradeYourPlan={setUpgradeYourPlan} />
+      )}
 
       {isCancelSubscriptionModalOpen && (
-        <CancelSubscriptionModal closeModal={closeCancelSubscriptionModal} />
+        <CancelSubscriptionModal
+          closeModal={closeCancelSubscriptionModal}
+          setIsPaidMember={setIsPaidMember}
+        />
       )}
 
       <div className="col-md-10 col-sm-10 payment-detail">
         <h2 className="payment-plan">Payment plan</h2>
-        <button
-          className="upgrade-button d-none d-md-block"
-          onClick={() => setIsUpgradeModalOpen(!isUpgradeModalOpen)}
-        >
-          upgrade now
-        </button>
+        {!isPaidMember && (
+          <button
+            className="upgrade-button d-none d-md-block"
+            onClick={() => setIsUpgradeModalOpen(!isUpgradeModalOpen)}
+          >
+            upgrade now
+          </button>
+        )}
       </div>
       <div className="col-md-10 col-sm-10 payment-detail-plan">
         <h2 className="payment-type">Type of plan</h2>
-        <h2 className="payment-trail">30 Days Free Trail</h2>
+        {isPaidMember ? (
+          <div className="plans-toggle">
+            <h3 className="payment-trail mb-0">Months</h3>
+            <div className="check-box-acc mx-3">
+              <label class="switch" id="licenses">
+                <input
+                  htmlFor="licenses"
+                  id="licenseSetting"
+                  type="checkbox"
+                  checked={true}
+                  // onClick={() => onPlanSliderClick()}
+                />
+                <span class="plan-slider round"></span>
+              </label>
+            </div>
+            <h3 className="payment-trail mb-0">Annual</h3>
+          </div>
+        ) : (
+          <h2 className="payment-trail">30 Days Free Trail</h2>
+        )}
       </div>
       <div className="col-md-10 col-sm-10 payment-detail-plan">
         <h2 className="payment-type">Trail ends</h2>
@@ -74,12 +113,33 @@ function PaymentSection({ openLicenseDrawer }) {
           <h2 className="payment-trail">**** **** 9999</h2>
         </div>
       </div>
-      <div className="payment-detail-plan col-sm-6 col-md-10 d-block mx-auto">
+      <div className="payment-detail-plan col-sm-6 col-md-10 d-block mx-auto mx-md-0">
+        {isPaidMember ? (
+          <button
+            className="cancel-subscription"
+            onClick={() => setIsCancelSubscriptionModalOpen(true)}
+          >
+            Cancel Subscription
+          </button>
+        ) : (
+          <button
+            className="upgrade-button w-100 d-block d-md-none text-center"
+            onClick={() => setIsUpgradeModalOpen(!isUpgradeModalOpen)}
+          >
+            upgrade now
+          </button>
+        )}
+      </div>
+      <div className="payment-detail-plan col-sm-10 col-md-10 mt-4 mb-2">
+        <h2 className="payment-plan">Account Status</h2>
+      </div>
+      <div className="payment-detail-plan col-sm-10 col-md-10 mt-0">
+        <h2 className="payment-type">De-Activate account</h2>
         <button
-          className="upgrade-button w-100 d-block d-md-none text-center"
-          onClick={() => setIsUpgradeModalOpen(!isUpgradeModalOpen)}
+          className="cancel-subscription"
+          onClick={() => setIsDeactivatedAccountModalOpen(true)}
         >
-          upgrade now
+          de-activate
         </button>
       </div>
     </>
