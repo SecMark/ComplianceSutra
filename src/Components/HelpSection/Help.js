@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import {isMobile} from "react-device-detect"
+import { isMobile } from "react-device-detect";
 import HelpData from "../../HelpData/Help.json";
 import QuestionAnswer from "./QuestionAndAnswers/QuestionAnswer";
 import LeftSideBar from "../../CommonModules/SideBar/LeftSideBar";
@@ -22,7 +22,6 @@ const Help = () => {
   const [navigationHideShow, setNavigationHideShow] = useState(false);
 
   const fetchAnswer = (ID, questionID) => {
-    console.log(ID, questionID);
     const getAnswersById = HelpData.find(({ id }) => id === ID);
     const getAnwerDetail = getAnswersById.questions.find(
       ({ questionId }) => questionId === questionID
@@ -60,55 +59,45 @@ const Help = () => {
 
   return (
     <div className="Parent">
-     
-      {/* <div className="Sidebar">
-        <LeftSideBar />
-      </div>
-      <div className="SidebarMobile">
-        <img src={menu} alt="" height={18} />
-
-        <img src={logo} alt="" />
-      </div> */}
       {isMobile ? (
-          <div id="sideBarParent" className="" ref={sideBarParent}>
+        <div id="sideBarParent" className="" ref={sideBarParent}>
+          <div
+            id="sideBarChild"
+            className="leftSideBarFixed"
+            ref={sideBarChild}
+          >
+            <MobileLeftSidebar
+              className="d-block d-lg-none"
+              close={() => closeMobileSidebar()}
+            />
+          </div>
+        </div>
+      ) : (
+        <LeftSideBar />
+      )}
+      <div className="d-block mobile-head d-md-none">
+        {showHB === false && (
+          <div className="d-flex justify-content-between d-lg-none">
             <div
-              id="sideBarChild"
-              className="leftSideBarFixed"
-              ref={sideBarChild}
+              className=""
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                onHBMenu();
+              }}
             >
-              <MobileLeftSidebar
-                className="d-block d-lg-none"
-                close={() => closeMobileSidebar()}
-              />
+              <img src={togglemobile} alt="toggle mobile" />
+            </div>
+            <div className="pr-4">
+              {" "}
+              <img
+                className="mobile-logo"
+                src={sideBarlogo}
+                alt="sideBarlogo"
+              />{" "}
             </div>
           </div>
-        ) : (
-          <LeftSideBar />
         )}
-        <div className="d-block mobile-head d-md-none">
-        {showHB === false && (
-                // <div className=" d-block d-sm-none pad-ms">
-                <div className="d-flex justify-content-between d-lg-none">
-                  <div
-                    className=""
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      onHBMenu();
-                    }}
-                  >
-                    <img src={togglemobile} alt="toggle mobile" />
-                  </div>
-                  <div className="pr-4">
-                    {" "}
-                    <img
-                      className="mobile-logo"
-                      src={sideBarlogo}
-                      alt="sideBarlogo"
-                    />{" "}
-                  </div>
-                </div>
-              )}
-        </div>
+      </div>
       <div className="MainHelp">
         <div className="HeaderHelp">
           <h4>Help & Support</h4>
