@@ -17,6 +17,7 @@ import moment from "moment";
 import { clearState, getHistoryList, setSuccess } from "../redux/actions";
 import { withRouter } from "react-router";
 import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
+import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
 
 const HistoryList = (props) => {
   // state for mobile design
@@ -262,9 +263,7 @@ const HistoryList = (props) => {
                   </tbody>
                 </table>
               ) : (
-                <div className="no-data">
-                  <p>Compliance History not found! Please set filters.</p>
-                </div>
+                <NoResultFound text="No Result Found" />
               )}
             </div>
           </div>
@@ -419,9 +418,7 @@ const HistoryList = (props) => {
                       </tbody>
                     </table>
                   ) : (
-                    <div className="no-data">
-                      <p>Compliance History not found! Select filter.</p>
-                    </div>
+                    <NoResultFound text="No Result found" />
                   )}
                 </div>
               </div>

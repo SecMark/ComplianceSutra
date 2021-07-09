@@ -28,7 +28,7 @@
 .dropdown--open {
   pointer-events: all;
   opacity: 1;
-  /* height: 251px; */
+  max-height: 110px;
 }
 .select-title {
   font-size: 0.8rem;
@@ -48,4 +48,3 @@
   font-weight: 500;
   color: rgb(72, 72, 72);
 }
-

@@ -1,19 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import {isMobile} from "react-device-detect"
 import HelpData from "../../HelpData/Help.json";
 import QuestionAnswer from "./QuestionAndAnswers/QuestionAnswer";
 import LeftSideBar from "../../CommonModules/SideBar/LeftSideBar";
-import logo from "../../assets/Images/LoginDemo/header-logo.png";
-import menu from "../../assets/Icons/togglemobile.png";
+import sideBarlogo from "../../assets/Images/LoginDemo/header-logo.png";
+import togglemobile from "../../assets/Icons/togglemobile.png";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { RiArrowUpSLine } from "react-icons/ri";
 import constant from "../../CommonModules/sharedComponents/constants/constant";
 
 import "./style.css";
+import MobileLeftSidebar from "../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
 const Help = () => {
   const [questionDetail, setQuestionDetail] = useState({});
   const [showMore, setshowMore] = useState(false);
+  const sideBarParent = useRef(null);
+  const sideBarChild = useRef(null);
   const [itemsToShow, setitemsToShow] = useState(constant.NumberOfItemsHelp);
+  const [showHB, setShowHBMenu] = useState(false); // For showing Hamburger Menu
+  const [navigationHideShow, setNavigationHideShow] = useState(false);
 
   const fetchAnswer = (ID, questionID) => {
     console.log(ID, questionID);
@@ -22,6 +28,25 @@ const Help = () => {
       ({ questionId }) => questionId === questionID
     );
     setQuestionDetail(getAnwerDetail);
+  };
+  const onHBMenu = () => {
+    setNavigationHideShow(true);
+    const drawerParent = sideBarParent;
+    const drawerChild = sideBarChild;
+    if (drawerParent) {
+      drawerParent.current.classList.add("overlay");
+      drawerChild.current.style.left = "0%";
+    }
+  };
+
+  const closeMobileSidebar = () => {
+    const drawerParent = document.getElementById("sideBarParent");
+    const drawerChild = document.getElementById("sideBarChild");
+    if (drawerParent) {
+      drawerParent.classList.remove("overlay");
+      drawerChild.style.left = "-100%";
+    }
+    setShowHBMenu(false);
   };
   const showMoreHandler = () => {
     if (itemsToShow === constant.NumberOfItemsHelp) {
@@ -35,14 +60,55 @@ const Help = () => {
 
   return (
     <div className="Parent">
-      <div className="Sidebar">
+     
+      {/* <div className="Sidebar">
         <LeftSideBar />
       </div>
       <div className="SidebarMobile">
         <img src={menu} alt="" height={18} />
 
         <img src={logo} alt="" />
-      </div>
+      </div> */}
+      {isMobile ? (
+          <div id="sideBarParent" className="" ref={sideBarParent}>
+            <div
+              id="sideBarChild"
+              className="leftSideBarFixed"
+              ref={sideBarChild}
+            >
+              <MobileLeftSidebar
+                className="d-block d-lg-none"
+                close={() => closeMobileSidebar()}
+              />
+            </div>
+          </div>
+        ) : (
+          <LeftSideBar />
+        )}
+        <div className="d-block mobile-head d-md-none">
+        {showHB === false && (
+                // <div className=" d-block d-sm-none pad-ms">
+                <div className="d-flex justify-content-between d-lg-none">
+                  <div
+                    className=""
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      onHBMenu();
+                    }}
+                  >
+                    <img src={togglemobile} alt="toggle mobile" />
+                  </div>
+                  <div className="pr-4">
+                    {" "}
+                    <img
+                      className="mobile-logo"
+                      src={sideBarlogo}
+                      alt="sideBarlogo"
+                    />{" "}
+                  </div>
+                </div>
+              )}
+        </div>
       <div className="MainHelp">
         <div className="HeaderHelp">
           <h4>Help & Support</h4>
