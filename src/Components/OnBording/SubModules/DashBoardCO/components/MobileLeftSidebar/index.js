@@ -51,8 +51,6 @@ function MobileLeftSidebar({ history, close }) {
       history.push("/notifications");
     } else if (currentActiveMenu === "settings") {
       history.push("/settings");
-    } else if (currentActiveMenu === "complianceHistory") {
-      history.push("/compliance-history");
     } else if (currentActiveMenu === "complianceHistoryList") {
       history.push("/compliance-history-list");
     } else if (currentActiveMenu === "newRegulations") {
@@ -132,7 +130,7 @@ function MobileLeftSidebar({ history, close }) {
             Notifications
           </div>
           {/* Compliance History Filter */}
-          <div
+          {/* <div
             onClick={() => onMenuClick("complianceHistory")}
             style={{ cursor: "pointer" }}
             className={
@@ -154,7 +152,7 @@ function MobileLeftSidebar({ history, close }) {
               alt="sideBarlogo"
             />{" "}
             History
-          </div>
+          </div> */}
           {/* Compliance History List */}
           <div
             onClick={() => onMenuClick("complianceHistoryList")}
