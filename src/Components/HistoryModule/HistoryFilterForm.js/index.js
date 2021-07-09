@@ -58,19 +58,11 @@ const HistoryFilterForm = (props) => {
   }, [state.HistoryReducer.from, state.HistoryReducer.to]);
 
   useEffect(() => {
-    console.log(state.HistoryReducer);
-    console.log(
-      moment(
-        moment(state.HistoryReducer?.from.join("-"), "DD-MM-YYYY").format(
-          "YYYY-MM-DD"
-        )
-      ).isSameOrAfter(priorDate)
-    );
     if (
       state.HistoryReducer.from.length !== 1 &&
-      isSameOrAfterToday(state.HistoryReducer.from) &&
+      isSameOrAfterToday(state.HistoryReducer?.from) &&
       state.HistoryReducer.to.length !== 1 &&
-      isSameOrAfterToday(state.HistoryReducer.to) &&
+      isSameOrAfterToday(state.HistoryReducer?.to) &&
       differenceInDays <= 365 &&
       priorDate !== "" &&
       moment(
@@ -180,15 +172,9 @@ const HistoryFilterForm = (props) => {
           pageName="historyCompliance"
         />
         <p style={{ color: "red", fontSize: "0.8rem" }}>
-          {state.HistoryReducer.from.length !== 1 &&
-            isSameOrAfterToday(state.HistoryReducer.from) !== undefined &&
-            !isSameOrAfterToday(state.HistoryReducer.from) && (
-              <small>
-                {"* " + constant.errorMessage.errorDueToGreaterDate}
-              </small>
-            )}
           {priorDate !== "" &&
-            state.HistoryReducer.from.length !== 1 &&
+            state.HistoryReducer?.from !== "" &&
+            state.HistoryReducer?.from.length !== 1 &&
             moment(
               moment(state.HistoryReducer?.from.join("-"), "DD-MM-YYYY").format(
                 "YYYY-MM-DD"
@@ -222,9 +208,9 @@ const HistoryFilterForm = (props) => {
               <br />
             </>
           )}
-          {state.HistoryReducer.to.length !== 1 &&
-            isSameOrAfterToday(state.HistoryReducer.to) !== undefined &&
-            !isSameOrAfterToday(state.HistoryReducer.to) && (
+          {state.HistoryReducer?.to.length !== 1 &&
+            isSameOrAfterToday(state.HistoryReducer?.to) !== undefined &&
+            !isSameOrAfterToday(state.HistoryReducer?.to) && (
               <>
                 <small>
                   {"* " + constant.errorMessage.errorDueToGreaterDate}
