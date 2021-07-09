@@ -61,7 +61,7 @@ const HistoryFilterForm = (props) => {
     console.log(state.HistoryReducer);
     console.log(
       moment(
-        moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+        moment(state.HistoryReducer?.from.join("-"), "DD-MM-YYYY").format(
           "YYYY-MM-DD"
         )
       ).isSameOrAfter(priorDate)
@@ -74,16 +74,16 @@ const HistoryFilterForm = (props) => {
       differenceInDays <= 365 &&
       priorDate !== "" &&
       moment(
-        moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+        moment(state.HistoryReducer?.from.join("-"), "DD-MM-YYYY").format(
           "YYYY-MM-DD"
         )
       ).isSameOrAfter(priorDate) &&
       moment(
-        moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+        moment(state.HistoryReducer?.from.join("-"), "DD-MM-YYYY").format(
           "YYYY-MM-DD"
         )
       ).isSameOrBefore(
-        moment(state.HistoryReducer.to.join("-"), "DD-MM-YYYY").format(
+        moment(state.HistoryReducer?.to.join("-"), "DD-MM-YYYY").format(
           "YYYY-MM-DD"
         )
       )
@@ -124,7 +124,7 @@ const HistoryFilterForm = (props) => {
           ),
         endDate:
           state.HistoryReducer.to &&
-          moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
+          moment(state.HistoryReducer?.to.join("-"), "DD-M-YYYY").format(
             "YYYY-MM-DD"
           ),
       };
@@ -152,12 +152,12 @@ const HistoryFilterForm = (props) => {
 
         startDate:
           state.HistoryReducer.from &&
-          moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
+          moment(state.HistoryReducer?.from.join("-"), "DD-M-YYYY").format(
             "YYYY-MM-DD"
           ),
         endDate:
           state.HistoryReducer.to &&
-          moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
+          moment(state.HistoryReducer?.to.join("-"), "DD-M-YYYY").format(
             "YYYY-MM-DD"
           ),
       };
@@ -190,7 +190,7 @@ const HistoryFilterForm = (props) => {
           {priorDate !== "" &&
             state.HistoryReducer.from.length !== 1 &&
             moment(
-              moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+              moment(state.HistoryReducer?.from.join("-"), "DD-MM-YYYY").format(
                 "YYYY-MM-DD"
               )
             ).isBefore(priorDate) && (
@@ -253,7 +253,7 @@ const HistoryFilterForm = (props) => {
                 {"* " +
                   constant.errorMessage.errorDueToReverseDate +
                   moment(
-                    state.HistoryReducer.from.join("-"),
+                    state.HistoryReducer?.from.join("-"),
                     "DD-MM-YYYY"
                   ).format("DD-MM-YYYY") +
                   "."}
@@ -277,11 +277,11 @@ const HistoryFilterForm = (props) => {
       {isAllInputFilled &&
       differenceInDays <= 365 &&
       moment(
-        moment(state.HistoryReducer.from.join("-"), "DD-MM-YYYY").format(
+        moment(state.HistoryReducer?.from.join("-"), "DD-MM-YYYY").format(
           "YYYY-MM-DD"
         )
       ).isSameOrBefore(
-        moment(state.HistoryReducer.to.join("-"), "DD-MM-YYYY").format(
+        moment(state.HistoryReducer?.to.join("-"), "DD-MM-YYYY").format(
           "YYYY-MM-DD"
         )
       ) ? (
