@@ -64,7 +64,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/compliance-history-list");
     } else if (currentActiveMenu === "newRegulations") {
       history.push("/new-regulations");
-    } else if (currentActiveMenu === "Help") {
+    } else if (currentActiveMenu === "help") {
       history.push("/help");
     }
   };
@@ -230,7 +230,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
 
           <div
             className={
-              !openProfile && state && state.adminMenu.currentMenu === "Help"
+              !openProfile && state && state.adminMenu.currentMenu === "help"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
@@ -238,9 +238,9 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             <img
               style={{ cursor: "pointer" }}
               title="Help"
-              onClick={() => onMenuClick("Help")}
+              onClick={() => onMenuClick("help")}
               src={
-                !openProfile && state && state.adminMenu.currentMenu === "Help"
+                !openProfile && state && state.adminMenu.currentMenu === "help"
                   ? HelpBlackActive
                   : HelpGreyActive
               }
