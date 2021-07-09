@@ -39,8 +39,6 @@ import axios, { post } from "axios";
 import { withRouter } from "react-router-dom";
 import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png";
 import { BsCheckCircle, BsClock } from "react-icons/bs";
-
-import TextareaAutosize from "react-textarea-autosize";
 import constant from "../../../../../../CommonModules/sharedComponents/constants/constant";
 import View from "../../../../../CalenderView/View";
 import TextareaAutosize from "react-textarea-autosize";

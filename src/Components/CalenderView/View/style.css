@@ -1,4 +1,3 @@
-
 .date-container {
   padding: 30px 50px;
   display: flex;
@@ -72,15 +71,16 @@
   background-color: #dedcff;
   align-items: center;
   justify-content: space-between;
+  margin-top: 10px;
 }
 .detail-content {
   display: flex;
   align-items: center;
+  max-width: 50%;
+  width: 100%;
 }
 .detail-name {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .detail-name p {
@@ -117,8 +117,28 @@
   text-align: left;
   color: #1b1d21;
   margin: 0 15px 0 0;
+  max-width: 300px;
+  width: 100%;
 }
+
 .approval {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #ff5f31;
+  border: none;
+  background-color: #dedcff;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: #ffefea;
+  max-width: 55px;
+}
+
+.approval-day {
   font-size: 10px;
   font-weight: normal;
   font-stretch: normal;
@@ -150,6 +170,7 @@
   background-color: #dedcff;
   padding: 12px 10px 12px 8px;
   margin-top: 5px;
+  cursor: pointer;
 }
 
 .week-detail h2 {
@@ -173,4 +194,116 @@
 .week-table tr td {
   border-right: 1px solid #ccc;
   border-top: 0px;
+}
+
+.calender {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  padding: 0px 40px;
+}
+
+.day-name {
+  border-bottom: 1px solid #eee8fc;
+  height: auto;
+  padding: 25px;
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #2c2738;
+}
+.day-name:nth-child(n + 2) {
+  border-left: 1px solid #eee8fc;
+}
+
+.day {
+  border-bottom: 1px solid #eee8fc;
+  height: auto;
+  padding: 5px 2px 0px 25px;
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  cursor: pointer;
+}
+
+.day:nth-child(n + 2) {
+  border-left: 1px solid #eee8fc;
+}
+
+.day-disable {
+  border-bottom: 1px solid #eee8fc;
+  height: auto;
+  padding: 5px 2px 0px 25px;
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  background: #e1e0e4;
+}
+.button-code {
+  border-radius: 2px;
+  background-color: #f1f3ff;
+  border: none;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #2c2738;
+  margin-left: 6px;
+}
+
+.UserNameDp {
+  display: flex;
+  align-items: center;
+}
+
+.CompanyName {
+  margin: 10px 0;
+}
+.CompanyName span {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #828282;
+}
+
+.week-detail h2 {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #1b1d21;
+  margin-top: 6px;
 }

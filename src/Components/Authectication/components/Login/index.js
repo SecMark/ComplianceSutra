@@ -1,123 +1,68 @@
-import React, { useState, useEffect } from "react"
-import "./styles.css"
-import { useSelector, useDispatch } from "react-redux"
-import { withRouter } from "react-router"
-import comtech from "../../../../assets/Images/CapmTech.png"
-import secmark from "../../../../assets/Images/secmark.png"
-import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png"
-import SideBar from "../../../../Components/OnBording/SubModules/SideBar"
-import { actions as signInSignUpActions } from "../../redux/actions"
-import validator from "validator"
+import React, { useState, useEffect } from "react";
+import "./styles.css";
+import { useSelector, useDispatch } from "react-redux";
+import { withRouter } from "react-router";
+import comtech from "../../../../assets/Images/CapmTech.png";
+import secmark from "../../../../assets/Images/secmark.png";
+import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
+import SideBar from "../../../../Components/OnBording/SubModules/SideBar";
+import { actions as signInSignUpActions } from "../../redux/actions";
+import validator from "validator";
 
 function Login({ history }) {
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const [values, setValues] = useState({
     LoginId: "",
     Pwd: "",
     rememberme: 0,
     Loginty: "AdminEmail",
-  })
+  });
   const [passwordState, setPasswordState] = useState({
     minlength: false,
     uppercaseandlowercase: false,
     alphabetsandigit: false,
-  })
+  });
   const [errors, setErrors] = useState({
     emailErr: "",
     passwordErr: "",
-  })
-  const [isValidate, setIsValidate] = useState(false)
+  });
+  const [isValidate, setIsValidate] = useState(false);
 
   const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
   const onChangeHandler = (name) => (event) => {
     let passwordReg =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
     if (name === "LoginId") {
-      let inputKey = "emailErr"
+      let inputKey = "emailErr";
       if (!validator.isEmail(event.target.value)) {
-        setErrors({ ...errors, [inputKey]: "Email is invalid" })
+        setErrors({ ...errors, [inputKey]: "Email is invalid" });
       } else {
-        setErrors({ ...errors, [inputKey]: "" })
+        setErrors({ ...errors, [inputKey]: "" });
       }
     }
-    // if (name === "Pwd") {
-    //     let inputKey = "passwordErr";
-    //     let minlength = "minlength";
-    //     let alphabetsandigit = "alphabetsandigit";
-    //     let uppercaseandlowercase = "uppercaseandlowercase"
-    //     if (!passwordReg.test(event.target.value)) {
-    //         let name = "passwordErr"
-    //         setErrors({ ...errors, [inputKey]: "Password is invalid" })
-    //     } else {
-    //         setErrors({ ...errors, [inputKey]: "" });
-    //     }
 
-    //     if (event.target.value.length < 8) {
-    //         setPasswordState(prevState => ({ ...prevState, [minlength]: false }));
-    //     } else {
-    //         setPasswordState(prevState => ({ ...prevState, [minlength]: true }));
-    //     }
-
-    //     let uppercaseandlowercaseRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/
-
-    //     if (uppercaseandlowercaseRE.test(event.target.value)) {
-    //         setPasswordState(prevState => ({
-    //             ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: true
-    //         }));
-    //     }
-    //     else {
-    //         if (/^[a-z]*$/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: false, [uppercaseandlowercase]: false
-    //             }));
-    //         } else if (/^[a-zA-Z]*$/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: false, [uppercaseandlowercase]: true
-    //             }));
-    //         }
-    //         else if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: true
-    //             }));
-    //         } else if (/^[a-z0-9]*$/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: false
-    //             }));
-    //         }
-    //         else if (/^[A-Z0-9]*$/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: false
-    //             }));
-    //         }
-    //         else {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: false, [uppercaseandlowercase]: false
-    //             }));
-    //         }
-    //     }
-    // }
-    setValues({ ...values, [name]: event.target.value })
-  }
+    setValues({ ...values, [name]: event.target.value });
+  };
 
   useEffect(() => {
     if (userID) {
-      history.push("/dashboard")
+      history.push("/dashboard");
     }
-  }, [])
+  }, []);
 
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
-      onSubmit()
+      onSubmit();
     }
-  }
+  };
 
   const onSubmit = () => {
     if (values.LoginId === "" || values.Pwd === "" || errors.emailErr !== "") {
       // scrollToElement('.input-error');
-      return
+      return;
     }
     dispatch(
       signInSignUpActions.signInRequest({
@@ -127,24 +72,24 @@ function Login({ history }) {
         Loginty: "AdminEmail",
         history: history,
       })
-    )
+    );
 
     setTimeout(() => {
-      let status = state.auth.loginSuccess
+      let status = state.auth.loginSuccess;
       if (status === false) {
-        let tempErr = [{ ...errors, ["emailErr"]: "Email Is Invalid" }]
+        let tempErr = [{ ...errors, ["emailErr"]: "Email Is Invalid" }];
         // tempErr.emailErr = "Email Is Invalid"
         // setErrors(tempErr)
       }
-    }, 1000)
-  }
+    }, 1000);
+  };
 
   const redirectToForgotPasswordScreen = () => {
-    return history.push("/forgot-password")
-  }
+    return history.push("/forgot-password");
+  };
   const redirectToSignupScreen = () => {
-    return history.push("/")
-  }
+    return history.push("/");
+  };
   return (
     <div className="row get-login-mobile">
       <div className="col-3 left-fixed">
@@ -166,7 +111,11 @@ function Login({ history }) {
                   <div className="col-lg-12">
                     <div className="header_logo">
                       {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                      <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
+                      <img
+                        src={comtech}
+                        alt="COMPLIANCE SUTRA"
+                        title="COMPLIANCE SUTRA"
+                      />
                       <span className="camp">COMPLIANCE SUTRA</span>
                       {/* </a> */}
                     </div>
@@ -174,7 +123,9 @@ function Login({ history }) {
                 </div>
               </div>
               <div className="comtech_login comtech_form_wrapper">
-                <p className="comtech_login_title">Login to COMPLIANCE SUTRA!</p>
+                <p className="comtech_login_title">
+                  Login to COMPLIANCE SUTRA!
+                </p>
                 <div className="comtech_form_wrapper">
                   <div className="form-group">
                     <label htmlFor="Company Email">Company Email</label>
@@ -302,7 +253,7 @@ function Login({ history }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default withRouter(Login)
+export default withRouter(Login);
