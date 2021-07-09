@@ -1,52 +1,52 @@
-import React, { useState, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import "./style.css"
-import { Modal } from "react-responsive-modal"
-import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png"
-import deleteIcon from "../../../../../../../assets/Icons/deleteIcon.png"
-import closeBlack from "../../../../../../../assets/Icons/closeBlack.png"
-import { actions as coActions } from "../../../redux/actions"
-import validator from "validator"
-import api from "../../../../../../../apiServices"
-import { toast } from "react-toastify"
-import { actions as logInfoActions } from "../../../../../../Authectication/redux/actions"
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import "./style.css";
+import { Modal } from "react-responsive-modal";
+import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
+import deleteIcon from "../../../../../../../assets/Icons/deleteIcon.png";
+import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
+import { actions as coActions } from "../../../redux/actions";
+import validator from "validator";
+import api from "../../../../../../../apiServices";
+import { toast } from "react-toastify";
+import { actions as logInfoActions } from "../../../../../../Authectication/redux/actions";
 function CoSettingRightGrid({ handleClose, history }) {
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const [isValidate, setIsValidate] = useState(false)
-  const [valuesBackup, setValuesBackup] = useState(null)
+  const [isValidate, setIsValidate] = useState(false);
+  const [valuesBackup, setValuesBackup] = useState(null);
   const [values, setValues] = useState({
     userName: "",
     designation: "",
     emailId: "",
     mobileNo: "",
     countrycode: "",
-  })
+  });
   const [errors, setErrors] = useState({
     passwordErr: "",
     confirmPasswordErr: "",
     mobileNumErr: "",
     countryCodeErr: "",
     designationErr: "",
-  })
-  const [valuesChanged, setValuesChanged] = useState(false)
-  const [verifyModalHideShow, setVerifyModalHideShow] = useState(false)
+  });
+  const [valuesChanged, setValuesChanged] = useState(false);
+  const [verifyModalHideShow, setVerifyModalHideShow] = useState(false);
   const [verifyPassword, setVerifyPassword] = useState({
     password: "",
     passwordError: "",
-  })
-  const [countryCode, setCountryCode] = useState("+91")
-  const loggedUser = state && state.auth && state.auth.loginInfo
-  const [userInfoBackup, setUserInfoBackup] = useState(null)
+  });
+  const [countryCode, setCountryCode] = useState("+91");
+  const loggedUser = state && state.auth && state.auth.loginInfo;
+  const [userInfoBackup, setUserInfoBackup] = useState(null);
   useEffect(() => {
     dispatch(
       coActions.availabilityCheckequest({
         loginID: loggedUser.EmailID,
         loginty: "AdminEmail",
       })
-    )
-  }, [])
+    );
+  }, []);
 
   useEffect(() => {
     const _name =
@@ -54,30 +54,30 @@ function CoSettingRightGrid({ handleClose, history }) {
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.UserName
+      state.taskReport.userAvailability.availabilityInfo.UserName;
     const _designation =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.Designation
+      state.taskReport.userAvailability.availabilityInfo.Designation;
     const _emailId =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.EmailID
+      state.taskReport.userAvailability.availabilityInfo.EmailID;
     const _mobile =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.Mobile
+      state.taskReport.userAvailability.availabilityInfo.Mobile;
     const _userInfo =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
-      state.taskReport.userAvailability.availabilityInfo
+      state.taskReport.userAvailability.availabilityInfo;
 
     let userObj = {
       userName: _name != "" && _name != undefined ? _name : "",
@@ -89,44 +89,44 @@ function CoSettingRightGrid({ handleClose, history }) {
         _userInfo !== "" && _userInfo !== undefined
           ? _userInfo.countrycode
           : "",
-    }
+    };
 
-    setValues(userObj)
-    setValuesBackup(userObj)
-    setUserInfoBackup(_userInfo)
-  }, [state.taskReport.userAvailability])
+    setValues(userObj);
+    setValuesBackup(userObj);
+    setUserInfoBackup(_userInfo);
+  }, [state.taskReport.userAvailability]);
 
   useEffect(() => {
     const actionStatus =
       state &&
       state.taskReport &&
       state.taskReport.coDetailsInsUpdDelInfo &&
-      state.taskReport.coDetailsInsUpdDelInfo.insUpdDelstatus
+      state.taskReport.coDetailsInsUpdDelInfo.insUpdDelstatus;
     if (actionStatus != undefined) {
       if (actionStatus === "Success") {
         let updEmail =
           state &&
           state.taskReport &&
           state.taskReport.coDetailsInsUpdDelInfo &&
-          state.taskReport.coDetailsInsUpdDelInfo.data
-        let logInfo = { ...loggedUser }
-        logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID
-        dispatch(logInfoActions.updateEmailInfo(logInfo))
+          state.taskReport.coDetailsInsUpdDelInfo.data;
+        let logInfo = { ...loggedUser };
+        logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID;
+        dispatch(logInfoActions.updateEmailInfo(logInfo));
         setTimeout(() => {
-          const UpdatedLogInInfo = state && state.auth && state.auth.loginInfo
+          const UpdatedLogInInfo = state && state.auth && state.auth.loginInfo;
           dispatch(
             coActions.availabilityCheckequest({
               loginID: logInfo.EmailID,
               loginty: "AdminEmail",
             })
-          )
-        }, 1000)
+          );
+        }, 1000);
       }
     }
-  }, [state.taskReport.coDetailsInsUpdDelInfo])
+  }, [state.taskReport.coDetailsInsUpdDelInfo]);
 
   const onSubmit = () => {
-    let isSubmit = false
+    let isSubmit = false;
     if (
       values.userName === "" ||
       values.mobileNo === "" ||
@@ -136,26 +136,26 @@ function CoSettingRightGrid({ handleClose, history }) {
       values.designation === "" ||
       values.countrycode === ""
     ) {
-      setIsValidate(true)
-      isSubmit = false
+      setIsValidate(true);
+      isSubmit = false;
     } else {
       if (
         values.emailId === valuesBackup.emailId &&
         values.mobileNo === valuesBackup.mobileNo
       ) {
-        setIsValidate(false)
-        handleFinalSubmit()
+        setIsValidate(false);
+        handleFinalSubmit();
       } else {
-        setVerifyModalHideShow(true)
+        setVerifyModalHideShow(true);
       }
     }
-  }
+  };
   const handleVerifyModalAction = (flag) => {
     if (flag) {
       let payload = {
         loginID: loggedUser.EmailID,
         pwd: verifyPassword.password,
-      }
+      };
       api
         .post("/api/Loginsuccess", payload)
         .then(function (response) {
@@ -165,9 +165,9 @@ function CoSettingRightGrid({ handleClose, history }) {
             response.data.StatusCode === 200 &&
             response.data.Message === "SUCCESS"
           ) {
-            setVerifyPassword({ password: "", passwordError: "" })
-            handleFinalSubmit()
-            setVerifyModalHideShow(false)
+            setVerifyPassword({ password: "", passwordError: "" });
+            handleFinalSubmit();
+            setVerifyModalHideShow(false);
           } else if (
             response &&
             response.data &&
@@ -177,96 +177,96 @@ function CoSettingRightGrid({ handleClose, history }) {
             setVerifyPassword({
               ...verifyPassword,
               ["passwordError"]: "invalid password.",
-            })
+            });
           } else {
             toast.error("Something went to wrong, Please try after sometime", {
               autoClose: 5000,
-            })
+            });
           }
         })
         .catch(function (error) {
           if (error) {
             toast.error("Something went to wrong, Please try after sometime", {
               autoClose: 5000,
-            })
+            });
           }
-        })
+        });
     } else {
-      setVerifyPassword({ password: "", passwordError: "" })
-      setVerifyModalHideShow(false)
+      setVerifyPassword({ password: "", passwordError: "" });
+      setVerifyModalHideShow(false);
     }
-  }
+  };
 
   const manageData = () => {
     if (handleClose == undefined) {
-      history.push("/settings")
+      history.push("/settings");
     } else {
-      handleClose()
+      handleClose();
     }
-  }
+  };
 
   //Mobile number validation function
   const validateMobileNumber = (e) => {
-    var countrycode = values.countryCode.replace("+", "")
-    let payload =
-    {
-      loginID: e.target.value,
-      loginty: "AdminMobile",
-      countrycode: countrycode
+    if (values && values.cntrycode) {
+      const countrycode = values.cntryCode.replace("+", "");
+      let payload = {
+        loginID: e.target.value,
+        loginty: "AdminMobile",
+        countrycode: countrycode,
+      };
+      api
+        .post("/api/availabilityCheck", payload)
+        .then(function (response) {
+          if (response && response.data && response.data.Status === "True") {
+            let inputKey = "mobileNumErr";
+            setErrors({ ...errors, [inputKey]: "true" });
+          } else {
+            let inputKey = "mobileNumErr";
+            setErrors({ ...errors, [inputKey]: "false" });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
-    api
-      .post("/api/availabilityCheck", payload)
-      .then(function (response) {
-        if (response && response.data && response.data.Status === "True") {
-          let inputKey = "mobileNumErr"
-          setErrors({ ...errors, [inputKey]: "true" })
-        }
-        else {
-          let inputKey = "mobileNumErr"
-          setErrors({ ...errors, [inputKey]: "false" })
-        }
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
+  };
 
   //Country code validate function
   const validateCountryCode = (e) => {
-    let strr = e.target.value
-    let str = strr.replace(/\D/g, "")
-    console.log("str => ", strr)
+    let strr = e.target.value;
+    let str = strr.replace(/\D/g, "");
+    console.log("str => ", strr);
 
     if (str === "") {
-      str = "91"
+      str = "91";
     }
     // str = str.substring(1);
     // console.log("str =",str);
     let payload = {
       cntryCode: str,
-    }
-    console.log(payload)
+    };
+    console.log(payload);
     api
       .post("/api/CountryCodeCheck", payload)
       .then(function (response) {
         // handle success
         if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true)
-          let inputKey = "countryCodeErr"
-          setErrors({ ...errors, [inputKey]: "" })
+          setCountryCode(true);
+          let inputKey = "countryCodeErr";
+          setErrors({ ...errors, [inputKey]: "" });
         } else {
-          setCountryCode(false)
+          setCountryCode(false);
           // setErrors(errors);
-          let inputKey = "countryCodeErr"
-          setErrors({ ...errors, [inputKey]: "true" })
+          let inputKey = "countryCodeErr";
+          setErrors({ ...errors, [inputKey]: "true" });
         }
       })
       .catch(function (error) {
         if (error) {
           // setIsCompanyNameValid(false);
         }
-      })
-  }
+      });
+  };
 
   const handleFinalSubmit = () => {
     let payload = {
@@ -278,27 +278,27 @@ function CoSettingRightGrid({ handleClose, history }) {
       designation: values.designation,
       userID: userInfoBackup.UserID,
       countrycode: values.countrycode,
-    }
-    dispatch(coActions.coDetailsInsUpdDelRequest(payload))
-    setValuesChanged(false)
-  }
+    };
+    dispatch(coActions.coDetailsInsUpdDelRequest(payload));
+    setValuesChanged(false);
+  };
   const onChangeHandler = (name) => (event) => {
     if (name === "userName" || name === "designation") {
-      const re = /^[a-z|A-Z_ ]*$/
+      const re = /^[a-z|A-Z_ ]*$/;
       if (event.target.value && !re.test(event.target.value)) {
-        return ""
+        return "";
       }
     }
     if (name === "mobileNo") {
-      const mobileNumberReg = /^[0-9]{0,10}$/
+      const mobileNumberReg = /^[0-9]{0,10}$/;
       if (!mobileNumberReg.test(Number(event.target.value))) {
-        return ""
+        return "";
       }
     }
-    setValuesChanged(true)
-    setValues({ ...values, [name]: event.target.value })
+    setValuesChanged(true);
+    setValues({ ...values, [name]: event.target.value });
     // }
-  }
+  };
 
   const renderVerifyDialog = () => {
     return (
@@ -359,8 +359,8 @@ function CoSettingRightGrid({ handleClose, history }) {
           </div>
         </div>
       </Modal>
-    )
-  }
+    );
+  };
 
   return (
     <div className="co-manangment-grid">
@@ -375,7 +375,7 @@ function CoSettingRightGrid({ handleClose, history }) {
             src={closeBlack}
             alt="close Black"
             onClick={() => {
-              manageData()
+              manageData();
             }}
           />
         </div>
@@ -438,7 +438,7 @@ function CoSettingRightGrid({ handleClose, history }) {
               className={
                 "form-control right-input-row " +
                 (isValidate &&
-                  (values.emailId === "" || !validator.isEmail(values.emailId))
+                (values.emailId === "" || !validator.isEmail(values.emailId))
                   ? "input-error"
                   : "")
               }
@@ -497,7 +497,7 @@ function CoSettingRightGrid({ handleClose, history }) {
                 className={
                   "form-control right-input-row contact-input-box" +
                   (isValidate &&
-                    (values.mobileNo === "" || values.mobileNo.length < 10)
+                  (values.mobileNo === "" || values.mobileNo.length < 10)
                     ? "input-error"
                     : "")
                 }
@@ -513,12 +513,9 @@ function CoSettingRightGrid({ handleClose, history }) {
                   Mobile number already Registered
                 </p>
               )}
-              {values.countryCode != "" &&
-                errors.countryCodeErr == "true" && (
-                  <p className="input-error-message">
-                    Invalid country code
-                  </p>
-                )}
+              {values.countryCode != "" && errors.countryCodeErr == "true" && (
+                <p className="input-error-message">Invalid country code</p>
+              )}
               {isValidate && values.mobileNo === "" && (
                 <p className="input-error-message absPosition">
                   Mobile number is required
@@ -564,8 +561,8 @@ function CoSettingRightGrid({ handleClose, history }) {
               <div
                 className="discard-label-link"
                 onClick={() => {
-                  setValues(valuesBackup)
-                  setValuesChanged(false)
+                  setValues(valuesBackup);
+                  setValuesChanged(false);
                 }}
               >
                 discard changes
@@ -575,6 +572,6 @@ function CoSettingRightGrid({ handleClose, history }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
-export default CoSettingRightGrid
+export default CoSettingRightGrid;
