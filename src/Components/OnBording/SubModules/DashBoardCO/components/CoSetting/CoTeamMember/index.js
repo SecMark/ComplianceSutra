@@ -780,7 +780,7 @@ function CoManagment({ handleClose }) {
       <div className="">
         <div className="d-block d-sm-none">
           <div className="mobile-py">
-            <div className="d-flex">
+            <div className="d-flex position-relative">
               <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
                 <div className="personal-mgt-title">Team Members</div>
               </div>
@@ -796,7 +796,7 @@ function CoManagment({ handleClose }) {
               </div>
             </div>
           </div>
-          <div className="scroll-personal-grid">
+          <div className="scroll-personal-grid position-relative">
             {/* <div className="">
                     <div className="col-12">
                     <div className="right-search-bar searchBox">
@@ -820,7 +820,7 @@ function CoManagment({ handleClose }) {
                     </div>
                     </div>
                     <br /> */}
-            <div className="d-flex">
+            <div className="d-flex position-relative">
               <div className="col-4 col-sm-2 col-md-2 col-xl-2 pl-0">
                 <div
                   style={{ cursor: "pointer" }}
@@ -830,7 +830,7 @@ function CoManagment({ handleClose }) {
                   add new +
                 </div>
               </div>
-              {/* <div className="col-8 col-sm-12 col-md-12 col-xl-12 pl-0">
+              <div className="col-8 col-sm-12 col-md-12 col-xl-12 pl-0">
                 {!isSearchOpenMobile && (
                   <div className="">
                     <img
@@ -929,7 +929,7 @@ function CoManagment({ handleClose }) {
                     )}
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
             <div className="col-12 pl-0 pr-0">
               <div className="line-after-heaing"></div>
