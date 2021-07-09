@@ -549,6 +549,7 @@ const NewRegulations = (props) => {
                         })
                       )}
                     </div>
+                  
                   )}
                 </div>
               </div>

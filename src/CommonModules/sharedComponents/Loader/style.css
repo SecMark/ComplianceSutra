@@ -1,3 +1,10 @@
 .loader {
   text-align: center;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0px;
+  bottom: 0px;
+  height: 0px;
+  position: fixed;
 }

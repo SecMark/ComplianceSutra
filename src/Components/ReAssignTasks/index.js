@@ -451,7 +451,7 @@ function ReAssignTasksModal({
         modal: "customReAssignModalMobile",
       }}
     >
-      <div className="container">
+      <div className="re-container">
         {Object.entries(assignTo).length === 0 && (
           <div className="modal-top">
             <h5>Re-assign to </h5>

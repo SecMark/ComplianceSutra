@@ -34,11 +34,10 @@
   height: 100vh;
 }
 .side-bar .left-bar {
-  width: 100%;
   padding-top: 30px;
   padding-left: 0;
   position: relative;
-  background: transparent;
+  /* background: transparent; */
 }
 
 .side-bar .left-bar .logo {
