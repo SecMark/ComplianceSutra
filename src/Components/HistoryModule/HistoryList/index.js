@@ -73,7 +73,6 @@ const HistoryList = (props) => {
 
   return (
     <>
-      <img className="right-bg" src={Cobg} alt="" />
       <div className="history-side-bar">
         {isMobile ? (
           <div id="sideBarParent" className="" ref={sideBarParent}>
@@ -298,95 +297,95 @@ const HistoryList = (props) => {
                 </div>
               </div>
             </div>
-            <div className="history-container">
-              <div className="row">
-                <div className="history-header">
-                  <h2 className="main-title">
-                    Compliance History{" "}
-                    <img src={filter} className="history-filter" />
-                  </h2>
-                  <button
-                    className="filter-toggle"
-                    onClick={() => setIsShowFilter(!isShowFilter)}
-                  >
-                    Filter
-                  </button>
-                </div>
-                <div className="scroll-personal-grid d-md-block d-sm-block table-responsive mt-4">
-                  {state.HistoryReducer.historyList.length !== 0 ? (
-                    <table className="table co-company-details-tbl table_legenda">
-                      <thead>
-                        <tr>
-                          <th clscope="col">Complete on</th>
-                          <th scope="col">Task Name</th>
-                          <th scope="col">Company</th>
-                          <th>Assigned To</th>
-                          <th>Approver</th>
-                          <th>Due Date</th>
-                          <th>status</th>
-                          <th style={{ textAlign: "center" }}>Download</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {state.HistoryReducer.historyList.map((list) => (
-                          <tr>
-                            <td className="task-detail">
-                              {moment(list.Completed).format("DD MMMM YYYY")}
-                            </td>
-                            <td className="task-name">{list.TaskName}</td>
-                            <td className="task-detail">{list.EntityName}</td>
-                            <td>
-                              {" "}
-                              <div className="holding-list-bold-title-background">
-                                <span className="circle-dp">
-                                  {getNameInitials(list.AprovalAssignedTo)}
-                                </span>{" "}
-                                <div className="nameCirle">
-                                  {list.AprovalAssignedTo}{" "}
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              {" "}
-                              <div className="holding-list-bold-title-background">
-                                <span className="circle-dp">
-                                  {getNameInitials(list.AssignedTo)}
-                                </span>{" "}
-                                <div className="nameCirle">
-                                  {" "}
-                                  {list.AssignedTo}{" "}
-                                </div>
-                              </div>
-                            </td>
-                            <td className="task-detail">
-                              {moment(list.EndDate).format("DD MMMM YYYY")}
-                            </td>
-                            <td>
-                              <button
-                                className={
-                                  list.Status === "PENDING"
-                                    ? "pending"
-                                    : list.Status === "ON TIME"
-                                    ? "on-time"
-                                    : "delayed"
-                                }
-                              >
-                                {list.Status}
-                              </button>
-                            </td>
-                            <td style={{ textAlign: "center" }}>
-                              <a
-                                href={`${BACKEND_BASE_URL}//viewfiles.ashx?id=${list?.TaskId}&flag=downloadtaskfiles&file=${list?.c_file}`}
-                              >
-                                {" "}
-                                <img src={download} />{" "}
-                              </a>
-                            </td>
-                          </tr>
-                        ))}
 
-                        {/* --------|||| Table for testing ||||--------- */}
-                        {/* <tr>
+            <div className="history-wrapper">
+              <div className="history-container">
+                <div className="row">
+                  <div className="history-header">
+                    <h2 className="main-title">
+                      Compliance History{" "}
+                      <img
+                        src={filter}
+                        className="history-filter"
+                        onClick={() => setIsShowFilter(!isShowFilter)}
+                      />
+                    </h2>
+                  </div>
+                  <div className="scroll-personal-grid d-md-block d-sm-block table-responsive mt-4">
+                    {state.HistoryReducer.historyList.length !== 0 ? (
+                      <table className="table co-company-details-tbl table_legenda">
+                        <thead>
+                          <tr>
+                            <th clscope="col">Complete on</th>
+                            <th scope="col">Task Name</th>
+                            <th scope="col">Company</th>
+                            <th>Assigned To</th>
+                            <th>Approver</th>
+                            <th>Due Date</th>
+                            <th>status</th>
+                            <th style={{ textAlign: "center" }}>Download</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {state.HistoryReducer.historyList.map((list) => (
+                            <tr>
+                              <td className="task-detail">
+                                {moment(list.Completed).format("DD MMMM YYYY")}
+                              </td>
+                              <td className="task-name">{list.TaskName}</td>
+                              <td className="task-detail">{list.EntityName}</td>
+                              <td>
+                                {" "}
+                                <div className="holding-list-bold-title-background">
+                                  <span className="circle-dp">
+                                    {getNameInitials(list.AprovalAssignedTo)}
+                                  </span>{" "}
+                                  <div className="nameCirle">
+                                    {list.AprovalAssignedTo}{" "}
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                {" "}
+                                <div className="holding-list-bold-title-background">
+                                  <span className="circle-dp">
+                                    {getNameInitials(list.AssignedTo)}
+                                  </span>{" "}
+                                  <div className="nameCirle">
+                                    {" "}
+                                    {list.AssignedTo}{" "}
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="task-detail">
+                                {moment(list.EndDate).format("DD MMMM YYYY")}
+                              </td>
+                              <td>
+                                <button
+                                  className={
+                                    list.Status === "PENDING"
+                                      ? "pending"
+                                      : list.Status === "ON TIME"
+                                      ? "on-time"
+                                      : "delayed"
+                                  }
+                                >
+                                  {list.Status}
+                                </button>
+                              </td>
+                              <td style={{ textAlign: "center" }}>
+                                <a
+                                  href={`${BACKEND_BASE_URL}//viewfiles.ashx?id=${list?.TaskId}&flag=downloadtaskfiles&file=${list?.c_file}`}
+                                >
+                                  {" "}
+                                  <img src={download} />{" "}
+                                </a>
+                              </td>
+                            </tr>
+                          ))}
+
+                          {/* --------|||| Table for testing ||||--------- */}
+                          {/* <tr>
                         <td className="task-detail">12 08 2001</td>
                         <td className="task-name">
                           Enhanced supervision reporting
@@ -414,12 +413,13 @@ const HistoryList = (props) => {
                           <img src={download} />
                         </td>
                       </tr> */}
-                        {/* -------- Table for testing --------- */}
-                      </tbody>
-                    </table>
-                  ) : (
-                    <NoResultFound text="No Result found" />
-                  )}
+                          {/* -------- Table for testing --------- */}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <NoResultFound text="No Result found" />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

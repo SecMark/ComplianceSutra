@@ -107,40 +107,41 @@ function Dashboard({ history }) {
           />
         </div>
       </div>
-      <div className="col-12 ">
-        <img className="right-bg" src={Cobg} alt="" />
-        {state && state.adminMenu.currentMenu === "taskList" && (
-          <RighSider
-            isTaskListOpen={isTaskListOpen}
-            setIsTaskListOpen={setIsTaskListOpen}
-            isTaskApproved={isTaskApproved}
-            setIsTaskApproved={setIsTaskApproved}
-            taskList={taskList}
-            companyName={companyName}
-            user={userDetails}
-          />
-        )}
+      <div className="task-wrapper">
+        <div className="col-12 ">
+          {state && state.adminMenu.currentMenu === "taskList" && (
+            <RighSider
+              isTaskListOpen={isTaskListOpen}
+              setIsTaskListOpen={setIsTaskListOpen}
+              isTaskApproved={isTaskApproved}
+              setIsTaskApproved={setIsTaskApproved}
+              taskList={taskList}
+              companyName={companyName}
+              user={userDetails}
+            />
+          )}
 
-        {state && state.adminMenu.currentMenu === "notfications" && (
-          <Notifications />
-        )}
-        {state && state.adminMenu.currentMenu === "settings" && (
-          <>
-            <div className="d-none d-sm-block">
-              <ComplianceOfficerSetting />
-            </div>
-            {/* <div className="d-block d-sm-none">
+          {state && state.adminMenu.currentMenu === "notfications" && (
+            <Notifications />
+          )}
+          {state && state.adminMenu.currentMenu === "settings" && (
+            <>
+              <div className="d-none d-sm-block">
+                <ComplianceOfficerSetting />
+              </div>
+              {/* <div className="d-block d-sm-none">
             </div> */}
-          </>
-        )}
-        {state && state.adminMenu.currentMenu === "complianceHistory" && (
-          // {History Filter}
-          <HistoryFilter />
-        )}
-        {state && state.adminMenu.currentMenu === "complianceHistoryList" && (
-          // {History List}
-          <HistoryList />
-        )}
+            </>
+          )}
+          {state && state.adminMenu.currentMenu === "complianceHistory" && (
+            // {History Filter}
+            <HistoryFilter />
+          )}
+          {state && state.adminMenu.currentMenu === "complianceHistoryList" && (
+            // {History List}
+            <HistoryList />
+          )}
+        </div>
       </div>
     </div>
   );

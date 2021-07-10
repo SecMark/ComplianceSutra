@@ -1,6 +1,5 @@
 import React from "react";
 import "./style.css";
-import Cobg from "../../assets/Images/Onboarding/co-bg.png";
 import SideBarCo from "./subModules/sideBar";
 import RightSideGrid from "./subModules/RightSideGrid";
 
@@ -14,7 +13,6 @@ function CoDashboard() {
       </div>
 
       <div className="col-12 pd-right co-bg">
-        {/* <img className="right-bg" src={Cobg} alt="" /> */}
         <RightSideGrid />
       </div>
     </div>

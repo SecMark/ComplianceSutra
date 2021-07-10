@@ -28,7 +28,6 @@
   border: none;
   padding: 10px;
   border-radius: 4px;
-  background-color: grey;
   cursor: not-allowed;
   pointer-events: none;
 }

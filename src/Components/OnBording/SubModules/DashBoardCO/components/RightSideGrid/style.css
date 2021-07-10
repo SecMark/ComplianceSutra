@@ -1,3 +1,9 @@
+.task-wrapper {
+  background: url("../../../../../../assets/Images/Onboarding/co-bg.png")
+    no-repeat left center;
+  background-size: cover;
+  width: 100%;
+}
 .all-companies-task-grid {
   /* padding: 48px 48px 95px; */
   object-fit: contain;
