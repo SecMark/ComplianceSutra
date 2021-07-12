@@ -15,8 +15,8 @@ import {
 } from "./types";
 
 const intialState = {
-  from: "",
-  to: "",
+  from: [],
+  to: [],
   selectedCompany: "",
   selectedLicenses: "",
   companyList: [],

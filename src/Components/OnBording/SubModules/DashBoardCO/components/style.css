@@ -4,6 +4,7 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
 .user-title {
   object-fit: contain;
   width: 100%;
@@ -174,8 +175,8 @@
   color: #575757;
   display: flex;
 }
-.first-icon-list{
-  margin-top: 144px;
+.first-icon-list {
+  padding-top: 48px !important;
 }
 .devider-line {
   width: 48px;
@@ -478,11 +479,11 @@
   border-radius: 10px;
 }
 
-.edit-option-box{
+.edit-option-box {
   width: 125px;
   height: 90px;
   object-fit: contain;
-  position:absolute;
+  position: absolute;
   border-radius: 4px;
   padding: 8px 6px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
@@ -490,7 +491,7 @@
   margin-left: 20px;
   z-index: 99999;
 }
-.edit-label-option{
+.edit-label-option {
   text-align: left;
   object-fit: contain;
   font-family: Poppins;
@@ -503,13 +504,13 @@
   text-align: left;
   color: #1b1d21;
   /* padding-bottom: 12px; */
-  border-bottom: 1px solid rgb(222 222 222 / 50%)
+  border-bottom: 1px solid rgb(222 222 222 / 50%);
 }
-.edit-label-option img{
+.edit-label-option img {
   vertical-align: baseline;
-    margin-right: 3px;
+  margin-right: 3px;
 }
-.logout-label-option{
+.logout-label-option {
   text-align: left;
   object-fit: contain;
   font-family: Poppins;
@@ -522,9 +523,9 @@
   text-align: left;
   color: #ef5d5d;
   /* padding-bottom: 12px; */
-  border-bottom: 1px solid rgb(222 222 222 / 50%)
+  border-bottom: 1px solid rgb(222 222 222 / 50%);
 }
-.logout-label-option img{
+.logout-label-option img {
   vertical-align: baseline;
-    margin-right: 3px;
+  margin-right: 3px;
 }

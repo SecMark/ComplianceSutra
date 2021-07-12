@@ -38,8 +38,8 @@ import MobileLeftSidebar from "../MobileLeftSidebar";
 import axios, { post } from "axios";
 import { withRouter } from "react-router-dom";
 import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png";
-
 import TextareaAutosize from "react-textarea-autosize";
+import ReAssignTasksModal from "../../../../../ReAssignTasks";
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
@@ -87,13 +87,17 @@ function RightSideGrid({
   const [showUserToolTip, setShowUserToolTip] = useState("");
   const [today, setToday] = useState(new Date());
   const [emailAvaliableCheck, setEmailAvaliableCheck] = useState(false);
-
+  const [
+    isShowReAssignModalForTeamMember,
+    setIsShowReAssignModalForTeamMember,
+  ] = useState(false);
+  const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
+    useState(false);
   const getTaskById =
     state &&
     state.taskReport &&
     state.taskReport.taskReportById &&
     state.taskReport.taskReportById.taskReportById;
-
   useEffect(() => {
     if (taskList != undefined && taskList.length > 0) {
       let tempArr = [];
@@ -1084,11 +1088,11 @@ function RightSideGrid({
 
   const onHBMenu = () => {
     const drawerParent = document.getElementById("sideBarParent");
-      const drawerChild = document.getElementById("sideBarChild");
-      if (drawerParent) {
-         drawerParent.classList.add("overlay");
-         drawerChild.style.left = "0%";
-      }
+    const drawerChild = document.getElementById("sideBarChild");
+    if (drawerParent) {
+      drawerParent.classList.add("overlay");
+      drawerChild.style.left = "0%";
+    }
   };
 
   return (
@@ -1097,13 +1101,13 @@ function RightSideGrid({
       {!isTaskListOpen && (
         <div className="all-companies-task-grid ">
           {isMobile && (
-             <div id="sideBarParent" className="">
-             <div id="sideBarChild" className="leftSideBarFixed">
-            <MobileLeftSidebar
-              className="d-block d-sm-none"
-              close={() => closeMobileSidebar()}
-            />
-            </div>
+            <div id="sideBarParent" className="">
+              <div id="sideBarChild" className="leftSideBarFixed">
+                <MobileLeftSidebar
+                  className="d-block d-sm-none"
+                  close={() => closeMobileSidebar()}
+                />
+              </div>
             </div>
           )}
 
@@ -1658,6 +1662,20 @@ function RightSideGrid({
 
       {isTaskListOpen && (
         <div className="row ">
+          <ReAssignTasksModal
+            openModal={isShowReAssignModalForTeamMember}
+            setShowModal={setIsShowReAssignModalForTeamMember}
+            userId={getTaskById && getTaskById.AssignedTo}
+            taskId={getTaskById && getTaskById.TaskId}
+            isSingleTask
+          />
+          <ReAssignTasksModal
+            openModal={isShowReAssignModalForApprover}
+            setShowModal={setIsShowReAssignModalForApprover}
+            userId={getTaskById && getTaskById.AprovalAssignedToID}
+            taskId={getTaskById && getTaskById.TaskId}
+            isSingleTask
+          />
           <div className="col-12 right-side-bar">
             <div className="">
               <div className="task-details-veiw">
@@ -1833,7 +1851,12 @@ function RightSideGrid({
                         </div>
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                           {getTaskById && getTaskById.AssignedTo != 0 ? (
-                            <div className="holding-list-bold-title">
+                            <div
+                              className="holding-list-bold-title"
+                              onClick={() =>
+                                setIsShowReAssignModalForTeamMember(true)
+                              }
+                            >
                               {getTaskById &&
                               getTaskById.AssignedToUserName == "" ? null : (
                                 <span className="cicrcle-name">
@@ -2021,7 +2044,12 @@ function RightSideGrid({
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                           {getTaskById &&
                           getTaskById.ApproverName != "Assign" ? (
-                            <div className="holding-list-bold-title">
+                            <div
+                              className="holding-list-bold-title"
+                              onClick={() =>
+                                setIsShowReAssignModalForApprover(true)
+                              }
+                            >
                               {getTaskById &&
                               getTaskById.ApproverName == "" ? null : (
                                 <span className="cicrcle-name">

@@ -8,6 +8,9 @@
   align-items: center;
   justify-content: space-between;
 }
+.history-container {
+  height: 94vh;
+}
 .filter-toggle {
   border: none;
   color: #fff;

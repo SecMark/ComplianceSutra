@@ -1,3 +1,9 @@
+.task-wrapper {
+  background: url("../../../../../../assets/Images/Onboarding/co-bg.png")
+    no-repeat left center;
+  background-size: cover;
+  width: 100%;
+}
 .all-companies-task-grid {
   /* padding: 48px 48px 95px; */
   object-fit: contain;
@@ -6,8 +12,8 @@
   background-color: #ffffff;
   position: relative;
   height: 94vh;
-  margin: 20px 20px 20px 7%;
-  z-index:2000;
+  margin: 20px 20px 20px 6.5vw;
+  z-index: 8;
 }
 .all-companies-title {
   opacity: 0.6;
@@ -337,7 +343,7 @@
   max-height: calc(100vh - 40px);
   overflow: auto;
   animation: mymove 1s;
-  z-index:10000 !important;
+  z-index: 1000 !important;
 }
 .new-side-bar {
   position: fixed;
@@ -797,9 +803,9 @@
   width: 120px;
 }
 
-.blank-space-height {
-  /* height: 280px; */
-}
+/* .blank-space-height {
+  height: 280px;
+} */
 
 .right-box-text {
   margin: 2px 23px 10px 8px;
@@ -1488,7 +1494,7 @@ div#navigationBar\ mobile-navigation-drower .taskList-mobile img {
 .file-grid-data .delete-icon {
   margin-top: 1px;
 }
-.mobile-height{
+.mobile-height {
   height: 83px;
 }
 
@@ -1499,7 +1505,7 @@ textarea.form-control.textAreaHeight::placeholder {
 @-moz-document url-prefix() {
   textarea.form-control.textAreaHeight {
     padding-top: 11px;
-}
+  }
 }
 @media screen and (min-width: 1650px) {
   .new-side-bar {
@@ -1515,16 +1521,16 @@ textarea.form-control.textAreaHeight::placeholder {
     top: 13px;
     left: 0px;
   }
-  .mobile-height{
+  .mobile-height {
     height: 80px;
   }
   .comment-box .input-comment-box .form-control {
     width: 230px;
     padding-top: 6px !important;
   }
-  .comment-box .input-comment-box .form-control::placeholder{
-  padding-top: 6px !important;
-}
+  .comment-box .input-comment-box .form-control::placeholder {
+    padding-top: 6px !important;
+  }
   .input-comment-box.input-comment-boxLeft {
     float: none !important;
   }
@@ -1588,9 +1594,9 @@ textarea.form-control.textAreaHeight::placeholder {
   .all-companies-task-grid .companies-sub-title {
     padding: 32px 20px 0px;
   }
-  .all-companies-task-grid .only-search-icon {
-    /* margin-right: 29px; */
-  }
+  /* .all-companies-task-grid .only-search-icon {
+    margin-right: 29px;
+  } */
   .overdue-title {
     font-size: 12px;
     font-weight: 300;
@@ -1691,7 +1697,7 @@ textarea.form-control.textAreaHeight::placeholder {
     left: 37%;
   }
 
-  .mobDisplaynone{
+  .mobDisplaynone {
     display: none;
   }
 }
@@ -1760,16 +1766,15 @@ textarea.form-control.textAreaHeight::placeholder {
 .only-mobile-assign-add {
   margin-top: 0px !important;
 }
-.border-bottom{
-border: solid 1px rgb(228 228 228 / 50%);
-border-left: none;
-border-right: none;
-border-top: none;
+.border-bottom {
+  border: solid 1px rgb(228 228 228 / 50%);
+  border-left: none;
+  border-right: none;
+  border-top: none;
 }
 
 @-moz-document url-prefix() {
-
-  .form-control.mozilla-py{
-   padding: 11px;
-  } 
+  .form-control.mozilla-py {
+    padding: 11px;
+  }
 }

@@ -64,7 +64,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/compliance-history-list");
     } else if (currentActiveMenu === "newRegulations") {
       history.push("/new-regulations");
-    } else if (currentActiveMenu === "Help") {
+    } else if (currentActiveMenu === "help") {
       history.push("/help");
     }
   };
@@ -202,25 +202,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             />
           </div>
         </div>
-        <div
-          className={
-            !openProfile && state && state.adminMenu.currentMenu === "Help"
-              ? "taskIcon-active"
-              : "taskIcon"
-          }
-        >
-          <img
-            style={{ cursor: "pointer" }}
-            title="Help"
-            onClick={() => onMenuClick("Help")}
-            src={
-              !openProfile && state && state.adminMenu.currentMenu === "Help"
-                ? HelpBlackActive
-                : HelpGreyActive
-            }
-            alt="sidebar Active"
-          />
-        </div>
+        <div className="devider-line"></div>
         <div className="second-icon-list">
           <div
             className={
@@ -245,6 +227,27 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Setting Icon"
             />
           </div>
+
+          <div
+            className={
+              !openProfile && state && state.adminMenu.currentMenu === "help"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="Help"
+              onClick={() => onMenuClick("help")}
+              src={
+                !openProfile && state && state.adminMenu.currentMenu === "help"
+                  ? HelpBlackActive
+                  : HelpGreyActive
+              }
+              alt="sidebar Active"
+            />
+          </div>
+
           <div className={openProfile ? "taskIcon-active" : "taskIcon"}>
             <img
               style={{ cursor: "pointer" }}

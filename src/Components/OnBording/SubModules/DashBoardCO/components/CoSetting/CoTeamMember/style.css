@@ -4,7 +4,7 @@
   box-shadow: 0 3px 36px 0 rgb(67 0 255 / 8%);
   background-color: #ffffff;
   position: relative;
-  height: 94vh;
+  height: 100%;
   margin: 20px 20px 20px 0px;
   padding-left: 48px;
   padding-right: 48px;
@@ -17,40 +17,49 @@
 /* .setPlaceHolder{
   padding-left: 42px !important;
 } */
-.co-team-member .searchBox .form-group .setPlaceHolder:focus::-webkit-input-placeholder {
-  padding-left: 0px; 
+.testing-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  box-shadow: 1px 1px 9999px grey;
 }
-.co-team-member .searchBox .form-group .placeHold:focus{
+.co-team-member
+  .searchBox
+  .form-group
+  .setPlaceHolder:focus::-webkit-input-placeholder {
+  padding-left: 0px;
+}
+.co-team-member .searchBox .form-group .placeHold:focus {
   padding-left: 41px !important;
 }
-.textwithoutFocus{
+.textwithoutFocus {
   padding-left: 40px !important;
 }
 
-.co-team-member .table td:last-child{
+.co-team-member .table td:last-child {
   /* padding: 0px important !important;
   padding: 0px; */
   width: 70px;
 }
-.co-team-member .table td{
+.co-team-member .table td {
   border-top: 0px solid #dee2e6;
 }
 .co-team-member td.fixWidth {
   width: 180px;
 }
-.tw-30{
+.tw-30 {
   width: 30%;
 }
-.tw-20{
+.tw-20 {
   width: 22%;
 }
-.tw-30{
+.tw-30 {
   width: 30%;
 }
-.tw-15{
+.tw-15 {
   width: 13%;
 }
-.tw-8{
+.tw-8 {
   width: 8%;
 }
 .table_legenda {
@@ -62,14 +71,14 @@
 .table_legenda tr {
   overflow-wrap: break-word;
 } */
-.dropList{
+.dropList {
   /* overflow-wrap: break-word; */
 }
 .nameCirle {
   overflow-wrap: break-word;
   line-height: 19px;
 }
-.co-team-member .scroll-personal-grid{
+.co-team-member .scroll-personal-grid {
   overflow-y: auto;
   overflow-x: hidden;
   height: 480px;
@@ -133,7 +142,7 @@
   color: #2c2738;
   margin-bottom: 40px;
 }
-.co-team-member .col-form-label{
+.co-team-member .col-form-label {
   width: 216px;
   font-family: Poppins;
   font-size: 13px;
@@ -145,14 +154,14 @@
   text-align: left;
   color: #2c2738;
 }
-.co-team-member .right-input-row{
+.co-team-member .right-input-row {
   width: 261px;
-  height:40px;
+  height: 40px;
   border-radius: 8px;
   border-color: rgb(228 228 228 / 50%);
   background-color: rgb(228 228 228 / 50%);
 }
-.co-team-member .right-input-row::placeholder{
+.co-team-member .right-input-row::placeholder {
   font-family: Poppins;
   font-size: 13px;
   font-weight: normal;
@@ -167,7 +176,7 @@
   box-shadow: none;
   border: 2px solid #6c5dd3 !important;
 }
-.co-team-member .save-changes-personal-btn{
+.co-team-member .save-changes-personal-btn {
   width: 147px;
   height: 43px;
   /* margin: 231px 651px 0 0; */
@@ -186,10 +195,10 @@
   color: #aeaeae;
   text-transform: uppercase;
 }
-.co-team-member .save-changes-personal-btn:hover{
+.co-team-member .save-changes-personal-btn:hover {
   color: #aeaeae;
 }
-.co-team-member .save-changes-personal-btn:focus{
+.co-team-member .save-changes-personal-btn:focus {
   box-shadow: inherit;
   border: none;
   outline: none;
@@ -212,7 +221,7 @@
   color: #ffffff;
   text-transform: uppercase;
 }
-.co-team-member .discard-label-link{
+.co-team-member .discard-label-link {
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -242,7 +251,7 @@
   background-color: #eee8fc;
   position: relative;
 }
-.co-team-member .subsidiaries{
+.co-team-member .subsidiaries {
   /* margin: 32px 378px 12.5px 0; */
   object-fit: contain;
   opacity: 0.5;
@@ -256,7 +265,7 @@
   text-align: left;
   color: #1b1d21;
 }
-.co-team-member .add-othe-company{
+.co-team-member .add-othe-company {
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -283,8 +292,8 @@
 .co-team-member .task-detail-data {
   /* margin: 20px 0px; */
 }
-.big-height{
-  height:250px !important;
+.big-height {
+  height: 250px !important;
 }
 
 .co-team-member .holding-list-normal-title {
@@ -312,23 +321,23 @@
   color: #2c2738;
   margin-bottom: 0px;
 }
-.co-team-member .drop-Icon-personal{
-    width: 8px;
-    margin-left: 11px;
-    height: 6px;
+.co-team-member .drop-Icon-personal {
+  width: 8px;
+  margin-left: 11px;
+  height: 6px;
 }
-.co-team-member .delete-Icon-personal{
+.co-team-member .delete-Icon-personal {
   width: 14px;
   margin-left: 16px;
   height: 18px;
   cursor: pointer;
   vertical-align: middle;
 }
-.co-team-member .circle-dp{
+.co-team-member .circle-dp {
   width: 20px;
   height: 20px;
   object-fit: contain;
-  float:left;
+  float: left;
   border-radius: 8px;
   background-color: #eae8ff;
   object-fit: contain;
@@ -343,9 +352,9 @@
   color: #b3abc4;
   padding: 5px 5px 4px;
   margin-right: 6px;
-    margin-top: 4px;
+  margin-top: 4px;
 }
-.co-team-member .redeign{
+.co-team-member .redeign {
   margin: 1px 0 0 16px;
   font-family: Poppins;
   font-size: 13px;
@@ -358,7 +367,7 @@
   color: #6c5dd3;
   text-transform: uppercase;
 }
-.co-team-member .add-licence-btn{
+.co-team-member .add-licence-btn {
   width: 166px;
   height: 44px;
   /* margin: 0 0 0 191px; */
@@ -385,8 +394,8 @@
   box-shadow: none !important;
   color: white !important;
 }
-.co-team-member .btn-top-pt{
-  margin-top:0px
+.co-team-member .btn-top-pt {
+  margin-top: 0px;
 }
 .co-team-member .discard-label-link {
   font-family: Poppins;
@@ -400,7 +409,7 @@
   text-transform: uppercase;
   color: #6c5dd3;
 }
-.co-team-member .add-same-space{
+.co-team-member .add-same-space {
   line-height: 45px;
 }
 .co-team-member .holding-list-bold-title-background {
@@ -424,22 +433,22 @@
 }
 
 .co-team-member .buttonprimary {
-    width: auto;
-    height: 23px;
-    object-fit: contain;
-    border-radius: 16px;
-    background-color: #6c5dd3;
-    font-family: Poppins;
-    font-size: 10px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 10px;
-    letter-spacing: 0.01px;
-    text-align: center;
-    color: #ffffff;
-    margin-left:5px;
-    text-transform: uppercase;
+  width: auto;
+  height: 23px;
+  object-fit: contain;
+  border-radius: 16px;
+  background-color: #6c5dd3;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 10px;
+  letter-spacing: 0.01px;
+  text-align: center;
+  color: #ffffff;
+  margin-left: 5px;
+  text-transform: uppercase;
 }
 .co-team-member .buttonprimarygray {
   width: auto;
@@ -463,7 +472,7 @@
   background-color: #e4e4e4 !important;
   color: #aeaeae !important;
 }
-.co-team-member .assign-with-icon{
+.co-team-member .assign-with-icon {
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -528,10 +537,10 @@
 .co-team-member .table tbody tr td:first-child {
   padding-left: 0px !important;
 }
-.co-team-member .table tbody tr{
+.co-team-member .table tbody tr {
   border-bottom: 1px solid rgb(228 228 228 / 30%);
 }
-.co-team-member .table td{
+.co-team-member .table td {
   padding-top: 16.5px;
   padding-bottom: 15px;
   vertical-align: middle;
@@ -551,12 +560,12 @@
   color: #2c2738;
   text-transform: uppercase;
 }
-.co-team-member .delete-Icon-check{
+.co-team-member .delete-Icon-check {
   width: 18px;
-  Height: 18px;
+  height: 18px;
   cursor: pointer;
 }
-.co-team-member .company-delete-right-bottom{
+.co-team-member .company-delete-right-bottom {
   width: 215px;
   /* height: 48px; */
   padding: 15px 16px 14px 12px;
@@ -564,7 +573,7 @@
   background-color: #f0efff;
   float: right;
   font-size: 13px;
-  margin:0 21px 0 8px;
+  margin: 0 21px 0 8px;
   font-family: Poppins;
   font-size: 13px;
   font-weight: normal;
@@ -574,27 +583,27 @@
   letter-spacing: 0px;
   color: #5d6370;
 }
-.co-team-member .Dropdown-control{
+.co-team-member .Dropdown-control {
   width: 165px;
   /* max-width: 240px; */
-  height: 40px;  
+  height: 40px;
   border: none;
-  border:none;
+  border: none;
   border-radius: 0px;
   cursor: pointer;
   padding: 8px;
   border-radius: 8px;
-  background-color:rgb(228 228 228 / 30%);
+  background-color: rgb(228 228 228 / 30%);
   font-family: Poppins;
-    font-size: 13px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 25px;
-    letter-spacing: 0.02px;
-    text-align: left;
-    color: #1b1d21;
-    position:relative;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 25px;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #1b1d21;
+  position: relative;
 }
 .co-team-member .Dropdown-menu {
   background-color: #ffffff;
@@ -609,7 +618,7 @@
   max-width: 240px;
   padding: 10px 0px;
 }
-.co-team-member .Dropdown-option{
+.co-team-member .Dropdown-option {
   padding: 8px 10px;
   cursor: pointer;
   font-size: 12px;
@@ -620,9 +629,8 @@
   letter-spacing: 0.02px;
   text-align: left;
   color: #1b1d21;
-  
 }
-.co-team-member  .arrow-open{
+.co-team-member .arrow-open {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 7px solid #323232;
@@ -631,7 +639,7 @@
   right: 14px;
 }
 
-.co-team-member  .arrow-closed {
+.co-team-member .arrow-closed {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 7px solid #323232;
@@ -646,7 +654,7 @@
   cursor: pointer;
   vertical-align: middle;
 }
-.co-team-member .check-icon-small{
+.co-team-member .check-icon-small {
   width: 13.3px;
   height: 13.3px;
   margin-right: 3px;
@@ -667,16 +675,16 @@
   color: #575757;
 }
 .co-team-member .contact-team {
-    object-fit: contain;
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.24px;
-    text-align: left;
-    color: #1b1d21;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #1b1d21;
 }
 .co-team-member .three-dot {
   width: 3px;
@@ -686,10 +694,10 @@
   vertical-align: middle;
   position: relative;
 }
-.co-team-member .three-dot-tooltip{
+.co-team-member .three-dot-tooltip {
   width: 142px;
   z-index: 999999;
-  height: 90px;
+  height: 135px;
   object-fit: contain;
   border-radius: 4px;
   right: 61px;
@@ -700,10 +708,10 @@
 }
 .co-team-member .right-search-bar {
   position: absolute;
-    right: 49px;
-    display: flex;
-    top: 49px;
-    line-height:40px;
+  right: 49px;
+  display: flex;
+  top: 49px;
+  line-height: 40px;
 }
 .co-team-member .add-new-plus {
   margin-left: 24px;
@@ -725,7 +733,7 @@
   height: 28px;
   cursor: pointer;
 }
-.co-team-member .filter-text{
+.co-team-member .filter-text {
   margin: 11px 16px 10px 0;
   font-family: Poppins;
   font-size: 13px;
@@ -750,7 +758,7 @@
   text-align: right;
   border-radius: 8px;
 }
-.co-team-member .searchBox .form-group .form-control{
+.co-team-member .searchBox .form-group .form-control {
   width: 455px;
   float: right;
   height: 47px;
@@ -764,14 +772,14 @@
   letter-spacing: 0px;
   text-align: left;
   color: #aeaeae;
-  padding-left:0px;
+  padding-left: 0px;
 }
-.co-team-member .searchBox .form-group .form-control:focus{
+.co-team-member .searchBox .form-group .form-control:focus {
   height: 47px;
   padding-left: 40px;
   width: 455px;
 }
-.co-team-member .searchBox .form-control::placeholder{
+.co-team-member .searchBox .form-control::placeholder {
   margin: 5px 0 4px 1px;
   font-family: Poppins;
   font-size: 13px;
@@ -782,7 +790,7 @@
   letter-spacing: 0px;
   text-align: left;
   color: #aeaeae;
-  padding-left:40px;
+  padding-left: 40px;
 }
 .co-team-member .searchBox img.IconGray {
   position: absolute;
@@ -790,7 +798,7 @@
   left: 12px;
   top: 10px;
 }
-.co-team-member .change-role{
+.co-team-member .change-role {
   font-family: Poppins;
   font-size: 12px;
   font-weight: normal;
@@ -801,9 +809,9 @@
   text-align: left;
   color: #1b1d21;
   padding: 13px 0px 13px 10px;
-    border-bottom: 1px solid rgb(222 222 222 / 30%);
+  border-bottom: 1px solid rgb(222 222 222 / 30%);
 }
-.co-team-member .delete-member{
+.co-team-member .delete-member {
   font-family: Poppins;
   font-size: 12px;
   font-weight: normal;
@@ -824,7 +832,7 @@
   width: 16px;
   height: 16px;
 }
-.co-team-member .cancelLink{
+.co-team-member .cancelLink {
   /* margin: 12px 0 12px 24px; */
   font-family: Poppins;
   font-size: 12px;
@@ -844,9 +852,9 @@
   width: 87px;
   text-transform: uppercase !important;
 }
-.co-team-member .common-button-disabled{
+.co-team-member .common-button-disabled {
   border-radius: 4px !important;
-  background-color: #aeaeae !important;;
+  background-color: #aeaeae !important;
   height: 43px;
   width: 87px;
   text-transform: uppercase !important;
@@ -896,7 +904,7 @@
   font-style: normal;
   line-height: normal;
 }
-.co-team-member .focusRemove .form-control::placeholder{
+.co-team-member .focusRemove .form-control::placeholder {
   font-family: Poppins;
   font-size: 13px;
   font-weight: 300;
@@ -908,12 +916,9 @@
   color: #aeaeae;
 }
 
-
 .full-btn-tabel {
   width: 200px !important;
 }
-
-
 
 .bottomBarFixedChangeRole {
   position: fixed;
@@ -921,37 +926,36 @@
   height: 200px;
   width: 100%;
   bottom: -100%;
-  z-index: 99999999  !important;
+  z-index: 99999999 !important;
   transition: 1s;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
 
-.overlayChangeRole{
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-z-index: 99999;
-overflow: hidden;
-transition: 1s;
-background-color: rgba(0, 0, 0, 0.48) !important;
+.overlayChangeRole {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  overflow: hidden;
+  transition: 1s;
+  background-color: rgba(0, 0, 0, 0.48) !important;
 }
-
 
 .bottomBarFixedMoreDetails {
-position: fixed;
-background: #fff;
-height: 200px;
-width: 100%;
-bottom: -100%;
-z-index: 99999999  !important;
-transition: 1s;
-border-top-left-radius: 16px;
-border-top-right-radius: 16px;
+  position: fixed;
+  background: #fff;
+  height: 200px;
+  width: 100%;
+  bottom: -100%;
+  z-index: 99999999 !important;
+  transition: 1s;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
-.user-email-right-mobile{
+.user-email-right-mobile {
   margin: 0 0 0 46px;
   opacity: 0.5;
   font-family: Poppins;
@@ -964,7 +968,7 @@ border-top-right-radius: 16px;
   text-align: left;
   color: #2c2738;
 }
-.overlayMoreDetails{
+.overlayMoreDetails {
   position: fixed;
   top: 0;
   left: 0;
@@ -972,7 +976,7 @@ border-top-right-radius: 16px;
   bottom: 0;
   z-index: 99999;
   transition: 1s;
-  background-color: rgba(0, 0, 0, 0.48)  !important;
+  background-color: rgba(0, 0, 0, 0.48) !important;
 }
 .bottomBarFixedChangeRole {
   position: fixed;
@@ -980,14 +984,14 @@ border-top-right-radius: 16px;
   height: 300px;
   width: 100%;
   bottom: -100%;
-  z-index: 99999999  !important;
+  z-index: 99999999 !important;
   transition: 1s;
   padding: 40px 24px 0px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
 
-.overlayChangeRole{
+.overlayChangeRole {
   position: fixed;
   top: 0;
   left: 0;
@@ -999,29 +1003,28 @@ border-top-right-radius: 16px;
   background-color: rgba(0, 0, 0, 0.48) !important;
 }
 
-
 .bottomBarFixedMoreDetails {
   position: fixed;
   background: #fff;
   height: 200px;
   width: 100%;
   bottom: -100%;
-  z-index: 99999999  !important;
+  z-index: 99999999 !important;
   transition: 1s;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   padding: 40px 24px 0px;
 }
 
-.overlayMoreDetails{
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-z-index: 99999;
-transition: 1s;
-background-color: rgba(0, 0, 0, 0.48)  !important;
+.overlayMoreDetails {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  transition: 1s;
+  background-color: rgba(0, 0, 0, 0.48) !important;
 }
 #drawerParentAddNew {
   display: none;
@@ -1033,7 +1036,7 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
   }
   .big-height {
     height: 305px !important;
-}
+  }
   .co-team-member {
     object-fit: contain;
     border-radius: 0px;
@@ -1072,11 +1075,11 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
     color: #ffffff;
     text-transform: uppercase;
   }
-  .co-team-member .sideBarFixedAccount{
+  .co-team-member .sideBarFixedAccount {
     padding: 40px 24px 0px;
     height: 550px;
   }
-  .co-team-member  .sideBarFixedAccount .form-control::placeholder{
+  .co-team-member .sideBarFixedAccount .form-control::placeholder {
     opacity: 0.5;
     font-family: Poppins;
     font-size: 13px;
@@ -1091,11 +1094,11 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
   .co-team-member .sideBarFixedAccount .last-two-btn {
     margin: 30px 0px 32px;
   }
-  .co-team-member .sideBarFixedAccount .form-group .form-control{
+  .co-team-member .sideBarFixedAccount .form-group .form-control {
     display: block;
     width: 100%;
-    height: calc(1.5em + .75rem + 2px);
-    padding: .375rem .75rem;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -1103,8 +1106,8 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #ced4da;
-    border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
   .co-team-member .sideBarFixedAccount .discard-label-link {
     font-family: Poppins;
@@ -1133,22 +1136,22 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
     font-style: normal;
     line-height: normal;
   }
-  .co-team-member .label-mobile{
+  .co-team-member .label-mobile {
     font-family: Poppins;
-      font-size: 13px;
-      font-weight: normal;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: normal;
-      letter-spacing: 0px;
-      text-align: left;
-      color: rgb(44 39 56 / 50%);
+    font-size: 13px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0px;
+    text-align: left;
+    color: rgb(44 39 56 / 50%);
   }
   .co-team-member .Dropdown-control {
     width: 100%;
     max-width: 100%;
   }
-  .change-role-mobile{
+  .change-role-mobile {
     margin: 0px 0px 30px 0px;
     font-family: Poppins;
     font-size: 23px;
@@ -1180,7 +1183,7 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
   .co-team-member .personal-mgt-title {
     margin-bottom: 0px;
   }
-  .co-team-member .mobile-py{
+  .co-team-member .mobile-py {
     padding: 34px 20px 25px;
   }
   .co-team-member .scroll-personal-grid {
@@ -1214,32 +1217,30 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
   .co-team-member .three-dot-tooltip {
     width: 142px;
     z-index: 999999;
-    height: 140px;
+    height: 177px;
     object-fit: contain;
     border-radius: 4px;
-    right: 5px;
+    right: 25px;
     box-shadow: 0 3px 6px 0 rgb(0 0 0 / 16%);
     background-color: #ffffff;
     position: absolute;
-    margin-top: 8px;
-    top: 16px;
+    margin-top: 35px;
   }
   .customModal {
     background: #b2dbbf;
-    max-width: 500px  !important;
-    width: 340px  !important;
-     height: 300px  !important;
-    display: inline-block  !important;
-    text-align: left  !important;
-    vertical-align: middle  !important;
-    background: #ffffff  !important;
-    box-shadow: 0 12px 15px 0 rgb(0 0 0 / 25%)  !important;
-    margin: 0px  !important;
-    padding: 0px  !important;
+    max-width: 500px !important;
+    width: 340px !important;
+    height: 300px !important;
+    display: inline-block !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+    background: #ffffff !important;
+    box-shadow: 0 12px 15px 0 rgb(0 0 0 / 25%) !important;
+    margin: 0px !important;
+    padding: 0px !important;
     position: relative;
   }
- 
-  
+
   .co-team-member .roleEmailText {
     line-height: 27px;
     text-align: right;
@@ -1265,10 +1266,10 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
     margin-top: 8px;
     right: -10px;
   }
-  .co-team-member .bottom-line{
+  .co-team-member .bottom-line {
     width: 100%;
     height: 1px;
-    margin:15.5px 0px 15.5px 0;
+    margin: 15.5px 0px 15.5px 0;
     object-fit: contain;
     opacity: 0.3;
     background-color: #eee8fc;
@@ -1300,7 +1301,7 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
     position: absolute;
     top: 28px;
   }
-  .dropDown-tooltip .change-role:first-child{
+  .dropDown-tooltip .change-role:first-child {
     border-bottom: inherit;
   }
   .co-team-member .holding-list-bold-title-background {
@@ -1312,10 +1313,10 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
     width: 91vw;
     /* max-width: 690px; */
   }
-    .co-team-member .searchBox .form-group .form-control:focus {
-      height: 47px;
-      padding-left: 30px;
-      width: 91vw;
+  .co-team-member .searchBox .form-group .form-control:focus {
+    height: 47px;
+    padding-left: 30px;
+    width: 91vw;
   }
 
   .co-team-member .searchBox {
@@ -1323,5 +1324,3 @@ background-color: rgba(0, 0, 0, 0.48)  !important;
     margin-top: -10px;
   }
 }
-
-
