@@ -11,7 +11,7 @@
   box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
   background-color: #ffffff;
   position: relative;
-  height: 94vh;
+  height: 100%;
   margin: 20px 20px 20px 6.5vw;
   z-index: 8;
 }

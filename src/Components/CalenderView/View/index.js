@@ -4,7 +4,12 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
-import { clearState, getDayData, getWeekData } from "../redux/actions";
+import {
+  clearState,
+  getDayData,
+  getMonthData,
+  getWeekData,
+} from "../redux/actions";
 import "./style.css";
 
 const View = () => {
@@ -58,7 +63,7 @@ const View = () => {
         const startDate = moment(weekStartDate)
           .add(counter, "days")
           .format("YYYY-MM-DD");
-          console.log(startDate);
+        console.log(startDate);
 
         const data = weekData[0]?.Details.filter(
           (details) => details.EndDate == startDate
@@ -138,6 +143,7 @@ const View = () => {
       }
       listOfDate.reverse();
     }
+
     let counter = 0;
     for (
       let index = firstDayOfCurrentMonth;
@@ -150,8 +156,10 @@ const View = () => {
       counter++;
     }
 
+    let endDate = new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0);
     setMonthDate(newDate);
     setMonths(listOfDate);
+    fetchMonthData(endDate);
   };
 
   const getMondays = (date) => {
@@ -191,6 +199,19 @@ const View = () => {
       ),
     };
     dispatch(getWeekData(dayPayload));
+  };
+
+  const fetchMonthData = (endDate) => {
+    var date = new Date();
+    var startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+
+    const dayPayload = {
+      userID: state.auth.loginInfo?.UserID,
+      EntityID: "M",
+      StartDate: moment(startDate).format("YYYY-MM-DD"),
+      EndDate: moment(moment(endDate).format()).format("YYYY-MM-DD"),
+    };
+    dispatch(getMonthData(dayPayload));
   };
 
   const getNameInitials = (name) => {

@@ -2,6 +2,7 @@ import {
   CLEAR_STATE,
   SET_DAY,
   SET_LOADING,
+  SET_MONTH,
   SET_SUCCESS,
   SET_WEEK,
 } from "./types";
@@ -9,6 +10,7 @@ import {
 const intialSate = {
   daysData: [],
   weekData: [],
+  monthData: [],
   isSuccess: false,
   isLoading: false,
 };
@@ -25,6 +27,12 @@ const reducer = (state = intialSate, { type, payload }) => {
       return {
         ...state,
         weekData: [...payload],
+      };
+
+    case SET_MONTH:
+      return {
+        ...state,
+        monthData: [...payload],
       };
 
     case SET_SUCCESS:

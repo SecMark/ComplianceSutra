@@ -2,9 +2,11 @@ import { SET_SUCCESS } from "../../HistoryModule/redux/types";
 import {
   CLEAR_STATE,
   GET_DAY,
+  GET_MONTH,
   GET_WEEK,
   SET_DAY,
   SET_LOADING,
+  SET_MONTH,
   SET_WEEK,
 } from "./types";
 
@@ -26,6 +28,17 @@ export const setWeekData = (payload) => {
 export const getWeekData = (payload) => {
   return {
     type: GET_WEEK,
+    payload,
+  };
+};
+
+export const setMonthData = (payload) => {
+  return { type: SET_MONTH, payload };
+};
+
+export const getMonthData = (payload) => {
+  return {
+    type: GET_MONTH,
     payload,
   };
 };
