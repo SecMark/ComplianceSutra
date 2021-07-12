@@ -131,7 +131,7 @@ export default function AppRouter() {
             path="/invitation-member"
             component={InvitationMemberFlow}
           />
-          <Route exact path="/notifications" component={Notification} />
+          <Route exact path="/notifications" component={DashBoardCO} />
           {/* <Route exact path="/co-managment" component={CoManagment}/> */}
           <Route exact path="/settings" component={CoSetting} />
 
@@ -151,14 +151,14 @@ export default function AppRouter() {
             component={UserVerificationProcess}
           />
 
-          <Route exact path="/compliance-history" component={HistoryFilter} />
-          <Route exact path="/help" component={Help} />
+          <Route exact path="/compliance-history" component={DashBoardCO} />
+          <Route exact path="/help" component={DashBoardCO} />
           <Route
             exact
             path="/compliance-history-list"
-            component={HistoryList}
+            component={DashBoardCO}
           />
-          <Route exact path="/new-regulations" component={NewRegulation} />
+          <Route exact path="/new-regulations" component={DashBoardCO} />
         </div>
       </>
     </div>

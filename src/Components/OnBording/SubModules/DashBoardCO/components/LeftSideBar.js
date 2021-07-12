@@ -59,7 +59,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/notifications");
     } else if (currentActiveMenu === "settings") {
       history.push("/settings");
-    } else if (currentActiveMenu === "complianceHistory") {
+    } else if (currentActiveMenu === "historyFilter") {
       history.push("/compliance-history");
     } else if (currentActiveMenu === "complianceHistoryList") {
       history.push("/compliance-history-list");
@@ -88,7 +88,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             className={
               !openProfile &&
               state &&
-              state.adminMenu.currentMenu === "complianceHistory"
+              state.adminMenu.currentMenu === "historyFilter"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
@@ -96,7 +96,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             <img
               style={{ cursor: "pointer" }}
               title="ComplianceHistory"
-              onClick={() => onMenuClick("complianceHistory")}
+              onClick={() => onMenuClick("historyFilter")}
               src={
                 !openProfile &&
                 state &&

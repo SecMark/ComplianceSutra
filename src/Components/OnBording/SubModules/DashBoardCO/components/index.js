@@ -5,6 +5,8 @@ import SideBarInputControl from "../components/LeftSideBar";
 import RighSider from "../components/RightSideGrid";
 import HistoryFilter from "../../../../../Components/HistoryModule/HistoryFilter/index";
 import HistoryList from "../../../../../Components/HistoryModule/HistoryList/index";
+import NewRegulations from "../../../../../Components/NewRegulationModule/NewRegulations/index";
+import HelpSection from "../../../../../Components/HelpSection/Help";
 import Cobg from "../../../../../assets/Images/Onboarding/co-bg.png";
 import { actions as taskReportActions } from "../redux/actions";
 import { toast } from "react-toastify";
@@ -92,7 +94,40 @@ function Dashboard({ history }) {
       window.location.href.includes("dashboard") &&
       state.adminMenu.currentMenu !== "taskList"
     ) {
+      console.log(isTaskListOpen);
+      if (isTaskListOpen) {
+        setIsTaskListOpen(false);
+      }
       dispatch(adminMenuActions.setCurrentMenu("taskList"));
+    } else if (
+      window.location.href.includes("compliance-history-list") &&
+      window.location.hash === "#/compliance-history-list" &&
+      state.adminMenu.currentMenu !== "complianceHistoryList"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
+      return;
+    } else if (
+      window.location.href.includes("compliance-history") &&
+      window.location.hash === "#/compliance-history" &&
+      state.adminMenu.currentMenu !== "historyFilter"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("historyFilter"));
+      return;
+    } else if (
+      window.location.href.includes("new-regulations") &&
+      state.adminMenu.currentMenu !== "newRegulations"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("newRegulations"));
+    } else if (
+      window.location.href.includes("help") &&
+      state.adminMenu.currentMenu !== "Help"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("Help"));
+    } else if (
+      window.location.href.includes("notifications") &&
+      state.adminMenu.currentMenu !== "notfications"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("notfications"));
     }
   }, []);
 
@@ -100,14 +135,15 @@ function Dashboard({ history }) {
     <div className="row co-dashboard">
       <div className=" left-fixed ">
         <div className="on-boarding">
-          {/* <SideBar /> */}
           <SideBarInputControl
             isTaskListOpen={isTaskListOpen}
             setIsTaskListOpen={setIsTaskListOpen}
           />
         </div>
       </div>
-      <div className="task-wrapper">
+      {/* <div className="task-wrapper"> */}
+      <div>
+      <img className="right-bg" src={Cobg} alt="" />
         <div className="col-12 ">
           {state && state.adminMenu.currentMenu === "taskList" && (
             <RighSider
@@ -133,14 +169,18 @@ function Dashboard({ history }) {
             </div> */}
             </>
           )}
-          {state && state.adminMenu.currentMenu === "complianceHistory" && (
-            // {History Filter}
-            <HistoryFilter />
-          )}
           {state && state.adminMenu.currentMenu === "complianceHistoryList" && (
             // {History List}
             <HistoryList />
           )}
+          {state && state.adminMenu.currentMenu === "historyFilter" && (
+            // {History Filter}
+            <HistoryFilter />
+          )}
+          {state && state.adminMenu.currentMenu === "newRegulations" && (
+            <NewRegulations />
+          )}
+          {state && state.adminMenu.currentMenu === "Help" && <HelpSection />}
         </div>
       </div>
     </div>
