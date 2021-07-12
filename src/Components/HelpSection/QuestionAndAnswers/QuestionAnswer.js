@@ -30,7 +30,6 @@ const QuestionAnswer = ({
           {showAnswer ? <RiArrowUpSLine /> : <RiArrowDownSLine />}
         </span>
       </div>
-
       <div className={`${answerStyles} AnswersTrue`}>
         <Answers questionDetail={questionDetail} />
       </div>
