@@ -4,12 +4,14 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
+import DayView from "../DayView";
 import {
   clearState,
   getDayData,
   getMonthData,
   getWeekData,
 } from "../redux/actions";
+import WeekView from "../WeekView";
 import "./style.css";
 
 const View = () => {
@@ -25,7 +27,7 @@ const View = () => {
   const state = useSelector((state) => state); // state
   const dispatch = useDispatch(); // dispatch
 
-  const { daysData, weekData } = state.CalenderReducer;
+  const { daysData, weekData, monthData } = state.CalenderReducer;
 
   useEffect(() => {
     getDays();
@@ -48,38 +50,14 @@ const View = () => {
     fetchWeekData();
   }, [state.auth.loginInfo?.UserID]);
 
-  useEffect(() => {
-    if (weekData && weekData[0]?.Details) {
-      setWeekDataList([]);
-      const weeksDataArray = [];
-      let counter = 0;
-      const startDateDay = parseInt(moment(weekStartDate).format("D"));
-
-      const endDate = parseInt(
-        moment(weekStartDate).add(7, "days").format("D")
-      );
-
-      for (let index = startDateDay; index < endDate; index++) {
-        const startDate = moment(weekStartDate)
-          .add(counter, "days")
-          .format("YYYY-MM-DD");
-        console.log(startDate);
-
-        const data = weekData[0]?.Details.filter(
-          (details) => details.EndDate == startDate
-        );
-        weeksDataArray.push({ values: data });
-        counter++;
-      }
-      setWeekDataList(weeksDataArray);
-    }
-  }, [weekStartDate]);
-
   const getDays = () => {
     const days = [];
     setSevenDays([]);
     for (let index = 0; index < 7; index++) {
-      const day = moment(weekStartDate).add(index, "days").format("ddd D");
+      const day = {
+        day: moment(weekStartDate).add(index, "days").format("ddd D"),
+        date: moment(weekStartDate).add(index, "days").format(),
+      };
       days.push(day);
     }
     setSevenDays(days);
@@ -237,7 +215,6 @@ const View = () => {
   const goToDateDay = (date) => {
     setDayDate("");
     const newDate = moment(date).format();
-    console.log(date);
     setDays(constant.day, constant.increment);
     setActiveDays(constant.day);
     setDayDate(newDate);
@@ -304,87 +281,14 @@ const View = () => {
           </button>
         </div>
       </div>
-      {activeDays === constant.day && (
-        <div className="detail-main">
-          {daysData && daysData[0]?.Details ? (
-            daysData[0]?.Details.map((day) => (
-              <div className="detail-container">
-                <div className="detail-content">
-                  <button className="license-code">{day?.LicenseCode}</button>
-                  <h2>{day?.TaskName}</h2>
-                  <button className="approval-day">Approval Pending</button>
-                </div>
-                <div className="detail-name">
-                  <span>{day?.EntityName}</span>
-                </div>
-                <div className="detail-name">
-                  <p>
-                    <span className="circle-dp">
-                      {getNameInitials(day?.AssignedName)}
-                    </span>{" "}
-                    <span className="user-name">{day?.AssignedName}</span>
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <NoResultFound text="No detail found" />
-          )}
-        </div>
-      )}
+      {activeDays === constant.day && <DayView daysData={daysData} />}
 
       {activeDays === constant.week && (
-        <div className="detail-main">
-          <table className="table co-company-details-tbl table_legenda week-table">
-            <thead>
-              <tr>
-                {sevenDays.map((day) => (
-                  <th key={day}>{day}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                {weekDataList &&
-                  weekDataList.map((data) => (
-                    <td>
-                      {data
-                        ? data.values.map((list) => (
-                            <div
-                              className="week-main"
-                              onClick={() => goToDateDay(list?.EndDate)}
-                            >
-                              <div className="week-detail">
-                                <button className="license-code">
-                                  {list?.LicenseCode}
-                                </button>
-                                <h2>{list?.TaskName}</h2>
-                                <button className="approval">
-                                  Approval Pending
-                                </button>
-                              </div>
-                              <div className="CompanyName">
-                                <span>{list?.EntityName}</span>
-                              </div>
-                              <div>
-                                <p className="UserNameDp">
-                                  <span className="circle-dp">
-                                    {getNameInitials(list?.AssignedName)}
-                                  </span>{" "}
-                                  <span className="user-name">
-                                    {list?.AssignedName}
-                                  </span>
-                                </p>
-                              </div>
-                            </div>
-                          ))
-                        : ""}
-                    </td>
-                  ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <WeekView
+          sevenDays={sevenDays}
+          weekData={weekData}
+          goToDateDay={goToDateDay}
+        />
       )}
 
       {activeDays === constant.month && (
@@ -396,10 +300,16 @@ const View = () => {
           <div className="day-name">Friday</div>
           <div className="day-name">Saturday</div>
           <div className="day-name">Sunday</div>
+
           {months.map((day, index) => {
             const month = moment(day).format("MMMM");
             const currentMonth = moment(monthDate).format("MMMM");
             const currentDay = moment(day).format("D");
+            const compareDate = moment(day).format("YYYY-MM-DD");
+
+            const list = monthData.filter(
+              ({ EndDate }) => EndDate === compareDate
+            );
 
             return (
               <div
@@ -407,17 +317,64 @@ const View = () => {
                 onClick={() => goToDateWeek(day)}
               >
                 {currentDay}
-                {currentDay == 7 && (
+                {month === currentMonth && list && list[0]?.LicenseCode && (
                   <>
-                    <button className="button-code">NSE</button>
-                    <button className="button-code">NSE</button>
+                    <div className="button-code">
+                      {list[0]?.LicenseCode}
+                      <div className="tooltip-container">
+                        <h2 className="tooltip-title">{list[0]?.TaskName}</h2>
+                        <div className="tooltip-company-detail">
+                          <span className="tooltip-compant-name">
+                            {list[0]?.EntityName}
+                          </span>
+                          <p>
+                            <span className="circle-dp-tooltip">
+                              {getNameInitials(list[0]?.AssignedName)}
+                            </span>{" "}
+                            <span className="user-name-tooltip">
+                              {list[0]?.AssignedName}
+                            </span>
+                          </p>
+                        </div>
+                        <button className="tooltip-view-detail-button">
+                          View Detail
+                        </button>
+                      </div>
+                    </div>
                   </>
                 )}
-                {currentDay == 17 && (
+
+                {month === currentMonth && list && list[1]?.LicenseCode && (
                   <>
-                    <button className="button-code">NSE</button>
-                    <button className="button-code">NSE</button>
+                    <div className="button-code">
+                      {list[1]?.LicenseCode}
+                      <div className="tooltip-container">
+                        <h2 className="tooltip-title">{list[1]?.TaskName}</h2>
+                        <div className="tooltip-company-detail">
+                          <span className="tooltip-compant-name">
+                            {list[1]?.EntityName}
+                          </span>
+                          <p>
+                            <span className="circle-dp-tooltip">
+                              {getNameInitials(list[1]?.AssignedName)}
+                            </span>{" "}
+                            <span className="user-name-tooltip">
+                              {list[1]?.AssignedName}
+                            </span>
+                          </p>
+                        </div>
+                        <button className="tooltip-view-detail-button">
+                          View Detail
+                        </button>
+                      </div>
+                    </div>
                   </>
+                )}
+
+                {month === currentMonth && list && list.length > 2 && (
+                  <button className="view-more">
+                    View {list.length} More Tasks{" "}
+                  </button>
                 )}
               </div>
             );

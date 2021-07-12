@@ -1,0 +1,121 @@
+.detail-main {
+  padding: 0 50px 12px;
+}
+
+.detail-container {
+  display: flex;
+  padding: 16px 24px;
+  border-radius: 4px;
+  background-color: #dedcff;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.detail-content {
+  display: flex;
+  align-items: center;
+  max-width: 50%;
+  width: 100%;
+}
+.detail-name {
+  display: flex;
+}
+
+.detail-name p {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.license-code {
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: #f7f4fe;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #1b1d21;
+  border: none;
+}
+
+.detail-content h2 {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #1b1d21;
+  margin: 0 15px 0 0;
+  max-width: 300px;
+  width: 100%;
+}
+
+.approval {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #ff5f31;
+  border: none;
+  background-color: #dedcff;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: #ffefea;
+  max-width: 55px;
+}
+
+.approval-day {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #ff5f31;
+  border: none;
+  background-color: #dedcff;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: #ffefea;
+}
+
+.assigned-day {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #31d524;
+  border: none;
+  background-color: #dedcff;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: #fbfffa;
+}
+
+.user-name {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #828282;
+}
