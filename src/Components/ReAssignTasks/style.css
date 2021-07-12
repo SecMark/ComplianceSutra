@@ -1,25 +1,25 @@
-.container {
+.re-container {
   background-color: white;
   border-radius: 1rem;
   height: 90vh;
   width: 530px;
   padding: 1rem 1.5rem;
 }
-.container > .modal-top {
+.re-container > .modal-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.container > .modal-top > img {
+.re-container > .modal-top > img {
   cursor: pointer;
 }
-.container > .header {
+.re-container > .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgb(209, 209, 209);
 }
-.container .header-controls {
+.re-container .header-controls {
   margin: 2.5rem 0 1rem 0;
   display: flex;
   justify-content: space-between;
@@ -152,11 +152,11 @@ button.re-assign {
     bottom: 0 !important;
     left: 0;
   }
-  .container .header-controls {
+  .re-container .header-controls {
     flex-direction: column;
     width: 100%;
   }
-  .container > .header > .header-controls span {
+  .re-container > .header > .header-controls span {
     font-weight: bold;
     margin: 0.5rem 0;
   }

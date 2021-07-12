@@ -393,7 +393,6 @@ label.custom-control-label.btn-top-label {
 .statedCheckboxWrap {
   display: flex;
   align-items: center;
-  margin: 15px 0 0;
 }
 
 .statedCheckboxWrap input {

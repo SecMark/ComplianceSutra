@@ -60,6 +60,7 @@
   width: 100%;
   align-items: flex-start;
   justify-content: space-between;
+  margin-top: 48px;
 }
 .HeaderHelp h4 {
   padding-bottom: -0.6rem;
@@ -115,18 +116,21 @@
 }
 
 .Right {
-  width: 69vw;
-  height: 95vh;
-  margin: 1rem -5rem 2rem 8rem;
+
+  width: 60vw;
+  height: 90vh;
+  margin: 2rem -5rem 2rem 8rem;
+
   border-radius: 36px;
 }
 .ContainerHelp {
   display: flex;
   flex-direction: column;
   align-items: initial;
-  padding: 1rem 1.5rem;
-  margin-left: 6rem;
-  height: 100%;
+
+  padding: 2rem 1.5rem;
+  height: 90vh;
+
   background-color: #fff;
   border-radius: 36px;
   box-shadow: 0 3px 36px 0 rgba(68, 0, 255, 0.151);
@@ -171,7 +175,10 @@
 }
 
 /* MOBILE */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 767px) {
+  .mobile-head {
+    margin: 0;
+  }
   .Parent {
     flex-direction: column;
     background-color: #fff;
