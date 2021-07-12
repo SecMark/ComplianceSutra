@@ -79,7 +79,9 @@ const NewRegulationFilter = ({ label }) => {
   useEffect(() => {
     if (
       state.UpdatesReducer.from !== "" &&
+      state.UpdatesReducer.from.length !== 1 &&
       state.UpdatesReducer.to !== "" &&
+      state.UpdatesReducer.to.length !== 1 &&
       state.UpdatesReducer.industry !== "" &&
       state.UpdatesReducer.issuer !== "" &&
       state.UpdatesReducer.topic !== ""
@@ -178,16 +180,12 @@ const NewRegulationFilter = ({ label }) => {
           name="to"
         />
       </div>
-
-      {isAllInputFilled ? (
-        <button className="view-updates-active" onClick={getResultByFilter}>
-          View Updates
-        </button>
-      ) : (
-        <button className="view-updates" onClick={getResultByFilter}>
-          View Updates
-        </button>
-      )}
+      <button
+        className={`view-updates ${isAllInputFilled && "view-updates-active"}`}
+        onClick={getResultByFilter}
+      >
+        View Updates
+      </button>
     </div>
   );
 };
