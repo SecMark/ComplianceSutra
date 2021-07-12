@@ -9,6 +9,7 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { RiArrowUpSLine } from "react-icons/ri";
 import constant from "../../CommonModules/sharedComponents/constants/constant";
+import bgReactangle from "../../assets/Images/BackgroundHelpRectangle.png";
 
 import "./style.css";
 import MobileLeftSidebar from "../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
@@ -154,6 +155,9 @@ const Help = () => {
             </div>
           );
         })}
+      </div>
+      <div id="bgRectangle">
+        <img src={bgReactangle} alt="backgroundImage"></img>
       </div>
     </div>
   );
