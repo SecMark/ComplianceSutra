@@ -57,7 +57,7 @@ const isToDateBeforeFromDate = (from, to) => {
 
 const searchUsers = (searchValue, data) => {
   if (searchValue !== "") {
-    const newArr = [
+    const searchResult = [
       ...data.filter((item) =>
         item.UserName.toLowerCase().includes(searchValue.toLowerCase())
       ),
@@ -65,7 +65,7 @@ const searchUsers = (searchValue, data) => {
         item.EmailID.toLowerCase().includes(searchValue.toLowerCase())
       ),
     ];
-    return [...new Set(newArr)];
+    return [...new Set(searchResult)];
   }
   return data;
 };
