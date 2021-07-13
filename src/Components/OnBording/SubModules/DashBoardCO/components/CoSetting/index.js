@@ -144,7 +144,7 @@ function CoSetting({ history }) {
         </div>
       )}
       {showHB === false && (
-        <div className=" d-block d-sm-none pad-ms pr-4">
+        <div className=" d-block d-md-none pad-ms pr-4">
           <div className="d-flex">
             <div
               className="w-25"
