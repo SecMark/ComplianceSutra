@@ -712,7 +712,7 @@ function CoManagment({ handleClose }) {
         userId={reAssignUserId}
       />
       {visible && _createDelectActionModal(openPopupIndex)}
-      <div className="d-none d-sm-block">
+      <div className="d-none d-md-block">
         <div className="d-flex">
           <div className="personal-mgt-title">Team Members </div>
           {!isSearchOpen && (
@@ -778,13 +778,13 @@ function CoManagment({ handleClose }) {
         </div>
       </div>
       <div className="">
-        <div className="d-block d-sm-none">
+        <div className="d-block d-md-none">
           <div className="mobile-py">
             <div className="d-flex position-relative">
               <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
                 <div className="personal-mgt-title">Team Members</div>
               </div>
-              <div className="col-2 col-sm-12 col-md-12 col-xl-12 d-block d-sm-none">
+              <div className="col-2 col-sm-12 col-md-12 col-xl-12 d-block d-md-none">
                 <img
                   className="close-icon-personal"
                   src={closeBlack}
@@ -1219,7 +1219,7 @@ function CoManagment({ handleClose }) {
           </div>
         </div>
       </div>
-      <div className="scroll-personal-grid d-none d-md-block table-responsive">
+      <div className="scroll-personal-grid d-none d-md-block position-relative">
         <table className="table co-company-details-tbl table_legenda">
           {/* <caption className="add-company-link">
                         Add another company
