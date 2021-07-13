@@ -146,9 +146,8 @@ const NewRegulations = (props) => {
 
   return (
     <>
-      <img className="right-bg" src={Cobg} alt="" />
       <div className="new-regulation-side-bar">
-        {isMobile ? (
+        {isMobile && (
           <div id="sideBarParent" className="" ref={sideBarParent}>
             <div
               id="sideBarChild"
@@ -161,9 +160,11 @@ const NewRegulations = (props) => {
               />
             </div>
           </div>
-        ) : (
-          <LeftSideBar />
         )}
+        {/* 
+        // ) : (
+        //   <LeftSideBar />
+        // )} */}
         {isMobile ? (
           <div className="new-regulation-container-mobile">
             {/* Filter pop-up for mobile */}
@@ -450,7 +451,7 @@ const NewRegulations = (props) => {
             />
             <div className="new-regulation-container">
               <div className="row">
-                <div className="col-md-12 col-lg-8">
+                <div className="col-md-12 col-lg-8 p-0">
                   <div className="new-regulation-header">
                     <h2 className="main-title">
                       New Regulations{" "}

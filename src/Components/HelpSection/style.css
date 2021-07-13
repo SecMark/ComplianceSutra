@@ -1,6 +1,14 @@
 .Parent {
   display: flex;
+  /* height: 100vh; */
+  object-fit: contain;
+
+  /* background-color: #ffffff; */
+  position: relative;
   height: 100vh;
+  /* margin: 20px 20px 20px 6.5vw; */
+  margin-left: 61px;
+  /* padding: 48px 0; */
 }
 .Parent::after {
   opacity: 0.1;
@@ -18,6 +26,7 @@
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: #fff;
+  z-index: 8;
 }
 
 .noView {
@@ -182,6 +191,7 @@
   .Parent {
     flex-direction: column;
     background-color: #fff;
+    margin: 0;
   }
   .HeaderHelp {
     width: 100%;
@@ -194,7 +204,7 @@
     position: relative;
     top: 0;
     right: 100px;
-    scroll: none;
+    /* scroll: none; */
   }
   .QuestionButton {
     display: none;

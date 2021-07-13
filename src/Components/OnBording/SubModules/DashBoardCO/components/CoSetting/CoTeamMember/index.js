@@ -1219,7 +1219,7 @@ function CoManagment({ handleClose }) {
           </div>
         </div>
       </div>
-      <div className="scroll-personal-grid d-none d-sm-block table-responsive">
+      <div className="scroll-personal-grid d-none d-md-block table-responsive">
         <table className="table co-company-details-tbl table_legenda">
           {/* <caption className="add-company-link">
                         Add another company
