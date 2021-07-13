@@ -1,5 +1,9 @@
 .Parent {
   display: flex;
+
+  object-fit: contain;
+
+  position: relative;
   height: 100vh;
 
   background: rgb(189, 225, 244);
@@ -10,6 +14,10 @@
     rgba(228, 193, 232, 1) 100%
   );
 }
+.Parent::after {
+  opacity: 0.1;
+}
+
 .MainHelp {
   display: flex;
   margin: 0;
@@ -60,7 +68,9 @@
 }
 .HeaderHelp {
   display: flex;
+
   padding: 0.5rem 1.5rem;
+
   width: 100%;
   align-items: flex-start;
   justify-content: space-between;
@@ -121,16 +131,20 @@
 
 .Right {
   width: 65vw;
+
   height: 90vh;
   margin: 2rem -5rem 2rem 8rem;
+
   border-radius: 36px;
 }
 .ContainerHelp {
   display: flex;
   flex-direction: column;
   align-items: initial;
+
   padding: 2rem 1.5rem;
   height: 90vh;
+
   background-color: #fff;
   border-radius: 36px;
 }
@@ -145,6 +159,7 @@
 }
 #bgRectangle {
   overflow: hidden;
+
   width: 60%;
   height: 23%;
   position: absolute;
@@ -176,6 +191,7 @@
     flex-direction: column;
     background-color: #fff;
     background: none;
+    /* margin: 0; */
   }
   .HeaderHelp {
     width: 100%;
@@ -188,7 +204,7 @@
     position: relative;
     top: 0;
     right: 100px;
-    scroll: none;
+    /* scroll: none; */
   }
   .QuestionButton {
     display: none;

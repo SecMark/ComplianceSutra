@@ -9,7 +9,9 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { RiArrowUpSLine } from "react-icons/ri";
 import constant from "../../CommonModules/sharedComponents/constants/constant";
+
 import bgReactangle from "../../assets/Images/BackgroundHelpRectangle.png";
+
 
 import "./style.css";
 import MobileLeftSidebar from "../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
@@ -60,7 +62,7 @@ const Help = () => {
 
   return (
     <div className="Parent">
-      {isMobile ? (
+      {isMobile && (
         <div id="sideBarParent" className="" ref={sideBarParent}>
           <div
             id="sideBarChild"
@@ -73,8 +75,6 @@ const Help = () => {
             />
           </div>
         </div>
-      ) : (
-        <LeftSideBar />
       )}
       <div className="d-block mobile-head d-md-none">
         {showHB === false && (
@@ -156,9 +156,12 @@ const Help = () => {
           );
         })}
       </div>
+
       <div id="bgRectangle">
         <img src={bgReactangle} alt="backgroundImage"></img>
       </div>
+
+
     </div>
   );
 };

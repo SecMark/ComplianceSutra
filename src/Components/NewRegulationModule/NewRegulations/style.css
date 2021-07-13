@@ -1,23 +1,22 @@
-.new-regulation-side-bar {
-  display: flex;
-}
 @media screen and (min-width: 992px) {
   .new-regulation-side-bar {
     height: 100vh;
   }
 }
+.new-regulation-side-bar {
+  display: block;
+}
 .new-regulation-container {
+  padding: 48px 48px;
   object-fit: contain;
   border-radius: 36px;
-  box-shadow: 0 3px 36px 0 rgb(67 0 255 / 8%);
+  box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
   background-color: #ffffff;
   position: relative;
-  /* height: calc(100vh-20px); */
-  overflow-y: auto;
-  margin: 20px;
-  padding: 48px 0;
-  width: 100%;
-  max-width: calc(100% - 64px);
+  height: 94vh;
+  margin: 20px 20px 20px 6.5vw;
+  width: auto;
+  z-index: 8;
 }
 
 .filter-image {
@@ -32,14 +31,14 @@
   position: absolute;
   right: -450px;
   top: 0;
-  z-index: 1;
+  z-index: 10;
   background-color: white;
   transition: all 500ms ease;
   overflow-y: scroll;
 }
 
 .new-regulation-container .row {
-  margin: 0px 0px 0px 30px;
+  margin: 0px;
   overflow-y: auto;
   height: 100%;
 }
@@ -275,6 +274,7 @@ p.description-text-search-active {
 }
 
 .TopSearch input {
+  flex: auto;
   border: 0px;
   margin: 0;
   padding: 0;
