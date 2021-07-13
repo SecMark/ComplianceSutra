@@ -148,7 +148,7 @@
   width: 60%;
   height: 23%;
   position: absolute;
-  /* z-index: 0; */
+
   top: 75%;
   left: 40%;
 }
@@ -175,6 +175,7 @@
   .Parent {
     flex-direction: column;
     background-color: #fff;
+    background: none;
   }
   .HeaderHelp {
     width: 100%;
