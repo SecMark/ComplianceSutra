@@ -29,9 +29,9 @@
   position: absolute;
   right: -450px;
   top: 0;
-  z-index: 1;
+  z-index: 10;
   background-color: white;
-  transition: all 500ms ease;
+  transition: all 300ms ease;
   /* box-shadow: 1px 1px 1px 9999px rgba(0, 0, 0, 0.7); */
 }
 
@@ -145,7 +145,7 @@
   color: #575757;
 }
 .no-data p {
-  font-size: 10p;
+  font-size: 10px;
 }
 
 .history-container-mobile {

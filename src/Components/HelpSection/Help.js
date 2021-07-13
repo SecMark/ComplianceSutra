@@ -62,7 +62,7 @@ const Help = () => {
 
   return (
     <div className="Parent">
-      {isMobile ? (
+      {isMobile && (
         <div id="sideBarParent" className="" ref={sideBarParent}>
           <div
             id="sideBarChild"
@@ -75,8 +75,6 @@ const Help = () => {
             />
           </div>
         </div>
-      ) : (
-        <LeftSideBar />
       )}
       <div className="d-block mobile-head d-md-none">
         {showHB === false && (
