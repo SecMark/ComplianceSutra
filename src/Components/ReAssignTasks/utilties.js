@@ -54,6 +54,21 @@ const isToDateBeforeFromDate = (from, to) => {
   const toDate = moment(to.join("-"), "DD-MM-YYYY").format("YYYY-MM-DD");
   return moment(fromDate, "YYYY-MM-DD").isSameOrAfter(toDate);
 };
+
+const searchUsers = (searchValue, data) => {
+  if (searchValue !== "") {
+    const newArr = [
+      ...data.filter((item) =>
+        item.UserName.toLowerCase().includes(searchValue.toLowerCase())
+      ),
+      ...data.filter((item) =>
+        item.EmailID.toLowerCase().includes(searchValue.toLowerCase())
+      ),
+    ];
+    return [...new Set(newArr)];
+  }
+  return data;
+};
 export {
   getInitials,
   checkResponse,
@@ -61,4 +76,5 @@ export {
   isSameOrBeforeToday,
   isMoreThanOneYearFromToday,
   isToDateBeforeFromDate,
+  searchUsers,
 };

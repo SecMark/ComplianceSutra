@@ -19,6 +19,7 @@ import {
   isSameOrBeforeToday,
   isMoreThanOneYearFromToday,
   isToDateBeforeFromDate,
+  searchUsers,
 } from "./utilties";
 import apiServices from "../OnBording/SubModules/DashBoardCO/api/index";
 function ReAssignTasksModal({
@@ -38,6 +39,7 @@ function ReAssignTasksModal({
     to: [],
     dueOn: [],
   });
+  const [searchValue, setSearchValue] = useState("");
   const [assignTo, setAssignTo] = useState({});
   const [filter, setFilter] = useState({});
   const FilterTypes = constants.ReAssignFilterTypes;
@@ -465,6 +467,8 @@ function ReAssignTasksModal({
                 type="text"
                 className="form-control"
                 placeholder="Enter name or email"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
               />
               <span>or</span>
               <button
@@ -502,8 +506,11 @@ function ReAssignTasksModal({
         <div className="main-content">
           {Object.entries(assignTo).length === 0 && (
             <div className="members-list">
-              {data && data.length > 0 ? (
-                data.map((member) => {
+              {/* {data && data.length > 0 ? (
+                data.map((member) => { */}
+              {searchUsers(searchValue, data) &&
+              searchUsers(searchValue, data).length > 0 ? (
+                searchUsers(searchValue, data).map((member) => {
                   const { UserID, EmailID, UserName } = member;
                   return (
                     <article
