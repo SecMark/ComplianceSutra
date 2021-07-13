@@ -1,11 +1,11 @@
-import moment from "moment";
 import React from "react";
+import moment from "moment";
 import "./style.css";
+import { getIntialName } from "../../../CommonModules/helpers/GetIntialName.helper";
 
-function MonthView({ months, goToDateWeek, monthDate }) {
-    console.log(months);
-  const moveToWeek = () => {
-    goToDateWeek();
+const MonthView = ({ months, goToDateWeek, monthDate, monthData }) => {
+  const moveToWeek = (day) => {
+    goToDateWeek(day);
   };
   return (
     <div className="calender">
@@ -18,6 +18,7 @@ function MonthView({ months, goToDateWeek, monthDate }) {
       <div className="day-name">Sunday</div>
 
       {months.map((day) => {
+        const todayDate = moment(new Date()).format("YYYY-MM-DD");
         const month = moment(day).format("MMMM");
         const currentMonth = moment(monthDate).format("MMMM");
         const currentDay = moment(day).format("D");
@@ -30,7 +31,13 @@ function MonthView({ months, goToDateWeek, monthDate }) {
             className={month === currentMonth ? "day" : "day-disable"}
             onClick={() => moveToWeek(day)}
           >
-            {currentDay}
+            <p
+              className={
+                todayDate === compareDate ? "active-date" : "inactive-date"
+              }
+            >
+              {currentDay}
+            </p>
             {month === currentMonth && list && list[0]?.LicenseCode && (
               <>
                 <div className="button-code">
@@ -43,7 +50,7 @@ function MonthView({ months, goToDateWeek, monthDate }) {
                       </span>
                       <p>
                         <span className="circle-dp-tooltip">
-                          {getNameInitials(list[0]?.AssignedName)}
+                          {getIntialName(list[0]?.AssignedName)}
                         </span>{" "}
                         <span className="user-name-tooltip">
                           {list[0]?.AssignedName}
@@ -70,7 +77,7 @@ function MonthView({ months, goToDateWeek, monthDate }) {
                       </span>
                       <p>
                         <span className="circle-dp-tooltip">
-                          {getNameInitials(list[1]?.AssignedName)}
+                          {getIntialName(list[1]?.AssignedName)}
                         </span>{" "}
                         <span className="user-name-tooltip">
                           {list[1]?.AssignedName}
@@ -95,6 +102,6 @@ function MonthView({ months, goToDateWeek, monthDate }) {
       })}
     </div>
   );
-}
+};
 
 export default MonthView;

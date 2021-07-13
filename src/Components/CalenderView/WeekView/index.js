@@ -33,46 +33,39 @@ const WeekView = ({ sevenDays, weekData, goToDateDay }) => {
             {sevenDays &&
               sevenDays.map((data) => {
                 const startDate = moment(data?.date).format("YYYY-MM-DD");
-
                 const filterList = weekData.filter(
                   (details) => details.EndDate == startDate
                 );
 
                 return (
                   <td>
-                    {filterList ? (
-                      filterList.map((list) => (
-                        <div
-                          className="week-main"
-                          onClick={() => moveToDay(list?.EndDate)}
-                        >
-                          <div className="week-detail">
-                            <button className="license-code">
-                              {list?.LicenseCode}
-                            </button>
-                            <h2>{list?.TaskName}</h2>
-                            <button className="approval">
-                              Approval Pending
-                            </button>
-                          </div>
-                          <div className="CompanyName">
-                            <span>{list?.EntityName}</span>
-                          </div>
-                          <div>
-                            <p className="UserNameDp">
-                              <span className="circle-dp">
-                                {getNameInitials(list?.AssignedName)}
-                              </span>{" "}
-                              <span className="user-name">
-                                {list?.AssignedName}
-                              </span>
-                            </p>
-                          </div>
+                    {filterList.map((list) => (
+                      <div
+                        className="week-main"
+                        onClick={() => moveToDay(list?.EndDate)}
+                      >
+                        <div className="week-detail">
+                          <button className="license-code">
+                            {list?.LicenseCode}
+                          </button>
+                          <h2>{list?.TaskName}</h2>
+                          <button className="approval">Approval Pending</button>
                         </div>
-                      ))
-                    ) : (
-                      <p>No Result Found</p>
-                    )}
+                        <div className="CompanyName">
+                          <span>{list?.EntityName}</span>
+                        </div>
+                        <div>
+                          <p className="UserNameDp">
+                            <span className="circle-dp">
+                              {getNameInitials(list?.AssignedName)}
+                            </span>{" "}
+                            <span className="user-name">
+                              {list?.AssignedName}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </td>
                 );
               })}

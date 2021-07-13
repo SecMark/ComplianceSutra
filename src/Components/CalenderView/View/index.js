@@ -2,9 +2,15 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  addDaysInDate,
+  getMondays,
+  subtractDaysInDate,
+} from "../../../CommonModules/helpers/Date.helper";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
 import DayView from "../DayView";
+import MonthView from "../MonthView";
 import {
   clearState,
   getDayData,
@@ -22,12 +28,16 @@ const View = () => {
   const [weekStartDate, setWeekStartDate] = useState(new Date());
   const [sevenDays, setSevenDays] = useState([]);
   const [months, setMonths] = useState([]);
-  const [weekDataList, setWeekDataList] = useState([]);
 
   const state = useSelector((state) => state); // state
   const dispatch = useDispatch(); // dispatch
 
   const { daysData, weekData, monthData } = state.CalenderReducer;
+  
+  useEffect(() => {
+    fetchDayData();
+    fetchWeekData();
+  }, [state.auth.loginInfo?.UserID]);
 
   useEffect(() => {
     getDays();
@@ -45,39 +55,36 @@ const View = () => {
     fetchDayData();
   }, [dayDate]);
 
-  useEffect(() => {
-    fetchDayData();
-    fetchWeekData();
-  }, [state.auth.loginInfo?.UserID]);
-
+  //Get Days from start date to end date.
   const getDays = () => {
     const days = [];
     setSevenDays([]);
     for (let index = 0; index < 7; index++) {
       const day = {
-        day: moment(weekStartDate).add(index, "days").format("ddd D"),
-        date: moment(weekStartDate).add(index, "days").format(),
+        day: moment(addDaysInDate(weekStartDate, index)).format("ddd D"),
+        date: moment(addDaysInDate(weekStartDate, index)).format(),
       };
       days.push(day);
     }
     setSevenDays(days);
   };
 
+  //Set Days based on day(day,week and month) type based on type(increment/decrement).
   const setDays = (activeDay, incrementType) => {
     if (activeDay === constant.week) {
       if (incrementType === constant.increment) {
-        const date = moment(weekStartDate).add(7, "days").format();
+        const date = addDaysInDate(weekStartDate, 7);
         setWeekStartDate(date);
       } else {
-        const date = moment(weekStartDate).subtract(7, "days").format();
+        const date = subtractDaysInDate(weekStartDate, 7);
         setWeekStartDate(date);
       }
     } else if (activeDay === constant.day) {
       if (incrementType === constant.increment) {
-        const date = moment(dayDate).add(1, "days");
+        const date = addDaysInDate(dayDate, 1);
         setDayDate(date);
       } else {
-        const date = moment(dayDate).subtract(1, "days");
+        const date = subtractDaysInDate(dayDate, 1);
         setDayDate(date);
       }
     } else {
@@ -85,6 +92,7 @@ const View = () => {
     }
   };
 
+  //Get Full Month
   const getMonths = (increment) => {
     const date = monthDate;
     let firstDayOfCurrentMonth, lastDayOfCurrentMonth, newDate;
@@ -97,11 +105,9 @@ const View = () => {
     } else {
       newDate = new Date();
     }
-    const getFirstMondayOfMonth = getMondays(newDate);
+    const listOfMondays = getMondays(newDate);
 
-    firstDayOfCurrentMonth = parseInt(
-      moment(getFirstMondayOfMonth[0]).format("D")
-    );
+    firstDayOfCurrentMonth = parseInt(moment(listOfMondays[0]).format("D"));
 
     lastDayOfCurrentMonth = moment(
       new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0)
@@ -114,8 +120,8 @@ const View = () => {
         index < firstDayOfCurrentMonth + 7;
         index++
       ) {
-        const date = moment(getFirstMondayOfMonth[0]).format();
-        const newDate = moment(date).subtract(counter, "days").format();
+        const date = moment(listOfMondays[0]).format();
+        const newDate = subtractDaysInDate(date, counter);
         listOfDate.push(newDate);
         counter++;
       }
@@ -128,8 +134,8 @@ const View = () => {
       index <= lastDayOfCurrentMonth;
       index++
     ) {
-      const date = moment(getFirstMondayOfMonth[0]).format();
-      const newDate = moment(date).add(counter, "days").format();
+      const date = moment(listOfMondays[0]).format();
+      const newDate = addDaysInDate(date, counter);
       listOfDate.push(newDate);
       counter++;
     }
@@ -140,23 +146,7 @@ const View = () => {
     fetchMonthData(endDate);
   };
 
-  const getMondays = (date) => {
-    let d = new Date(date),
-      month = d.getMonth(),
-      mondays = [];
-    d.setDate(1);
-    // Get the first Monday in the month
-    while (d.getDay() !== 1) {
-      d.setDate(d.getDate() + 1);
-    }
-    // Get all the other Mondays in the month
-    while (d.getMonth() === month) {
-      mondays.push(new Date(d.getTime()));
-      d.setDate(d.getDate() + 7);
-    }
-    return mondays;
-  };
-
+  //Dispatch Day API
   const fetchDayData = () => {
     const dayPayload = {
       userID: state.auth.loginInfo?.UserID,
@@ -167,18 +157,18 @@ const View = () => {
     dispatch(getDayData(dayPayload));
   };
 
+  //Dispatch Week API
   const fetchWeekData = () => {
     const dayPayload = {
       userID: state.auth.loginInfo?.UserID,
       EntityID: "M",
       StartDate: moment(weekStartDate).format("YYYY-MM-DD"),
-      EndDate: moment(moment(weekStartDate).add(7, "days").format()).format(
-        "YYYY-MM-DD"
-      ),
+      EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
     };
     dispatch(getWeekData(dayPayload));
   };
 
+  //Dispatch Month API
   const fetchMonthData = (endDate) => {
     var date = new Date();
     var startDate = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -192,17 +182,7 @@ const View = () => {
     dispatch(getMonthData(dayPayload));
   };
 
-  const getNameInitials = (name) => {
-    if (name != undefined) {
-      let initials = "";
-      initials = name
-        .split(" ")
-        .map((n) => n[0])
-        .join("");
-      return initials.toUpperCase();
-    }
-  };
-
+  //Move to Week view when click on month view date.
   const goToDateWeek = (date) => {
     setWeekStartDate("");
     const newDate = moment(date).format();
@@ -212,6 +192,8 @@ const View = () => {
     fetchWeekData();
   };
 
+
+  //Move to day view when click on week view date.
   const goToDateDay = (date) => {
     setDayDate("");
     const newDate = moment(date).format();
@@ -237,9 +219,9 @@ const View = () => {
 
           {activeDays === constant.week && (
             <span className="current-date">
-              {`${moment(weekStartDate).format("ddd D")}-${moment(weekStartDate)
-                .add(7, "days")
-                .format("ddd D,YYYY")}`}
+              {`${moment(weekStartDate).format("ddd D")}-${moment(
+                addDaysInDate(weekStartDate, 7)
+              ).format("ddd D,YYYY")}`}
             </span>
           )}
 
@@ -292,94 +274,12 @@ const View = () => {
       )}
 
       {activeDays === constant.month && (
-        <div className="calender">
-          <div className="day-name">Monday</div>
-          <div className="day-name">Tuesday</div>
-          <div className="day-name">Wednesday</div>
-          <div className="day-name">Thrusday</div>
-          <div className="day-name">Friday</div>
-          <div className="day-name">Saturday</div>
-          <div className="day-name">Sunday</div>
-
-          {months.map((day, index) => {
-            const month = moment(day).format("MMMM");
-            const currentMonth = moment(monthDate).format("MMMM");
-            const currentDay = moment(day).format("D");
-            const compareDate = moment(day).format("YYYY-MM-DD");
-
-            const list = monthData.filter(
-              ({ EndDate }) => EndDate === compareDate
-            );
-
-            return (
-              <div
-                className={month === currentMonth ? "day" : "day-disable"}
-                onClick={() => goToDateWeek(day)}
-              >
-                {currentDay}
-                {month === currentMonth && list && list[0]?.LicenseCode && (
-                  <>
-                    <div className="button-code">
-                      {list[0]?.LicenseCode}
-                      <div className="tooltip-container">
-                        <h2 className="tooltip-title">{list[0]?.TaskName}</h2>
-                        <div className="tooltip-company-detail">
-                          <span className="tooltip-compant-name">
-                            {list[0]?.EntityName}
-                          </span>
-                          <p>
-                            <span className="circle-dp-tooltip">
-                              {getNameInitials(list[0]?.AssignedName)}
-                            </span>{" "}
-                            <span className="user-name-tooltip">
-                              {list[0]?.AssignedName}
-                            </span>
-                          </p>
-                        </div>
-                        <button className="tooltip-view-detail-button">
-                          View Detail
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {month === currentMonth && list && list[1]?.LicenseCode && (
-                  <>
-                    <div className="button-code">
-                      {list[1]?.LicenseCode}
-                      <div className="tooltip-container">
-                        <h2 className="tooltip-title">{list[1]?.TaskName}</h2>
-                        <div className="tooltip-company-detail">
-                          <span className="tooltip-compant-name">
-                            {list[1]?.EntityName}
-                          </span>
-                          <p>
-                            <span className="circle-dp-tooltip">
-                              {getNameInitials(list[1]?.AssignedName)}
-                            </span>{" "}
-                            <span className="user-name-tooltip">
-                              {list[1]?.AssignedName}
-                            </span>
-                          </p>
-                        </div>
-                        <button className="tooltip-view-detail-button">
-                          View Detail
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {month === currentMonth && list && list.length > 2 && (
-                  <button className="view-more">
-                    View {list.length} More Tasks{" "}
-                  </button>
-                )}
-              </div>
-            );
-          })}
-        </div>
+        <MonthView
+          months={months}
+          monthDate={monthDate}
+          monthData={monthData}
+          goToDateWeek={goToDateWeek}
+        />
       )}
     </>
   );
