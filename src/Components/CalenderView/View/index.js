@@ -20,7 +20,7 @@ import {
 import WeekView from "../WeekView";
 import "./style.css";
 
-const View = () => {
+const View = ({ getSelectTaskDetails }) => {
   const [activeDays, setActiveDays] = useState(constant.day);
   const [dayDate, setDayDate] = useState(new Date());
   const [monthDate, setMonthDate] = useState(new Date());
@@ -33,7 +33,7 @@ const View = () => {
   const dispatch = useDispatch(); // dispatch
 
   const { daysData, weekData, monthData } = state.CalenderReducer;
-  
+
   useEffect(() => {
     fetchDayData();
     fetchWeekData();
@@ -192,7 +192,6 @@ const View = () => {
     fetchWeekData();
   };
 
-
   //Move to day view when click on week view date.
   const goToDateDay = (date) => {
     setDayDate("");
@@ -279,6 +278,7 @@ const View = () => {
           monthDate={monthDate}
           monthData={monthData}
           goToDateWeek={goToDateWeek}
+          getSelectTaskDetails={getSelectTaskDetails}
         />
       )}
     </>

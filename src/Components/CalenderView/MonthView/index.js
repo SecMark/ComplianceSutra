@@ -2,20 +2,29 @@ import React from "react";
 import moment from "moment";
 import "./style.css";
 import { getIntialName } from "../../../CommonModules/helpers/GetIntialName.helper";
+import constant from "../../../CommonModules/sharedComponents/constants/constant";
 
-const MonthView = ({ months, goToDateWeek, monthDate, monthData }) => {
+const MonthView = ({
+  months,
+  goToDateWeek,
+  monthDate,
+  monthData,
+  getSelectTaskDetails,
+}) => {
   const moveToWeek = (day) => {
     goToDateWeek(day);
   };
+
+  const viewDetail = (TaskId) => {
+    const task = { TaskId };
+    getSelectTaskDetails(task);
+  };
+
   return (
     <div className="calender">
-      <div className="day-name">Monday</div>
-      <div className="day-name">Tuesday</div>
-      <div className="day-name">Wednesday</div>
-      <div className="day-name">Thrusday</div>
-      <div className="day-name">Friday</div>
-      <div className="day-name">Saturday</div>
-      <div className="day-name">Sunday</div>
+      {constant.Weeks.map((day) => (
+        <div className="day-name">{day}</div>
+      ))}
 
       {months.map((day) => {
         const todayDate = moment(new Date()).format("YYYY-MM-DD");
@@ -57,7 +66,11 @@ const MonthView = ({ months, goToDateWeek, monthDate, monthData }) => {
                         </span>
                       </p>
                     </div>
-                    <button className="tooltip-view-detail-button">
+
+                    <button
+                      className="tooltip-view-detail-button"
+                      onClick={() => viewDetail(list[0]?.TaskId)}
+                    >
                       View Detail
                     </button>
                   </div>
@@ -84,7 +97,11 @@ const MonthView = ({ months, goToDateWeek, monthDate, monthData }) => {
                         </span>
                       </p>
                     </div>
-                    <button className="tooltip-view-detail-button">
+
+                    <button
+                      className="tooltip-view-detail-button"
+                      onClick={() => viewDetail(list[1]?.TaskId)}
+                    >
                       View Detail
                     </button>
                   </div>
@@ -94,7 +111,8 @@ const MonthView = ({ months, goToDateWeek, monthDate, monthData }) => {
 
             {month === currentMonth && list && list.length > 2 && (
               <button className="view-more">
-                View {list.length} More Tasks{" "}
+                View {parseInt(list.length - 2)} More{" "}
+                {parseInt(list.length - 2) < 1 ? "Tasks" : "Task"}{" "}
               </button>
             )}
           </div>

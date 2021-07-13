@@ -395,6 +395,7 @@ function RightSideGrid({
     setShowComments(false);
     setExpandedFlags([]);
     setCurrentTaskData(e);
+    setActiveView(constant.list);
     let taskID = null;
     let task_id = NotificationRedu.NotificationRedu.task_id;
 
@@ -1512,7 +1513,9 @@ function RightSideGrid({
             </div>
           )}
 
-          {activeView === constant.calender && <View />}
+          {activeView === constant.calender && (
+            <View getSelectTaskDetails={getSelectTaskDetails} />
+          )}
         </div>
       )}
 
