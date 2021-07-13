@@ -3,7 +3,7 @@ import { isMobile } from "react-device-detect";
 import HelpData from "../../HelpData/Help.json";
 import QuestionAnswer from "./QuestionAndAnswers/QuestionAnswer";
 import LeftSideBar from "../../CommonModules/SideBar/LeftSideBar";
-import sideBarlogo from "../../assets/Images/LoginDemo/header-logo.png";
+import sideBarlogo from "../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../assets/Icons/togglemobile.png";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { RiArrowDownSLine } from "react-icons/ri";
@@ -11,7 +11,6 @@ import { RiArrowUpSLine } from "react-icons/ri";
 import constant from "../../CommonModules/sharedComponents/constants/constant";
 
 import bgReactangle from "../../assets/Images/BackgroundHelpRectangle.png";
-
 
 import "./style.css";
 import MobileLeftSidebar from "../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
@@ -160,8 +159,6 @@ const Help = () => {
       <div id="bgRectangle">
         <img src={bgReactangle} alt="backgroundImage"></img>
       </div>
-
-
     </div>
   );
 };
