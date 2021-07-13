@@ -131,8 +131,11 @@ button.re-assign {
 /* @media (min-width: 576px) {} */
 
 /* Medium devices (tablets, 768px and up) */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .re-container {
+    width: 100vw;
+  }
+  .container {
     height: 95vh;
     width: 100vw;
     border-bottom-left-radius: 0;

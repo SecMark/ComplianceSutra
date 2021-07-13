@@ -3,13 +3,14 @@ import { isMobile } from "react-device-detect";
 import HelpData from "../../HelpData/Help.json";
 import QuestionAnswer from "./QuestionAndAnswers/QuestionAnswer";
 import LeftSideBar from "../../CommonModules/SideBar/LeftSideBar";
-import sideBarlogo from "../../assets/Images/LoginDemo/header-logo.png";
+import sideBarlogo from "../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../assets/Icons/togglemobile.png";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { RiArrowUpSLine } from "react-icons/ri";
 import constant from "../../CommonModules/sharedComponents/constants/constant";
-// import Background from "../../assets/Images/Image 13.png";
+
+import bgReactangle from "../../assets/Images/BackgroundHelpRectangle.png";
 
 import "./style.css";
 import MobileLeftSidebar from "../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
@@ -60,7 +61,7 @@ const Help = () => {
 
   return (
     <div className="Parent">
-      {isMobile ? (
+      {isMobile && (
         <div id="sideBarParent" className="" ref={sideBarParent}>
           <div
             id="sideBarChild"
@@ -73,8 +74,6 @@ const Help = () => {
             />
           </div>
         </div>
-      ) : (
-        <LeftSideBar />
       )}
       <div className="d-block mobile-head d-md-none">
         {showHB === false && (
@@ -156,7 +155,10 @@ const Help = () => {
           );
         })}
       </div>
-      <div id="bgRectangle"></div>
+
+      <div id="bgRectangle">
+        <img src={bgReactangle} alt="backgroundImage"></img>
+      </div>
     </div>
   );
 };

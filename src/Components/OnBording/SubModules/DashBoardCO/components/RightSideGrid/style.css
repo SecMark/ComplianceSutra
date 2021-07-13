@@ -1,9 +1,15 @@
-.task-wrapper {
+/* .task-wrapper {
   background: url("../../../../../../assets/Images/Onboarding/co-bg.png")
     no-repeat left center;
   background-size: cover;
   width: 100%;
-}
+} */
+
+/* @media screen and (max-width: 767px) {
+  .task-wrapper {
+    background: #fff;
+  }
+} */
 .all-companies-task-grid {
   /* padding: 48px 48px 95px; */
   object-fit: contain;
@@ -1567,8 +1573,8 @@ textarea.form-control.textAreaHeight::placeholder {
     box-shadow: 0 3px 36px 0 rgb(67 0 255 / 8%);
     background-color: #ffffff;
     position: relative;
-    height: 100%;
-    margin: 0px 0px 19px 0px;
+    height: 100vh;
+    margin: 0;
   }
   .file-upload-box {
     width: 100%;
@@ -1634,7 +1640,7 @@ textarea.form-control.textAreaHeight::placeholder {
     margin: 35px 24px 0px;
   }
   .task-grid-scroll {
-    height: 400px;
+    height: 60vh;
     background: #fff;
     overflow-x: hidden !important;
   }

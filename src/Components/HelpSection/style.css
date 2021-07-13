@@ -1,6 +1,19 @@
 .Parent {
   display: flex;
+
+  object-fit: contain;
+
+  position: relative;
   height: 100vh;
+
+  background: rgb(189, 225, 244);
+  background: linear-gradient(
+    41deg,
+    rgba(189, 225, 244, 1) 10%,
+    rgba(255, 255, 255, 1) 40%,
+    rgba(228, 193, 232, 1) 100%
+  );
+  margin-left: 61px;
 }
 .Parent::after {
   opacity: 0.1;
@@ -9,15 +22,15 @@
 .MainHelp {
   display: flex;
   margin: 0;
+  background-color: #fff;
   padding: 0;
-  width: 30vw;
+  width: 27vw;
   height: 100vh;
   justify-content: space-between;
   border-radius: 0;
   flex-direction: column;
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: #fff;
 }
 
 .noView {
@@ -56,7 +69,9 @@
 }
 .HeaderHelp {
   display: flex;
-  padding: 4rem 1.5rem 1rem 1.5rem;
+
+  padding: 0.5rem 1.5rem;
+
   width: 100%;
   align-items: flex-start;
   justify-content: space-between;
@@ -116,8 +131,8 @@
 }
 
 .Right {
+  width: 65vw;
 
-  width: 60vw;
   height: 90vh;
   margin: 2rem -5rem 2rem 8rem;
 
@@ -133,7 +148,6 @@
 
   background-color: #fff;
   border-radius: 36px;
-  box-shadow: 0 3px 36px 0 rgba(68, 0, 255, 0.151);
 }
 .ContainerHelp h6 {
   font-size: 24px;
@@ -146,18 +160,13 @@
 }
 #bgRectangle {
   overflow: hidden;
-  padding: 0;
-  margin: 0;
-  width: 38vw;
-  height: 24vh;
-  position: absolute;
-  top: 80%;
-  left: 60%;
-  background-color: #7a73ffc9;
-  transform: rotate(11deg);
-  opacity: 0.08;
 
-  object-fit: contain;
+  width: 60%;
+  height: 23%;
+  position: absolute;
+
+  top: 75%;
+  left: 40%;
 }
 
 .noAnswer {
@@ -182,6 +191,8 @@
   .Parent {
     flex-direction: column;
     background-color: #fff;
+    background: none;
+    margin: 0;
   }
   .HeaderHelp {
     width: 100%;
@@ -194,7 +205,7 @@
     position: relative;
     top: 0;
     right: 100px;
-    scroll: none;
+    /* scroll: none; */
   }
   .QuestionButton {
     display: none;

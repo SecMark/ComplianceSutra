@@ -6,6 +6,7 @@ import Cobg from "../../../../../../assets/Images/Onboarding/co-bg.png";
 import RighSideGrid from "../notification/SubModules/RightSideNotification";
 import { withRouter } from "react-router-dom";
 import { actions as adminMenuActions } from "../../MenuRedux/actions";
+// import RightSideGrid from "../RightSideGrid";
 
 function Notification({ history }) {
   const dispatch = useDispatch();
@@ -27,18 +28,18 @@ function Notification({ history }) {
   }, []);
 
   return (
-    <div className="row co-dashboard">
-      <div className="left-fixed ">
-        <div className="on-boarding">
-          <SideBarInputControl />
-        </div>
-      </div>
+    // <div className="row co-dashboard">
+    //   <div className="left-fixed ">
+    //     <div className="on-boarding">
+    //       <SideBarInputControl />
+    //     </div>
+    //   </div>
 
-      <div className="col-12 ">
-        <img className="right-bg" src={Cobg} alt="" />
-        <RighSideGrid />
-      </div>
-    </div>
+    //   <div className="col-12 ">
+    //     <img className="right-bg" src={Cobg} alt="" />
+    //   </div>
+    // </div>
+    <RighSideGrid />
   );
 }
 
