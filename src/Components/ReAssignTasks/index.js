@@ -45,7 +45,8 @@ function ReAssignTasksModal({
   const FilterTypes = constants.ReAssignFilterTypes;
   const Flags = constants.ReAssignFlags;
   const Messages = constants.ReAssignMessages;
-
+  console.log("userType: ", userType);
+  console.log("assignTo", assignTo);
   const handleClose = () => {
     setAssignTo({});
     setFilter({});
@@ -177,6 +178,65 @@ function ReAssignTasksModal({
           });
         }
       }
+      // For Compliance Officer
+      if (assignTo.UserType === 3 && userId) {
+        let payload = {
+          coUserType: "3",
+          migrateID: assignTo.UserID,
+          taskID: taskId,
+          flag: Flags[0],
+        };
+        if (filter.name === FilterTypes.migrateAllTasksForever) {
+          migrateTasks(payload).then((response) => {
+            if (checkResponse(response)) {
+              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
+            } else {
+              toast.error(Messages.error);
+            }
+          });
+        } else if (
+          filter.name === FilterTypes.migrateAllTasksOfParticularDate
+        ) {
+          payload = {
+            coUserType: "3",
+            migrateID: assignTo.UserID,
+            taskID: taskId,
+            migratefrom: moment(
+              filter.value.dueOn.join("-"),
+              "DD-MM-YYYY"
+            ).format("YYYY-MM-DD"),
+            flag: Flags[1],
+          };
+          migrateTasks(payload).then((response) => {
+            if (checkResponse(response)) {
+              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
+            } else {
+              toast.error(Messages.error);
+            }
+          });
+        } else if (filter.name === FilterTypes.migrateAllTasksInDateRange) {
+          payload = {
+            coUserType: "3",
+            migrateID: assignTo.UserID,
+            taskID: taskId,
+            migratefrom: moment(
+              filter.value.from.join("-"),
+              "DD-MM-YYYY"
+            ).format("YYYY-MM-DD"),
+            migrateto: moment(filter.value.to.join("-"), "DD-MM-YYYY").format(
+              "YYYY-MM-DD"
+            ),
+            flag: Flags[2],
+          };
+          migrateTasks(payload).then((response) => {
+            if (checkResponse(response)) {
+              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
+            } else {
+              toast.error(Messages.error);
+            }
+          });
+        }
+      }
     }
 
     // For All Tasks
@@ -186,7 +246,7 @@ function ReAssignTasksModal({
       isSingleTask === undefined
     ) {
       // For Team Member
-      if (userType === 4 && userId) {
+      if (userType === 4 && assignTo.UserType === 4 && userId) {
         let payload = {
           coUserType: "4",
           migrateID: assignTo.UserID,
@@ -257,7 +317,7 @@ function ReAssignTasksModal({
         }
       }
       // For Approver
-      if (userType === 5 && userId) {
+      if (userType === 5 && assignTo.UserType === 5 && userId) {
         let payload = {
           coUserType: "5",
           migrateID: assignTo.UserID,
@@ -306,6 +366,77 @@ function ReAssignTasksModal({
         ) {
           payload = {
             coUserType: "5",
+            migrateID: assignTo.UserID,
+            ecoUserId: userId,
+            migratefrom: moment(
+              filter.value.dueOn.join("-"),
+              "DD-M-YYYY"
+            ).format("YYYY-MM-DD"),
+            flag: Flags[1],
+          };
+          migrateTasks(payload)
+            .then((response) => {
+              if (checkResponse(response)) {
+                toast.success(Messages.success + assignTo.UserName);
+              } else {
+                toast.error(Messages.error);
+              }
+            })
+            .catch((err) => {
+              toast.error(Messages.error);
+            });
+        }
+      }
+      // For Compliance Officer
+      if (assignTo.UserType === 3 && userId) {
+        let payload = {
+          coUserType: "3",
+          migrateID: assignTo.UserID,
+          ecoUserId: userId,
+          flag: 0,
+        };
+        if (filter.name === FilterTypes.migrateAllTasksForever) {
+          migrateTasks(payload)
+            .then((response) => {
+              if (checkResponse(response)) {
+                toast.success(Messages.success + assignTo.UserName);
+              } else {
+                toast.error(Messages.error);
+              }
+            })
+            .catch((err) => {
+              toast.error(Messages.error);
+            });
+        } else if (filter.name === FilterTypes.migrateAllTasksInDateRange) {
+          payload = {
+            coUserType: "3",
+            migrateID: assignTo.UserID,
+            ecoUserId: userId,
+            migratefrom: moment(
+              filter.value.from.join("-"),
+              "DD-MM-YYYY"
+            ).format("YYYY-MM-DD"),
+            migrateto: moment(filter.value.to.join("-"), "DD-MM-YYYY").format(
+              "YYYY-MM-DD"
+            ),
+            flag: "2",
+          };
+          migrateTasks(payload)
+            .then((response) => {
+              if (checkResponse(response)) {
+                toast.success(Messages.success + assignTo.UserName);
+              } else {
+                toast.error(Messages.error);
+              }
+            })
+            .catch((err) => {
+              toast.error(Messages.error);
+            });
+        } else if (
+          filter.name === FilterTypes.migrateAllTasksOfParticularDate
+        ) {
+          payload = {
+            coUserType: "3",
             migrateID: assignTo.UserID,
             ecoUserId: userId,
             migratefrom: moment(
