@@ -67,6 +67,11 @@ function Dashboard({ history }) {
       history.push("/login");
     }
   }, []);
+  
+  useEffect(() => {
+    setIsTaskListOpen(false);
+  }, []);
+
   useEffect(() => {
     // if (entityID) {
     //   dispatch(
@@ -143,7 +148,7 @@ function Dashboard({ history }) {
       </div>
       {/* <div className="task-wrapper"> */}
       <div>
-      <img className="right-bg" src={Cobg} alt="" />
+        <img className="right-bg" src={Cobg} alt="" />
         <div className="col-12 ">
           {state && state.adminMenu.currentMenu === "taskList" && (
             <RighSider

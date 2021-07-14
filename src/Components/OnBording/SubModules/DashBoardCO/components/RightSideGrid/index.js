@@ -105,6 +105,12 @@ function RightSideGrid({
     state.taskReport &&
     state.taskReport.taskReportById &&
     state.taskReport.taskReportById.taskReportById;
+
+  useEffect(() => {
+    setIsTaskListOpen(false);
+    setExpandedFlags([]);
+  }, []);
+
   useEffect(() => {
     if (taskList != undefined && taskList.length > 0) {
       let tempArr = [];
