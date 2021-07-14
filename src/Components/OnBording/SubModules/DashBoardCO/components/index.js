@@ -62,6 +62,10 @@ function Dashboard({ history }) {
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.formDataPersonalData &&
     state.complianceOfficer.personalInfo.formDataPersonalData.entityName;
+
+  useEffect(() => {
+    setIsTaskListOpen(false);
+  }, []);
   useEffect(() => {
     if (userID === undefined) {
       history.push("/login");
@@ -143,7 +147,7 @@ function Dashboard({ history }) {
       </div>
       {/* <div className="task-wrapper"> */}
       <div>
-      <img className="right-bg" src={Cobg} alt="" />
+        <img className="right-bg" src={Cobg} alt="" />
         <div className="col-12 ">
           {state && state.adminMenu.currentMenu === "taskList" && (
             <RighSider
