@@ -1,6 +1,6 @@
 .searchable {
   /* width: 274px !important; */
-  width: 100%;
+  width: 100% !important;
 }
 .filter-form label {
   margin-top: 15px;
@@ -39,7 +39,7 @@
 }
 @media screen and (min-width: 992px) {
   .searchable {
-    width: 274px !important;
+    width: 100% !important;
   }
   .view-updates {
     margin-top: 70px;
