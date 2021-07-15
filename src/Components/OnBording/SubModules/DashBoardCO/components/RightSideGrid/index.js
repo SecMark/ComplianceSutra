@@ -1148,12 +1148,12 @@ function RightSideGrid({
           </div>
           {/* statistics start */}
           {activeView === constant.list && (
-            <div className="statistics-container">
+            <div className="statistics-container flex-column flex-md-row align-items-start align-items-md-center">
               <div className="statistics-title">
                 <span>This Month</span>
                 <h3>Things are on track!</h3>
               </div>
-              <div className="statistics-detail">
+              <div className="statistics-detail mx-0 mx-md-3">
                 <div className="complete">
                   <div className="complete-icon">
                     <BsCheckCircle />
@@ -1310,7 +1310,7 @@ function RightSideGrid({
                 </div>
 
                 {activeView === constant.list && (
-                  <div className="View-by">
+                  <div className="View-by d-none d-md-block">
                     <button className="view">View By</button>
                     <button
                       className={

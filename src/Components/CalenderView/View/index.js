@@ -38,17 +38,17 @@ const View = ({ getSelectTaskDetails }) => {
     {
       id: 1,
       value: constant.day,
-      name: "Day",
+      name: "By Day",
     },
     {
       id: 2,
       value: constant.week,
-      name: "Week",
+      name: "By Week",
     },
     {
       id: 3,
       value: constant.month,
-      name: "Month",
+      name: "By Month",
     },
   ];
   useEffect(() => {
@@ -278,16 +278,20 @@ const View = ({ getSelectTaskDetails }) => {
             Month
           </button>
         </div>
-        <Select
-          options={viewBy}
-          onChange={(value) => {
-            const selectedValue = value[0].value;
-            setActiveDays(selectedValue);
-          }}
-          searchable={false}
-          labelField={"name"}
-          valueField={"value"}
-        />
+        <div className="d-block d-md-none">
+          <Select
+            options={viewBy}
+            onChange={(value) => {
+              const selectedValue = value[0].value;
+              setActiveDays(selectedValue);
+            }}
+            className="view-by-select d-flex d-md-none"
+            searchable={false}
+            labelField={"name"}
+            valueField={"value"}
+            values={[viewBy[0]]}
+          />
+        </div>
       </div>
       {activeDays === constant.day && <DayView daysData={daysData} />}
 

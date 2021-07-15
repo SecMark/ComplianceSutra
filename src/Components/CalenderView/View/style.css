@@ -311,6 +311,35 @@
   border-radius: 50px;
   color: #ffffff;
 }
+.view-by-select {
+  border-radius: 30px !important;
+  min-height: 20px !important;
+  padding: 3px 10px !important;
+  background-color: #b3abc4;
+  font-size: 11px;
+  color: #fff;
+  border: none !important;
+  font-weight: 500;
+  box-shadow: none !important;
+}
+.react-dropdown-select-dropdown {
+  border-radius: 0.5rem !important;
+}
+.react-dropdown-select-item {
+  color: #1b1d21;
+}
+.react-dropdown-select-dropdown-handle > svg:focus,
+.react-dropdown-select-dropdown-handle > svg {
+  color: #fff;
+}
+.react-dropdown-select-item-selected {
+  background: #6c5dd3 !important;
+}
+/* .view-by-select:focus-withink,
+.view-by-select:focus {
+  border: none !important;
+  box-shadow: 0 0 0 black !important;
+} */
 
 @media screen and (max-width: 767.99px) {
   .date-container {

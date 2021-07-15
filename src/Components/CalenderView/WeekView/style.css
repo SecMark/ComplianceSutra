@@ -27,3 +27,37 @@
   border-right: 1px solid #ccc;
   border-top: 0px;
 }
+
+@media screen and (max-width: 767.99px) {
+  .week-table tr th,
+  .week-table tr td {
+    border: none !important;
+  }
+  .week-table tr th {
+    text-align: left;
+    font-weight: 600;
+  }
+  .week-main {
+    margin: 10px 0;
+  }
+  .co-company-details-tbl {
+    min-width: 960px !important;
+    max-width: 260% !important;
+    min-height: 300px;
+  }
+  .co-company-details-tbl::-webkit-scrollbar {
+    width: 4px;
+  }
+  .co-company-details-tbl::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 0px;
+  }
+  .co-company-details-tbl::-webkit-scrollbar-thumb {
+    width: 4px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 0px !important;
+  }
+  .detail-main {
+    overflow-x: auto;
+  }
+}

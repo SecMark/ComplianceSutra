@@ -1980,3 +1980,9 @@ textarea.form-control.textAreaHeight::placeholder {
   padding: 0 0 0 40px;
   height: 40px !important;
 }
+
+@media screen and (max-width: 767px) {
+  .statistics-container {
+    padding: 47px 20px 0px 20px;
+  }
+}
