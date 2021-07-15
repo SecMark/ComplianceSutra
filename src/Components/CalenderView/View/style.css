@@ -311,3 +311,17 @@
   border-radius: 50px;
   color: #ffffff;
 }
+
+@media screen and (max-width: 767.99px) {
+  .date-container {
+    padding: 30px 20px;
+  }
+  .date-container svg {
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .current-date {
+    font-size: 12px;
+    font-weight: 700;
+  }
+}

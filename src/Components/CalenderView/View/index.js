@@ -2,6 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
+import Select from "react-dropdown-select";
 import {
   addDaysInDate,
   getMondays,
@@ -33,7 +34,23 @@ const View = ({ getSelectTaskDetails }) => {
   const dispatch = useDispatch(); // dispatch
 
   const { daysData, weekData, monthData } = state.CalenderReducer;
-
+  const viewBy = [
+    {
+      id: 1,
+      value: constant.day,
+      name: "Day",
+    },
+    {
+      id: 2,
+      value: constant.week,
+      name: "Week",
+    },
+    {
+      id: 3,
+      value: constant.month,
+      name: "Month",
+    },
+  ];
   useEffect(() => {
     fetchDayData();
     fetchWeekData();
@@ -235,7 +252,7 @@ const View = ({ getSelectTaskDetails }) => {
             onClick={() => setDays(activeDays, constant.increment)}
           />
         </div>
-        <div>
+        <div className="d-none d-md-block">
           <button
             className={
               activeDays === constant.day ? "active-day" : "inactive-day"
@@ -261,6 +278,16 @@ const View = ({ getSelectTaskDetails }) => {
             Month
           </button>
         </div>
+        <Select
+          options={viewBy}
+          onChange={(value) => {
+            const selectedValue = value[0].value;
+            setActiveDays(selectedValue);
+          }}
+          searchable={false}
+          labelField={"name"}
+          valueField={"value"}
+        />
       </div>
       {activeDays === constant.day && <DayView daysData={daysData} />}
 

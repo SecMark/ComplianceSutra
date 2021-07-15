@@ -13,7 +13,7 @@
 }
 .detail-content {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   max-width: 50%;
   width: 100%;
 }
@@ -58,7 +58,9 @@
   max-width: 300px;
   width: 100%;
 }
-
+.detail-footer {
+  width: 30%;
+}
 .approval {
   font-size: 10px;
   font-weight: normal;
@@ -118,4 +120,25 @@
   letter-spacing: 0.24px;
   text-align: left;
   color: #828282;
+}
+@media screen and (max-width: 767.99px) {
+  .detail-container {
+    padding: 16px;
+  }
+  .detail-main {
+    padding: 0 20px 12px;
+  }
+  .detail-content {
+    max-width: 100%;
+  }
+  .detail-content h2 {
+    font-weight: 600;
+  }
+  .detail-footer {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .license-code {
+    color: #1b1d21 !important;
+  }
 }
