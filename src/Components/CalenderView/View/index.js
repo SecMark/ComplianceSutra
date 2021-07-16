@@ -34,6 +34,7 @@ const View = ({ getSelectTaskDetails }) => {
   const dispatch = useDispatch(); // dispatch
 
   const { daysData, weekData, monthData } = state.CalenderReducer;
+  const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
   const viewBy = [
     {
       id: 1,
@@ -242,7 +243,11 @@ const View = ({ getSelectTaskDetails }) => {
           )}
 
           {activeDays === constant.month && (
-            <span className="current-date">
+            <span
+              className="current-date"
+              onClick={() => setIsShowSmallCalender(!isShowSmallCalender)}
+              style={{ cursor: "pointer" }}
+            >
               {`${moment(monthDate).format("MMMM")}`}
             </span>
           )}
@@ -289,7 +294,7 @@ const View = ({ getSelectTaskDetails }) => {
             searchable={false}
             labelField={"name"}
             valueField={"value"}
-            values={[viewBy[0]]}
+            values={viewBy.filter((item) => item.value === activeDays)}
           />
         </div>
       </div>
@@ -310,6 +315,7 @@ const View = ({ getSelectTaskDetails }) => {
           monthData={monthData}
           goToDateWeek={goToDateWeek}
           getSelectTaskDetails={getSelectTaskDetails}
+          isSmallCalenderOpen={isShowSmallCalender}
         />
       )}
     </>

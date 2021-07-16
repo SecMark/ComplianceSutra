@@ -220,3 +220,76 @@
   text-align: left;
   color: #ffffff;
 }
+.calender-mobile {
+  height: 70vh;
+  overflow-y: scroll;
+  padding: 0 20px;
+}
+.calender-mobile-item {
+  border-bottom: 1px solid rgb(228, 224, 224);
+  padding: 20px 0;
+}
+.calender-mobile .left {
+  width: 20%;
+}
+.calender-mobile .right {
+  width: 80%;
+}
+.current-day {
+  background: #6969ff;
+  border-radius: 50%;
+  height: 40px;
+  /* padding: 9px 7px; */
+  width: 40px;
+  /* color: white; */
+}
+.current-day > h5 {
+  color: #fff;
+}
+.right > .view-more {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+.right-item {
+  margin-bottom: 1rem;
+}
+.right-item-task-name {
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+.right-item-task-name,
+.left p,
+.left h5 {
+  font-size: 14px;
+}
+.small-calender-mobile {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  box-shadow: 0px 1px 3px grey;
+}
+.small-calender-day-name,
+.small-calender-day,
+.small-calender-active-date,
+.small-calender-inactive-date {
+  color: #2c2738;
+  height: auto;
+  text-align: center;
+  margin: 10px 0;
+  font-weight: 600;
+}
+.small-calender-inactive-date,
+.small-calender-active-date {
+  font-weight: normal;
+  margin: 0;
+  height: 30px;
+  width: 30px;
+}
+.small-calender-day {
+  height: fit-content;
+  margin: 0;
+}
+.small-calender-day-disable .small-calender-inactive-date {
+  color: white;
+  pointer-events: none;
+}
