@@ -19,12 +19,12 @@
 }
 .bottom-logo-strip-parent-grid {
   min-height: calc(100vh - 260px);
-  padding-bottom: 70px;
+  padding-bottom: 15px;
   position: relative;
 }
 .bottom-logo-strip-parent-grid .companyDetailsGrid{
   height: 100vh;
-  max-height: calc(100vh - 350px);
+  max-height: calc(100vh - 264px);
   overflow: auto;
 }
 .bottom-logo-strip-parent-grid .bottom-logo-strip {
@@ -804,7 +804,7 @@
 }
 .searchable__list__item:last-child
 {
-  border-bottom: inherit;
+  border-bottom: inherit !important;
 }
 .searchable__list__item:hover {
   background-color: inherit !important;
@@ -1036,7 +1036,7 @@ textarea {
     position: relative;
   }
   .company-details {
-    margin-top: 96px;
+    margin-top: 79px;
     height: calc(100% - 0px);
   }
   .company-details .company-title {

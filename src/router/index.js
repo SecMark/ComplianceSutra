@@ -4,6 +4,7 @@ import Header from "../CommonModules/Header";
 import Compliance from "../Components/ComplianceModule";
 import CapmTechLandingPage from "../Components/CapmTechLandingPage";
 import TeamMember from "../Components/TeamMemberFlow/DashBoard";
+import DashBoardView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView";
 import OnBoarding from "../Components/OnBording/SubModules/GetStarted";
 import ComplianceDemo7 from "../Components/ComplianceModule/ComplianceDemo7";
 import PersonalDetails from "../Components/OnBording/SubModules/PersonalDetails";
@@ -20,40 +21,42 @@ import SIGNUPPOP from "../Components/TeamMemberFlow/index";
 import CompanyDetails from "../Components/OnBording/SubModules/CompanyDetails";
 import VerifyOTPCO from "../Components/OnBording/SubModules/VerifyOTP";
 import YouAreDone from "../Components/OnBording/SubModules/YourAreDone";
-import Help from "../Components/HelpSection/Help";
 // import loginComtech from "../Components/LoginComtech";
 // import ForgotPasswordComtech from "../Components/ForgotPasswordComtech";
 // import NewPasswordComtech from "../Components/NewPasswordComtech";
 import Governance from "../Components/OnBording/SubModules/Governance";
 
-import CoPersonal from "../Components/OnBording/SubModules/DashBoardCO/components/CoSetting/CoPersonal/index";
+import CoPersonal from '../Components/OnBording/SubModules/DashBoardCO/components/CoSetting/CoPersonal/index';
 import PersonalDetailsTM from "../Components/TeamMemberFlow/VerificationFlow/components/PersonalDetails";
-import Login from "../Components/Authectication/components/Login";
-import ForgotPassword from "../Components/Authectication/components/ForgotPassword";
-import ChangePassword from "../Components/Authectication/components/ChangePassword";
-import RedirectToDashboard from "../Components/OnBording/SubModules/redirectToLogin";
-import InvitationMemberFlow from "../Components/OnBording/SubModules/IniviteFlowMember";
+import Login from '../Components/Authectication/components/Login';
+import ForgotPassword from '../Components/Authectication/components/ForgotPassword';
+import ChangePassword from '../Components/Authectication/components/ChangePassword';
+import RedirectToDashboard from '../Components/OnBording/SubModules/redirectToLogin'
+import InvitationMemberFlow from "../Components/OnBording/SubModules/IniviteFlowMember"
 import Notification from "../Components/OnBording/SubModules/DashBoardCO/components/notification";
 //import CoManagment from "../Components/OnBording/SubModules/DashBoardCO/components/HeadCOManagement";
 import CoSetting from "../Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
-import UserProfileVerifcation from "../Components/UserVerification/components/PersonalDetails";
+import UserProfileVerifcation from "../Components/UserVerification/components/PersonalDetails"
 import UserOTPVerifcation from "../Components/UserVerification/components/OTPVerification";
 import UserVerificationProcess from "../Components/UserVerification/components";
-import HistoryList from "../Components/HistoryModule/HistoryList";
-import HistoryFilter from "../Components/HistoryModule/HistoryFilter";
-import NewRegulation from "../Components/NewRegulationModule/NewRegulations";
+import CalendarView from "../Components/OnBording/SubModules/DashBoardCO/components/CalendarView/components";
+import BoardView from "../Components/OnBording/SubModules/DashBoardCO/components/BoardView";
+import MultiCompanyQuickOverView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/MultiCompanyView/index";
+import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/MultiTeamMemberView/index";
+import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
+import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
+import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
 export default function AppRouter() {
   const checkHeader = () => {
-    if (
-      window.location.includes === '/compliance-demo-end"' ||
-      window.location.includes === "/"
-    ) {
+    
+    if (window.location.includes === '/compliance-demo-end"' ||
+      window.location.includes === '/') {
       document.body.style.backgroundColor = "white";
       return true;
     }
     return false;
-  };
+  }
   return (
     <div>
       <>
@@ -68,6 +71,7 @@ export default function AppRouter() {
             component={CapmTechLandingPage}
           />
           <Route exact path="/on-boarding" component={OnBoarding} />
+          <Route exact path="/board-view" component={BoardView} />
           <Route exact path="/team-member" component={TeamMember} />
           <Route
             exact
@@ -106,7 +110,16 @@ export default function AppRouter() {
           />
           <Route exact path="/sign-up-request" component={SIGNUPPOP} />
           <Route exact path="/otp-verification-co" component={VerifyOTPCO} />
-          <Route exact path="/dashboard" component={DashBoardCO} />
+          <Route
+            exact
+            path="/dashboard"
+            component={DashBoardCO}
+          />
+           <Route
+            exact
+            path="/dashboard-view"
+            component={DashBoardView}
+          />
           <Route
             exact
             path="/personal-details-team-member"
@@ -159,6 +172,57 @@ export default function AppRouter() {
             component={DashBoardCO}
           />
           <Route exact path="/new-regulations" component={DashBoardCO} />
+           <Route
+            exact
+            path="/login"
+            component={Login}
+          />
+
+          <Route
+            exact
+            path="/forgot-password"
+            component={ForgotPassword}
+          />
+          <Route
+            exact
+            path="/change-password"
+            component={ChangePassword}
+          />
+
+          <Route
+            exact
+            path="/governance"
+            component={Governance}
+          />
+
+          <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
+          <Route exact path="/redirect-dashboard" component={RedirectToDashboard} />
+
+          <Route exact path="/invitation-member" component={InvitationMemberFlow} />
+          <Route exact path="/notifications" component={Notification} />
+          {/* <Route exact path="/co-managment" component={CoManagment}/> */}
+          <Route exact path="/settings" component={CoSetting} />
+          <Route exact path="/calendar-view" component={CalendarView} />
+          <Route exact path="/user-details-verification" component={UserProfileVerifcation} />
+          <Route exact path="/otp-verification" component={UserOTPVerifcation} />
+          <Route exact path="/user-verification-process" component={UserVerificationProcess} />
+          <Route exact path="/company-quick-overview" component={MultiCompanyQuickOverView} />
+          <Route exact path="/team-member-quick-overView" component={MultiTeamMemberView} />
+          <Route
+            exact
+            path="/risk-delay-tasklist"
+            component={RiskAndDelaysTaskList}
+          />
+          <Route
+            exact
+            path="/pending-action-task-list"
+            component={PendingAction}
+          />
+          <Route
+            exact
+            path="/compliance-history"
+            component={ComplianceHistory}
+          />
         </div>
       </>
     </div>

@@ -12,12 +12,22 @@ const loginReq = function* loginReq({ payload }) {
             yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
             //yield put(push(`/${authData && authData.store_locale}/my-account`));
             // toast.success("Login successfully" , {autoClose: 5000});
-            yield put(
-                menuActions.setCurrentMenu
-                    ("taskList"),
-            );
-            yield put(menuActions.setActiveTabInSetting("personal"));
-            payload.history.push("/dashboard")
+            if (data && data.UserType === 3) {
+                yield put(
+                    menuActions.setCurrentMenu
+                        ("dashboard"),
+                );
+                yield put(menuActions.setActiveTabInSetting("personal"));
+                payload.history.push("/dashboard-view")
+            } else {
+                yield put(
+                    menuActions.setCurrentMenu
+                        ("taskList"),
+                );
+                payload.history.push("/dashboard")
+            }
+
+           
         } else {
             toast.error("Invalid username and password !!!");
             yield put(actions.signInRequestFailed({ loginSuccess: false }));

@@ -1,79 +1,79 @@
-import React, { useEffect, useState } from "react";
-import "./otp.css";
-import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
-import comtech from "../../../../assets/Images/CapmTech.png";
-import secmark from "../../../../assets/Images/secmark.png";
-import leftArrow from "../../../../assets/Icons/leftArrow.png";
-import { useDispatch, useSelector } from "react-redux";
-import SideBarInputControl from "../WebStepper.js";
-import { actions as otpVerificationActions } from "../../redux/actions";
-import api from "../../../../apiServices";
-import { toast } from "react-toastify";
-import { withRouter } from "react-router-dom";
-let flag = false;
+import React, { useEffect, useState } from "react"
+import "./otp.css"
+import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png"
+import comtech from "../../../../assets/Images/CapmTech.png"
+import secmark from "../../../../assets/Images/secmark.png"
+import leftArrow from "../../../../assets/Icons/leftArrow.png"
+import { useDispatch, useSelector } from "react-redux"
+import SideBarInputControl from "../WebStepper.js"
+import { actions as otpVerificationActions } from "../../redux/actions"
+import api from "../../../../apiServices"
+import { toast } from "react-toastify"
+import { withRouter } from "react-router-dom"
+let flag = false
 function VeryOTP({ history, currentStep }) {
-  const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-  const [currentOTP, setCurrentOTP] = useState("");
-  const [isOTPValid, setIsOTPValid] = useState(false);
-  const [otp, setOTP] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [phoneNumberErr, setPhoneNumberErr] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [isEnableSecureOTP, setIsEnabledSecureOTP] = useState(false);
-  const [showChangeMobileSection, setShowChangeMobileSection] = useState(false);
-  const [showResendSection, setShowResendSection] = useState(false);
-  const initialMinute = 1;
-  const initialSeconds = 0;
-  const [disabled, setDisabled] = useState(false);
-  const [minutes, setMinutes] = useState(initialMinute);
-  const [seconds, setSeconds] = useState(initialSeconds);
-  const [otpValid, setOtpInValid] = useState("");
-  const [userID, setUserID] = useState(0);
-  const [disabledButton, setDisabledButton] = useState(false);
-  const [countryCode, setCountryCode] = useState(true);
-  const [countryCodeCr, setCountryCodeCR] = useState("");
+  const dispatch = useDispatch()
+  const state = useSelector((state) => state)
+  const [currentOTP, setCurrentOTP] = useState("")
+  const [isOTPValid, setIsOTPValid] = useState(false)
+  const [otp, setOTP] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [phoneNumberErr, setPhoneNumberErr] = useState("")
+  const [mobileNumber, setMobileNumber] = useState("")
+  const [isEnableSecureOTP, setIsEnabledSecureOTP] = useState(false)
+  const [showChangeMobileSection, setShowChangeMobileSection] = useState(false)
+  const [showResendSection, setShowResendSection] = useState(false)
+  const initialMinute = 1
+  const initialSeconds = 0
+  const [disabled, setDisabled] = useState(false)
+  const [minutes, setMinutes] = useState(initialMinute)
+  const [seconds, setSeconds] = useState(initialSeconds)
+  const [otpValid, setOtpInValid] = useState("")
+  const [userID, setUserID] = useState(0)
+  const [disabledButton, setDisabledButton] = useState(false)
+  const [countryCode, setCountryCode] = useState(true)
+  const [countryCodeCr, setCountryCodeCR] = useState("")
   const [values, setValues] = useState({
     countryCode: "+91",
-  });
+  })
 
   const otpInfo =
-    state && state.complianceOfficer && state.complianceOfficer.otoInfo;
+    state && state.complianceOfficer && state.complianceOfficer.otoInfo
   const email =
     state &&
     state.users &&
     state.users.personalInfo &&
     state.users.personalInfo.formData &&
-    state.users.personalInfo.formData.adminEmail;
+    state.users.personalInfo.formData.adminEmail
 
   const mobile_number =
     state &&
     state.users &&
     state.users.personalInfo &&
     state.users.personalInfo.formData &&
-    state.users.personalInfo.formData.adminMobile;
+    state.users.personalInfo.formData.adminMobile
 
   const countrycode =
     state &&
     state.users &&
     state.users.personalInfo &&
     state.users.personalInfo.formData &&
-    state.users.personalInfo.formData.countrycode;
+    state.users.personalInfo.formData.countrycode
 
   let tempMobileNumber =
     state &&
     state.users &&
     state.users.personalInfo &&
     state.users.personalInfo.formData &&
-    state.users.personalInfo.formData.adminMobile;
+    state.users.personalInfo.formData.adminMobile
 
-  let initialCountryCode = "";
+  let initialCountryCode = ""
   initialCountryCode =
     state &&
     state.users &&
     state.users.personalInfo &&
     state.users.personalInfo.formData &&
-    state.users.personalInfo.formData.countrycode;
+    state.users.personalInfo.formData.countrycode
 
   let countryCodeCR =
     state &&
@@ -84,41 +84,41 @@ function VeryOTP({ history, currentStep }) {
     state.users.otpInfo[0][0].UserDetails &&
     state.users.otpInfo[0][0].UserDetails[0] &&
     state.users.otpInfo[0][0].UserDetails &&
-    state.users.otpInfo[0][0].UserDetails[0].countrycode;
+    state.users.otpInfo[0][0].UserDetails[0].countrycode
 
   useEffect(() => {
     if (countryCodeCR !== undefined && isEnableSecureOTP) {
-      let concatCntryCode = `+${countryCodeCR}`;
-      setCountryCodeCR(concatCntryCode);
+      let concatCntryCode = `+${countryCodeCR}`
+      setCountryCodeCR(concatCntryCode)
     }
-  }, [countryCodeCR]);
+  }, [countryCodeCR])
 
   useEffect(() => {
     if (tempMobileNumber !== undefined) {
-      setPhoneNumber(tempMobileNumber);
-      setMobileNumber(tempMobileNumber);
+      setPhoneNumber(tempMobileNumber)
+      setMobileNumber(tempMobileNumber)
     }
-  }, [tempMobileNumber]);
+  }, [tempMobileNumber])
 
   useEffect(() => {
-    let location = window.location.href;
-    let data = location.split("=");
-    let splitEmailAndType = data && data[1].split("&");
-    let emailFromLink = splitEmailAndType[0];
-    let typeFromLink = data[2];
-    getUserId(emailFromLink, typeFromLink);
+    let location = window.location.href
+    let data = location.split("=")
+    let splitEmailAndType = data && data[1].split("&")
+    let emailFromLink = splitEmailAndType[0]
+    let typeFromLink = data[2]
+    getUserId(emailFromLink, typeFromLink)
     // if (mobile_number !== undefined) {
     //   setMobileNumber(mobile_number)
     // }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (mobile_number !== undefined) {
-      let mobNo = mobile_number.substring(2);
+      let mobNo = mobile_number.substring(2)
       // setPhoneNumber(mobNo)
-      setMobileNumber(mobile_number);
+      setMobileNumber(mobile_number)
     }
-  }, [mobile_number]);
+  }, [mobile_number])
 
   const getUserId = (email, type) => {
     let payload = {
@@ -127,7 +127,7 @@ function VeryOTP({ history, currentStep }) {
       rememberme: 0,
       loginty: "",
       userTYPe: parseInt(type),
-    };
+    }
 
     api
       .post("/api/getUserID", payload)
@@ -138,95 +138,95 @@ function VeryOTP({ history, currentStep }) {
           response.data[0] &&
           response.data[0].UserID
         ) {
-          setUserID(response.data[0].UserID);
+          setUserID(response.data[0].UserID)
         } else {
-          setUserID(0);
+          setUserID(0)
         }
       })
       .catch(function (error) {
         if (error) {
-          setUserID(0);
+          setUserID(0)
         }
-      });
-  };
+      })
+  }
   const validateCountryCode = (e) => {
-    let strr = e.target.value;
-    let str = strr.replace(/\D/g, "");
+    let strr = e.target.value
+    let str = strr.replace(/\D/g, "")
     if (str === "") {
-      str = "91";
+      str = "91"
     }
     let payload = {
       cntryCode: str,
-    };
+    }
     api
       .post("/api/CountryCodeCheck", payload)
       .then(function (response) {
         if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true);
+          setCountryCode(true)
         } else {
-          setCountryCode(false);
+          setCountryCode(false)
         }
       })
       .catch(function (error) {
         if (error) {
-          toast.error(error);
+          toast.error(error)
         }
-      });
-  };
+      })
+  }
 
   const handelChange = (e) => {
-    setOtpInValid(false);
-    setDisabled(false);
-    setCountryCode(true);
-    const { name, value } = e.target;
-    const mobileNumberReg = /^[0-9]{0,10}$/;
-    const otpRE = /^[0-9]{0,5}$/;
+    setOtpInValid(false)
+    setDisabled(false)
+    setCountryCode(true)
+    const { name, value } = e.target
+    const mobileNumberReg = /^[0-9]{0,10}$/
+    const otpRE = /^[0-9]{0,5}$/
     if (e.target.name === "otp") {
       if (!mobileNumberReg.test(e.target.value)) {
-        return "";
+        return ""
       }
     }
     if (name === "phoneNumber") {
       if (!mobileNumberReg.test(value)) {
-        return "";
+        return ""
       } else {
-        setPhoneNumber(value);
-        setMobileNumber(value);
+        setPhoneNumber(value)
+        setMobileNumber(value)
       }
       if (value.length < 10) {
-        setPhoneNumberErr("Mobile number is invalid");
+        setPhoneNumberErr("Mobile number is invalid")
       } else {
-        setPhoneNumberErr("");
+        setPhoneNumberErr("")
       }
     }
     if (name === "countryCode") {
-      const re = /[\d\+]+/;
+      const re = /[\d\+]+/
       if (e.target.value && !re.test(e.target.value)) {
-        return "";
+        return ""
       }
-      setValues({ countryCode: e.target.value });
+      setValues({ countryCode: e.target.value })
     }
     if (name === "otp") {
       if (!otpRE.test(value)) {
-        return "";
+        return ""
       }
-      setOTP(value);
+      setOTP(value)
     }
-  };
+  }
 
   const updateMobileNumber = () => {
-    setShowChangeMobileSection(true);
-    setIsEnabledSecureOTP(true);
-    setPhoneNumber("");
-  };
+    setShowChangeMobileSection(true)
+    setIsEnabledSecureOTP(true)
+    setPhoneNumber("")
+  }
 
   const resendOTP = (value, emails) => {
-    setShowResendSection(false);
-    setMinutes(1);
+    setShowResendSection(false)
+    setMinutes(1)
     let payload = {
       phn: value,
       email: emails,
-    };
+    }
     api
       .post("/api/sendmsgwithverificationcodes", payload)
       .then(function (response) {
@@ -239,37 +239,37 @@ function VeryOTP({ history, currentStep }) {
         ) {
           toast.success(
             "The OTP has been sent to your registered mobile number"
-          );
+          )
         } else {
-          toast.error("something went wrong please try again !!!");
+          toast.error("something went wrong please try again !!!")
         }
       })
       .catch(function (error) {
         if (error) {
         }
-      });
-  };
+      })
+  }
 
   const updateMobileNumberAndSendOTP = (e) => {
-    e.preventDefault();
-    const mobileNumberReg = /^[0-9]{0,10}$/;
+    e.preventDefault()
+    const mobileNumberReg = /^[0-9]{0,10}$/
     if (
       phoneNumber === "" ||
       !mobileNumberReg.test(phoneNumber) ||
       phoneNumber.length < 10
     ) {
-      return "";
+      return ""
     } else {
-      setDisabledButton(true);
-      setDisabled(true);
+      setDisabledButton(true)
+      setDisabled(true)
     }
-    availabilityCheck();
-  };
+    availabilityCheck()
+  }
 
   const availabilityCheck = (phoneNumber) => {
-    let countryCode;
-    let strr = values.countryCode;
-    countryCode = strr.replace(/\D/g, "");
+    let countryCode
+    let strr = values.countryCode
+    countryCode = strr.replace(/\D/g, "")
     let payload = {
       loginID: mobileNumber,
       loginty: "AdminMobile",
@@ -277,26 +277,26 @@ function VeryOTP({ history, currentStep }) {
         values.countryCode === "" || values.countryCode === "+"
           ? "91"
           : countryCode,
-    };
+    }
     api
       .post("/api/availabilityCheck", payload)
       .then(function (response) {
         if (response && response.data && response.data.Status === "false") {
-          let location = window.location.href;
-          let data = location.split("=");
-          let splitEmailAndType = data && data[1].split("&");
-          let emailFromLink = splitEmailAndType[0];
-          let typeFromLink = data[2];
-          let countryCode;
-          let strr = values.countryCode;
+          let location = window.location.href
+          let data = location.split("=")
+          let splitEmailAndType = data && data[1].split("&")
+          let emailFromLink = splitEmailAndType[0]
+          let typeFromLink = data[2]
+          let countryCode
+          let strr = values.countryCode
           // countryCode = strr.replace(/\D/g, '');
-          countryCode = strr;
+          countryCode = strr
           const pwd =
             state &&
             state.users &&
             state.users.personalInfo &&
             state.users.personalInfo.formData &&
-            state.users.personalInfo.formData.adminPWD;
+            state.users.personalInfo.formData.adminPWD
 
           dispatch(
             otpVerificationActions.updateMobileNumberOTPRequest({
@@ -310,30 +310,30 @@ function VeryOTP({ history, currentStep }) {
               countrycode:
                 countryCode === "" || countryCode === "+" ? "+91" : countryCode,
             })
-          );
-          setMinutes(1);
-          setSeconds(0);
-          setIsEnabledSecureOTP(true);
-          setShowChangeMobileSection(false);
+          )
+          setMinutes(1)
+          setSeconds(0)
+          setIsEnabledSecureOTP(true)
+          setShowChangeMobileSection(false)
         } else {
-          toast.error("Mobile Number Already registered");
+          toast.error("Mobile Number Already registered")
         }
       })
       .catch(function (error) {
         if (error) {
-          toast.error(error);
+          toast.error(error)
         }
-      });
-  };
+      })
+  }
 
   const sendOTPRequest = (emails) => {
-    setDisabled(true);
+    setDisabled(true)
 
-    let payload = {};
+    let payload = {}
     payload = {
       phn: mobileNumber,
       email: emails,
-    };
+    }
 
     api
       .post("/api/sendmsgwithverificationcode", payload)
@@ -345,62 +345,60 @@ function VeryOTP({ history, currentStep }) {
           response.data.otp != "" &&
           response.data.statuscode === "200"
         ) {
-          setIsEnabledSecureOTP(true);
-          setShowChangeMobileSection(false);
+          setIsEnabledSecureOTP(true)
+          setShowChangeMobileSection(false)
           toast.success(
             "The OTP has been sent to your registered mobile number"
-          );
+          )
         } else {
-          toast.error("something went wrong please try again !!!");
-          setIsEnabledSecureOTP(true);
-          setShowChangeMobileSection(false);
+          toast.error("something went wrong please try again !!!")
+          setIsEnabledSecureOTP(true)
+          setShowChangeMobileSection(false)
         }
       })
       .catch(function (error) {
         if (error) {
-          setIsEnabledSecureOTP(false);
+          setIsEnabledSecureOTP(false)
         }
-      });
-  };
+      })
+  }
   //  else {
   //   //toast.error("Mobile number is not generated")
   // }
 
   useEffect(() => {
     let myInterval = setInterval(() => {
-      console.log(seconds, minutes);
       if (seconds > 0) {
-        setSeconds(seconds - 1);
+        setSeconds(seconds - 1)
       } else {
       }
       if (seconds === 0) {
         if (minutes === 0) {
-          console.log(minutes);
-          setShowResendSection(true);
-          clearInterval(myInterval);
+          setShowResendSection(true)
+          clearInterval(myInterval)
         } else {
-          setMinutes(minutes - 1);
-          setSeconds(59);
+          setMinutes(minutes - 1)
+          setSeconds(59)
         }
       }
-    }, 1000);
+    }, 1000)
     return () => {
-      clearInterval(myInterval);
-    };
-  });
+      clearInterval(myInterval)
+    }
+  })
 
   const verifyOTP = () => {
-    let location = window.location.href;
-    let data = location.split("=");
-    let splitEmailAndType = data && data[1].split("&");
-    let emailFromLink = splitEmailAndType[0];
-    let typeFromLink = data[2];
-    let payload = {};
+    let location = window.location.href
+    let data = location.split("=")
+    let splitEmailAndType = data && data[1].split("&")
+    let emailFromLink = splitEmailAndType[0]
+    let typeFromLink = data[2]
+    let payload = {}
     payload = {
       phn: phoneNumber,
       email: emailFromLink,
       otp: otp,
-    };
+    }
     if (otp !== "") {
       api
         .post("/api/GetOTP", payload)
@@ -412,24 +410,24 @@ function VeryOTP({ history, currentStep }) {
             response.data.otp != "" &&
             response.data.Status === "False"
           ) {
-            setOtpInValid(true);
+            setOtpInValid(true)
           } else {
-            setOtpInValid(false);
-            toast.success("OTP is verified successfully");
+            setOtpInValid(false)
+            toast.success("OTP is verified successfully")
             setTimeout(() => {
-              history.push("/redirect-user-dashboard");
-            }, 2000);
+              history.push("/redirect-user-dashboard")
+            }, 2000)
           }
         })
         .catch(function (error) {
           if (error) {
-            setOtpInValid(false);
+            setOtpInValid(false)
           }
-        });
+        })
     } else {
-      toast.error("Enter OTP");
+      toast.error("Enter OTP")
     }
-  };
+  }
 
   return (
     <div className="row">
@@ -452,11 +450,7 @@ function VeryOTP({ history, currentStep }) {
                   <div className="col-lg-12">
                     <div className="header_logo">
                       {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                      <img
-                        src={comtech}
-                        alt="COMPLIANCE SUTRA"
-                        title="COMPLIANCE SUTRA"
-                      />
+                      <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
                       <span className="camp">COMPLIANCE SUTRA</span>
                       {/* </a> */}
                     </div>
@@ -678,7 +672,7 @@ function VeryOTP({ history, currentStep }) {
                               className="count-text-sec"
                             >
                               {" "}
-                             
+                              {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
                             </p>
                           )}
                         </span>
@@ -740,7 +734,7 @@ function VeryOTP({ history, currentStep }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default withRouter(VeryOTP);
+export default withRouter(VeryOTP)

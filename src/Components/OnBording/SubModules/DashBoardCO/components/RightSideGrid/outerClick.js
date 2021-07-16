@@ -9,8 +9,8 @@ export const  useOuterClick =(callback)=> {
     });
   
     useEffect(() => {
-      document.addEventListener("click", handleClick);
-      return () => document.removeEventListener("click", handleClick);
+      document.addEventListener("mousedown", handleClick);
+      return () => document.removeEventListener("mousedown", handleClick);
   
       // read most recent callback and innerRef dom node from refs
       function handleClick(e) {

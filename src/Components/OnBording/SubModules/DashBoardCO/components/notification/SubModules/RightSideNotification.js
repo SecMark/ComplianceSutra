@@ -14,7 +14,7 @@ import { actions as coActions } from "../../../redux/actions"
 import { isMobile } from "react-device-detect"
 import { useOuterClick } from "./outerClick.js"
 import { Link } from "react-router-dom"
-import { setNotificationTaskId } from "../Redux/Action"
+import {actions as notificationActions} from "../Redux/actions";
 
 function NotificationGrid(props) {
   // console.log("state => ",state);
@@ -180,7 +180,7 @@ function NotificationGrid(props) {
                <div id="sideBarChild" className="leftSideBarFixed">
                   <MobileLeftSidebar className="d-block d-sm-none" close={() => closeMobileSidebar()} />
                </div></div>}
-         <div className="mobile-head mobile-top-pyd d-block d-md-none">
+         <div className="mobile-head mobile-top-pyd d-block d-sm-none">
             <div className="d-flex">
                <div className="w-25"><img style={{ cursor: "pointer" }} onClick={() => { openHBMenu() }} src={togglemobile} alt="toggle mobile" /></div>
                <div className="w-75"> <img className="mobile-logo" src={sideBarlogo} /> </div>
@@ -253,10 +253,10 @@ function NotificationGrid(props) {
                                 <Link
                                   to="/dashboard"
                                   style={{ textDecoration: "none" }}
+                                 
                                   onClick={() => {
-                                    props.dispatch(
-                                      setNotificationTaskId(element.TaskId)
-                                    )
+                                    dispatch(
+                                      notificationActions.setTaskID(element.TaskId))
                                   }}
                                 >
                                   <div className={"white-background"}>

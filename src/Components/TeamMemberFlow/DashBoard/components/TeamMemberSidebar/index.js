@@ -90,7 +90,6 @@ function TeamSidebar({ isMarked, showDescription, setIsMarked }) {
           <div className="bold-title-task">Tasks</div>
 
           <div className="row">
-       
             <div className="col-12">
               <div className="sidebar-file-title-grid">
                 <div className="file-title">List</div>
@@ -186,7 +185,7 @@ function TeamSidebar({ isMarked, showDescription, setIsMarked }) {
                     <span className="sidebar-nse-label">MCX</span>
                     <div className="d-block">
                       <div className="sidebar-subtitle">
-                        Monthy Statement of Accounts{" "}
+                      Monthy Statement of Accounts{" "}
                       </div>
                       <div className="sidebar-red-week">20 April</div>
                     </div>
@@ -209,7 +208,7 @@ function TeamSidebar({ isMarked, showDescription, setIsMarked }) {
                     <span className="sidebar-nse-label">MCX</span>
                     <div className="d-block">
                       <div className="sidebar-subtitle">
-                        Anuual Compliace Report{" "}
+                      Anuual Compliace Report {" "}
                       </div>
                       <div className="sidebar-red-week">20 April</div>
                     </div>
