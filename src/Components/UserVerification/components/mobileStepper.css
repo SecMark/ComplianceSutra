@@ -1,0 +1,73 @@
+
+
+.mobile-steper-stripe  {
+    position: absolute;
+    top: 120px;
+    padding: 0px 0px;
+    display: flex; 
+    width: 100%;
+    overflow: hidden;
+    z-index: 1;
+    padding-bottom: 36px;
+  }
+  .mobile-steper-stripe .stepper-container {
+    display: flex;
+    padding: 0;
+  }
+  .mobile-steper-stripe .stepper-item-outer:nth-of-type(even) {
+    height: 0px;
+    border: 0.5px solid #C8CACB;
+    width: 10px;
+  }
+  .mobile-steper-stripe .stepper-item-outer:nth-of-type(odd) .stepper-item-inner.stepper-item-inner-active {
+    width: 16px;
+    height: 16px;
+    border: 2px dashed #6c5dd3;
+  }
+  .mobile-steper-stripe .stepper-container .stepper-item .stepper-title{
+    display: none;
+  }
+  
+  .mobile-steper-stripe .stepper-item-outer:nth-of-type(odd) {
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+  
+  .mobile-steper-stripe .stepper-item-inner-completed::after {
+    content: " ";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-size: cover;
+    background-image: url("../../../assets/Icons/Completed-icons.png");
+   
+  }
+  
+  .mobile-steper-stripe .stepper-item-inner-completed {
+    background-color: #51b6ed00;
+  }
+  
+  .mobile-steper-stripe .stepper-item-inner-active {
+    background-color: none;
+    width: 16px;
+    height: 16px;
+    background-size: cover; 
+    background: none;
+    border: 2px dashed #C8CACB;
+    
+  }
+  .mobile-steper-stripe .stepper-item-inner-active {
+    background-color: #007cc300;
+  }
+  .mobile-steper-stripe .stepper-item-inner-future {
+    background-color: transparent;
+    width: 16px !important;
+    height: 16px !important;
+    background-size: contain;
+    background-image: url("../../../assets/Icons/future-check.png");
+    border: 2px solid #C8CACB;
+    opacity: 0.7;
+  }
+  

@@ -1,0 +1,164 @@
+.co-change-password-grid {
+  object-fit: contain;
+  border-radius: 36px;
+  box-shadow: 0 3px 36px 0 rgb(67 0 255 / 8%);
+  background-color: #ffffff;
+  position: relative;
+  height: 94vh;
+  margin: 20px 20px 20px 0px;
+  padding-left: 48px;
+  padding-top: 56px;
+  object-fit: contain;
+  /*-webkit-backdrop-filter: blur(50px);
+   backdrop-filter: blur(50px);
+  background-color: rgb(255 255 255 / 55%); */
+}
+.co-change-password-grid .border-header {
+  width: 798px;
+  height: 1px;
+  margin: 15.5px 14px 39.5px 2px;
+  object-fit: contain;
+  background-color: #eee8fc;
+  position: relative;
+}
+.co-change-password-grid .form-row {
+  margin-bottom: 24px;
+}
+.co-change-password-grid .bottom-logo-strip {
+  position: absolute;
+  bottom: 37px;
+  max-width: 83%;
+  width: 100%;
+}
+.co-change-password-grid .personal-mgt-title {
+  font-family: Poppins;
+  font-size: 24px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+}
+.co-change-password-grid .col-form-label{
+  width: 216px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.co-change-password-grid .right-input-row{
+  width: 216px;
+  height:40px;
+  border-radius: 8px;
+  border-color: rgb(228 228 228 / 50%);
+}
+.co-change-password-grid .right-input-row::placeholder{
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #aeaeae;
+}
+.co-change-password-grid .form-row .form-control:focus {
+  box-shadow: none;
+  border: 2px solid #6c5dd3 !important;
+}
+.co-change-password-grid .save-changes-btn{
+  width: 147px;
+  height: 43px;
+  margin: 231px 651px 0 0;
+  object-fit: contain;
+  border-radius: 4px;
+  background-color: #e4e4e4;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: center;
+  color: #aeaeae;
+  text-transform: uppercase;
+}
+.co-change-password-grid .save-changes-btn:hover{
+  color: #aeaeae;
+}
+.co-change-password-grid .save-changes-btn:focus{
+  box-shadow: inherit;
+  border: none;
+  outline: none;
+}
+.co-change-password-grid .save-changes-blue-btn {
+  width: 157px;
+  height: 43px;
+  object-fit: contain;
+  border-radius: 4px;
+  background-color: #6c5dd3 !important;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: center;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+.co-change-password-grid .discard-label-link{
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  text-transform: uppercase;
+  color: #6c5dd3;
+}
+.co-change-password-grid .save-changes-blue-btn:hover {
+  background-color: #8680ff !important;
+  color: white !important;
+}
+.co-change-password-grid .save-changes-blue-btn:focus:not(:focus-visible) {
+  outline: 0;
+  background-color: #000000 !important;
+  box-shadow: none !important;
+  color: white !important;
+}
+@media screen and (max-width: 767px) {
+.change-pass-Co-setting .password-text {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+  padding-bottom: 0px;
+  margin-bottom: 2px;
+}
+.change-pass-Co-setting .notification-div-flex {
+  display: block !important;
+  align-items: center;
+  justify-content: space-between;
+}
+
+}

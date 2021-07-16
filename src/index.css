@@ -1,0 +1,162 @@
+html {
+  overflow-x: hidden;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fff;
+}
+
+.bottom-right-bg {
+  position: fixed;
+  width: 500px;
+  bottom: -151px;
+  right: -240px;
+}
+.on-boarding {
+  background-image: linear-gradient(0deg, #a329ff, #14cfff);
+}
+.on-boarding img {
+  opacity: 0.6;
+}
+.center {
+  text-align: center;
+}
+.common-button {
+  border-radius: 4px !important;
+  background-color: #6c5dd3 !important;
+  height: 43px;
+  text-transform: uppercase !important;
+}
+.common-button:hover {
+  background-color: #8680ff !important;
+  color: white !important;
+}
+.common-button:focus:not(:focus-visible) {
+  outline: 0;
+  background-color: #000000 !important;
+  box-shadow: none !important;
+  color: white !important;
+}
+
+.input-error {
+  border: 2px solid #ef5d5d !important;
+}
+
+.input-error-message {
+  padding-top: 5px;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #ef5d5d;
+  width: 250px;
+}
+.co-dashboard .on-boarding {
+  background-image: none;
+}
+
+.on-boarding .left-bar img {
+  opacity: 1;
+}
+
+.Toastify__toast-body {
+  font-family: Poppins;
+  padding: 0px;
+}
+.Toastify__toast--error {
+      background: #ffb2b2 !important; 
+    color: #000 !important;
+     width: auto; 
+     height:auto; 
+    padding: 12px 16px 14px;
+    border-radius: 4px;
+    /* background-color: #f0efff; */
+    /* margin: 3px 32px 0 8px; */
+    font-family: Poppins;
+    font-size: 13px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0px;
+    /* text-align: right; */
+    /* color: #5d6370; */
+}
+/* .Toastify__toast .Toastify__toast--success {
+  background-color: red !important;
+} */
+.Toastify__toast--success {
+  /* background: #7fba7a !important; */
+  background: #ebe8ff !important;
+  color: #000 !important;
+}
+.Toastify__close-button {
+  color: #000 !important;
+}
+.Toastify__close-button > svg {
+  color: #000 !important;
+}
+
+.success-form-control {
+  width: 358px;
+  height: 40px;
+  border-radius: 8px;
+  border: solid 2px #7fba7a;
+  background-color: #ffffff;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000;
+}
+
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 90%;
+  }
+  .custom-container {
+    max-width: 1150px;
+  }
+}
+.cutom-add-whatsappflag {
+  position: absolute;
+  left: 0 !important;
+  z-index: 1 !important;
+  width: 1rem;
+  height: 1.25rem;
+  opacity: 1 !important;
+  top: 0px !important;
+}
+* {
+  scrollbar-width: thin !important;
+}
+:root {
+  scrollbar-color: #d5d5d5 transparent;
+}
+/* input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
+
+/* Firefox */
+/* input[type="number"] {
+  -moz-appearance: textfield;
+} */

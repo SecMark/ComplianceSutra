@@ -1,0 +1,418 @@
+.potential-risks-right-side-grid {
+    width: 338px;
+    height: 416px;
+    margin: 44px auto 40px auto;
+    object-fit: contain;
+    background-color: #fff;
+    border-radius: 16px;
+    position: relative;
+    left: 132px;
+    top: 0px;
+}
+.potential-risks-btn-grid{
+    width: 100%;
+    display: block;
+}
+.potential-risks-right-grid-title{
+    width: 173px;
+    height: 63px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.25;
+    letter-spacing: normal;
+    text-align: left;
+    color: #11142d;
+    margin-bottom: 0px;
+}
+.potential-risks-arrow-preview-next {
+    width: 100%;
+    margin-bottom: 0px;
+}
+.potential-risks-top-performance{
+    width: 128px;
+    height: 128px;
+    /* margin: 32px 76px 61px 661px; */
+    object-fit: contain;
+    position: absolute;
+    top: 158px;
+    right: -67px;
+    /* background: #7e6ff7; */
+    background: #7e6ff7cc;    
+    text-align: center;
+    z-index: 9;
+    padding: 27px 10px;
+    border-radius: 8px;
+}
+.potential-risks-top-performance-last{
+    width: 128px;
+    height: 128px;
+    /* margin: 32px 76px 61px 661px; */
+
+    object-fit: contain;
+    position: absolute;
+    bottom: -32px;
+    left: -52px;
+    /* background: #85ef8c; */
+    background:#85ef8ccc;    
+    text-align: center;
+    z-index: 9;
+    padding: 21px 10px;
+    border-radius: 8px;
+}
+.potential-risks-performance-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 1.92px;
+    text-align: center;
+    color: #ffffff;
+    margin-top: 15px;
+  }
+
+  .potential-risks-white-box{
+    width: 100%;
+    height: 416px;
+    object-fit: contain;
+    background-size: contain;
+    padding: 14px 24px;
+    background-repeat: no-repeat;
+    background-color: #fff;
+    border-radius: 20px;
+    position: static;
+    /* background-image: url("../../../assets/Images/Compliancedemo/bg.png"); */
+}
+.potential-risks-btn1{
+    background-image: url("../../../assets/Images/Compliancedemo/blueLabel.png");
+    width: 261px;
+    height: 56px;
+    border-radius: 8px;
+    background-color: #ef5d5d;
+    object-fit: contain;
+    float: left;
+    mix-blend-mode: multiply;
+    border-radius: 8px;
+    background-blend-mode: multiply;
+    padding: 0px 19px;
+    position: absolute;
+    top: 119px;
+    left: 27px;
+}
+.red-circle{
+    width: 36px;
+    height: 36px;
+    background-color: #ef5d5d;
+    border-radius: 50%;
+    position: absolute;
+    right: 13px;
+    top: 10px;
+    line-height: 37px;
+    padding-left: 13px;
+    color: #fff;
+}
+.potential-risks-btn2{
+    /* background-image: url("../../../assets/Images/Compliancedemo/blueLabel.png"); */
+    width: 261px;
+    height: 56px;
+    object-fit: contain;
+    float: left;
+    mix-blend-mode: multiply;
+    border-radius: 8px;
+    background-blend-mode: multiply;
+    padding: 0px 19px;
+    margin-bottom: 30px;
+    position: absolute;
+    top: 204px;
+   
+    background-color: #d8f7ff;
+    left: 27px;
+}
+.potential-risks-btn3{
+    background-color: #f1ffd8;
+    width: 261px;
+    height: 56px;
+    object-fit: contain;
+    float: left;
+    mix-blend-mode: multiply;
+    border-radius: 8px;
+    background-blend-mode: multiply;
+    padding: 0px 19px;
+    margin-bottom: 30px;
+    position: absolute;
+    top: 274px;
+    left: 27px;
+}
+.potential-risks-btn4{
+    background-color: #f1d8ff;
+    width: 261px;
+    height: 56px;
+    object-fit: contain;
+    float: left;
+    mix-blend-mode: multiply;
+    border-radius: 8px;
+    background-blend-mode: multiply;
+    padding: 0px 19px;
+    margin-bottom: 30px;
+    position: absolute;
+    top: 343px;
+    left: 27px;
+}
+
+.potential-risks-white {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffffff;
+  }
+.potential-risks-icon-text {
+    line-height: 55px;
+}
+.potential-risks-title{
+    float: left;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #2c2738;
+  }
+  .potential-risks-dueBtn-blck {
+    vertical-align: middle;
+    margin-left: 5px;
+    object-fit: contain;
+    border-radius: 8px;
+    border-radius: 8px;
+    background-color: #1b1d21;
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
+    padding: 1px 7px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    /* line-height: normal; */
+    letter-spacing: 0.13px;
+    /* text-align: left; */
+    color: #ffffff;
+}
+  .potential-risks-dueBtn {
+    /* width: 58px; */
+    /* height: 16px; */
+    vertical-align: middle;
+    margin-left: 5px;
+    object-fit: contain;
+    border-radius: 8px;
+    background-color: #ef5d5d;
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
+    padding: 1px 7px;
+    font-weight: 600;
+    font-stretch: normal; 
+    font-style: normal; 
+    /* line-height: normal; */
+    letter-spacing: 0.13px;
+    /* text-align: left; */
+    color: #ffffff;
+}
+.potential-risks-alignright {
+	float: right;
+}
+@media (max-width:980px){
+    .potential-risks-right-side-grid {
+        width: 100%;
+        height: 422px;
+        margin: 84px 58px 46px 0px;
+        object-fit: contain;
+    }
+    .potential-risks-top-performance {
+        right: -60px;
+    }
+    .potential-risks-right-side-grid {
+        left: 0px;
+    }
+    .potential-risks-mobile-padding {
+        padding: 0px 146px;
+    }
+    .potential-risks-btn1 {
+        width: 319px;
+    }
+    .potential-risks-btn2 {
+        width: 319px;
+    }
+    .potential-risks-btn3 {
+        width: 319px;
+    }
+    .potential-risks-btn4 {
+        width: 319px;
+    }
+}
+@media (max-width:767px){
+
+    /* .potential-risks-mobile-padding {
+        padding: 0px 58px;
+    } */
+    .potential-risks-mobile-padding {
+        padding: 0px 0px;
+    }
+    .potential-risks-dueBtn {
+        margin-left: 10px;
+    }
+    .potential-risks-right-side-grid {
+        width: 100%;
+        height: 291px;
+        /* margin: 44px 64px 46px 122px; */
+        object-fit: contain;
+        background-color: #fff;
+        border-radius: 16px;
+        position: relative;
+        left: 0px;
+        top: 0px;
+    }
+    
+    .potential-risks-right-side-grid {
+        width: 249px;
+        height: 291px;
+        margin: 0 auto;
+        object-fit: contain;
+    }
+    
+   
+    .potential-risks-right-grid-title {
+        width: 100px;
+        font-size: 14px;
+    }
+    .potential-risks-white-box {
+        width: 249px;
+        margin: 0 auto;
+        height: 291px;
+    }
+    .potential-risks-top-performance {
+        width: 80px;
+        height: 80px;
+        /* margin: 32px 76px 61px 661px; */
+        object-fit: contain;
+        position: absolute;
+        top: -13px;
+        right: -24px;
+        background: #7e6ff7;
+        text-align: center;
+        z-index: 9;
+        padding: 14px 10px;
+        border-radius: 8px;
+    }
+    .potential-risks-top-performance img {
+        width: 20px;
+        height: 31px;
+    }
+    .potential-risks-performance-text {
+        font-family: 'Poppins', sans-serif;
+        font-size: 7px !important;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.33;
+        letter-spacing: 1.92px;
+        text-align: center;
+        color: #ffffff;
+        margin-top: 7px;
+    }
+    .potential-risks-btn1 {
+        width: 195px;
+        height: 42px;
+        top: 83px;
+        left: 27px;
+    }
+    .red-circle {
+        width: 27px;
+        height: 27px;
+        background-color: #ef5d5d;
+        border-radius: 50%;
+        position: absolute;
+        right: 16px;
+        top: 8px;
+        line-height: 29px;
+        font-size: 10px;
+        padding-left: 11px;
+        color: #fff;
+    }
+    .potential-risks-icon-text {
+        line-height: 43px;
+    }
+    .potential-risks-btn2 .potential-risks-icon-text {
+        line-height: 27px;
+    }
+    .potential-risks-btn3 .potential-risks-icon-text {
+        line-height: 27px;
+    }
+    .potential-risks-btn4 .potential-risks-icon-text {
+        line-height: 27px;
+    }
+    .potential-risks-btn3 {
+        background-color: #f1ffd8;
+        width: 195px;
+        height: 27px;
+        top: 182px;
+    }
+    .potential-risks-btn2 {
+        width: 195px;
+        height: 27px;
+        object-fit: contain;
+        float: left;
+        border-radius: 8px;
+        padding: 0px 19px;
+        margin-bottom: 30px;
+        position: absolute;
+        top: 140px;
+        left: 27px;
+    }
+    .potential-risks-top-performance-last {
+        left: -26px;
+        width: 93px;
+        height: 98px;
+        /* margin: 32px 76px 61px 661px; */
+        object-fit: contain;
+        position: absolute;
+        bottom: -21px;
+        background: #85ef8c;
+        text-align: center;
+        z-index: 9;
+        padding: 25px 10px;
+        border-radius: 8px;
+    }
+    .potential-risks-top-performance-last img {
+        width: 29px;
+        height: 29px;
+        margin-bottom: 6px;
+    }
+    .potential-risks-btn4 {
+        background-color: #f1d8ff;
+        width: 195px;
+        height: 27px;
+        top: 223px;
+    }
+    .potential-risks-title {
+        float: left;
+        font-family: 'Poppins', sans-serif;
+        font-size: 10px;
+        font-weight: 600;
+    }
+    .potential-risks-alignright img {
+        width: 20px;
+        height: 20px;
+    }
+    .potential-risks-white {
+        font-family: 'Poppins', sans-serif;
+        font-size: 10px;
+    }
+    
+}

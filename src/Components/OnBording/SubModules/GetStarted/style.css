@@ -1,0 +1,383 @@
+/* header css  start*/
+.get-main-get-start {
+  height: 100vh;
+  padding-bottom: 60px;
+  position: relative;
+}
+.get-started-header {
+  padding-top: 40px;
+}
+.header_logo {
+  object-fit: contain;
+}
+.header_logo img {
+  width: 32px;
+}
+.header_logo a:hover {
+  text-decoration: none;
+}
+.header_logo .camp {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.04;
+  letter-spacing: normal;
+  text-align: left;
+  position: relative;
+  color: #1b1d21;
+  top: 3px;
+  left: 6px;
+}
+.get-main-get-start .wrapper_login {
+  margin-top: 40px;
+  /* height: calc(100% - 0px); */
+}
+.get-main-get-start .text-right {
+  float: right;
+  margin-top: 0px;
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: 0.01px;
+  text-align: right;
+  color: #2c2738;
+}
+.header .testLabelRight {
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+}
+.header .testing-label {
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: right;
+  color: #000000;
+  margin-bottom: 0px;
+}
+/* header css  end*/
+.wrapper_login {
+  margin-top: 64px;
+  /* height: calc(100% - 0px); */
+}
+.wrapper_login .login_title {
+  font-size: 33px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  margin-bottom: 40px;
+  font-family: "Poppins", sans-serif;
+}
+.wrapper_login .form_wrapper {
+  max-width: 358px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.form_wrapper label {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.get-main-get-start .form_wrapper .form-control {
+  width: 358px;
+  height: 40px;
+  opacity: 0.5;
+  border-radius: 8px;
+  border: solid 1px #e4e4e4;
+  background-color: #ffffff;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #aeaeae;
+}
+
+.form_wrapper .form-control:focus {
+  box-shadow: none;
+  border: 2px solid #6c5dd3;
+  background-color: white !important;
+  opacity: 1;
+  color: #2c2738;
+}
+.get-started-btn .common-button {
+  border-radius: 4px !important;
+  background-color: #6c5dd3 !important;
+  height: 43px;
+  text-transform: uppercase !important;
+  width: 130px !important;
+  text-align: center;
+}
+.get-main-get-start .activate-link {
+  opacity:inherit;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+  margin-top: 10px;
+}
+.get-main-get-start .bottom-logo-strip .account-link {
+  opacity: inherit;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: rgb(44 39 56 / 50%);
+}
+.get-main-get-start .bottom-logo-strip .login-link {
+  opacity: inherit;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+}
+.form_wrapper .login_button {
+  background-color: #6c5dd3;
+  min-width: 130px;
+  height: 43px;
+  text-transform: uppercase;
+  font-size: 13px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 500;
+  font-family: "Poppins";
+  margin-top: 25px;
+}
+
+.get-started-btn .verify-email {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 25px;
+}
+.landing-terms-condition{
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: right;
+  color: #6c5dd3;
+}
+.landing-terms-condition:hover {
+  color: #6c5dd3;
+  text-decoration: inherit;
+}
+label.custom-control-label.btn-top-label {
+  line-height: 23px;
+  font-size: 12px;
+  color: rgb(44 39 56 / 80%);
+}
+.get-started-btn .form-group {
+  /* min-height: 91px !important; */
+  min-height: 102px !important;
+  margin-bottom: 0px;
+}
+.get-started-btn .input-error-message {
+  padding-top: 8px !important;
+  margin-bottom: 0px !important;
+}
+
+.input-error{
+  color: #000 !important;
+  opacity: 1 !important;
+}
+/* login section */
+
+/* bottom logo */
+
+.get-started-bottom .bottom-logo-strip {
+  position: absolute;
+  bottom: 20px;
+  max-width: 83%;
+  width: 100%;
+}
+.aligncenter {
+  align-items: center;
+}
+.bottom_logo a {
+  text-decoration: none;
+}
+.bottom_logo .powerBy {
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -1px;
+  text-align: left;
+  color: #11142d;
+}
+.login-link {
+  opacity: 1;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+}
+.account-link {
+  opacity: 0.8;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+
+.powerBy {
+  font-family: Poppins;
+  font-size: 11px;
+  font-weight: 200;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 3.36;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #aeaeae;
+}
+/* bottom logo */
+
+.password-success-input{
+  border: solid 2px #7FBA7A !important;
+}
+
+.activeForm-control{
+  /* border: solid 2px #7FBA7A !important; */
+  background-color: #ffffff;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000 !important;
+  opacity: 1 !important;
+}
+.error-msg-border{
+  color: #000 !important;
+  opacity: 1 !important;
+}
+.get-started-btn .form_wrapper label {
+  line-height: 25px;
+}
+.alink-hover a:hover {
+  color: #8680ff !important;
+  text-decoration: none !important;
+}
+
+/* .custom-control-input:checked~.custom-control-label::before{
+  background-color: red !important; 
+} */
+.get-main-get-start .custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  border-color: #6c5dd3 !important;
+  background-color: #6c5dd3 !important;
+  border-radius: 3px;
+  border: #adb5bd solid 1px;
+}
+.get-main-get-start .custom-checkbox .custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow:inherit;
+  border-radius: 3px;
+  border: #adb5bd solid 1px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+@media screen and (max-width: 767px) {
+  .get-main-get-start .container{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .left-fixed {
+      display: none;
+  }
+  .get-started-btn .common-button {
+    margin-top: 32px;
+}
+  .getStartMobile .padding-right {
+    padding-left: 14px !important;
+    margin-left: 0px;
+  }
+  .input-front-forget-link{
+      display: block;
+  }
+  .newPass_form_wrapper span {
+      padding-left: 0px;
+  }
+  .newPass_form_wrapper .form-control {
+      width: 100%;
+      height: 40px;
+  }
+  .wrapper_login .login_title {
+    font-size: 23px !important;
+  }
+  .get-main-get-start .form_wrapper .form-control {
+    width: 312px;
+  }
+  .verify-email {
+    margin-top: 32px;
+  }
+  .get-started-bottom .bottom-logo-strip{
+    position: relative !important;
+      padding-top: 261px;
+  }
+}
+@media screen and (max-width: 320px){
+  .wrapper_login .login_title {
+      font-size: 23px;
+  }
+}
