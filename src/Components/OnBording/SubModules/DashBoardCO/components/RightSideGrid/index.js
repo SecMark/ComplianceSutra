@@ -38,6 +38,9 @@ import MobileLeftSidebar from "../MobileLeftSidebar";
 import axios, { post } from "axios";
 import { withRouter } from "react-router-dom";
 import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png";
+import { BsCheckCircle, BsClock } from "react-icons/bs";
+import constant from "../../../../../../CommonModules/sharedComponents/constants/constant";
+import View from "../../../../../CalenderView/View";
 import TextareaAutosize from "react-textarea-autosize";
 import ReAssignTasksModal from "../../../../../ReAssignTasks";
 function RightSideGrid({
@@ -87,6 +90,10 @@ function RightSideGrid({
   const [showUserToolTip, setShowUserToolTip] = useState("");
   const [today, setToday] = useState(new Date());
   const [emailAvaliableCheck, setEmailAvaliableCheck] = useState(false);
+
+  const [activeViewBy, setActiveViewBy] = useState(constant.status);
+  const [activeView, setActiveView] = useState(constant.list);
+
   const [
     isShowReAssignModalForTeamMember,
     setIsShowReAssignModalForTeamMember,
@@ -98,6 +105,12 @@ function RightSideGrid({
     state.taskReport &&
     state.taskReport.taskReportById &&
     state.taskReport.taskReportById.taskReportById;
+
+  useEffect(() => {
+    setIsTaskListOpen(false);
+    setExpandedFlags([]);
+  }, []);
+
   useEffect(() => {
     if (taskList != undefined && taskList.length > 0) {
       let tempArr = [];
@@ -388,6 +401,7 @@ function RightSideGrid({
     setShowComments(false);
     setExpandedFlags([]);
     setCurrentTaskData(e);
+    setActiveView(constant.list);
     let taskID = null;
     let task_id = NotificationRedu.NotificationRedu.task_id;
 
@@ -1132,54 +1146,66 @@ function RightSideGrid({
               </div>
             </div>
           </div>
+          {/* statistics start */}
+          {activeView === constant.list && (
+            <div className="statistics-container flex-column flex-md-row align-items-start align-items-md-center">
+              <div className="statistics-title">
+                <span>This Month</span>
+                <h3>Things are on track!</h3>
+              </div>
+              <div className="statistics-detail mx-0 mx-md-3">
+                <div className="complete">
+                  <div className="complete-icon">
+                    <BsCheckCircle />
+                  </div>
+                  <div className="complete-statistics">
+                    <span>Completed</span>
+                    <h3>24</h3>
+                  </div>
+                </div>
+                <div className="scheduled">
+                  <div className="scheduled-icon">
+                    <BsClock />
+                  </div>
+                  <div className="scheduled-statistics">
+                    <span>Scheduled</span>
+                    <h3>24</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* statistics end*/}
+
           <div className="d-flex mobile-height">
             <div className="companies-sub-title w-25 d-none d-sm-block">
               Tasks
             </div>
             {!searchBoxShowMobile && (
-              <div className="companies-sub-title w-25 d-block d-sm-none">
-                Tasks
-              </div>
+              <>
+                <div className="companies-sub-title w-25 d-block d-sm-none">
+                  Tasks
+                </div>
+              </>
             )}
             <div className="w-75 d-none d-sm-block">
-              {!searchBoxShow && (
-                <div
-                  className="only-search-icon"
-                  onClick={() => setsearchBoxShow(true)}
-                >
-                  <img src={searchIcon} alt="sidebar Check Icon" />
+              <div className="searchBox d-none d-sm-block" ref={innerSearch}>
+                <div className="input-group form-group search-group">
+                  <img
+                    className="IconGray"
+                    src={searchIcon}
+                    alt="search Icon"
+                  />
+                  <input
+                    className="form-control search-control"
+                    type="text"
+                    placeholder="Search for team, licenses, Companies etc"
+                    onChange={(e) => handleSearch(e.target.value)}
+                    value={searchValue}
+                  />
                 </div>
-              )}
-              {searchBoxShow && (
-                <div className="searchBox d-none d-sm-block" ref={innerSearch}>
-                  <div className="input-group form-group">
-                    <img
-                      className="IconGray"
-                      src={searchIcon}
-                      alt="search Icon"
-                    />
-                    <input
-                      className="form-control mozilla-py"
-                      type="text"
-                      placeholder="Search Tasks"
-                      onChange={(e) => handleSearch(e.target.value)}
-                      value={searchValue}
-                    />
-                    <span className="input-group-append">
-                      <button
-                        className="btn border-start-0 border-top-0 border-bottom-0 border-0 ms-n5"
-                        type="button"
-                      >
-                        <img
-                          src={closeIconGray}
-                          alt="close Icon"
-                          onClick={() => clearSearch()}
-                        />
-                      </button>
-                    </span>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
             <div
               className={
@@ -1234,169 +1260,268 @@ function RightSideGrid({
               <div className="file-title">Search Results: </div>
             )}
             {searchValue === "" && (
-              <div>
-                <div className="file-title">List</div>
-                <div className="file-title-progress"></div>
+              <div className="task-container">
+                <div className="task-view">
+                  <div>
+                    <div
+                      className={
+                        activeView === constant.list
+                          ? "file-title"
+                          : "file-title-inactive"
+                      }
+                      onClick={() => setActiveView(constant.list)}
+                    >
+                      Lists
+                    </div>
+                    {activeView === constant.list && (
+                      <div className="file-title-progress w-40"></div>
+                    )}
+                  </div>
+                  <div>
+                    <div
+                      className={
+                        activeView === constant.calender
+                          ? "file-title"
+                          : "file-title-inactive"
+                      }
+                      onClick={() => setActiveView(constant.calender)}
+                    >
+                      Calender
+                    </div>
+                    {activeView === constant.calender && (
+                      <div className="file-title-progress w-70"></div>
+                    )}
+                  </div>
+                  <div>
+                    <div
+                      className={
+                        activeView === constant.board
+                          ? "file-title"
+                          : "file-title-inactive"
+                      }
+                      onClick={() => setActiveView(constant.board)}
+                    >
+                      Board
+                    </div>
+                    {activeView === constant.board && (
+                      <div className="file-title-progress w-40"></div>
+                    )}
+                  </div>
+                </div>
+
+                {activeView === constant.list && (
+                  <div className="View-by d-none d-md-block">
+                    <button className="view">View By</button>
+                    <button
+                      className={
+                        activeViewBy === constant.status
+                          ? "view-by-button-active"
+                          : "view-by-button"
+                      }
+                      onClick={() => setActiveViewBy(constant.status)}
+                    >
+                      Status
+                    </button>
+                    <button
+                      className={
+                        activeViewBy === constant.license
+                          ? "view-by-button-active"
+                          : "view-by-button"
+                      }
+                      onClick={() => setActiveViewBy(constant.license)}
+                    >
+                      License
+                    </button>
+                    <button
+                      className={
+                        activeViewBy === constant.company
+                          ? "view-by-button-active"
+                          : "view-by-button"
+                      }
+                      onClick={() => setActiveViewBy(constant.company)}
+                    >
+                      Company
+                    </button>
+                    <button
+                      className={
+                        activeViewBy === constant.team
+                          ? "view-by-button-active"
+                          : "view-by-button"
+                      }
+                      onClick={() => setActiveViewBy(constant.team)}
+                    >
+                      Team
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          <div className="task-grid-scroll">
-            {searchValue != "" && (
-              <div
-                className="take-action"
-                style={{
-                  marginBottom: "0px",
-                  paddingBottom: "0px",
-                  paddingTop: "20px",
-                }}
-              >
-                {searchData.length > 0 &&
-                  searchData.map((task) => {
-                    return <>{renderTaskList(task.data, task.Status, 2)}</>;
-                  })}
-              </div>
-            )}
-            {searchValue === "" &&
-              taskData &&
-              taskData.length > 0 &&
-              taskData.map((item, index) => {
-                return (
-                  <>
-                    <div className="take-action">
-                      <div className="task-list-grid">
-                        {item.Status.trim() === "overdue" && (
-                          <div
-                            className="action-title"
-                            style={{ color: "#f22727", fontWeight: "500" }}
-                          >
-                            {"Overdue"}
-                          </div>
-                        )}
-                        {item.Status.trim() === "Pending" && (
-                          <div className="action-title">{"Take Action"}</div>
-                        )}
-                        {(item.Status.trim() === "Upcoming" ||
-                          item.Status.trim() === "Completed") && (
-                          <div
-                            className="upcoming-btn"
-                            onClick={() => {
-                              expandedFlags.includes(index)
-                                ? handleExpandList("hide", index)
-                                : handleExpandList("show", index);
-                            }}
-                          >
+          {activeView === constant.list && (
+            <div className="task-grid-scroll">
+              {searchValue != "" && (
+                <div
+                  className="take-action"
+                  style={{
+                    marginBottom: "0px",
+                    paddingBottom: "0px",
+                    paddingTop: "20px",
+                  }}
+                >
+                  {searchData.length > 0 &&
+                    searchData.map((task) => {
+                      return <>{renderTaskList(task.data, task.Status, 2)}</>;
+                    })}
+                </div>
+              )}
+              {searchValue === "" &&
+                taskData &&
+                taskData.length > 0 &&
+                taskData.map((item, index) => {
+                  return (
+                    <>
+                      <div className="take-action">
+                        <div className="task-list-grid">
+                          {item.Status.trim() === "overdue" && (
                             <div
-                              style={{ cursor: "pointer" }}
-                              className={
-                                item.Status.trim() === "Upcoming"
-                                  ? "upcoming-title"
-                                  : "complete-title"
-                              }
+                              className="action-title"
+                              style={{ color: "#f22727", fontWeight: "500" }}
                             >
-                              {item.Status.trim() === "Upcoming"
-                                ? "Upcoming"
-                                : "Completed"}
-                              <span
+                              {"Overdue"}
+                            </div>
+                          )}
+                          {item.Status.trim() === "Pending" && (
+                            <div className="action-title">{"Take Action"}</div>
+                          )}
+                          {(item.Status.trim() === "Upcoming" ||
+                            item.Status.trim() === "Completed") && (
+                            <div
+                              className="upcoming-btn"
+                              onClick={() => {
+                                expandedFlags.includes(index)
+                                  ? handleExpandList("hide", index)
+                                  : handleExpandList("show", index);
+                              }}
+                            >
+                              <div
+                                style={{ cursor: "pointer" }}
                                 className={
                                   item.Status.trim() === "Upcoming"
-                                    ? "black-circle"
-                                    : "green-circle"
+                                    ? "upcoming-title"
+                                    : "complete-title"
                                 }
                               >
-                                <p className="black-circle-text">
-                                  {item.Details.length}
-                                </p>
-                              </span>
-                              {expandedFlags.includes(index) ? (
-                                <img
-                                  src={upArrow}
-                                  className="arrowDown"
-                                  alt="Arrow Up"
-                                />
-                              ) : (
-                                <img
-                                  src={downArrow}
-                                  className="arrowDown"
-                                  alt="Arrow down"
-                                />
-                              )}
-                            </div>
-                          </div>
-                        )}
-                        {item.Status.trim() === "overdue" &&
-                          item.Details.slice(
-                            0,
-                            rowCount[item.Status.trim()]
-                          ).map((task) => {
-                            return (
-                              <>{renderTaskList(task, item.Status.trim(), 1)}</>
-                            );
-                          })}
-                        {item.Status.trim() != "overdue" &&
-                          (item.Status.trim() === "Pending"
-                            ? true
-                            : !expandedFlags.includes(index)) && (
-                            <>
-                              {item.Details.slice(
-                                0,
-                                rowCount[item.Status.trim()]
-                              ).map((task) => {
-                                return (
-                                  <>
-                                    {renderTaskList(
-                                      task,
-                                      item.Status.trim(),
-                                      1
-                                    )}
-                                  </>
-                                );
-                              })}
-                              <div>
-                                {item.Details.length > 4 && (
-                                  <>
-                                    {rowCount[item.Status.trim()] > 4 && (
-                                      <div
-                                        onClick={() =>
-                                          showLessMore(item.Status, 4)
-                                        }
-                                        className="viewAll showLess"
-                                      >
-                                        Show Less{" "}
-                                        <img
-                                          src={viewAllArowTop}
-                                          alt="Show Less"
-                                        />
-                                      </div>
-                                    )}
-                                    {rowCount[item.Status.trim()] === 4 && (
-                                      <div
-                                        onClick={() =>
-                                          showLessMore(
-                                            item.Status,
-                                            item.Details.length
-                                          )
-                                        }
-                                        className="viewAll"
-                                      >
-                                        View All ({item.Details.length - 4} )
-                                        <img
-                                          src={viewAllArow}
-                                          alt="view All Arow"
-                                        />
-                                      </div>
-                                    )}
-                                  </>
+                                {item.Status.trim() === "Upcoming"
+                                  ? "Upcoming"
+                                  : "Completed"}
+                                <span
+                                  className={
+                                    item.Status.trim() === "Upcoming"
+                                      ? "black-circle"
+                                      : "green-circle"
+                                  }
+                                >
+                                  <p className="black-circle-text">
+                                    {item.Details.length}
+                                  </p>
+                                </span>
+                                {expandedFlags.includes(index) ? (
+                                  <img
+                                    src={upArrow}
+                                    className="arrowDown"
+                                    alt="Arrow Up"
+                                  />
+                                ) : (
+                                  <img
+                                    src={downArrow}
+                                    className="arrowDown"
+                                    alt="Arrow down"
+                                  />
                                 )}
                               </div>
-                            </>
+                            </div>
                           )}
+                          {item.Status.trim() === "overdue" &&
+                            item.Details.slice(
+                              0,
+                              rowCount[item.Status.trim()]
+                            ).map((task) => {
+                              return (
+                                <>
+                                  {renderTaskList(task, item.Status.trim(), 1)}
+                                </>
+                              );
+                            })}
+                          {item.Status.trim() != "overdue" &&
+                            (item.Status.trim() === "Pending"
+                              ? true
+                              : !expandedFlags.includes(index)) && (
+                              <>
+                                {item.Details.slice(
+                                  0,
+                                  rowCount[item.Status.trim()]
+                                ).map((task) => {
+                                  return (
+                                    <>
+                                      {renderTaskList(
+                                        task,
+                                        item.Status.trim(),
+                                        1
+                                      )}
+                                    </>
+                                  );
+                                })}
+                                <div>
+                                  {item.Details.length > 4 && (
+                                    <>
+                                      {rowCount[item.Status.trim()] > 4 && (
+                                        <div
+                                          onClick={() =>
+                                            showLessMore(item.Status, 4)
+                                          }
+                                          className="viewAll showLess"
+                                        >
+                                          Show Less{" "}
+                                          <img
+                                            src={viewAllArowTop}
+                                            alt="Show Less"
+                                          />
+                                        </div>
+                                      )}
+                                      {rowCount[item.Status.trim()] === 4 && (
+                                        <div
+                                          onClick={() =>
+                                            showLessMore(
+                                              item.Status,
+                                              item.Details.length
+                                            )
+                                          }
+                                          className="viewAll"
+                                        >
+                                          View All ({item.Details.length - 4} )
+                                          <img
+                                            src={viewAllArow}
+                                            alt="view All Arow"
+                                          />
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                                </div>
+                              </>
+                            )}
+                        </div>
                       </div>
-                    </div>
-                  </>
-                );
-              })}
-          </div>
+                    </>
+                  );
+                })}
+            </div>
+          )}
+
+          {activeView === constant.calender && (
+            <View getSelectTaskDetails={getSelectTaskDetails} />
+          )}
         </div>
       )}
 

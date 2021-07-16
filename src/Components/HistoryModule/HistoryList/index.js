@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import MobileLeftSidebar from "../../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
-import HistoryFilterForm from "../HistoryFilterForm.js";
+import HistoryFilterForm from "../HistoryFilterForm/index";
 import filter from "../../../assets/Icons/Filters.png";
 import download from "../../../assets/Icons/download.png";
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";

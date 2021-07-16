@@ -71,6 +71,11 @@ function Dashboard({ history }) {
       history.push("/login");
     }
   }, []);
+  
+  useEffect(() => {
+    setIsTaskListOpen(false);
+  }, []);
+
   useEffect(() => {
     // if (entityID) {
     //   dispatch(
