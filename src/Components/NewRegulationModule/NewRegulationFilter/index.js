@@ -73,6 +73,7 @@ const NewRegulationFilter = ({ label }) => {
     const setArrayOfObjectInList = topicList.map((item) => {
       return { value: item.Topic, label: item.Topic };
     });
+
     setListOfTopic([...setArrayOfObjectInList]);
   }, [state.auth.loginInfo?.UserID]);
 

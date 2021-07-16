@@ -201,6 +201,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Bell"
             />
           </div>
+      
+      
         </div>
         <div className="devider-line"></div>
         <div className="second-icon-list">

@@ -179,7 +179,7 @@ const NewRegulations = (props) => {
               <div className="filter-popup-mobile--wrapper">
                 <h2 style={{ marginBottom: "2rem" }}>Fiters</h2>
                 <div className="filter-wrapper-mobile">
-                  <NewRegulationFilter />
+                
                 </div>
               </div>
             </div>
@@ -430,7 +430,7 @@ const NewRegulations = (props) => {
               />
               <h3 style={{ marginBottom: "0px" }}>Filters</h3>
             </div>
-            <NewRegulationFilter />
+       
           </div>
         </div>
         <div className="d-none d-md-block w-100">
