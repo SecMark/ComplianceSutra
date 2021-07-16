@@ -14,7 +14,7 @@ import { actions as coActions } from "../../../redux/actions"
 import { isMobile } from "react-device-detect"
 import { useOuterClick } from "./outerClick.js"
 import { Link } from "react-router-dom"
-import { setNotificationTaskId } from "../Redux/Action"
+import {actions as notificationActions} from "../Redux/actions";
 
 function NotificationGrid(props) {
   // console.log("state => ",state);
@@ -253,10 +253,10 @@ function NotificationGrid(props) {
                                 <Link
                                   to="/dashboard"
                                   style={{ textDecoration: "none" }}
+                                 
                                   onClick={() => {
-                                    props.dispatch(
-                                      setNotificationTaskId(element.TaskId)
-                                    )
+                                    dispatch(
+                                      notificationActions.setTaskID(element.TaskId))
                                   }}
                                 >
                                   <div className={"white-background"}>

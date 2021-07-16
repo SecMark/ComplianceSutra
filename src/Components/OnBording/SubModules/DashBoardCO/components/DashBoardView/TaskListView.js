@@ -1,9 +1,17 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect,useRef, useCallback } from "react"
 import "./style.css"
+import "../BoardView/style.css"
 import Modal from "react-awesome-modal"
+import AssigneList from './component/AssignedView.js'
+import CompanyTaskList from './component/companyList.js'
+import LicenseTaskList from './component/LicenseTaskList.js'
+import CalendarView from "../CalendarView/components/index"
+import { Link } from "react-router-dom"
+import  {useDropdownOuterClick} from "../RightSideGrid/dropdownOuterClick";
 import closeBlack from "../../../../../../assets/Icons/closeBlack.png"
 import fileIcon from "../../../../../../assets/Icons/fileIcon.png"
 import sideBarlogo from "../../../../../../assets/Icons/sideBarlogo.png"
+import redArrowTop from "../../../../../../assets/Icons/redArrowTop.png"
 import togglemobile from "../../../../../../assets/Icons/togglemobile.png"
 import keyboardArrowRightBlack from "../../../../../../assets/Icons/keyboardArrowRightBlack.png"
 import downArrow from "../../../../../../assets/Icons/downArrow.png"
@@ -17,7 +25,7 @@ import taskIcon from "../../../../../../assets/Icons/taskIcon.png"
 import sidebarBell from "../../../../../../assets/Icons/sidebarBell.png"
 import upArrow from "../../../../../../assets/Icons/topArrowAccordian.png"
 import RedLine from "../../../../../../assets/Icons/RedLine.png"
-import {isMobile} from "react-device-detect"
+import { isMobile } from "react-device-detect"
 import assignIconCircle from "../../../../../../assets/Icons/assignIconCircle.png"
 import viewAllArow from "../../../../../../assets/Icons/viewAllArow.png"
 import viewAllArowTop from "../../../../../../assets/Icons/viewAllArowTop.png"
@@ -29,16 +37,25 @@ import completeTaskIcon from "../../../../../../assets/Icons/emailVerify.png"
 import { toast } from "react-toastify"
 import moment from "moment"
 import Dropzone from "react-dropzone"
+import CustomCard from "./BoardCard"
 import { useOuterClick } from "../RightSideGrid/outerClick.js"
-import {BACKEND_BASE_URL} from "../../../../../../apiServices/baseurl"
+import { BACKEND_BASE_URL } from "../../../../../../apiServices/baseurl"
 import { useSelector, useDispatch, connect } from "react-redux"
 import { actions as taskReportActions } from "../../redux/actions"
 import MobileLeftSidebar from "../MobileLeftSidebar"
 import axios, { post } from "axios"
 import { withRouter } from "react-router-dom"
 import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png"
-
 import TextareaAutosize from "react-textarea-autosize"
+import Board from 'react-trello'
+import BoardView from "../BoardView/index";
+import dropdownBottomArrow from "../../../../../../assets/Icons/dropdownBottomArrow.png"
+import dropdownCheckIcon from "../../../../../../assets/Icons/dropdownCheckIcon.png"
+import { actions as notificationActions } from ".././notification/Redux/actions.js";
+
+import RiskAndDelaysTaskList from "./component/RiskAndDelaysTaskList"
+import PendingAction from "./component/PendingAction"
+
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
@@ -48,10 +65,36 @@ function RightSideGrid({
   companyName,
   user,
   history,
-  NotificationRedu,
+  click,
+  setClick,
+  listView,
+  setListView
 }) {
+
+
+  let dropDownArr = [{
+    viewBy: "By Status",
+    name: "status"
+  },
+  {
+    viewBy: "By Company",
+    name: "company"
+  },
+  {
+    viewBy: "By License",
+    name: "license"
+  },
+  {
+    viewBy: "Team",
+    name: "team-member"
+  }
+  ]
+  const searchInput = useRef(null);
+
+  const [openBoardDrD, setOpenBoardDrp] = useState(false)
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
+  const [currentBoardViewBy, setCurrentBoardViewBy] = useState("status")
 
   const [completedDate, setCompletedDate] = useState("")
 
@@ -78,6 +121,7 @@ function RightSideGrid({
   const [searchBoxShowMobile, setsearchBoxShowMobile] = useState(false)
   const [navigationHideShow, setNavigationHideShow] = useState(false)
   const [taskData, setTaskData] = useState([])
+  const [listTaskData, setListTaskData] = useState("")
   const [taskDataBackup, setTaskDataBackup] = useState([])
   const [expandedFlags, setExpandedFlags] = useState([])
   const [rowCount, setRowCount] = useState([])
@@ -86,6 +130,10 @@ function RightSideGrid({
   const [showUserToolTip, setShowUserToolTip] = useState("")
   const [today, setToday] = useState(new Date())
   const [emailAvaliableCheck, setEmailAvaliableCheck] = useState(false)
+  const [assignRowCount, setAssignRowCount] = useState([])
+  const [taskListDisplay, setTaskListDisplay] = useState("1")
+  const [displayTask, setDisplayTask] = useState("1")
+  const [mobileViewBy, setMobileViewBy] = useState(false)
 
   const getTaskById =
     state &&
@@ -100,7 +148,7 @@ function RightSideGrid({
       taskList.map((item) => {
         if (item.Details.length >= 1 && item.Details[0].TaskId != 0) {
           tempArr.push({ ...item })
-          tempRowCount[item.Status.trim()] = 4
+          tempRowCount[item.Status.trim()] = 3
         }
       })
       let sortedArray = tempArr.sort((a, b) => a.ORD - b.ORD)
@@ -148,10 +196,47 @@ function RightSideGrid({
           let fileData = response.data
           setFileList(fileData)
         })
-        .catch((error) => {})
+        .catch((error) => { })
     }
   }, [getTaskById, uploadFile])
 
+  useEffect(() => {
+    if (taskListDisplay === "1") {
+      const payload = {
+        entityid  : "",
+        userID    : user.UserID,
+        usertype  : user.UserType
+      }
+      axios
+      .post(`${BACKEND_BASE_URL}/api/getTaskReport`, payload)
+      .then((response) => {
+        let fileData = response.data
+        let tempArr = []
+        let tempRowCount = {}
+        fileData.map((item) => {
+          if (item.Details.length >= 1 && item.Details[0].TaskId != 0) {
+            tempArr.push({ ...item })
+            tempRowCount[item.Status.trim()] = 3
+          }
+        })
+        let sortedArray = tempArr.sort((a, b) => a.ORD - b.ORD)
+        setRowCount(tempRowCount)
+        setListTaskData(sortedArray)
+        })
+      .catch((error) => { 
+          console.log("error => ",error);
+      })
+    }
+  }, [taskListDisplay])
+
+  console.log("ListTaskData = ",listTaskData)
+
+
+  const innerRefDrop = useDropdownOuterClick((e) => {
+    if (openBoardDrD === true && !e.target.id.includes("dropDown")) {
+      setOpenBoardDrp(false)
+    }
+  })
   useEffect(() => {
     var today = new Date()
     var dd = String(today.getDate()).padStart(2, "0")
@@ -190,6 +275,22 @@ function RightSideGrid({
     }
   })
 
+  const _defineDropDownOptions = (viewType) => {
+    let str = "";
+    if (viewType === "status") {
+      str = "By Status";
+    } else if (viewType === "license") {
+      str = "By License"
+    } else if (viewType === "team-member") {
+      str = "Team"
+    } else if (viewType === "company") {
+      str = "By Company"
+    } else {
+      str = "By Status"
+    }
+    return str;
+  }
+
   const innerRef = useOuterClick((e) => {
     if (
       (currentDropDown !== "open" && !e.target.id.includes("assignBtn")) ||
@@ -215,17 +316,20 @@ function RightSideGrid({
     state.taskReport.getTaskCommentByRole &&
     state.taskReport.getTaskCommentByRole.getTaskCommentByRole
 
-  const getInitials = (str) => {
-    var initials = " "
-    if (str != "" && str) {
-      var names = str.split(" "),
-        initials = names[0].substring(0, 1).toUpperCase()
-      if (names.length > 1) {
-        initials += names[names.length - 1].substring(0, 1).toUpperCase()
+    const getInitials = (str) => {
+      var initials = " "
+      if (str != "" && str) {
+        var names = str.split(" "),
+          initials = names[0].substring(0, 1).toUpperCase()
+        if (names.length > 1) {
+          initials += names[names.length - 1].substring(0, 1).toUpperCase()
+        }else if (names.length == 1) {
+          initials = names[0].substring(0, 2).toUpperCase()
+          // initials += names[names.length - 1].substring(0, 1).toUpperCase()
+        }
       }
+      return initials
     }
-    return initials
-  }
 
   const getAllFile = () => {
     if (getTaskById != undefined) {
@@ -268,7 +372,7 @@ function RightSideGrid({
             toast.error("Error in the deleting file !!!")
           }
         })
-        .catch((error) => {})
+        .catch((error) => { })
     }
   }
 
@@ -368,12 +472,7 @@ function RightSideGrid({
     )
   }
 
-  useEffect(() => {
-    let task_id = NotificationRedu &&  NotificationRedu.NotificationRedu && NotificationRedu.NotificationRedu.task_id
-    if (task_id) {
-      getSelectTaskDetails()
-    }
-  }, [])
+
 
   const getSelectTaskDetails = (e) => {
     setShowFiles(true)
@@ -381,7 +480,7 @@ function RightSideGrid({
     setExpandedFlags([])
     setCurrentTaskData(e)
     let taskID = null
-    let task_id = NotificationRedu.NotificationRedu.task_id
+    let task_id = null
 
     if (task_id !== null && e === undefined) {
       taskID = task_id
@@ -394,7 +493,7 @@ function RightSideGrid({
       })
     )
 
-    setIsTaskListOpen(true)
+    // setIsTaskListOpen(true)
   }
 
   const getApproveUsers = () => {
@@ -623,7 +722,6 @@ function RightSideGrid({
 
   const handleAssignKeyDown = (e) => {
     if (e.key === "Enter") {
-      console.log("1234")
       handleCheckAssignToEmailAvailability(e)
       // handleAssignToTask(e)
     }
@@ -642,6 +740,17 @@ function RightSideGrid({
     )
     setSelectedUser("")
   }
+
+  const _getAssignedName = (name) => {
+    let str = ""
+    if (name.length < 11) {
+        str = name;
+    } else {
+        str = `${name.slice(0, 9)}...`
+    }
+    return str;
+}
+
 
   const handleApproveTask = (e) => {
     let id = getTaskById.TaskId
@@ -718,11 +827,11 @@ function RightSideGrid({
 
   const closeMobileSidebar = () => {
     const drawerParent = document.getElementById("sideBarParent");
-      const drawerChild = document.getElementById("sideBarChild");
-      if (drawerParent) {
-         drawerParent.classList.remove("overlay");
-         drawerChild.style.left = "-100%";
-      }
+    const drawerChild = document.getElementById("sideBarChild");
+    if (drawerParent) {
+      drawerParent.classList.remove("overlay");
+      drawerChild.style.left = "-100%";
+    }
   }
 
   const showLessMore = (status, count) => {
@@ -730,7 +839,11 @@ function RightSideGrid({
     tempRowCnt[status.trim()] = count
     setRowCount(tempRowCnt)
   }
-
+  const AssignShowLessMore = (status, count) => {
+    let tempRowCnt = { ...assignRowCount }
+    tempRowCnt[status.trim()] = count
+    setAssignRowCount(tempRowCnt)
+  }
   const handleExpandList = (flag, index) => {
     let tempExtend = [...expandedFlags]
     if (flag === "show") {
@@ -764,20 +877,42 @@ function RightSideGrid({
       taskList &&
         taskList.forEach((obj1) => {
           obj1.Details.forEach((obj2) => {
-            if (
-              obj2.TaskName.toLowerCase().includes(searchText.toLowerCase())
+            if (obj2.TaskName !== "Norec") {
+             if (
+              obj2.TaskName.toLowerCase().includes(searchText.toLowerCase()) || 
+              obj2.EntityName.toLowerCase().includes(searchText.toLowerCase()) ||
+              obj2.LicenseCode.toLowerCase().includes(searchText.toLowerCase()) ||
+              obj2.AssignedName.toLowerCase().includes(searchText.toLowerCase()) 
             ) {
               let task = { Status: obj1.Status, data: obj2 }
               tempArr.push(task)
-            }
+            }}
           })
         })
       setSearchData(tempArr)
     }
   }
+  useEffect(()=>{
+    searchInput.current && searchInput.current.focus();
+  },[searchBoxShow])
+
+  function handleFocus(){
+    setsearchBoxShow(true)
+    searchInput.current && searchInput.current.focus() 
+  }
 
   const renderTaskList = (task, Status, listType) => {
     return (
+      <Link
+      to="/dashboard"
+      style={{ textDecoration: "none" }}
+      onClick={() => {
+        dispatch(
+          notificationActions.setTaskID(task.TaskId))
+          localStorage.setItem("expandedFlagss",expandedFlags,"allRowCount-copy",rowCount);
+          localStorage.setItem("allRowCount", JSON.stringify(rowCount))
+        }}
+    >
       <div
         className="row"
         style={{ marginBottom: "15px", position: "relative" }}
@@ -790,15 +925,15 @@ function RightSideGrid({
             </div>
           </div>
         )}
-        <div className="col-10 col-md-6 col-sm-6 col-xl-6">
-          <div className="all-companies-sub-title">
+        <div className="col-10 col-md-5 col-sm-5 col-xl-5">
+          <div className="all-companies-sub-title new-task-list">
             {/* <img id={task.TaskId} style={{ cursor: "pointer" }}
               src={task.Status === "Approved" ? completeTaskIcon : sidebarCheckIcon}
               alt="sidebar Check Icon"
               onClick={() => _handleApproveTaskOnCheckBoxClick(task.TaskId)} /> */}
             <div
               onClick={(e) => getSelectTaskDetails(task)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer",display: "flex" }}
             >
               <div class="graybox-left">
                 <span class="all-companies-nse-label">{task.LicenseCode}</span>
@@ -818,6 +953,7 @@ function RightSideGrid({
                     {getDayDate(task.EndDate, 2)}
                   </div>
                 </div>
+                { task.Status !== "Assigned" &&
                 <p
                   className="pink-label-text d-none d-sm-block"
                   style={{
@@ -827,50 +963,51 @@ function RightSideGrid({
                           ? "#fcf3cd"
                           : // task.Status === "Completed By User"  ? "#cdfcd8 " :
                           task.Status === "Completed By User"
-                          ? task.EndDate < today
-                            ? "#cdfcd8"
-                            : "#ffefea"
-                          : task.Status === "Approved"
-                          ? "#cdfcd8"
-                          : task.Status === "Assigned"
-                          ? "#ffefea"
-                          : task.Status === "Request Rejected"
-                          ? "#ffefea"
-                          : "#d2fccd"
+                            ? moment(task.ActualTaskEndDate).isBefore(today)
+                              ? "#cdfcd8"
+                              : "#ffefea"
+                            : task.Status === "Approved"
+                              ? "#cdfcd8"
+                              : task.Status === "Assigned"
+                                ? "#ffefea"
+                                : task.Status === "Request Rejected"
+                                  ? "#ffefea"
+                                  : "#d2fccd"
                         : "#d2fccd",
                     color:
                       task && task.Status
                         ? task.Status === "Completed By User"
-                          ? task.EndDate < today
+                          ? moment(task.ActualTaskEndDate).isBefore(today)
                             ? "#7fba7a"
                             : "#ff5f31"
                           : // task.Status === "Completed By User" ? "#7fba7a" :
                           task.Status === "Approved"
-                          ? "#7fba7a"
-                          : task.Status === "Assigned"
-                          ? "#f8c102"
-                          : task.Status === "Assign"
-                          ? "#f8c102"
-                          : task.Status === "Request Rejected"
-                          ? "#ff5f31"
-                          : ""
+                            ? "#7fba7a"
+                            : task.Status === "Assigned"
+                              ? "#f8c102"
+                              : task.Status === "Assign"
+                                ? "#f8c102"
+                                : task.Status === "Request Rejected"
+                                  ? "#ff5f31"
+                                  : ""
                         : "#fcf3cd",
                   }}
                 >
                   {task.Status && task.Status === "Completed By User"
-                    ? task.EndDate < today
-                      ? "Task Completed"
+                    ? moment(task.ActualTaskEndDate).isBefore(today)
+                      ? "NOT REVIEWED"
                       : "Approval Pending"
                     : task.Status === "Assign"
-                    ? "Assign Task"
-                    : task.Status === "Assigned"
-                    ? "Task Assigned"
-                    : task.Status === "Approved"
-                    ? "Task Approved"
-                    : task.Status === "Request Rejected"
-                    ? "Task Rejected"
-                    : ""}
+                      ? "Assign Task"
+                      : task.Status === "Assigned"
+                        ? "Task Assigned"
+                        : task.Status === "Approved"
+                          ? "Task Approved"
+                          : task.Status === "Request Rejected"
+                            ? "Task Rejected"
+                            : ""}
                 </p>
+                 }
               </span>
             </div>
           </div>
@@ -886,12 +1023,12 @@ function RightSideGrid({
           </div>
         </div>
         <div
-          className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block"
+          className="col-2 col-md-3 col-sm-3 col-xl-3 d-none d-sm-block"
           style={{ cursor: "pointer" }}
           onClick={(e) => getSelectTaskDetails(task)}
         >
           {task.AssignedTo != 0 ? (
-            <div className="d-flex">
+            <div className="d-flex new-task-list">
               {userDetails.UserType === 4 ? (
                 task.ApproverName === "Assign" ? null : (
                   <div className="circle-name d-none d-sm-block">
@@ -925,16 +1062,249 @@ function RightSideGrid({
                     : task.ApproverName}
                 </div>
               ) : (
-                <div className="circle-front-text d-none d-sm-block">
-                  {task.AssignedName}
+                <div className="circle-front-text d-none d-sm-block mail">
+                  
+                 {_getAssignedName(task.AssignedName)} 
                 </div>
               )}
             </div>
           ) : (
             <div>
               <div
+                className="circle-front-text NoStatus">
+                {" "}
+                <img src={assignIconCircle} alt="" /> ASSIGN
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="col-2">
+          <div className="align-right task-list-new">
+            <div className="d-flex">
+              <div
+                className={
+                  Status === "overdue"
+                    ? "red-week d-none d-sm-block"
+                    : "black-week d-none d-sm-block"
+                }
+                style={{ cursor: "pointer" }}
+                onClick={(e) => getSelectTaskDetails(task)}
+              >
+                {getDayDate(task.EndDate, 1)}
+              </div>
+              <div
+                className="right-arrow-week text-right-grid"
+                
+                onClick={(e) => getSelectTaskDetails(task)}
+              >
+                {
+                  <img
+                    className="d-none d-sm-block"
+                    src={keyboardArrowRightBlack}
+                    alt="Right Arrow"
+                  />
+                }
+                {task.AssignedTo !== 0 && (
+                  <img
+                    className="d-block d-sm-none"
+                    src={keyboardArrowRightBlack}
+                    alt="Right Arrow"
+                  />
+                )}
+                {showUserToolTip === `Tooltip${task.TaskId}` && (
+                  <div className="toolTip-input">
+                    <div className="tooltiptext1 mobDisplaynone">
+                      <span className="font-normal-text1">
+                        {task.AssignedName}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {
+                  // task.AssignedTo > 0 &&
+                  task.AssignedTo === 0 && (
+                    <div className="only-mobile-assign-add d-block d-sm-none">
+                      <div
+                        className="assign-user-icon"
+                        onMouseOver={() =>
+                          setShowUserToolTip(`Tooltip${task.TaskId}`)
+                        }
+                        onMouseOut={() => setShowUserToolTip("")}
+                      >
+                        <img
+                          src={assignIconCircle}
+                          className="d-block d-sm-none"
+                          alt="Assign Circle"
+                        />
+                      </div>
+                    </div>
+                  )
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+        {Status === "overdue" && searchValue === "" &&(
+          <div className="redWidth-bottom">
+            <div className="redLine">
+              {" "}
+              <img src={RedLine} alt="" />
+            </div>
+          </div>
+        )}
+      </div>
+      
+      </Link>
+    )
+  }
+
+  const renderCompanyTaskList = (task, Status, listType) => {
+    return (
+      <div
+        className="row"
+        style={{ marginBottom: "15px", position: "relative" }}
+      >
+        {listType === 1 && Status === "overdue" && (
+          <div className="redWidth">
+            <div className="redLine">
+              {" "}
+              <img src={RedLine} alt="" />
+            </div>
+          </div>
+        )}
+        <div className="col-10 col-md-6 col-sm-6 col-xl-6">
+          <div className="all-companies-sub-title">
+            <div
+              onClick={(e) => getSelectTaskDetails(task)}
+              style={{ cursor: "pointer" }}
+            >
+              <div class="graybox-left">
+                <span class="all-companies-nse-label">{task.LicenseCode}</span>
+              </div>
+              <span className="pink-label-title-right">
+                <div className="overdue-title">{task.TaskName}</div>
+                <div
+                  className={
+                    Status === "overdue"
+                      ? "red-week d-block d-sm-none"
+                      : "black-week d-block d-sm-none"
+                  }
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => getSelectTaskDetails(task)}
+                >
+                  <div className="d-block d-sm-none">
+                    {getDayDate(task.EndDate, 2)}
+                  </div>
+                </div>
+                { task.Status !== "Assigned"  &&
+                <p
+                  className="pink-label-text d-none d-sm-block"
+                  style={{
+                    backgroundColor:
+                      task && task.Status
+                        ? task.Status === "Assign"
+                          ? "#fcf3cd"
+                          : // task.Status === "Completed By User"  ? "#cdfcd8 " :
+                          task.Status === "Completed By User"
+                            ? moment(task.ActualTaskEndDate).isBefore(today)
+                              ? "#cdfcd8"
+                              : "#ffefea"
+                            : task.Status === "Approved"
+                              ? "#cdfcd8"
+                              : task.Status === "Assigned"
+                                ? "#ffefea"
+                                : task.Status === "Request Rejected"
+                                  ? "#ffefea"
+                                  : "#d2fccd"
+                        : "#d2fccd",
+                    color:
+                      task && task.Status
+                        ? task.Status === "Completed By User"
+                          ? moment(task.ActualTaskEndDate).isBefore(today)
+                            ? "#7fba7a"
+                            : "#ff5f31"
+                          : // task.Status === "Completed By User" ? "#7fba7a" :
+                          task.Status === "Approved"
+                            ? "#7fba7a"
+                            : task.Status === "Assigned"
+                              ? "#f8c102"
+                              : task.Status === "Assign"
+                                ? "#f8c102"
+                                : task.Status === "Request Rejected"
+                                  ? "#ff5f31"
+                                  : ""
+                        : "#fcf3cd",
+                  }}
+                >
+                  {task.Status && task.Status === "Completed By User"
+                    ? moment(task.ActualTaskEndDate).isBefore(today)
+                      ? "NOT REVIEWED"
+                      : "Approval Pending"
+                    : task.Status === "Assign"
+                      ? "Assign Task"
+                      : task.Status === "Assigned"
+                        ? "Task Assigned"
+                        : task.Status === "Approved"
+                          ? "Task Approved"
+                          : task.Status === "Request Rejected"
+                            ? "Task Rejected"
+                            : ""}
+                </p>
+              }
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
+          <div
+            className="circle-front-text"
+            style={{ width: "fit-content", cursor: "pointer" }}
+            value={task.TaskId}
+            onClick={(e) => getSelectTaskDetails(task)}
+          >
+            {task.EntityName}
+          </div>
+        </div>
+        <div
+          className="col-2 col-md-2 col-sm-2 col-xl-2 "
+          style={{ cursor: "pointer" }}
+          onClick={(e) => getSelectTaskDetails(task)}
+        >
+          {task.AssignedTo != 0 ? (
+            <div className=""z style={{display:"none"}}>
+              {userDetails.UserType === 4 ? (
+                task.ApproverName === "Assign" ? null : (
+                  <div className="circle-name d-none d-sm-block">
+                    <div className="circle-text">
+                      {userDetails.UserType === 4 &&
+                        getInitials(task.ApproverName)}
+                    </div>
+                  </div>
+                )
+              ) : (
+                <div className="circle-name d-none d-sm-block" >
+                  <div className="circle-text" style={{display:"none"}}>
+                    {getInitials(task.AssignedName)}
+                  </div>
+                </div>
+              )}
+              {userDetails.UserType === 4 ? (
+                <div className="circle-front-text d-none d-sm-block">
+                  {task.ApproverName === "Assign"
+                    ? "No Approver"
+                    : task.ApproverName}
+                </div>
+              ) : (
+                <div className="circle-front-text d-none d-sm-block">
+                  {task.AssignedName}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div >
+              <div
                 className="circle-front-text NoStatus"
-                style={{ color: "#6c5dd3" }}
+                style={{ color: "#6c5dd3",display:"none" }}
               >
                 {" "}
                 <img src={assignIconCircle} alt="" /> ASSIGN
@@ -958,7 +1328,7 @@ function RightSideGrid({
               </div>
               <div
                 className="right-arrow-week text-right-grid"
-                style={{ cursor: "pointer" }}
+               
                 onClick={(e) => getSelectTaskDetails(task)}
               >
                 {
@@ -1009,7 +1379,7 @@ function RightSideGrid({
           </div>
         </div>
         {Status === "overdue" && (
-          <div className="redWidth-bottom">
+          <div className="redWidth-bottom ">
             <div className="redLine">
               {" "}
               <img src={RedLine} alt="" />
@@ -1062,7 +1432,7 @@ function RightSideGrid({
             <div className="d-flex">
               <div
                 className="right-arrow-week text-right-grid"
-                style={{ cursor: "pointer" }}
+               
                 onClick={(e) => getSelectTaskDetails(task)}
               >
                 <img
@@ -1078,39 +1448,55 @@ function RightSideGrid({
     )
   }
 
-  const onHBMenu = () =>{
+  const onHBMenu = () => {
     const drawerParent = document.getElementById("sideBarParent");
-      const drawerChild = document.getElementById("sideBarChild");
-      if (drawerParent) {
-         drawerParent.classList.add("overlay");
-         drawerChild.style.left = "0%";
-      }
+    const drawerChild = document.getElementById("sideBarChild");
+    if (drawerParent) {
+      drawerParent.classList.add("overlay");
+      drawerChild.style.left = "0%";
+    }
 
   }
+  const innerRefDropWeb = useDropdownOuterClick((e) => {
+    if (openBoardDrD === true && !e.target.id.includes("drpBoard")) {
+      setOpenBoardDrp(false)
+    }
+  })
 
   return (
     <>
+    {
+     click === "riskAndDelays" ? 
+      <div className="all-companies-task-grid mobile-dashboard-view">
+          <RiskAndDelaysTaskList click={click} setClick={setClick} user={user} />
+      </div>
+    : click === "pendingAction" ?
+      <div className="all-companies-task-grid mobile-dashboard-view">
+        <PendingAction click={click} setClick={setClick} user={user}/>
+      </div>
+    :
+    <>
       {visibleRejectTaskModal && renderRejectTaskModal()}
       {!isTaskListOpen && (
-        <div className="all-companies-task-grid ">
+        <div className="all-companies-task-grid mobile-dashboard-view">
           {isMobile && (
-             <div id="sideBarParent" className="">
-             <div id="sideBarChild" className="leftSideBarFixed">
-            <MobileLeftSidebar
-              className="d-block d-sm-none"
-              close={() => closeMobileSidebar()}
-            />
-            </div>
+            <div id="sideBarParent" className="">
+              <div id="sideBarChild" className="leftSideBarFixed">
+                <MobileLeftSidebar
+                  className="d-block d-sm-none"
+                  close={() => closeMobileSidebar()}
+                />
+              </div>
             </div>
           )}
 
-          <div className="mobile-head d-block d-sm-none">
+          {/* <div className="mobile-head d-block d-sm-none">
             <div className="d-flex">
               <div
                 className="w-25"
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  onHBMenu ()
+                  onHBMenu()
                 }}
               >
                 <img src={togglemobile} alt="toggle mobile" />
@@ -1124,21 +1510,30 @@ function RightSideGrid({
                 />{" "}
               </div>
             </div>
-          </div>
-          <div className="d-flex mobile-height">
+          </div> */}
+          <>
+          <div className="d-flex mobile-height-dasboardView">
             <div className="companies-sub-title w-25 d-none d-sm-block">
               Tasks
             </div>
-            {!searchBoxShowMobile && (
-              <div className="companies-sub-title w-25 d-block d-sm-none">
-                Tasks
+            {/* {!searchBoxShowMobile && ( */}
+            <div className="d-flex pl-0">
+              <div className="overview-mobile d-block d-sm-none" onClick={()=>setListView("0")}>
+                Overview
               </div>
-            )}
+              <div className="companies-sub-title d-block d-sm-none">
+              Tasks
+            </div>
+            </div>
+              
+            {/* )} */}
             <div className="w-75 d-none d-sm-block">
               {!searchBoxShow && (
                 <div
                   className="only-search-icon"
-                  onClick={() => setsearchBoxShow(true)}
+                  // onClick={() => setsearchBoxShow(true)}
+                  onClick= {handleFocus}
+
                 >
                   <img src={searchIcon} alt="sidebar Check Icon" />
                 </div>
@@ -1152,9 +1547,11 @@ function RightSideGrid({
                       alt="search Icon"
                     />
                     <input
+                      ref={searchInput}
+                      autofocus 
                       className="form-control mozilla-py"
                       type="text"
-                      placeholder="Search Tasks"
+                      placeholder="Search for teams,licenses, Companies etc"
                       onChange={(e) => handleSearch(e.target.value)}
                       value={searchValue}
                     />
@@ -1178,7 +1575,7 @@ function RightSideGrid({
               className={
                 searchBoxShowMobile
                   ? "col-12 d-block d-sm-none"
-                  : "col-10 d-block d-sm-none mobile"
+                  : "col-5 d-block d-sm-none mobile"
               }
             >
               {!searchBoxShowMobile && (
@@ -1200,7 +1597,7 @@ function RightSideGrid({
                     <input
                       className="form-control"
                       type="text"
-                      placeholder="Search Tasks"
+                      placeholder="Search for teams,licenses, Companies etc"
                       onChange={(e) => handleSearch(e.target.value)}
                       value={searchValue}
                     />
@@ -1222,102 +1619,333 @@ function RightSideGrid({
             </div>
           </div>
 
-          <div className="task-details-file-grid">
+          <div className="task-details-file-grid task-details-file-grid-dashboard custimDesignTask" style={{position: "relative"}}>
             {searchValue != "" && (
               <div className="file-title">Search Results: </div>
             )}
             {searchValue === "" && (
-              <div>
-                <div className="file-title">List</div>
-                <div className="file-title-progress"></div>
-              </div>
+              <span>
+                <span className={displayTask === "1"? "file-title-active":"file-title-inactive"} style={{cursor: "pointer" }} onClick={e =>{setDisplayTask("1");setTaskListDisplay("1");}}>List</span>
+                {displayTask === "1" && <div className="file-title-progress"></div>}
+                <span className={displayTask === "3"? "file-title-active":"file-title-inactive"} style={{ marginLeft: "40px", cursor: "pointer" }} onClick={e =>{setDisplayTask("3");setTaskListDisplay("");}}>Calendar</span>
+                {displayTask === "3" && <div className="file-title-progress" style={{left:"67px",width:"90px"}}></div>}
+                <span className= {displayTask === "2"? "file-title-active":"file-title-inactive"} style={{ marginLeft: "40px", cursor: "pointer" }} onClick={e =>{setDisplayTask("2");setTaskListDisplay("");}}>Board</span>
+                {displayTask === "2" && <div className="file-title-progress" style={{left:"190px",width:"65px"}}></div>}
+                              
+              </span>
             )}
-          </div>
+                  {(searchValue === "" && displayTask === "1" ||searchValue === ""&& displayTask === "2") &&
+                    <div className="take-action mb-0 d-none d-sm-block">
+                      <ul className="pull-right" style={{ float: "right" }}>
+                        <span style={{ fontSize: "10px", backgroundColor: "transparent" }}>View by</span>
+                        <span className={displayTask === "1" ? taskListDisplay === "1" && "active" : currentBoardViewBy === "status" && "active"} style={{ fontSize: "10px", marginLeft: "10px", paddingLeft: "6px", paddingRight: "6px", cursor: "pointer" }} onClick={e => {
+                          if (displayTask === "1") {
+                            setTaskListDisplay("1"); setDisplayTask("1")
+                          }
+                          if (displayTask === "2") { setCurrentBoardViewBy("status") }
 
-          <div className="task-grid-scroll">
-            {searchValue != "" && (
-              <div
-                className="take-action"
-                style={{
-                  marginBottom: "0px",
-                  paddingBottom: "0px",
-                  paddingTop: "20px",
-                }}
-              >
-                {searchData.length > 0 &&
-                  searchData.map((task) => {
-                    return <>{renderTaskList(task.data, task.Status, 2)}</>
-                  })}
+                        }}>Status</span>
+                        <span className={displayTask === "1" ? taskListDisplay === "2" && "active" : currentBoardViewBy === "company" && "active"} style={{ fontSize: "11px", marginLeft: "10px", paddingLeft: "6px", paddingRight: "6px", cursor: "pointer" }} onClick={e => {
+                          if (displayTask === "1") {
+                            setTaskListDisplay("2"); setDisplayTask("1");
+                          }
+                          if (displayTask === "2") {
+                            setCurrentBoardViewBy("company")
+                          }
+                        }}>Company</span>
+                        <span className={displayTask === "1" ? taskListDisplay === "3" && "active" : currentBoardViewBy === "license" && "active"} style={{ fontSize: "11px", marginLeft: "10px", paddingLeft: "6px", paddingRight: "6px", cursor: "pointer" }} onClick={e => {
+                          if (displayTask === "1") {
+                            setTaskListDisplay("3");
+                            setDisplayTask("1");
+                          }
+                          if (displayTask === "2") {
+                            setCurrentBoardViewBy("license")
+                          }
+                        }
+                        }>License</span>
+                        <span className={displayTask === "1" ? taskListDisplay === "4" && "active" : currentBoardViewBy === "team-member" && "active"} style={{ fontSize: "11px", marginLeft: "10px", paddingLeft: "6px", paddingRight: "6px", cursor: "pointer" }} onClick={e => {
+                          if (displayTask === "1") {
+                            setTaskListDisplay("4"); setDisplayTask("1");
+                          }
+                          if (displayTask === "2") {
+                            setCurrentBoardViewBy("team-member")
+                          }
+                        }}>Team</span>
+                      </ul>
+                    </div>
+                  }
+                </div>
+                { displayTask === "2" && searchValue === "" &&
+                  <div>
+                    <div className="take-action" style={{ height: "72vh",overflowY:'hidden' }}>
+                      {
+                        taskData && taskData.length > 0 &&
+                            <div className="task-list-grid">
+                              
+                              <BoardView
+                                setCurrentBoardViewBy={setCurrentBoardViewBy}
+                                currentBoardViewBy={currentBoardViewBy}
+                              />
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+                    { displayTask === "3" && searchValue === "" &&
+                      <div>
+                        <div className="take-action" style={{ height: "72vh" }}>
+                          { false && 
+                            taskData && taskData.length > 0 &&
+                            <div className="task-list-grid">
+                              <CalendarView
+                              />
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+                    <div className={displayTask === "1" && "task-grid-scroll customScrollSecond newHeigt"}>
+                      {searchValue != "" && (
+                        <div
+                          className="take-action"
+                          style={{
+                            marginBottom: "0px",
+                            paddingBottom: "0px",
+                            paddingTop: "20px",
+                            height: "70vh"
+                          }}
+                        >
+                          {searchData.length > 0 &&
+                            searchData.map((task) => {
+                              return <>{renderTaskList(task.data, task.Status, 2)}</>
+                            })}
+                        </div>
+                      )}
+
+            {isMobile && displayTask === "1" && (<>
+              <div className="dropdown-mobile" onClick={(e) => {
+                if (mobileViewBy) {
+                  setMobileViewBy(false)
+                } else { setMobileViewBy(true) }
+              }}>
+                {taskListDisplay === "1" ? "By Status" : taskListDisplay === "2" ? "Company" : taskListDisplay === "3" ? "License" : taskListDisplay === "4" ? "Team" : "View By"}
+                <img
+                  className="drop-down-bottom-arrow"
+                  src={dropdownBottomArrow}
+                  alt="dropdownBottomArrow"
+                />
               </div>
-            )}
-            {searchValue === "" &&
-              taskData &&
-              taskData.length > 0 &&
-              taskData.map((item, index) => {
+              {mobileViewBy && (
+                <div ref={innerRefDrop} className="dropdown-open">
+                  <div
+                    className=""
+                    onClick={e => { setTaskListDisplay("4"); setDisplayTask("1"); setMobileViewBy(false) }}
+                  >
+                                <div className="icon-text-inline">
+                                  <span className={taskListDisplay === "4" ?"float-left dropdown-active-link" :"float-left change-role" }>By Team</span>
+                                  <span className="float-right change-role">
+                                    {taskListDisplay === "4" && <img
+                                      className="dropdownCheck"
+                                      src={dropdownCheckIcon}
+                                      alt="dropdownCheckIcon"
+                                    />}
+                                  </span>
+                                </div> 
+                              </div>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={e =>{setTaskListDisplay("3");setDisplayTask("1");setMobileViewBy(false)}}
+                                className=""
+                              >
+                                <div className="icon-text-inline">
+                                  <span className={taskListDisplay === "3" ?"float-left dropdown-active-link" :"float-left change-role" }>By License</span>
+                                  <span className="float-right change-role">
+                                  {taskListDisplay === "3" && <img
+                                      className="dropdownCheck"
+                                      src={dropdownCheckIcon}
+                                      alt="dropdownCheckIcon"
+                                    />}
+                                  </span>
+                                </div> 
+                              </div>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={e => {setTaskListDisplay("1");setDisplayTask("1");setMobileViewBy(false)}}
+                                className=""
+                              >
+                                <div className="icon-text-inline">
+                                  <span className={taskListDisplay === "1" ?"float-left dropdown-active-link" :"float-left change-role" }>By Status</span>
+                                  <span className="float-right change-role">
+                                    {taskListDisplay === "1" && <img
+                                      className="dropdownCheck"
+                                      src={dropdownCheckIcon}
+                                      alt="dropdownCheckIcon"
+                                    />}
+                                  </span>
+                                </div> 
+                                
+                              </div><div
+                                style={{ cursor: "pointer" }}
+                                onClick={e =>{setTaskListDisplay("2");setDisplayTask("1");setMobileViewBy(false)}}
+                                className=""
+                              >
+                                <div className="icon-text-inline">
+                                  <span className={taskListDisplay === "2" ?"float-left dropdown-active-link" :"float-left change-role" }>By Company</span>
+                                  <span className="float-right change-role">
+                                  {taskListDisplay === "2" && <img
+                                      className="dropdownCheck"
+                                      src={dropdownCheckIcon}
+                                      alt="dropdownCheckIcon"
+                                    />}
+                                  </span>
+                                </div> 
+                              </div>
+                            </div>
+                          )}
+                          </>
+            )}          
+            {taskListDisplay === "1" && displayTask === "1" &&
+              searchValue === "" &&
+              listTaskData &&
+              listTaskData.length > 0 &&
+              listTaskData.map((item, index) => {
                 return (
                   <>
-                    <div className="take-action">
-                      <div className="task-list-grid">
+                  <div className="mobile-dashboard-view">
+                    <div className="take-action" >
+                      <div className="task-list-grid" >
                         {item.Status.trim() === "overdue" && (
                           <div
-                            className="action-title"
-                            style={{ color: "#f22727", fontWeight: "500" }}
+                            className="action-title upcoming-btn"
+                            style={{ color: "#f22727", fontWeight: "500",display:"flex",width:"fit-content" }}
+                              onClick={() => {
+                                expandedFlags.includes(index)
+                                  ? handleExpandList("hide", index)
+                                  : handleExpandList("show", index)
+                              }}
                           >
-                            {"Overdue"}
+                            {"Overdue"} <p className="red-circle-overide">{item.Details.length}</p>  
+                            {/* <img
+                                className="redArrowTop"
+                                src={redArrowTop}
+                                alt="redArrowTop"
+                              /> */}
+                                {!expandedFlags.includes(index) ? (
+                                  <img
+                                    src={redArrowTop}
+                                    className="redArrowTop arrowDown"
+                                    alt="Arrow Up"
+                                    style={{width:"18px", height:"18px",marginTop: "2px",marginLeft:"9px"}}
+                                  />
+                                ) : (
+                                  // <img
+                                  //   src={downArrow}
+                                  //   className="redArrowTop arrowDown"
+                                  //   alt="Arrow down"
+                                  //   style={{width:"10px", height:"7px",marginTop: "8px",marginLeft:"9px"}}
+
+                                  // />
+
+                                  <img
+                                  src={redArrowTop}
+                                  className="redArrowTop arrowDown"
+                                  alt="Arrow Up"
+                                  style={{width:"18px", height:"18px",marginTop: "2px",marginLeft:"9px",transform: "rotate(180deg)" }}
+                                />
+                                )}
                           </div>
                         )}
                         {item.Status.trim() === "Pending" && (
-                          <div className="action-title">{"Take Action"}</div>
+                          // <div className="action-title">{"Take Action"} 
+                            /* <span className="" style={{backgroundColor:"#000",color:"#fff",borderRadius:"50%" , fontSize:"12px"}}>{item.Details.length}</span>&nbsp;&nbsp; */
+                          // </div>
+                          <div
+                              className="upcoming-btn"
+                              style={{ cursor: "pointer",width:"fit-content" }}
+                              onClick={() => {
+                                expandedFlags.includes(index)
+                                  ? handleExpandList("hide", index)
+                                  : handleExpandList("show", index)
+                              }}
+                            >
+                              <div
+                                style={{ cursor: "pointer" }}
+                                className= "upcoming-title"
+                              > 
+                                {"Take Action"}
+                                <span className="black-circle">
+                                  <p className="black-circle-text">
+                                    {item.Details.length}
+                                  </p>
+                                </span>
+                                {!expandedFlags.includes(index) ? (
+                                  <img
+                                    src={upArrow}
+                                    className="arrowDown"
+                                    alt="Arrow Up"
+                                  />
+                                ) : (
+                                  <img
+                                    src={downArrow}
+                                    className="arrowDown"
+                                    alt="Arrow down"
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          
                         )}
                         {(item.Status.trim() === "Upcoming" ||
                           item.Status.trim() === "Completed") && (
-                          <div
-                            className="upcoming-btn"
-                            onClick={() => {
-                              expandedFlags.includes(index)
-                                ? handleExpandList("hide", index)
-                                : handleExpandList("show", index)
-                            }}
-                          >
                             <div
-                              style={{ cursor: "pointer" }}
-                              className={
-                                item.Status.trim() === "Upcoming"
-                                  ? "upcoming-title"
-                                  : "complete-title"
-                              }
+                              className="upcoming-btn"
+                              style={{ cursor: "pointer",width:"fit-content" }}
+                              onClick={() => {
+                                expandedFlags.includes(index)
+                                  ? handleExpandList("hide", index)
+                                  : handleExpandList("show", index)
+                              }}
                             >
-                              {item.Status.trim() === "Upcoming"
-                                ? "Upcoming"
-                                : "Completed"}
-                              <span
+                              <div
+                                style={{ cursor: "pointer" }}
                                 className={
                                   item.Status.trim() === "Upcoming"
-                                    ? "black-circle"
-                                    : "green-circle"
+                                    ? "upcoming-title"
+                                    : "complete-title"
                                 }
                               >
-                                <p className="black-circle-text">
-                                  {item.Details.length}
-                                </p>
-                              </span>
-                              {expandedFlags.includes(index) ? (
-                                <img
-                                  src={upArrow}
-                                  className="arrowDown"
-                                  alt="Arrow Up"
-                                />
-                              ) : (
-                                <img
+                                {item.Status.trim() === "Upcoming"
+                                  ? "Upcoming"
+                                  : "Completed"}
+                                <span
+                                  className={
+                                    item.Status.trim() === "Upcoming"
+                                      ? "black-circle"
+                                      : "green-circle"
+                                  }
+                                >
+                                  <p className="black-circle-text">
+                                    {item.Details.length}
+                                  </p>
+                                </span>
+                                {!expandedFlags.includes(index) ? (
+                                  <img
                                   src={downArrow}
                                   className="arrowDown"
                                   alt="Arrow down"
                                 />
-                              )}
+                                ) : (
+
+                                  <img
+                                  src={upArrow}
+                                  className="arrowDown"
+                                  alt="Arrow Up"
+                                />
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        )}
-                        {item.Status.trim() === "overdue" &&
+                          )}
+                        {/* {item.Status.trim() === "overdue" &&
                           item.Details.slice(
                             0,
                             rowCount[item.Status.trim()]
@@ -1325,11 +1953,15 @@ function RightSideGrid({
                             return (
                               <>{renderTaskList(task, item.Status.trim(), 1)}</>
                             )
-                          })}
-                        {item.Status.trim() != "overdue" &&
-                          (item.Status.trim() === "Pending"
-                            ? true
-                            : !expandedFlags.includes(index)) && (
+                          })} */}
+                        {(
+                          // item.Status.trim() === "overdue" &&
+                          // item.Status.trim() === "Pending"
+                          //   ? true
+                          //   :                            
+                              item.Status.trim() === "Upcoming" ? expandedFlags.includes(index): item.Status.trim() === "Completed" ? expandedFlags.includes(index):
+                              item.Status.trim() === "overdue" ? !expandedFlags.includes(index): item.Status.trim() === "Pending" ? !expandedFlags.includes(index):
+                            !expandedFlags.includes(index)) && (
                             <>
                               {item.Details.slice(
                                 0,
@@ -1346,12 +1978,12 @@ function RightSideGrid({
                                 )
                               })}
                               <div>
-                                {item.Details.length > 4 && (
+                                {item.Details.length > 3 && (
                                   <>
-                                    {rowCount[item.Status.trim()] > 4 && (
+                                    {rowCount[item.Status.trim()] > 3 && (
                                       <div
                                         onClick={() =>
-                                          showLessMore(item.Status, 4)
+                                          showLessMore(item.Status, 3)
                                         }
                                         className="viewAll showLess"
                                       >
@@ -1362,7 +1994,7 @@ function RightSideGrid({
                                         />
                                       </div>
                                     )}
-                                    {rowCount[item.Status.trim()] === 4 && (
+                                    {rowCount[item.Status.trim()] === 3 && (
                                       <div
                                         onClick={() =>
                                           showLessMore(
@@ -1372,7 +2004,7 @@ function RightSideGrid({
                                         }
                                         className="viewAll"
                                       >
-                                        View All ({item.Details.length - 4} )
+                                        View All ({item.Details.length - 3} More)
                                         <img
                                           src={viewAllArow}
                                           alt="view All Arow"
@@ -1386,1256 +2018,40 @@ function RightSideGrid({
                           )}
                       </div>
                     </div>
+                    </div>
                   </>
                 )
               })}
-          </div>
-        </div>
-      )}
-
-      {isTaskListOpen && (
-        <div className="row ">
-          <div className="col-3 new-side-bar d-none d-sm-block">
-            <div className="scroll-inside">
-              <div className="all-companies-task-grid-2 inside-padding-sidebar">
-                {!searchBoxShow && (
-                  <div
-                    className="only-search-icon"
-                    onClick={() => setsearchBoxShow(true)}
-                  >
-                    <img src={searchIcon} alt="sidebar Check Icon" />
-                  </div>
-                )}
-                {searchBoxShow && (
-                  <div
-                    className="task-details-file-grid-sidebar ss"
-                    ref={innerSearch}
-                    style={{ marginTop: "12px" }}
-                  >
-                    <img
-                      className="IconGray"
-                      src={searchIcon}
-                      alt="search Icon"
-                      style={{
-                        position: "absolute",
-                        marginTop: "10px",
-                        paddingLeft: "10px",
-                      }}
-                    />
-                    <input
-                      className="form-control"
-                      type="text"
-                      placeholder="Search Tasks"
-                      onChange={(e) => handleSearch(e.target.value)}
-                      value={searchValue}
-                      style={{ paddingLeft: "40px" }}
-                    />
-
-                    <span
-                      className="input-group-append"
-                      style={{ marginTop: "-40px", float: "right" }}
-                    >
-                      <button
-                        className="btn border-start-0 border-top-0 border-bottom-0 border-0 ms-n5"
-                        type="button"
-                      >
-                        <img
-                          src={closeIconGray}
-                          alt="close Icon"
-                          onClick={() => clearSearch()}
-                        />
-                      </button>
-                    </span>
-                  </div>
-                )}
-                {!searchBoxShow && (
-                  <>
-                    <div className="all-companies-title-sidebar">
-                      All Companies
-                    </div>
-                    <div className="companies-sub-title-sidebar">Tasks</div>
-                  </>
-                )}
-                <div className="task-details-file-grid-sidebar">
-                  <div className="row">
-                    <div className="col">
-                      {searchValue != "" && (
-                        <div className="file-title">Search Results: </div>
-                      )}
-                      {searchValue === "" && (
-                        <div>
-                          <div className="file-title">List</div>
-                          <div className="file-title-progress"></div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="take-action">
-                  {searchValue != "" && (
-                    <div
-                      className="take-action"
-                      style={{
-                        marginBottom: "0px",
-                        paddingBottom: "0px",
-                        paddingTop: "20px",
-                      }}
-                    >
-                      {searchData.length > 0 &&
-                        searchData.map((task) => {
-                          return (
-                            <>
-                              {renderSidebarTaskList(task.data, task.Status, 2)}
-                            </>
-                          )
-                        })}
-                    </div>
-                  )}
-                  {searchValue === "" &&
-                    taskData &&
-                    taskData.length > 0 &&
-                    taskData.map((item, index) => {
-                      return (
-                        <>
-                          <div className="task-list-grid">
-                            {item.Status.trim() === "overdue" && (
-                              <div
-                                className="overdue-title-sidebar"
-                                style={{ color: "#f22727", fontWeight: "500" }}
-                              >
-                                {"Overdue"}
-                              </div>
-                            )}
-                            {item.Status.trim() === "Pending" && (
-                              <div className="action-title-sidebar">
-                                {"Take Action"}
-                              </div>
-                            )}
-                            {(item.Status.trim() === "Upcoming" ||
-                              item.Status.trim() === "Completed") && (
-                              <div
-                                className={
-                                  item.Status.trim() === "Upcoming"
-                                    ? "upcoming-btn sidebar-upcoming"
-                                    : "upcoming-btn sidebar-completed"
-                                }
-                                onClick={() => {
-                                  expandedFlags.includes(index)
-                                    ? handleExpandList("hide", index)
-                                    : handleExpandList("show", index)
-                                }}
-                              >
-                                <div
-                                  style={{ cursor: "pointer" }}
-                                  className={
-                                    item.Status.trim() === "Upcoming"
-                                      ? "upcoming-title"
-                                      : "complete-title"
-                                  }
-                                >
-                                  {item.Status.trim() === "Upcoming"
-                                    ? "Upcoming"
-                                    : "Completed"}
-                                  <span
-                                    className={
-                                      item.Status.trim() === "Upcoming"
-                                        ? "black-circle"
-                                        : "green-circle"
-                                    }
-                                  >
-                                    <p className="black-circle-text">
-                                      {item.Details.length}
-                                    </p>
-                                  </span>
-                                  {expandedFlags.includes(index) ? (
-                                    <img
-                                      src={upArrow}
-                                      className="arrowDown"
-                                      alt="Arrow Up"
-                                    />
-                                  ) : (
-                                    <img
-                                      src={downArrow}
-                                      className="arrowDown"
-                                      alt="Arrow down"
-                                    />
-                                  )}
-                                </div>
-                              </div>
-                            )}
-                            {item.Status.trim() === "overdue" &&
-                              item.Details.slice(
-                                0,
-                                rowCount[item.Status.trim()]
-                              ).map((task) => {
-                                return (
-                                  <>
-                                    {renderSidebarTaskList(
-                                      task,
-                                      item.Status.trim(),
-                                      1
-                                    )}
-                                  </>
-                                )
-                              })}
-
-                            {item.Status.trim() != "overdue" &&
-                              (item.Status.trim() === "Pending"
-                                ? true
-                                : !expandedFlags.includes(index)) && (
-                                <>
-                                  {item.Details.slice(
-                                    0,
-                                    rowCount[item.Status.trim()]
-                                  ).map((task) => {
-                                    return (
-                                      <>
-                                        {renderSidebarTaskList(
-                                          task,
-                                          item.Status.trim(),
-                                          1
-                                        )}
-                                      </>
-                                    )
-                                  })}
-                                  <div>
-                                    {item.Details.length > 4 && (
-                                      <>
-                                        <div className="sidebar-btn">
-                                          {rowCount[item.Status.trim()] > 4 && (
-                                            <div
-                                              onClick={() =>
-                                                showLessMore(item.Status, 4)
-                                              }
-                                              className="viewAll showLess"
-                                            >
-                                              Show Less{" "}
-                                              <img
-                                                src={viewAllArowTop}
-                                                alt="Show Less"
-                                              />
-                                            </div>
-                                          )}
-                                          {rowCount[item.Status.trim()] ===
-                                            4 && (
-                                            <div
-                                              onClick={() =>
-                                                showLessMore(
-                                                  item.Status,
-                                                  item.Details.length
-                                                )
-                                              }
-                                              className="viewAll"
-                                            >
-                                              View All (
-                                              {item.Details.length - 4} )
-                                              <img
-                                                src={viewAllArow}
-                                                alt="view All Arow"
-                                              />
-                                            </div>
-                                          )}
-                                        </div>
-                                      </>
-                                    )}
-                                  </div>
-                                </>
-                              )}
-                          </div>
-                        </>
-                      )
-                    })}
-                </div>
+              {/* License View Temp test */}
+              <div className="task-list-grid">
+                {
+                  taskListDisplay === "3" &&
+                  <LicenseTaskList user={user} sideBarTaskList={false}/>
+                }
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isTaskListOpen && (
-        <div className="row ">
-          <div className="col-12 right-side-bar">
-            <div className="">
-              <div className="task-details-veiw">
-                <div className="task-details-header">
-                  <div className="closing-icon">
-                    <div className="task-details-title">
-                      {getTaskById && getTaskById.EntityName}
-                    </div>
-                    <div
-                      className="task-close-icon"
-                      onClick={() => {
-                        setIsTaskListOpen(false)
-                        setExpandedFlags([])
-                      }}
-                    >
-                      <img src={closeBlack} alt="Arrow close" />
-                    </div>
-                  </div>
-                  <div className="task-details-sub-title">
-                    {getTaskById && getTaskById.TaskName}{" "}
-                    <span className="nse-label d-none d-sm-block">
-                      {getTaskById && getTaskById.LicenseCode}
-                    </span>
-                  </div>
-
-                  <div className="d-flex d-block d-sm-none">
-                    <span className="nse-label ml-0">
-                      {getTaskById && getTaskById.LicenseCode}
-                    </span>
-                    <div
-                      className="pink-label-mobile ml-0"
-                      style={{
-                        backgroundColor:
-                          getTaskById && getTaskById.Status
-                            ? getTaskById.Status === "Assign"
-                              ? "#fcf3cd"
-                              : // getTaskById.Status === "Completed By User" ? "#cdfcd8 " :
-                              getTaskById.Status === "Completed By User"
-                              ? getTaskById && getTaskById.EndDate < today
-                                ? "#cdfcd8"
-                                : "#ffefea"
-                              : getTaskById.Status === "Approved"
-                              ? "#cdfcd8"
-                              : getTaskById.Status === "Assigned"
-                              ? "#ffefea"
-                              : getTaskById.Status === "Request Rejected"
-                              ? "#ffefea"
-                              : "#d2fccd"
-                            : "#d2fccd",
-                      }}
-                    >
-                      <div
-                        className="approved-text"
-                        style={{
-                          color:
-                            getTaskById && getTaskById.Status
-                              ? getTaskById.Status === "Completed By User"
-                                ? getTaskById && getTaskById.EndDate < today
-                                  ? "#7fba7a"
-                                  : "#ff5f31"
-                                : // task.Status === "Completed By User" ? "#7fba7a" :
-                                getTaskById.Status === "Approved"
-                                ? "#7fba7a"
-                                : getTaskById.Status === "Assigned"
-                                ? "#f8c102"
-                                : getTaskById.Status === "Assign"
-                                ? "#f8c102"
-                                : getTaskById.Status === "Request Rejected"
-                                ? "#ff5f31"
-                                : ""
-                              : "#fcf3cd",
-                        }}
-                      >
-                        {getTaskById && getTaskById.Status && (
-                          <div style={{ textTransform: "uppercase" }}>
-                            {
-                              // getTaskById.Status === "Completed By User" ? "Task Completed" :
-                              getTaskById.Status === "Completed By User"
-                                ? getTaskById && getTaskById.EndDate < today
-                                  ? "Task Completed"
-                                  : "Approval Pending"
-                                : getTaskById.Status === "Assign"
-                                ? "Assign Task"
-                                : getTaskById.Status === "Assigned"
-                                ? "Task Assigned"
-                                : getTaskById.Status === "Approved"
-                                ? "Task Approved"
-                                : getTaskById.Status === "Request Rejected"
-                                ? "Task Rejected"
-                                : null
-                            }
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="border-header d-none d-sm-block">
-                    <div
-                      className="approved-label"
-                      style={{
-                        backgroundColor:
-                          getTaskById && getTaskById.Status
-                            ? getTaskById.Status === "Assign"
-                              ? "#fcf3cd"
-                              : getTaskById.Status === "Completed By User"
-                              ? getTaskById && getTaskById.EndDate < today
-                                ? "#cdfcd8"
-                                : "#ffefea"
-                              : // getTaskById.Status === "Completed By User"  ? "#cdfcd8 " :
-                              getTaskById.Status === "Approved"
-                              ? "#cdfcd8"
-                              : getTaskById.Status === "Assigned"
-                              ? "#ffefea"
-                              : getTaskById.Status === "Request Rejected"
-                              ? "#ffefea"
-                              : "#d2fccd"
-                            : "#d2fccd",
-                      }}
-                    >
-                      <div
-                        className="approved-text"
-                        style={{
-                          color:
-                            getTaskById && getTaskById.Status
-                              ? getTaskById.Status === "Completed By User"
-                                ? getTaskById && getTaskById.EndDate < today
-                                  ? "#7fba7a"
-                                  : "#ff5f31"
-                                : // task.Status === "Completed By User" ? "#7fba7a" :
-                                getTaskById.Status === "Approved"
-                                ? "#7fba7a"
-                                : getTaskById.Status === "Assigned"
-                                ? "#f8c102"
-                                : getTaskById.Status === "Assign"
-                                ? "#f8c102"
-                                : getTaskById.Status === "Request Rejected"
-                                ? "#ff5f31"
-                                : ""
-                              : "#fcf3cd",
-                        }}
-                      >
-                        {getTaskById && getTaskById.Status && (
-                          <div style={{ textTransform: "uppercase" }}>
-                            {
-                              // getTaskById.Status === "Completed By User" ? "Task Completed" :
-                              getTaskById.Status === "Completed By User"
-                                ? getTaskById && getTaskById.EndDate < today
-                                  ? "Task Completed"
-                                  : "Approval Pending"
-                                : getTaskById.Status === "Assign"
-                                ? "Assign Task"
-                                : getTaskById.Status === "Assigned"
-                                ? "Task Assigned"
-                                : getTaskById.Status === "Approved"
-                                ? "Task Approved"
-                                : getTaskById.Status === "Request Rejected"
-                                ? "Task Rejected"
-                                : null
-                            }
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="task-detail-data">
-                    {userDetails.UserType != 4 && (
-                      <div className="row">
-                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                          <div className="holding-list-normal-title">
-                            Assigned to
-                          </div>
-                        </div>
-                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          {getTaskById && getTaskById.AssignedTo != 0 ? (
-                            <div className="holding-list-bold-title">
-                              {getTaskById &&
-                              getTaskById.AssignedToUserName == "" ? null : (
-                                <span className="cicrcle-name">
-                                  {getInitials(
-                                    getTaskById &&
-                                      getTaskById.AssignedToUserName
-                                  )}
-                                </span>
-                              )}
-                              {getTaskById && getTaskById.AssignedToUserName}
-                            </div>
-                          ) : (
-                            <div
-                              className="holding-list-bold-title AssinTo"
-                              // onClick={getUserDetail}
-                            >
-                              <div className="col-9 pl-0">
-                                <div
-                                  className="dashboard-assign"
-                                  id="assignBtn"
-                                  style={{
-                                    cursor: "pointer",
-                                    width: "fit-content",
-                                  }}
-                                  onClick={(e) => AssignDisplay(e)}
-                                >
-                                  <img
-                                    src={assignIconCircle}
-                                    alt="account Circle Purple"
-                                  />{" "}
-                                  Assign
-                                </div>
-                                {currentDropDown === "open" && (
-                                  <div
-                                    ref={innerRef}
-                                    className="bottom-tool-tip"
-                                    style={{ display: "block" }}
-                                  >
-                                    <div
-                                      className="shadow-tooltip"
-                                      style={{
-                                        minHeight: "113px",
-                                        maxHeight: "auto",
-                                        height: "auto",
-                                      }}
-                                    >
-                                      <div className="">
-                                        <div className="tool-tip-head">
-                                          <div className="add-Email border-bottom">
-                                            <div class="form-group" style={{width:"100%"}}>
-                                              <input
-                                                style={{width:"100%"}}
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="Enter name or email"
-                                                value={selectedUser}
-                                                onKeyPress={(e) =>
-                                                  handleAssignKeyDown(e)
-                                                }
-                                                onChange={(e) =>
-                                                  handleAppSearch(
-                                                    e.target.value
-                                                  )
-                                                }
-                                              />
-                                              {emailAvaliableCheck &&
-                                                selectedUser != "" && (
-                                                  <div
-                                                    className=""
-                                                    style={{
-                                                      color: "#ef5d5d",
-                                                      paddingLeft: "7px",
-                                                      position: "absolute",
-                                                    }}
-                                                  >
-                                                    Email already exists
-                                                  </div>
-                                                )}
-                                            </div>
-                                            <span className="or-devider" style={{display:"none"}}>or </span>
-                                            <button class="btn save-details assign-me"style={{display:"none"}} value="4" onClick={(e) => AssignTaskToMe(e)}>Assign to me</button>
-                                          </div>
-                                        </div>
-                                        <div
-                                          className="email-list-box"
-                                          style={{
-                                            paddingBottom: "15px",
-                                            maxHeight: "115px",
-                                            height: "auto",
-                                          }}
-                                        >
-                                          {allUser && allUser.length > 0 ? (
-                                            allUser.map((user, index) => (
-                                              <div
-                                                className="email-list-row"
-                                                key={index}
-                                                style={{ cursor: "pointer" }}
-                                                onClick={() =>
-                                                  onAssignTaskClick(user)
-                                                }
-                                              >
-                                                <span class="name-circle">
-                                                  {getInitials(
-                                                    user.UserName
-                                                      ? user.UserName
-                                                      : user.EmailID
-                                                      ? user.EmailID
-                                                      : null
-                                                  )}
-                                                </span>
-                                                <span className="name-of-emailer">
-                                                  {user.UserName
-                                                    ? user.UserName
-                                                    : ""}
-                                                </span>
-                                                <span className="last-email-box">
-                                                  {user.EmailID}
-                                                </span>
-                                              </div>
-                                            ))
-                                          ) : (
-                                            <span
-                                              className="last-email-box email-list-row"
-                                              style={{ textAlign: "center" }}
-                                            >
-                                              No records Available
-                                            </span>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    {userDetails.UserType != 3 && (
-                      <div className="row">
-                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                          <div className="holding-list-normal-title">
-                            Assigned by
-                          </div>
-                        </div>
-                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          <div className="holding-list-bold-title">
-                            {getTaskById &&
-                            getTaskById.AssignedFromUserName == "" ? null : (
-                              <span className="cicrcle-name">
-                                {getInitials(
-                                  getTaskById &&
-                                    getTaskById.AssignedFromUserName
-                                )}
-                              </span>
-                            )}
-                            {getTaskById && getTaskById.AssignedFromUserName}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    {userDetails.UserType != 5 && (
-                      <div className="row">
-                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                          <div className="holding-list-normal-title">
-                            Approver
-                          </div>
-                        </div>
-                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          {getTaskById &&
-                          getTaskById.ApproverName != "Assign" ? (
-                            <div className="holding-list-bold-title">
-                              {getTaskById &&
-                              getTaskById.ApproverName == "" ? null : (
-                                <span className="cicrcle-name">
-                                  {getInitials(
-                                    getTaskById && getTaskById.ApproverName
-                                  )}
-                                </span>
-                              )}
-                              {getTaskById && getTaskById.ApproverName}
-                            </div>
-                          ) : (
-                            <div
-                              className="holding-list-bold-title"
-                              // onClick={getApproveUsers}
-                            >
-                              <div className="col-9 pl-0">
-                                {user && user.UserType === 4 ? (
-                                  <div className="holding-list-bold-title">
-                                    Not Assigned
-                                  </div>
-                                ) : (
-                                  <div
-                                    className="dashboard-assign"
-                                    style={{
-                                      cursor: "pointer",
-                                      width: "fit-content",
-                                    }}
-                                    onClick={(e) => ApprovDisplay(e)}
-                                  >
-                                    <img
-                                      src={assignIconCircle}
-                                      alt="account Circle Purple"
-                                    />{" "}
-                                    Assign
-                                  </div>
-                                )}
-                                {approverDropDown ===
-                                  "openapproverdropdown" && (
-                                  <div
-                                    ref={approverDropDownRef}
-                                    className="bottom-tool-tip"
-                                    style={{ display: "block" }}
-                                  >
-                                    <div
-                                      className="shadow-tooltip"
-                                      style={{
-                                        minHeight: "113px",
-                                        maxHeight: "auto",
-                                        height: "auto",
-                                      }}
-                                    >
-                                      <div className="">
-                                        <div className="tool-tip-head">
-                                          <div className="add-Email border-bottom">
-                                            <div class="form-group" style={{width:"100%"}}> 
-                                              <input
-                                                style={{width:"100%"}}
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="Enter name or email"
-                                                value={selectedUser}
-                                                onKeyPress={(e) =>
-                                                  handleKeyDown(e)
-                                                }
-                                                onChange={(e) =>
-                                                  handleAppSearch(
-                                                    e.target.value
-                                                  )
-                                                }
-                                              />
-                                              {emailAvaliableCheck &&
-                                                selectedUser != "" && (
-                                                  <div
-                                                    className=""
-                                                    style={{
-                                                      color: "#ef5d5d",
-                                                      paddingLeft: "7px",
-                                                      position: "absolute",
-                                                    }}
-                                                  >
-                                                    Email already exists
-                                                  </div>
-                                                )}
-                                            </div>
-                                            <span className="or-devider" style={{display:"none"}}> or</span>
-                                            <button class="btn save-details assign-me" value="5" onClick={(e) => approvTaskToMe(e)}style={{display:"none"}}>Assign to me</button>
-                                          </div>
-                                        </div>
-                                        <div
-                                          className="email-list-box"
-                                          style={{
-                                            paddingBottom: "15px",
-                                            maxHeight: "115px",
-                                            height: "auto",
-                                          }}
-                                        >
-                                          {allUser && allUser.length > 0 ? (
-                                            allUser.map((user, index) => (
-                                              <div
-                                                className="email-list-row"
-                                                key={index}
-                                                style={{ cursor: "pointer" }}
-                                                onClick={() =>
-                                                  handleChooseApprove(user)
-                                                }
-                                              >
-                                                <span class="name-circle">
-                                                  {getInitials(
-                                                    user.UserName
-                                                      ? user.UserName
-                                                      : user.EmailID
-                                                      ? user.EmailID
-                                                      : null
-                                                  )}
-                                                </span>
-                                                <span className="name-of-emailer">
-                                                  {user.UserName
-                                                    ? user.UserName
-                                                    : ""}
-                                                </span>
-                                                <span className="last-email-box">
-                                                  {user.EmailID}
-                                                </span>
-                                              </div>
-                                            ))
-                                          ) : (
-                                            <span
-                                              className="last-email-box email-list-row"
-                                              style={{ textAlign: "center" }}
-                                            >
-                                              No records Available
-                                            </span>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    <div className="row">
-                      <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                        <div className="holding-list-normal-title">
-                          Due Date
-                        </div>
-                      </div>
-                      <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                        <div className="holding-list-bold-title">
-                          {moment(getTaskById && getTaskById.EndDate).format(
-                            "DD MMM"
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    {userDetails.UserType != 4 && (
-                      <div className="row">
-                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                          <div className="holding-list-normal-title">
-                            Deadline
-                          </div>
-                        </div>
-                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          <div className="holding-list-bold-title">
-                            {moment(
-                              getTaskById && getTaskById.ActualTaskEndDate
-                            ).format("DD MMM")}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    {userDetails.UserType != 4 && (
-                      <div className="row">
-                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                          <div className="holding-list-normal-title">
-                            Status
-                          </div>
-                        </div>
-                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          <div className="holding-list-bold-title">
-                            {getTaskById && getTaskById.Status
-                              ? getTaskById.Status === "Completed By User"
-                                ? getTaskById.EndDate < today
-                                  ? "Task Completed"
-                                  : "Approval Pending"
-                                : getTaskById.Status === "Assign"
-                                ? "Assign Task"
-                                : getTaskById.Status === "Assigned"
-                                ? "Task Assigned"
-                                : getTaskById.Status === "Approved"
-                                ? "Task Approved"
-                                : getTaskById.Status === "Request Rejected"
-                                ? "Task Rejected"
-                                : null
-                              : ""}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    {completedDate &&
-                      isTaskApproved &&
-                      userDetails.UserType != 4 && (
-                        <div className="row">
-                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                            <div className="holding-list-normal-title">
-                              Completed on
-                            </div>
-                          </div>
-                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                            <div className="holding-list-bold-title">
-                              {moment(completedDate).format("DD MMM  h:mm a")}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    <div className="row">
-                      <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                        <div className="holding-list-normal-title">License</div>
-                      </div>
-                      <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                        <div className="holding-list-bold-title">
-                          {getTaskById && getTaskById.LicenseCode}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                        <div className="holding-list-normal-title">Company</div>
-                      </div>
-                      <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                        <div className="holding-list-bold-title">
-                          {getTaskById && getTaskById.EntityName}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="task-details-file-grid1">
-                  <div className="d-flex">
-                    <div className="tab-list-space">
-                      {showFiles ? (
-                        <div
-                          className="file-title pointer"
-                          onClick={() => {
-                            setShowFiles(true)
-                            setShowComments(false)
-                            setShowHtoDoIt(false)
-                          }}
-                        >
-                          Files
-                        </div>
-                      ) : (
-                        <div
-                          className="file-title unActiveText-color pointer"
-                          onClick={() => {
-                            setShowFiles(true)
-                            setShowComments(false)
-                            setShowHtoDoIt(false)
-                          }}
-                        >
-                          Files
-                        </div>
-                      )}
-                      {showFiles && (
-                        <div className="file-title-progress col-5"></div>
-                      )}
-                    </div>
-                    <div className="tab-list-space">
-                      {showComments ? (
-                        <div
-                          className="file-title  pointer"
-                          style={{ color: "#2c2738" }}
-                          onClick={() => getComments()}
-                        >
-                          Comments
-                        </div>
-                      ) : (
-                        <div
-                          className="file-title unActiveText-color"
-                          onClick={() => getComments()}
-                        >
-                          Comments
-                        </div>
-                      )}
-                      {showComments && (
-                        <div className="file-title-progress comments-progress-width"></div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                {showFiles && (
-                  <div className="file-grid-data">
-                    {user && user.UserType && user.UserType === 4 || user && user.UserType && user.UserType === 3 ?  (
-                      <>
-                        {getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.Status === "Assigned" &&
-                        getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.TaskStatus === 0 ? (
-                          user && user.UserType && user.UserType === 4 || user && user.UserType && user.UserType === 3 ? (
-                            <>
-                              {" "}
-                              <div className="row">
-                                <div className="col-12 col-sm-4 col-md-4 col-xl-4">
-                                  <div className="file-upload-title file-img-width">
-                                    <div className="">
-                                      <div className="file-upload-box">
-                                        <div className="image-display">
-                                          <Dropzone
-                                            multiple={true}
-                                            maxSize={26214400}
-                                            accept=".png,.jpg,
-                                        application/pdf,application/rtf,application/msword,image/bmp,
-                                        application/vnd.ms-excel,image/tiff,image/tif,image/jpeg,
-                                        application/ms-excel,
-                                        .tiff,.pdf,.doc,.docx,
-                                        .XLS,.xlsx,.CSV,.zip,.rar,.txt"
-                                            onDrop={(acceptedFiles) =>
-                                              handleSelectUploadFile(
-                                                acceptedFiles
-                                              )
-                                            }
-                                          >
-                                            {({
-                                              getRootProps,
-                                              getInputProps,
-                                            }) => (
-                                              <div
-                                                {...getRootProps({
-                                                  className: "dropzone",
-                                                })}
-                                              >
-                                                <div>
-                                                  <input {...getInputProps()} />
-                                                </div>
-                                                <img
-                                                  src={fileUploadIcon}
-                                                  className="cloudImg"
-                                                  alt="File Upload icon"
-                                                />
-                                                <div className="drag-drop-title text-center">
-                                                  Drag and drop your files here
-                                                </div>
-                                                <div className="text-center">
-                                                  Upload files
-                                                </div>
-                                              </div>
-                                            )}
-                                          </Dropzone>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </>
-                          ) : null
-                        ) : null}
-
-                        {fileList && fileList.length > 0 ? (
-                          fileList.map((file, index) => (
-                            <div className="no-files">
-                              {file && file.Files && file.Files.length > 0
-                                ? file.Files.map((files, index) => (
-                                    <div className="d-flex">
-                                      <div className="pr-3">
-                                        <div className="file-upload-title file-img-width">
-                                          <img
-                                            src={fileIcon}
-                                            alt="file Icon"
-                                            className="file-icon-box"
-                                            value={files.TaskFileId}
-                                          />{" "}
-                                          {files.FileName}
-                                        </div>
-                                      </div>
-                                      <div className="pr-3">
-                                        {getTaskById &&
-                                          getTaskById.TaskId !== undefined && (
-                                            <a
-                                              href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
-                                              style={{ textDecoration: "none" }}
-                                              className="file-download-title pointer d-flex"
-                                            >
-                                              download{" "}
-                                              <span className="d-none d-sm-block">
-                                                &nbsp;file
-                                              </span>
-                                            </a>
-                                          )}
-                                      </div>
-                                      <div className="pr-3">
-                                        <div
-                                          style={{ cursor: "pointer" }}
-                                          onClick={() => deleteFile(files)}
-                                          className="file-download-title pointer d-flex"
-                                        >
-                                          <img
-                                            className="delete-icon"
-                                            src={deleteBlack}
-                                            alt="delete Icon"
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))
-                                : "No Files To View here"}
-                            </div>
-                          ))
-                        ) : (
-                          <div className="no-files">No Files To View here</div>
-                        )}
-                      </>
-                    ) : fileList && fileList.length > 0 ? (
-                      fileList.map((file, index) => (
-                        <div className="no-files">
-                          {file && file.Files && file.Files.length > 0
-                            ? file.Files.map((files, index) => (
-                                <div className="row">
-                                  <div className="col-8 col-sm-4 col-md-4 col-xl-4">
-                                    <div className="file-upload-title file-img-width">
-                                      <img
-                                        src={fileIcon}
-                                        alt="file Icon"
-                                        value={files.TaskFileId}
-                                      />{" "}
-                                      {files.FileName}
-                                    </div>
-                                  </div>
-                                  <div className="col-4 col-sm-8 col-md-8 col-xl-8">
-                                    {getTaskById &&
-                                      getTaskById.TaskId !== undefined && (
-                                        <a
-                                          href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
-                                          style={{ textDecoration: "none" }}
-                                          className="file-download-title pointer d-flex"
-                                        >
-                                          download{" "}
-                                          <span className="d-none d-sm-block">
-                                            &nbsp;file
-                                          </span>
-                                        </a>
-                                      )}
-                                  </div>
-                                </div>
-                              ))
-                            : "No Files To View here"}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="no-files">No Files To View here</div>
-                    )}
-
-                    {(getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Approved") ||
-                    (getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 1) ? (
-                      (user && user.UserType && user.UserType === 3) ||
-                      user.UserType === 4 ||
-                      (user.UserType === 5 && " ")
-                    ) : getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Assigned" &&
-                      getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 0 ? (
-                      user && user.UserType && user.UserType === 4 ? (
-                        <button
-                          style={{ marginTop: 10, width: 150 }}
-                          onClick={() => teamMemberMarkComplete()}
-                          className="btn save-details-bnt approve-task"
-                          value="3"
-                        >
-                          Mark Complete
-                        </button>
-                      ) : (
-                        ""
-                      )
-                    ) : getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Assign" &&
-                      getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 0 ? (
-                      ""
-                    ) : getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Request Rejected" &&
-                      getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 3 ? (
-                      user &&
-                      user.UserType &&
-                      user.UserType === 4 && (
-                        <button
-                          style={{ marginTop: 10, width: 150 }}
-                          onClick={() => teamMemberMarkComplete()}
-                          className="btn save-details-bnt approve-task"
-                          value="3"
-                        >
-                          Mark Complete
-                        </button>
-                      )
-                    ) : (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.Status === "Completed By User") ||
-                      (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.TaskStatus === 4) ? (
-                      (user && user.UserType && user.UserType === 3) ||
-                      (user && user.UserType && user.UserType === 5) ? (
-                        <div class="btn-toolbar text-center well">
-                          <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
-                            <button
-                              onClick={(e) => handleAppTask(getTaskById)}
-                              className="btn save-details-bnt approve-task"
-                            >
-                              approve task
-                            </button>
-                          </div>
-                          <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-45">
-                            <button
-                              className="btn save-details-bnt reject-task"
-                              value="3"
-                              onClick={() => setVisibleRejectTaskModal(true)}
-                            >
-                              reject Task
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        ""
-                      )
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                )}
-                {showComments && (
-                  <div className="file-grid-data blank-space-height">
-                    {getCommentsbyId && getCommentsbyId.length > 0 ? (
-                      getCommentsbyId.map((comment, index) => (
-                        <div>
-                          <div className="comment-box">
-                            <div className="name-box">
-                              {getInitials(
-                                comment &&
-                                  comment.B &&
-                                  comment.B[0] &&
-                                  comment.B[0].UserName &&
-                                  comment.B[0].UserName != ""
-                                  ? comment.B[0].UserName
-                                  : "No Username"
-                              )}
-                            </div>
-                            <div className="rigt-box-comment">
-                              <div className="d-flex">
-                                <div className="right-box-text">
-                                  {comment &&
-                                  comment.B &&
-                                  comment.B[0] &&
-                                  comment.B[0].UserName &&
-                                  comment.B[0].UserName != ""
-                                    ? comment.B[0].UserName
-                                    : "No Username"}
-                                </div>
-                                <div className="days-ago">
-                                  {moment(comment.CommentOn).format("DD MMM")}
-                                </div>
-                              </div>
-                              <div className="comment-desc">
-                                {comment.Comment}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="no-comments">No Comments</div>
-                    )}
-
-                    <div className="comment-box">
-                      <div className="name-box">
-                        {getInitials(user && user.UserName)}
-                      </div>
-                      <div className="rigt-box-comment">
-                        <div className="input-comment-box input-comment-boxLeft">
-                          <TextareaAutosize
-                            minRows={1.3}
-                            style={{ overflow: "hidden" }}
-                            type="text"
-                            className="form-control textAreaHeight"
-                            value={inputComment}
-                            placeholder="Add a comment"
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
-                          <div className="inputIcon">
-                            <img
-                              src={inputRightArrow}
-                              alt=""
-                              style={{ cursor: "pointer" }}
-                              onClick={() => submitComment()}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {showHtoDoIt && (
-                  <div className="file-grid-data blank-space-height">
-                    <h1>We Don't Know</h1>
-                  </div>
-                )}
+              {/* Company view Display */}
+              <div className="task-list-grid">
+                {
+                  taskListDisplay === "2" &&
+                    <CompanyTaskList user={user} sideBarTaskList={false}/>
+                }
               </div>
-            </div>
+                
+              {/* Assigned View  */}
+              <div className="Assign View">
+                  {
+                   taskListDisplay === "4" && 
+                     <AssigneList assignRowCount user={user}  sideBarTaskList={false}/>
+                  }
+              </div>
           </div>
+          </>
         </div>
       )}
-
-     
+      </>
+    }
     </>
   )
 }
-const mapStateToProps = (state) => ({
-  NotificationRedu: state,
-})
-export default connect(mapStateToProps)(withRouter(RightSideGrid))
+
+export default withRouter(RightSideGrid)

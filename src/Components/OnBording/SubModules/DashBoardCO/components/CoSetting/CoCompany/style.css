@@ -414,6 +414,7 @@
 }
 .co-personal-grid .table td.deleteIconCheck {
   min-width: 80px;
+  padding-left: 0px;
 }
 .co-personal-grid .table td.companyName {
   min-width: 240px;

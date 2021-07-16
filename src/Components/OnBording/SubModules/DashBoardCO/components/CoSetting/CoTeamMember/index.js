@@ -82,6 +82,8 @@ function CoManagment({ handleClose }) {
 
   const [teamMemberData, setMemberData] = useState([])
 
+  const [indexToBeDeleted, setIndexToBeDeleted] = useState(undefined)
+
   const [fields, setFields] = useState([
     {
       id: "",
@@ -136,7 +138,9 @@ function CoManagment({ handleClose }) {
   ])
   const [isValidEmail, setIsValidEmail] = useState(true)
   const innerRef = useOuterClick((e) => {
-    if (openPopupIndex !== "") setOpenPopupIndex("")
+    if (openPopupIndex !== "") {
+      setOpenPopupIndex("")
+    }
   })
 
   const [currentIndex, setCurrentIndex] = useState("")
@@ -247,6 +251,7 @@ function CoManagment({ handleClose }) {
   }, [teamMemberData])
 
   const onDeletePress = (index) => {
+    
     setOpenPopupIndex("")
     const payload = {
       gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
@@ -270,11 +275,13 @@ function CoManagment({ handleClose }) {
             toast.success("Deleted records sucessfully")
             getSettingData()
             setVisible(false)
+            setIndexToBeDeleted(undefined)
             setOpenPopupIndex("")
           }
         } else {
           toast.error("Something went wrong !!!")
           setVisible(false)
+          setIndexToBeDeleted(undefined)
           setOpenPopupIndex("")
         }
       })
@@ -284,7 +291,7 @@ function CoManagment({ handleClose }) {
       })
   }
 
-  const _createDelectActionModal = (index) => {
+  const _createDelectActionModal = (memberIndex) => {
         return (<div className="deletemodal">
             <Modal
                 blockScroll={false}
@@ -298,10 +305,10 @@ function CoManagment({ handleClose }) {
                 open={visible}
                 center={true}
                 showCloseIcon={false}
-                onClose={() => setVisible(false)}
+                onClose={() =>{ setVisible(false);setIndexToBeDeleted(undefined)}}
                 //modalId="governance"
                 styles={{ width: 373, height: 210, overflow: 'hidden' }}
-                onOverlayClick={() => setVisible(false)}
+                onOverlayClick={() => {setVisible(false);setIndexToBeDeleted(undefined)}}
             >
                 <div className="model-design-delete-company big-height">
                     <div className="delete-record-title">Delete company record?</div>
@@ -318,7 +325,7 @@ function CoManagment({ handleClose }) {
                 CANCEL
               </button>
               <button
-                onClick={() => onDeletePress(index)}
+                onClick={() => onDeletePress(memberIndex)}
                 className="btn delete-Record"
               >
                 DELETE
@@ -446,6 +453,7 @@ function CoManagment({ handleClose }) {
 
   const openPopup = (index) => {
     setOpenPopupIndex(index)
+    setIndexToBeDeleted(index)
   }
   const changeRole = (key) => {
     setOpenPopupIndex("")
@@ -691,7 +699,7 @@ function CoManagment({ handleClose }) {
   }
   return (
     <div className="co-team-member">
-      {visible && _createDelectActionModal(openPopupIndex)}
+      {visible && _createDelectActionModal(indexToBeDeleted)}
       <div className="d-none d-sm-block">
         <div className="d-flex">
           <div className="personal-mgt-title">Team Members </div>

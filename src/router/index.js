@@ -39,8 +39,13 @@ import CoSetting from "../Components/OnBording/SubModules/DashBoardCO/components
 import UserProfileVerifcation from "../Components/UserVerification/components/PersonalDetails"
 import UserOTPVerifcation from "../Components/UserVerification/components/OTPVerification";
 import UserVerificationProcess from "../Components/UserVerification/components";
-
+import CalendarView from "../Components/OnBording/SubModules/DashBoardCO/components/CalendarView/components";
 import BoardView from "../Components/OnBording/SubModules/DashBoardCO/components/BoardView";
+import MultiCompanyQuickOverView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/MultiCompanyView/index";
+import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/MultiTeamMemberView/index";
+import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
+import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
+import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
 export default function AppRouter() {
   const checkHeader = () => {
@@ -150,10 +155,27 @@ export default function AppRouter() {
           <Route exact path="/notifications" component={Notification} />
           {/* <Route exact path="/co-managment" component={CoManagment}/> */}
           <Route exact path="/settings" component={CoSetting} />
-
+          <Route exact path="/calendar-view" component={CalendarView} />
           <Route exact path="/user-details-verification" component={UserProfileVerifcation} />
           <Route exact path="/otp-verification" component={UserOTPVerifcation} />
           <Route exact path="/user-verification-process" component={UserVerificationProcess} />
+          <Route exact path="/company-quick-overview" component={MultiCompanyQuickOverView} />
+          <Route exact path="/team-member-quick-overView" component={MultiTeamMemberView} />
+          <Route
+            exact
+            path="/risk-delay-tasklist"
+            component={RiskAndDelaysTaskList}
+          />
+          <Route
+            exact
+            path="/pending-action-task-list"
+            component={PendingAction}
+          />
+          <Route
+            exact
+            path="/compliance-history"
+            component={ComplianceHistory}
+          />
         </div>
       </>
     </div>

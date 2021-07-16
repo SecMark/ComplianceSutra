@@ -4,6 +4,28 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+.edit-link{
+	position: absolute;
+    z-index: 999;
+    overflow: hidden;
+    bottom: 28px;
+}
+
+.mmm{
+  position: relative;
+  bottom: -75px;
+}
+
+.devider-line-set {
+  width: 48px;
+  height: 1px;
+  object-fit: contain;
+  background-color: #eee8fc;
+  margin: 0 auto !important;
+  margin-bottom: 35px !important;
+  margin-top: 87px !important;
+}
 .user-title {
   object-fit: contain;
   width: 100%;
@@ -17,6 +39,9 @@
   letter-spacing: 0px;
   text-align: left;
   color: #2c2738;
+}
+.fix-top{
+  overflow-y:scroll;
 }
 .bold-title-sidebar {
   margin: 0px 0px 25px 0px;
@@ -175,7 +200,7 @@
   display: flex;
 }
 .first-icon-list{
-  margin-top: 144px;
+  margin-top: 57px;
 }
 .devider-line {
   width: 48px;
@@ -184,7 +209,16 @@
   background-color: #eee8fc;
   margin: 0 auto;
   margin-bottom: 35px;
-  margin-top: 35px;
+  margin-top: 87px;
+}
+.taskIcon.mt-8 {
+  position: absolute;
+  bottom: 0px;
+  padding: 0px auto;
+  text-align: !important;
+  /* margin: 0 auto; */
+  left: 14px;
+  right: 0px;
 }
 .sidebar-file-title-grid {
   border-bottom: 2px solid #eee8fc;
@@ -482,13 +516,15 @@
   width: 125px;
   height: 90px;
   object-fit: contain;
-  position:absolute;
+  /* position:absolute; */
   border-radius: 4px;
   padding: 8px 6px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   background-color: #ffffff;
   margin-left: 20px;
   z-index: 99999;
+  /* bottom: 8px;
+  left: 16px; */
 }
 .edit-label-option{
   text-align: left;
@@ -527,4 +563,16 @@
 .logout-label-option img{
   vertical-align: baseline;
     margin-right: 3px;
+}
+@media screen and (max-width: 767px) {
+.fix-top{
+  overflow-y:hidden !important;
+}
+/* .fix-top .task-list-grid {
+  margin-bottom: 24px;
+} */
+.customHeight .task-list-grid {
+  margin-bottom: 24px !important;
+}
+
 }

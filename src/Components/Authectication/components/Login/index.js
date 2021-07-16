@@ -32,6 +32,8 @@ function Login({ history }) {
 
   const userID =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID
+
+  const userDetails = state && state.auth && state.auth.loginInfo
   const onChangeHandler = (name) => (event) => {
     let passwordReg =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
@@ -104,7 +106,11 @@ function Login({ history }) {
 
   useEffect(() => {
     if (userID) {
-      history.push("/dashboard")
+      if (userDetails.UserType === 4) {
+        history.push("/dashboard")
+      }else{
+        history.push("/dashboard-view")
+      }
     }
   }, [])
 

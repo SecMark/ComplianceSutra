@@ -16,7 +16,16 @@ import bellInactive from "../../../../../../assets/Icons/sidebarBell.png";
 import bellActive from "../../../../../../assets/Icons/bellSelected.png";
 import userActive from "../../../../../../assets/Icons/dropdownUser.png";
 import userInactive from "../../../../../../assets/Icons/sideBaruser.png";
+// import dashboardView from "../../../../../../assets/Icons/dashboard_black.png";
+import historyActive from "../../../../../../assets/Icons/history_black_24dp.png";
+import dashboardView from "../../../../../../assets/Icons/dashboardFirstIcon.png"
+import circleClock  from "../../../../../../assets/Icons/circleClock.png";
+import listIcon     from "../../../../../../assets/Icons/listIcon.png";
+import questionIcon from "../../../../../../assets/Icons/questionIcon.png";
 
+import dashBoardActiveIcon from "../../../../../../assets/Icons/dashBoardActiveIcon.png"
+
+import {actions as notificationActions} from "../notification/Redux/actions"
 
 import "./style.css";
 
@@ -30,8 +39,13 @@ function MobileLeftSidebar({ history, close }) {
         }
     });
 
+  const userDetails = state && state.auth && state.auth.loginInfo
+
     const onLogoutClick = () => {
         close()
+        dispatch(setCurrentMenuActions.setCurrentBoardViewTaskId(null))
+        dispatch(setCurrentMenuActions.setCurrentCalendarViewTaskId(null))
+        dispatch(notificationActions.setTaskID(null))
         dispatch(loginActions.createLogoutAction())
         history.push("/login")
     }
@@ -45,6 +59,9 @@ function MobileLeftSidebar({ history, close }) {
       history.push("/notifications")
     } else if (currentActiveMenu === "settings") {
       history.push("/settings")
+    }
+    else if (currentActiveMenu === "dashboard"){
+      history.push("/dashboard-view")
     }
     }
 
@@ -60,12 +77,16 @@ function MobileLeftSidebar({ history, close }) {
     }
 
     return (
-        <div id="navigationBar mobile-navigation-drower">
+        <div id="navigationBar mobile-navigation-drower" style={{overflow:"scroll"}}>
             <div className="left-bar">
                 <div className="logo">
                     <img src={closeBlack} alt="sideBarlogo" style={{ cursor: "pointer" }} onClick={() => close()} />
                 </div>
                 <div className="first-icon-list-mobile">
+                    {userDetails.UserType != 4 && (<div onClick={() => onMenuClick("dashboard")} style={{ cursor: "pointer" }}
+                        className={!openProfile && state && state.adminMenu.currentMenu === "dashboard" ? "taskList-mobile" : "inactiveMobile"}>
+                        <img src={!openProfile && state && state.adminMenu.currentMenu === "dashboard" ? dashBoardActiveIcon : dashboardView}   style={{ cursor: "pointer", width: "18px" }} alt="sideBarlogo" /> Dashboard
+                    </div>)}
                     <div onClick={() => onMenuClick("taskList")} style={{ cursor: "pointer" }}
                         className={!openProfile && state && state.adminMenu.currentMenu === "taskList" ? "taskList-mobile" : "inactiveMobile"}>
                         <img src={!openProfile && state && state.adminMenu.currentMenu === "taskList" ? taskActive : taskInactive} alt="sideBarlogo" /> Tasks
@@ -74,18 +95,34 @@ function MobileLeftSidebar({ history, close }) {
                         className={!openProfile && state && state.adminMenu.currentMenu === "notfications" ? "taskList-mobile" : "inactiveMobile"}>
                         <img src={!openProfile && state && state.adminMenu.currentMenu === "notfications" ? bellActive : bellInactive} alt="sideBarlogo" /> Notifications
                     </div>
+                    <div style={{ cursor: "pointer" }}
+                        className="inactiveMobile">
+                        <img src={circleClock} style={{ cursor: "pointer", width: "18px" }}  alt="sideBarlogo" /> Compliance History
+                    </div>
+                    {userDetails.UserType != 4 && (<div style={{ cursor: "pointer" }}
+                        className="inactiveMobile">
+                        <img src={listIcon} alt="sideBarlogo" style={{ cursor: "pointer", width: "18px" }}/> <span>New Regulations</span>
+                    </div>)}
                 </div>
                 <div className="devider-line"></div>
                 <div className="second-icon-list">
-                    <div onClick={() => onMenuClick("settings")} style={{ cursor: "pointer" }}
+                <div onClick={() => onMenuClick("settings")} style={{ cursor: "pointer" }}
                         className={!openProfile && state && state.adminMenu.currentMenu === "settings" ? "taskList-mobile" : "inactiveMobile"}>
                         <img src={!openProfile && state && state.adminMenu.currentMenu === "settings" ? settingActive : settingInactive} alt="sideBarlogo" /> Settings</div>
+                <div  style={{ cursor: "pointer" }}
+                    className="inactiveMobile">
+                    <img src={questionIcon}  style={{ cursor: "pointer", width: "18px" }}  alt="sideBarlogo"/> Help & Support
+                </div>
+                <div  style={{ cursor: "pointer" }}
+                    className="inactiveMobile">
+                    <img src={listIcon} alt="sideBarlogo" style={{ cursor: "pointer", width: "18px" }}/> Modules
+                </div>
                     <div onClick={() => setOpenProfile(true)} style={{ cursor: "pointer" }}
                         className={openProfile ? "taskList-mobile" : "inactiveMobile"}>
                         <img src={openProfile ? userActive : userInactive} alt="sidebar Account Circle" /> Profile
                             <img className={openProfile ? "top-arrow-mobile" : "down-arrow-mobile"}
                             src={mobileTopArrow} alt="edit" />
-                        {openProfile && (<div className="edit-link">
+                        {openProfile && (<div className="">
                             <div ref={openProfileRef} className="edit-option-box">
                                 <div style={{ cursor: "pointer" }} onClick={() => onEditProfileClick()} style={{ cursor: "pointer" }} className="edit-label-option">
                                     <img src={editpen} alt="edit" /> Edit Profile</div>
@@ -99,6 +136,74 @@ function MobileLeftSidebar({ history, close }) {
 
         </div>
     );
+
+    // return (
+    //     <div id="navigationBar mobile-navigation-drower">
+    //         <div className="left-bar">
+    //             <div className="logo">
+    //                 <img src={closeBlack} alt="sideBarlogo" style={{ cursor: "pointer" }} onClick={() => close()} />
+    //             </div>
+    //             <div className="first-icon-list-mobile">
+    //                 <div onClick={() => onMenuClick("taskList")} style={{ cursor: "pointer" }}
+    //                     className={!openProfile && state && state.adminMenu.currentMenu === "dashboard" ? "taskList-mobile" : "inactiveMobile"}>
+    //                     <img style={{ cursor: "pointer", width: "18px" }} src={!openProfile && state && state.adminMenu.currentMenu === "dashboard" ? dashboardView : dashboardView} alt="sidebar Active" /> DashBoard
+    //                 </div>
+    //                 <div onClick={() => onMenuClick("taskList")} style={{ cursor: "pointer" }}
+    //                     className={!openProfile && state && state.adminMenu.currentMenu === "taskList" ? "taskList-mobile" : "inactiveMobile"}>
+    //                     <img src={!openProfile && state && state.adminMenu.currentMenu === "taskList" ? taskActive : taskInactive} alt="sideBarlogo" /> Task
+    //                 </div>
+    //                 <div onClick={() => onMenuClick("notfications")} style={{ cursor: "pointer" }}
+    //                     className={!openProfile && state && state.adminMenu.currentMenu === "notfications" ? "taskList-mobile" : "inactiveMobile"}>
+    //                     <img src={!openProfile && state && state.adminMenu.currentMenu === "notfications" ? bellActive : bellInactive} alt="sideBarlogo" /> Notification
+    //                 </div>
+    //                 {/* Addition by Mayank */}
+    //                 <div style={{ cursor: "pointer" }}
+    //                     className={!openProfile && state && state.adminMenu.currentMenu === "complianceHistory" ? "taskList-mobile" : "inactiveMobile"}>
+    //                     <img style={{ cursor: "pointer", width: "18px" }} src={historyActive} alt="taskIcon" /> <span >Complaince History</span>
+    //                 </div>
+
+    //                 {/* <div onClick={() => onMenuClick("complianceHistory")} style={{ cursor: "pointer" }}
+    //                     className={!openProfile && state && state.adminMenu.currentMenu === "clock" ? "taskIcon-active" : "taskIcon"}>
+    //                     <img style={{ cursor: "pointer", width: "18px" }} src={settingInactive} alt="taskIcon" /> Complaince History
+    //                 </div> */}
+    //                 {/* <div onClick={() => onMenuClick("newRegulations")} style={{ cursor: "pointer" }}
+    //                     className={!openProfile && state && state.adminMenu.currentMenu === "notfications" ? "taskList-mobile" : "inactiveMobile"}>
+    //                     <img src={!openProfile && state && state.adminMenu.currentMenu === "notfications" ? bellActive : bellInactive} alt="fileIcon" /> New Regulations
+    //                 </div> */}
+    //             </div>
+    //             <div className="devider-line"></div>
+    //             <div className="second-icon-list">
+    //                 <div onClick={() => onMenuClick("settings")} style={{ cursor: "pointer" }}
+    //                     className={!openProfile && state && state.adminMenu.currentMenu === "settings" ? "taskList-mobile" : "inactiveMobile"}>
+    //                     <img src={!openProfile && state && state.adminMenu.currentMenu === "settings" ? settingActive : settingInactive} alt="sideBarlogo" /> Settings</div>
+                    
+    //                 <div style={{ cursor: "pointer" }}
+    //                     className={!openProfile && state && state.adminMenu.currentMenu === "settings" ? "taskList-mobile" : "inactiveMobile"}>
+    //                     <img src={settingInactive} alt="sideBarlogo" /> Help & Support
+    //                 </div>
+    //                 <div style={{ cursor: "pointer" }}
+    //                     className={!openProfile && state && state.adminMenu.currentMenu === "settings" ? "taskList-mobile" : "inactiveMobile"}>
+    //                     <img src={settingInactive} alt="sideBarlogo" /> Modules
+    //                 </div>
+    //                 <div onClick={() => setOpenProfile(true)} style={{ cursor: "pointer" }}
+    //                     className={openProfile ? "taskList-mobile" : "inactiveMobile"}>
+    //                     <img src={openProfile ? userActive : userInactive} alt="sidebar Account Circle" /> Profile
+    //                         <img className={openProfile ? "top-arrow-mobile" : "down-arrow-mobile"}
+    //                         src={mobileTopArrow} alt="edit" />
+    //                     {openProfile && (<div className="edit-link">
+    //                         <div ref={openProfileRef} className="edit-option-box">
+    //                             <div style={{ cursor: "pointer" }} onClick={() => onEditProfileClick()} style={{ cursor: "pointer" }} className="edit-label-option">
+    //                                 <img src={editpen} alt="edit" /> Edit Profile</div>
+    //                             <div style={{ cursor: "pointer" }} onClick={() => onLogoutClick()} className="logout-label-option border-0">
+    //                                 <img src={LogoutIcon} alt="logout Icon" /> Logout</div>
+    //                         </div>
+    //                     </div>)}
+    //                 </div>
+    //             </div>
+    //         </div>
+
+    //     </div>
+    // );
 }
 
 export default withRouter(MobileLeftSidebar);

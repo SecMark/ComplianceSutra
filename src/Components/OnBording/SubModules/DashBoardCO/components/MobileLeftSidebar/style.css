@@ -96,6 +96,9 @@ div#navigationBar\ mobile-navigation-drower{
   div#navigationBar\ mobile-navigation-drower {
     margin: 0 43.6px 0 0px;
   }
+  div#navigationBar\ mobile-navigation-drower .first-icon-list-mobile {
+    margin-top: 23px !important;
+  }
   .overlay {
     position: fixed;
     top: 0;

@@ -565,7 +565,7 @@
   color: #6c5dd3;
 }
 .right-tooltip .tooltiptext {
-  width: 300px;
+  width: 325px;
   background-color: #1b1d21;
   color: #fff;
   border-radius: 8px;
@@ -612,8 +612,8 @@
 .right-tooltip .tooltiptext::after {
   content: "";
   position: absolute;
-  top: 100%;
-  left: 14% !important;
+  top: 99%;
+  left: 16% !important;
   margin-left: 0;
   border-width: 10px;
   border-style: solid;
@@ -1022,9 +1022,9 @@ img.mobileUser-icon {
     line-height: 22px;
   }
   .mobile-load .tooltiptext {
-    width: 302px;
+    width: 330px;
     left: 0px;
-    margin-left: -125px;
+    margin-left: -163px;
   }
   .mobile-load .tooltiptext1 {
     width: 250px;

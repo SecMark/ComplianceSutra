@@ -53,7 +53,6 @@ const onSubmit = () => {
   setIsValidate(false);
   setIsEmailExist(false)
   if (checkBoxState === true) {
-
       dispatch(
         emailActions.verifyEmailRequest({
           LoginID: values.loginID,

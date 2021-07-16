@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import SideBarInputControl from "../components/LeftSideBar";
 import RighSider from "../components/RightSideGrid";
 import Cobg from "../../../../../assets/Images/Onboarding/co-bg.png";
+import sideBarlogo from "../../../../../assets/Icons/sideBarlogo.png"
+import togglemobile from "../../../../../assets/Icons/togglemobile.png"
 import { actions as taskReportActions } from "../redux/actions";
 import { toast } from "react-toastify";
 import { withRouter } from 'react-router-dom';
@@ -99,7 +101,7 @@ function Dashboard({ history }) {
 
 
   return (
-    <div className="row co-dashboard">
+    <div className="row co-dashboard fix-top">
       <div className=" left-fixed ">
         <div className="on-boarding">
           {/* <SideBar /> */}

@@ -9,7 +9,7 @@ import invitemember from "../Components/OnBording/SubModules/IniviteFlowMember/r
 import users from "../Components/UserVerification/redux/reducers"
 
 import adminMenu from "../Components/OnBording/SubModules/DashBoardCO/MenuRedux/reducers"
-import NotificationRedu from "../Components/OnBording/SubModules/DashBoardCO/components/notification/Redux/Reducers/NotificationRedu"
+import NotificationRedu from "../Components/OnBording/SubModules/DashBoardCO/components/notification/Redux/reducers";
 
 const createRootReducer = (history) =>
   combineReducers({
