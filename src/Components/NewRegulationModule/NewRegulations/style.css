@@ -39,10 +39,15 @@
 
 .new-regulation-container .row {
   margin: 0px;
-  overflow-y: auto;
   height: 100%;
 }
-
+.new-regulation-container .row .regulations-scroll {
+  overflow: auto;
+  height: 68vh;
+  padding: 0;
+  padding-right: 3rem;
+  margin-top: 2rem;
+}
 .SbPara {
   max-width: 240px;
   display: block;
@@ -506,6 +511,11 @@ p.description-text-search-active {
 .regulation-details-wrapper-mobile > .regulation-details-html-mobile p {
   font-size: 11px;
 }
+.regulations-list-mobile {
+  height: 65vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
 @media (max-width: 575.98px) {
   .filter-popup-mobile--wrapper,
   .regulation-details-popup-mobile--wrapper {
@@ -527,6 +537,9 @@ p.description-text-search-active {
   .regulation-details-popup-mobile--wrapper {
     width: 70%;
     margin: auto;
+  }
+  .new-regulation-side-bar .detail-popup {
+    width: 680px;
   }
 }
 @media (max-width: 767px) {

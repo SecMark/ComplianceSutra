@@ -166,7 +166,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           >
             <img
               style={{ cursor: "pointer" }}
-              title="compliancehistorylist"
+              title="Compliancehistorylist"
               onClick={() => onMenuClick("complianceHistoryList")}
               src={
                 !openProfile &&
@@ -190,7 +190,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           >
             <img
               style={{ cursor: "pointer" }}
-              title="compliancehistorylist"
+              title="Compliancehistorylist"
+
               onClick={() => onMenuClick("newRegulations")}
               src={
                 !openProfile &&
