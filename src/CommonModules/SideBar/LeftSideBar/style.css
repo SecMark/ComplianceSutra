@@ -180,6 +180,9 @@
   color: #575757;
   display: flex;
 }
+.first-icon-list {
+  padding-top: 48px !important;
+}
 .devider-line {
   width: 48px;
   height: 1px;
