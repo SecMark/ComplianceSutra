@@ -68,6 +68,10 @@ function Dashboard({ history }) {
       history.push("/login");
     }
   }, []);
+
+  useEffect(() => {
+    if (state.adminMenu.currentMenu !== "taskList") setIsTaskListOpen(false);
+  }, []);
   useEffect(() => {
     // if (entityID) {
     //   dispatch(
