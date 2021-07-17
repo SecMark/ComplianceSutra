@@ -66,13 +66,10 @@ function MainApp() {
             } else {
               toast.success(<MultipleNotification id={toastId.current} toast={toast} notificationCount={notificationArr.length} />)
             }
-
           } else {
           }
-
         }
         else {
-
         }
       })
       .catch(function (error) {

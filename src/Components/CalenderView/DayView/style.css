@@ -1,5 +1,7 @@
 .detail-main {
   padding: 0 50px 12px;
+  overflow-y: auto;
+  height: calc(100vh - 249px);
 }
 
 .detail-container {

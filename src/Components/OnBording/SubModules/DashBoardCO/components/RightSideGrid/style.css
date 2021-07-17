@@ -1208,15 +1208,15 @@ font-family: Poppins;
 .pending-scroll .task-grid-scroll{
   overflow-y: auto;
   overflow-x: hidden;
-  height: 100vh;
-  max-height: calc(100vh - 142px);
+  /* height: 100vh; */
+  /* max-height: calc(100vh - 142px); */
   overflow: auto;
 }
 .task-grid-scroll {
   overflow-y: auto;
   overflow-x: hidden;
-  height: 100vh;
-  max-height: calc(100vh - 200px);
+  /* height: 100vh;
+  max-height: calc(100vh - 200px); */
   overflow: auto;
 }
 .task-grid-scroll .upcoming-grid {

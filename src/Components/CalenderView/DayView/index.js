@@ -7,7 +7,7 @@ const DayView = ({ daysData }) => {
     if (name != undefined) {
       let initials = "";
       initials = name
-        .split(" ")
+        .split(" ") 
         .map((n) => n[0])
         .join("");
       return initials.toUpperCase();
