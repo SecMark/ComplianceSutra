@@ -175,7 +175,7 @@ export default function AppRouter() {
           />
           <Route exact path="/notifications" component={Notification} />
           {/* <Route exact path="/co-managment" component={CoManagment}/> */}
-          <Route exact path="/settings" component={CoSetting} />
+          {/* <Route exact path="/settings" component={CoSetting} /> */}
           <Route exact path="/calendar-view" component={CalendarView} />
           <Route
             exact

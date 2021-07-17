@@ -136,9 +136,11 @@ const MonthView = ({
               const compareDate = moment(day).format("YYYY-MM-DD");
               return (
                 <div
-                  className={`${month === currentMonth
-                    ? "small-calender-day"
-                    : "small-calender-day-disable"} d-flex align-items-center justify-content-center`}
+                  className={`${
+                    month === currentMonth
+                      ? "small-calender-day"
+                      : "small-calender-day-disable"
+                  } d-flex align-items-center justify-content-center`}
                   onClick={() => moveToWeek(day)}
                 >
                   <p
