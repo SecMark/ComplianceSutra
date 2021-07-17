@@ -213,12 +213,9 @@ export default function AppRouter() {
             component={PendingAction}
           />
 
-          <Route
-            exact
-            path="/compliance-history-list"
-            component={DashBoardCO}
-          />
+          <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route exact path="/new-regulations" component={DashBoardCO} />
+          <Route exact path="/help" component={DashBoardCO} />
         </div>
       </>
     </div>

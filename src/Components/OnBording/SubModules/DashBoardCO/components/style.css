@@ -5,14 +5,15 @@
   overflow-x: hidden;
 }
 
-.edit-link{
-	position: absolute;
-    z-index: 999;
-    overflow: hidden;
-    bottom: 28px;
+.edit-link {
+  position: absolute;
+  z-index: 999;
+  /* overflow: hidden; */
+  bottom: 85px;
+  left: 30px;
 }
 
-.mmm{
+.mmm {
   position: relative;
   bottom: -75px;
 }
@@ -40,8 +41,8 @@
   text-align: left;
   color: #2c2738;
 }
-.fix-top{
-  overflow-y:scroll;
+.fix-top {
+  overflow-y: scroll;
 }
 .bold-title-sidebar {
   margin: 0px 0px 25px 0px;
@@ -199,7 +200,7 @@
   color: #575757;
   display: flex;
 }
-.first-icon-list{
+.first-icon-list {
   margin-top: 57px;
 }
 .devider-line {
@@ -215,7 +216,7 @@
   position: absolute;
   bottom: 0px;
   padding: 0px auto;
-  text-align: !important;
+  /* text-align: !important; */
   /* margin: 0 auto; */
   left: 14px;
   right: 0px;
@@ -512,7 +513,7 @@
   border-radius: 10px;
 }
 
-.edit-option-box{
+.edit-option-box {
   width: 125px;
   height: 90px;
   object-fit: contain;
@@ -526,7 +527,7 @@
   /* bottom: 8px;
   left: 16px; */
 }
-.edit-label-option{
+.edit-label-option {
   text-align: left;
   object-fit: contain;
   font-family: Poppins;
@@ -539,13 +540,13 @@
   text-align: left;
   color: #1b1d21;
   /* padding-bottom: 12px; */
-  border-bottom: 1px solid rgb(222 222 222 / 50%)
+  border-bottom: 1px solid rgb(222 222 222 / 50%);
 }
-.edit-label-option img{
+.edit-label-option img {
   vertical-align: baseline;
-    margin-right: 3px;
+  margin-right: 3px;
 }
-.logout-label-option{
+.logout-label-option {
   text-align: left;
   object-fit: contain;
   font-family: Poppins;
@@ -558,21 +559,20 @@
   text-align: left;
   color: #ef5d5d;
   /* padding-bottom: 12px; */
-  border-bottom: 1px solid rgb(222 222 222 / 50%)
+  border-bottom: 1px solid rgb(222 222 222 / 50%);
 }
-.logout-label-option img{
+.logout-label-option img {
   vertical-align: baseline;
-    margin-right: 3px;
+  margin-right: 3px;
 }
 @media screen and (max-width: 767px) {
-.fix-top{
-  overflow-y:hidden !important;
-}
-/* .fix-top .task-list-grid {
+  .fix-top {
+    overflow-y: hidden !important;
+  }
+  /* .fix-top .task-list-grid {
   margin-bottom: 24px;
 } */
-.customHeight .task-list-grid {
-  margin-bottom: 24px !important;
-}
-
+  .customHeight .task-list-grid {
+    margin-bottom: 24px !important;
+  }
 }

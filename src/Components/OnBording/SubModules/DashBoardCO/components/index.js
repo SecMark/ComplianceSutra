@@ -15,7 +15,8 @@ import MobileSettingSideBar from "./CoSetting/MobileSettingSideBar";
 import { actions as adminMenuActions } from "../MenuRedux/actions";
 import NewRegulations from "../../../../NewRegulationModule/NewRegulations";
 import HistoryList from "../../../../HistoryModule/HistoryList";
-import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
+import HelpSection from "../../../../HelpSection/Help";
+// import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -105,29 +106,22 @@ function Dashboard({ history }) {
       }
       dispatch(adminMenuActions.setCurrentMenu("taskList"));
     } else if (
-      window.location.href.includes("compliance-history-list") &&
-      window.location.hash === "#/compliance-history-list" &&
-      state.adminMenu.currentMenu !== "complianceHistoryList"
-    ) {
-      dispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
-      return;
-    } else if (
       window.location.href.includes("compliance-history") &&
       window.location.hash === "#/compliance-history" &&
-      state.adminMenu.currentMenu !== "historyFilter"
+      state.adminMenu.currentMenu !== "history"
     ) {
-      dispatch(adminMenuActions.setCurrentMenu("historyFilter"));
+      dispatch(adminMenuActions.setCurrentMenu("history"));
       return;
     } else if (
       window.location.href.includes("new-regulations") &&
-      state.adminMenu.currentMenu !== "newRegulations"
+      state.adminMenu.currentMenu !== "new-regulations"
     ) {
-      dispatch(adminMenuActions.setCurrentMenu("newRegulations"));
+      dispatch(adminMenuActions.setCurrentMenu("new-regulations"));
     } else if (
       window.location.href.includes("help") &&
-      state.adminMenu.currentMenu !== "Help"
+      state.adminMenu.currentMenu !== "help"
     ) {
-      dispatch(adminMenuActions.setCurrentMenu("Help"));
+      dispatch(adminMenuActions.setCurrentMenu("help"));
     } else if (
       window.location.href.includes("notifications") &&
       state.adminMenu.currentMenu !== "notfications"
@@ -171,17 +165,17 @@ function Dashboard({ history }) {
             </div>
           </>
         )}
-        {state && state.adminMenu.currentMenu === "complianceHistoryList" && (
+        {state && state.adminMenu.currentMenu === "history" && (
           // {History List}
           <HistoryList />
         )}
-        {state && state.adminMenu.currentMenu === "historyFilter" && (
-          // {History Filter}
+        {/* {state && state.adminMenu.currentMenu === "historyFilter" && (
           <HistoryFilter />
-        )}
-        {state && state.adminMenu.currentMenu === "newRegulations" && (
+        )} */}
+        {state && state.adminMenu.currentMenu === "new-regulations" && (
           <NewRegulations />
         )}
+        {state && state.adminMenu.currentMenu === "help" && <HelpSection />}
       </div>
     </div>
   );

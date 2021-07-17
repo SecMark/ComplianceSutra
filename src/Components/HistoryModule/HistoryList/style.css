@@ -10,6 +10,16 @@
 }
 .history-container {
   height: 94vh;
+  padding: 48px 48px;
+  object-fit: contain;
+  border-radius: 36px;
+  box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
+  background-color: #ffffff;
+  position: relative;
+  overflow-y: auto;
+  margin: 20px 20px 20px 6.5vw;
+  width: auto;
+  z-index: 8;
 }
 .filter-toggle {
   border: none;
@@ -20,7 +30,20 @@
   font-size: 12px;
   border-radius: 0.3rem;
 }
-
+.main-title {
+  font-family: Poppins;
+  font-size: 24px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+}
+.data-options > img {
+  height: 16px;
+}
 .filter-popup {
   width: 400px;
   height: 100vh;
@@ -135,6 +158,7 @@
   font-style: normal;
   line-height: normal;
   letter-spacing: 0.02px;
+  letter-spacing: 0.02px;
   text-align: left;
   color: #807d88;
   text-transform: uppercase;
@@ -151,6 +175,7 @@
 .history-container-mobile {
   width: 100%;
   min-height: 100vh;
+  position: relative;
   background-color: white;
 }
 .mobile-head {
@@ -182,7 +207,7 @@
   width: 100vw;
   z-index: 3;
   background-color: rgb(255, 255, 255);
-  height: 70vh;
+  height: 80vh;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   padding: 2rem 1rem;
@@ -221,20 +246,32 @@
 }
 
 .filter-popup-mobile {
-  height: 80vh;
+  height: 90vh;
 }
 .filter-wrapper-mobile {
   height: 60vh;
   overflow-y: auto;
+  padding-right: 1rem;
 }
 .filter-wrapper-desktop {
   height: 70vh;
   overflow-y: auto;
 }
+.history-list-scroll-mobile {
+  padding-right: 1rem;
+  margin-top: 5vh;
+  height: 70vh;
+  overflow: auto;
+}
 @media (max-width: 575.98px) {
   .filter-popup-mobile--wrapper {
     width: 90%;
     margin: auto;
+  }
+}
+@media screen and (max-width: 767px) {
+  .main-title {
+    padding: 0px 0px;
   }
 }
 
