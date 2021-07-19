@@ -22,7 +22,7 @@ const MonthView = ({
   };
   return (
     <>
-      <div className="calender d-none d-md-grid">
+      <div className="calender  d-md-grid">
         {constant.Weeks.map((day) => (
           <div className="day-name">{day}</div>
         ))}
@@ -122,7 +122,7 @@ const MonthView = ({
           );
         })}
       </div>
-      <div className="calender-mobile">
+      <div className="calender-mobile d-block d-md-none">
         {isSmallCalenderOpen && (
           <div className="small-calender-mobile">
             {constant.Weeks.map((day) => (
