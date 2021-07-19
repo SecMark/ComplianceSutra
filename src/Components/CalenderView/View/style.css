@@ -60,12 +60,12 @@
   border: none;
 }
 
-.calender {
+/* .calender {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(7, 1fr);
   padding: 0px 40px;
-}
+} */
 
 .day-name {
   border-bottom: 1px solid #eee8fc;

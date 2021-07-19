@@ -293,3 +293,8 @@
   color: white;
   pointer-events: none;
 }
+@media screen and (max-width: 767px) {
+  .calender {
+    display: none;
+  }
+}

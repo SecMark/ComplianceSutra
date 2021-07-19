@@ -57,6 +57,7 @@ import { actions as adminMenuActions } from "../../MenuRedux/actions";
 import View from "../../../../../CalenderView/View";
 
 import TextareaAutosize from "react-textarea-autosize";
+import ReAssignTasksModal from "../../../../../ReAssignTasks";
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
@@ -146,7 +147,12 @@ function RightSideGrid({
 
   const currentFilterViewByRedux =
     state && state.adminMenu && state.adminMenu.currentFilterViewBy;
-
+    const [
+      isShowReAssignModalForTeamMember,
+      setIsShowReAssignModalForTeamMember,
+    ] = useState(false);
+    const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
+      useState(false);
   const getTaskById =
     state &&
     state.taskReport &&
@@ -4599,6 +4605,20 @@ function RightSideGrid({
 
       {isTaskListOpen && (
         <div className="row ">
+           <ReAssignTasksModal
+            openModal={isShowReAssignModalForTeamMember}
+            setShowModal={setIsShowReAssignModalForTeamMember}
+            userId={getTaskById && getTaskById.AssignedTo}
+            taskId={getTaskById && getTaskById.TaskId}
+            isSingleTask
+          />
+          <ReAssignTasksModal
+            openModal={isShowReAssignModalForApprover}
+            setShowModal={setIsShowReAssignModalForApprover}
+            userId={getTaskById && getTaskById.AprovalAssignedToID}
+            taskId={getTaskById && getTaskById.TaskId}
+            isSingleTask
+          />
           <div className="col-12 right-side-bar">
             <div className="">
               <div className="task-details-veiw scroll-remove-file">
@@ -4822,7 +4842,12 @@ function RightSideGrid({
                         </div>
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                           {getTaskById && getTaskById.AssignedTo != 0 ? (
-                            <div className="holding-list-bold-title">
+                            <div className="holding-list-bold-title"
+                            style={{cursor: "pointer"}}
+                            onClick={() =>
+                              setIsShowReAssignModalForTeamMember(true)
+                            }
+                            >
                               {getTaskById &&
                               getTaskById.AssignedToUserName == "" ? null : (
                                 <span className="cicrcle-name">
@@ -5036,7 +5061,12 @@ function RightSideGrid({
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                           {getTaskById &&
                           getTaskById.ApproverName != "Assign" ? (
-                            <div className="holding-list-bold-title">
+                            <div className="holding-list-bold-title"
+                            style={{cursor: "pointer"}}
+                            onClick={() =>
+                              setIsShowReAssignModalForApprover(true)
+                            }
+                            >
                               {getTaskById &&
                               getTaskById.ApproverName == "" ? null : (
                                 <span className="cicrcle-name">
