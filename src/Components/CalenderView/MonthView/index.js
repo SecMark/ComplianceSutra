@@ -22,7 +22,7 @@ const MonthView = ({
   };
   return (
     <>
-      <div className="calender  d-md-grid">
+      <div className="calender">
         {constant.Weeks.map((day) => (
           <div className="day-name">{day}</div>
         ))}
