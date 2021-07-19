@@ -423,7 +423,6 @@ p.description-text-search-active {
 .new-regulation-container-mobile {
   min-height: 100vh;
   width: 100%;
-  position: relative;
   background-color: white;
 }
 .mobile-head {
