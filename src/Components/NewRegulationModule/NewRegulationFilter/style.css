@@ -2,6 +2,11 @@
   /* width: 274px !important; */
   width: 100% !important;
 }
+.filter-form {
+  height: 70vh;
+  overflow: auto;
+  padding-right: 2rem;
+}
 .filter-form label {
   margin-top: 15px;
   font-family: Poppins;
@@ -37,14 +42,21 @@
   background-color: #6c5dd3;
   pointer-events: all;
 }
+p.warnings {
+  color: red;
+}
+p.warnings > small {
+  color: red;
+  font-size: 0.7rem;
+}
 @media screen and (min-width: 992px) {
   .searchable {
     width: 100% !important;
   }
-  .view-updates {
+  /* .view-updates {
     margin-top: 70px;
   }
   .view-updates-active {
     margin-top: 70px;
-  }
+  } */
 }

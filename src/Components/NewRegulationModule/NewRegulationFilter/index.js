@@ -15,7 +15,12 @@ import {
   setTopic,
 } from "../redux/actions";
 import moment from "moment";
-
+import {
+  isDifferenceIsMoreThanOneYear,
+  isSameOrBeforeToday,
+  isMoreThanOneYearFromToday,
+  isToDateBeforeFromDate,
+} from "../../ReAssignTasks/utilties";
 import "./style.css";
 
 const NewRegulationFilter = ({ label }) => {
@@ -80,9 +85,23 @@ const NewRegulationFilter = ({ label }) => {
   useEffect(() => {
     if (
       state.UpdatesReducer.from !== "" &&
-      state.UpdatesReducer.from.length !== 1 &&
+      state.UpdatesReducer.from.length !== 0 &&
+      state.UpdatesReducer.from.length === 3 &&
       state.UpdatesReducer.to !== "" &&
-      state.UpdatesReducer.to.length !== 1 &&
+      state.UpdatesReducer.to.length !== 0 &&
+      state.UpdatesReducer.to.length === 3 &&
+      isSameOrBeforeToday(state.UpdatesReducer.from) &&
+      !isMoreThanOneYearFromToday(state.UpdatesReducer.from) &&
+      isSameOrBeforeToday(state.UpdatesReducer.to) &&
+      !isMoreThanOneYearFromToday(state.UpdatesReducer.to) &&
+      !isDifferenceIsMoreThanOneYear(
+        state.UpdatesReducer.from,
+        state.UpdatesReducer.to
+      ) &&
+      !isToDateBeforeFromDate(
+        state.UpdatesReducer.from,
+        state.UpdatesReducer.to
+      ) &&
       state.UpdatesReducer.industry !== "" &&
       state.UpdatesReducer.issuer !== "" &&
       state.UpdatesReducer.topic !== ""
@@ -127,6 +146,19 @@ const NewRegulationFilter = ({ label }) => {
     dispatch(setFilterPayload(filterRequestPayload));
     dispatch(setIsFilter(true));
   };
+  useEffect(() => {
+    console.log("from: ", state.UpdatesReducer.from);
+    if (
+      state.UpdatesReducer.from !== "" &&
+      state.UpdatesReducer.from.length === 3
+    ) {
+      console.log(
+        "isSameOrBeforeToday: ",
+        isSameOrBeforeToday(state.UpdatesReducer.from)
+      );
+    }
+    console.log("to: ", state.UpdatesReducer.to);
+  }, [state.UpdatesReducer.from, state.UpdatesReducer.to]);
 
   return (
     <div className="filter-form">
@@ -168,18 +200,94 @@ const NewRegulationFilter = ({ label }) => {
         <Datepicker
           pageName="newRegulation"
           dispatch={dispatch}
-          actionType="SET_TO_DATE"
+          actionType="SET_FROM_DATE"
           name="from"
         />
+        <p className="warnings">
+          {state.UpdatesReducer.from !== "" &&
+            state.UpdatesReducer.from.length === 3 &&
+            !isSameOrBeforeToday(state.UpdatesReducer.from) !== undefined &&
+            !isSameOrBeforeToday(state.UpdatesReducer.from) && (
+              <small className="d-block">
+                {"* " + constant.errorMessage.errorDueToGreaterDate}
+              </small>
+            )}
+          {state.UpdatesReducer.from !== "" &&
+            state.UpdatesReducer.from.length === 3 &&
+            isMoreThanOneYearFromToday(state.UpdatesReducer.from) !==
+              undefined &&
+            isMoreThanOneYearFromToday(state.UpdatesReducer.from) && (
+              <small className="d-block">
+                {"* " +
+                  constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
+              </small>
+            )}
+        </p>
       </div>
       <div>
         <label>To</label>
         <Datepicker
           pageName="newRegulation"
           dispatch={dispatch}
-          actionType="SET_FROM_DATE"
+          actionType="SET_TO_DATE"
           name="to"
         />
+        <p className="warnings">
+          {state.UpdatesReducer.to !== "" &&
+            state.UpdatesReducer.to.length === 3 &&
+            !isSameOrBeforeToday(state.UpdatesReducer.to) !== undefined &&
+            !isSameOrBeforeToday(state.UpdatesReducer.to) && (
+              <small className="d-block">
+                {"* " + constant.errorMessage.errorDueToGreaterDate}
+              </small>
+            )}
+          {state.UpdatesReducer.to !== "" &&
+            state.UpdatesReducer.to.length === 3 &&
+            isMoreThanOneYearFromToday(state.UpdatesReducer.to) !== undefined &&
+            isMoreThanOneYearFromToday(state.UpdatesReducer.to) && (
+              <small className="d-block">
+                {"* " +
+                  constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
+              </small>
+            )}
+          {state.UpdatesReducer.to !== "" &&
+            state.UpdatesReducer.to.length === 3 &&
+            state.UpdatesReducer.from !== "" &&
+            state.UpdatesReducer.from.length === 3 &&
+            isDifferenceIsMoreThanOneYear(
+              state.UpdatesReducer.from,
+              state.UpdatesReducer.to
+            ) !== undefined &&
+            isDifferenceIsMoreThanOneYear(
+              state.UpdatesReducer.from,
+              state.UpdatesReducer.to
+            ) && (
+              <small className="d-block">
+                {"* " + constant.errorMessage.errorDueToRange}
+              </small>
+            )}
+          {state.UpdatesReducer.to !== "" &&
+            state.UpdatesReducer.to.length === 3 &&
+            state.UpdatesReducer.from !== "" &&
+            state.UpdatesReducer.from.length === 3 &&
+            isToDateBeforeFromDate(
+              state.UpdatesReducer.from,
+              state.UpdatesReducer.to
+            ) !== undefined &&
+            isToDateBeforeFromDate(
+              state.UpdatesReducer.from,
+              state.UpdatesReducer.to
+            ) && (
+              <small className="d-block">
+                {"* " +
+                  constant.errorMessage.errorDueToReverseDate +
+                  moment(
+                    state.UpdatesReducer.from.join("-"),
+                    "DD-MM-YYYY"
+                  ).format("D MMMM YYYY")}
+              </small>
+            )}
+        </p>
       </div>
       <button
         className={`view-updates ${isAllInputFilled && "view-updates-active"}`}

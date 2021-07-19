@@ -177,7 +177,7 @@ const NewRegulations = (props) => {
                 onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
               />
               <div className="filter-popup-mobile--wrapper">
-                <h2 style={{ marginBottom: "2rem" }}>Filters</h2>
+                <h2 style={{ marginBottom: "2rem" }}>Fiters</h2>
                 <div className="filter-wrapper-mobile">
                   <NewRegulationFilter />
                 </div>
