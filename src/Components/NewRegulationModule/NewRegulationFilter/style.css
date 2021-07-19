@@ -2,10 +2,12 @@
   /* width: 274px !important; */
   width: 100% !important;
 }
-.filter-form {
-  height: 70vh;
-  overflow: auto;
-  padding-right: 2rem;
+@media screen and (min-width: 767px) {
+  .filter-form {
+    height: 70vh;
+    overflow: auto;
+    padding-right: 2rem;
+  }
 }
 .filter-form label {
   margin-top: 15px;
