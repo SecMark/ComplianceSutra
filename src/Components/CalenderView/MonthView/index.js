@@ -22,107 +22,109 @@ const MonthView = ({
   };
   return (
     <>
-      <div className="calender">
-        {constant.Weeks.map((day) => (
-          <div className="day-name">{day}</div>
-        ))}
+      <div className="calender-container">
+        <div className="calender">
+          {constant.Weeks.map((day) => (
+            <div className="day-name">{day}</div>
+          ))}
 
-        {months.map((day) => {
-          const todayDate = moment(new Date()).format("YYYY-MM-DD");
-          const month = moment(day).format("MMMM");
-          const currentMonth = moment(monthDate).format("MMMM");
-          const currentDay = moment(day).format("D");
-          const compareDate = moment(day).format("YYYY-MM-DD");
+          {months.map((day) => {
+            const todayDate = moment(new Date()).format("YYYY-MM-DD");
+            const month = moment(day).format("MMMM");
+            const currentMonth = moment(monthDate).format("MMMM");
+            const currentDay = moment(day).format("D");
+            const compareDate = moment(day).format("YYYY-MM-DD");
 
-          const list = monthData.filter(
-            ({ EndDate }) => EndDate === compareDate
-          );
+            const list = monthData.filter(
+              ({ EndDate }) => EndDate === compareDate
+            );
 
-          return (
-            <div
-              className={month === currentMonth ? "day" : "day-disable"}
-              onClick={() => moveToWeek(day)}
-            >
-              <p
-                className={
-                  todayDate === compareDate ? "active-date" : "inactive-date"
-                }
+            return (
+              <div
+                className={month === currentMonth ? "day" : "day-disable"}
+                onClick={() => moveToWeek(day)}
               >
-                {currentDay}
-              </p>
-              {month === currentMonth && list && list[0]?.LicenseCode && (
-                <>
-                  <div className="button-code">
-                    {list[0]?.LicenseCode}
-                    <div className="tooltip-container">
-                      <h2 className="tooltip-title">{list[0]?.TaskName}</h2>
-                      <div className="tooltip-company-detail">
-                        <span className="tooltip-compant-name">
-                          {list[0]?.EntityName}
-                        </span>
-                        <p>
-                          <span className="circle-dp-tooltip">
-                            {getIntialName(list[0]?.AssignedName)}
-                          </span>{" "}
-                          <span className="user-name-tooltip">
-                            {list[0]?.AssignedName}
+                <p
+                  className={
+                    todayDate === compareDate ? "active-date" : "inactive-date"
+                  }
+                >
+                  {currentDay}
+                </p>
+                {month === currentMonth && list && list[0]?.LicenseCode && (
+                  <>
+                    <div className="button-code">
+                      {list[0]?.LicenseCode}
+                      <div className="tooltip-container">
+                        <h2 className="tooltip-title">{list[0]?.TaskName}</h2>
+                        <div className="tooltip-company-detail">
+                          <span className="tooltip-compant-name">
+                            {list[0]?.EntityName}
                           </span>
-                        </p>
+                          <p>
+                            <span className="circle-dp-tooltip">
+                              {getIntialName(list[0]?.AssignedName)}
+                            </span>{" "}
+                            <span className="user-name-tooltip">
+                              {list[0]?.AssignedName}
+                            </span>
+                          </p>
+                        </div>
+
+                        <button
+                          className="tooltip-view-detail-button"
+                          onClick={() => viewDetail(list[0]?.TaskId)}
+                        >
+                          View Detail
+                        </button>
                       </div>
-
-                      <button
-                        className="tooltip-view-detail-button"
-                        onClick={() => viewDetail(list[0]?.TaskId)}
-                      >
-                        View Detail
-                      </button>
                     </div>
-                  </div>
-                </>
-              )}
+                  </>
+                )}
 
-              {month === currentMonth && list && list[1]?.LicenseCode && (
-                <>
-                  <div className="button-code">
-                    {list[1]?.LicenseCode}
-                    <div className="tooltip-container">
-                      <h2 className="tooltip-title">{list[1]?.TaskName}</h2>
-                      <div className="tooltip-company-detail">
-                        <span className="tooltip-compant-name">
-                          {list[1]?.EntityName}
-                        </span>
-                        <p>
-                          <span className="circle-dp-tooltip">
-                            {getIntialName(list[1]?.AssignedName)}
-                          </span>{" "}
-                          <span className="user-name-tooltip">
-                            {list[1]?.AssignedName}
+                {month === currentMonth && list && list[1]?.LicenseCode && (
+                  <>
+                    <div className="button-code">
+                      {list[1]?.LicenseCode}
+                      <div className="tooltip-container">
+                        <h2 className="tooltip-title">{list[1]?.TaskName}</h2>
+                        <div className="tooltip-company-detail">
+                          <span className="tooltip-compant-name">
+                            {list[1]?.EntityName}
                           </span>
-                        </p>
+                          <p>
+                            <span className="circle-dp-tooltip">
+                              {getIntialName(list[1]?.AssignedName)}
+                            </span>{" "}
+                            <span className="user-name-tooltip">
+                              {list[1]?.AssignedName}
+                            </span>
+                          </p>
+                        </div>
+
+                        <button
+                          className="tooltip-view-detail-button"
+                          onClick={() => viewDetail(list[1]?.TaskId)}
+                        >
+                          View Detail
+                        </button>
                       </div>
-
-                      <button
-                        className="tooltip-view-detail-button"
-                        onClick={() => viewDetail(list[1]?.TaskId)}
-                      >
-                        View Detail
-                      </button>
                     </div>
-                  </div>
-                </>
-              )}
+                  </>
+                )}
 
-              {month === currentMonth && list && list.length > 2 && (
-                <button className="view-more">
-                  View {parseInt(list.length - 2)} More{" "}
-                  {parseInt(list.length - 2) < 1 ? "Tasks" : "Task"}{" "}
-                </button>
-              )}
-            </div>
-          );
-        })}
+                {month === currentMonth && list && list.length > 2 && (
+                  <button className="view-more">
+                    View {parseInt(list.length - 2)} More{" "}
+                    {parseInt(list.length - 2) < 1 ? "Tasks" : "Task"}{" "}
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <div className="calender-mobile">
+      <div className="calender-mobile d-block d-md-none">
         {isSmallCalenderOpen && (
           <div className="small-calender-mobile">
             {constant.Weeks.map((day) => (

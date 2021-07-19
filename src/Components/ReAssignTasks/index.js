@@ -45,13 +45,13 @@ function ReAssignTasksModal({
   const FilterTypes = constants.ReAssignFilterTypes;
   const Flags = constants.ReAssignFlags;
   const Messages = constants.ReAssignMessages;
-  console.log("userType: ", userType);
-  console.log("assignTo", assignTo);
+
   const handleClose = () => {
     setAssignTo({});
     setFilter({});
     setShowModal(false);
   };
+
   const handleReAssign = () => {
     // For Single Tasks
     if (

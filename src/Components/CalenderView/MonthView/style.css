@@ -1,3 +1,7 @@
+.calender-container {
+  height: calc(100vh - 249px);
+  overflow-y: auto;
+}
 .calender {
   display: grid;
   grid-template-columns: repeat(7, 1fr);

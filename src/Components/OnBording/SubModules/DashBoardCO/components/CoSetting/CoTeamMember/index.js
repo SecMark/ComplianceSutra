@@ -194,6 +194,7 @@ function CoManagment({ handleClose }) {
   });
 
   const changeRoleMobile = (item, index) => {
+    console.log(item, index);
     fields &&
       fields[openPopupIndex] &&
       setRoleTitle(fields[openPopupIndex].role);
