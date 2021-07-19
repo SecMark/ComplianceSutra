@@ -122,7 +122,7 @@ const MonthView = ({
           );
         })}
       </div>
-      <div className="calender-mobile d-block d-md-none">
+      <div className="calender-mobile">
         {isSmallCalenderOpen && (
           <div className="small-calender-mobile">
             {constant.Weeks.map((day) => (
