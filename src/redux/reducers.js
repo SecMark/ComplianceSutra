@@ -12,6 +12,8 @@ import adminMenu from "../Components/OnBording/SubModules/DashBoardCO/MenuRedux/
 import NotificationRedu from "../Components/OnBording/SubModules/DashBoardCO/components/notification/Redux/Reducers/NotificationRedu";
 import HistoryReducer from "../Components/HistoryModule/redux/reducers";
 import UpdatesReducer from "../Components/NewRegulationModule/redux/reducers";
+import CalenderReducer from "../Components/CalenderView/redux/reducers";
+
 
 const createRootReducer = (history) =>
   combineReducers({
@@ -25,7 +27,8 @@ const createRootReducer = (history) =>
     adminMenu,
     NotificationRedu,
     HistoryReducer,
-    UpdatesReducer
+    UpdatesReducer,
+    CalenderReducer,
   });
 
 export default createRootReducer;

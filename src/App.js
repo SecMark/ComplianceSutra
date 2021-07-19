@@ -1,75 +1,97 @@
 import React, { useEffect } from "react";
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 import AppRouter from "./router";
 import { useDispatch, useSelector } from "react-redux";
-import { createHashHistory } from "history";
+import { createHashHistory } from 'history';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../src/apiServices";
+import { actions as notificationActions } from "./Components/OnBording/SubModules/DashBoardCO/redux/actions";
 import CoSetting from "./Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
-
+import MultipleNotification from "../src/CustomNotification/MultipleNotification";
+import SingleNotification from "../src/CustomNotification/SingleNotification"
 function App() {
   return <MainApp />;
 }
+
+
 function MainApp() {
   // eslint-disable-next-line
+  const toastId = React.useRef(null);
   const state = useSelector((state) => state);
-  console.warn = (message, ...args) => {};
-  console.warn = () => {};
+  const dispatch = useDispatch();
+  console.warn = (message, ...args) => { };
+  console.warn = () => { };
+  console.error = () => { }
   const browserHistory = createHashHistory();
-
   const userID = state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID
-
   useEffect(() => {
+
     const interval = setInterval(() => {
       try {
         if (userID) {
-          changeSettingFlagAPICall();
+          notificationAPICall();
         }
-      } catch (err) {}
-    }, 60000);
+      }
+      catch (err) { }
+    }, 60000)
 
     return () => clearInterval(interval);
-  }, []);
+  }, [])
 
-  const changeSettingFlagAPICall = () => {
+  const notificationAPICall = () => {
+    let notificationArr = [];
     const payload = {
       userID: userID,
-    };
-    api
-      .post("/api/Notifications", payload)
+    }
+    api.post("/api/Notifications", payload)
       .then(function (response) {
-        var date1 = new Date(); //current time
-        if (response && response.data && response.data[0]) {
-          let notification = response && response.data && response.data[0];
-          var notificationDateTime = notification.date;
-          var date2 = new Date(notificationDateTime);
-          var timeDiff = Math.abs(date2.getTime() - date1.getTime()); // in miliseconds
-
-          if (timeDiff < 45000) {
-            if (notification && notification.Comment) {
-              var text = notification.Comment.replace(/(<([^>]+)>)/g, "");
-              toast.success(text);
+        var date1 = new Date();//current time
+        if (response && response.data && response.data.length > 0) {
+          let notification = response && response.data
+          var notificationDateTime;
+          var date2;
+          var timeDiff;
+          notification && notification.length > 0 && notification.map((item, index) => {
+            notificationDateTime = item.date;
+            date2 = new Date(notificationDateTime);
+            timeDiff = Math.abs(date2.getTime() - date1.getTime()); // in miliseconds
+            if (timeDiff < 60000) {
+              notificationArr.push(item);
             }
+          })
+          if (notificationArr && notificationArr.length > 0) {
+            if (notificationArr.length === 1) {
+              toast.success(<SingleNotification id={toastId.current} toast={toast} notification={notificationArr[0]} />)
+            } else {
+              toast.success(<MultipleNotification id={toastId.current} toast={toast} notificationCount={notificationArr.length} />)
+            }
+          } else {
           }
-        } else {
+        }
+        else {
         }
       })
       .catch(function (error) {
         if (error) {
         }
       });
-  };
+  }
   return (
-    <div>
-      <ToastContainer autoClose={5000} hideProgressBar={true} />
+    <>
+
       <Router history={browserHistory}>
+        <ToastContainer
+          autoClose={5000}
+          closeOnClick={false}
+          draggable={false}
+
+          hideProgressBar={true} />
         <Switch>
           <Route component={AppRouter} />
-          {/* <Route component={Help} /> */}
         </Switch>
       </Router>
-    </div>
+    </>
   );
 }
 

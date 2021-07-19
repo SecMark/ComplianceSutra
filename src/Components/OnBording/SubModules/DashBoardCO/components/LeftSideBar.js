@@ -1,41 +1,44 @@
 import React, { useState } from "react";
 import "./style.css";
-
+// import SideBarBg from "../../../../assets/Images/Onboarding/side-bar-bg.png";
+import dashBoardActiveIcon from "../../../../../assets/Icons/dashBoardActiveIcon.png";
 import sideBarlogo from "../../../../../assets/Icons/sideBarlogo.png";
+import circleClock from "../../../../../assets/Icons/circleClock.png";
+import questionIcon from "../../../../../assets/Icons/questionIcon.png";
+import questionIconActive from "../../../../../assets/Icons/HelpBlackActive.png";
+import listIcon from "../../../../../assets/Icons/listIcon.png";
 import SideBaruser from "../../../../../assets/Icons/sideBaruser.png";
 
 import sidebarActive from "../../../../../assets/Icons/sidebar-active.png";
 import sidebarRightActive from "../../../../../assets/Icons/task_alt_black_24dp (1).png";
-import dashboardBlackActive from "../../../../../assets/Icons/dashboard_black.png";
-import dashboardGreyActive from "../../../../../assets/Icons/dashboard_grey.png";
-import updateActive from "../../../../../assets/Icons/update_active.png";
-
-import historyListActive from "../../../../../assets/Icons/history_active.png";
-import historyListInActive from "../../../../../assets/Icons/history_unactive.png";
-
 import sidebarBell from "../../../../../assets/Icons/sidebarBell.png";
 import sidebarBellActive from "../../../../../assets/Icons/bellSelected.png";
 import settingActive from "../../../../../assets/Icons/activeSetting.png";
 import userActive from "../../../../../assets/Icons/dropdownUser.png";
-
+import dashboardView from "../../../../../assets/Icons/dashboardFirstIcon.png";
 import sidebarSettingIcon from "../../../../../assets/Icons/sidebarSettingIcon.png";
+
 import editpen from "../../../../../assets/Icons/editpen.png";
 import LogoutIcon from "../../../../../assets/Icons/LogoutIcon.png";
+
+import { useOuterClick } from "../components/RightSideGrid/outerClick";
 import { useSelector, useDispatch } from "react-redux";
+import { actions as loginActions } from "../../../../Authectication/redux/actions";
 import { withRouter } from "react-router-dom";
 import { actions as adminMenuActions } from "../MenuRedux/actions";
-import { useOuterClick } from "../../../../OnBording/SubModules/AssignTask/utils";
-import { actions as loginActions } from "../../../../Authectication/redux/actions";
-import HelpBlackActive from "../../../../../assets/Icons/HelpBlackActive.png";
-import HelpGreyActive from "../../../../../assets/Icons/HelpGreyActive.png";
+import { actions as notficationActions } from "./notification/Redux/actions";
+
+import historyListActive from "../../../../../assets/Icons/history_active.png";
+import historyListInActive from "../../../../../assets/Icons/history_unactive.png";
+
+import updateActive from "../../../../../assets/Icons/update_active.png";
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
-
   const dispatch = useDispatch();
+  const userDetails = state && state.auth && state.auth.loginInfo;
 
   const [openProfile, setOpenProfile] = useState(false);
-
   const openProfileRef = useOuterClick((e) => {
     if (openProfile === true) {
       setOpenProfile(false);
@@ -43,14 +46,25 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   });
 
   const onLogoutClick = () => {
-    dispatch(adminMenuActions.setCurrentMenu("taskList"));
+    if (userDetails.UserType === 3) {
+      dispatch(adminMenuActions.setCurrentMenu("dashboard"));
+    } else {
+      dispatch(adminMenuActions.setCurrentMenu("taskList"));
+    }
+
     dispatch(loginActions.createLogoutAction());
+    dispatch(adminMenuActions.setCurrentBoardViewTaskId(null));
+    dispatch(adminMenuActions.setCurrentCalendarViewTaskId(null));
+    dispatch(notficationActions.setTaskID(null));
     history.push("/login");
   };
 
   const onMenuClick = (currentActiveMenu) => {
     dispatch(adminMenuActions.setCurrentMenu(currentActiveMenu));
     if (currentActiveMenu === "taskList") {
+      dispatch(notficationActions.setTaskID(null));
+      localStorage.removeItem("expandedFlagss");
+      localStorage.removeItem("allRowCount");
       history.push("/dashboard");
       if (isTaskListOpen) {
         setIsTaskListOpen(false);
@@ -59,13 +73,13 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/notifications");
     } else if (currentActiveMenu === "settings") {
       history.push("/settings");
-    } else if (currentActiveMenu === "historyFilter") {
+    } else if (currentActiveMenu === "dashboard") {
+      history.push("/dashboard-view");
+    } else if (currentActiveMenu === "history") {
       history.push("/compliance-history");
-    } else if (currentActiveMenu === "complianceHistoryList") {
-      history.push("/compliance-history-list");
-    } else if (currentActiveMenu === "newRegulations") {
+    } else if (currentActiveMenu === "new-regulations") {
       history.push("/new-regulations");
-    } else if (currentActiveMenu === "Help") {
+    } else if (currentActiveMenu === "help") {
       history.push("/help");
     }
   };
@@ -84,29 +98,31 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           <img src={sideBarlogo} alt="sideBarlogo" />
         </div>
         <div className="first-icon-list">
-          <div
-            className={
-              !openProfile &&
-              state &&
-              state.adminMenu.currentMenu === "historyFilter"
-                ? "taskIcon-active"
-                : "taskIcon"
-            }
-          >
-            <img
-              style={{ cursor: "pointer" }}
-              title="ComplianceHistory"
-              onClick={() => onMenuClick("historyFilter")}
-              src={
+          {userDetails.UserType === 3 && (
+            <div
+              className={
                 !openProfile &&
                 state &&
-                state.adminMenu.currentMenu === "complianceHistory"
-                  ? dashboardBlackActive
-                  : dashboardGreyActive
+                state.adminMenu.currentMenu === "dashboard"
+                  ? "taskIcon-active"
+                  : "taskIcon"
               }
-              alt="sidebar Active"
-            />
-          </div>
+            >
+              <img
+                style={{ cursor: "pointer", width: "18px" }}
+                title="Dashboard"
+                onClick={() => onMenuClick("dashboard")}
+                src={
+                  !openProfile &&
+                  state &&
+                  state.adminMenu.currentMenu === "dashboard"
+                    ? dashBoardActiveIcon
+                    : dashboardView
+                }
+                alt="sidebar Active"
+              />
+            </div>
+          )}
 
           <div
             className={
@@ -154,24 +170,23 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Bell"
             />
           </div>
+          {/* <div className={!openProfile && state && state.adminMenu.currentMenu === "notfications" ? "taskIcon-active" : "taskIcon"}> */}
 
           <div
             className={
-              !openProfile &&
-              state &&
-              state.adminMenu.currentMenu === "complianceHistoryList"
+              !openProfile && state && state.adminMenu.currentMenu === "history"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
           >
             <img
               style={{ cursor: "pointer" }}
-              title="complianceHistoryList"
-              onClick={() => onMenuClick("complianceHistoryList")}
+              title="Compliance History"
+              onClick={() => onMenuClick("history")}
               src={
                 !openProfile &&
                 state &&
-                state.adminMenu.currentMenu === "complianceHistoryList"
+                state.adminMenu.currentMenu === "history"
                   ? historyListActive
                   : historyListInActive
               }
@@ -183,19 +198,19 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             className={
               !openProfile &&
               state &&
-              state.adminMenu.currentMenu === "newRegulations"
+              state.adminMenu.currentMenu === "new-regulations"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
           >
             <img
               style={{ cursor: "pointer" }}
-              title="complianceHistoryList"
-              onClick={() => onMenuClick("newRegulations")}
+              title="New Regulations"
+              onClick={() => onMenuClick("new-regulations")}
               src={
                 !openProfile &&
                 state &&
-                state.adminMenu.currentMenu === "newRegulations"
+                state.adminMenu.currentMenu === "new-regulations"
                   ? updateActive
                   : updateActive
               }
@@ -203,7 +218,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             />
           </div>
         </div>
-        <div className="devider-line"></div>
+        <div className="devider-line devider-line-set"></div>
         <div className="second-icon-list">
           <div
             className={
@@ -228,32 +243,36 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Setting Icon"
             />
           </div>
-
           <div
             className={
-              !openProfile && state && state.adminMenu.currentMenu === "Help"
+              !openProfile && state && state.adminMenu.currentMenu === "help"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
           >
             <img
-              style={{ cursor: "pointer" }}
-              title="Help"
-              onClick={() => onMenuClick("Help")}
+              onClick={() => onMenuClick("help")}
+              style={{ cursor: "pointer", width: "18px" }}
               src={
-                !openProfile && state && state.adminMenu.currentMenu === "Help"
-                  ? HelpBlackActive
-                  : HelpGreyActive
+                !openProfile && state && state.adminMenu.currentMenu === "help"
+                  ? questionIconActive
+                  : questionIcon
               }
-              alt="sidebar Active"
+              alt="taskIcon"
             />
           </div>
 
-          <div className={openProfile ? "taskIcon-active" : "taskIcon"}>
+          <div
+            className={
+              openProfile
+                ? "taskIcon-active mmm taskIcon mt-8"
+                : "taskIcon mt-8"
+            }
+          >
             <img
               style={{ cursor: "pointer" }}
               title="Profile"
-              onClick={() => setOpenProfile(true)}
+              onClick={() => setOpenProfile(!openProfile)}
               src={openProfile ? userActive : SideBaruser}
               alt="sidbar User"
             />

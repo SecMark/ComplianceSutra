@@ -1120,16 +1120,17 @@ function AssignTask({ history }) {
       return assignIcon;
     }
     if(index==1 || index%5==1){
-      return assignIcon2;
+      return assignIcon4;
+      
     }
     if(index==2 || index%5==2){
-      return assignIcon3;
+      return assignIcon2;
     }
     if(index==3 || index%5==3){
-      return assignIcon4;
+      return assignIcon5;  
     }
     if(index==4 || index%5==4){
-      return assignIcon5;
+      return assignIcon3;
     }
   }
 
@@ -1264,7 +1265,7 @@ function AssignTask({ history }) {
                                       src={
                                          chooseImage(itemTask.licenseIndex)
                                       }
-                                      style={{objectFit:"cover",height:"48px"}}
+                                      // style={{objectFit:"cover",height:"48px"}}
                                       // {
                                       //   itemTask.imageType !== 1 || itemTask.imageType !== 2 || itemTask.imageType !== 3 || itemTask.imageType !== 4 ? height : "49px",width:"49px" 
                                       // }

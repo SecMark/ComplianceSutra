@@ -303,7 +303,7 @@ const CompanyDeleteRequest = function* CompanyDeleteRequest({ payload }) {
     const { data, status } = yield call(api.coSettingCommonApi, payload);
     let statusCode = data && data[0] && data[0].StatusCode;
     if (status === 200 && statusCode != false) {
-      toast.success("Company Delete successfully.")
+      toast.success("Company deleted successfully.")
       yield put(actions.deleteCompanyRequestSuccess({ Status: 'Success' }));
     } else {
       toast.error("Something went wrong.");

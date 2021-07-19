@@ -1,11 +1,15 @@
+.co-setting{
+  
+}
 .co-setting .devider-line {
-  width: 48px;
-  height: 1px;
-  margin-bottom: 35px;
-  margin-top: 35px;
-  object-fit: contain;
-  background-color: #eee8fc;
-  margin-left: 7.5px;
+    width: 48px;
+    height: 1px;
+    margin-bottom: 35px;
+    margin-top: 35px;
+    object-fit: contain;
+    background-color: #eee8fc;
+    margin-left: 7.5px;
+ 
 }
 .co-setting .left-fixed {
   flex: 0 0 26%;
@@ -16,7 +20,7 @@
   position: fixed;
   z-index: 9;
 }
-.co-setting .padding-left {
+.co-setting .padding-left{
   padding-left: 26%;
 }
 
@@ -28,13 +32,16 @@
   padding-left: 0;
   height: 100vh;
 }
-.co-setting .side-bar-outer {
+.co-setting .side-bar-outer{
   width: 100%;
   height: 100vh;
   background-color: #fff;
   display: flex;
 }
-.pad-ms {
-  padding: 40px 40px 20px 40px;
-  width: 100%;
+.co-setting .side-bar-outer{
+
+}
+.pad-ms{
+  padding: 40px 10px 20px 40px;
+  width:100%
 }

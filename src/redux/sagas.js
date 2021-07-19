@@ -8,6 +8,8 @@ import inviteMemberSaga from "../Components/OnBording/SubModules/IniviteFlowMemb
 import userTypeSagas from "../Components/UserVerification/redux/sagas";
 import historySaga from "../Components/HistoryModule/redux/saga";
 import updatesSaga from "../Components/NewRegulationModule/redux/saga";
+import calenderViewSaga from "../Components/CalenderView/redux/saga";
+
 function* watchAndLog() {
   yield takeEvery("*", function* logger(action) {
     const state = yield select();
@@ -27,5 +29,7 @@ export default function* root() {
     fork(userTypeSagas),
     fork(historySaga),
     fork(updatesSaga),
+    fork(calenderViewSaga),
+    fork(userTypeSagas),
   ]);
 }

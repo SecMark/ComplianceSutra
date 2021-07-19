@@ -61,6 +61,7 @@ function CompanyDetails({ history }) {
   const [liecenseData, setLiecenseData] = useState([])
   const [category, setCategory] = useState([])
   const [categoryo, setCategoryo] = useState([])
+  const [mobCategoryo, setMobCategoryo] = useState([])
   const [companyTypeInfo, setCompanyTypeInfo] = useState([])
   const [companyTypeoInfo, setCompanyTypeoInfo] = useState([])
   const [curentRowInfo, setCurrntRowInfo] = useState([])
@@ -205,10 +206,16 @@ function CompanyDetails({ history }) {
     setCompanyTypeoInfo(array)
 
     var array2 = []
+    var mobArray2 = []
+
     Categories &&
       Categories.map((item) => {
         array2.push({ value: item.Category, label: item.Category })
+        if (item.Category !== "" || item.Category) {
+          mobArray2.push({ value: item.Category, label: item.Category })          
+        }
       })
+    setMobCategoryo(mobArray2)
     setCategoryo(array2)
   }, [Categories, companyType])
 
@@ -939,7 +946,8 @@ function CompanyDetails({ history }) {
                 className="form-control border-0"
                 placeholder={item.category ? item.category : "Select Category"} // by default "Search"
                 notFoundText="No result found" // by default "No result found"
-                options={categoryo}
+                // options={categoryo}
+                options={mobCategoryo}
                 onSelect={(value) => {
                   handleCompanyTypeChange(value, index, "categoryType")
                 }}
@@ -1387,7 +1395,7 @@ function CompanyDetails({ history }) {
           <div className="container">
             <div className="bottom-logo-strip">
               <div className="row aligncenter">
-                <div className="col-12">
+                <div className="col-6">
                   <button
                     disabled={checkButtonDisabled() === true ? false : true}
                     className={
@@ -1405,14 +1413,7 @@ function CompanyDetails({ history }) {
                     Next
                   </button>
                 </div>
-              </div>
-              <div className="row aligncenter">
-                {/* <div className="col-md-6 col-xs-12">
-                           <p className="account-link">
-                              *For companies requiring compliance in{" "}
-                              <img className="header_logo" src={india} alt="" /> INDIA
-                  </p>
-                        </div> */}
+                <div className="col-6">
                 <div className="col-md-12 col-xs-12 d-none d-sm-block text-right">
                   {/* <a href="#" style={{'cursor': 'auto'}}> */}
                   <span className="powerBy">Powered by</span>
@@ -1424,7 +1425,22 @@ function CompanyDetails({ history }) {
                   />
                   {/* </a> */}
                 </div>
+                </div>
               </div>
+              {/* <div className="row aligncenter">
+               
+                <div className="col-md-12 col-xs-12 d-none d-sm-block text-right">
+               
+                  <span className="powerBy">Powered by</span>
+                  <img
+                    className="header_logo footer-logo-secmark"
+                    src={secmark}
+                    alt="SECMARK"
+                    title="SECMARK"
+                  />
+                 
+                </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import MobileLeftSidebar from "../../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
-import HistoryFilterForm from "../HistoryFilterForm.js";
+import HistoryFilterForm from "../HistoryFilterForm/index";
 import filter from "../../../assets/Icons/Filters.png";
 import download from "../../../assets/Icons/download.png";
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
@@ -161,10 +161,10 @@ const HistoryList = (props) => {
             </div>
           )}
           {/* View more data ends here */}
-          <div className="d-block mobile-head">
+          <div className="d-block mobile-head d-md-none">
             {showHB === false && (
               // <div className=" d-block d-sm-none pad-ms">
-              <div className="d-flex justify-content-between d-lg-none">
+              <div className="d-flex justify-content-between">
                 <div
                   className=""
                   style={{ cursor: "pointer" }}
@@ -174,7 +174,7 @@ const HistoryList = (props) => {
                 >
                   <img src={togglemobile} alt="toggle mobile" />
                 </div>
-                <div className="pr-4">
+                <div className="pr-0">
                   {" "}
                   <img
                     className="mobile-logo"
@@ -185,78 +185,82 @@ const HistoryList = (props) => {
               </div>
             )}
             <div className=" table-header-mobile d-flex justify-content-between align-items-center mt-3">
-              <h3 className="mb-0">Compliance History</h3>
+              <p className="main-title mb-0">Compliance History</p>
               <img
                 src={filter}
                 alt="filter"
                 onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
               />
             </div>
-            {state.HistoryReducer.historyList.length !== 0 ? (
-              <table className="table co-company-details-tbl table_legenda mt-3">
-                <thead>
-                  <tr>
-                    <th>Complete on</th>
-                    <th>status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {state.HistoryReducer.historyList.map((list) => (
+            <div className="history-list-scroll-mobile">
+              {state.HistoryReducer.historyList.length !== 0 ? (
+                <table className="table table_legenda mt-3">
+                  <thead>
                     <tr>
-                      <td className="task-name td-mobile">
-                        {list.TaskName}
-                        <br />
-                        <span className="task-detail">
-                          {moment(list.Completed).format("DD MMMM YYYY")}
-                        </span>
-                      </td>
-                      <td className="d-flex justify-content-between td-mobile">
-                        <button
-                          className={
-                            list.Status === "Pending"
-                              ? list.Status === "Delayed"
-                                ? "delayed"
-                                : "on-time"
-                              : "pending"
-                          }
-                        >
-                          {list.Status}
-                        </button>
-                        <div className="data-options">
-                          <img
-                            src={threeDots}
-                            alt="options"
-                            onClick={() => {
-                              if (isShowMobileOptionsId === list.TaskId) {
-                                setIsShowMobileOptionsId(null);
-                                setMobileRowData({});
-                                return;
-                              }
-                              setIsShowMobileOptionsId(list.TaskId);
-                              setMobileRowData(list);
-                            }}
-                          />
-                          {isShowMobileOptionsId === list?.TaskId && (
-                            <div className="more-options">
-                              {/* View More Logic Here */}
-                              <span
-                                onClick={() => {
-                                  setIsShowMobileRowData(!isShowMobileRowData);
-                                }}
-                              >
-                                View More
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </td>
+                      <th>Complete on</th>
+                      <th>status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <NoResultFound text="No Result Found" />
-            )}
+                  </thead>
+                  <tbody>
+                    {state.HistoryReducer.historyList.map((list) => (
+                      <tr>
+                        <td className="task-name td-mobile">
+                          {list.TaskName}
+                          <br />
+                          <span className="task-detail">
+                            {moment(list.Completed).format("DD MMMM YYYY")}
+                          </span>
+                        </td>
+                        <td className="d-flex justify-content-between td-mobile">
+                          <button
+                            className={
+                              list.Status === "Pending"
+                                ? list.Status === "Delayed"
+                                  ? "delayed"
+                                  : "on-time"
+                                : "pending"
+                            }
+                          >
+                            {list.Status}
+                          </button>
+                          <div className="data-options">
+                            <img
+                              src={threeDots}
+                              alt="options"
+                              onClick={() => {
+                                if (isShowMobileOptionsId === list.TaskId) {
+                                  setIsShowMobileOptionsId(null);
+                                  setMobileRowData({});
+                                  return;
+                                }
+                                setIsShowMobileOptionsId(list.TaskId);
+                                setMobileRowData(list);
+                              }}
+                            />
+                            {isShowMobileOptionsId === list?.TaskId && (
+                              <div className="more-options">
+                                {/* View More Logic Here */}
+                                <span
+                                  onClick={() => {
+                                    setIsShowMobileRowData(
+                                      !isShowMobileRowData
+                                    );
+                                  }}
+                                >
+                                  View More
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <NoResultFound text="No Result Found" />
+              )}
+            </div>
           </div>
         </div>
       ) : (

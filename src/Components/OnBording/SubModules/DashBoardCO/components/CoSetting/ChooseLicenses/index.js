@@ -9,6 +9,12 @@ import searchIcon from "../../../../../../../assets/Icons/searchIcon.png"
 import { useDispatch, useSelector } from "react-redux"
 import { actions as coActions } from "../../../redux/actions"
 
+import assignIcon1 from "../../../../../../../assets/Icons/assignIcon.png"
+import assignIcon3 from "../../../../../../../assets/Icons/assignIcon2.png"
+import assignIcon5 from "../../../../../../../assets/Icons/assignIcon3.png"
+import assignIcon2 from "../../../../../../../assets/Icons/assignIcon4.png"
+import assignIcon4 from "../../../../../../../assets/Icons/assignIcon5.png"
+
 function ChooseLicenses({ fields, close }) {
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
@@ -329,6 +335,25 @@ function ChooseLicenses({ fields, close }) {
     )
   }
 
+
+  const chooseImage = (index) => {
+    if(index==0 || index%5==0){
+      return assignIcon1;
+    }
+    if(index==1 || index%5==1){
+      return assignIcon2;
+    }
+    if(index==2 || index%5==2){
+      return assignIcon3;
+    }
+    if(index==3 || index%5==3){
+      return assignIcon4;
+    }
+    if(index==4 || index%5==4){
+      return assignIcon5;
+    }
+  }
+
   return (
     <div className="get-main">
       <div className="container-fluid pl-0 pr-0">
@@ -441,7 +466,9 @@ function ChooseLicenses({ fields, close }) {
                             </div>
                           </div>
                           <div className="assign-icon">
-                            <img src={assignIcon} alt="assignIcon" />
+                            {/* <img src={assignIcon} alt="assignIcon" /> */}
+                            <img src={chooseImage(index)} alt="assignIcon" />
+                            {/* src={chooseImage(index)} */}
                           </div>
                           <div className="gst-type-licence">
                             {item[0]}

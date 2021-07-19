@@ -204,7 +204,7 @@
 }
 
 .two-btn {
-    margin: 25px 0px 24px;
+    margin: 25px 0px 12px;
     object-fit: contain;
     border-radius: 12px;
     background-color: #52d9b4;
@@ -268,7 +268,7 @@
     padding-bottom: 0px;
     margin-bottom: 0px;
     color: #2c2738;  
-    width: 30px;
+    width: 20%;
 }
 .second-btn {
   margin-bottom: 0 !important;
@@ -484,3 +484,16 @@
   background: #d9d9d9;
   border-radius: 10px;
 }
+
+@media screen and (max-width: 767px) {
+  .compliant-option ul .gray-box {
+    width: inherit;
+}
+.compliant-option ul .red-box {
+  width: inherit;
+}
+.compliant-option ul .green-box {
+  width: inherit;
+}
+}
+

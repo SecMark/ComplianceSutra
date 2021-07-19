@@ -37,22 +37,19 @@
 .on-boarding .side-bar {
   height: 100%;
   max-width: 30vw;
-  background: transparent;
-  max-width: 100%;
-  width: 100%;
-  overflow: hidden;
 }
 .side-bar-image-outer {
   display: flex;
+  -ms-flex-align: stretch;
   align-items: stretch;
+  -ms-flex-pack: center;
   justify-content: center;
-  position: absolute;
+  position: relative;
   overflow: hidden;
   border-image: none;
   border-image: initial;
   margin: 0px;
   height: 100%;
-  width: 93%;
 }
 .side-bar-image-outer .image-span {
   width: 100%;
@@ -125,7 +122,7 @@
   bottom: 80px;
   /* left: 50px; */
   left: 33px;
-  width: 275px;
+  width: 306px;
 }
 .big-title {
   text-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
@@ -150,7 +147,7 @@
   letter-spacing: 0.01px;
   text-align: left;
   color: #ffffff;
-  margin-bottom: 55px;
+  margin-bottom:55px;
 }
 .text-section .desc:after {
   content: " .";

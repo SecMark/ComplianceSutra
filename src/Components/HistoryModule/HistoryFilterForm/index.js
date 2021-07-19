@@ -37,6 +37,7 @@ const HistoryFilterForm = (props) => {
     actionDispatch(clearState());
     actionDispatch(getCompanyList(companyRequestPayload));
   }, [state.auth.loginInfo?.UserID]);
+
   useEffect(() => {
     if (state.HistoryReducer.companyList.length !== 0) {
       const priorDates = state.HistoryReducer.companyList.map((item) =>
@@ -51,6 +52,7 @@ const HistoryFilterForm = (props) => {
       setPriorDate(priorDate);
     }
   }, [state.HistoryReducer.companyList]);
+
   useEffect(() => {
     setDifferenceInDays(
       differenceInDate(state.HistoryReducer.from, state.HistoryReducer.to)

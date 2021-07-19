@@ -19,9 +19,11 @@ import {
 
 function* fetchUpdates(action) {
   try {
+    console.log("hello function call");
     yield put(setLoading(true));
+    yield put(setSuccess(false));
     const { data, status } = yield call(api.getUpdates, action.payload);
-    if (status === 200) {
+    if (status === 200 && data) {
       yield put(setLoading(false));
       yield put(setSuccess(true));
       yield put(setUpdates(data));

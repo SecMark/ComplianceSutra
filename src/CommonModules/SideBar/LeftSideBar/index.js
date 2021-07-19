@@ -94,7 +94,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           >
             <img
               style={{ cursor: "pointer" }}
-              title="ComplianceHistory"
+              title="Compliancehistory"
               onClick={() => onMenuClick("complianceHistory")}
               src={
                 !openProfile &&
@@ -165,7 +165,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           >
             <img
               style={{ cursor: "pointer" }}
-              title="complianceHistoryList"
+              title="Compliancehistorylist"
               onClick={() => onMenuClick("complianceHistoryList")}
               src={
                 !openProfile &&
@@ -189,7 +189,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           >
             <img
               style={{ cursor: "pointer" }}
-              title="complianceHistoryList"
+              title="compliancehistorylist"
               onClick={() => onMenuClick("newRegulations")}
               src={
                 !openProfile &&
@@ -201,6 +201,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Bell"
             />
           </div>
+      
+      
         </div>
         <div className="devider-line"></div>
         <div className="second-icon-list">

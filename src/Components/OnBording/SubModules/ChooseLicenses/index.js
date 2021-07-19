@@ -504,7 +504,7 @@ function ChooseLicenses({
                   alt="closeIcon"
                 />
               </div>
-              <div className="col-6 pl-0 d-block d-sm-none text-right mt-0">
+              <div className="col-6 pl-0 d-block d-sm-none text-right mt-0 mobile-right-0">
                 <button
                   class="btn mb-2 save-details common-button-next"
                   disabled={
@@ -521,7 +521,8 @@ function ChooseLicenses({
               <p className="licenses-title">
                 {" "}
                 Choose Licenses{" "}
-                <span className="search-icon">
+
+                <span className="mobile-right-0 search-icon">
                   <img
                     onClick={() => setSearchEnable(true)}
                     src={search}
@@ -562,9 +563,9 @@ function ChooseLicenses({
             searchLiecenseData.length > 0 &&
             searchLiecenseData.map((data, key) => (
               <div className="searchGrid search-list">
-                <div className="col-12 d-block d-sm-none pl-0">
+                {/* <div className="col-12 d-block d-sm-none pl-0">
                   <div className="serchlist-title">Search Results:</div>
-                </div>
+                </div> */}
                 <div className="search-detail-grid">
                   <div className="serchlist-title">Search Results:</div>
                   {data[1].map((subTask) =>
@@ -619,7 +620,7 @@ function ChooseLicenses({
                         onClick={() => onClickArrow(item[0])}
                         className="col-2 col-sm-2 col-md-2"
                       >
-                        <div className="liecense down-arrow float-right">
+                        <div className="liecense down-arrow float-right mobile-right">
                           <div id={`arrow${item[0]}`} className="downArrow" />
                         </div>
                       </div>

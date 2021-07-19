@@ -23,7 +23,6 @@
 }
 .co-manangment-grid .form-row {
   margin-bottom: 40px;
-  display: flex;
 }
 .co-manangment-grid .bottom-logo-strip {
   position: absolute;
@@ -42,7 +41,7 @@
   text-align: left;
   color: #2c2738;
 }
-.col-form-label {
+.col-form-label{
   width: 216px;
   font-family: Poppins;
   font-size: 13px;
@@ -54,13 +53,13 @@
   text-align: left;
   color: rgb(44 39 56 / 30%);
 }
-.right-input-row {
+.right-input-row{
   width: 480px;
-  height: 40px;
+  height:40px;
   border-radius: 8px;
   border-color: rgb(228 228 228 / 50%);
 }
-.right-input-row::placeholder {
+.right-input-row::placeholder{
   font-family: Poppins;
   font-size: 13px;
   font-weight: normal;
@@ -75,7 +74,7 @@
   box-shadow: none;
   border: 2px solid #6c5dd3 !important;
 }
-.save-changes-btn {
+.save-changes-btn{
   width: 147px;
   height: 43px;
   object-fit: contain;
@@ -93,10 +92,10 @@
   color: #aeaeae;
   text-transform: uppercase;
 }
-.save-changes-btn:hover {
+.save-changes-btn:hover{
   color: #aeaeae;
 }
-.save-changes-btn:focus {
+.save-changes-btn:focus{
   box-shadow: inherit;
   border: none;
   outline: none;
@@ -119,7 +118,7 @@
   color: #ffffff;
   text-transform: uppercase;
 }
-.discard-label-link {
+.discard-label-link{
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -147,7 +146,7 @@
   box-shadow: none !important;
   color: white !important;
 }
-.confirm-title-model {
+.confirm-title-model{
   object-fit: contain;
   font-family: Poppins;
   font-size: 24px;
@@ -159,7 +158,7 @@
   text-align: left;
   color: #2c2738;
 }
-.confirm-title-desc {
+.confirm-title-desc{
   margin: 8px 0 33px;
   opacity: 0.5;
   font-family: Poppins;
@@ -172,7 +171,7 @@
   text-align: left;
   color: #2c2738;
 }
-.confirm-model .form-group {
+.confirm-model .form-group{
   margin-bottom: 48px !important;
   width: 261px;
   height: 40px;
@@ -181,7 +180,7 @@
   border: solid 1px #e4e4e4;
   background-color: #ffffff;
 }
-.confirm-model .form-group::placeholder {
+.confirm-model .form-group::placeholder{
   font-family: Poppins;
   font-size: 20px !important;
   font-weight: normal;
@@ -232,7 +231,7 @@
   box-shadow: none !important;
   color: white !important;
 }
-.confirm-model .cancel-link-model {
+.confirm-model .cancel-link-model{
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -245,13 +244,13 @@
   margin: 12px 0 12px 24px;
   cursor: pointer;
 }
-.contact-no-pin {
+.contact-no-pin{
   border-right: 0px;
   border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-  font-family: Poppins;
+  border-bottom-right-radius: 0px !important;  
+  font-family: Poppins;  
 }
-.contact-input-box {
+.contact-input-box{
   border-left: 0px;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
@@ -261,23 +260,19 @@
 }
 .pin-no input#countrycode::placeholder {
   font-size: 16px;
-  font-family: "Poppins";
+  font-family: 'Poppins';
   line-height: 17px;
 }
 @media screen and (max-width: 767px) {
-  .co-setting .capmtech-review-model {
-    padding: 12px 15px !important;
+  .co-setting .capmtech-review-model{
+    padding: 12px 15px !important; 
   }
   .contact-input-box {
     border-left: 0px;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     padding-left: 0px;
-    /* width: 324px !important; */
-    width: 260px !important;
-  }
-  .co-manangment-grid .bottom-logo-strip {
-    max-width: 100%;
+    width: 324px !important;
   }
   .customPersonalModal {
     background: #b2dbbf;
@@ -292,24 +287,20 @@
     margin: 0px !important;
     padding: 0px !important;
     position: relative;
-  }
+}
   .co-manangment-grid {
     object-fit: contain;
     border-radius: 0px;
     box-shadow: inherit;
     background-color: #ffffff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
+    position: relative;
+    height: 94vh;
     margin: 0px 0px 0px 0px;
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 32px;
     object-fit: contain;
-    -webkit-backdrop-filter: inherit;
+    -webkit-backdrop-filter:inherit;
     backdrop-filter: inherit;
     background-color: #fff;
   }
@@ -330,7 +321,7 @@
     position: relative !important;
     padding-top: 99px;
   }
-  .close-icon-personal {
+  .close-icon-personal{
     position: absolute;
     right: 9px;
     top: 9px;
@@ -340,6 +331,7 @@
   }
 }
 
-.absPosition {
+
+.absPosition{
   position: absolute;
 }
