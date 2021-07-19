@@ -171,10 +171,10 @@ function RightSideGrid({
       state && state.NotificationRedu && state.NotificationRedu.taskID;
     if (task_id !== null) {
       getSelectTaskDetails();
-    } 
+    }
   }, [state.NotificationRedu.taskID]);
 
-  useEffect(() => { 
+  useEffect(() => {
     // current property is refered to input element
     searchInput.current && searchInput.current.focus();
   }, [searchBoxShow]);
@@ -4552,7 +4552,7 @@ function RightSideGrid({
                                               {item.Details.length - 3} )
                                               <img
                                                 src={viewAllArow}
-                                                alt="view All Arow"
+                                                alt="view All Arrow"
                                               />
                                             </div>
                                           )}
