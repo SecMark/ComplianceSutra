@@ -8,6 +8,8 @@ import questionIcon from "../../../../../assets/Icons/questionIcon.png";
 import questionIconActive from "../../../../../assets/Icons/HelpBlackActive.png";
 import listIcon from "../../../../../assets/Icons/listIcon.png";
 import SideBaruser from "../../../../../assets/Icons/sideBaruser.png";
+import HelpBlackActive from "../../../../../assets/Icons/HelpBlackActive.png";
+import HelpGreyActive from "../../../../../assets/Icons/HelpGreyActive.png";
 
 import sidebarActive from "../../../../../assets/Icons/sidebar-active.png";
 import sidebarRightActive from "../../../../../assets/Icons/task_alt_black_24dp (1).png";
@@ -252,11 +254,11 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           >
             <img
               onClick={() => onMenuClick("help")}
-              style={{ cursor: "pointer", width: "18px" }}
+              style={{ cursor: "pointer" }}
               src={
                 !openProfile && state && state.adminMenu.currentMenu === "help"
-                  ? questionIconActive
-                  : questionIcon
+                  ? HelpBlackActive
+                  : HelpGreyActive
               }
               alt="taskIcon"
             />

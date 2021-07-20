@@ -547,4 +547,7 @@ p.description-text-search-active {
     flex-direction: column;
     justify-content: flex-start;
   }
+  .new-regulation-side-bar {
+    position: relative;
+  }
 }

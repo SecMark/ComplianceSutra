@@ -10,6 +10,8 @@ import { withRouter } from "react-router-dom";
 import { isEmail } from "../../utils.js";
 import { actions as emailActions } from "../../../OnBording/redux/actions";
 import { toast } from "react-toastify";
+import Modal from "../../../Terms&Conditions/Modal";
+import Terms from "../../../Terms&Conditions/Terms";
 
 function GetStart({ history }) {
   const dispatch = useDispatch();
@@ -20,14 +22,6 @@ function GetStart({ history }) {
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.emailAlreadExist;
-
-  useEffect(() => {
-    dispatch(
-      emailActions.clearEmailAlreadyCache({
-        emailAlreadExist: false,
-      })
-    );
-  }, []);
 
   useEffect(() => {
     if (emailAlreadExist === false && emailAlreadExist !== "") {
@@ -46,6 +40,7 @@ function GetStart({ history }) {
   const [inputBorder, setInputBorder] = useState(false);
   const [isValidate, setIsValidate] = useState(false);
   const [isEmailExist, setIsEmailExist] = useState(false);
+  const [show, setShow] = useState(false);
   const onChangeHandler = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
@@ -57,7 +52,6 @@ function GetStart({ history }) {
   };
   const onSubmit = () => {
     setIsValidate(true);
-
     if (!isEmail(values.loginID) || values.loginID === "") {
       return;
     }
@@ -144,7 +138,6 @@ function GetStart({ history }) {
                       value={values.loginID}
                       onChange={onChangeHandler("loginID")}
                     />
-                    {/* {emailAlreadExist && (<p className="input-error-message">Email already exists please login</p>)} */}
                     {isValidate && values.loginID === "" && (
                       <p className="input-error-message">Email is required</p>
                     )}
@@ -159,15 +152,6 @@ function GetStart({ history }) {
                       </p>
                     )}
                   </div>
-                  {/* <div className="custom-control custom-checkbox" >
-                    <input type="checkbox"
-                      className="custom-control-input cutom-add-whatsappflag"
-                      style={{ cursor: "pointer", height: "1.5rem" }}
-                      value={checkBoxState}
-                      onChange={(e) => onCheckboxChange(e)}
-                    />
-                    <label className="custom-control-label btn-top-label alink-hover" htmlFor="customCheck">I agree to all the <a href="#" className="landing-terms-condition"><b>Terms and Conditions</b></a></label>
-                  </div> */}
                   <div className="custom-control custom-checkbox">
                     <input
                       id="magicBtn"
@@ -178,14 +162,13 @@ function GetStart({ history }) {
                       onChange={(e) => onCheckboxChange(e)}
                     />
                     <label className="custom-control-label" for="magicBtn">
-                      I agree to all the{" "}
-                      <a
-                        href="https://drive.google.com/file/d/1eV8wzPYFN4s9KxTA2oQCoQjEM2s8vDU-/view?usp=sharing"
-                        target="_blank"
-                        className="landing-terms-condition"
-                      >
-                        Terms and Conditions
-                      </a>
+                      I agree to all the
+                      <button className="Terms" onClick={() => setShow(!show)}>
+                        <Modal>
+                          <Terms show={show} setShow={setShow} />
+                        </Modal>
+                        Terms & Conditions
+                      </button>
                     </label>
                   </div>
 
