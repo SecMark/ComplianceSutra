@@ -16,7 +16,7 @@ import Terms from "../../../Terms&Conditions/Terms";
 function GetStart({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [checkBoxState, setCheckBoxState] = useState(true);
+  const [checkBoxState, setCheckBoxState] = useState(false);
 
   let emailAlreadExist =
     state &&
