@@ -3,7 +3,12 @@
   display: flex;
   justify-content: space-between;
 }
-
+.take-action .date-container {
+  padding: 6px 0px;
+}
+.take-action .calender {
+  padding: 0 24px 0 0;
+}
 .current-date {
   font-family: Poppins;
   font-size: 14px;

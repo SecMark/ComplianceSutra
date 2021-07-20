@@ -7,7 +7,7 @@ const DayView = ({ daysData }) => {
     if (name != undefined) {
       let initials = "";
       initials = name
-        .split(" ") 
+        .split(" ")
         .map((n) => n[0])
         .join("");
       return initials.toUpperCase();
@@ -22,10 +22,19 @@ const DayView = ({ daysData }) => {
             <div className="detail-content flex-column flex-md-row align-items-start align-items-md-center">
               <button className="license-code">{day?.LicenseCode}</button>
               <h2 className="my-2 my-md-0">{day?.TaskName}</h2>
+              <div className="status-container d-none d-md-block">
+                <button
+                  className={`${
+                    day?.Status === "Assign" ? "assigned-day" : "approval-day"
+                  }`}
+                >
+                  {day?.Status === "Assign" ? "Assigned" : "Approval Pending"}
+                </button>
+              </div>
               <button
-                className={
+                className={`${
                   day?.Status === "Assign" ? "assigned-day" : "approval-day"
-                }
+                } d-block d-md-none`}
               >
                 {day?.Status === "Assign" ? "Assigned" : "Approval Pending"}
               </button>
@@ -34,7 +43,7 @@ const DayView = ({ daysData }) => {
               <div className="detail-name">
                 <span>{day?.EntityName}</span>
               </div>
-              <div className="detail-name">
+              <div className="detail-name align-left-always">
                 <p>
                   <span className="circle-dp">
                     {getNameInitials(day?.AssignedName)}
