@@ -2,7 +2,7 @@ import React from "react";
 import "./style.css";
 import cross from "../../assets/Icons/closeIcon1.png";
 import Data from "../../TermsData/Terms.json";
-const Terms = ({ show, setShow }) => {
+const Terms = ({ show, setShow, onAgreeAndContinue, onDisagree }) => {
   return (
     <>
       {show ? (
@@ -11,7 +11,7 @@ const Terms = ({ show, setShow }) => {
             <div className="Container">
               <div className="Header">
                 <h3>Terms & Conditions</h3>
-                <button onClick={setShow}>
+                <button onClick={() => setShow(false)}>
                   <img src={cross} alt="" />
                 </button>
               </div>
@@ -50,8 +50,21 @@ const Terms = ({ show, setShow }) => {
                 Last Updated : <b>24th May 2021</b>
               </p>
               <div className="ButtonClass">
-                <button>DISAGREE</button>
-                <button id="Agree" onClick={setShow}>
+                <button
+                  onClick={() => {
+                    onDisagree();
+                    setShow(false);
+                  }}
+                >
+                  DISAGREE
+                </button>
+                <button
+                  id="Agree"
+                  onClick={() => {
+                    onAgreeAndContinue();
+                    setShow(false);
+                  }}
+                >
                   AGREE & CONTINUE
                 </button>
               </div>

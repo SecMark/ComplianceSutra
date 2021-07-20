@@ -16,7 +16,7 @@ import Terms from "../../../Terms&Conditions/Terms";
 function GetStart({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [checkBoxState, setCheckBoxState] = useState(false);
+  const [checkBoxState, setCheckBoxState] = useState(true);
 
   let emailAlreadExist =
     state &&
@@ -50,6 +50,12 @@ function GetStart({ history }) {
   const onCheckboxChange = (e) => {
     setCheckBoxState(e.target.checked);
   };
+  const onAgreeAndContinue = () => {
+    setCheckBoxState(true);
+  };
+  const onDisagree = () => {
+    setCheckBoxState(false);
+  };
   const onSubmit = () => {
     setIsValidate(true);
     if (!isEmail(values.loginID) || values.loginID === "") {
@@ -81,6 +87,14 @@ function GetStart({ history }) {
 
   return (
     <div className="row getStartMobile">
+      <Modal>
+        <Terms
+          show={show}
+          setShow={setShow}
+          onAgreeAndContinue={onAgreeAndContinue}
+          onDisagree={onDisagree}
+        />
+      </Modal>
       <div className="col-3 left-fixed">
         <div className="on-boarding">
           <SideBar />
@@ -158,18 +172,16 @@ function GetStart({ history }) {
                       type="checkbox"
                       className="custom-control-input"
                       style={{ width: "1rem", height: "1.25rem" }}
-                      value={checkBoxState}
                       onChange={(e) => onCheckboxChange(e)}
+                      checked={checkBoxState}
                     />
+
                     <label className="custom-control-label" for="magicBtn">
                       I agree to all the
-                      <button className="Terms" onClick={() => setShow(!show)}>
-                        <Modal>
-                          <Terms show={show} setShow={setShow} />
-                        </Modal>
-                        Terms & Conditions
-                      </button>
                     </label>
+                    <button className="Terms" onClick={() => setShow(true)}>
+                      Terms & Conditions
+                    </button>
                   </div>
 
                   <button
