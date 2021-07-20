@@ -1,9 +1,11 @@
 .detail-main {
-  padding: 0 50px 12px;
+  padding: 0 48px 12px;
   overflow-y: auto;
   height: calc(100vh - 249px);
 }
-
+.take-action .detail-main {
+  padding: 0 0 12px;
+}
 .detail-container {
   display: flex;
   padding: 16px 24px;
@@ -16,7 +18,7 @@
 .detail-content {
   display: flex;
   /* align-items: center; */
-  max-width: 50%;
+  max-width: 70%;
   width: 100%;
 }
 .detail-name {
@@ -123,6 +125,7 @@
   text-align: left;
   color: #828282;
 }
+
 @media screen and (max-width: 767.99px) {
   .detail-container {
     padding: 16px;
@@ -135,6 +138,7 @@
   }
   .detail-content h2 {
     font-weight: 600;
+    max-width: 90%;
   }
   .detail-footer {
     width: 100%;
@@ -142,5 +146,20 @@
   }
   .license-code {
     color: #1b1d21 !important;
+  }
+}
+@media screen and (min-width: 768px) {
+  .detail-content {
+    justify-content: center;
+  }
+  .detail-content h2 {
+    flex: 1;
+    max-width: 100%;
+  }
+  .status-container {
+    flex: 0.5;
+  }
+  .detail-name.align-left-always {
+    flex: 0.6;
   }
 }
