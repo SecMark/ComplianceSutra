@@ -62,6 +62,11 @@ function DashBoardView({ history }) {
             history.push("/login")
         }
     }, [])
+
+    useEffect(() => {
+        console.log("Task list is open", isTaskListOpen);
+        setIsTaskListOpen(false);
+      }, []);
     useEffect(() => {
         dispatch(
             taskReportActions.taskReportRequest(

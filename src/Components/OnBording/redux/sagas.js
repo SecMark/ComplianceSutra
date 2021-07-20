@@ -1,15 +1,15 @@
 import { call, put, takeLatest, delay, select } from "redux-saga/effects";
 import { actions, types } from "./actions";
 import api from "../api";
-import apiServices from "../../../apiServices"
+import apiServices from "../../../apiServices";
 
 import { toast } from "react-toastify";
 let temp = [];
 const complianceOfficer = (state) => state && state.complianceOfficer;
 
 const verifyEmailReq = function* verifyEmailReq({ payload }) {
-    const link = `http://139.162.5.110:9091/#/email-verification-confirmed?email=${payload.LoginID}`;
-    const body = `<!DOCTYPE html>
+  const link = `http://139.162.5.110:9091/#/email-verification-confirmed?email=${payload.LoginID}`;
+  const body = `<!DOCTYPE html>
     <html>
         <head>
             <meta name="viewport" content="width=device-width" />
@@ -456,96 +456,96 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
             </table>
         </body>
     </html>`;
-    if (payload.from !== "resend-mail") {
-        try {
-            yield put(
-                actions.verifyEmailRequestFailed({
-                    emailAlreadyExistMessage: false,
-                })
-            );
-            const { data, status } = yield call(api.verifyEmail, payload);
-            if (status === 200 && data.Status === "false") {
-                let obj = {
-                        email: payload.LoginID,
-                        invitation: "V"
-                }
-                apiServices.post("/api/getEmailbody", obj)
-                .then(function (response) {
-                    if (
-                        response &&
-                        response.data &&
-                        response.data.Status  &&
-                        response.data.Status === true
-                    ) {
-                        toast.success("The verification link has been sent to your email account successfully");
-                        payload.history && payload.history.push("/email-verification-info-page");
-                    } else {
-                        toast.error("something went wrong please try again !!!")
-                    }
-                })
-                .catch(function (error) {
-                    if (error) {
-                    }
-                });
-
-                yield put(
-                    actions.verifyEmailRequestSuccess({
-                        verifyEmail: true,
-                        email: payload.LoginID,
-                    })
-                );
-                yield delay(2000);
-                //payload.history && payload.history.push("/email-verification-info-page");
-                //yield put(push(`/${authData && authData.store_locale}/my-account`));
-            } else {
-                // toast.error("Email already exists please login");
-                yield put(
-                    actions.verifyEmailRequestFailed({
-                        verifyEmail: false,
-                        emailAlreadyExistMessage: true,
-                        email: payload.LoginID,
-                    })
-                );
-            }
-        } catch (err) {
-            // toast.error(
-            //     (err && err.response && err.response.data && err.response.data.message) ||
-            //         'Something went to wrong, Please try after sometime',
-            // );
-            yield put(actions.verifyEmailRequestFailed({ verifyEmail: false }));
-
-        }
-    } else {
-        window.Email.send({
-            Host: "180.179.151.1",
-            Username: "secmarktx@m3c.io",
-            Password: "Am6#uIayAOE#c",
-            To: `${payload.LoginID}`,
-            From: "support@capmtech.com",
-            Subject: "Verification Email",
-            Body: body,
+  if (payload.from !== "resend-mail") {
+    try {
+      yield put(
+        actions.verifyEmailRequestFailed({
+          emailAlreadyExistMessage: false,
         })
-            .then(function (message) {
-                if (message === "OK") {
-                    toast.success("The verification link has been sent to your email account successfully");
-                } else {
-                    toast.error("The mail not sent successfully");
-                }
-                // toast.success("mail sent successfully")
-            })
-            .then(function (error) {
-                // toast.error("mail not sent successfully")
-            });
+      );
+      const { data, status } = yield call(api.verifyEmail, payload);
+      if (status === 200 && data.Status === "false") {
+        let obj = {
+          email: payload.LoginID,
+          invitation: "V",
+        };
+        apiServices
+          .post("/api/getEmailbody", obj)
+          .then(function (response) {
+            if (
+              response &&
+              response.data &&
+              response.data.Status &&
+              response.data.Status === true
+            ) {
+              toast.success(
+                "The verification link has been sent to your email account successfully"
+              );
+              payload.history &&
+                payload.history.push("/email-verification-info-page");
+            } else {
+              toast.error("something went wrong please try again !!!");
+            }
+          })
+          .catch(function (error) {
+            if (error) {
+            }
+          });
 
+        yield put(
+          actions.verifyEmailRequestSuccess({
+            verifyEmail: true,
+            email: payload.LoginID,
+          })
+        );
+        yield delay(2000);
+        //payload.history && payload.history.push("/email-verification-info-page");
+        //yield put(push(`/${authData && authData.store_locale}/my-account`));
+      } else {
+        // toast.error("Email already exists please login");
+        yield put(
+          actions.verifyEmailRequestFailed({
+            verifyEmail: false,
+            emailAlreadyExistMessage: true,
+            email: payload.LoginID,
+          })
+        );
+      }
+    } catch (err) {
+      // toast.error(
+      //     (err && err.response && err.response.data && err.response.data.message) ||
+      //         'Something went to wrong, Please try after sometime',
+      // );
+      yield put(actions.verifyEmailRequestFailed({ verifyEmail: false }));
     }
+  } else {
+    window.Email.send({
+      Host: "180.179.151.1",
+      Username: "secmarktx@m3c.io",
+      Password: "Am6#uIayAOE#c",
+      To: `${payload.LoginID}`,
+      From: "support@capmtech.com",
+      Subject: "Verification Email",
+      Body: body,
+    })
+      .then(function (message) {
+        if (message === "OK") {
+          toast.success(
+            "The verification link has been sent to your email account successfully"
+          );
+        } else {
+          toast.error("The mail not sent successfully");
+        }
+        // toast.success("mail sent successfully")
+      })
+      .then(function (error) {
+        // toast.error("mail not sent successfully")
+      });
+  }
 };
 
-
-
-
-
 const taskMailRequest = function* taskMailRequest({ payload }) {
-    const body = `<!DOCTYPE html>
+  const body = `<!DOCTYPE html>
 <html>
     <head>
         <meta name="viewport" content="width=device-width" />
@@ -1049,283 +1049,325 @@ const taskMailRequest = function* taskMailRequest({ payload }) {
     </body>
 </html>`;
 
-    try {
-        window.Email.send({
-            Host: "180.179.151.1",
-            Username: "secmarktx@m3c.io",
-            Password: "Am6#uIayAOE#c",
-            To: payload.email,
-            From: "support@capmtech.com",
-            Subject: "Task List Mail",
-            Body: body,
-        })
-            .then(function (message) {
-                console.log("message", message)
-                if (message === 'OK') {
-                    toast.success("mail sent successfully")
-                } else {
-                    toast.error("mail not sent successfully")
-                }
-                // toast.success("mail sent successfully")
-            }).then(function (error) {
-                console.log("error", error)
-                // toast.error("mail not sent successfully")
-            });
-
-    } catch (err) {
-        yield put(actions.createTaskMailRequestFailed({ verifyEmail: false }));
-
-    }
+  try {
+    window.Email.send({
+      Host: "180.179.151.1",
+      Username: "secmarktx@m3c.io",
+      Password: "Am6#uIayAOE#c",
+      To: payload.email,
+      From: "support@capmtech.com",
+      Subject: "Task List Mail",
+      Body: body,
+    })
+      .then(function (message) {
+        console.log("message", message);
+        if (message === "OK") {
+          toast.success("mail sent successfully");
+        } else {
+          toast.error("mail not sent successfully");
+        }
+        // toast.success("mail sent successfully")
+      })
+      .then(function (error) {
+        console.log("error", error);
+        // toast.error("mail not sent successfully")
+      });
+  } catch (err) {
+    yield put(actions.createTaskMailRequestFailed({ verifyEmail: false }));
+  }
 };
 
-
-
-const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({ payload }) {
-    try {
-        const { data, status } = yield call(api.checkEmailVerifiedThroughEmail, payload);
-        if (status === 200) {
-            let statusCode, message;
-            statusCode = data && data[0] && data[0].StatusCode;
-            message = data && data[0] && data[0].Message;
-            if (statusCode !== undefined && !statusCode) {
-                yield put(actions.insUpdateDeletAPIRequestSuccess({ loginSuccess: true, statusCode: status, message: message }));
-                toast.error(message && message);
-            } else {
-                let companyName = payload.entityName
-                yield put(actions.insUpdateDeletAPIRequestSuccess({ formDataPersonalData: payload, data: data, userInfo:payload, companyName: companyName }));
-                if (payload.from === 'personal-details-co') {
-                    toast.success("Personal Information saved successfully");
-                    yield (delay(1000))
-                    payload.history.push("/company-details");
-                }
-            }
-
-        } else {
-            toast.error("something went wrong !!!");
-            yield put(actions.insUpdateDeletAPIRequestFailed({ loginSuccess: false }));
+const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
+  payload,
+}) {
+  try {
+    const { data, status } = yield call(
+      api.checkEmailVerifiedThroughEmail,
+      payload
+    );
+    if (status === 200) {
+      let statusCode, message;
+      statusCode = data && data[0] && data[0].StatusCode;
+      message = data && data[0] && data[0].Message;
+      if (statusCode !== undefined && !statusCode) {
+        yield put(
+          actions.insUpdateDeletAPIRequestSuccess({
+            loginSuccess: true,
+            statusCode: status,
+            message: message,
+          })
+        );
+        toast.error(message && message);
+      } else {
+        let companyName = payload.entityName;
+        yield put(
+          actions.insUpdateDeletAPIRequestSuccess({
+            formDataPersonalData: payload,
+            data: data,
+            userInfo: payload,
+            companyName: companyName,
+          })
+        );
+        if (payload.from === "personal-details-co") {
+          toast.success("Personal Information saved successfully");
+          yield delay(1000);
+          payload.history.push("/company-details");
         }
-    } catch (err) {
-        // toast.error(
-        //     (err && err.response && err.response.data && err.response.data.message) ||
-        //         'Something went to wrong, Please try after sometime',
-        // );
-        yield put(actions.insUpdateDeletAPIRequestFailed({ loginSuccess: false }));
-
+      }
+    } else {
+      toast.error("something went wrong !!!");
+      yield put(
+        actions.insUpdateDeletAPIRequestFailed({ loginSuccess: false })
+      );
     }
+  } catch (err) {
+    // toast.error(
+    //     (err && err.response && err.response.data && err.response.data.message) ||
+    //         'Something went to wrong, Please try after sometime',
+    // );
+    yield put(actions.insUpdateDeletAPIRequestFailed({ loginSuccess: false }));
+  }
 };
 
 const companyTypeRequest = function* companyTypeRequest({ payload }) {
-    try {
-        const { data, status } = yield call(api.companyType, payload);
-        if (status === 200) {
-            yield put(actions.companyTypeRequestSuccess({ companyLicenseData: data }));
-            //yield put(push(`/${authData && authData.store_locale}/my-account`));
-            toast.success(data && data.Message);
-        } else {
-            toast.success(data && data.Message);
-            yield put(actions.companyTypeRequestFailed({ companyType: false, companyLicenseData: [] }));
-        }
-    } catch (err) {
-        // toast.error(
-        //     (err && err.response && err.response.data && err.response.data.message) ||
-        //         'Something went to wrong, Please try after sometime',
-        // );
-        yield put(actions.companyTypeRequestFailed({ companyType: false, companyLicenseData: [] }));
-
+  try {
+    const { data, status } = yield call(api.companyType, payload);
+    if (status === 200) {
+      yield put(
+        actions.companyTypeRequestSuccess({ companyLicenseData: data })
+      );
+      //yield put(push(`/${authData && authData.store_locale}/my-account`));
+      toast.success(data && data.Message);
+    } else {
+      toast.success(data && data.Message);
+      yield put(
+        actions.companyTypeRequestFailed({
+          companyType: false,
+          companyLicenseData: [],
+        })
+      );
     }
+  } catch (err) {
+    // toast.error(
+    //     (err && err.response && err.response.data && err.response.data.message) ||
+    //         'Something went to wrong, Please try after sometime',
+    // );
+    yield put(
+      actions.companyTypeRequestFailed({
+        companyType: false,
+        companyLicenseData: [],
+      })
+    );
+  }
 };
-
 
 const otpRequest = function* otpRequest({ payload }) {
-    try {
-        const { data, status } = yield call(api.sendOTP, payload);
-        if (status === 200) {
-            yield put(actions.sendOTPRequestSuccess(data));
-            //yield put(push(`/${authData && authData.store_locale}/my-account`));
-            toast.success("The otp has been sent on your registered mobile number");
-        } else {
-            toast.error("Failed to verify OTP Request");
-            yield put(actions.sendOTPRequestFailed({}));
-        }
-    } catch (err) {
-        yield put(actions.sendOTPRequestFailed({}));
-        toast.error("Failed to verify OTP Request");
-
+  try {
+    const { data, status } = yield call(api.sendOTP, payload);
+    if (status === 200) {
+      yield put(actions.sendOTPRequestSuccess(data));
+      //yield put(push(`/${authData && authData.store_locale}/my-account`));
+      toast.success("The otp has been sent on your registered mobile number");
+    } else {
+      toast.error("Failed to verify OTP Request");
+      yield put(actions.sendOTPRequestFailed({}));
     }
+  } catch (err) {
+    yield put(actions.sendOTPRequestFailed({}));
+    toast.error("Failed to verify OTP Request");
+  }
 };
 
-
 const verifyOtpRequest = function* verifyOtpRequest({ payload }) {
-    try {
-        const { data, status } = yield call(api.verifyOTP, payload);
-        if (status === 200) {
-            yield put(actions.verifyOTPRequestSuccess(data));
-            //yield put(push(`/${authData && authData.store_locale}/my-account`));
-            toast.success(data && data.Message);
-        } else {
-            toast.success(data && data.Message);
-            yield put(actions.verifyOTPRequestFailed({}));
-        }
-    } catch (err) {
-        // toast.error(
-        //     (err && err.response && err.response.data && err.response.data.message) ||
-        //         'Something went to wrong, Please try after sometime',
-        // );
-        yield put(actions.verifyOTPRequestFailed({}));
-
+  try {
+    const { data, status } = yield call(api.verifyOTP, payload);
+    if (status === 200) {
+      yield put(actions.verifyOTPRequestSuccess(data));
+      //yield put(push(`/${authData && authData.store_locale}/my-account`));
+      toast.success(data && data.Message);
+    } else {
+      toast.success(data && data.Message);
+      yield put(actions.verifyOTPRequestFailed({}));
     }
+  } catch (err) {
+    // toast.error(
+    //     (err && err.response && err.response.data && err.response.data.message) ||
+    //         'Something went to wrong, Please try after sometime',
+    // );
+    yield put(actions.verifyOTPRequestFailed({}));
+  }
 };
 
 const insertCerificateRequest = function* insertCerificateRequest({ payload }) {
-    try {
-        const { data, status } = yield call(api.insertCerificateDetailsService, payload);
+  try {
+    const { data, status } = yield call(
+      api.insertCerificateDetailsService,
+      payload
+    );
 
-        if (status === 200) {
-            const complianceOfficerData = yield select(complianceOfficer);
-            let entityId = data && data.table && data.table[0] && data.table[0].entityID;
-            let companyName = payload.entityName;
-            let obj = { entityID: entityId, companyName: companyName }
-            let arr = complianceOfficerData.entityInfo;
-            console.log(arr)
-            let index = complianceOfficerData.entityInfo.length ? 0 : complianceOfficerData.entityInfo.length;
-            arr.push(obj)
-            yield put(actions.storeEnityIDwithCompaName(arr))
-            yield put(actions.insertCerificateDetailsRequestSuccess(data));
-            //yield put(push(`/${authData && authData.store_locale}/my-account`));
-            if (payload.from === "delete") {
-                toast.success("Company Deleted");
-            } else if (payload.from === "saved") {
-                toast.success("Company added successfully");
-            }
-        } else {
-            toast.success(data && data.Message);
-            yield put(actions.insertCerificateDetailsRequestFailed({}));
-        }
-    } catch (err) {
-        // toast.error(
-        //     (err && err.response && err.response.data && err.response.data.message) ||
-        //         'Something went to wrong, Please try after sometime',
-        // );
-        yield put(actions.insertCerificateDetailsRequestFailed({}));
-
+    if (status === 200) {
+      const complianceOfficerData = yield select(complianceOfficer);
+      let entityId =
+        data && data.table && data.table[0] && data.table[0].entityID;
+      let companyName = payload.entityName;
+      let obj = { entityID: entityId, companyName: companyName };
+      let arr = complianceOfficerData.entityInfo;
+      console.log(arr);
+      let index = complianceOfficerData.entityInfo.length
+        ? 0
+        : complianceOfficerData.entityInfo.length;
+      arr.push(obj);
+      yield put(actions.storeEnityIDwithCompaName(arr));
+      yield put(actions.insertCerificateDetailsRequestSuccess(data));
+      //yield put(push(`/${authData && authData.store_locale}/my-account`));
+      if (payload.from === "delete") {
+        toast.success("Company Deleted");
+      } else if (payload.from === "saved") {
+        toast.success("Company added successfully");
+      }
+    } else {
+      toast.success(data && data.Message);
+      yield put(actions.insertCerificateDetailsRequestFailed({}));
     }
+  } catch (err) {
+    // toast.error(
+    //     (err && err.response && err.response.data && err.response.data.message) ||
+    //         'Something went to wrong, Please try after sometime',
+    // );
+    yield put(actions.insertCerificateDetailsRequestFailed({}));
+  }
 
-    //payload.history.push("/assign-task")
-
+  //payload.history.push("/assign-task")
 };
-
 
 const insertTaskListReq = function* insertTaskListReq({ payload }) {
-    try {
-        const { data, status } = yield call(api.insertTempTask, payload);
-        if (status === 200 && payload && payload.length > 0) {
-            toast.success("Tasks are assigned");
-            yield delay(1000)
-            payload && payload[0].history.push("/otp-verification-co")
-        } else {
-            toast.error("something went wrong !!!")
-        }
-    } catch (err) {
-        yield put(actions.insertTaskListRequestFailed({ companyType: false, companyLicenseData: [] }));
-
+  try {
+    const { data, status } = yield call(api.insertTempTask, payload);
+    if (status === 200 && payload && payload.length > 0) {
+      toast.success("Tasks are assigned");
+      yield delay(1000);
+      payload && payload[0].history.push("/otp-verification-co");
+    } else {
+      toast.error("something went wrong !!!");
     }
+  } catch (err) {
+    yield put(
+      actions.insertTaskListRequestFailed({
+        companyType: false,
+        companyLicenseData: [],
+      })
+    );
+  }
 };
 
-
 const assignTaskDataReq = function* assignTaskDataReq({ payload }) {
-    try {
-        const { data, status } = yield call(api.getAssignedTaskData, payload);
-        let statusCode = data && data[0] && data[0].StatusCode;
-        if (status === 200 && statusCode != false) {
-            yield put(actions.getAssignTaskDataReuestSuccess(data));
-            //yield put(push(`/${authData && authData.store_locale}/my-account`));
-            toast.success(data && data.Message);
-        } else {
-            toast.success(data && data.Message);
-            yield put(actions.getAssignTaskDataReuestFailed());
-            // yield put(actions.insertTaskListRequestFailed({ companyType: false, companyLicenseData: [] }));
-        }
-    } catch (err) {
-        // toast.error(
-        //     (err && err.response && err.response.data && err.response.data.message) ||
-        //         'Something went to wrong, Please try after sometime',
-        // );
-        yield put(actions.getAssignTaskDataReuestFailed());
-
+  try {
+    const { data, status } = yield call(api.getAssignedTaskData, payload);
+    let statusCode = data && data[0] && data[0].StatusCode;
+    if (status === 200 && statusCode != false) {
+      yield put(actions.getAssignTaskDataReuestSuccess(data));
+      //yield put(push(`/${authData && authData.store_locale}/my-account`));
+      toast.success(data && data.Message);
+    } else {
+      toast.success(data && data.Message);
+      yield put(actions.getAssignTaskDataReuestFailed());
+      // yield put(actions.insertTaskListRequestFailed({ companyType: false, companyLicenseData: [] }));
     }
+  } catch (err) {
+    // toast.error(
+    //     (err && err.response && err.response.data && err.response.data.message) ||
+    //         'Something went to wrong, Please try after sometime',
+    // );
+    yield put(actions.getAssignTaskDataReuestFailed());
+  }
 };
 
 const governanceDataReq = function* governanceDataReq({ payload }) {
-
-    try {
-        const { data, status } = yield call(api.getGovernanceCompanyData, payload);
-        if (status === 200) {
-            yield put(actions.governanceAPIRequestSuccess(data));
-            toast.success(data && data.Message);
-        } else {
-            toast.success(data && data.Message);
-            yield put(actions.governanceAPIRequestFailed());
-        }
-    } catch (err) {
-        yield put(actions.governanceAPIRequestFailed());
-
+  try {
+    const { data, status } = yield call(api.getGovernanceCompanyData, payload);
+    if (status === 200) {
+      yield put(actions.governanceAPIRequestSuccess(data));
+      toast.success(data && data.Message);
+    } else {
+      toast.success(data && data.Message);
+      yield put(actions.governanceAPIRequestFailed());
     }
+  } catch (err) {
+    yield put(actions.governanceAPIRequestFailed());
+  }
 };
 
-
 const updateMobileNumberOTP = function* updateMobileNumberOTP({ payload }) {
-    try {
-        const { data, status } = yield call(api.checkEmailVerifiedThroughEmail, payload);
-        if (status === 200) {
-
-            let companyName = payload.entityName
-            yield put(actions.insUpdateDeletAPIRequestSuccess({ formDataPersonalData: payload, data: data, companyName: companyName, userInfo: payload }));
-            let obj = {
-                phn: payload.adminMobile,
-                email: ""
-            }
-            apiServices.post("/api/sendmsgwithverificationcode", obj)
-                .then(function (response) {
-                    // handle success
-                    if (
-                        response &&
-                        response.data &&
-                        response.data.otp != "" &&
-                        response.data.statuscode === "200"
-                    ) {
-                        toast.success("The OTP has been sent to your registered mobile number")
-                    } else {
-                        toast.error("something went wrong please try again !!!")
-                    }
-                })
-                .catch(function (error) {
-                    if (error) {
-                    }
-                });
-            toast.success(data && data.Message);
-        }
-
-    } catch (err) {
-        // toast.error(
-        //     (err && err.response && err.response.data && err.response.data.message) ||
-        //         'Something went to wrong, Please try after sometime',
-        // );
-        //  yield put(actions.updatePhoneNumberOTPRequestFailed());
-
+  try {
+    const { data, status } = yield call(
+      api.checkEmailVerifiedThroughEmail,
+      payload
+    );
+    if (status === 200) {
+      let companyName = payload.entityName;
+      yield put(
+        actions.insUpdateDeletAPIRequestSuccess({
+          formDataPersonalData: payload,
+          data: data,
+          companyName: companyName,
+          userInfo: payload,
+        })
+      );
+      let obj = {
+        phn: payload.adminMobile,
+        email: "",
+      };
+      apiServices
+        .post("/api/sendmsgwithverificationcode", obj)
+        .then(function (response) {
+          // handle success
+          if (
+            response &&
+            response.data &&
+            response.data.otp != "" &&
+            response.data.statuscode === "200"
+          ) {
+            toast.success(
+              "The OTP has been sent to your registered mobile number"
+            );
+          } else {
+            toast.error("something went wrong please try again !!!");
+          }
+        })
+        .catch(function (error) {
+          if (error) {
+          }
+        });
+      toast.success(data && data.Message);
     }
+  } catch (err) {
+    // toast.error(
+    //     (err && err.response && err.response.data && err.response.data.message) ||
+    //         'Something went to wrong, Please try after sometime',
+    // );
+    //  yield put(actions.updatePhoneNumberOTPRequestFailed());
+  }
 };
 
 export default function* sagas() {
-    yield takeLatest(types.SEND_MAIL_TASK_REQUEST, taskMailRequest);
-    yield takeLatest(types.COMPANY_TYPE_REQUEST, companyTypeRequest);
-    yield takeLatest(types.VERIFY_EMAIL_REQUEST, verifyEmailReq);
-    yield takeLatest(types.INS_UPDATE_DELETE_API_REQUEST, insertUpdateDeleteAPIReq);
-    yield takeLatest(types.SEND_OTP_ACTION_REQUEST, otpRequest);
-    yield takeLatest(types.VERIFY_OTP_REQUEST, verifyOtpRequest);
-    yield takeLatest(types.INSERTCERIFICATEDETAILS_REQUEST, insertCerificateRequest);
-    yield takeLatest(types.INSERT_TASK_DATA_REQUEST, insertTaskListReq);
-    yield takeLatest(types.UPDATE_MOBILE_NUMBER_OTP_REQUEST, updateMobileNumberOTP);
-    yield takeLatest(types.GET_ASSIGN_TASK_DATA_REQUEST, assignTaskDataReq);
-    yield takeLatest(types.GOVERNANCEDATA_REQUEST, governanceDataReq);
-
+  yield takeLatest(types.SEND_MAIL_TASK_REQUEST, taskMailRequest);
+  yield takeLatest(types.COMPANY_TYPE_REQUEST, companyTypeRequest);
+  yield takeLatest(types.VERIFY_EMAIL_REQUEST, verifyEmailReq);
+  yield takeLatest(
+    types.INS_UPDATE_DELETE_API_REQUEST,
+    insertUpdateDeleteAPIReq
+  );
+  yield takeLatest(types.SEND_OTP_ACTION_REQUEST, otpRequest);
+  yield takeLatest(types.VERIFY_OTP_REQUEST, verifyOtpRequest);
+  yield takeLatest(
+    types.INSERTCERIFICATEDETAILS_REQUEST,
+    insertCerificateRequest
+  );
+  yield takeLatest(types.INSERT_TASK_DATA_REQUEST, insertTaskListReq);
+  yield takeLatest(
+    types.UPDATE_MOBILE_NUMBER_OTP_REQUEST,
+    updateMobileNumberOTP
+  );
+  yield takeLatest(types.GET_ASSIGN_TASK_DATA_REQUEST, assignTaskDataReq);
+  yield takeLatest(types.GOVERNANCEDATA_REQUEST, governanceDataReq);
 }

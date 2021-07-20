@@ -613,6 +613,7 @@ function CoManagment({ handleClose }) {
     }
   };
   const MoreDetails = (item) => {
+    console.log(item);
     setCurrentRow(item);
     const drawerParent = document.getElementById("moreDetailsParent");
     const drawerChild = document.getElementById("moreDetailsChild");
@@ -976,7 +977,7 @@ function CoManagment({ handleClose }) {
                           )}
 
                         {openPopupIndex !== "" && openPopupIndex === index && (
-                          <div ref={innerRef} className="three-dot-tooltip">
+                          <div className="three-dot-tooltip">
                             <div
                               className="change-role"
                               onClick={() => MoreDetails(item)}
