@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 // import SideBarBg from "../../../../assets/Images/Onboarding/side-bar-bg.png";
 import dashBoardActiveIcon from "../../../../../assets/Icons/dashBoardActiveIcon.png";
@@ -34,13 +34,86 @@ import historyListActive from "../../../../../assets/Icons/history_active.png";
 import historyListInActive from "../../../../../assets/Icons/history_unactive.png";
 
 import updateActive from "../../../../../assets/Icons/update_active.png";
+import SingleNotification from "../../../../../CustomNotification/SingleNotification";
+import api from "../../../../../apiServices";
+import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
+import { toast } from "react-toastify";
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const toastId = React.useRef(null);
   const userDetails = state && state.auth && state.auth.loginInfo;
 
   const [openProfile, setOpenProfile] = useState(false);
+  const userID =
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      try {
+        if (userID) {
+          notificationAPICall();
+        }
+      } catch (err) {}
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const notificationAPICall = () => {
+    let notificationArr = [];
+    const payload = {
+      userID: userID,
+    };
+    api
+      .post("/api/Notifications", payload)
+      .then(function (response) {
+        var date1 = new Date(); //current time
+        if (response && response.data && response.data.length > 0) {
+          let notification = response && response.data;
+          var notificationDateTime;
+          var date2;
+          var timeDiff;
+          notification &&
+            notification.length > 0 &&
+            notification.map((item, index) => {
+              notificationDateTime = item.date;
+              date2 = new Date(notificationDateTime);
+              timeDiff = Math.abs(date2.getTime() - date1.getTime()); // in miliseconds
+              if (timeDiff < 60000) {
+                notificationArr.push(item);
+              }
+            });
+          if (notificationArr && notificationArr.length > 0) {
+            if (notificationArr.length === 1) {
+              toast.success(
+                <SingleNotification
+                  id={toastId.current}
+                  toast={toast}
+                  notification={notificationArr[0]}
+                />
+              );
+            } else {
+              toast.success(
+                <MultipleNotification
+                  id={toastId.current}
+                  toast={toast}
+                  notificationCount={notificationArr.length}
+                />
+              );
+            }
+          } else {
+          }
+        } else {
+        }
+      })
+      .catch(function (error) {
+        if (error) {
+        }
+      });
+  };
+
   const openProfileRef = useOuterClick((e) => {
     if (openProfile === true) {
       setOpenProfile(false);

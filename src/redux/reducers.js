@@ -17,7 +17,7 @@ import CalenderReducer from "../Components/CalenderView/redux/reducers";
 
 const createRootReducer = (history) =>
   combineReducers({
-    router: connectRouter(history),
+   // router: connectRouter(history),
     auth,
     complianceOfficer,
     teamMemberFlow,

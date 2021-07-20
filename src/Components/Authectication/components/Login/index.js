@@ -45,62 +45,7 @@ function Login({ history }) {
         setErrors({ ...errors, [inputKey]: "" });
       }
     }
-    // if (name === "Pwd") {
-    //     let inputKey = "passwordErr";
-    //     let minlength = "minlength";
-    //     let alphabetsandigit = "alphabetsandigit";
-    //     let uppercaseandlowercase = "uppercaseandlowercase"
-    //     if (!passwordReg.test(event.target.value)) {
-    //         let name = "passwordErr"
-    //         setErrors({ ...errors, [inputKey]: "Password is invalid" })
-    //     } else {
-    //         setErrors({ ...errors, [inputKey]: "" });
-    //     }
 
-    //     if (event.target.value.length < 8) {
-    //         setPasswordState(prevState => ({ ...prevState, [minlength]: false }));
-    //     } else {
-    //         setPasswordState(prevState => ({ ...prevState, [minlength]: true }));
-    //     }
-
-    //     let uppercaseandlowercaseRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/
-
-    //     if (uppercaseandlowercaseRE.test(event.target.value)) {
-    //         setPasswordState(prevState => ({
-    //             ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: true
-    //         }));
-    //     }
-    //     else {
-    //         if (/^[a-z]*$/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: false, [uppercaseandlowercase]: false
-    //             }));
-    //         } else if (/^[a-zA-Z]*$/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: false, [uppercaseandlowercase]: true
-    //             }));
-    //         }
-    //         else if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: true
-    //             }));
-    //         } else if (/^[a-z0-9]*$/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: false
-    //             }));
-    //         }
-    //         else if (/^[A-Z0-9]*$/.test(event.target.value)) {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: false
-    //             }));
-    //         }
-    //         else {
-    //             setPasswordState(prevState => ({
-    //                 ...prevState, [alphabetsandigit]: false, [uppercaseandlowercase]: false
-    //             }));
-    //         }
-    //     }
-    // }
     setValues({ ...values, [name]: event.target.value });
   };
 
@@ -122,7 +67,6 @@ function Login({ history }) {
 
   const onSubmit = () => {
     if (values.LoginId === "" || values.Pwd === "" || errors.emailErr !== "") {
-      // scrollToElement('.input-error');
       return;
     }
     dispatch(
