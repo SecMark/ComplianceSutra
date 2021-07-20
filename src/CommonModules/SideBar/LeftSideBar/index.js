@@ -201,8 +201,6 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Bell"
             />
           </div>
-      
-      
         </div>
         <div className="devider-line"></div>
         <div className="second-icon-list">
@@ -243,10 +241,11 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               onClick={() => onMenuClick("help")}
               src={
                 !openProfile && state && state.adminMenu.currentMenu === "help"
-                  ? HelpBlackActive
+                  ? HelpGreyActive
                   : HelpGreyActive
               }
               alt="sidebar Active"
+              size={44}
             />
           </div>
 
