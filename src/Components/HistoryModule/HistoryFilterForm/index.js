@@ -156,9 +156,9 @@ const HistoryFilterForm = (props) => {
           ),
       };
     }
-    actionDispatch(adminMenuActions.setCurrentMenu("complianceHistoryList"));
+    actionDispatch(adminMenuActions.setCurrentMenu("history"));
     actionDispatch(getHistoryList(historyListPayload));
-    history.push("/compliance-history-list");
+    // history.push("/compliance-history");
   };
   return (
     <>
