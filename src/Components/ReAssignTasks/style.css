@@ -36,7 +36,7 @@
 .header-after-selected > img {
   cursor: pointer;
 }
-input.form-control {
+.header-controls .form-control {
   flex: 0.5;
 }
 button.re-assign-to-me,
