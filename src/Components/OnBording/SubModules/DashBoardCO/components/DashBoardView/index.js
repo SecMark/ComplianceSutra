@@ -104,6 +104,9 @@ function DashBoardView({ history }) {
       if (window.location.href.includes("dashboard")) {
         dispatch(adminMenuActions.setCurrentMenu("taskList"));
       }
+      if (window.location.href.includes("dashboard-view")) {
+        dispatch(adminMenuActions.setCurrentMenu("dashboard"));
+      }
     }
   }, []);
 

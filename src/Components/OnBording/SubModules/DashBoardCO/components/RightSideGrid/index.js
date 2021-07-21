@@ -147,12 +147,12 @@ function RightSideGrid({
 
   const currentFilterViewByRedux =
     state && state.adminMenu && state.adminMenu.currentFilterViewBy;
-    const [
-      isShowReAssignModalForTeamMember,
-      setIsShowReAssignModalForTeamMember,
-    ] = useState(false);
-    const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
-      useState(false);
+  const [
+    isShowReAssignModalForTeamMember,
+    setIsShowReAssignModalForTeamMember,
+  ] = useState(false);
+  const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
+    useState(false);
   const getTaskById =
     state &&
     state.taskReport &&
@@ -1317,69 +1317,74 @@ function RightSideGrid({
             {showFiles && (
               <div className="file-grid-data">
                 {(user && user.UserType && user.UserType === 4) ||
-                (user && user.UserType && user.UserType === 3) ? (
+                (user && user.UserType &&(userDetails.UserType === 3 || userDetails.UserType ===5)) ? (
                   <>
                     {getTaskById &&
                     getTaskById.Status &&
                     getTaskById.Status === "Assigned" &&
                     getTaskById &&
                     getTaskById.Status &&
-                    getTaskById.TaskStatus === 0 ? (
-                      (user && user.UserType && user.UserType === 4) ||
-                      (user && user.UserType && user.UserType === 3) ? (
-                        <>
-                          {" "}
-                          <div className="row">
-                            <div className="col-12 col-sm-4 col-md-4 col-xl-4">
-                              <div className="file-upload-title file-img-width">
-                                <div className="">
-                                  <div className="file-upload-box">
-                                    <div className="image-display">
-                                      <Dropzone
-                                        multiple={true}
-                                        maxSize={26214400}
-                                        accept=".png,.jpg,
+                    getTaskById.TaskStatus === 0
+                      ? (user && user.UserType && user.UserType === 4) ||
+                        (user && user.UserType && user.UserType === 3 || user.UserType == 5 ? (
+                          <>
+                            {" "}
+                            <div className="row">
+                              <div className="col-12 col-sm-4 col-md-4 col-xl-4">
+                                <div className="file-upload-title file-img-width">
+                                  <div className="">
+                                    <div className="file-upload-box">
+                                      <div className="image-display">
+                                        <Dropzone
+                                          multiple={true}
+                                          maxSize={26214400}
+                                          accept=".png,.jpg,
                                         application/pdf,application/rtf,application/msword,image/bmp,
                                         application/vnd.ms-excel,image/tiff,image/tif,image/jpeg,
                                         application/ms-excel,
                                         .tiff,.pdf,.doc,.docx,
                                         .XLS,.xlsx,.CSV,.zip,.rar,.txt"
-                                        onDrop={(acceptedFiles) =>
-                                          handleSelectUploadFile(acceptedFiles)
-                                        }
-                                      >
-                                        {({ getRootProps, getInputProps }) => (
-                                          <div
-                                            {...getRootProps({
-                                              className: "dropzone",
-                                            })}
-                                          >
-                                            <div>
-                                              <input {...getInputProps()} />
+                                          onDrop={(acceptedFiles) =>
+                                            handleSelectUploadFile(
+                                              acceptedFiles
+                                            )
+                                          }
+                                        >
+                                          {({
+                                            getRootProps,
+                                            getInputProps,
+                                          }) => (
+                                            <div
+                                              {...getRootProps({
+                                                className: "dropzone",
+                                              })}
+                                            >
+                                              <div>
+                                                <input {...getInputProps()} />
+                                              </div>
+                                              <img
+                                                src={fileUploadIcon}
+                                                className="cloudImg"
+                                                alt="File Upload icon"
+                                              />
+                                              <div className="drag-drop-title text-center">
+                                                Drag and drop your files here
+                                              </div>
+                                              <div className="text-center">
+                                                Upload files
+                                              </div>
                                             </div>
-                                            <img
-                                              src={fileUploadIcon}
-                                              className="cloudImg"
-                                              alt="File Upload icon"
-                                            />
-                                            <div className="drag-drop-title text-center">
-                                              Drag and drop your files here
-                                            </div>
-                                            <div className="text-center">
-                                              Upload files
-                                            </div>
-                                          </div>
-                                        )}
-                                      </Dropzone>
+                                          )}
+                                        </Dropzone>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </>
-                      ) : null
-                    ) : null}
+                          </>
+                        ) : null)
+                      : null}
 
                     {fileList && fileList.length > 0 ? (
                       fileList.map((file, index) => (
@@ -1485,7 +1490,7 @@ function RightSideGrid({
                   getTaskById.TaskStatus === 1) ? (
                   (user && user.UserType && user.UserType === 3) ||
                   user.UserType === 4 ||
-                  (user.UserType === 5 && " ")
+                  (user.UserType === 5)
                 ) : getTaskById &&
                   getTaskById.Status &&
                   getTaskById.Status === "Assigned" &&
@@ -4043,7 +4048,7 @@ function RightSideGrid({
             <div
               id="test"
               className={
-                userDetails.UserType === 3
+                (userDetails.UserType === 3 || userDetails.UserType ===5)
                   ? "sidebar-new-class "
                   : "sidebar-new-class-team "
               }
@@ -4609,7 +4614,7 @@ function RightSideGrid({
 
       {isTaskListOpen && (
         <div className="row ">
-           <ReAssignTasksModal
+          <ReAssignTasksModal
             openModal={isShowReAssignModalForTeamMember}
             setShowModal={setIsShowReAssignModalForTeamMember}
             userId={getTaskById && getTaskById.AssignedTo}
@@ -4846,11 +4851,12 @@ function RightSideGrid({
                         </div>
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                           {getTaskById && getTaskById.AssignedTo != 0 ? (
-                            <div className="holding-list-bold-title"
-                            style={{cursor: "pointer"}}
-                            onClick={() =>
-                              setIsShowReAssignModalForTeamMember(true)
-                            }
+                            <div
+                              className="holding-list-bold-title"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                setIsShowReAssignModalForTeamMember(true)
+                              }
                             >
                               {getTaskById &&
                               getTaskById.AssignedToUserName == "" ? null : (
@@ -5065,11 +5071,12 @@ function RightSideGrid({
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                           {getTaskById &&
                           getTaskById.ApproverName != "Assign" ? (
-                            <div className="holding-list-bold-title"
-                            style={{cursor: "pointer"}}
-                            onClick={() =>
-                              setIsShowReAssignModalForApprover(true)
-                            }
+                            <div
+                              className="holding-list-bold-title"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                setIsShowReAssignModalForApprover(true)
+                              }
                             >
                               {getTaskById &&
                               getTaskById.ApproverName == "" ? null : (
@@ -5568,7 +5575,7 @@ function RightSideGrid({
                 {showFiles && (
                   <div className="file-grid-data">
                     {(user && user.UserType && user.UserType === 4) ||
-                    (user && user.UserType && user.UserType === 3) ? (
+                    (user && user.UserType && (userDetails.UserType === 3 || userDetails.UserType ===5)) ? (
                       <>
                         {getTaskById &&
                         getTaskById.Status &&
@@ -5577,7 +5584,7 @@ function RightSideGrid({
                         getTaskById.Status &&
                         getTaskById.TaskStatus === 0 ? (
                           (user && user.UserType && user.UserType === 4) ||
-                          (user && user.UserType && user.UserType === 3) ? (
+                          (user && user.UserType && (userDetails.UserType === 3 || userDetails.UserType ===5)) ? (
                             <>
                               {" "}
                               <div className="row">
@@ -5743,7 +5750,7 @@ function RightSideGrid({
                       (getTaskById &&
                         getTaskById.Status &&
                         getTaskById.TaskStatus === 1) ? (
-                      (user && user.UserType && user.UserType === 3) ||
+                      (user && user.UserType && (userDetails.UserType === 3 || userDetails.UserType ===5)) ||
                       user.UserType === 4 ||
                       (user.UserType === 5 && " ")
                     ) : getTaskById &&
