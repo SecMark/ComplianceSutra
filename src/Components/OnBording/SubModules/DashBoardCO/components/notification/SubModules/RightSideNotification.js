@@ -16,6 +16,7 @@ import { useOuterClick } from "./outerClick.js";
 import { Link } from "react-router-dom";
 import { actions as notificationActions } from "../Redux/actions";
 import NoResultFound from "../../../../../../../CommonModules/sharedComponents/NoResultFound";
+import { setNotificationTaskId } from "../Redux/Action";
 
 function NotificationGrid(props) {
   // console.log("state => ",state);
@@ -309,9 +310,7 @@ function NotificationGrid(props) {
                                     style={{ textDecoration: "none" }}
                                     onClick={() => {
                                       dispatch(
-                                        notificationActions.setTaskID(
-                                          element.TaskId
-                                        )
+                                        setNotificationTaskId(element.TaskId)
                                       );
                                     }}
                                   >

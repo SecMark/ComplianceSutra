@@ -175,10 +175,12 @@ function RightSideGrid({
   useEffect(() => {
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
-    if (task_id !== null) {
+      console.log(state.NotificationRedu)
+    if (task_id) {
+      console.log(state.NotificationRedu?.taskID)
       getSelectTaskDetails();
     }
-  }, [state.NotificationRedu.taskID]);
+  }, [state.NotificationRedu?.taskID]);
 
   useEffect(() => {
     // current property is refered to input element
@@ -1904,6 +1906,7 @@ function RightSideGrid({
     }
   };
   const getSelectTaskDetails = (e) => {
+    console.log("hello");
     setShowFiles(true);
     setShowComments(false);
     setCurrentDropDown("");
@@ -1916,6 +1919,7 @@ function RightSideGrid({
 
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
+      console.log(state.NotificationRedu);
 
     if (task_id !== null && e === undefined) {
       if (localStorage.expandedFlagss) {

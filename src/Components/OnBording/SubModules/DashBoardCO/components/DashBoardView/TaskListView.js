@@ -56,6 +56,7 @@ import { actions as notificationActions } from ".././notification/Redux/actions.
 import RiskAndDelaysTaskList from "./component/RiskAndDelaysTaskList";
 import PendingAction from "./component/PendingAction";
 import View from "../../../../../CalenderView/View";
+import { setNotificationTaskId } from "../notification/Redux/Action";
 
 function RightSideGrid({
   isTaskListOpen,
@@ -912,7 +913,7 @@ function RightSideGrid({
         to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
-          dispatch(notificationActions.setTaskID(task.TaskId));
+          dispatch(setNotificationTaskId(task.TaskId));
           localStorage.setItem(
             "expandedFlagss",
             expandedFlags,

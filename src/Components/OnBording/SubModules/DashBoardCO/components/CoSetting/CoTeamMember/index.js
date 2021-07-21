@@ -136,8 +136,9 @@ function CoManagment({ handleClose }) {
     },
   ]);
   const [isValidEmail, setIsValidEmail] = useState(true);
+  
   const innerRef = useOuterClick((e) => {
-    if (openPopupIndex !== "") setOpenPopupIndex("");
+    //if (openPopupIndex !== "") setOpenPopupIndex("");
   });
 
   const [currentIndex, setCurrentIndex] = useState("");
@@ -254,6 +255,7 @@ function CoManagment({ handleClose }) {
   }, [teamMemberData]);
 
   const onDeletePress = (index) => {
+    console.log(fields, openPopupIndex);
     setOpenPopupIndex("");
     const payload = {
       gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
@@ -261,7 +263,8 @@ function CoManagment({ handleClose }) {
       actionFlag: 3,
       entityID: 0,
       licID: 0,
-      uUserID: fields && fields[index] && fields[index].id,
+      uUserID:
+        (fields && fields[openPopupIndex] && fields[openPopupIndex].id) || "",
       utype: 0,
       // notificationList: "",
       // pwd: "",
@@ -454,6 +457,7 @@ function CoManagment({ handleClose }) {
   };
 
   const openPopup = (index) => {
+    console.log("open pop up", index);
     setOpenPopupIndex(index);
   };
   const changeRole = (key) => {
@@ -1644,13 +1648,6 @@ function CoManagment({ handleClose }) {
           </tbody>
         </table>
       </div>
-      {/* <div className="bottom-logo-strip personal-details">
-                <div className="row aligncenter">
-                    <div className="col-12">
-                        <div className="company-delete-right-bottom"><img className="check-icon-small" src={checkIocnSmall} alt="close Gray Icon" /> Member removed  <img className="small-icon-close" src={smallClose} alt="close Gray Icon" /></div>
-                    </div>
-                </div>
-            </div> */}
     </div>
   );
 }
