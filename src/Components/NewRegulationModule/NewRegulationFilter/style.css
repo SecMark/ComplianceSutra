@@ -24,34 +24,24 @@
   line-height: normal;
   letter-spacing: 0.02px;
   text-align: left;
-  color: #aeaeae;
+  color: rgb(219, 215, 215);
   border: none;
   padding: 10px;
   border-radius: 4px;
-  background-color: #e4e4e4;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .view-updates-active {
-  margin-top: 35px;
-  font-size: 13px;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: 0.02px;
-  text-align: left;
   color: #ffffff;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  opacity: 0.7;
   background-color: #6c5dd3;
+  pointer-events: all;
 }
 @media screen and (min-width: 992px) {
   .searchable {
     width: 274px !important;
   }
-  .view-updates-active {
+  .view-updates {
     margin-top: 70px;
   }
   .view-updates-active {

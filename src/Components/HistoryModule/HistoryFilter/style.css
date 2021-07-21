@@ -1,6 +1,12 @@
 .history-side-bar {
   display: flex;
 }
+.history-wrapper {
+  background: url("../../../assets/Images/Onboarding/co-bg.png") no-repeat left
+    center;
+  background-size: cover;
+  width: 100%;
+}
 .history-container {
   object-fit: contain;
   border-radius: 36px;
@@ -35,9 +41,9 @@
 
 h2.main-title {
   font-size: 24px;
-    font-weight: 600;
+  font-weight: 600;
 }
 
-h2.main-title img{
+h2.main-title img {
   margin: 0 0 0 10px;
 }
