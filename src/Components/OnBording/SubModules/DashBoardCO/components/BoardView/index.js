@@ -143,7 +143,7 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
                     <div className="task-list-grid customHeight">
                         <Board
                             components={components}
-                            laneStyle={userDetails.UserType === 3 ? { maxHeight: '98vh', maxWidth: '100%', height: '67vh' } : { maxHeight: '98vh', maxWidth: '100%', height: '50vh' }}
+                            laneStyle={userDetails.UserType === 3 || userDetails.UserType === 5 ? { maxHeight: '98vh', maxWidth: '100%', height: '67vh' } : { maxHeight: '98vh', maxWidth: '100%', height: '50vh' }}
                             cardDraggable={false}
                             draggable={false}
                             cardStyle={{ minWidth: '100%' }}
