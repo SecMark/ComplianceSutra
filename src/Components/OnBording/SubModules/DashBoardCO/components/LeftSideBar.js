@@ -173,7 +173,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           <img src={sideBarlogo} alt="sideBarlogo" />
         </div>
         <div className="first-icon-list">
-          {userDetails.UserType === 3 && (
+          {(userDetails.UserType === 3 || userDetails.UserType === 5) && (
             <div
               className={
                 !openProfile &&
