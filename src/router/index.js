@@ -147,11 +147,6 @@ export default function AppRouter() {
 
           <Route
             exact
-            path="/user-details-verification"
-            component={UserProfileVerifcation}
-          />
-          <Route
-            exact
             path="/otp-verification"
             component={UserOTPVerifcation}
           />
@@ -182,11 +177,7 @@ export default function AppRouter() {
             path="/user-details-verification"
             component={UserProfileVerifcation}
           />
-          <Route
-            exact
-            path="/otp-verification"
-            component={UserOTPVerifcation}
-          />
+
           <Route
             exact
             path="/user-verification-process"
