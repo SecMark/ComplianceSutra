@@ -8,6 +8,4 @@ if (window.location.href.includes("localhost")) {
   url = "http://brainmidas.com/";
 }
 
-console.log("localhost", window.location.href.includes("localhost")); 
-
 export const BACKEND_BASE_URL = url;
