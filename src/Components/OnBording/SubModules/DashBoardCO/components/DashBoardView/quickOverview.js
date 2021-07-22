@@ -27,7 +27,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const [collapse, setCollapse] = useState([]);
-  const [thingOnTrack, setThingOnTrack] = useState([]);
+  const [thingOnTrack, setThingOnTrack] = useState({});
   const [companyViewData, setCompanyViewData] = useState([]);
   const [teamPerformance, setTeamPerformanceData] = useState([]);
   const [section3, setSection3] = useState([]);
@@ -39,7 +39,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
     if (
       userDetails &&
       userDetails.UserID !== undefined &&
-      userDetails.UserType === 3
+      (userDetails.UserType === 3 || userDetails.UserType === 5)
     ) {
       fetchQuickOverViewSectionData("type1");
       fetchTeamPerformanceData();
@@ -486,38 +486,54 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                     </span>
                   </div>
                 </>
-                <div
-                  className={
-                    companyViewData &&
-                    companyViewData.length > 0 &&
-                    companyViewData.length === 2
-                      ? "two-btn mainBoxShado"
-                      : "two-btn"
-                  }
-                >
-                  {companyViewData &&
-                    companyViewData.length > 0 &&
-                    companyViewData.length <= 5 &&
-                    companyViewData.map((item, index) =>
-                      _renderCompanyView(item, index, companyViewData.length)
-                    )}
-                  {!showMoreLess &&
-                    companyViewData &&
-                    companyViewData.length > 0 &&
-                    companyViewData.length > 5 &&
-                    companyViewData
-                      .slice(0, 5)
-                      .map((item, index) =>
-                        _renderCompanyView(item, index, companyViewData.length)
-                      )}
-                  {showMoreLess &&
-                    companyViewData &&
-                    companyViewData.length > 0 &&
-                    companyViewData.length > 5 &&
-                    companyViewData.map((item, index) =>
-                      _renderCompanyView(item, index, companyViewData.length)
-                    )}
-                </div>
+                {userDetails &&
+                  userDetails.UserID !== undefined &&
+                  userDetails.UserType === 3 && (
+                    <div
+                      className={
+                        companyViewData &&
+                        companyViewData.length > 0 &&
+                        companyViewData.length === 2
+                          ? "two-btn mainBoxShado"
+                          : "two-btn"
+                      }
+                    >
+                      {companyViewData &&
+                        companyViewData.length > 0 &&
+                        companyViewData.length <= 5 &&
+                        companyViewData.map((item, index) =>
+                          _renderCompanyView(
+                            item,
+                            index,
+                            companyViewData.length
+                          )
+                        )}
+                      {!showMoreLess &&
+                        companyViewData &&
+                        companyViewData.length > 0 &&
+                        companyViewData.length > 5 &&
+                        companyViewData
+                          .slice(0, 5)
+                          .map((item, index) =>
+                            _renderCompanyView(
+                              item,
+                              index,
+                              companyViewData.length
+                            )
+                          )}
+                      {showMoreLess &&
+                        companyViewData &&
+                        companyViewData.length > 0 &&
+                        companyViewData.length > 5 &&
+                        companyViewData.map((item, index) =>
+                          _renderCompanyView(
+                            item,
+                            index,
+                            companyViewData.length
+                          )
+                        )}
+                    </div>
+                  )}
                 {!showMoreLess &&
                   companyViewData &&
                   companyViewData.length > 5 && (
@@ -538,6 +554,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                 )}
                 <div className="two-btn-new"></div>
                 {thingOnTrack &&
+                  Object.entries(thingOnTrack).length !== 0 &&
                   thingOnTrack.RiskTask !== 0 &&
                   thingOnTrack.PendingTask !== 0 && (
                     <div className="take-action-grid-new shadow bg-white rounded">
