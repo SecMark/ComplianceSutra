@@ -93,7 +93,9 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                   toast={toast}
                   notification={notificationArr[0]}
                 />
-              );
+              ,{
+                toastId:"single-notification"
+              });
             } else {
               toast.success(
                 <MultipleNotification
@@ -101,7 +103,9 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                   toast={toast}
                   notificationCount={notificationArr.length}
                 />
-              );
+              ,{
+                toastId:"multiple-notification"
+              });
             }
           } else {
           }

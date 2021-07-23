@@ -72,11 +72,11 @@ const NewRegulations = (props) => {
   //clear filter
   useEffect(() => {
     dispatch(clearFilter());
-  }, []);
+  }, [false]);
 
   useEffect(() => {
     fetchAndSetUpdates();
-  }, [state.auth.loginInfo?.UserID]);
+  }, [false]);
 
   useEffect(() => {
     setIsShowFilter(false);
@@ -85,7 +85,7 @@ const NewRegulations = (props) => {
 
   const fetchAndSetUpdates = () => {
     const payload = { UserID: state.auth.loginInfo?.UserID };
-    dispatch(getUpdates(payload));
+   // dispatch(getUpdates(payload));
   };
   const changeShowRegulationDetail = () => {
     setIsShowRegulationDetail(!isShowRegulationDetail);
