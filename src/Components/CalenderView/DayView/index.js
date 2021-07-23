@@ -40,13 +40,21 @@ const DayView = ({ daysData }) => {
                 <Link
                   to="/dashboard"
                   className={`${
-                    day?.Status === "Assign" ? "assigned-day" : "approval-day"
+                    day?.Status === "Approval Pending"
+                      ? "approval-day"
+                      : day?.Status == "Assigned"
+                      ? "assigned-day"
+                      : "approval-day"
                   }`}
                   onClick={() => {
                     dispatch(setNotificationTaskId(day?.TaskId));
                   }}
                 >
-                  {day?.Status === "Assign" ? "Assigned" : "Approval Pending"}
+                  {day?.Status === "Approval Pending"
+                    ? "Approval Pending"
+                    : day?.Status === "Completed By User"
+                    ? "Approval Pending"
+                    : day?.Status}
                 </Link>
               </div>
               <button

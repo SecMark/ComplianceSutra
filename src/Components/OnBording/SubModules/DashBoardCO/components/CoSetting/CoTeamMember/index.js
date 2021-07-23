@@ -549,11 +549,16 @@ function CoManagment({ handleClose }) {
     setIsValidEmail(true);
     setAlreadyExist(false);
     const { name, value } = e.target;
+    console.log(name);
     if (name === "fullName") {
       const re = /^[a-z|A-Z_ ]*$/;
       if (e.target.value && !re.test(e.target.value)) {
         return "";
       }
+    }
+    if (name === "email") {
+      console.log("hello");
+      onValidateEmail(e);
     }
     setInputTeamMember({ ...inputTeamMember, [name]: e.target.value });
   };
@@ -1026,7 +1031,7 @@ function CoManagment({ handleClose }) {
                               onClick={() => {
                                 setVisible(true);
                                 setDeleteMemberIndex(index);
-                                setOpenPopupIndex("")
+                                setOpenPopupIndex("");
                               }}
                               className="delete-member"
                             >
@@ -1463,9 +1468,11 @@ function CoManagment({ handleClose }) {
                               </div>
                               <div
                                 style={{ cursor: "pointer" }}
-                                onClick={() => {setVisible(true)
-                                  setDeleteMemberIndex(index)
-                                setOpenPopupIndex("")}}
+                                onClick={() => {
+                                  setVisible(true);
+                                  setDeleteMemberIndex(index);
+                                  setOpenPopupIndex("");
+                                }}
                                 className="delete-member"
                               >
                                 Delete member

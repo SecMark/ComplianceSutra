@@ -49,7 +49,22 @@ const WeekView = ({ sevenDays, weekData, goToDateDay }) => {
                             {list?.LicenseCode}
                           </button>
                           <h2>{list?.TaskName}</h2>
-                          <button className="approval">Approval Pending</button>
+                          <button
+                            className={`${
+                              list?.Status === "Approval Pending"
+                                ? "approval-day"
+                                : list?.Status == "Assigned"
+                                ? "assigned-day"
+                                : "approval-day"
+                            }`}
+                          >
+                            {" "}
+                            {list?.Status === "Approval Pending"
+                              ? "Approval Pending"
+                              : list?.Status === "Completed By User"
+                              ? "Approval Pending"
+                              : list?.Status}
+                          </button>
                         </div>
                         <div className="CompanyName">
                           <span>{list?.EntityName}</span>

@@ -48,7 +48,7 @@ const NewRegulationFilter = ({ label }) => {
       return { value: item.Industry, label: item.Industry };
     });
     setListOfIndustry([...setArrayOfObjectInList]);
-  }, [state.auth.loginInfo?.UserID]);
+  }, [false]);
 
   useEffect(() => {
     const issuerListRequestPayload = {
@@ -64,7 +64,7 @@ const NewRegulationFilter = ({ label }) => {
     });
 
     setListOfIssuers([...setArrayOfObjectInList]);
-  }, [state.auth.loginInfo?.UserID]);
+  }, [false]);
 
   useEffect(() => {
     const topicListRequestPayload = {
@@ -80,7 +80,7 @@ const NewRegulationFilter = ({ label }) => {
     });
 
     setListOfTopic([...setArrayOfObjectInList]);
-  }, [state.auth.loginInfo?.UserID]);
+  }, [false]);
 
   useEffect(() => {
     if (
