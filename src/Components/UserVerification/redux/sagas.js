@@ -28,7 +28,9 @@ const userDataSaveRequest = function* userDataSaveRequest({ payload }) {
               formData: payload,
             })
           )
-          toast.success("Personal Information saved successfully")
+          toast.success("Personal Information saved successfully", {
+            toastId:"personal-info-save"
+          })
           yield delay(2000)
           payload.history.push(
             `/otp-verification?email=${payload.adminEmail}&type=${payload.userType}`
