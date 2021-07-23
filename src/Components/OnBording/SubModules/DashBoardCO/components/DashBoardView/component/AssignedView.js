@@ -279,7 +279,7 @@ export default function AssignedView(props) {
   const renderSidebarTaskList = (task, Status, listType) => {
     return (
       <Link
-        //to="/dashboard"
+        to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
           dispatch(setNotificationTaskId(task.TaskId));

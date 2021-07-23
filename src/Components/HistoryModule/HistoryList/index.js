@@ -371,12 +371,19 @@ const HistoryList = (props) => {
                             </button>
                           </td>
                           <td style={{ textAlign: "center" }}>
-                            <a
-                              href={`${BACKEND_BASE_URL}//viewfiles.ashx?id=${list?.TaskId}&flag=downloadtaskfiles&file=${list?.c_file}`}
-                            >
-                              {" "}
-                              <img src={download} />{" "}
-                            </a>
+                            {list?.c_file ? (
+                              <a
+                                href={`${BACKEND_BASE_URL}//viewfiles.ashx?id=${list?.TaskId}&flag=downloadtaskfiles&file=${list?.c_file}`}
+                              >
+                                {" "}
+                                <img src={download} />{" "}
+                              </a>
+                            ) : (
+                              <img
+                                src={download}
+                                style={{ cursor: "pointer" }}
+                              />
+                            )}
                           </td>
                         </tr>
                       ))}

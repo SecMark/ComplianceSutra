@@ -25,6 +25,9 @@ export default function LicenseTaskList(props) {
   const [today, setToday] = useState(new Date());
   const [showUserToolTip, setShowUserToolTip] = useState("");
   const [expandedFlags, setExpandedFlags] = useState([]);
+  useEffect(() => {
+    console.log("gello");
+  }, []);
 
   useEffect(() => {
     const payload = {
@@ -133,7 +136,7 @@ export default function LicenseTaskList(props) {
   const renderTaskList = (task, Status, listType) => {
     return (
       <Link
-        //to="/dashboard"
+        to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
           dispatch(setNotificationTaskId(task.TaskId));

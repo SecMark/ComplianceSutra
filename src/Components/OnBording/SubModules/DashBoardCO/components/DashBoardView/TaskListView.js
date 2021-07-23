@@ -5,39 +5,23 @@ import Modal from "react-awesome-modal";
 import AssigneList from "./component/AssignedView.js";
 import CompanyTaskList from "./component/companyList.js";
 import LicenseTaskList from "./component/LicenseTaskList.js";
-import CalendarView from "../CalendarView/components/index";
 import { Link } from "react-router-dom";
 import { useDropdownOuterClick } from "../RightSideGrid/dropdownOuterClick";
-import closeBlack from "../../../../../../assets/Icons/closeBlack.png";
-import fileIcon from "../../../../../../assets/Icons/fileIcon.png";
-import sideBarlogo from "../../../../../../assets/Icons/sideBarlogo.png";
 import redArrowTop from "../../../../../../assets/Icons/redArrowTop.png";
 import togglemobile from "../../../../../../assets/Icons/togglemobile.png";
 import keyboardArrowRightBlack from "../../../../../../assets/Icons/keyboardArrowRightBlack.png";
 import downArrow from "../../../../../../assets/Icons/downArrow.png";
-import inputRightArrow from "../../../../../../assets/Icons/inputRightArrow.png";
-import sidebarSettingIcon from "../../../../../../assets/Icons/sidebarSettingIcon.png";
-import editpen from "../../../../../../assets/Icons/editpen.png";
-import mobileTopArrow from "../../../../../../assets/Icons/mobileTopArrow.png";
-import LogoutIcon from "../../../../../../assets/Icons/LogoutIcon.png";
-import sidebarAccountCircle from "../../../../../../assets/Icons/sidebarAccountCircle.png";
-import taskIcon from "../../../../../../assets/Icons/taskIcon.png";
-import sidebarBell from "../../../../../../assets/Icons/sidebarBell.png";
+
 import upArrow from "../../../../../../assets/Icons/topArrowAccordian.png";
 import RedLine from "../../../../../../assets/Icons/RedLine.png";
 import { isMobile } from "react-device-detect";
 import assignIconCircle from "../../../../../../assets/Icons/assignIconCircle.png";
 import viewAllArow from "../../../../../../assets/Icons/viewAllArow.png";
 import viewAllArowTop from "../../../../../../assets/Icons/viewAllArowTop.png";
-import sidebarCheckIcon from "../../../../../../assets/Icons/sidebarCheckIcon.png";
 import closeIconGray from "../../../../../../assets/Icons/closeIconGray.png";
 import searchIcon from "../../../../../../assets/Icons/searchIcon.png";
-import fileUploadIcon from "../../../../../../assets/Icons/fileUploadIcon.png";
-import completeTaskIcon from "../../../../../../assets/Icons/emailVerify.png";
 import { toast } from "react-toastify";
 import moment from "moment";
-import Dropzone from "react-dropzone";
-import CustomCard from "./BoardCard";
 import { useOuterClick } from "../RightSideGrid/outerClick.js";
 import { BACKEND_BASE_URL } from "../../../../../../apiServices/baseurl";
 import { useSelector, useDispatch, connect } from "react-redux";
@@ -45,13 +29,10 @@ import { actions as taskReportActions } from "../../redux/actions";
 import MobileLeftSidebar from "../MobileLeftSidebar";
 import axios, { post } from "axios";
 import { withRouter } from "react-router-dom";
-import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png";
-import TextareaAutosize from "react-textarea-autosize";
-import Board from "react-trello";
+
 import BoardView from "../BoardView/index";
 import dropdownBottomArrow from "../../../../../../assets/Icons/dropdownBottomArrow.png";
 import dropdownCheckIcon from "../../../../../../assets/Icons/dropdownCheckIcon.png";
-import { actions as notificationActions } from ".././notification/Redux/actions.js";
 
 import RiskAndDelaysTaskList from "./component/RiskAndDelaysTaskList";
 import PendingAction from "./component/PendingAction";
@@ -60,36 +41,12 @@ import { setNotificationTaskId } from "../notification/Redux/Action";
 
 function RightSideGrid({
   isTaskListOpen,
-  setIsTaskListOpen,
-  isTaskApproved,
-  setIsTaskApproved,
   taskList,
-  companyName,
   user,
-  history,
   click,
   setClick,
-  listView,
   setListView,
 }) {
-  let dropDownArr = [
-    {
-      viewBy: "By Status",
-      name: "status",
-    },
-    {
-      viewBy: "By Company",
-      name: "company",
-    },
-    {
-      viewBy: "By License",
-      name: "license",
-    },
-    {
-      viewBy: "Team",
-      name: "team-member",
-    },
-  ];
   const searchInput = useRef(null);
 
   const [openBoardDrD, setOpenBoardDrp] = useState(false);
@@ -120,7 +77,7 @@ function RightSideGrid({
   const [searchBoxShow, setsearchBoxShow] = useState(false);
 
   const [searchBoxShowMobile, setsearchBoxShowMobile] = useState(false);
-  const [navigationHideShow, setNavigationHideShow] = useState(false);
+
   const [taskData, setTaskData] = useState([]);
   const [listTaskData, setListTaskData] = useState("");
   const [taskDataBackup, setTaskDataBackup] = useState([]);
@@ -230,8 +187,6 @@ function RightSideGrid({
     }
   }, [taskListDisplay]);
 
-  console.log("ListTaskData = ", listTaskData);
-
   const innerRefDrop = useDropdownOuterClick((e) => {
     if (openBoardDrD === true && !e.target.id.includes("dropDown")) {
       setOpenBoardDrp(false);
@@ -275,22 +230,6 @@ function RightSideGrid({
     }
   });
 
-  const _defineDropDownOptions = (viewType) => {
-    let str = "";
-    if (viewType === "status") {
-      str = "By Status";
-    } else if (viewType === "license") {
-      str = "By License";
-    } else if (viewType === "team-member") {
-      str = "Team";
-    } else if (viewType === "company") {
-      str = "By Company";
-    } else {
-      str = "By Status";
-    }
-    return str;
-  };
-
   const innerRef = useOuterClick((e) => {
     if (
       (currentDropDown !== "open" && !e.target.id.includes("assignBtn")) ||
@@ -325,7 +264,6 @@ function RightSideGrid({
         initials += names[names.length - 1].substring(0, 1).toUpperCase();
       } else if (names.length == 1) {
         initials = names[0].substring(0, 2).toUpperCase();
-        // initials += names[names.length - 1].substring(0, 1).toUpperCase()
       }
     }
     return initials;
@@ -490,8 +428,6 @@ function RightSideGrid({
         taskID: taskID,
       })
     );
-
-    // setIsTaskListOpen(true)
   };
 
   const getApproveUsers = () => {
@@ -937,10 +873,6 @@ function RightSideGrid({
           )}
           <div className="col-10 col-md-5 col-sm-5 col-xl-5">
             <div className="all-companies-sub-title new-task-list">
-              {/* <img id={task.TaskId} style={{ cursor: "pointer" }}
-              src={task.Status === "Approved" ? completeTaskIcon : sidebarCheckIcon}
-              alt="sidebar Check Icon"
-              onClick={() => _handleApproveTaskOnCheckBoxClick(task.TaskId)} /> */}
               <div
                 onClick={(e) => getSelectTaskDetails(task)}
                 style={{ cursor: "pointer", display: "flex" }}
@@ -1057,16 +989,7 @@ function RightSideGrid({
                     </div>
                   </div>
                 )}
-                {/* // <div className="circle-name d-none d-sm-block">
-              //   <div className="circle-text">
-              //     {
-              //        userDetails.UserType === 4 ?
-              //        getInitials(task.ApproverName === "Assign" ? "no approver" : task.ApproverName)
-              //        :
-              //         getInitials(task.AssignedName)
-              //     }
-              //   </div>
-              // </div> */}
+
                 {userDetails.UserType === 4 ? (
                   <div className="circle-front-text d-none d-sm-block">
                     {task.ApproverName === "Assign"
@@ -1361,26 +1284,23 @@ function RightSideGrid({
                     </div>
                   </div>
                 )}
-                {
-                  // task.AssignedTo > 0 &&
-                  task.AssignedTo === 0 && (
-                    <div className="only-mobile-assign-add d-block d-sm-none">
-                      <div
-                        className="assign-user-icon"
-                        onMouseOver={() =>
-                          setShowUserToolTip(`Tooltip${task.TaskId}`)
-                        }
-                        onMouseOut={() => setShowUserToolTip("")}
-                      >
-                        <img
-                          src={assignIconCircle}
-                          className="d-block d-sm-none"
-                          alt="Assign Circle"
-                        />
-                      </div>
+                {task.AssignedTo === 0 && (
+                  <div className="only-mobile-assign-add d-block d-sm-none">
+                    <div
+                      className="assign-user-icon"
+                      onMouseOver={() =>
+                        setShowUserToolTip(`Tooltip${task.TaskId}`)
+                      }
+                      onMouseOut={() => setShowUserToolTip("")}
+                    >
+                      <img
+                        src={assignIconCircle}
+                        className="d-block d-sm-none"
+                        alt="Assign Circle"
+                      />
                     </div>
-                  )
-                }
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1410,9 +1330,6 @@ function RightSideGrid({
       >
         <div className="col-10">
           <div className="all-companies-sub-title">
-            {/* <img id={task.TaskId} src={task.Status === "Approved" ? completeTaskIcon : sidebarCheckIcon}
-              alt="sidebar Check Icon" onClick={() => _handleApproveTaskOnCheckBoxClick(task.TaskId)} /> */}
-
             <div className="graybox-left">
               <span className="all-companies-nse-label">
                 {task.LicenseCode}
@@ -1497,34 +1414,12 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-
-              {/* <div className="mobile-head d-block d-sm-none">
-            <div className="d-flex">
-              <div
-                className="w-25"
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  onHBMenu()
-                }}
-              >
-                <img src={togglemobile} alt="toggle mobile" />
-              </div>
-              <div className="w-75">
-                {" "}
-                <img
-                  className="mobile-logo"
-                  src={sideBarlogo}
-                  alt="sideBarlogo"
-                />{" "}
-              </div>
-            </div>
-          </div> */}
               <>
                 <div className="d-flex mobile-height-dasboardView">
                   <div className="companies-sub-title w-25 d-none d-sm-block">
                     Tasks
                   </div>
-                  {/* {!searchBoxShowMobile && ( */}
+
                   <div className="d-flex pl-0">
                     <div
                       className="overview-mobile d-block d-sm-none"

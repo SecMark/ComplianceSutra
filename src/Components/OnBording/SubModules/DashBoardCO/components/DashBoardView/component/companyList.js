@@ -121,7 +121,7 @@ export default function AssignedView(props) {
   const renderCompanyTaskList = (task, Status, listType) => {
     return (
       <Link
-      //  to="/dashboard"
+        to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
           dispatch(setNotificationTaskId(task.TaskId));
