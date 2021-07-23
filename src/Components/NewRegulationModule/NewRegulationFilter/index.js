@@ -84,16 +84,28 @@ const NewRegulationFilter = ({ label }) => {
 
   useEffect(() => {
     if (
+      (state.UpdatesReducer.from !== "" &&
+        state.UpdatesReducer.from.length !== 0 &&
+        state.UpdatesReducer.from.length === 3 &&
+        isSameOrBeforeToday(state.UpdatesReducer.from)) ||
+      (state.UpdatesReducer.to !== "" &&
+        state.UpdatesReducer.to.length !== 0 &&
+        state.UpdatesReducer.to.length === 3 &&
+        isSameOrBeforeToday(state.UpdatesReducer.to)) ||
+      state.UpdatesReducer.industry !== "" ||
+      state.UpdatesReducer.issuer !== "" ||
+      state.UpdatesReducer.topic !== ""
+    ) {
+      setIsAllInputFilled(true);
+    } else if (
       state.UpdatesReducer.from !== "" &&
       state.UpdatesReducer.from.length !== 0 &&
       state.UpdatesReducer.from.length === 3 &&
+      isSameOrBeforeToday(state.UpdatesReducer.from) &&
       state.UpdatesReducer.to !== "" &&
       state.UpdatesReducer.to.length !== 0 &&
       state.UpdatesReducer.to.length === 3 &&
-      isSameOrBeforeToday(state.UpdatesReducer.from) &&
-      !isMoreThanOneYearFromToday(state.UpdatesReducer.from) &&
       isSameOrBeforeToday(state.UpdatesReducer.to) &&
-      !isMoreThanOneYearFromToday(state.UpdatesReducer.to) &&
       !isDifferenceIsMoreThanOneYear(
         state.UpdatesReducer.from,
         state.UpdatesReducer.to
@@ -101,10 +113,7 @@ const NewRegulationFilter = ({ label }) => {
       !isToDateBeforeFromDate(
         state.UpdatesReducer.from,
         state.UpdatesReducer.to
-      ) &&
-      state.UpdatesReducer.industry !== "" &&
-      state.UpdatesReducer.issuer !== "" &&
-      state.UpdatesReducer.topic !== ""
+      )
     ) {
       setIsAllInputFilled(true);
     } else {
@@ -118,14 +127,20 @@ const NewRegulationFilter = ({ label }) => {
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
       regbodies: state.UpdatesReducer.issuer,
-      submissionfrom: moment(
-        state.UpdatesReducer.from.join("-"),
-        "DD-M-YYYY"
-      ).format("YYYY-MM-DD"),
-      submissionto: moment(
-        state.UpdatesReducer.to.join("-"),
-        "DD-M-YYYY"
-      ).format("YYYY-MM-DD"),
+      submissionfrom:
+        state.UpdatesReducer.from !== "" &&
+        state.UpdatesReducer.from.length !== 0 &&
+        state.UpdatesReducer.from.length === 3 &&
+        moment(state.UpdatesReducer.from.join("-"), "DD-M-YYYY").format(
+          "YYYY-MM-DD"
+        ),
+      submissionto:
+        state.UpdatesReducer.to !== "" &&
+        state.UpdatesReducer.to.length !== 0 &&
+        state.UpdatesReducer.to.length === 3 &&
+        moment(state.UpdatesReducer.to.join("-"), "DD-M-YYYY").format(
+          "YYYY-MM-DD"
+        ),
       flag: constant.filterFlag,
     };
 
@@ -133,32 +148,40 @@ const NewRegulationFilter = ({ label }) => {
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
       issuer: state.UpdatesReducer.issuer,
-      fromAndToDate: `${moment(
-        state.UpdatesReducer.from.join("-"),
-        "DD-M-YYYY"
-      ).format("MMM Do YYYY")} to ${moment(
-        state.UpdatesReducer.to.join("-"),
-        "DD-M-YYYY"
-      ).format("MMM Do YYYY")}`,
+      fromAndToDate: `${
+        state.UpdatesReducer.to !== "" &&
+        state.UpdatesReducer.to.length !== 0 &&
+        state.UpdatesReducer.to.length === 3 &&
+        moment(state.UpdatesReducer.from.join("-"), "DD-M-YYYY").format(
+          "MMM Do YYYY"
+        )
+      } to ${
+        state.UpdatesReducer.to !== "" &&
+        state.UpdatesReducer.to.length !== 0 &&
+        state.UpdatesReducer.to.length === 3 &&
+        moment(state.UpdatesReducer.to.join("-"), "DD-M-YYYY").format(
+          "MMM Do YYYY"
+        )
+      }`,
     };
 
     dispatch(setBadges(setBagdesPayload));
     dispatch(setFilterPayload(filterRequestPayload));
     dispatch(setIsFilter(true));
   };
-  useEffect(() => {
-    console.log("from: ", state.UpdatesReducer.from);
-    if (
-      state.UpdatesReducer.from !== "" &&
-      state.UpdatesReducer.from.length === 3
-    ) {
-      console.log(
-        "isSameOrBeforeToday: ",
-        isSameOrBeforeToday(state.UpdatesReducer.from)
-      );
-    }
-    console.log("to: ", state.UpdatesReducer.to);
-  }, [state.UpdatesReducer.from, state.UpdatesReducer.to]);
+  // useEffect(() => {
+  //   console.log("from: ", state.UpdatesReducer.from);
+  //   if (
+  //     state.UpdatesReducer.from !== "" &&
+  //     state.UpdatesReducer.from.length === 3
+  //   ) {
+  //     console.log(
+  //       "isSameOrBeforeToday: ",
+  //       isSameOrBeforeToday(state.UpdatesReducer.from)
+  //     );
+  //   }
+  //   console.log("to: ", state.UpdatesReducer.to);
+  // }, [state.UpdatesReducer.from, state.UpdatesReducer.to]);
 
   return (
     <div className="filter-form">
@@ -212,7 +235,7 @@ const NewRegulationFilter = ({ label }) => {
                 {"* " + constant.errorMessage.errorDueToGreaterDate}
               </small>
             )}
-          {state.UpdatesReducer.from !== "" &&
+          {/* {state.UpdatesReducer.from !== "" &&
             state.UpdatesReducer.from.length === 3 &&
             isMoreThanOneYearFromToday(state.UpdatesReducer.from) !==
               undefined &&
@@ -221,7 +244,7 @@ const NewRegulationFilter = ({ label }) => {
                 {"* " +
                   constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
               </small>
-            )}
+            )} */}
         </p>
       </div>
       <div>
@@ -241,7 +264,7 @@ const NewRegulationFilter = ({ label }) => {
                 {"* " + constant.errorMessage.errorDueToGreaterDate}
               </small>
             )}
-          {state.UpdatesReducer.to !== "" &&
+          {/* {state.UpdatesReducer.to !== "" &&
             state.UpdatesReducer.to.length === 3 &&
             isMoreThanOneYearFromToday(state.UpdatesReducer.to) !== undefined &&
             isMoreThanOneYearFromToday(state.UpdatesReducer.to) && (
@@ -249,7 +272,7 @@ const NewRegulationFilter = ({ label }) => {
                 {"* " +
                   constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
               </small>
-            )}
+            )} */}
           {state.UpdatesReducer.to !== "" &&
             state.UpdatesReducer.to.length === 3 &&
             state.UpdatesReducer.from !== "" &&
