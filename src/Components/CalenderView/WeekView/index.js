@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import "./style.css";
 
-const WeekView = ({ sevenDays, weekData, goToDateDay }) => {
+const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
   const getNameInitials = (name) => {
     if (name != undefined) {
       let initials = "";
@@ -42,7 +42,18 @@ const WeekView = ({ sevenDays, weekData, goToDateDay }) => {
                     {filterList.map((list) => (
                       <div
                         className="week-main"
-                        onClick={() => moveToDay(list?.EndDate)}
+                        onClick={() => {
+                          if (userDetails && userDetails.UserType !== 6) {
+                            moveToDay(list?.EndDate);
+                          }
+                        }}
+                        style={{
+                          pointerEvents: `${
+                            userDetails && userDetails.UserType === 6
+                              ? "none"
+                              : "auto"
+                          }`,
+                        }}
                       >
                         <div className="week-detail">
                           <button className="license-code">

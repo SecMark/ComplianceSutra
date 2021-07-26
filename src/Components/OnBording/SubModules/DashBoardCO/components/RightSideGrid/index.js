@@ -175,9 +175,9 @@ function RightSideGrid({
   useEffect(() => {
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
-      console.log(state.NotificationRedu)
+    console.log(state.NotificationRedu);
     if (task_id) {
-      console.log(state.NotificationRedu?.taskID)
+      console.log(state.NotificationRedu?.taskID);
       getSelectTaskDetails();
     }
   }, [state.NotificationRedu?.taskID]);
@@ -1317,7 +1317,10 @@ function RightSideGrid({
             {showFiles && (
               <div className="file-grid-data">
                 {(user && user.UserType && user.UserType === 4) ||
-                (user && user.UserType &&(userDetails.UserType === 3 || userDetails.UserType ===5)) ? (
+                (user &&
+                  user.UserType &&
+                  (userDetails.UserType === 3 ||
+                    userDetails.UserType === 5)) ? (
                   <>
                     {getTaskById &&
                     getTaskById.Status &&
@@ -1326,7 +1329,8 @@ function RightSideGrid({
                     getTaskById.Status &&
                     getTaskById.TaskStatus === 0
                       ? (user && user.UserType && user.UserType === 4) ||
-                        (user && user.UserType && user.UserType === 3 || user.UserType == 5 ? (
+                        ((user && user.UserType && user.UserType === 3) ||
+                        user.UserType == 5 ? (
                           <>
                             {" "}
                             <div className="row">
@@ -1490,7 +1494,7 @@ function RightSideGrid({
                   getTaskById.TaskStatus === 1) ? (
                   (user && user.UserType && user.UserType === 3) ||
                   user.UserType === 4 ||
-                  (user.UserType === 5)
+                  user.UserType === 5
                 ) : getTaskById &&
                   getTaskById.Status &&
                   getTaskById.Status === "Assigned" &&
@@ -1924,7 +1928,7 @@ function RightSideGrid({
 
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
-      console.log(state.NotificationRedu);
+    console.log(state.NotificationRedu);
 
     if (task_id !== null && e === undefined) {
       if (localStorage.expandedFlagss) {
@@ -2425,7 +2429,13 @@ function RightSideGrid({
     return (
       <div
         className="row"
-        style={{ marginBottom: "15px", position: "relative" }}
+        style={{
+          marginBottom: "15px",
+          position: "relative",
+          pointerEvents: `${
+            userDetails && userDetails.UserType === 6 ? "none" : "auto"
+          }`,
+        }}
         onClick={(e) => getSelectTaskDetails(task)}
       >
         {listType === 1 && Status === "overdue" && (
@@ -4048,7 +4058,7 @@ function RightSideGrid({
             <div
               id="test"
               className={
-                (userDetails.UserType === 3 || userDetails.UserType ===5)
+                userDetails.UserType === 3 || userDetails.UserType === 5
                   ? "sidebar-new-class "
                   : "sidebar-new-class-team "
               }
@@ -5038,7 +5048,7 @@ function RightSideGrid({
                         </div>
                       </div>
                     )}
-                    {userDetails.UserType != 3 && (
+                    {userDetails.UserType !== 3 && (
                       <div className="row">
                         <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                           <div className="holding-list-normal-title">
@@ -5575,7 +5585,10 @@ function RightSideGrid({
                 {showFiles && (
                   <div className="file-grid-data">
                     {(user && user.UserType && user.UserType === 4) ||
-                    (user && user.UserType && (userDetails.UserType === 3 || userDetails.UserType ===5)) ? (
+                    (user &&
+                      user.UserType &&
+                      (userDetails.UserType === 3 ||
+                        userDetails.UserType === 5)) ? (
                       <>
                         {getTaskById &&
                         getTaskById.Status &&
@@ -5584,7 +5597,10 @@ function RightSideGrid({
                         getTaskById.Status &&
                         getTaskById.TaskStatus === 0 ? (
                           (user && user.UserType && user.UserType === 4) ||
-                          (user && user.UserType && (userDetails.UserType === 3 || userDetails.UserType ===5)) ? (
+                          (user &&
+                            user.UserType &&
+                            (userDetails.UserType === 3 ||
+                              userDetails.UserType === 5)) ? (
                             <>
                               {" "}
                               <div className="row">
@@ -5750,7 +5766,10 @@ function RightSideGrid({
                       (getTaskById &&
                         getTaskById.Status &&
                         getTaskById.TaskStatus === 1) ? (
-                      (user && user.UserType && (userDetails.UserType === 3 || userDetails.UserType ===5)) ||
+                      (user &&
+                        user.UserType &&
+                        (userDetails.UserType === 3 ||
+                          userDetails.UserType === 5)) ||
                       user.UserType === 4 ||
                       (user.UserType === 5 && " ")
                     ) : getTaskById &&

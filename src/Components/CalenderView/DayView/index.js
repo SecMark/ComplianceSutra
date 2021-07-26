@@ -1,14 +1,14 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
 import { setNotificationTaskId } from "../../OnBording/SubModules/DashBoardCO/components/notification/Redux/Action";
 import "./style.css";
 
-const DayView = ({ daysData }) => {
+const DayView = ({ daysData, userDetails }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-
+  console.log(userDetails);
   const getNameInitials = (name) => {
     if (name != undefined) {
       let initials = "";
@@ -31,7 +31,16 @@ const DayView = ({ daysData }) => {
         daysData.map((day) => (
           <div
             className="detail-container align-items-start align-items-md-center flex-column flex-md-row"
-            onClick={() => openTaskDetail(day?.TaskId)}
+            onClick={() => {
+              if (userDetails && userDetails.UserType !== 6) {
+                openTaskDetail(day?.TaskId);
+              }
+            }}
+            style={{
+              pointerEvents: `${
+                userDetails && userDetails.UserType === 6 ? "none" : "auto"
+              }`,
+            }}
           >
             <div className="detail-content flex-column flex-md-row align-items-start align-items-md-center">
               <button className="license-code">{day?.LicenseCode}</button>

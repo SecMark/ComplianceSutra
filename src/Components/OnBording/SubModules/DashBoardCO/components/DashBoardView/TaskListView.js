@@ -849,14 +849,21 @@ function RightSideGrid({
         to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
-          dispatch(setNotificationTaskId(task.TaskId));
-          localStorage.setItem(
-            "expandedFlagss",
-            expandedFlags,
-            "allRowCount-copy",
-            rowCount
-          );
-          localStorage.setItem("allRowCount", JSON.stringify(rowCount));
+          if (userDetails && userDetails.UserType !== 6) {
+            dispatch(setNotificationTaskId(task.TaskId));
+            localStorage.setItem(
+              "expandedFlagss",
+              expandedFlags,
+              "allRowCount-copy",
+              rowCount
+            );
+            localStorage.setItem("allRowCount", JSON.stringify(rowCount));
+          }
+        }}
+        style={{
+          pointerEvents: `${
+            userDetails && userDetails.UserType === 6 ? "none" : "auto"
+          }`,
         }}
       >
         <div
