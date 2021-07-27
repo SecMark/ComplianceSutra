@@ -309,9 +309,21 @@ function NotificationGrid(props) {
                                     to="/dashboard"
                                     style={{ textDecoration: "none" }}
                                     onClick={() => {
-                                      dispatch(
-                                        setNotificationTaskId(element.TaskId)
-                                      );
+                                      if (
+                                        loggedUser &&
+                                        loggedUser.UserType !== 6
+                                      ) {
+                                        dispatch(
+                                          setNotificationTaskId(element.TaskId)
+                                        );
+                                      }
+                                    }}
+                                    style={{
+                                      pointerEvents: `${
+                                        loggedUser && loggedUser.UserType === 6
+                                          ? "none"
+                                          : "auto"
+                                      }`,
                                     }}
                                   >
                                     <div className={"white-background"}>

@@ -11,6 +11,7 @@ const MonthView = ({
   monthData,
   getSelectTaskDetails,
   isSmallCalenderOpen,
+  userDetails,
 }) => {
   const moveToWeek = (day) => {
     goToDateWeek(day);
@@ -42,7 +43,16 @@ const MonthView = ({
             return (
               <div
                 className={month === currentMonth ? "day" : "day-disable"}
-                onClick={() => moveToWeek(day)}
+                onClick={() => {
+                  if (userDetails && userDetails.UserType !== 6) {
+                    moveToWeek(day);
+                  }
+                }}
+                style={{
+                  pointerEvents: `${
+                    userDetails && userDetails.UserType === 6 ? "none" : "auto"
+                  }`,
+                }}
               >
                 <p
                   className={
@@ -73,7 +83,11 @@ const MonthView = ({
 
                         <button
                           className="tooltip-view-detail-button"
-                          onClick={() => viewDetail(list[0]?.TaskId)}
+                          onClick={() => {
+                            if (userDetails && userDetails.UserType !== 6) {
+                              viewDetail(list[0]?.TaskId);
+                            }
+                          }}
                         >
                           View Detail
                         </button>
@@ -104,7 +118,11 @@ const MonthView = ({
 
                         <button
                           className="tooltip-view-detail-button"
-                          onClick={() => viewDetail(list[1]?.TaskId)}
+                          onClick={() => {
+                            if (userDetails.UserType !== 6) {
+                              viewDetail(list[1]?.TaskId);
+                            }
+                          }}
                         >
                           View Detail
                         </button>
@@ -143,7 +161,11 @@ const MonthView = ({
                       ? "small-calender-day"
                       : "small-calender-day-disable"
                   } d-flex align-items-center justify-content-center`}
-                  onClick={() => moveToWeek(day)}
+                  onClick={() => {
+                    if (userDetails && userDetails.UserType !== 6) {
+                      moveToWeek(day);
+                    }
+                  }}
                 >
                   <p
                     className={
@@ -175,7 +197,14 @@ const MonthView = ({
               ({ EndDate }) => EndDate === compareDate
             );
             return (
-              <div className="calender-mobile-item d-flex align-items-center">
+              <div
+                className="calender-mobile-item d-flex align-items-center"
+                style={{
+                  pointerEvents: `${
+                    userDetails && userDetails.UserType === 6 ? "none" : "auto"
+                  }`,
+                }}
+              >
                 <div className="left d-flex flex-column justify-content-center align-items-center">
                   <div
                     className={`${
@@ -200,7 +229,11 @@ const MonthView = ({
                     <>
                       <div
                         className="right-item d-flex align-items-center"
-                        onClick={() => viewDetail(list[0]?.TaskId)}
+                        onClick={() => {
+                          if (userDetails && userDetails.UserType !== 6) {
+                            viewDetail(list[0]?.TaskId);
+                          }
+                        }}
                       >
                         <div className="button-code m-0">
                           {list[0]?.LicenseCode}
@@ -241,7 +274,11 @@ const MonthView = ({
                     <>
                       <div
                         className="right-item d-flex align-items-center"
-                        onClick={() => viewDetail(list[0]?.TaskId)}
+                        onClick={() => {
+                          if (userDetails && userDetails.UserType !== 6) {
+                            viewDetail(list[0]?.TaskId);
+                          }
+                        }}
                       >
                         <div className="button-code m-0">
                           {list[0]?.LicenseCode}
@@ -281,7 +318,11 @@ const MonthView = ({
                   {list && list.length > 2 && (
                     <button
                       className="view-more"
-                      onClick={() => moveToWeek(day)}
+                      onClick={() => {
+                        if (userDetails && userDetails.UserType !== 6) {
+                          moveToWeek(day);
+                        }
+                      }}
                     >
                       View {parseInt(list.length - 2)} More{" "}
                       {parseInt(list.length - 2) < 1 ? "Tasks" : "Task"}{" "}

@@ -69,6 +69,7 @@ function CoManagment({ handleClose }) {
   const [alreadyExist, setAlreadyExist] = useState(false);
 
   const auth = state && state.auth;
+  const userDetails = auth && auth.loginInfo;
 
   const [searchText, setSearchText] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -745,13 +746,15 @@ function CoManagment({ handleClose }) {
               <span onClick={() => onClickSearchIcon()} className="search-icon">
                 <img src={teamSearch} alt="team Search Icon" />
               </span>
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => setAddNew(true)}
-                className="add-new-plus"
-              >
-                add new +
-              </div>
+              {userDetails && userDetails.UserType !== 6 && (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setAddNew(true)}
+                  className="add-new-plus"
+                >
+                  add new +
+                </div>
+              )}
             </div>
           )}
           {isSearchOpen && (
@@ -838,13 +841,20 @@ function CoManagment({ handleClose }) {
                     <br /> */}
             <div className="d-flex position-relative">
               <div className="col-4 col-sm-2 col-md-2 col-xl-2 pl-0">
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => onAddNewMemberMobile(true)}
-                  className="add-new-plus"
-                >
-                  add new +
-                </div>
+                {userDetails && userDetails.UserType !== 6 ? (
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() => onAddNewMemberMobile(true)}
+                    className="add-new-plus"
+                  >
+                    add new +
+                  </div>
+                ) : (
+                  <div
+                    className="add-new-plus"
+                    style={{ height: "20px", cursor: "auto" }}
+                  ></div>
+                )}
               </div>
               <div className="col-8 col-sm-12 col-md-12 col-xl-12 pl-0">
                 {!isSearchOpenMobile && (
@@ -995,7 +1005,17 @@ function CoManagment({ handleClose }) {
                           )}
 
                         {openPopupIndex !== "" && openPopupIndex === index && (
-                          <div ref={innerRef} className="three-dot-tooltip">
+                          <div
+                            ref={innerRef}
+                            className="three-dot-tooltip"
+                            style={{
+                              height: `${
+                                userDetails && userDetails.UserType === 6
+                                  ? "44px"
+                                  : "177px"
+                              }`,
+                            }}
+                          >
                             <div
                               className="change-role"
                               onClick={() => {
@@ -1005,38 +1025,42 @@ function CoManagment({ handleClose }) {
                             >
                               More details
                             </div>
-                            <div
-                              style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                changeRoleMobile(item, index);
-                                setOpenPopupIndex("");
-                              }}
-                              className="change-role"
-                            >
-                              Change role
-                            </div>
-                            <div
-                              style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setIsShowReAssignModalMobile(true);
-                                setOpenPopupIndex("");
-                              }}
-                              className="change-role"
-                            >
-                              Re-Assign
-                            </div>
+                            {userDetails && userDetails.UserType !== 6 && (
+                              <>
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    changeRoleMobile(item, index);
+                                    setOpenPopupIndex("");
+                                  }}
+                                  className="change-role"
+                                >
+                                  Change role
+                                </div>
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    setIsShowReAssignModalMobile(true);
+                                    setOpenPopupIndex("");
+                                  }}
+                                  className="change-role"
+                                >
+                                  Re-Assign
+                                </div>
 
-                            <div
-                              style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setVisible(true);
-                                setDeleteMemberIndex(index);
-                                setOpenPopupIndex("");
-                              }}
-                              className="delete-member"
-                            >
-                              Delete member
-                            </div>
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    setVisible(true);
+                                    setDeleteMemberIndex(index);
+                                    setOpenPopupIndex("");
+                                  }}
+                                  className="delete-member"
+                                >
+                                  Delete member
+                                </div>
+                              </>
+                            )}
                           </div>
                         )}
                       </div>
@@ -1418,7 +1442,9 @@ function CoManagment({ handleClose }) {
                   </td>
                   {item.showAcceptDelectIcon === false &&
                     teamMemberData &&
-                    teamMemberData.length > 0 && (
+                    teamMemberData.length > 0 &&
+                    userDetails &&
+                    userDetails.UserType !== 6 && (
                       <td className="pl-0">
                         <div
                           style={{ cursor: "pointer" }}

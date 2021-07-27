@@ -22,7 +22,7 @@ import WeekView from "../WeekView";
 import "./style.css";
 
 const View = ({ getSelectTaskDetails }) => {
-  const [activeDays, setActiveDays] = useState(constant.day);
+  const [activeDays, setActiveDays] = useState(constant.week);
   const [dayDate, setDayDate] = useState(new Date());
   const [monthDate, setMonthDate] = useState(new Date());
 
@@ -32,7 +32,7 @@ const View = ({ getSelectTaskDetails }) => {
 
   const state = useSelector((state) => state); // state
   const dispatch = useDispatch(); // dispatch
-
+  const userDetails = state && state.auth && state.auth.loginInfo;
   const { daysData, weekData, monthData } = state.CalenderReducer;
   const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
   const viewBy = [
@@ -298,13 +298,16 @@ const View = ({ getSelectTaskDetails }) => {
           />
         </div>
       </div>
-      {activeDays === constant.day && <DayView daysData={daysData} />}
+      {activeDays === constant.day && (
+        <DayView daysData={daysData} userDetails={userDetails} />
+      )}
 
       {activeDays === constant.week && (
         <WeekView
           sevenDays={sevenDays}
           weekData={weekData}
           goToDateDay={goToDateDay}
+          userDetails={userDetails}
         />
       )}
 
@@ -316,6 +319,7 @@ const View = ({ getSelectTaskDetails }) => {
           goToDateWeek={goToDateWeek}
           getSelectTaskDetails={getSelectTaskDetails}
           isSmallCalenderOpen={isShowSmallCalender}
+          userDetails={userDetails}
         />
       )}
     </>

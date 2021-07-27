@@ -24,6 +24,7 @@ export default function AssignedView(props) {
   const [expandedFlags, setExpandedFlags] = useState([]);
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const userDetails = state && state.auth && state.auth.loginInfo;
 
   useEffect(() => {
     var today = new Date();
@@ -111,7 +112,14 @@ export default function AssignedView(props) {
         to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
-          dispatch(setNotificationTaskId(task.TaskId));
+          if (userDetails && userDetails.UserType !== 6) {
+            dispatch(setNotificationTaskId(task.TaskId));
+          }
+        }}
+        style={{
+          pointerEvents: `${
+            userDetails && userDetails.UserType === 6 ? "none" : "auto"
+          }`,
         }}
       >
         <div

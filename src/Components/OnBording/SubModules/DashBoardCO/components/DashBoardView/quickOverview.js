@@ -488,7 +488,8 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                 </>
                 {userDetails &&
                   userDetails.UserID !== undefined &&
-                  userDetails.UserType === 3 && (
+                  (userDetails.UserType === 3 ||
+                    userDetails.UserType === 6) && (
                     <div
                       className={
                         companyViewData &&
