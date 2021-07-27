@@ -1,50 +1,50 @@
-import React, { useState } from "react"
-import RightImageBg from "../../../../../assets/Images/Onboarding/RectangleOnboadign.png"
-import comtech from "../../../../../assets/Images/CapmTech.png"
-import secmark from "../../../../../assets/Images/secmark.png"
-import { useDispatch, useSelector } from "react-redux"
-import { isEmail, checkPersonalDetailsForm } from "../../util.js"
-import { actions as personalDetailsAction } from "../../../redux/actions"
-import { withRouter } from "react-router-dom"
-import SideBarInputControl from "../../components/SideBarInputControlTeamMember"
-import { toast } from "react-toastify"
+import React, { useState } from "react";
+import RightImageBg from "../../../../../assets/Images/Onboarding/RectangleOnboadign.png";
+import comtech from "../../../../../assets/Images/CapmTech.png";
+import secmark from "../../../../../assets/Images/secmark.png";
+import { useDispatch, useSelector } from "react-redux";
+import { isEmail, checkPersonalDetailsForm } from "../../util.js";
+import { actions as personalDetailsAction } from "../../../redux/actions";
+import { withRouter } from "react-router-dom";
+import SideBarInputControl from "../../components/SideBarInputControlTeamMember";
+import { toast } from "react-toastify";
 function PersonalDetails({ history }) {
-  const dispatch = useDispatch()
-  const state = useSelector((state) => state)
-  console.log("HHH", state)
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  console.log("HHH", state);
   //const guestUser = state && state.auth && state.auth.guestUser;
-  const quote_id = state && state.auth && state.auth.quote_id
-  const [isValidate, setIsValidate] = useState(false)
+  const quote_id = state && state.auth && state.auth.quote_id;
+  const [isValidate, setIsValidate] = useState(false);
   const [values, setValues] = useState({
     fullName: "",
     mobileNumber: "",
     designation: "",
     password: "",
     confirmPassword: "",
-  })
+  });
 
   const onChangeHandler = (name) => (event) => {
     if (name === "fullName" || name === "designation") {
-      const re = /^[a-z|A-Z_ ]*$/
+      const re = /^[a-z|A-Z_ ]*$/;
       if (event.target.value && !re.test(event.target.value)) {
-        return ""
+        return "";
       }
     }
-    const mobileNumberReg = /^[0-9]{0,10}$/
+    const mobileNumberReg = /^[0-9]{0,10}$/;
     if (name === "mobileNumber") {
-      console.log("event.target.value", event.target.value)
+      console.log("event.target.value", event.target.value);
       if (!mobileNumberReg.test(event.target.value)) {
-        return ""
+        return "";
       }
     }
-    setValues({ ...values, [name]: event.target.value })
-  }
+    setValues({ ...values, [name]: event.target.value });
+  };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onSubmit()
+      onSubmit();
     }
-  }
+  };
 
   const onSubmit = () => {
     const email =
@@ -54,7 +54,7 @@ function PersonalDetails({ history }) {
       state.teamMemberFlow.teamMemberEmailVerifyInfo &&
       state.teamMemberFlow.teamMemberEmailVerifyInfo &&
       state.teamMemberFlow.teamMemberEmailVerifyInfo.teamMemberInfo &&
-      state.teamMemberFlow.teamMemberEmailVerifyInfo.teamMemberInfo.email
+      state.teamMemberFlow.teamMemberEmailVerifyInfo.teamMemberInfo.email;
 
     const companyName =
       state &&
@@ -62,13 +62,13 @@ function PersonalDetails({ history }) {
       state.teamMemberFlow.teamMemberEmailVerifyInfo &&
       state.teamMemberFlow.teamMemberEmailVerifyInfo &&
       state.teamMemberFlow.teamMemberEmailVerifyInfo &&
-      state.teamMemberFlow.teamMemberEmailVerifyInfo.teamMemberInfo.companyName
+      state.teamMemberFlow.teamMemberEmailVerifyInfo.teamMemberInfo.companyName;
 
-    setIsValidate(true)
+    setIsValidate(true);
     if (checkPersonalDetailsForm(values)) {
-      return
+      return;
     }
-    setIsValidate(false)
+    setIsValidate(false);
     if (companyName && email) {
       dispatch(
         personalDetailsAction.insUpdateDeletAPIRequestTM({
@@ -85,11 +85,11 @@ function PersonalDetails({ history }) {
           history,
           from: "personal-details-team",
         })
-      )
+      );
     } else {
-      toast.error("something went wrong")
+      toast.error("something went wrong");
     }
-  }
+  };
   return (
     <div className="row">
       <div className="col-3 left-fixed">
@@ -112,7 +112,11 @@ function PersonalDetails({ history }) {
                   <div className="col-lg-12">
                     <div className="header_logo">
                       {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                      <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
+                      <img
+                        src={comtech}
+                        alt="COMPLIANCE SUTRA"
+                        title="COMPLIANCE SUTRA"
+                      />
                       <span className="camp">COMPLIANCE SUTRA</span>
                       {/* </a> */}
                     </div>
@@ -125,7 +129,7 @@ function PersonalDetails({ history }) {
                   <div className="row">
                     <div className="col-6">
                       <div className="form-group">
-                        <label htmlFor="FullName">Full Name</label>
+                        <label htmlFor="FullName">Full Name </label>
                         <input
                           type="text"
                           className={
@@ -451,7 +455,7 @@ function PersonalDetails({ history }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default withRouter(PersonalDetails)
+export default withRouter(PersonalDetails);
