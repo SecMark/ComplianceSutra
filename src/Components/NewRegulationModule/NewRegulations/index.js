@@ -85,7 +85,7 @@ const NewRegulations = (props) => {
 
   const fetchAndSetUpdates = () => {
     const payload = { UserID: state.auth.loginInfo?.UserID };
-   // dispatch(getUpdates(payload));
+    // dispatch(getUpdates(payload));
   };
   const changeShowRegulationDetail = () => {
     setIsShowRegulationDetail(!isShowRegulationDetail);
@@ -325,76 +325,7 @@ const NewRegulations = (props) => {
                   {updateList?.length === 0 ? (
                     <NoResultFound text="No detail found" />
                   ) : (
-                    updateList?.map((updates) => {
-                      return (
-                        <div
-                          className="list"
-                          onClick={() => {
-                            fetchAndSetNewRegulationDetail(updates.id);
-                            setIsShowRegulationDetailMobile(
-                              !isShowRegulationDetailMobile
-                            );
-                          }}
-                        >
-                          <h2
-                            className={
-                              state.UpdatesReducer.isSearch
-                                ? "new-regulation-title-search-active"
-                                : "new-regulation-title"
-                            }
-                          >
-                            {updates?.Title &&
-                              getHighlightedText(updates.Title, searchValue)}
-                          </h2>
-                          <div className="description">
-                            <p
-                              className={
-                                state.UpdatesReducer.isSearch
-                                  ? "description-text-search-active"
-                                  : "description-text"
-                              }
-                            >
-                              {" "}
-                              {updates?.GistText &&
-                                getHighlightedText(
-                                  updates?.GistText,
-                                  searchValue
-                                )}
-                            </p>
-                          </div>
-                          <div className="description-details">
-                            <div className="license-details">
-                              <button className="license-code">
-                                {updates?.Regbodies && updates.Regbodies}
-                              </button>
-                              <span
-                                className={
-                                  state.UpdatesReducer.isSearch
-                                    ? "license-number-active"
-                                    : "license-number"
-                                }
-                              >
-                                {updates?.CircularNo &&
-                                  getHighlightedText(
-                                    updates.CircularNo,
-                                    searchValue
-                                  )}
-                              </span>
-                            </div>
-                            <span
-                              className={
-                                state.UpdatesReducer.isSearch
-                                  ? "date-active"
-                                  : "date"
-                              }
-                            >
-                              {updates?.Submissiondate &&
-                                moment(updates.Submissiondate).format("Do MMM")}
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    })
+                    <h1>Hei</h1>
                   )}
                 </div>
               )}
@@ -478,73 +409,7 @@ const NewRegulations = (props) => {
                   {updateList.length === 0 ? (
                     <NoResultFound text="No detail found" />
                   ) : (
-                    updateList?.map((updates) => {
-                      return (
-                        <div
-                          className="list"
-                          onClick={() =>
-                            fetchAndSetNewRegulationDetail(updates.id)
-                          }
-                        >
-                          <h2
-                            className={
-                              state.UpdatesReducer.isSearch
-                                ? "new-regulation-title-search-active"
-                                : "new-regulation-title"
-                            }
-                          >
-                            {updates?.Title &&
-                              getHighlightedText(updates.Title, searchValue)}
-                          </h2>
-                          <div className="description">
-                            <p
-                              className={
-                                state.UpdatesReducer.isSearch
-                                  ? "description-text-search-active"
-                                  : "description-text"
-                              }
-                            >
-                              {updates?.GistText &&
-                                getHighlightedText(
-                                  updates.GistText,
-                                  searchValue
-                                )}
-                            </p>
-                            <span
-                              className={
-                                state.UpdatesReducer.isSearch
-                                  ? "date-search-active"
-                                  : "date"
-                              }
-                            >
-                              {updates?.Submissiondate &&
-                                getHighlightedText(
-                                  moment(updates.Submissiondate).format(
-                                    "Do MMM"
-                                  ),
-                                  searchValue
-                                )}
-                            </span>
-                          </div>
-                          <button className="license-code">
-                            {updates.Regbodies}
-                          </button>
-                          <span
-                            className={
-                              state.UpdatesReducer.isSearch
-                                ? "license-number-search-active"
-                                : "license-number"
-                            }
-                          >
-                            {updates?.CircularNo &&
-                              getHighlightedText(
-                                updates.CircularNo,
-                                searchValue
-                              )}
-                          </span>
-                        </div>
-                      );
-                    })
+                    <h1>Hiee</h1>
                   )}
                 </div>
               </div>

@@ -62,3 +62,8 @@ p.warnings > small {
     margin-top: 70px;
   } */
 }
+
+.searchable__controls__list__item {
+  padding: 1px 5px 2px 5px !important;
+  background-color: #7b74ff !important;
+}

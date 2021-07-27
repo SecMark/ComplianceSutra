@@ -183,7 +183,8 @@ const NewRegulationFilter = ({ label }) => {
           notFoundText="No result found"
           listMaxHeight={200}
           options={listOfIssuers}
-          onSelect={(event) => dispatch(setIssuer(event))}
+          onSelect={(event) => dispatch(setIssuer(event.toString()))}
+          multiple={true}
         />
       </div>
       <div>
@@ -194,7 +195,8 @@ const NewRegulationFilter = ({ label }) => {
           notFoundText="No result found"
           listMaxHeight={200}
           options={listOfIndustries}
-          onSelect={(event) => dispatch(setIndustry(event))}
+          onSelect={(event) => dispatch(setIndustry(event.toString()))}
+          multiple={true}
         />
       </div>
       <div>
@@ -205,7 +207,8 @@ const NewRegulationFilter = ({ label }) => {
           notFoundText="No result found"
           listMaxHeight={200}
           options={listOfTopic}
-          onSelect={(event) => dispatch(setTopic(event))}
+          onSelect={(event) => dispatch(setTopic(event.toString()))}
+          multiple={true}
         />
       </div>
       <div>
