@@ -4,9 +4,6 @@ import Searchable from "react-searchable-dropdown";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
 import {
-  getIndustryList,
-  getIssuerList,
-  getTopicList,
   setBadges,
   setFilterPayload,
   setIndustry,
@@ -23,64 +20,15 @@ import {
 } from "../../ReAssignTasks/utilties";
 import "./style.css";
 
-const NewRegulationFilter = ({ label }) => {
-  const [listOfIndustries, setListOfIndustry] = useState([]);
-  const [listOfIssuers, setListOfIssuers] = useState([]);
-  const [listOfTopic, setListOfTopic] = useState([]);
+const NewRegulationFilter = ({
+  listOfIndustries,
+  listOfIssuers,
+  listOfTopic,
+}) => {
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
-  //deconstruct updates reducer state values.
-  const { industryList, issuerList, topicList } = state.UpdatesReducer;
-
-  useEffect(() => {
-    const industryListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      industry: constant.flag,
-    };
-
-    //get issuer list.
-    dispatch(getIndustryList(industryListRequestPayload));
-    //set industry list for searchable dropdown.
-    const setArrayOfObjectInList = industryList?.map((item) => {
-      return { value: item.Industry, label: item.Industry };
-    });
-    setListOfIndustry([...setArrayOfObjectInList]);
-  }, [false]);
-
-  useEffect(() => {
-    const issuerListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      regbodies: constant.flag,
-    };
-
-    //get issuer list.
-    dispatch(getIssuerList(issuerListRequestPayload));
-    //set issuer list for searchable dropdown.
-    const setArrayOfObjectInList = issuerList.map((item) => {
-      return { value: item.Regbodies, label: item.Regbodies };
-    });
-
-    setListOfIssuers([...setArrayOfObjectInList]);
-  }, [false]);
-
-  useEffect(() => {
-    const topicListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      topic: constant.flag,
-    };
-
-    //get topic list.
-    dispatch(getTopicList(topicListRequestPayload));
-    //set topic list for searchable dropdown.
-    const setArrayOfObjectInList = topicList.map((item) => {
-      return { value: item.Topic, label: item.Topic };
-    });
-
-    setListOfTopic([...setArrayOfObjectInList]);
-  }, [false]);
 
   useEffect(() => {
     if (
