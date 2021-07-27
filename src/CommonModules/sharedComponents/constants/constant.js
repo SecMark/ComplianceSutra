@@ -13,6 +13,7 @@ export default {
     errorDueToPreviousDate: "Date should be after today's date.",
     errorDueToMoreThanOneYearDateFromToday:
       "Date should be less than 1 year from today's date.",
+    errorDueToBeforeDate: "Date should not be prior to today's date.",
   },
   filterFlag: "A",
   status: "status",
