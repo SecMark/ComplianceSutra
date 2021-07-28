@@ -22,6 +22,15 @@ function MultiSelectCompanyDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const sagaState = useSelector((state) => state);
 
+  useEffect(() => {
+    const licenseRequestPayload = {
+      userID: sagaState.auth.loginInfo?.UserID,
+      entityid: constant.licenseEntityId,
+      usertype: sagaState.auth.loginInfo?.UserType,
+    };
+    dispatch(getLicenseList(licenseRequestPayload));
+  }, []);
+
   return (
     <>
       <div className="form-group mt-3">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
@@ -26,6 +26,7 @@ function PersonalDetails({ history }) {
     password: "",
     confirmPassword: "",
   });
+  const [mobileNumberValid, setMobileNumberValid] = useState("true");
 
   const [errors, setErrors] = useState({
     passwordErr: "",
@@ -42,6 +43,30 @@ function PersonalDetails({ history }) {
     alphabetsandigit: false,
   });
   const [countryCode, setCountryCode] = useState(true);
+
+  const checkNumberAvailable = () => {
+    let payload = {
+      countrycode: values.countryCode.replace("+", ""),
+      loginID: values.mobileNumber,
+      loginty: "AdminMobile",
+    };
+    api
+      .post("/api/availabilityCheck", payload)
+      .then((result) => {
+        console.log(result.data.Status);
+        setMobileNumberValid(result.data.Status);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (values.mobileNumber.length >= 10) {
+      checkNumberAvailable();
+    }
+  }, [values.mobileNumber]);
+
   const onChangeHandler = (name) => (event) => {
     if (
       name === "fullName" ||
@@ -169,6 +194,10 @@ function PersonalDetails({ history }) {
     state.complianceOfficer.personalInfo.message;
 
   const onSubmit = () => {
+    if (mobileNumberValid == "true") {
+      toast.error("Mobile number already registered.");
+      return;
+    }
     let location = window.location.href;
     let data = location.split("=");
     let splitEmailAndType = data && data[1].split("&");
@@ -288,7 +317,7 @@ function PersonalDetails({ history }) {
                     <div className="row">
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
-                          <label htmlFor="FullName">Full Name</label>
+                          <label htmlFor="FullName">Full Name </label>
                           <input
                             type="text"
                             className={
@@ -385,6 +414,12 @@ function PersonalDetails({ history }) {
                             values.mobileNumber.length < 10 && (
                               <p className="input-error-message">
                                 Mobile number is invalid
+                              </p>
+                            )}
+                          {values.mobileNumber.length >= 10 &&
+                            mobileNumberValid == "true" && (
+                              <p className="input-error-message">
+                                Mobile number already registered.
                               </p>
                             )}
                         </div>

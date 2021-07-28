@@ -4,7 +4,8 @@ import check from "../../../assets/Icons/check.png";
 import uncheck from "../../../assets/Icons/uncheck.png";
 import {
   selectLicenseToggle,
-  setLicenseList,
+  getLicenseList,
+  getCompanyList,
 } from "../../../Components/HistoryModule/redux/actions";
 import "./style.css";
 

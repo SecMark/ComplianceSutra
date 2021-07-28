@@ -28,15 +28,15 @@ const HistoryFilterForm = (props) => {
   const history = useHistory();
   const actionDispatch = useDispatch();
 
-  useEffect(() => {
-    const companyRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      entityid: constant.companyEntityId,
-      usertype: state.auth.loginInfo?.UserType,
-    };
-    actionDispatch(clearState());
-    actionDispatch(getCompanyList(companyRequestPayload));
-  }, [state.auth.loginInfo?.UserID]);
+  // useEffect(() => {
+  //   const companyRequestPayload = {
+  //     userID: state.auth.loginInfo?.UserID,
+  //     entityid: constant.companyEntityId,
+  //     usertype: state.auth.loginInfo?.UserType,
+  //   };
+  //   actionDispatch(clearState());
+  //   actionDispatch(getCompanyList(companyRequestPayload));
+  // }, [state.auth.loginInfo?.UserID]);
 
   useEffect(() => {
     if (state.HistoryReducer.companyList.length !== 0) {
