@@ -6,6 +6,7 @@ import AssigneList from "./component/AssignedView.js";
 import CompanyTaskList from "./component/companyList.js";
 import LicenseTaskList from "./component/LicenseTaskList.js";
 import CalendarView from "../CalendarView/components/index";
+import View from "../../../../../CalenderView/View";
 import { Link } from "react-router-dom";
 import { useDropdownOuterClick } from "../RightSideGrid/dropdownOuterClick";
 import closeBlack from "../../../../../../assets/Icons/closeBlack.png";
@@ -1819,9 +1820,9 @@ function RightSideGrid({
                 {displayTask === "3" && searchValue === "" && (
                   <div>
                     <div className="take-action" style={{ height: "72vh" }}>
-                      {false && taskData && taskData.length > 0 && (
+                      {taskData && taskData.length > 0 && (
                         <div className="task-list-grid">
-                          <CalendarView />
+                          <View getSelectTaskDetails={getSelectTaskDetails} />
                         </div>
                       )}
                     </div>
