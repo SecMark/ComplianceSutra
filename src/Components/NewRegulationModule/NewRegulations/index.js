@@ -128,7 +128,7 @@ const NewRegulations = (props) => {
     const { value } = event.target;
     if (value !== "") {
       const searchPayload = {
-        UserID: state.auth.loginInfo?.UserID,
+        //UserID: state.auth.loginInfo?.UserID,
         flag: value,
       };
       setSearchValue(value);
@@ -174,16 +174,8 @@ const NewRegulations = (props) => {
       userID: state.auth.loginInfo?.UserID,
       industry: constant.flag,
     };
-
     //get issuer list.
     dispatch(getIndustryList(industryListRequestPayload));
-    //set industry list for searchable dropdown.
-    const setArrayOfObjectInList = industryList?.map((item) => {
-      return { value: item.Industry, label: item.Industry };
-    });
-
-    setListOfIndustry([...setArrayOfObjectInList]);
-    return true;
   };
 
   const getAndSetIssuerList = () => {
@@ -194,13 +186,6 @@ const NewRegulations = (props) => {
 
     //get issuer list.
     dispatch(getIssuerList(issuerListRequestPayload));
-    //set issuer list for searchable dropdown.
-    const setArrayOfObjectInList = issuerList.map((item) => {
-      return { value: item.Regbodies, label: item.Regbodies };
-    });
-
-    setListOfIssuers([...setArrayOfObjectInList]);
-    return true;
   };
 
   const getAndSetTopicList = () => {
@@ -208,16 +193,8 @@ const NewRegulations = (props) => {
       userID: state.auth.loginInfo?.UserID,
       topic: constant.flag,
     };
-
     //get topic list.
     dispatch(getTopicList(topicListRequestPayload));
-    //set topic list for searchable dropdown.
-    const setArrayOfObjectInList = topicList.map((item) => {
-      return { value: item.Topic, label: item.Topic };
-    });
-
-    setListOfTopic([...setArrayOfObjectInList]);
-    return true;
   };
 
   return (
@@ -255,11 +232,7 @@ const NewRegulations = (props) => {
               <div className="filter-popup-mobile--wrapper">
                 <h2 style={{ marginBottom: "2rem" }}>Fiters</h2>
                 <div className="filter-wrapper-mobile">
-                  <NewRegulationFilter
-                    listOfIndustries={listOfIndustries}
-                    listOfIssuers={listOfIssuers}
-                    listOfTopic={listOfTopic}
-                  />
+                  <NewRegulationFilter />
                 </div>
               </div>
             </div>

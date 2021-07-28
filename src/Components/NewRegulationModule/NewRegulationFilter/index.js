@@ -20,15 +20,37 @@ import {
 } from "../../ReAssignTasks/utilties";
 import "./style.css";
 
-const NewRegulationFilter = ({
-  listOfIndustries,
-  listOfIssuers,
-  listOfTopic,
-}) => {
+const NewRegulationFilter = () => {
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
+  const [listOfIndustries, setListOfIndustry] = useState([]);
+  const [listOfIssuers, setListOfIssuers] = useState([]);
+  const [listOfTopic, setListOfTopic] = useState([]);
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const { industryList, issuerList, topicList } = state.UpdatesReducer;
+
+  useEffect(() => {
+    //set industry list for searchable dropdown.
+    var setArrayOfObjectInList = industryList?.map((item) => {
+      return { value: item.Industry, label: item.Industry };
+    });
+    setListOfIndustry([...setArrayOfObjectInList]);
+
+    //set issuer list for searchable dropdown.
+    var setArrayOfObjectInList = issuerList.map((item) => {
+      return { value: item.Regbodies, label: item.Regbodies };
+    });
+    setListOfIssuers([...setArrayOfObjectInList]);
+
+    //set topic list for searchable dropdown.
+    var setArrayOfObjectInList = topicList.map((item) => {
+      return { value: item.Topic, label: item.Topic };
+    });
+
+    setListOfTopic([...setArrayOfObjectInList]);
+  }, []);
 
   useEffect(() => {
     if (
