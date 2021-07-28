@@ -1,24 +1,24 @@
-import React, { useState } from "react"
-import "./style.css"
-import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png"
-import comtech from "../../../../assets/Images/CapmTech.png"
-import secmark from "../../../../assets/Images/secmark.png"
-import { useDispatch, useSelector } from "react-redux"
-import { isEmail, checkPersonalDetailsForm } from "../../utils.js"
-import { actions as personalDetailsAction } from "../../redux/actions"
-import { withRouter } from "react-router-dom"
-import SideBarInputControl from "../SideBarInputControl"
-import api from "../../../../apiServices"
-import { toast } from "react-toastify"
-import MobileStepper from "../mobileStepper"
+import React, { useState } from "react";
+import "./style.css";
+import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
+import comtech from "../../../../assets/Images/CapmTech.png";
+import secmark from "../../../../assets/Images/secmark.png";
+import { useDispatch, useSelector } from "react-redux";
+import { isEmail, checkPersonalDetailsForm } from "../../utils.js";
+import { actions as personalDetailsAction } from "../../redux/actions";
+import { withRouter } from "react-router-dom";
+import SideBarInputControl from "../SideBarInputControl";
+import api from "../../../../apiServices";
+import { toast } from "react-toastify";
+import MobileStepper from "../mobileStepper";
 
 function PersonalDetails({ history }) {
-  const dispatch = useDispatch()
-  const state = useSelector((state) => state)
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
 
   //const guestUser = state && state.auth && state.auth.guestUser;
-  const quote_id = state && state.auth && state.auth.quote_id
-  const [isValidate, setIsValidate] = useState(false)
+  const quote_id = state && state.auth && state.auth.quote_id;
+  const [isValidate, setIsValidate] = useState(false);
   const [values, setValues] = useState({
     fullName: "",
     mobileNumber: "",
@@ -27,96 +27,96 @@ function PersonalDetails({ history }) {
     designation: "",
     password: "",
     confirmPassword: "",
-  })
+  });
   const [errors, setErrors] = useState({
     passwordErr: "",
     confirmPasswordErr: "",
     mobileNumErr: "",
     countryCodeErr: "",
     designationErr: "",
-  })
-  const [whatappFlag, setWhatappFlag] = useState(false)
-  const [isCompanyNameValid, setIsCompanyNameValid] = useState(true)
+  });
+  const [whatappFlag, setWhatappFlag] = useState(false);
+  const [isCompanyNameValid, setIsCompanyNameValid] = useState(true);
   const [passwordState, setPasswordState] = useState({
     minlength: false,
     uppercaseandlowercase: false,
     alphabetsandigit: false,
-  })
+  });
   // console.log(values, errors)
-  const [countryCode, setCountryCode] = useState("+91")
+  const [countryCode, setCountryCode] = useState("+91");
   const onChangeHandler = (name) => (event) => {
     if (name === "fullName" || name === "designation") {
-      const re = /^[a-z|A-Z_ ]*$/
+      const re = /^[a-z|A-Z_ ]*$/;
       if (event.target.value && !re.test(event.target.value)) {
-        return ""
+        return "";
       }
     }
-    const re = /^(?=.*\S).+$/
+    const re = /^(?=.*\S).+$/;
     if (
       event.target.value !== "" &&
       !re.test(event.target.value) &&
       name === "companyName"
     ) {
-      return ""
+      return "";
     }
     if (name === "countryCode") {
       // console.log("inner CounryCode")
-      const re = /[\d\+]+/
+      const re = /[\d\+]+/;
       // const re =  /^[0-9!@#$&()-`.+,/\"]*$/;
       // console.log("event.target.value",);
       if (event.target.value && !re.test(event.target.value)) {
-        return ""
+        return "";
       }
     }
 
     if (name === "mobileNumber") {
-      let inputKey = "mobileNumErr"
+      let inputKey = "mobileNumErr";
       // console.log(event.target.value);
       if (event.target.value > 0 && event.target.value < 9) {
       } else if (event.target.value == 10) {
       }
     }
-    const mobileNumberReg = /^[0-9]{0,10}$/
+    const mobileNumberReg = /^[0-9]{0,10}$/;
     // let passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
     let passwordRE =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-]{8,16}$/
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-]{8,16}$/;
     if (name === "mobileNumber") {
       if (!mobileNumberReg.test(event.target.value)) {
-        return ""
+        return "";
       }
     }
     if (name === "password") {
-      let minlength = "minlength"
-      let alphabetsandigit = "alphabetsandigit"
-      let uppercaseandlowercase = "uppercaseandlowercase"
-      let inputKey = "passwordErr"
+      let minlength = "minlength";
+      let alphabetsandigit = "alphabetsandigit";
+      let uppercaseandlowercase = "uppercaseandlowercase";
+      let inputKey = "passwordErr";
       if (!passwordRE.test(event.target.value)) {
-        setErrors({ ...errors, [inputKey]: "Password is invalid" })
+        setErrors({ ...errors, [inputKey]: "Password is invalid" });
       } else {
-        setErrors({ ...errors, [inputKey]: "" })
+        setErrors({ ...errors, [inputKey]: "" });
       }
       if (event.target.value.length < 8) {
-        setPasswordState((prevState) => ({ ...prevState, [minlength]: false }))
+        setPasswordState((prevState) => ({ ...prevState, [minlength]: false }));
       } else {
-        setPasswordState((prevState) => ({ ...prevState, [minlength]: true }))
+        setPasswordState((prevState) => ({ ...prevState, [minlength]: true }));
       }
 
       let uppercaseandlowercaseRE =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
       if (uppercaseandlowercaseRE.test(event.target.value)) {
         setPasswordState((prevState) => ({
           ...prevState,
           [alphabetsandigit]: true,
           [uppercaseandlowercase]: true,
-        }))
+        }));
       } else {
         if (/^[a-z]*$/.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: false,
             [uppercaseandlowercase]: false,
-          }))
+          }));
         } else if (
           /^[a-zA-Z]*$/.test(event.target.value) &&
           /(?=.*?[A-Z])(?=.*?[a-z])./.test(event.target.value)
@@ -126,7 +126,7 @@ function PersonalDetails({ history }) {
             ...prevState,
             [alphabetsandigit]: false,
             [uppercaseandlowercase]: true,
-          }))
+          }));
         } else if (
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]/.test(event.target.value)
         ) {
@@ -134,14 +134,14 @@ function PersonalDetails({ history }) {
             ...prevState,
             [alphabetsandigit]: true,
             [uppercaseandlowercase]: true,
-          }))
+          }));
         } else if (/(?=.*?[A-Za-z])(?=.*?[0-9])/.test(event.target.value)) {
           // else if (/(?=.*?[A-Za-z])(?=.*?[0-9])./.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: true,
             [uppercaseandlowercase]: false,
-          }))
+          }));
         }
         // else if (/^[A-Z0-9]*$/.test(event.target.value)) {
         //   setPasswordState(prevState => ({
@@ -153,53 +153,53 @@ function PersonalDetails({ history }) {
             ...prevState,
             [alphabetsandigit]: false,
             [uppercaseandlowercase]: false,
-          }))
+          }));
         }
       }
     }
     if (name === "confirmPassword") {
-      let inputKey = "confirmPasswordErr"
+      let inputKey = "confirmPasswordErr";
       if (!passwordRE.test(event.target.value)) {
-        setErrors({ ...errors, [inputKey]: "Confirm password is invalid" })
+        setErrors({ ...errors, [inputKey]: "Confirm password is invalid" });
       } else {
-        setErrors({ ...errors, [inputKey]: "" })
+        setErrors({ ...errors, [inputKey]: "" });
       }
     }
-    setValues({ ...values, [name]: event.target.value })
-  }
+    setValues({ ...values, [name]: event.target.value });
+  };
 
   const handleWhatsappChange = (event) => {
-    setWhatappFlag(event.target.checked)
-  }
+    setWhatappFlag(event.target.checked);
+  };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onSubmit()
+      onSubmit();
     }
-  }
+  };
   const errorMessage =
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.message
-  const email = localStorage.getItem("coemail")
+    state.complianceOfficer.personalInfo.message;
+  const email = localStorage.getItem("coemail");
   const onSubmit = () => {
-    setIsValidate(true)
+    setIsValidate(true);
     if (checkPersonalDetailsForm(values)) {
-      return
+      return;
     }
     if (
       errors.passwordErr !== "" ||
       errors.confirmPasswordErr !== "" ||
       errors.countryCodeErr === "true"
     ) {
-      return ""
+      return "";
     }
-    setIsValidate(false)
+    setIsValidate(false);
     if (email) {
-      let countryCode
-      let strr = values.countryCode
+      let countryCode;
+      let strr = values.countryCode;
       // countryCode = strr.replace(/\D/g, '');
-      countryCode = strr
+      countryCode = strr;
       dispatch(
         personalDetailsAction.insUpdateDeletAPIRequest({
           entityName: values.companyName,
@@ -218,12 +218,12 @@ function PersonalDetails({ history }) {
           countrycode:
             countryCode === "" || countryCode === "+" ? "+91" : countryCode,
         })
-      )
+      );
     } else {
-      toast.error("Please verify your email")
-      return ""
+      toast.error("Please verify your email");
+      return "";
     }
-  }
+  };
 
   const validateCompanyName = (e) => {
     let payload = {
@@ -232,59 +232,59 @@ function PersonalDetails({ history }) {
       rememberme: 0,
       loginty: "AdminCompany",
       countrycode: values.countryCode,
-    }
+    };
     api
       .post("/api/availabilityCheck", payload)
       .then(function (response) {
         // handle success
         if (response && response.data && response.data.Status === "True") {
-          setIsCompanyNameValid(false)
+          setIsCompanyNameValid(false);
         } else {
-          setIsCompanyNameValid(true)
+          setIsCompanyNameValid(true);
         }
       })
       .catch(function (error) {
         if (error) {
-          setIsCompanyNameValid(false)
+          setIsCompanyNameValid(false);
         }
-      })
-  }
+      });
+  };
 
   const validateCountryCode = (e) => {
-    let strr = e.target.value
-    let str = strr.replace(/\D/g, "")
-    console.log("str => ", strr)
+    let strr = e.target.value;
+    let str = strr.replace(/\D/g, "");
+    console.log("str => ", strr);
 
     if (str === "") {
-      str = "91"
+      str = "91";
     }
     // str = str.substring(1);
     // console.log("str =",str);
     let payload = {
       cntryCode: str,
-    }
-    console.log(payload)
+    };
+    console.log(payload);
     api
       .post("/api/CountryCodeCheck", payload)
       .then(function (response) {
         // handle success
         if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true)
-          let inputKey = "countryCodeErr"
-          setErrors({ ...errors, [inputKey]: "" })
+          setCountryCode(true);
+          let inputKey = "countryCodeErr";
+          setErrors({ ...errors, [inputKey]: "" });
         } else {
-          setCountryCode(false)
+          setCountryCode(false);
           // setErrors(errors);
-          let inputKey = "countryCodeErr"
-          setErrors({ ...errors, [inputKey]: "true" })
+          let inputKey = "countryCodeErr";
+          setErrors({ ...errors, [inputKey]: "true" });
         }
       })
       .catch(function (error) {
         if (error) {
           // setIsCompanyNameValid(false);
         }
-      })
-  }
+      });
+  };
   // console.log("errors => ",errors);
   return (
     <div className="row get-mobile-personal-detail">
@@ -308,8 +308,12 @@ function PersonalDetails({ history }) {
                   <div className="col-lg-12">
                     <div className="header_logo">
                       {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                        <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
-                        <span className="camp">COMPLIANCE SUTRA</span>
+                      <img
+                        src={comtech}
+                        alt="COMPLIANCE SUTRA"
+                        title="COMPLIANCE SUTRA"
+                      />
+                      <span className="camp">COMPLIANCE SUTRA</span>
                       {/* </a> */}
                     </div>
                   </div>
@@ -325,7 +329,7 @@ function PersonalDetails({ history }) {
                     <div className="row">
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
-                          <label htmlFor="FullName">Full Name</label>
+                          <label htmlFor="FullName">Full Name </label>
                           <input
                             type="text"
                             className={
@@ -959,7 +963,7 @@ function PersonalDetails({ history }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default withRouter(PersonalDetails)
+export default withRouter(PersonalDetails);
