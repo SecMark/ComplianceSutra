@@ -12,9 +12,15 @@ import Cobg from "../../../assets/Images/Onboarding/co-bg.png";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { isMobile } from "react-device-detect";
-// import constant from "../../../CommonModules/sharedComponents/constants/constant";
+import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import moment from "moment";
-import { clearState, getHistoryList, setSuccess } from "../redux/actions";
+import {
+  clearState,
+  getCompanyList,
+  getHistoryList,
+  getLicenseList,
+  setSuccess,
+} from "../redux/actions";
 import { withRouter } from "react-router";
 import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
@@ -56,7 +62,7 @@ const HistoryList = (props) => {
 
   useEffect(() => {
     setIsShowMobileFilter(false);
-    setIsShowFilter(false);
+    // setIsShowFilter(false);
     dispatch(setSuccess(false));
   }, [state.HistoryReducer.isSuccess]);
 
@@ -304,7 +310,22 @@ const HistoryList = (props) => {
                   <img
                     src={filter}
                     className="history-filter"
-                    onClick={() => setIsShowFilter(!isShowFilter)}
+                    onClick={() => {
+                      const licenseRequestPayload = {
+                        userID: state.auth.loginInfo?.UserID,
+                        entityid: constant.licenseEntityId,
+                        usertype: state.auth.loginInfo?.UserType,
+                      };
+                      dispatch(getLicenseList(licenseRequestPayload));
+                      const companyRequestPayload = {
+                        userID: state.auth.loginInfo?.UserID,
+                        entityid: constant.companyEntityId,
+                        usertype: state.auth.loginInfo?.UserType,
+                      };
+
+                      dispatch(getCompanyList(companyRequestPayload));
+                      setIsShowFilter(!isShowFilter);
+                    }}
                   />
                 </h2>
               </div>

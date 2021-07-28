@@ -62,7 +62,6 @@ function PersonalDetails({ history }) {
   };
 
   useEffect(() => {
-    console.log("CALLED");
     if (values.mobileNumber.length >= 10) {
       checkNumberAvailable();
     }

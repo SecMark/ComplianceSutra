@@ -1,6 +1,6 @@
 export default {
   companyEntityId: "C",
-  licenseEntityId: "L",
+  licenseEntityId: "I",
   historyEntityId: "H",
   flag: "1",
   errorMessage: {

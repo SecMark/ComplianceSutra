@@ -5592,10 +5592,12 @@ function RightSideGrid({
                       <>
                         {getTaskById &&
                         getTaskById.Status &&
-                        getTaskById.Status === "Assigned" &&
+                        (getTaskById.Status === "Assigned" ||
+                          getTaskById.Status === "Request Rejected") &&
                         getTaskById &&
                         getTaskById.Status &&
-                        getTaskById.TaskStatus === 0 ? (
+                        (getTaskById.TaskStatus === 0 ||
+                          getTaskById.TaskStatus === 3) ? (
                           (user && user.UserType && user.UserType === 4) ||
                           (user &&
                             user.UserType &&
