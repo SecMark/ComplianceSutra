@@ -26,6 +26,15 @@ const isSameOrBeforeToday = (date) => {
     return moment(dateInRequiredFormat).isSameOrBefore(todayDate);
   }
 };
+const isBeforeToday = (date) => {
+  const todayDate = moment().format("YYYY-MM-DD");
+  if (date.length !== 0) {
+    const dateInRequiredFormat = moment(date.join("-"), "DD-MM-YYYY").format(
+      "YYYY-MM-DD"
+    );
+    return moment(dateInRequiredFormat).isBefore(todayDate);
+  }
+};
 const isMoreThanOneYearFromToday = (date) => {
   const selectedDate = moment(date.join("-"), "DD-MM-YYYY").format(
     "YYYY-MM-DD"
@@ -74,6 +83,7 @@ export {
   checkResponse,
   isDifferenceIsMoreThanOneYear,
   isSameOrBeforeToday,
+  isBeforeToday,
   isMoreThanOneYearFromToday,
   isToDateBeforeFromDate,
   searchUsers,
