@@ -1319,19 +1319,20 @@ function CoManagment({ handleClose }) {
                   </div>
                 </td>
                 <td>
-                  <Dropdown
-                    onChange={(value) => handleChangeInputBoxRole(value)}
-                    arrowClosed={<span className="arrow-closed" />}
-                    arrowOpen={<span className="arrow-open" />}
-                    options={optionsInputBoxRole}
-                    value={
-                      inputTeamMember.role.length === 0
-                        ? null
-                        : inputTeamMember.role
-                    }
+                  <select
+                    className="select-role"
                     placeholder="Select role"
-                  />
+                    onChange={(value) => handleChangeInputBoxRole(value)}
+                  >
+                    <option disabled selected>
+                      Select Role
+                    </option>
+                    {optionsInputBoxRole.map(({ label, value }) => (
+                      <option value={value}> {label} </option>
+                    ))}
+                  </select>
                 </td>
+
                 <td>
                   <div className="form-group mb-0">
                     <input
