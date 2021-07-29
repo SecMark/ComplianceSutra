@@ -1636,6 +1636,7 @@ button.btn.border-start-0.border-top-0.border-bottom-0.border-0.ms-n5:focus {
 .graybox-left {
   width: 40px;
   float: left;
+  z-index: 1;
 }
 .pink-label-title-right {
   display: block;
