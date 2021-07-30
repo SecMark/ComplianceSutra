@@ -533,13 +533,15 @@ function CoManagment({ handleClose }) {
     setFields(list);
   };
 
-  const handleChangeInputBoxRole = (value) => {
-    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
+  const handleChangeInputBoxRole = (event) => {
+    console.log(event.target.value);
+    setInputTeamMember({ ...inputTeamMember, ["role"]: event.target.value });
   };
 
-  const handleChangeInputBoxRoleMobile = (value) => {
-    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
-    onConfirmChangeRole(currentRow, openPopupIndex, value);
+  const handleChangeInputBoxRoleMobile = (event) => {
+
+    setInputTeamMember({ ...inputTeamMember, ["role"]: event.target.value });
+    onConfirmChangeRole(currentRow, openPopupIndex, event.target.value);
     closeChangeRole();
   };
 
