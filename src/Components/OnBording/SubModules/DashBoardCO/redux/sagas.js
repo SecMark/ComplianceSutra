@@ -183,7 +183,7 @@ const coDetailsInsUpdDelInfo = function* coDetailsInsUpdDelInfo({ payload }) {
     const { data, status } = yield call(api.postCodetailsInsUpdDel, payload);
     let statusCode = data && data[0] && data[0].StatusCode;
     if (status === 200 && statusCode != false) {
-      toast.success("Details Saved Successfully.");
+      toast.success("Verification link sent to you given email");
       yield put(actions.coDetailsInsUpdDelRequestSuccess({ insUpdDelstatus: 'Success', data: data }));
 
     } else {
