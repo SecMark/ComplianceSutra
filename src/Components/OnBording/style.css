@@ -38,19 +38,23 @@
   height: 100%;
   max-width: 30vw;
   background: transparent;
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 .side-bar-image-outer {
   display: flex;
-  -ms-flex-align: stretch;
+  -webkit-align-items: stretch;
   align-items: stretch;
-  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
-  position: relative;
+  position: absolute;
   overflow: hidden;
   border-image: none;
   border-image: initial;
-  margin: 0px;
+  margin: 0;
   height: 100%;
+  width: 91%;
 }
 .side-bar-image-outer .image-span {
   width: 100%;
@@ -121,9 +125,8 @@
 .sidbarBottom-grid {
   position: absolute;
   bottom: 80px;
-  /* left: 50px; */
   left: 33px;
-  width: 306px;
+  width: 275px;
 }
 .big-title {
   text-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
@@ -148,7 +151,7 @@
   letter-spacing: 0.01px;
   text-align: left;
   color: #ffffff;
-  margin-bottom:55px;
+  margin-bottom: 55px;
 }
 .text-section .desc:after {
   content: " .";
@@ -300,7 +303,6 @@
 .back-color .container-xl {
   max-width: 85%;
 }
-
 
 @media (max-width: 1200px) {
   .big-title {

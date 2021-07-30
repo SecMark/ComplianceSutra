@@ -8,10 +8,12 @@ import sidebarActive from "../../../assets/Icons/sidebar-active.png";
 import sidebarRightActive from "../../../assets/Icons/task_alt_black_24dp (1).png";
 import dashboardBlackActive from "../../../assets/Icons/dashboard_black.png";
 import dashboardGreyActive from "../../../assets/Icons/dashboard_grey.png";
+import updateActive from "../../../assets/Icons/update_active.png";
 
 import historyListActive from "../../../assets/Icons/history_active.png";
 import historyListInActive from "../../../assets/Icons/history_unactive.png";
-
+import HelpBlackActive from "../../../assets/Icons/HelpBlackActive.png";
+import HelpGreyActive from "../../../assets/Icons/HelpGreyActive.png";
 import sidebarBell from "../../../assets/Icons/sidebarBell.png";
 import sidebarBellActive from "../../../assets/Icons/bellSelected.png";
 import settingActive from "../../../assets/Icons/activeSetting.png";
@@ -28,7 +30,7 @@ import { actions as loginActions } from "../../../Components/Authectication/redu
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
-  
+
   const dispatch = useDispatch();
 
   const [openProfile, setOpenProfile] = useState(false);
@@ -60,6 +62,10 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/compliance-history");
     } else if (currentActiveMenu === "complianceHistoryList") {
       history.push("/compliance-history-list");
+    } else if (currentActiveMenu === "newRegulations") {
+      history.push("/new-regulations");
+    } else if (currentActiveMenu === "help") {
+      history.push("/help");
     }
   };
 
@@ -88,7 +94,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           >
             <img
               style={{ cursor: "pointer" }}
-              title="ComplianceHistory"
+              title="Compliancehistory"
               onClick={() => onMenuClick("complianceHistory")}
               src={
                 !openProfile &&
@@ -159,7 +165,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           >
             <img
               style={{ cursor: "pointer" }}
-              title="complianceHistoryList"
+              title="Compliancehistorylist"
               onClick={() => onMenuClick("complianceHistoryList")}
               src={
                 !openProfile &&
@@ -167,6 +173,30 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                 state.adminMenu.currentMenu === "complianceHistoryList"
                   ? historyListActive
                   : historyListInActive
+              }
+              alt="sidebar Bell"
+            />
+          </div>
+
+          <div
+            className={
+              !openProfile &&
+              state &&
+              state.adminMenu.currentMenu === "newRegulations"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="compliancehistorylist"
+              onClick={() => onMenuClick("newRegulations")}
+              src={
+                !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "newRegulations"
+                  ? updateActive
+                  : updateActive
               }
               alt="sidebar Bell"
             />
@@ -197,6 +227,28 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Setting Icon"
             />
           </div>
+
+          <div
+            className={
+              !openProfile && state && state.adminMenu.currentMenu === "help"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="Help"
+              onClick={() => onMenuClick("help")}
+              src={
+                !openProfile && state && state.adminMenu.currentMenu === "help"
+                  ? HelpGreyActive
+                  : HelpGreyActive
+              }
+              alt="sidebar Active"
+              size={44}
+            />
+          </div>
+
           <div className={openProfile ? "taskIcon-active" : "taskIcon"}>
             <img
               style={{ cursor: "pointer" }}

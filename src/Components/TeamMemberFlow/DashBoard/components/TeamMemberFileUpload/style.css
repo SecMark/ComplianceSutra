@@ -227,6 +227,18 @@
     border-style: dashed;
     position: relative; */
 }
+.file-upload-box .text-center {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #6c5dd3;
+}
 .image-display {
   /* position: absolute;
   top: 24px; */
@@ -250,6 +262,7 @@
   letter-spacing: 0px;
   text-align: center;
   color: #2c2738;
+  text-transform: none;
 }
 .file-upload-blue {
   font-family: Poppins;

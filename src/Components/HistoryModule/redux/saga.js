@@ -16,8 +16,8 @@ function* fetchCompanyList(action) {
       yield put(setCompanyList(data));
     } else {
     }
-  } catch (e) {
-    console.log(e.message);
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
@@ -25,25 +25,26 @@ function* fetchLicenseList(action) {
   try {
     const { data, status } = yield call(api.getTaskReport, action.payload);
     if (status === 200) {
-      yield put(setSuccess(true));
       yield put(setLicenseList(data));
     } else {
     }
-  } catch (e) {
-    console.log(e.message);
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
 function* fetchHistoryList(action) {
   try {
     const { data, status } = yield call(api.getTaskReport, action.payload);
+
     if (status === 200) {
-      yield put(setSuccess(true));
       yield put(setHistoryList(data));
-    } else {
-    }
-  } catch (e) {
-    console.log(e.message);
+      yield put(setSuccess(true));
+    } 
+  } catch (error) {
+    yield put(setHistoryList([]));
+    yield put(setSuccess(true));
+    console.log(error.message);
   }
 }
 

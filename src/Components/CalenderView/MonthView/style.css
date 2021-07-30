@@ -1,0 +1,304 @@
+.calender-container {
+  height: calc(100vh - 249px);
+  overflow-y: auto;
+}
+.calender {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  padding: 0px 40px;
+}
+
+.day-name {
+  border-bottom: 1px solid #eee8fc;
+  height: auto;
+  padding: 25px;
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #2c2738;
+}
+.day-name:nth-child(n + 2) {
+  border-left: 1px solid #eee8fc;
+}
+
+.day {
+  border-bottom: 1px solid #eee8fc;
+  height: auto;
+  padding: 5px 2px 0px 8px;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.day:nth-child(n + 2) {
+  border-left: 1px solid #eee8fc;
+}
+
+.day-disable {
+  border-bottom: 1px solid #eee8fc;
+  height: auto;
+  padding: 5px 2px 0px 25px;
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  background: #e1e0e4;
+}
+
+.UserNameDp {
+  display: flex;
+  align-items: center;
+}
+
+.CompanyName {
+  margin: 10px 0;
+}
+.CompanyName span {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #828282;
+}
+
+.week-detail h2 {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #1b1d21;
+  margin-top: 6px;
+}
+
+.view-more {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #6c5dd3;
+  border: none;
+  background: none;
+  font-weight: bold;
+}
+
+.button-code {
+  border-radius: 2px;
+  background-color: #f1f3ff;
+  border: none;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #2c2738;
+  margin: 0 0 5px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 10px;
+}
+
+.button-code:hover .tooltip-container {
+  position: absolute;
+  z-index: 9;
+  display: block;
+}
+
+.tooltip-container {
+  padding: 10px 20px 20px 20px;
+  border-radius: 8px;
+  background-color: #6c5dd3;
+  width: 315px;
+  display: none;
+  top: 32px;
+  left: 0px;
+}
+
+.tooltip-container:before {
+  background: url("../../../assets/Icons/Polygon.png") no-repeat top left;
+  background-size: cover;
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 12px;
+  top: -12px;
+  left: 9px;
+}
+.tooltip-title {
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
+
+.tooltip-company-detail {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tooltip-view-detail-button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.tooltip-compant-name {
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.circle-dp-tooltip {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  float: left;
+  border-radius: 8px;
+  background-color: #eae8ff;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 8px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.16px;
+  text-align: center;
+  color: #b3abc4;
+  padding: 5px 5px 4px;
+  margin-right: 6px;
+  margin-top: 4px;
+}
+
+.user-name-tooltip {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #ffffff;
+}
+.calender-mobile {
+  height: 55vh;
+  overflow-y: scroll;
+  padding: 0 20px;
+}
+.calender-mobile-item {
+  border-bottom: 1px solid rgb(228, 224, 224);
+  padding: 20px 0;
+}
+.calender-mobile .left {
+  width: 20%;
+}
+.calender-mobile .right {
+  width: 80%;
+}
+.current-day {
+  background: #6969ff;
+  border-radius: 50%;
+  height: 40px;
+  /* padding: 9px 7px; */
+  width: 40px;
+  /* color: white; */
+}
+.current-day > h5 {
+  color: #fff;
+}
+.right > .view-more {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+.right-item {
+  margin-bottom: 1rem;
+}
+.right-item-task-name {
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+.right-item-task-name,
+.left p,
+.left h5 {
+  font-size: 14px;
+}
+.small-calender-mobile {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  box-shadow: 0px 1px 3px grey;
+}
+.small-calender-day-name,
+.small-calender-day,
+.small-calender-active-date,
+.small-calender-inactive-date {
+  color: #2c2738;
+  height: auto;
+  text-align: center;
+  margin: 10px 0;
+  font-weight: 600;
+}
+.small-calender-inactive-date,
+.small-calender-active-date {
+  font-weight: normal;
+  margin: 0;
+  height: 30px;
+  width: 30px;
+}
+.small-calender-day {
+  height: fit-content;
+  margin: 0;
+}
+.small-calender-day-disable .small-calender-inactive-date {
+  color: white;
+  pointer-events: none;
+}
+@media screen and (max-width: 767px) {
+  .calender-container {
+    display: none;
+  }
+}

@@ -1,45 +1,77 @@
-import React, { useState, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import "./style.css"
-import { Modal } from "react-responsive-modal"
-import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png"
-import deleteIcon from "../../../../../../../assets/Icons/deleteIcon.png"
-import closeBlack from "../../../../../../../assets/Icons/closeBlack.png"
-import { actions as coActions } from "../../../redux/actions"
-import validator from "validator"
-import api from "../../../../../../../apiServices"
-import { toast } from "react-toastify"
-import { actions as logInfoActions } from "../../../../../../Authectication/redux/actions"
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import "./style.css";
+import { Modal } from "react-responsive-modal";
+import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
+import deleteIcon from "../../../../../../../assets/Icons/deleteIcon.png";
+import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
+import { actions as coActions } from "../../../redux/actions";
+import validator from "validator";
+import api from "../../../../../../../apiServices";
+import { toast } from "react-toastify";
+import { actions as logInfoActions } from "../../../../../../Authectication/redux/actions";
 function CoSettingRightGrid({ handleClose, history }) {
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const [isValidate, setIsValidate] = useState(false)
-  const [valuesBackup, setValuesBackup] = useState(null)
+  const [isValidate, setIsValidate] = useState(false);
+  const [valuesBackup, setValuesBackup] = useState(null);
   const [values, setValues] = useState({
     userName: "",
     designation: "",
     emailId: "",
     mobileNo: "",
     countrycode: "",
-  })
+  });
+  const [isValidEmail, setIsValidEmail] = useState(null);
 
-  const [valuesChanged, setValuesChanged] = useState(false)
-  const [verifyModalHideShow, setVerifyModalHideShow] = useState(false)
+  const [valuesChanged, setValuesChanged] = useState(false);
+  const [verifyModalHideShow, setVerifyModalHideShow] = useState(false);
   const [verifyPassword, setVerifyPassword] = useState({
     password: "",
     passwordError: "",
-  })
-  const loggedUser = state && state.auth && state.auth.loginInfo
-  const [userInfoBackup, setUserInfoBackup] = useState(null)
+  });
+  const loggedUser = state && state.auth && state.auth.loginInfo;
+  const [userInfoBackup, setUserInfoBackup] = useState(null);
   useEffect(() => {
     dispatch(
       coActions.availabilityCheckequest({
         loginID: loggedUser.EmailID,
         loginty: "AdminEmail",
       })
-    )
-  }, [])
+    );
+  }, []);
+
+  const verfiyEmail = async (email) => {
+    if (validator.isEmail(email)) {
+      if (email !== valuesBackup.emailId) {
+        let payload = {
+          loginID: email,
+          pwd: "",
+          rememberme: 0,
+          loginty: "AdminEmail",
+        };
+        return await api
+          .post("/api/availabilityCheck", payload)
+          .then(function (response) {
+            if (response && response.data && response.data.Status === "True") {
+              setIsValidEmail(false);
+              return false;
+            } else {
+              setIsValidEmail(true);
+              return true;
+            }
+          })
+          .catch(function (error) {
+            if (error) {
+              return false;
+            }
+          });
+      } else {
+        setIsValidEmail(true);
+      }
+    }
+  };
 
   useEffect(() => {
     const _name =
@@ -47,30 +79,30 @@ function CoSettingRightGrid({ handleClose, history }) {
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.UserName
+      state.taskReport.userAvailability.availabilityInfo.UserName;
     const _designation =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.Designation
+      state.taskReport.userAvailability.availabilityInfo.Designation;
     const _emailId =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.EmailID
+      state.taskReport.userAvailability.availabilityInfo.EmailID;
     const _mobile =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.Mobile
+      state.taskReport.userAvailability.availabilityInfo.Mobile;
     const _userInfo =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
-      state.taskReport.userAvailability.availabilityInfo
+      state.taskReport.userAvailability.availabilityInfo;
 
     let userObj = {
       userName: _name != "" && _name != undefined ? _name : "",
@@ -82,73 +114,75 @@ function CoSettingRightGrid({ handleClose, history }) {
         _userInfo !== "" && _userInfo !== undefined
           ? _userInfo.countrycode
           : "",
-    }
+    };
 
-    setValues(userObj)
-    setValuesBackup(userObj)
-    setUserInfoBackup(_userInfo)
-  }, [state.taskReport.userAvailability])
+    setValues(userObj);
+    setValuesBackup(userObj);
+    setUserInfoBackup(_userInfo);
+  }, [state.taskReport.userAvailability]);
 
   useEffect(() => {
     const actionStatus =
       state &&
       state.taskReport &&
       state.taskReport.coDetailsInsUpdDelInfo &&
-      state.taskReport.coDetailsInsUpdDelInfo.insUpdDelstatus
+      state.taskReport.coDetailsInsUpdDelInfo.insUpdDelstatus;
     if (actionStatus != undefined) {
       if (actionStatus === "Success") {
         let updEmail =
           state &&
           state.taskReport &&
           state.taskReport.coDetailsInsUpdDelInfo &&
-          state.taskReport.coDetailsInsUpdDelInfo.data
-        let logInfo = { ...loggedUser }
-        logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID
-        dispatch(logInfoActions.updateEmailInfo(logInfo))
+          state.taskReport.coDetailsInsUpdDelInfo.data;
+        console.log(updEmail);
+        let logInfo = { ...loggedUser };
+        logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID;
+        dispatch(logInfoActions.updateEmailInfo(logInfo));
         setTimeout(() => {
-          const UpdatedLogInInfo = state && state.auth && state.auth.loginInfo
+          const UpdatedLogInInfo = state && state.auth && state.auth.loginInfo;
           dispatch(
             coActions.availabilityCheckequest({
               loginID: logInfo.EmailID,
               loginty: "AdminEmail",
             })
-          )
-        }, 1000)
+          );
+        }, 1000);
       }
     }
-  }, [state.taskReport.coDetailsInsUpdDelInfo])
+  }, [state.taskReport.coDetailsInsUpdDelInfo]);
 
   const onSubmit = () => {
-    let isSubmit = false
+    let isSubmit = false;
     if (
       values.userName === "" ||
       values.mobileNo === "" ||
       values.mobileNo.length < 10 ||
       values.emailId === "" ||
       !validator.isEmail(values.emailId) ||
+      (isValidEmail !== null && !isValidEmail) ||
       values.designation === "" ||
       values.countrycode === ""
     ) {
-      setIsValidate(true)
-      isSubmit = false
+      setIsValidate(true);
+      isSubmit = false;
     } else {
       if (
         values.emailId === valuesBackup.emailId &&
         values.mobileNo === valuesBackup.mobileNo
       ) {
-        setIsValidate(false)
-        handleFinalSubmit()
+        setIsValidate(false);
+        handleFinalSubmit();
       } else {
-        setVerifyModalHideShow(true)
+        setVerifyModalHideShow(true);
       }
     }
-  }
+  };
   const handleVerifyModalAction = (flag) => {
     if (flag) {
       let payload = {
         loginID: loggedUser.EmailID,
         pwd: verifyPassword.password,
-      }
+      };
       api
         .post("/api/Loginsuccess", payload)
         .then(function (response) {
@@ -158,9 +192,9 @@ function CoSettingRightGrid({ handleClose, history }) {
             response.data.StatusCode === 200 &&
             response.data.Message === "SUCCESS"
           ) {
-            setVerifyPassword({ password: "", passwordError: "" })
-            handleFinalSubmit()
-            setVerifyModalHideShow(false)
+            setVerifyPassword({ password: "", passwordError: "" });
+            handleFinalSubmit();
+            setVerifyModalHideShow(false);
           } else if (
             response &&
             response.data &&
@@ -170,65 +204,68 @@ function CoSettingRightGrid({ handleClose, history }) {
             setVerifyPassword({
               ...verifyPassword,
               ["passwordError"]: "invalid password.",
-            })
+            });
           } else {
             toast.error("Something went to wrong, Please try after sometime", {
               autoClose: 5000,
-            })
+            });
           }
         })
         .catch(function (error) {
           if (error) {
             toast.error("Something went to wrong, Please try after sometime", {
               autoClose: 5000,
-            })
+            });
           }
-        })
+        });
     } else {
-      setVerifyPassword({ password: "", passwordError: "" })
-      setVerifyModalHideShow(false)
+      setVerifyPassword({ password: "", passwordError: "" });
+      setVerifyModalHideShow(false);
     }
-  }
+  };
 
   const manageData = () => {
     if (handleClose == undefined) {
-      history.push("/settings")
+      history.push("/settings");
     } else {
-      handleClose()
+      handleClose();
     }
-  }
+  };
 
   const handleFinalSubmit = () => {
     let payload = {
       adminName: values.userName,
       adminMobile: values.mobileNo,
       adminEmail: values.emailId,
-      userType: 1,
+      userType: values.emailId !== valuesBackup.emailId ? 9 : 1,
       actionFlag: 2,
       designation: values.designation,
       userID: userInfoBackup.UserID,
       countrycode: values.countrycode,
-    }
-    dispatch(coActions.coDetailsInsUpdDelRequest(payload))
-    setValuesChanged(false)
-  }
+    };
+    dispatch(coActions.coDetailsInsUpdDelRequest(payload));
+    setValuesChanged(false);
+  };
   const onChangeHandler = (name) => (event) => {
     if (name === "userName" || name === "designation") {
-      const re = /^[a-z|A-Z_ ]*$/
+      const re = /^[a-z|A-Z_ ]*$/;
       if (event.target.value && !re.test(event.target.value)) {
-        return ""
+        return "";
       }
     }
     if (name === "mobileNo") {
-      const mobileNumberReg = /^[0-9]{0,10}$/
+      const mobileNumberReg = /^[0-9]{0,10}$/;
       if (!mobileNumberReg.test(Number(event.target.value))) {
-        return ""
+        return "";
       }
     }
-    setValuesChanged(true)
-    setValues({ ...values, [name]: event.target.value })
+    if (name === "emailId") {
+      verfiyEmail(event.target.value);
+    }
+    setValuesChanged(true);
+    setValues({ ...values, [name]: event.target.value });
     // }
-  }
+  };
 
   const renderVerifyDialog = () => {
     return (
@@ -289,8 +326,8 @@ function CoSettingRightGrid({ handleClose, history }) {
           </div>
         </div>
       </Modal>
-    )
-  }
+    );
+  };
 
   return (
     <div className="co-manangment-grid">
@@ -305,7 +342,7 @@ function CoSettingRightGrid({ handleClose, history }) {
             src={closeBlack}
             alt="close Black"
             onClick={() => {
-              manageData()
+              manageData();
             }}
           />
         </div>
@@ -365,13 +402,16 @@ function CoSettingRightGrid({ handleClose, history }) {
           <div>
             <input
               type="text"
-              className={
-                "form-control right-input-row " +
-                (isValidate &&
-                (values.emailId === "" || !validator.isEmail(values.emailId))
+              className={`form-control right-input-row ${
+                isValidate &&
+                (values.emailId === "" ||
+                  !validator.isEmail(values.emailId) ||
+                  (validator.isEmail(values.emailId) &&
+                    isValidEmail !== null &&
+                    !isValidEmail))
                   ? "input-error"
-                  : "")
-              }
+                  : ""
+              }`}
               value={values.emailId}
               placeholder="Enter your email id"
               id="email"
@@ -383,10 +423,19 @@ function CoSettingRightGrid({ handleClose, history }) {
               </p>
             )}
             {isValidate &&
-              values.emailId != "" &&
+              values.emailId !== "" &&
               !validator.isEmail(values.emailId) && (
                 <p className="input-error-message absPosition">
-                  Email ID is required
+                  Enter Valid Email ID
+                </p>
+              )}
+            {isValidate &&
+              values.emailId !== "" &&
+              validator.isEmail(values.emailId) &&
+              !isValidEmail &&
+              values.emailId !== valuesBackup.emailId && (
+                <p className="input-error-message absPosition">
+                  Email already exists.
                 </p>
               )}
           </div>
@@ -481,8 +530,9 @@ function CoSettingRightGrid({ handleClose, history }) {
               <div
                 className="discard-label-link"
                 onClick={() => {
-                  setValues(valuesBackup)
-                  setValuesChanged(false)
+                  setValues(valuesBackup);
+                  setValuesChanged(false);
+                  setIsValidate(false);
                 }}
               >
                 discard changes
@@ -492,6 +542,6 @@ function CoSettingRightGrid({ handleClose, history }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
-export default CoSettingRightGrid
+export default CoSettingRightGrid;

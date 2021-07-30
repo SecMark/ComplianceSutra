@@ -1,7 +1,8 @@
 .side-bar {
   display: flex;
-    width: 64px;
-    background-color: #f6f9fb;
+  width: 64px;
+  background-color: #f6f9fb;
+  height: 100vh;
 }
 .side-bar .right-side {
   width: 100%;
@@ -179,9 +180,7 @@
   color: #575757;
   display: flex;
 }
-.first-icon-list {
-  margin-top: 144px;
-}
+
 .devider-line {
   width: 48px;
   height: 1px;

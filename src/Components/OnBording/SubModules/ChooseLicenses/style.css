@@ -660,6 +660,11 @@ div#contentGeneral:last-child {
 }
 /* bottom logo */
 
+.assign-icon img {
+  background-size: auto;
+  height: auto;
+  width:44px;
+}
 @media (min-width: 1200px) {
   .sideBarFixed .container,
   .sideBarFixed .container-lg,
@@ -671,10 +676,19 @@ div#contentGeneral:last-child {
 }
 
 @media screen and (max-width: 767px) {
+  .mobile-right-0{
+    padding-right: 0px !important;
+    margin-right: 0px !important;
+  }
+
   .two-icon .custom-control {
     margin-top: 0px;
     margin-right: 7px;
   }
+  
+.drower .count-task-num {
+  text-align: left;
+}
   .accordian-grid-active .tasks-count {
     padding: 0px 0px 0px 90px;
     line-height: 20px;
@@ -696,7 +710,7 @@ div#contentGeneral:last-child {
   overflow-x: hidden; */
   }
   .serchlist-title {
-    margin: 0px -9px 0px;
+    margin: 0px 0px 0px;
     font-family: Poppins;
     font-size: 15px;
     font-weight: normal;
@@ -781,7 +795,7 @@ div#contentGeneral:last-child {
   }
   .searchGrid .serch-num {
     line-height: 5px;
-    padding-left: 26px;
+    padding-left: 43px;
     margin-bottom: 12px;
   }
   .assign-icon {
@@ -793,6 +807,7 @@ div#contentGeneral:last-child {
   }
   .assign-icon img {
     width: 32px;
+    height: auto;
   }
   .searchBox .input-group {
     width: 100%;
@@ -823,7 +838,11 @@ div#contentGeneral:last-child {
   }
   .downArrow {
     margin-top: 6px;
-    margin-left: 15px;
+    margin-left: 17px;
+  }
+  .mobile-right .downArrow {
+    margin-top: 6px;
+    margin-left: 31px;
   }
   .choose-licenses .search-icon {
     text-align: right;

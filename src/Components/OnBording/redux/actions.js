@@ -29,48 +29,65 @@ const INSERTCERIFICATEDETAILS_SUCCESS =
 const INSERTCERIFICATEDETAILS_FAILED =
   "CAPMTECH/INSERTCERIFICATEDETAILS_FAILED";
 
+const GET_ASSIGN_TASK_DATA_REQUEST = "CAPMTECH/GET_ASSIGN_TASK_DATA_REQUEST";
+const GET_ASSIGN_TASK_DATA_REQUEST_SUCCESS =
+  "CAPMTECH/GET_ASSIGN_TASK_DATA_REQUEST_SUCCESS";
+const GET_ASSIGN_TASK_DATA_REQUEST_FAILED =
+  "CAPMTECH/GET_ASSIGN_TASK_DATA_REQUEST_FAILED";
 
+const UPDATE_MOBILE_NUMBER_OTP_REQUEST =
+  "CAPMTECH/UPDATE_MOBILE_NUMBER_OTP_REQUEST";
+const UPDATE_MOBILE_NUMBER_OTP_REQUEST_SUCCESS =
+  "CAPMTECH/UPDATE_MOBILE_NUMBER_OTP_REQUEST_SUCCESS";
+const UPDATE_MOBILE_NUMBER_OTP_REQUEST_FAILED =
+  "CAPMTECH/UPDATE_MOBILE_NUMBER_OTP_REQUEST_FAILED";
 
-const GET_ASSIGN_TASK_DATA_REQUEST = 'CAPMTECH/GET_ASSIGN_TASK_DATA_REQUEST';
-const GET_ASSIGN_TASK_DATA_REQUEST_SUCCESS = 'CAPMTECH/GET_ASSIGN_TASK_DATA_REQUEST_SUCCESS';
-const GET_ASSIGN_TASK_DATA_REQUEST_FAILED = 'CAPMTECH/GET_ASSIGN_TASK_DATA_REQUEST_FAILED';
+const INSERT_TASK_DATA_REQUEST = "CAPMTECH/INSERT_TASK_DATA_REQUEST";
+const INSERT_TASK_DATA_REQUEST_SUCCESS =
+  "CAPMTECH/INSERT_TASK_DATA_REQUEST_SUCCESS";
+const INSERT_TASK_DATA_REQUEST_FAILED =
+  "CAPMTECH/INSERT_TASK_DATA_REQUEST_FAILED";
 
-const UPDATE_MOBILE_NUMBER_OTP_REQUEST = 'CAPMTECH/UPDATE_MOBILE_NUMBER_OTP_REQUEST';
-const UPDATE_MOBILE_NUMBER_OTP_REQUEST_SUCCESS = 'CAPMTECH/UPDATE_MOBILE_NUMBER_OTP_REQUEST_SUCCESS';
-const UPDATE_MOBILE_NUMBER_OTP_REQUEST_FAILED = 'CAPMTECH/UPDATE_MOBILE_NUMBER_OTP_REQUEST_FAILED';
+const SEND_MAIL_TASK_REQUEST = "CAPMTECH/SEND_MAIL_TASK_REQUEST";
+const SEND_MAIL_TASK_REQUEST_SUCCESS = "CAPMTECH/SEND_MAIL_TASK_REQUEST_SUCESS";
+const SEND_MAIL_TASK_REQUEST_FAILED = "CAPMTECH/SEND_MAIL_TASK_REQUEST_FAILED";
 
-
-
-const INSERT_TASK_DATA_REQUEST = 'CAPMTECH/INSERT_TASK_DATA_REQUEST';
-const INSERT_TASK_DATA_REQUEST_SUCCESS = 'CAPMTECH/INSERT_TASK_DATA_REQUEST_SUCCESS';
-const INSERT_TASK_DATA_REQUEST_FAILED = 'CAPMTECH/INSERT_TASK_DATA_REQUEST_FAILED';
-
-
-const SEND_MAIL_TASK_REQUEST = 'CAPMTECH/SEND_MAIL_TASK_REQUEST';
-const SEND_MAIL_TASK_REQUEST_SUCCESS = 'CAPMTECH/SEND_MAIL_TASK_REQUEST_SUCESS';
-const SEND_MAIL_TASK_REQUEST_FAILED = 'CAPMTECH/SEND_MAIL_TASK_REQUEST_FAILED';
-
-
-const GOVERNANCEDATA_REQUEST = 'CAPMTECH/GOVERNANCEDATA_REQUEST';
-const GOVERNANCEDATA_REQUEST_FAILED = 'CAPMTECH/GOVERNANCEDATA_REQUEST_FAILED';
-const GOVERNANCEDATA_REQUEST_SUCCESS = 'CAPMTECH/GOVERNANCEDATA_REQUEST_SUCCESS';
+const GOVERNANCEDATA_REQUEST = "CAPMTECH/GOVERNANCEDATA_REQUEST";
+const GOVERNANCEDATA_REQUEST_FAILED = "CAPMTECH/GOVERNANCEDATA_REQUEST_FAILED";
+const GOVERNANCEDATA_REQUEST_SUCCESS =
+  "CAPMTECH/GOVERNANCEDATA_REQUEST_SUCCESS";
 // Action method
 
-const STORE_ENTITYID = 'CAPMTECH/STORE_ENTITYID';
+const STORE_ENTITYID = "CAPMTECH/STORE_ENTITYID";
+const CLEAR_EMAIL_ALREADY_CACHE = "CAPMTECH/CLEAR_EMAIL_ALREADY_CACHE";
 
 const createTaskMailRequest = createAction(SEND_MAIL_TASK_REQUEST);
-const createTaskMailRequestSuccess = createAction(SEND_MAIL_TASK_REQUEST_SUCCESS);
+const clearEmailAlreadyCache = createAction(CLEAR_EMAIL_ALREADY_CACHE);
+
+const createTaskMailRequestSuccess = createAction(
+  SEND_MAIL_TASK_REQUEST_SUCCESS
+);
 const createTaskMailRequestFailed = createAction(SEND_MAIL_TASK_REQUEST_FAILED);
 
 const insertTaskListRequest = createAction(INSERT_TASK_DATA_REQUEST);
-const insertTaskListRequestSuccess = createAction(INSERT_TASK_DATA_REQUEST_SUCCESS);
-const insertTaskListRequestFailed = createAction(INSERT_TASK_DATA_REQUEST_FAILED);
+const insertTaskListRequestSuccess = createAction(
+  INSERT_TASK_DATA_REQUEST_SUCCESS
+);
+const insertTaskListRequestFailed = createAction(
+  INSERT_TASK_DATA_REQUEST_FAILED
+);
 
 const storeEnityIDwithCompaName = createAction(STORE_ENTITYID);
 
-const insertCerificateDetailsRequest = createAction(INSERTCERIFICATEDETAILS_REQUEST);
-const insertCerificateDetailsRequestSuccess = createAction(INSERTCERIFICATEDETAILS_SUCCESS);
-const insertCerificateDetailsRequestFailed = createAction(INSERTCERIFICATEDETAILS_FAILED);
+const insertCerificateDetailsRequest = createAction(
+  INSERTCERIFICATEDETAILS_REQUEST
+);
+const insertCerificateDetailsRequestSuccess = createAction(
+  INSERTCERIFICATEDETAILS_SUCCESS
+);
+const insertCerificateDetailsRequestFailed = createAction(
+  INSERTCERIFICATEDETAILS_FAILED
+);
 
 const companyTypeRequest = createAction(COMPANY_TYPE_REQUEST);
 const companyTypeRequestSuccess = createAction(COMPANY_TYPE_REQUEST_SUCCESS);
@@ -80,9 +97,15 @@ const sendOTPRequest = createAction(SEND_OTP_ACTION_REQUEST);
 const sendOTPRequestSuccess = createAction(SEND_OTP_ACTION_SUCCESS);
 const sendOTPRequestFailed = createAction(SEND_OTP_ACTION_FAILED);
 
-const updatePhoneNumberOTPRequest = createAction(UPDATE_MOBILE_NUMBER_OTP_REQUEST);
-const updatePhoneNumberOTPRequestSuccess = createAction(UPDATE_MOBILE_NUMBER_OTP_REQUEST_SUCCESS);
-const updatePhoneNumberOTPRequestFailed = createAction(UPDATE_MOBILE_NUMBER_OTP_REQUEST_FAILED)
+const updatePhoneNumberOTPRequest = createAction(
+  UPDATE_MOBILE_NUMBER_OTP_REQUEST
+);
+const updatePhoneNumberOTPRequestSuccess = createAction(
+  UPDATE_MOBILE_NUMBER_OTP_REQUEST_SUCCESS
+);
+const updatePhoneNumberOTPRequestFailed = createAction(
+  UPDATE_MOBILE_NUMBER_OTP_REQUEST_FAILED
+);
 
 // Action method
 const verifyEmailRequest = createAction(VERIFY_EMAIL_REQUEST);
@@ -90,23 +113,30 @@ const verifyEmailRequestSuccess = createAction(VERIFY_EMAIL_REQUEST_SUCCESS);
 const verifyEmailRequestFailed = createAction(VERIFY_EMAIL_REQUEST_FAILED);
 
 const insUpdateDeletAPIRequest = createAction(INS_UPDATE_DELETE_API_REQUEST);
-const insUpdateDeletAPIRequestSuccess = createAction(INS_UPDATE_DELETE_API_SUCCESS);
-const insUpdateDeletAPIRequestFailed = createAction(INS_UPDATE_DELETE_API_FAILED);
+const insUpdateDeletAPIRequestSuccess = createAction(
+  INS_UPDATE_DELETE_API_SUCCESS
+);
+const insUpdateDeletAPIRequestFailed = createAction(
+  INS_UPDATE_DELETE_API_FAILED
+);
 
 const verifyOTPRequest = createAction(VERIFY_OTP_REQUEST);
 const verifyOTPRequestSuccess = createAction(VERIFY_OTP_SUCCESS);
 const verifyOTPRequestFailed = createAction(VERIFY_OTP_FAILED);
 
-
 const getAssignTaskDataReuest = createAction(GET_ASSIGN_TASK_DATA_REQUEST);
-const getAssignTaskDataReuestSuccess = createAction(GET_ASSIGN_TASK_DATA_REQUEST_SUCCESS);
-const getAssignTaskDataReuestFailed = createAction(GET_ASSIGN_TASK_DATA_REQUEST_FAILED);
-
+const getAssignTaskDataReuestSuccess = createAction(
+  GET_ASSIGN_TASK_DATA_REQUEST_SUCCESS
+);
+const getAssignTaskDataReuestFailed = createAction(
+  GET_ASSIGN_TASK_DATA_REQUEST_FAILED
+);
 
 const governanceAPIRequest = createAction(GOVERNANCEDATA_REQUEST);
-const governanceAPIRequestSuccess = createAction(GOVERNANCEDATA_REQUEST_SUCCESS);
+const governanceAPIRequestSuccess = createAction(
+  GOVERNANCEDATA_REQUEST_SUCCESS
+);
 const governanceAPIRequestFailed = createAction(GOVERNANCEDATA_REQUEST_FAILED);
-
 
 export const actions = {
   storeEnityIDwithCompaName,
@@ -149,10 +179,10 @@ export const actions = {
   verifyOTPRequest,
   verifyOTPRequestFailed,
   verifyOTPRequestSuccess,
-
   insertTaskListRequest,
   insertTaskListRequestSuccess,
   insertTaskListRequestFailed,
+  clearEmailAlreadyCache,
 };
 
 export const types = {
@@ -201,4 +231,6 @@ export const types = {
   SEND_MAIL_TASK_REQUEST,
   SEND_MAIL_TASK_REQUEST_FAILED,
   SEND_MAIL_TASK_REQUEST_SUCCESS,
+
+  CLEAR_EMAIL_ALREADY_CACHE,
 };

@@ -10,7 +10,7 @@ import { actions as otpVerificationActions } from "../../redux/actions";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
-import MobileStepper from "../mobileStepper"
+import MobileStepper from "../mobileStepper";
 
 function VeryOTP({ history, currentStep }) {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ function VeryOTP({ history, currentStep }) {
   const [isOTPValid, setIsOTPValid] = useState(false);
   const [otp, setOTP] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [phoneNumberErr, setPhoneNumberErr] = useState("")
+  const [phoneNumberErr, setPhoneNumberErr] = useState("");
   const [isEnableSecureOTP, setIsEnabledSecureOTP] = useState(false);
   const [showChangeMobileSection, setShowChangeMobileSection] = useState(false);
   const [showResendSection, setShowResendSection] = useState(false);
@@ -28,8 +28,8 @@ function VeryOTP({ history, currentStep }) {
   const [minutes, setMinutes] = useState(initialMinute);
   const [seconds, setSeconds] = useState(initialSeconds);
   const [otpValid, setOtpInValid] = useState("");
-  const [disabled, setDisabled] = useState(false)
-  const [availCheck, setAvailCheck] = useState(false)
+  const [disabled, setDisabled] = useState(false);
+  const [availCheck, setAvailCheck] = useState(false);
   const [countryCode, setCountryCode] = useState("+91");
   const [values, setValues] = useState({
     countryCode: "+91",
@@ -37,7 +37,8 @@ function VeryOTP({ history, currentStep }) {
 
   const otpInfo =
     state && state.complianceOfficer && state.complianceOfficer.otoInfo;
-  const email = state &&
+  const email =
+    state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.data &&
@@ -80,153 +81,155 @@ function VeryOTP({ history, currentStep }) {
     state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
     state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
 
-
   const validateCountryCode = (e) => {
-      let strr = e.target.value;
-      let str =  strr.replace(/\D/g,'')
-      console.log("str => ",strr);  
-      if (str === "") {
-        str = "91"
-      }
-      let payload = {
-        cntryCode: str,
-      };
-      console.log(payload);
-      api
-        .post("/api/CountryCodeCheck", payload)
-        .then(function (response) {
-          // handle success
-          console.log("response => ",response);
-          if (response && response.data && response.data.Status === "True") {
-            setCountryCode(true)
-          } else {
-            setCountryCode(false);
-          }
-        })
-        .catch(function (error) {
-          if (error) {
-            toast.error(error)
-          }
-        });
-}
-console.log("bomnumber => ",mobileNumber)
+    let strr = e.target.value;
+    let str = strr.replace(/\D/g, "");
+    console.log("str => ", strr);
+    if (str === "") {
+      str = "91";
+    }
+    let payload = {
+      cntryCode: str,
+    };
+    console.log(payload);
+    api
+      .post("/api/CountryCodeCheck", payload)
+      .then(function (response) {
+        // handle success
+        console.log("response => ", response);
+        if (response && response.data && response.data.Status === "True") {
+          setCountryCode(true);
+        } else {
+          setCountryCode(false);
+        }
+      })
+      .catch(function (error) {
+        if (error) {
+          toast.error(error);
+        }
+      });
+  };
+  console.log("bomnumber => ", mobileNumber);
   const handelChange = (e) => {
-    setDisabled(false)
+    setDisabled(false);
     const { name, value } = e.target;
     const mobileNumberReg = /^[0-9]{0,10}$/;
     const otpRE = /^[0-9]{0,5}$/;
-    if (e.target.name === 'otp') {
+    if (e.target.name === "otp") {
       if (!mobileNumberReg.test(e.target.value)) {
-        return '';
+        return "";
       }
     }
     if (name === "countryCode") {
-      setCountryCode(true)
+      setCountryCode(true);
       const re = /[\d\+]+/;
       if (e.target.value && !re.test(e.target.value)) {
         return "";
-      }else{
-        setValues({countryCode:e.target.value})
+      } else {
+        setValues({ countryCode: e.target.value });
       }
     }
     if (name === "phoneNumber") {
       if (!mobileNumberReg.test(value)) {
-        return ""
-      }
-      else {
-        setPhoneNumber(e.target.value)
+        return "";
+      } else {
+        setPhoneNumber(e.target.value);
       }
       if (value.length < 10) {
-        setPhoneNumberErr("Mobile number is invalid")
+        setPhoneNumberErr("Mobile number is invalid");
       } else {
-        setPhoneNumberErr("")
+        setPhoneNumberErr("");
       }
     }
     if (name === "otp") {
       if (!otpRE.test(value)) {
-        return ""
+        return "";
       }
       setOTP(value);
     }
-  }
+  };
 
   const updateMobileNumber = () => {
-    setShowChangeMobileSection(true)
+    setShowChangeMobileSection(true);
     setIsEnabledSecureOTP(true);
-
-  }
+  };
 
   const resendOTP = () => {
     setShowResendSection(false);
     let payload = {
       phn: mobileNumber,
-      email: email
-    }
+      email: email,
+    };
+    console.log(payload);
     api
       .post("/api/sendmsgwithverificationcode", payload)
       .then(function (response) {
+        console.log(response.data);
         // handle success
-        if (
-          response &&
-          response.data &&
-          response.data.statuscode === "200"
-        ) {
-          toast.success("The OTP has been sent to your registered mobile number")
+        if (response && response.data && response.data.statuscode === "200") {
+          toast.success(
+            "The OTP has been sent to your registered mobile number"
+          );
         } else {
-          toast.error("something went wrong please try again !!!")
+          toast.error("something went wrong please try again !!!");
         }
       })
       .catch(function (error) {
-        if (error) {
-        }
+        console.log(error);
       });
     setSeconds(59);
-
-  }
-
+  };
 
   const updateMobileNumberAndSendOTP = () => {
-    setSeconds(59)
+    setSeconds(59);
     const mobileNumberReg = /^[0-9]{0,10}$/;
-    if (phoneNumber === "" || !mobileNumberReg.test(phoneNumber) || phoneNumber.length < 10 ) {
+    if (
+      phoneNumber === "" ||
+      !mobileNumberReg.test(phoneNumber) ||
+      phoneNumber.length < 10
+    ) {
       return "";
     } else {
-      setDisabled(true)
-      setCountryCode(true)
+      setDisabled(true);
+      setCountryCode(true);
     }
-    availabilityCheck(phoneNumber)
-  }
+    availabilityCheck(phoneNumber);
+  };
 
   const availabilityCheck = (phoneNumber) => {
     let countryCode;
-    let strr = values.countryCode
-    countryCode = strr.replace(/\D/g, '')
+    let strr = values.countryCode;
+    countryCode = strr.replace(/\D/g, "");
     let payload = {
-      loginID     : phoneNumber,
-      loginty     : "AdminMobile",
-      countrycode : values.countryCode === "" || values.countryCode === "+"  ? "91" : countryCode,
-    }
+      loginID: phoneNumber,
+      loginty: "AdminMobile",
+      countrycode:
+        values.countryCode === "" || values.countryCode === "+"
+          ? "91"
+          : countryCode,
+    };
     api
       .post("/api/availabilityCheck", payload)
-      .then(function(response){
-          console.log("availabaility res => ",response)
-          if (response && 
-              response.data && 
-              response.data.Status === "false") {
-                if (countryCode) {
-                const adminPWD = state && state.complianceOfficer &&
-                                state.complianceOfficer.userData
-                                && state.complianceOfficer.userData &&
-                                state.complianceOfficer.userData &&
-                                state.complianceOfficer.userData.adminPWD;
+      .then(function (response) {
+        console.log("availabaility res => ", response);
+        if (response && response.data && response.data.Status === "false") {
+          if (countryCode) {
+            const adminPWD =
+              state &&
+              state.complianceOfficer &&
+              state.complianceOfficer.userData &&
+              state.complianceOfficer.userData &&
+              state.complianceOfficer.userData &&
+              state.complianceOfficer.userData.adminPWD;
 
-                let countryCode;
-                let strr = values.countryCode;
-                // countryCode = strr.replace(/\D/g, '');
-                countryCode = strr;
-        
-              setTimeout(() => {
-                dispatch(otpVerificationActions.updatePhoneNumberOTPRequest({
+            let countryCode;
+            let strr = values.countryCode;
+            // countryCode = strr.replace(/\D/g, '');
+            countryCode = strr;
+
+            setTimeout(() => {
+              dispatch(
+                otpVerificationActions.updatePhoneNumberOTPRequest({
                   entityName: "",
                   adminName: "",
                   adminMobile: phoneNumber,
@@ -238,52 +241,52 @@ console.log("bomnumber => ",mobileNumber)
                   designation: "",
                   userID: userID,
                   history,
-                  countrycode: countryCode === "" || countryCode === "+" ? "+91" : countryCode,
-                  from: 'personal-details-team'
-                }),
-                );
-              }, 1000);
-              setIsEnabledSecureOTP(true);
-              setShowChangeMobileSection(false)  
-            }else{
-              setCountryCode(false)
-            }    
-          }else{
-            toast.error("Mobile Number Already registered")
+                  countrycode:
+                    countryCode === "" || countryCode === "+"
+                      ? "+91"
+                      : countryCode,
+                  from: "personal-details-team",
+                })
+              );
+            }, 1000);
+            setIsEnabledSecureOTP(true);
+            setShowChangeMobileSection(false);
+          } else {
+            setCountryCode(false);
           }
+        } else {
+          toast.error("Mobile Number Already registered");
+        }
       })
       .catch(function (error) {
         if (error) {
-            toast.error(error)
+          toast.error(error);
         }
       });
-  }
-
+  };
 
   const sendOTPRequest = (text) => {
-    setDisabled(true)
-    let payload = {}
+    setDisabled(true);
+    let payload = {};
     payload = {
       phn: mobileNumber,
-      email: email
-    }
+      email: email,
+    };
 
     api
       .post("/api/sendmsgwithverificationcode", payload)
       .then(function (response) {
         // handle success
-        if (
-          response &&
-          response.data &&
-          response.data.statuscode === "200"
-        ) {
+        if (response && response.data && response.data.statuscode === "200") {
           setIsEnabledSecureOTP(true);
-          setShowChangeMobileSection(false)
-          toast.success("The OTP has been sent to your registered mobile number")
+          setShowChangeMobileSection(false);
+          toast.success(
+            "The OTP has been sent to your registered mobile number"
+          );
         } else {
-          toast.error("something went wrong please try again !!!")
+          toast.error("something went wrong please try again !!!");
           setIsEnabledSecureOTP(true);
-          setShowChangeMobileSection(false)
+          setShowChangeMobileSection(false);
         }
       })
       .catch(function (error) {
@@ -291,7 +294,7 @@ console.log("bomnumber => ",mobileNumber)
           setIsEnabledSecureOTP(false);
         }
       });
-  }
+  };
   //  else {
   //   //toast.error("Mobile number is not generated")
   // }
@@ -304,28 +307,27 @@ console.log("bomnumber => ",mobileNumber)
       }
       if (seconds === 0) {
         if (minutes === 0) {
-          setShowResendSection(true)
-          clearInterval(myInterval)
+          setShowResendSection(true);
+          clearInterval(myInterval);
         } else {
           setMinutes(minutes - 1);
           setSeconds(59);
         }
       }
-    }, 1000)
+    }, 1000);
     return () => {
       clearInterval(myInterval);
     };
   });
 
   const verifyOTP = () => {
-    let payload = {}
+    let payload = {};
     payload = {
       phn: mobileNumber,
       email: email,
-      otp: otp
-    }
+      otp: otp,
+    };
     if (otp !== "") {
-
       api
         .post("/api/GetOTP", payload)
         .then(function (response) {
@@ -336,11 +338,11 @@ console.log("bomnumber => ",mobileNumber)
             response.data.otp != "" &&
             response.data.Status === "False"
           ) {
-            setOtpInValid(true)
+            setOtpInValid(true);
           } else {
-            setOtpInValid(false)
+            setOtpInValid(false);
             setTimeout(() => {
-              history.push("/redirect-dashboard")
+              history.push("/redirect-dashboard");
             }, 4000);
           }
         })
@@ -350,12 +352,9 @@ console.log("bomnumber => ",mobileNumber)
           }
         });
     } else {
-      toast.error("Enter OTP")
+      toast.error("Enter OTP");
     }
-  }
-
-
-
+  };
 
   return (
     <div className="row">
@@ -378,8 +377,12 @@ console.log("bomnumber => ",mobileNumber)
                   <div className="col-lg-12">
                     <div className="header_logo">
                       {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                        <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
-                        <span className="camp">COMPLIANCE SUTRA</span>
+                      <img
+                        src={comtech}
+                        alt="COMPLIANCE SUTRA"
+                        title="COMPLIANCE SUTRA"
+                      />
+                      <span className="camp">COMPLIANCE SUTRA</span>
                       {/* </a> */}
                     </div>
                   </div>
@@ -399,10 +402,10 @@ console.log("bomnumber => ",mobileNumber)
                     src={leftArrow}
                     alt=""
                   />{" "} */}
-                      Let's secure your account
-                      <br />
-                      with verified mobile
-                    </p>
+                  Let's secure your account
+                  <br />
+                  with verified mobile
+                </p>
 
                 {/* <p className="login_title"><img className="right-back-arrow" src={leftArrow} alt="" /> Let's secure your account<br />
                       with verified mobile</p>                  */}
@@ -440,14 +443,25 @@ console.log("bomnumber => ",mobileNumber)
                   </div> */}
 
                 {isEnableSecureOTP === false && (
-
                   <div>
                     <div className="send-otp">
                       <p className="disc-text">
-                        This helps you prevent unauthorized access to your account. And you don't have to remember any password
+                        This helps you prevent unauthorized access to your
+                        account. And you don't have to remember any password
                       </p>
                       <p className="will-send-text">
-                        We will send OTP on {cntryCode == 0 ? "": cntryCode }{" "}{mobileNumber}{" "}<span className="space-mobile d-block d-sm-none"><br /></span><span style={{ cursor: "pointer" }} onClick={() => updateMobileNumber()} className="change">CHANGE</span>
+                        We will send OTP on {cntryCode == 0 ? "" : cntryCode}{" "}
+                        {mobileNumber}{" "}
+                        <span className="space-mobile d-block d-sm-none">
+                          <br />
+                        </span>
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => updateMobileNumber()}
+                          className="change"
+                        >
+                          CHANGE
+                        </span>
                       </p>
                       <button
                         disabled={disabled}
@@ -457,79 +471,107 @@ console.log("bomnumber => ",mobileNumber)
                         SECURE NOW
                       </button>
                     </div>
-
-
                   </div>
                 )}
-                {showChangeMobileSection &&
-                  (
-                    <div>
-                      <div className="send-otp">
-                        <p className="disc-text">
-                          This helps you prevent unauthorized access to your account. And you don't have to remember any password
+                {showChangeMobileSection && (
+                  <div>
+                    <div className="send-otp">
+                      <p className="disc-text">
+                        This helps you prevent unauthorized access to your
+                        account. And you don't have to remember any password
                       </p>
-                        <p className="will-send-text">
-                          We will send OTP on:
-                        </p>
-                        <div className="form-group smallBtn">
-                          <div className="d-flex">
-                            <input
-                              style={{width:"45px",fontWeight:"400",fontSize:"13px"}}
-                              type="text"
-                              className="form-control plus-pin"
-                              id="countryCode"
-                              name="countryCode"
-                              maxLength="3"
-                              value={values.countryCode}
-                              onChange={handelChange}
-                              onBlur={(e) => validateCountryCode(e)}
-                            />
-                            <input
-                              style={{fontWeight:"400",fontSize:"13px"}}
-                              type="text"
-                              name="phoneNumber"
-                              value={phoneNumber}
-                              onChange={handelChange}
-                              className={
-                                "form-control input-mobile-box-otp" +
-                                (phoneNumberErr !== ""
-                                  ? "input-error"
-                                  : "")
-                              }
-                              id="OTP"
-                              maxLength={10}
-                              placeholder="Enter mobile number"
-                              required
-                            />
-                          </div>
-                          {!countryCode && (<p className="input-error-message"style={{marginBottom:"0px"}}>Invalid country code</p>)}
-                          {phoneNumberErr !== "" && (<p className="input-error-message" style={{position:"absolute"}}>{phoneNumberErr}</p>)}
-                          <button
-                            disabled={!countryCode || disabled}
-                            onClick={() => {
-                              updateMobileNumberAndSendOTP();
+                      <p className="will-send-text">We will send OTP on:</p>
+                      <div className="form-group smallBtn">
+                        <div className="d-flex">
+                          <input
+                            style={{
+                              width: "45px",
+                              fontWeight: "400",
+                              fontSize: "13px",
                             }}
-                            className="btn save-details common-button"
-                          >
-                            Secure Now
-                    </button>
+                            type="text"
+                            className="form-control plus-pin"
+                            id="countryCode"
+                            name="countryCode"
+                            maxLength="3"
+                            value={values.countryCode}
+                            onChange={handelChange}
+                            onBlur={(e) => validateCountryCode(e)}
+                          />
+                          <input
+                            style={{ fontWeight: "400", fontSize: "13px" }}
+                            type="text"
+                            name="phoneNumber"
+                            value={phoneNumber}
+                            onChange={handelChange}
+                            className={
+                              "form-control input-mobile-box-otp" +
+                              (phoneNumberErr !== "" ? "input-error" : "")
+                            }
+                            id="OTP"
+                            maxLength={10}
+                            placeholder="Enter mobile number"
+                            required
+                          />
                         </div>
+                        {!countryCode && (
+                          <p
+                            className="input-error-message"
+                            style={{ marginBottom: "0px" }}
+                          >
+                            Invalid country code
+                          </p>
+                        )}
+                        {phoneNumberErr !== "" && (
+                          <p
+                            className="input-error-message"
+                            style={{ position: "absolute" }}
+                          >
+                            {phoneNumberErr}
+                          </p>
+                        )}
+                        <button
+                          disabled={!countryCode || disabled}
+                          onClick={() => {
+                            updateMobileNumberAndSendOTP();
+                          }}
+                          className="btn save-details common-button"
+                        >
+                          Secure Now
+                        </button>
                       </div>
-                    </div>)}
+                    </div>
+                  </div>
+                )}
 
                 {isEnableSecureOTP && !showChangeMobileSection && (
                   <div className="verify-otp">
-                    <p className="disc-text">Please enter the verification code sent to your phone no.</p>
-                    <p className="will-send-text">  {cntryCode}{" "}{mobileNumber} <span style={{ cursor: "pointer" }} onClick={() => updateMobileNumber()} className="mobile-change">CHANGE</span></p>
+                    <p className="disc-text">
+                      Please enter the verification code sent to your phone no.
+                    </p>
+                    <p className="will-send-text">
+                      {" "}
+                      {cntryCode} {mobileNumber}{" "}
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => updateMobileNumber()}
+                        className="mobile-change"
+                      >
+                        CHANGE
+                      </span>
+                    </p>
 
                     <div className="form-group smallBtn">
-                      <input type="text"
+                      <input
+                        type="text"
                         className={
                           "form-control " +
                           (otp !== "" && otpValid === true
                             ? "input-error"
                             : "") +
-                          (otp !== "" && otpValid === false ? " success-input-form-control" : "")
+                          (otp !== "" && otpValid === false
+                            ? " success-input-form-control"
+                            : "")
                         }
                         value={otp}
                         name="otp"
@@ -537,19 +579,52 @@ console.log("bomnumber => ",mobileNumber)
                         id="OTP"
                         maxLength={5}
                         placeholder="Enter 5 digit OTP"
-                        required />
-                      {otp !== "" && otpValid === true && (<p className="input-error-message" style={{position:"absolute"}}>OTP is invalid</p>)}
-                    </div>
-                    {!showResendSection && <p style={{ display: "flex" }} className="Resend-OTP-in"> Resend OTP in:<span className="second">{minutes === 0 && seconds === 0
-                      ? null
-                      : <p style={{ fontStyle: "bold" }} className="count-text-sec"> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</p>
-                    }</span></p>}
-                    {showResendSection &&
-                      (
-                        <p> <span className="resend-text"><b>Didn't receive an OTP?</b>
-                        </span><span onClick={() => resendOTP()} className="resend">RESEND</span></p>
+                        required
+                      />
+                      {otp !== "" && otpValid === true && (
+                        <p
+                          className="input-error-message"
+                          style={{ position: "absolute" }}
+                        >
+                          OTP is invalid
+                        </p>
                       )}
-                    <button style={{ cursor: "pointer" }} onClick={() => verifyOTP()} className="btn save-details common-button mt-0">VERIFY</button>
+                    </div>
+                    {!showResendSection && (
+                      <p style={{ display: "flex" }} className="Resend-OTP-in">
+                        {" "}
+                        Resend OTP in:
+                        <span className="second">
+                          {minutes === 0 && seconds === 0 ? null : (
+                            <p
+                              style={{ fontStyle: "bold" }}
+                              className="count-text-sec"
+                            >
+                              {" "}
+                              {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                            </p>
+                          )}
+                        </span>
+                      </p>
+                    )}
+                    {showResendSection && (
+                      <p>
+                        {" "}
+                        <span className="resend-text">
+                          <b>Didn't receive an OTP?</b>
+                        </span>
+                        <span onClick={() => resendOTP()} className="resend">
+                          RESEND
+                        </span>
+                      </p>
+                    )}
+                    <button
+                      style={{ cursor: "pointer" }}
+                      onClick={() => verifyOTP()}
+                      className="btn save-details common-button mt-0"
+                    >
+                      VERIFY
+                    </button>
                   </div>
                 )}
                 {/* <span className="change">CHANGE</span> */}
@@ -570,7 +645,12 @@ console.log("bomnumber => ",mobileNumber)
                   <div className="col-6"></div>
                   <div className="col-6 d-none d-sm-block text-right">
                     {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                      <img className="header_logo footer-logo-secmark" src={secmark} alt="SECMARK" title="SECMARK" />
+                    <img
+                      className="header_logo footer-logo-secmark"
+                      src={secmark}
+                      alt="SECMARK"
+                      title="SECMARK"
+                    />
                     {/* </a> */}
                   </div>
                 </div>

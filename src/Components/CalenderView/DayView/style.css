@@ -1,0 +1,166 @@
+.detail-main {
+  padding: 0 48px 12px;
+  overflow-y: auto;
+  height: calc(100vh - 249px);
+}
+.take-action .detail-main {
+  padding: 0 0 12px;
+}
+.detail-container {
+  display: flex;
+  padding: 16px 24px;
+  border-radius: 4px;
+  background-color: #dedcff;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.detail-content {
+  display: flex;
+  /* align-items: center; */
+  max-width: 70%;
+  width: 100%;
+}
+.detail-name {
+  display: flex;
+}
+
+.detail-name p {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.license-code {
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: #f7f4fe;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #1b1d21;
+  border: none;
+}
+
+.detail-content h2 {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #1b1d21;
+  margin: 0 15px 0 0;
+  max-width: 300px;
+  width: 100%;
+}
+.detail-footer {
+  width: 30%;
+}
+.approval {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #ff5f31;
+  border: none;
+  background-color: #dedcff;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: #ffefea;
+  max-width: 55px;
+}
+
+.approval-day {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #ff5f31;
+  border: none;
+  background-color: #dedcff;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: #ffefea;
+}
+
+.assigned-day {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #31d524;
+  border: none;
+  background-color: #dedcff;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background-color: #fbfffa;
+}
+
+.user-name {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #828282;
+}
+
+@media screen and (max-width: 767.99px) {
+  .detail-container {
+    padding: 16px;
+  }
+  .detail-main {
+    padding: 0 20px 12px;
+  }
+  .detail-content {
+    max-width: 100%;
+  }
+  .detail-content h2 {
+    font-weight: 600;
+    max-width: 90%;
+  }
+  .detail-footer {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .license-code {
+    color: #1b1d21 !important;
+  }
+}
+@media screen and (min-width: 768px) {
+  .detail-content {
+    justify-content: center;
+  }
+  .detail-content h2 {
+    flex: 1;
+    max-width: 100%;
+  }
+  .status-container {
+    flex: 0.5;
+  }
+  .detail-name.align-left-always {
+    flex: 0.6;
+  }
+}

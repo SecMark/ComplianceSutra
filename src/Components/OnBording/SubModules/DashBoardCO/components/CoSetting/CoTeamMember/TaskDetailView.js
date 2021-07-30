@@ -17,7 +17,6 @@ function TaskDetailsView({
   taskList,
   companyName,
 }) {
-
   const [selectedTask, setSelectedTask] = useState(null);
   const [completedTaskList, setCompletedTaskList] = useState([]);
   const [completedDate, setCompletedDate] = useState("");

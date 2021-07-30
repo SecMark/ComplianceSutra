@@ -11,7 +11,7 @@ const actionHandler = {
     ...state,
     isVerifiedEmail: false,
     verifyEmailInfo: {},
-    emailAlreadExist:payload.emailAlreadyExistMessage
+    emailAlreadExist: payload.emailAlreadyExistMessage,
   }),
   [types.VERIFY_EMAIL_REQUEST_SUCCESS]: (state, { payload }) => ({
     ...state,
@@ -35,7 +35,7 @@ const actionHandler = {
     isVerifiedEmail: true,
     emailInfo: payload,
     personalInfo: payload,
-    userData:payload.userInfo
+    userData: payload.userInfo,
   }),
   [types.COMPANY_TYPE_REQUEST]: (state) => ({
     ...state,
@@ -92,45 +92,45 @@ const actionHandler = {
   [types.INSERTCERIFICATEDETAILS_FAILED]: (state) => ({
     ...state,
     cerificateInfo: {},
-    certificateloader: true
+    certificateloader: true,
   }),
 
-    [types.INSERT_TASK_DATA_REQUEST]: (state) => ({
-        ...state,
-        taskInfo: {}
-    }),
-    [types.INSERT_TASK_DATA_REQUEST_SUCCESS]: (state, { payload }) => ({
-        ...state,
-        taskInfo: payload
-    }),
-    [types.INSERT_TASK_DATA_REQUEST_FAILED]: (state) => ({
-        ...state,
-        taskInfo: {}
-    }),
+  [types.INSERT_TASK_DATA_REQUEST]: (state) => ({
+    ...state,
+    taskInfo: {},
+  }),
+  [types.INSERT_TASK_DATA_REQUEST_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    taskInfo: payload,
+  }),
+  [types.INSERT_TASK_DATA_REQUEST_FAILED]: (state) => ({
+    ...state,
+    taskInfo: {},
+  }),
 
-    [types.SEND_MAIL_TASK_REQUEST]: (state) => ({
-        ...state,
-        taskMailInfo: {}
-    }),
-    [types.SEND_MAIL_TASK_REQUEST_SUCCESS]: (state, { payload }) => ({
-        ...state,
-        taskMailInfo: payload
-    }),
-    [types.SEND_MAIL_TASK_REQUEST_FAILED]: (state) => ({
-        ...state,
-        taskMailInfo: {}
+  [types.SEND_MAIL_TASK_REQUEST]: (state) => ({
+    ...state,
+    taskMailInfo: {},
+  }),
+  [types.SEND_MAIL_TASK_REQUEST_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    taskMailInfo: payload,
+  }),
+  [types.SEND_MAIL_TASK_REQUEST_FAILED]: (state) => ({
+    ...state,
+    taskMailInfo: {},
   }),
   [types.GET_ASSIGN_TASK_DATA_REQUEST]: (state) => ({
     ...state,
-    assignedTaskData: {}
+    assignedTaskData: {},
   }),
   [types.GET_ASSIGN_TASK_DATA_REQUEST_SUCCESS]: (state, { payload }) => ({
     ...state,
-    assignedTaskData: payload
+    assignedTaskData: payload,
   }),
   [types.GET_ASSIGN_TASK_DATA_REQUEST_FAILED]: (state) => ({
     ...state,
-    assignedTaskData: {}
+    assignedTaskData: {},
   }),
   [types.UPDATE_MOBILE_NUMBER_OTP_REQUEST]: (state) => ({
     ...state,
@@ -160,12 +160,17 @@ const actionHandler = {
     ...state,
     entityInfo: payload,
   }),
+
+  [types.CLEAR_EMAIL_ALREADY_CACHE]: (state, { payload }) => ({
+    ...state,
+    emailAlreadExist: payload,
+  }),
 };
 
 export default handleActions(actionHandler, {
   isVerifiedEmail: false,
   emailInfo: {},
-  emailAlreadExist:"",
+  emailAlreadExist: "",
   verifyEmailInfo: {},
   companyType: false,
   companyInfo: {},
@@ -181,7 +186,7 @@ export default handleActions(actionHandler, {
   updateMobileNumber: false,
   otpStatusCo: {},
   entityInfo: [],
-  userInfo:{},
-  userData:{},
-  goveranceData: {}
+  userInfo: {},
+  userData: {},
+  goveranceData: {},
 });

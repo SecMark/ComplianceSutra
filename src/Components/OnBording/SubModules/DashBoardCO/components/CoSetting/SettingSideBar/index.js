@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { actions as loginActions } from "../../../../../../Authectication/redux/actions"
 import { withRouter } from "react-router-dom"
 import { actions as adminMenuActions } from "../../../MenuRedux/actions"
+import {actions as notficationActions} from "../../notification/Redux/actions"
 import sideBarlogo from "../../../../../../../assets/Icons/sideBarlogo.png"
 import togglemobile from "../../../../../../../assets/Icons/togglemobile.png"
 import MobileLeftSidebar from "../../MobileLeftSidebar"
@@ -20,6 +21,9 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
 
   const onLogoutClick = () => {
         dispatch(loginActions.createLogoutAction())
+        dispatch(adminMenuActions.setCurrentBoardViewTaskId(null));
+        dispatch(notficationActions.setTaskID(null))
+        dispatch(adminMenuActions.setCurrentCalendarViewTaskId(null))
         history.push("/login")
     }
     const closeMobileSidebar = () => {

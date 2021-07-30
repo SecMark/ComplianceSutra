@@ -133,10 +133,10 @@
   color: #11142d;
 }
 .bottom-logo-strip-verify .login-link {
-  opacity: 0.8;
+  /* opacity: 0.8; */
   font-family: Poppins;
-  font-size: 11px;
-  font-weight: normal;
+  font-size: 13px;
+  font-weight: 500;
   font-stretch: normal;
   font-style: normal;
   line-height: normal;

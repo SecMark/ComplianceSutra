@@ -414,6 +414,7 @@
 }
 .co-personal-grid .table td.deleteIconCheck {
   min-width: 80px;
+  padding-left: 0px;
 }
 .co-personal-grid .table td.companyName {
   min-width: 240px;
@@ -620,7 +621,6 @@
   max-height: calc(100vh - 210px);
   overflow: auto;
 }
-
 
 /* Css for Delete Confirmation Model*/
 
@@ -1053,5 +1053,4 @@
     color: #1b1d21;
     margin-bottom: 19px;
   }
-
 }

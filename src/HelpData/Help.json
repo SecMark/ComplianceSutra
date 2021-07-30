@@ -1,0 +1,135 @@
+[
+  {
+    "id": "1",
+    "title": "Managing Your Account",
+
+    "questions": [
+      {
+        "questionId": "1",
+        "question": "What is Settlement Scheme 2020 all about?",
+        "answer": "In view of the large-scale disruption caused by the COVID-19 pandemic, markets regulator Sebi has extended till 31 December the one-time settlement scheme for entities that executed reversal of trades in stock options segment of the BSE during 2014 and 2015.The settlement scheme, introduced by the regulator in July, commenced on 1 August, 2020 and was supposed to end on 31 October, 2020.However, amidst the disruption caused by the pandemic, Sebi received many representations seeking extension of the period of the scheme, the regulator said in a public notice issued late on Saturday."
+      },
+      {
+        "questionId": "2",
+        "question": "What is security",
+        "answer": "We be made solely at the discretion of SecMark and shallbe intimated to the client by a suitable modification to the terms and conditions or otherapplicable section on the website or in any other manner."
+      },
+      {
+        "questionId": "3",
+        "question": "What is World",
+        "answer": " the discretion of SecMark and shallbe intimated to the client by a suitable modification to the terms and conditions or otherapplicable section on the website or in any other manner."
+      },
+      {
+        "questionId": "4",
+        "question": "What is Market",
+        "answer": " Market iscretion of SecMark and shallbe intimated to the client by a suitable modi"
+      },
+      {
+        "question": "Lorem awdadaj kdbak b kdjabbdka",
+        "questionId": "5",
+
+        "answer": "Lorem ipsum dolor sit amet consectetur adipis heyaed adadgha"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Security Issues",
+    "questions": [
+      {
+        "questionId": "1",
+
+        "answer": "We be made solely at the discretion of SecMark and shallbe intimated to the client by a suitable modification to the terms and conditions or otherapplicable section on the website or in any other manner.",
+
+        "question": "Lorem ipshdlabhawdhadadb da"
+      },
+      {
+        "question": "Lorem awdadaj kdbak b kdjabbdka",
+        "questionId": "2",
+
+        "answer": "Lorem ipsum dolor sit amet consectetur adipis heyaed adadgha"
+      },
+      {
+        "question": "Lorem awdadaj kdbak b kdjabbdka",
+        "questionId": "3",
+
+        "answer": "Lorem ipsum dolor sit amet consectetur adipis heyaed adadgha"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Refunds",
+    "questions": [
+      {
+        "questionId": "1",
+
+        "answer": "new security to world peace",
+
+        "question": "Lorem ipsum doloddhdlabhawdhadadb da"
+      },
+      {
+        "questionId": "2",
+
+        "question": "Lorem awdadaj kdbak b kdjabbdka",
+        "answer": "new security to world peace"
+      },
+      {
+        "questionId": "3",
+        "question": "What is World",
+        "answer": " the discretion of SecMark and shallbe intimated to the client by a suitable modification to the terms and conditions or otherapplicable section on the website or in any other manner."
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Payment",
+    "questions": [
+      {
+        "questionId": "1",
+
+        "answer": "new security to world peace",
+
+        "question": "Lorem ipsum dolor sit amet consectetur adipis heyaed adadghab  da"
+      },
+      {
+        "questionId": "2",
+
+        "question": "Lorem awdadaj kdbak b kdjabbdka",
+        "answer": "new security to world peace"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "title": "Account",
+    "questions": [
+      {
+        "questionId": "1",
+
+        "answer": "new security to world peace",
+
+        "question": "Lorem ipsum dolor sit amet consectetur adipb da"
+      },
+      {
+        "questionId": "2",
+
+        "question": "Lorem awdadaj kdbak b kdjabbdka",
+        "answer": "new security to world peace"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "title": "Others",
+    "questions": [
+      {
+        "question": "Lorem ipsum dolor sit amet codlabhawdhadadb da"
+      },
+      {
+        "question": "Lorem awdadaj kdbak b kdjabbdka"
+      }
+    ],
+    "answer": ""
+  }
+]

@@ -24,7 +24,7 @@ import "./style.css";
 const stepperContentArray = [
    {
       icon: CalenderIcon,
-      header: "Compliance calender that drives completion",
+      header: "Compliance calendar that drives completion",
       description: "Get alerts for not just on the deadline but also when to start the tasks"
    },
    {

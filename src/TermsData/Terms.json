@@ -1,0 +1,101 @@
+[
+  {
+    "id": "1",
+    "title": "General terms",
+    "content1": "Before availing of CAPMTech services, the Client shall complete the registration process as maybe prescribed from time to time. The Client shall follow the instruction given in the website forregistering himself as a client.",
+    "content2": "The Client agrees that all compliance, task management and Audit decisions are based on theClient's own evaluation of compliance objectives. The Client will not hold nor seek to holdSecMark or any of its officers, directors, partners, employees, subsidiaries, affiliates or business associates liable for any non-complaince, cost of damage incurred by the Client consequentupon relying on information, or any other material/information whatsoever on the web site,literature, brochure issued by SecMark or any other agency appointed/authorised by SecMark.",
+    "lists": []
+  },
+  {
+    "id": "2",
+    "title": "Security precaution and password",
+    "content1": "SecMark will provide the client with a username and a password which will enable him to avail of the facilities of CAPTech services on platform such as website and/or application or over thetelephone or in any such other manner as may be permitted by SecMark for availing of theservices. All terms regarding the use, reset and modification of such password shall be governedby information on the website.Any Password can be reset by the You at any point of time, by selecting the ‘Forgot Password’ link under the login area. As soon as You select the ‘Forgot Password’ link, a reset link is sent toYour registered email ID, where the same process of setting a unique password is followed.",
+    "content2": "The Client shall be responsible for keeping the Username and Password confidential and secure and shall be solely responsible for all acts and transactions done by any person whosoeverthrough SecMark CAPMTech System using the Client’s Username and/or Password whether ornot such person was authorised to do so.The Client shall immediately inform SecMark of any unauthorised use of the Client’s Usernameor Password with full details of such unauthorised use including the date of such unauthorised use, the manner in which it was unauthorisedly used, the transactions effected pursuant to such unauthorised use, etc.The Client agrees that he shall be fully liable and responsible for any and all unauthorised use and misuse of his Password and/or Username and also for any and all acts.Without prejudice to the provisions mentioned herein above, the Client shall immediately notifySecMark in writing with full details if:",
+    "lists": [
+      {
+        "list": "He discovers or suspects unauthorised access through his Username, Password orAccount,"
+      },
+      {
+        "list": "He notices discrepancies that might be attributable to unauthorised access, he forgets hispassword or he discovers a security flaw in our System."
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Fees",
+    "content1": "The Client agrees to pay SecMarck any fees, GST and other taxes as agreed upon and due fromtime to time, as applied to such Client's account, transactions for the services that the Clientreceives.",
+    "content2": " All fees and charges on SecMark’s platform are subject to change from time to time. Each timethere is any change with respect to fees, charges SecMark would notify all Clients by an emailand/or SMS to their registered email ID and contact number with all details, along with the dateof such changes being effective.",
+    "lists": []
+  },
+  {
+    "id": "4",
+    "title": "Miscellaneous",
+    "content1": "All modification to this Agreement shall be made solely at the discretion of SecMark and shallbe intimated to the client by a suitable modification to the terms and conditions or otherapplicable section on the website or in any other manner.",
+    "content2": "",
+    "lists": []
+  },
+  {
+    "id": "5",
+    "title": "Indemnity",
+    "content1": "In the event of death or insolvency of the client, winding up or liquidation, or their otherwisebecoming incapable of receiving our services SecMark may stop their services and the client orhis legal representative shall be liable for any losses, costs and be entitled to any surplus whichmay result therefrom.",
+    "content2": "The client agrees to indemnify SecMark from any loss, injury, claim or any action instituted against SecMark arising from the misuse of the password by any party.",
+    "lists": []
+  },
+  {
+    "id": "6",
+    "title": "Force Majeure",
+    "content1": " SecMark shall not be responsible for delay or default in the performance of their obligations dueto contingencies beyond their control, such as (including but not limited to) losses caused directly or indirectly by exchange or market rulings, suspension of trading, fire, flood, civil commotion, earthquake, war, strikes, failure of the systems, failure of the internet links orgovernment / regulatory action.",
+    "content2": "",
+    "lists": []
+  },
+  {
+    "id": "7",
+    "title": "Severence",
+    "content1": " In the event of any one or more of the provisions contained in this Agreement becoming invalid,illegal or unenforceable in any respect under any law for the time being in force, the validity,legality and enforceability of the remaining provisions contained herein shall not in any way beprejudiced or affected thereto.",
+    "content2": "",
+    "lists": []
+  },
+  {
+    "id": "8",
+    "title": "Refund & cancellation policy",
+    "content1": " The Refund & Cancellation policy for all payments made towards our services using any mode of payment shall stand as under:",
+    "content2": "",
+    "lists": [
+      {
+        "list": "In case you have paid the charges multiple times, please create a ticket here and we will initiate the necessary procedure to refund your money."
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "title": "Notice",
+    "content1": " All notices, correspondences or communications issued under this agreement shall be served in any one or more of the following modes of communications and such notice or communication shall be served at the ordinary place of residence and/or last known web address / residing address and / or at the ordinary business address of the party to this agreement such as -",
+    "content2": "",
+    "lists": [
+      {
+        "list": "By hand"
+      },
+      {
+        "list": "Delivery by post"
+      },
+      {
+        "list": "By registered post"
+      },
+      {
+        "list": "Under certificate of posting"
+      },
+      {
+        "list": "By email or fax"
+      },
+      {
+        "list": "By affixing it on the door at the last known business or residential address."
+      },
+      {
+        "list": "By oral communication to the party or on the last known telephone number or on the recording machine of such number."
+      },
+      {
+        "list": "By advertising in at least one prominent daily newspaper having circulation in the area where the last known business or residential address of the party is situated."
+      }
+    ]
+  }
+]

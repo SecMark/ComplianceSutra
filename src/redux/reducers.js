@@ -11,9 +11,13 @@ import users from "../Components/UserVerification/redux/reducers";
 import adminMenu from "../Components/OnBording/SubModules/DashBoardCO/MenuRedux/reducers";
 import NotificationRedu from "../Components/OnBording/SubModules/DashBoardCO/components/notification/Redux/Reducers/NotificationRedu";
 import HistoryReducer from "../Components/HistoryModule/redux/reducers";
+import UpdatesReducer from "../Components/NewRegulationModule/redux/reducers";
+import CalenderReducer from "../Components/CalenderView/redux/reducers";
+
+
 const createRootReducer = (history) =>
   combineReducers({
-    router: connectRouter(history),
+   // router: connectRouter(history),
     auth,
     complianceOfficer,
     teamMemberFlow,
@@ -23,6 +27,8 @@ const createRootReducer = (history) =>
     adminMenu,
     NotificationRedu,
     HistoryReducer,
+    UpdatesReducer,
+    CalenderReducer,
   });
 
 export default createRootReducer;

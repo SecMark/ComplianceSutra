@@ -1,0 +1,255 @@
+.Parent {
+  display: flex;
+
+  object-fit: contain;
+
+  position: relative;
+  height: 100vh;
+
+  background: rgb(189, 225, 244);
+  background: linear-gradient(
+    41deg,
+    rgba(189, 225, 244, 1) 10%,
+    rgba(255, 255, 255, 1) 40%,
+    rgba(228, 193, 232, 1) 100%
+  );
+  margin-left: 4.85vw;
+}
+.Parent::after {
+  opacity: 0.1;
+}
+
+.MainHelp {
+  display: flex;
+  margin: 0;
+  background-color: #fff;
+  padding: 0;
+  width: 27vw;
+  height: 100vh;
+  justify-content: space-between;
+  border-radius: 0;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.noView {
+  display: none;
+}
+.question {
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 3px 6px 0 rgba(176, 176, 176, 0.16);
+  padding: 0.1rem 0.5px;
+  width: 100%;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-left: auto;
+  cursor: pointer;
+  align-items: center;
+}
+
+.noAnswer {
+  display: none;
+}
+.Sidebar {
+  height: auto;
+}
+.Left {
+  width: 30vw;
+  border-radius: 0;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  color: #2c2738;
+}
+.HeaderHelp {
+  display: flex;
+
+  padding: 0.5rem 1.5rem;
+
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: 48px;
+}
+.HeaderHelp h4 {
+  padding-bottom: -0.6rem;
+}
+.Element {
+  margin: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+}
+#Title {
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+.Body {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+}
+.ViewMore {
+  color: #7a73ff;
+  background-color: #fff;
+  border: none;
+  display: flex;
+  align-items: initial;
+  margin-top: 1rem;
+}
+.question p {
+  font-size: 10px;
+  margin: 1rem 0;
+  padding: 0 0.8rem;
+  line-height: 1.5rem;
+  cursor: pointer;
+}
+.question button {
+  border: none;
+  background-color: #fff;
+  cursor: pointer;
+  width: 10%;
+}
+.question:hover {
+  box-shadow: 0 3px 6px 0 rgba(176, 176, 176, 0.16);
+  background-color: #f7f4fe;
+}
+.QuestionButton {
+  padding: 0 1rem;
+}
+.QuestionButtonMobile {
+  display: none;
+}
+.SidebarMobile {
+  display: none;
+}
+
+.Right {
+  width: 65vw;
+
+  height: 90vh;
+  margin: 2rem -5rem 2rem 8rem;
+
+  border-radius: 36px;
+}
+.ContainerHelp {
+  display: flex;
+  flex-direction: column;
+  align-items: initial;
+
+  padding: 2rem 1.5rem;
+  height: 90vh;
+
+  background-color: #fff;
+  border-radius: 36px;
+}
+.ContainerHelp h6 {
+  font-size: 24px;
+  margin-bottom: 2rem;
+}
+.ContainerHelp p {
+  font-size: 14px;
+  opacity: 0.7;
+  line-height: 2rem;
+}
+#bgRectangle {
+  overflow: hidden;
+
+  width: 60%;
+  height: 23%;
+  position: absolute;
+
+  top: 75%;
+  left: 40%;
+}
+
+.noAnswer {
+  display: none;
+}
+
+.showAnswer {
+  display: block;
+}
+
+.AnswersTrue {
+  position: absolute;
+  top: 0;
+  right: 100px;
+}
+
+/* MOBILE */
+@media screen and (max-width: 767px) {
+  .mobile-head {
+    margin: 0;
+  }
+  .Parent {
+    flex-direction: column;
+    background-color: #fff;
+    background: none;
+    margin: 0;
+  }
+  .HeaderHelp {
+    width: 100%;
+    height: 8rem;
+  }
+  .MainHelp {
+    width: 100vw;
+  }
+  .AnswersTrue {
+    position: relative;
+    top: 0;
+    right: 100px;
+    /* scroll: none; */
+  }
+  .QuestionButton {
+    display: none;
+  }
+  .QuestionButtonMobile {
+    display: inline-block;
+    padding: 0 1rem;
+  }
+  .Right {
+    width: 95%;
+    border-radius: 0;
+    height: auto;
+    margin-left: 6.5rem;
+  }
+  .ContainerHelp {
+    height: 90vh;
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+  }
+  .ContainerHelp h6 {
+    display: none;
+  }
+  .ContainerHelp p {
+    font-size: 10px;
+    line-height: 1.8;
+  }
+  .Sidebar {
+    display: none;
+  }
+  .SidebarMobile {
+    display: block;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem;
+  }
+  .ViewMore {
+    width: 100%;
+    padding: 0 20%;
+  }
+  #bgRectangle img {
+    display: none;
+  }
+}

@@ -112,8 +112,11 @@ function CoManagment({handleClose}) {
         if (categoryTypes != undefined) {
             let categoryoptions = []
             categoryTypes.map((item) => {
-                let option = { value: item.Category, label: item.Category }
-                categoryoptions.push(option);
+                if (item.Category !== "" || item.Category !== "") {
+                    let option = { value: item.Category, label: item.Category }
+                    categoryoptions.push(option);                    
+                }
+
             })
             setCategoryTypes(categoryoptions)
             setCategoryTypesBackup(categoryoptions)
@@ -174,7 +177,7 @@ function CoManagment({handleClose}) {
         if (addEditStatus != undefined) {
             if (addEditStatus === "Success" && selectedIndex != undefined) {
                 setToastType(1)
-                toast.success("Comapny details added");
+                toast.success("Company details added");
                 //document.getElementById("toasterPrompt").classList.add("show");
                 setTimeout(() => {
                     //document.getElementById("toasterPrompt").classList.remove("show");
@@ -185,7 +188,10 @@ function CoManagment({handleClose}) {
                 }, 5000); 
             } else {
                 setToastType(2)
-                toast.error("Something went wrong")
+                if (addEditStatus !== "Success") {
+                    toast.error("Something went wrong")                    
+                }
+
                 //document.getElementById("toasterPrompt").classList.add("show");
                 setTimeout(() => {
                     //document.getElementById("toasterPrompt").classList.remove("show");
@@ -1225,7 +1231,7 @@ function CoManagment({handleClose}) {
                     <div className="col-12">
                         <div className="company-delete-right-bottom">
                             <img className="check-icon-small" src={toastType === 1 ? checkIocnSmall : redCheck} alt="close Gray Icon" />
-                            {toastType === 1 ? "Company details added" : "Something went wrong."}
+                            {toastType === 1 ? "Company details added" : "Company cant be added."}
                             <img className="small-icon-close" src={smallClose} alt="close Gray Icon" /></div>
                     </div>
                 </div>
