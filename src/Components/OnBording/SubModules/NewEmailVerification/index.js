@@ -48,6 +48,7 @@ function VerifyEmailErrorPage() {
           onLogoutClick();
         } else {
           toast.error("Something went wrong");
+          onLogoutClick();
         }
       });
     } else {
