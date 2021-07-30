@@ -10,6 +10,9 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { actions as emailActions } from "../../../OnBording/redux/actions";
 import { useHistory, useLocation, useParams } from "react-router";
+import { actions as adminMenuActions } from "../DashBoardCO/MenuRedux/actions";
+import { actions as notficationActions } from "../DashBoardCO/components/notification/Redux/actions";
+import { actions as loginActions } from "../../../Authectication/redux/actions";
 
 function VerifyEmailErrorPage() {
   const dispatch = useDispatch();
@@ -18,88 +21,39 @@ function VerifyEmailErrorPage() {
   const url_params = useParams();
   const state = useSelector((state) => state);
   const [showSupportText, setShowSupportText] = React.useState(false);
-  const email =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.verifyEmailInfo &&
-    state.complianceOfficer.verifyEmailInfo.email;
-
-  const resendEmail = () => {
-    // window.Email.send({
-    //   Host: "180.179.151.1",
-    //   Username: "secmarktx@m3c.io",
-    //   Password: "Am6#uIayAOE#c",
-    //   To: email,
-    //   From: "support@capmtech.com",
-    //   Subject: "Verification Email",
-    //   Body: getTemplate(email),
-    // })
-    //   .then(function (message) {
-    //     if (message === "OK") {
-    //       toast.success("The verification link has been sent to your email account successfully");
-    //     } else {
-    //       toast.error("The mail not sent successfully");
-    //     }
-    //     // toast.success("mail sent successfully")
-    //   })
-    //   .then(function (error) {
-    //     // toast.error("mail not sent successfully")
-    //   });
-    let obj = {
-      email: email,
-      invitation: "V",
-    };
-    apiServices
-      .post("/api/getEmailbody", obj)
-      .then(function (response) {
-        // handle success
-        if (
-          response &&
-          response.data &&
-          response.data.Status &&
-          response.data.Status === true
-        ) {
-          toast.success(
-            "The verification link has been sent to your email account successfully"
-          );
-        } else {
-          toast.error("The mail not sent successfully");
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-        }
-      });
-
-    setShowSupportText(true);
+  const userDetails = state && state.auth && state.auth.loginInfo;
+  const onLogoutClick = () => {
+    if (userDetails.UserType === 3) {
+      dispatch(adminMenuActions.setCurrentMenu("dashboard"));
+    } else {
+      dispatch(adminMenuActions.setCurrentMenu("taskList"));
+    }
+    dispatch(loginActions.createLogoutAction());
+    dispatch(adminMenuActions.setCurrentBoardViewTaskId(null));
+    dispatch(adminMenuActions.setCurrentCalendarViewTaskId(null));
+    dispatch(notficationActions.setTaskID(null));
+    history.push("/login");
   };
+
   const handleConfirmEmail = () => {
-    console.log(new URLSearchParams(location.search));
-    // const email =
-    //   location.search &&
-    //   location.search !== "" &&
-    //   location.search.split("=")[1];
     const email = new URLSearchParams(location.search).get("email");
     if (email !== null && email !== "") {
       let payload = {
         actionFlag: 2,
         adminEmail: email,
       };
-      console.log(payload);
       apiServices.post("/api/ins_upd_del_User", payload).then((response) => {
-        //   if(response &&
-        //       response.data &&
-        //       response.data.Status  &&
-        //       response.data.Status === true) {
-        //           toast.success("Emain verified succesfully!")
-        //           history.push("/login");
-        //       }else {
-        //           toast.error("Something went wrong");
-        //       }
-        console.log(response);
+        if (response && response.data && response.data.UserDetails) {
+          toast.success("Emain verified succesfully!");
+          onLogoutClick();
+        } else {
+          toast.error("Something went wrong");
+          onLogoutClick();
+        }
       });
     } else {
       toast.error("Verification link is invalid");
+      onLogoutClick();
     }
   };
   return (
@@ -166,7 +120,7 @@ function VerifyEmailErrorPage() {
                         Need help? Reach out to us 'at:
                         <span
                           style={{ cursor: "pointer" }}
-                          onClick={() => resendEmail()}
+                          // onClick={() => resendEmail()}
                           className="login-link-black contact-spacing"
                         >
                           {" "}
