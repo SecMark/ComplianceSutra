@@ -120,7 +120,7 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
     min-width: 100%;
     overflow-x: hidden;
     align-self: center;
-    max-height: 90vh;
+    max-height: 55vh;
     margin-top: 10px;
     flex-direction: column;
     justify-content: space-between;
@@ -148,7 +148,7 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
                   ? {
                       maxHeight: "98vh",
                       maxWidth: "100%",
-                      height: "67vh",
+                      height: "60vh",
                     }
                   : { maxHeight: "98vh", maxWidth: "100%", height: "50vh" }
               }

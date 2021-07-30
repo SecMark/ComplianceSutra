@@ -134,8 +134,9 @@ function CoSettingRightGrid({ handleClose, history }) {
           state.taskReport &&
           state.taskReport.coDetailsInsUpdDelInfo &&
           state.taskReport.coDetailsInsUpdDelInfo.data;
+        console.log(updEmail);
         let logInfo = { ...loggedUser };
-        logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID;
+        logInfo.EmailID = updEmail[0].EmailID;
         dispatch(logInfoActions.updateEmailInfo(logInfo));
         setTimeout(() => {
           const UpdatedLogInInfo = state && state.auth && state.auth.loginInfo;
@@ -236,7 +237,7 @@ function CoSettingRightGrid({ handleClose, history }) {
       adminName: values.userName,
       adminMobile: values.mobileNo,
       adminEmail: values.emailId,
-      userType: 1,
+      userType: 9,
       actionFlag: 2,
       designation: values.designation,
       userID: userInfoBackup.UserID,
@@ -401,15 +402,14 @@ function CoSettingRightGrid({ handleClose, history }) {
           <div>
             <input
               type="text"
-              className={
-                "form-control right-input-row " +
-                (isValidate &&
+              className={`form-control right-input-row ${
+                isValidate &&
                 (values.emailId === "" ||
                   !validator.isEmail(values.emailId) ||
                   (validator.isEmail(values.emailId) && !isValidEmail))
                   ? "input-error"
-                  : "")
-              }
+                  : ""
+              }`}
               value={values.emailId}
               placeholder="Enter your email id"
               id="email"
@@ -530,6 +530,7 @@ function CoSettingRightGrid({ handleClose, history }) {
                 onClick={() => {
                   setValues(valuesBackup);
                   setValuesChanged(false);
+                  setIsValidate(false);
                 }}
               >
                 discard changes

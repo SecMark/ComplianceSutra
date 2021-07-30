@@ -12,6 +12,7 @@ import CoDashboard from "../Components/CoDashboard";
 import AssignTask from "../Components/OnBording/SubModules/AssignTask";
 import VerifyEmailErrorPage from "../Components/OnBording/SubModules/VerifyEmail";
 import EmailVerifiedPage from "../Components/OnBording/SubModules/EmailVerify";
+import NewEmailVerification from "../Components/OnBording/SubModules/NewEmailVerification";
 import TeamMemberFlow from "../Components/TeamMemberFlow/VerificationFlow/";
 import TeamMemberFlowPersonalDetails from "../Components/TeamMemberFlow/VerificationFlow/components/PersonalDetails";
 import TeamMemberFlowOTP from "../Components/TeamMemberFlow/VerificationFlow/components/OTPVerification";
@@ -97,6 +98,11 @@ export default function AppRouter() {
             exact
             path="/email-verification-confirmed"
             component={EmailVerifiedPage}
+          />
+          <Route
+            exact
+            path="/new-email-verification"
+            component={NewEmailVerification}
           />
           <Route
             exact
