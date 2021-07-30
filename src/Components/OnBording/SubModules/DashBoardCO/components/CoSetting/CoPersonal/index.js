@@ -136,7 +136,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           state.taskReport.coDetailsInsUpdDelInfo.data;
         console.log(updEmail);
         let logInfo = { ...loggedUser };
-        logInfo.EmailID = updEmail[0].EmailID;
+        logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID;
         dispatch(logInfoActions.updateEmailInfo(logInfo));
         setTimeout(() => {
           const UpdatedLogInInfo = state && state.auth && state.auth.loginInfo;
@@ -159,7 +159,7 @@ function CoSettingRightGrid({ handleClose, history }) {
       values.mobileNo.length < 10 ||
       values.emailId === "" ||
       !validator.isEmail(values.emailId) ||
-      !isValidEmail ||
+      (isValidEmail !== null && !isValidEmail) ||
       values.designation === "" ||
       values.countrycode === ""
     ) {
@@ -237,7 +237,7 @@ function CoSettingRightGrid({ handleClose, history }) {
       adminName: values.userName,
       adminMobile: values.mobileNo,
       adminEmail: values.emailId,
-      userType: 9,
+      userType: values.emailId !== valuesBackup.emailId ? 9 : 1,
       actionFlag: 2,
       designation: values.designation,
       userID: userInfoBackup.UserID,
@@ -406,7 +406,9 @@ function CoSettingRightGrid({ handleClose, history }) {
                 isValidate &&
                 (values.emailId === "" ||
                   !validator.isEmail(values.emailId) ||
-                  (validator.isEmail(values.emailId) && !isValidEmail))
+                  (validator.isEmail(values.emailId) &&
+                    isValidEmail !== null &&
+                    !isValidEmail))
                   ? "input-error"
                   : ""
               }`}
