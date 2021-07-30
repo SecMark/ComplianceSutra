@@ -77,6 +77,7 @@ const HistoryList = (props) => {
     }
   };
 
+  console.log(state.HistoryReducer.historyList);
   return (
     <>
       {isMobile && (
@@ -392,18 +393,16 @@ const HistoryList = (props) => {
                             </button>
                           </td>
                           <td style={{ textAlign: "center" }}>
-                            {list?.c_file ? (
+                            {list?.GEN_TaskFile &&
+                            Object.keys(list?.GEN_TaskFile[0]).length !== 0 ? (
                               <a
-                                href={`${BACKEND_BASE_URL}//viewfiles.ashx?id=${list?.TaskId}&flag=downloadtaskfiles&file=${list?.c_file}`}
+                                href={`${BACKEND_BASE_URL}//viewfiles.ashx?id=${list?.TaskId}&flag=downloadtaskfiles&file=${list?.GEN_TaskFile[0].c_file}`}
                               >
                                 {" "}
                                 <img src={download} />{" "}
                               </a>
                             ) : (
-                              <img
-                                src={download}
-                                style={{ cursor: "pointer" }}
-                              />
+                              <span>N/A</span>
                             )}
                           </td>
                         </tr>
