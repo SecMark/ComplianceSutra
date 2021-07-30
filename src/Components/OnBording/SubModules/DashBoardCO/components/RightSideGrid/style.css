@@ -1522,7 +1522,7 @@ button.btn.border-start-0.border-top-0.border-bottom-0.border-0.ms-n5:focus {
   background-image: linear-gradient(to top, #a329ff, #14cfff);
 }
 .reject-model-title {
-  width: 216px;
+  width: 302px;
   height: 66px;
   font-family: Poppins;
   font-size: 23px;
@@ -1636,6 +1636,7 @@ button.btn.border-start-0.border-top-0.border-bottom-0.border-0.ms-n5:focus {
 .graybox-left {
   width: 40px;
   float: left;
+  z-index: 1;
 }
 .pink-label-title-right {
   display: block;

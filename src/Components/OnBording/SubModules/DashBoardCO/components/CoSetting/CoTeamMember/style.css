@@ -1323,3 +1323,16 @@
     margin-top: -10px;
   }
 }
+
+.select-role {
+  width: 165px;
+  padding: 8px;
+  background: #f7f7f7;
+  border-radius: 5px;
+  border: none;
+}
+
+.select-role:focus-visible {
+  outline: none;
+  border: 2px solid #6c5dd3 !important;
+}

@@ -11,11 +11,19 @@ const loginReq = function* loginReq({ payload }) {
     if (data && data.Message !== "FAIL") {
       yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
       console.log("login response", data);
-      if (data && data.UserType === 3) {
+      if (
+        (data && data.UserType === 3) ||
+        data.UserType === 5 ||
+        data.UserType === 6
+      ) {
         yield put(menuActions.setCurrentMenu("dashboard"));
         yield put(menuActions.setActiveTabInSetting("personal"));
         payload.history.push("/dashboard-view");
-      } else {
+      }
+      // else if (data && data.UserType === 6) {
+      //   toast.error("You don't have permission!!!");
+      // }
+      else {
         yield put(menuActions.setCurrentMenu("taskList"));
         payload.history.push("/dashboard");
       }

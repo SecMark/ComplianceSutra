@@ -4,9 +4,6 @@ import Searchable from "react-searchable-dropdown";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import Datepicker from "../../../CommonModules/sharedComponents/Datepicker";
 import {
-  getIndustryList,
-  getIssuerList,
-  getTopicList,
   setBadges,
   setFilterPayload,
   setIndustry,
@@ -23,77 +20,62 @@ import {
 } from "../../ReAssignTasks/utilties";
 import "./style.css";
 
-const NewRegulationFilter = ({ label }) => {
+const NewRegulationFilter = () => {
+  const [isAllInputFilled, setIsAllInputFilled] = useState(false);
   const [listOfIndustries, setListOfIndustry] = useState([]);
   const [listOfIssuers, setListOfIssuers] = useState([]);
   const [listOfTopic, setListOfTopic] = useState([]);
-  const [isAllInputFilled, setIsAllInputFilled] = useState(false);
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
-  //deconstruct updates reducer state values.
   const { industryList, issuerList, topicList } = state.UpdatesReducer;
 
   useEffect(() => {
-    const industryListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      industry: constant.flag,
-    };
-
-    //get issuer list.
-    dispatch(getIndustryList(industryListRequestPayload));
     //set industry list for searchable dropdown.
-    const setArrayOfObjectInList = industryList?.map((item) => {
+    var setArrayOfObjectInList = industryList?.map((item) => {
       return { value: item.Industry, label: item.Industry };
     });
     setListOfIndustry([...setArrayOfObjectInList]);
-  }, [state.auth.loginInfo?.UserID]);
 
-  useEffect(() => {
-    const issuerListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      regbodies: constant.flag,
-    };
-
-    //get issuer list.
-    dispatch(getIssuerList(issuerListRequestPayload));
     //set issuer list for searchable dropdown.
-    const setArrayOfObjectInList = issuerList.map((item) => {
+    var setArrayOfObjectInList = issuerList.map((item) => {
       return { value: item.Regbodies, label: item.Regbodies };
     });
-
     setListOfIssuers([...setArrayOfObjectInList]);
-  }, [state.auth.loginInfo?.UserID]);
 
-  useEffect(() => {
-    const topicListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      topic: constant.flag,
-    };
-
-    //get topic list.
-    dispatch(getTopicList(topicListRequestPayload));
     //set topic list for searchable dropdown.
-    const setArrayOfObjectInList = topicList.map((item) => {
+    var setArrayOfObjectInList = topicList.map((item) => {
       return { value: item.Topic, label: item.Topic };
     });
 
     setListOfTopic([...setArrayOfObjectInList]);
-  }, [state.auth.loginInfo?.UserID]);
+  }, []);
 
   useEffect(() => {
     if (
+      (state.UpdatesReducer.from !== "" &&
+        state.UpdatesReducer.from.length !== 0 &&
+        state.UpdatesReducer.from.length === 3 &&
+        isSameOrBeforeToday(state.UpdatesReducer.from)) ||
+      (state.UpdatesReducer.to !== "" &&
+        state.UpdatesReducer.to.length !== 0 &&
+        state.UpdatesReducer.to.length === 3 &&
+        isSameOrBeforeToday(state.UpdatesReducer.to)) ||
+      state.UpdatesReducer.industry !== "" ||
+      state.UpdatesReducer.issuer !== "" ||
+      state.UpdatesReducer.topic !== ""
+    ) {
+      setIsAllInputFilled(true);
+    } else if (
       state.UpdatesReducer.from !== "" &&
       state.UpdatesReducer.from.length !== 0 &&
       state.UpdatesReducer.from.length === 3 &&
+      isSameOrBeforeToday(state.UpdatesReducer.from) &&
       state.UpdatesReducer.to !== "" &&
       state.UpdatesReducer.to.length !== 0 &&
       state.UpdatesReducer.to.length === 3 &&
-      isSameOrBeforeToday(state.UpdatesReducer.from) &&
-      !isMoreThanOneYearFromToday(state.UpdatesReducer.from) &&
       isSameOrBeforeToday(state.UpdatesReducer.to) &&
-      !isMoreThanOneYearFromToday(state.UpdatesReducer.to) &&
       !isDifferenceIsMoreThanOneYear(
         state.UpdatesReducer.from,
         state.UpdatesReducer.to
@@ -101,10 +83,7 @@ const NewRegulationFilter = ({ label }) => {
       !isToDateBeforeFromDate(
         state.UpdatesReducer.from,
         state.UpdatesReducer.to
-      ) &&
-      state.UpdatesReducer.industry !== "" &&
-      state.UpdatesReducer.issuer !== "" &&
-      state.UpdatesReducer.topic !== ""
+      )
     ) {
       setIsAllInputFilled(true);
     } else {
@@ -118,14 +97,22 @@ const NewRegulationFilter = ({ label }) => {
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
       regbodies: state.UpdatesReducer.issuer,
-      submissionfrom: moment(
-        state.UpdatesReducer.from.join("-"),
-        "DD-M-YYYY"
-      ).format("YYYY-MM-DD"),
-      submissionto: moment(
-        state.UpdatesReducer.to.join("-"),
-        "DD-M-YYYY"
-      ).format("YYYY-MM-DD"),
+      submissionfrom:
+        (state.UpdatesReducer.from !== "" &&
+          state.UpdatesReducer.from.length !== 0 &&
+          state.UpdatesReducer.from.length === 3 &&
+          moment(state.UpdatesReducer.from.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          )) ||
+        "",
+      submissionto:
+        (state.UpdatesReducer.to !== "" &&
+          state.UpdatesReducer.to.length !== 0 &&
+          state.UpdatesReducer.to.length === 3 &&
+          moment(state.UpdatesReducer.to.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          )) ||
+        "",
       flag: constant.filterFlag,
     };
 
@@ -133,32 +120,28 @@ const NewRegulationFilter = ({ label }) => {
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
       issuer: state.UpdatesReducer.issuer,
-      fromAndToDate: `${moment(
-        state.UpdatesReducer.from.join("-"),
-        "DD-M-YYYY"
-      ).format("MMM Do YYYY")} to ${moment(
-        state.UpdatesReducer.to.join("-"),
-        "DD-M-YYYY"
-      ).format("MMM Do YYYY")}`,
+      fromDate:
+        (state.UpdatesReducer.to !== "" &&
+          state.UpdatesReducer.to.length !== 0 &&
+          state.UpdatesReducer.to.length === 3 &&
+          moment(state.UpdatesReducer.from.join("-"), "DD-M-YYYY").format(
+            "MMM Do YYYY"
+          )) ||
+        "",
+      toDate:
+        (state.UpdatesReducer.to !== "" &&
+          state.UpdatesReducer.to.length !== 0 &&
+          state.UpdatesReducer.to.length === 3 &&
+          moment(state.UpdatesReducer.to.join("-"), "DD-M-YYYY").format(
+            "MMM Do YYYY"
+          )) ||
+        "",
     };
 
     dispatch(setBadges(setBagdesPayload));
     dispatch(setFilterPayload(filterRequestPayload));
     dispatch(setIsFilter(true));
   };
-  useEffect(() => {
-    console.log("from: ", state.UpdatesReducer.from);
-    if (
-      state.UpdatesReducer.from !== "" &&
-      state.UpdatesReducer.from.length === 3
-    ) {
-      console.log(
-        "isSameOrBeforeToday: ",
-        isSameOrBeforeToday(state.UpdatesReducer.from)
-      );
-    }
-    console.log("to: ", state.UpdatesReducer.to);
-  }, [state.UpdatesReducer.from, state.UpdatesReducer.to]);
 
   return (
     <div className="filter-form">
@@ -170,7 +153,8 @@ const NewRegulationFilter = ({ label }) => {
           notFoundText="No result found"
           listMaxHeight={200}
           options={listOfIssuers}
-          onSelect={(event) => dispatch(setIssuer(event))}
+          onSelect={(event) => dispatch(setIssuer(event.toString()))}
+          multiple={true}
         />
       </div>
       <div>
@@ -181,7 +165,8 @@ const NewRegulationFilter = ({ label }) => {
           notFoundText="No result found"
           listMaxHeight={200}
           options={listOfIndustries}
-          onSelect={(event) => dispatch(setIndustry(event))}
+          onSelect={(event) => dispatch(setIndustry(event.toString()))}
+          multiple={true}
         />
       </div>
       <div>
@@ -192,7 +177,8 @@ const NewRegulationFilter = ({ label }) => {
           notFoundText="No result found"
           listMaxHeight={200}
           options={listOfTopic}
-          onSelect={(event) => dispatch(setTopic(event))}
+          onSelect={(event) => dispatch(setTopic(event.toString()))}
+          multiple={true}
         />
       </div>
       <div>
@@ -212,7 +198,7 @@ const NewRegulationFilter = ({ label }) => {
                 {"* " + constant.errorMessage.errorDueToGreaterDate}
               </small>
             )}
-          {state.UpdatesReducer.from !== "" &&
+          {/* {state.UpdatesReducer.from !== "" &&
             state.UpdatesReducer.from.length === 3 &&
             isMoreThanOneYearFromToday(state.UpdatesReducer.from) !==
               undefined &&
@@ -221,7 +207,7 @@ const NewRegulationFilter = ({ label }) => {
                 {"* " +
                   constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
               </small>
-            )}
+            )} */}
         </p>
       </div>
       <div>
@@ -241,7 +227,7 @@ const NewRegulationFilter = ({ label }) => {
                 {"* " + constant.errorMessage.errorDueToGreaterDate}
               </small>
             )}
-          {state.UpdatesReducer.to !== "" &&
+          {/* {state.UpdatesReducer.to !== "" &&
             state.UpdatesReducer.to.length === 3 &&
             isMoreThanOneYearFromToday(state.UpdatesReducer.to) !== undefined &&
             isMoreThanOneYearFromToday(state.UpdatesReducer.to) && (
@@ -249,7 +235,7 @@ const NewRegulationFilter = ({ label }) => {
                 {"* " +
                   constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
               </small>
-            )}
+            )} */}
           {state.UpdatesReducer.to !== "" &&
             state.UpdatesReducer.to.length === 3 &&
             state.UpdatesReducer.from !== "" &&

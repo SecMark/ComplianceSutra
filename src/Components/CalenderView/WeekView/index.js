@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import "./style.css";
 
-const WeekView = ({ sevenDays, weekData, goToDateDay }) => {
+const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
   const getNameInitials = (name) => {
     if (name != undefined) {
       let initials = "";
@@ -42,14 +42,40 @@ const WeekView = ({ sevenDays, weekData, goToDateDay }) => {
                     {filterList.map((list) => (
                       <div
                         className="week-main"
-                        onClick={() => moveToDay(list?.EndDate)}
+                        onClick={() => {
+                          if (userDetails && userDetails.UserType !== 6) {
+                            moveToDay(list?.EndDate);
+                          }
+                        }}
+                        style={{
+                          pointerEvents: `${
+                            userDetails && userDetails.UserType === 6
+                              ? "none"
+                              : "auto"
+                          }`,
+                        }}
                       >
                         <div className="week-detail">
                           <button className="license-code">
                             {list?.LicenseCode}
                           </button>
                           <h2>{list?.TaskName}</h2>
-                          <button className="approval">Approval Pending</button>
+                          <button
+                            className={`${
+                              list?.Status === "Approval Pending"
+                                ? "approval-day"
+                                : list?.Status == "Assigned"
+                                ? "assigned-day"
+                                : "approval-day"
+                            }`}
+                          >
+                            {" "}
+                            {list?.Status === "Approval Pending"
+                              ? "Approval Pending"
+                              : list?.Status === "Completed By User"
+                              ? "Approval Pending"
+                              : list?.Status}
+                          </button>
                         </div>
                         <div className="CompanyName">
                           <span>{list?.EntityName}</span>

@@ -136,13 +136,14 @@ function ChangePassword({ history }) {
       apiServices.post("/api/getEmailbody", obj)
         .then(function (response) {
           if (response && response.data && response.data.data[0] && response.data.data[0].Status === "True") {
+           console.log(response)
             // let message = ""
             // message = response.data.data[0].Message;
             // toast.error(message && message)
 
           } else {
             toast.success("The link you followed expired");
-            history.push("/login")
+           // history.push("/login")
           }
         })
         .catch(function (error) {

@@ -8,7 +8,6 @@ import closeIconGray from "../../assets/Icons/closeIconGray.png";
 import closeIcon from "../../assets/Icons/closeIcon.png";
 import Datepicker from "../../CommonModules/sharedComponents/Datepicker/index";
 import constants from "../../CommonModules/sharedComponents/constants/constant";
-import { isSameOrAfterToday } from "../../CommonModules/sharedComponents/Datepicker/utils";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import reducer from "./reducer";
@@ -16,7 +15,7 @@ import {
   getInitials,
   checkResponse,
   isDifferenceIsMoreThanOneYear,
-  isSameOrBeforeToday,
+  isBeforeToday,
   isMoreThanOneYearFromToday,
   isToDateBeforeFromDate,
   searchUsers,
@@ -546,7 +545,7 @@ function ReAssignTasksModal({
         filter.value.dueOn &&
         filter.value.dueOn.length !== 0 &&
         filter.value.dueOn.length === 3 &&
-        !isSameOrBeforeToday(filter.value.dueOn) &&
+        !isBeforeToday(filter.value.dueOn) &&
         !isMoreThanOneYearFromToday(filter.value.dueOn)
       ) {
         setIsAllInputFilled(true);
@@ -558,9 +557,9 @@ function ReAssignTasksModal({
         filter.value.to.length !== 0 &&
         filter.value.from.length === 3 &&
         filter.value.to.length === 3 &&
-        !isSameOrBeforeToday(filter.value.from) &&
+        !isBeforeToday(filter.value.from) &&
         !isMoreThanOneYearFromToday(filter.value.from) &&
-        !isSameOrBeforeToday(filter.value.to) &&
+        !isBeforeToday(filter.value.to) &&
         !isMoreThanOneYearFromToday(filter.value.to) &&
         !isDifferenceIsMoreThanOneYear(filter.value.from, filter.value.to) &&
         !isToDateBeforeFromDate(filter.value.from, filter.value.to)
@@ -706,12 +705,11 @@ function ReAssignTasksModal({
                           actionType="SET_DUE_DATE"
                         />
                         <p className="warnings">
-                          {isSameOrBeforeToday(filter.value.dueOn) !==
-                            undefined &&
-                            isSameOrBeforeToday(filter.value.dueOn) && (
+                          {isBeforeToday(filter.value.dueOn) !== undefined &&
+                            isBeforeToday(filter.value.dueOn) && (
                               <small>
                                 {"* " +
-                                  constants.errorMessage.errorDueToPreviousDate}
+                                  constants.errorMessage.errorDueToBeforeDate}
                               </small>
                             )}
                           {isMoreThanOneYearFromToday(filter.value.dueOn) &&
@@ -771,12 +769,11 @@ function ReAssignTasksModal({
                           actionType="SET_FROM_DATE"
                         />
                         <p className="warnings">
-                          {isSameOrBeforeToday(filter.value.from) !==
-                            undefined &&
-                            isSameOrBeforeToday(filter.value.from) && (
+                          {isBeforeToday(filter.value.from) !== undefined &&
+                            isBeforeToday(filter.value.from) && (
                               <small className="d-block">
                                 {"* " +
-                                  constants.errorMessage.errorDueToPreviousDate}
+                                  constants.errorMessage.errorDueToBeforeDate}
                               </small>
                             )}
                           {isMoreThanOneYearFromToday(filter.value.from) !==
@@ -800,11 +797,11 @@ function ReAssignTasksModal({
                           actionType="SET_TO_DATE"
                         />
                         <p className="warnings">
-                          {isSameOrBeforeToday(filter.value.to) !== undefined &&
-                            isSameOrBeforeToday(filter.value.to) && (
+                          {isBeforeToday(filter.value.to) !== undefined &&
+                            isBeforeToday(filter.value.to) && (
                               <small className="d-block">
                                 {"* " +
-                                  constants.errorMessage.errorDueToPreviousDate}
+                                  constants.errorMessage.errorDueToBeforeDate}
                               </small>
                             )}
                           {isMoreThanOneYearFromToday(filter.value.to) !==

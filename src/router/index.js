@@ -12,6 +12,7 @@ import CoDashboard from "../Components/CoDashboard";
 import AssignTask from "../Components/OnBording/SubModules/AssignTask";
 import VerifyEmailErrorPage from "../Components/OnBording/SubModules/VerifyEmail";
 import EmailVerifiedPage from "../Components/OnBording/SubModules/EmailVerify";
+import NewEmailVerification from "../Components/OnBording/SubModules/NewEmailVerification";
 import TeamMemberFlow from "../Components/TeamMemberFlow/VerificationFlow/";
 import TeamMemberFlowPersonalDetails from "../Components/TeamMemberFlow/VerificationFlow/components/PersonalDetails";
 import TeamMemberFlowOTP from "../Components/TeamMemberFlow/VerificationFlow/components/OTPVerification";
@@ -45,10 +46,10 @@ import MultiCompanyQuickOverView from "../Components/OnBording/SubModules/DashBo
 import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/MultiTeamMemberView/index";
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
-import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
+// import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
-import HistoryList from "../Components/HistoryModule/HistoryList";
-import NewRegulations from "../Components/NewRegulationModule/NewRegulations";
+// import HistoryList from "../Components/HistoryModule/HistoryList";
+// import NewRegulations from "../Components/NewRegulationModule/NewRegulations";
 
 export default function AppRouter() {
   const checkHeader = () => {
@@ -100,6 +101,11 @@ export default function AppRouter() {
           />
           <Route
             exact
+            path="/new-email-verification"
+            component={NewEmailVerification}
+          />
+          <Route
+            exact
             path="/team-member-personal-info"
             component={TeamMemberFlowPersonalDetails}
           />
@@ -129,37 +135,37 @@ export default function AppRouter() {
 
           <Route exact path="/governance" component={Governance} />
 
-          <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
-          <Route
+          {/* <Route exact path="/redirect-user-dashboard" component={YouAreDone} /> */}
+          {/* <Route
             exact
             path="/redirect-dashboard"
             component={RedirectToDashboard}
-          />
+          /> */}
 
-          <Route
+          {/* <Route
             exact
             path="/invitation-member"
             component={InvitationMemberFlow}
-          />
+          /> */}
 
           {/* <Route exact path="/co-managment" component={CoManagment}/> */}
           <Route exact path="/settings" component={CoSetting} />
 
-          <Route
+          {/* <Route
             exact
             path="/user-details-verification"
             component={UserProfileVerifcation}
-          />
-          <Route
+          /> */}
+          {/* <Route
             exact
             path="/otp-verification"
             component={UserOTPVerifcation}
-          />
-          <Route
+          /> */}
+          {/* <Route
             exact
             path="/user-verification-process"
             component={UserVerificationProcess}
-          />
+          /> */}
 
           <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
           <Route

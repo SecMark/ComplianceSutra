@@ -69,6 +69,7 @@ function CoManagment({ handleClose }) {
   const [alreadyExist, setAlreadyExist] = useState(false);
 
   const auth = state && state.auth;
+  const userDetails = auth && auth.loginInfo;
 
   const [searchText, setSearchText] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -104,6 +105,7 @@ function CoManagment({ handleClose }) {
 
   const [visible, setVisible] = useState(false);
   const [openPopupIndex, setOpenPopupIndex] = useState("");
+  const [deleteMemeberIndex, setDeleteMemberIndex] = useState("");
   const [fieldArray, setFieldsArray] = useState([
     {
       id: "",
@@ -136,9 +138,8 @@ function CoManagment({ handleClose }) {
     },
   ]);
   const [isValidEmail, setIsValidEmail] = useState(true);
-  
   const innerRef = useOuterClick((e) => {
-    //if (openPopupIndex !== "") setOpenPopupIndex("");
+    // if (openPopupIndex !== "") setOpenPopupIndex("");
   });
 
   const [currentIndex, setCurrentIndex] = useState("");
@@ -195,7 +196,6 @@ function CoManagment({ handleClose }) {
   });
 
   const changeRoleMobile = (item, index) => {
-    console.log(item, index);
     fields &&
       fields[openPopupIndex] &&
       setRoleTitle(fields[openPopupIndex].role);
@@ -255,7 +255,6 @@ function CoManagment({ handleClose }) {
   }, [teamMemberData]);
 
   const onDeletePress = (index) => {
-    console.log(fields, openPopupIndex);
     setOpenPopupIndex("");
     const payload = {
       gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
@@ -263,8 +262,7 @@ function CoManagment({ handleClose }) {
       actionFlag: 3,
       entityID: 0,
       licID: 0,
-      uUserID:
-        (fields && fields[openPopupIndex] && fields[openPopupIndex].id) || "",
+      uUserID: fields && fields[index] && fields[index].id,
       utype: 0,
       // notificationList: "",
       // pwd: "",
@@ -295,6 +293,7 @@ function CoManagment({ handleClose }) {
   };
 
   const _createDelectActionModal = (index) => {
+    // setOpenPopupIndex("");
     return (
       <div className="deletemodal">
         <Modal
@@ -324,13 +323,20 @@ function CoManagment({ handleClose }) {
             </div>
             <div className="last-two-model-btn" style={{ marginTop: 20 }}>
               <button
-                onClick={() => setVisible(false)}
+                onClick={() => {
+                  setVisible(false);
+                  setOpenPopupIndex("");
+                  setDeleteMemberIndex("");
+                }}
                 className="btn cancel-delete"
               >
                 CANCEL
               </button>
               <button
-                onClick={() => onDeletePress(index)}
+                onClick={() => {
+                  onDeletePress(deleteMemeberIndex);
+                  setDeleteMemberIndex("");
+                }}
                 className="btn delete-Record"
               >
                 DELETE
@@ -457,7 +463,6 @@ function CoManagment({ handleClose }) {
   };
 
   const openPopup = (index) => {
-    console.log("open pop up", index);
     setOpenPopupIndex(index);
   };
   const changeRole = (key) => {
@@ -528,13 +533,15 @@ function CoManagment({ handleClose }) {
     setFields(list);
   };
 
-  const handleChangeInputBoxRole = (value) => {
-    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
+  const handleChangeInputBoxRole = (event) => {
+    console.log(event.target.value);
+    setInputTeamMember({ ...inputTeamMember, ["role"]: event.target.value });
   };
 
-  const handleChangeInputBoxRoleMobile = (value) => {
-    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
-    onConfirmChangeRole(currentRow, openPopupIndex, value);
+  const handleChangeInputBoxRoleMobile = (event) => {
+
+    setInputTeamMember({ ...inputTeamMember, ["role"]: event.target.value });
+    onConfirmChangeRole(currentRow, openPopupIndex, event.target.value);
     closeChangeRole();
   };
 
@@ -545,11 +552,16 @@ function CoManagment({ handleClose }) {
     setIsValidEmail(true);
     setAlreadyExist(false);
     const { name, value } = e.target;
+    console.log(name);
     if (name === "fullName") {
       const re = /^[a-z|A-Z_ ]*$/;
       if (e.target.value && !re.test(e.target.value)) {
         return "";
       }
+    }
+    if (name === "email") {
+      console.log("hello");
+      onValidateEmail(e);
     }
     setInputTeamMember({ ...inputTeamMember, [name]: e.target.value });
   };
@@ -617,7 +629,6 @@ function CoManagment({ handleClose }) {
     }
   };
   const MoreDetails = (item) => {
-    console.log(item);
     setCurrentRow(item);
     const drawerParent = document.getElementById("moreDetailsParent");
     const drawerChild = document.getElementById("moreDetailsChild");
@@ -717,7 +728,9 @@ function CoManagment({ handleClose }) {
         userType={reAssignUserType}
         userId={reAssignUserId}
       />
-      {visible && _createDelectActionModal(openPopupIndex)}
+      {visible &&
+        deleteMemeberIndex !== "" &&
+        _createDelectActionModal(deleteMemeberIndex)}
       <div className="d-none d-md-block">
         <div className="d-flex">
           <div className="personal-mgt-title">Team Members </div>
@@ -735,13 +748,15 @@ function CoManagment({ handleClose }) {
               <span onClick={() => onClickSearchIcon()} className="search-icon">
                 <img src={teamSearch} alt="team Search Icon" />
               </span>
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => setAddNew(true)}
-                className="add-new-plus"
-              >
-                add new +
-              </div>
+              {userDetails && userDetails.UserType !== 6 && (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setAddNew(true)}
+                  className="add-new-plus"
+                >
+                  add new +
+                </div>
+              )}
             </div>
           )}
           {isSearchOpen && (
@@ -828,13 +843,20 @@ function CoManagment({ handleClose }) {
                     <br /> */}
             <div className="d-flex position-relative">
               <div className="col-4 col-sm-2 col-md-2 col-xl-2 pl-0">
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => onAddNewMemberMobile(true)}
-                  className="add-new-plus"
-                >
-                  add new +
-                </div>
+                {userDetails && userDetails.UserType !== 6 ? (
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() => onAddNewMemberMobile(true)}
+                    className="add-new-plus"
+                  >
+                    add new +
+                  </div>
+                ) : (
+                  <div
+                    className="add-new-plus"
+                    style={{ height: "20px", cursor: "auto" }}
+                  ></div>
+                )}
               </div>
               <div className="col-8 col-sm-12 col-md-12 col-xl-12 pl-0">
                 {!isSearchOpenMobile && (
@@ -973,7 +995,11 @@ function CoManagment({ handleClose }) {
                                   )[0].UserType
                                 );
                                 setReAssignUserId(item.id);
-                                openPopup(index);
+                                if (openPopupIndex !== "") {
+                                  setOpenPopupIndex("");
+                                } else {
+                                  openPopup(index);
+                                }
                               }}
                               src={threeDots}
                               alt="three Dots Icon"
@@ -981,38 +1007,62 @@ function CoManagment({ handleClose }) {
                           )}
 
                         {openPopupIndex !== "" && openPopupIndex === index && (
-                          <div className="three-dot-tooltip">
+                          <div
+                            ref={innerRef}
+                            className="three-dot-tooltip"
+                            style={{
+                              height: `${
+                                userDetails && userDetails.UserType === 6
+                                  ? "44px"
+                                  : "177px"
+                              }`,
+                            }}
+                          >
                             <div
                               className="change-role"
-                              onClick={() => MoreDetails(item)}
+                              onClick={() => {
+                                MoreDetails(item);
+                                setOpenPopupIndex("");
+                              }}
                             >
                               More details
                             </div>
-                            <div
-                              style={{ cursor: "pointer" }}
-                              onClick={() => changeRoleMobile(item, index)}
-                              className="change-role"
-                            >
-                              Change role
-                            </div>
-                            <div
-                              style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setIsShowReAssignModalMobile(true);
-                                setOpenPopupIndex("");
-                              }}
-                              className="change-role"
-                            >
-                              Re-Assign
-                            </div>
+                            {userDetails && userDetails.UserType !== 6 && (
+                              <>
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    changeRoleMobile(item, index);
+                                    setOpenPopupIndex("");
+                                  }}
+                                  className="change-role"
+                                >
+                                  Change role
+                                </div>
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    setIsShowReAssignModalMobile(true);
+                                    setOpenPopupIndex("");
+                                  }}
+                                  className="change-role"
+                                >
+                                  Re-Assign
+                                </div>
 
-                            <div
-                              style={{ cursor: "pointer" }}
-                              onClick={() => setVisible(true)}
-                              className="delete-member"
-                            >
-                              Delete member
-                            </div>
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    setVisible(true);
+                                    setDeleteMemberIndex(index);
+                                    setOpenPopupIndex("");
+                                  }}
+                                  className="delete-member"
+                                >
+                                  Delete member
+                                </div>
+                              </>
+                            )}
                           </div>
                         )}
                       </div>
@@ -1271,19 +1321,20 @@ function CoManagment({ handleClose }) {
                   </div>
                 </td>
                 <td>
-                  <Dropdown
-                    onChange={(value) => handleChangeInputBoxRole(value)}
-                    arrowClosed={<span className="arrow-closed" />}
-                    arrowOpen={<span className="arrow-open" />}
-                    options={optionsInputBoxRole}
-                    value={
-                      inputTeamMember.role.length === 0
-                        ? null
-                        : inputTeamMember.role
-                    }
+                  <select
+                    className="select-role"
                     placeholder="Select role"
-                  />
+                    onChange={(value) => handleChangeInputBoxRole(value)}
+                  >
+                    <option disabled selected>
+                      Select Role
+                    </option>
+                    {optionsInputBoxRole.map(({ label, value }) => (
+                      <option value={value}> {label} </option>
+                    ))}
+                  </select>
                 </td>
+
                 <td>
                   <div className="form-group mb-0">
                     <input
@@ -1394,7 +1445,9 @@ function CoManagment({ handleClose }) {
                   </td>
                   {item.showAcceptDelectIcon === false &&
                     teamMemberData &&
-                    teamMemberData.length > 0 && (
+                    teamMemberData.length > 0 &&
+                    userDetails &&
+                    userDetails.UserType !== 6 && (
                       <td className="pl-0">
                         <div
                           style={{ cursor: "pointer" }}
@@ -1405,7 +1458,11 @@ function CoManagment({ handleClose }) {
                               )[0].UserType
                             );
                             setReAssignUserId(item.id);
-                            openPopup(index);
+                            if (openPopupIndex !== "") {
+                              setOpenPopupIndex("");
+                            } else {
+                              openPopup(index);
+                            }
                           }}
                           className="aaaa float-right"
                         >
@@ -1420,7 +1477,10 @@ function CoManagment({ handleClose }) {
                             <div className="three-dot-tooltip">
                               <div
                                 style={{ cursor: "pointer" }}
-                                onClick={() => changeRole(index)}
+                                onClick={() => {
+                                  changeRole(index);
+                                  setOpenPopupIndex("");
+                                }}
                                 className="change-role"
                               >
                                 Change role
@@ -1437,7 +1497,11 @@ function CoManagment({ handleClose }) {
                               </div>
                               <div
                                 style={{ cursor: "pointer" }}
-                                onClick={() => setVisible(true)}
+                                onClick={() => {
+                                  setVisible(true);
+                                  setDeleteMemberIndex(index);
+                                  setOpenPopupIndex("");
+                                }}
                                 className="delete-member"
                               >
                                 Delete member
@@ -1648,6 +1712,13 @@ function CoManagment({ handleClose }) {
           </tbody>
         </table>
       </div>
+      {/* <div className="bottom-logo-strip personal-details">
+                <div className="row aligncenter">
+                    <div className="col-12">
+                        <div className="company-delete-right-bottom"><img className="check-icon-small" src={checkIocnSmall} alt="close Gray Icon" /> Member removed  <img className="small-icon-close" src={smallClose} alt="close Gray Icon" /></div>
+                    </div>
+                </div>
+            </div> */}
     </div>
   );
 }

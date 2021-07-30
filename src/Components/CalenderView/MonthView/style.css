@@ -225,7 +225,7 @@
   color: #ffffff;
 }
 .calender-mobile {
-  height: 70vh;
+  height: 55vh;
   overflow-y: scroll;
   padding: 0 20px;
 }
@@ -298,7 +298,7 @@
   pointer-events: none;
 }
 @media screen and (max-width: 767px) {
-  .calender {
+  .calender-container {
     display: none;
   }
 }

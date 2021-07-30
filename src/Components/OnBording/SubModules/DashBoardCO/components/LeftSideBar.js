@@ -92,7 +92,10 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                   id={toastId.current}
                   toast={toast}
                   notification={notificationArr[0]}
-                />
+                />,
+                {
+                  toastId: "single-notification",
+                }
               );
             } else {
               toast.success(
@@ -100,7 +103,10 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                   id={toastId.current}
                   toast={toast}
                   notificationCount={notificationArr.length}
-                />
+                />,
+                {
+                  toastId: "multiple-notification",
+                }
               );
             }
           } else {
@@ -173,7 +179,9 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           <img src={sideBarlogo} alt="sideBarlogo" />
         </div>
         <div className="first-icon-list">
-          {(userDetails.UserType === 3 || userDetails.UserType === 5) && (
+          {(userDetails.UserType === 3 ||
+            userDetails.UserType === 5 ||
+            userDetails.UserType === 6) && (
             <div
               className={
                 !openProfile &&

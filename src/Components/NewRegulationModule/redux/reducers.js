@@ -38,7 +38,8 @@ const initailState = {
     industry: "",
     issuer: "",
     topic: "",
-    fromAndToDate: "",
+    fromDate: "",
+    toDate: "",
   },
 };
 
@@ -116,7 +117,7 @@ const reducer = (state = initailState, { type, payload }) => {
         ...state,
         badges: { ...state.badges, [payload.key]: payload.value },
       };
-      
+
     case UPDATE_FILTER:
       return {
         ...state,

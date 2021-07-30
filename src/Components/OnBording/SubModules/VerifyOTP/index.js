@@ -160,9 +160,11 @@ function VeryOTP({ history, currentStep }) {
       phn: mobileNumber,
       email: email,
     };
+    console.log(payload);
     api
       .post("/api/sendmsgwithverificationcode", payload)
       .then(function (response) {
+        console.log(response.data);
         // handle success
         if (response && response.data && response.data.statuscode === "200") {
           toast.success(
@@ -173,8 +175,7 @@ function VeryOTP({ history, currentStep }) {
         }
       })
       .catch(function (error) {
-        if (error) {
-        }
+        console.log(error);
       });
     setSeconds(59);
   };
@@ -210,7 +211,7 @@ function VeryOTP({ history, currentStep }) {
     api
       .post("/api/availabilityCheck", payload)
       .then(function (response) {
-        console.log("availability res => ", response);
+        console.log("availabaility res => ", response);
         if (response && response.data && response.data.Status === "false") {
           if (countryCode) {
             const adminPWD =
@@ -223,7 +224,7 @@ function VeryOTP({ history, currentStep }) {
 
             let countryCode;
             let strr = values.countryCode;
-
+            // countryCode = strr.replace(/\D/g, '');
             countryCode = strr;
 
             setTimeout(() => {
@@ -254,7 +255,7 @@ function VeryOTP({ history, currentStep }) {
             setCountryCode(false);
           }
         } else {
-          <p className="input-error-message">Mobile Number already exists</p>;
+          toast.error("Mobile Number Already registered");
         }
       })
       .catch(function (error) {
