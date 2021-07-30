@@ -87,7 +87,7 @@ const NewRegulations = (props) => {
     setShowHBMenu(false);
   };
 
-  //clear filter
+  // clear filter
   useEffect(() => {
     dispatch(clearFilter());
   }, [false]);
@@ -230,9 +230,14 @@ const NewRegulations = (props) => {
                 onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
               />
               <div className="filter-popup-mobile--wrapper">
-                <h2 style={{ marginBottom: "2rem" }}>Fiters</h2>
+                <h2 style={{ marginBottom: "2rem" }}>Filter</h2>
                 <div className="filter-wrapper-mobile">
-                  <NewRegulationFilter />
+                  <NewRegulationFilter
+                    setIsShowFilter={setIsShowFilter}
+                    isShowFilter={isShowFilter}
+                    isShowMobileFilter={isShowMobileFilter}
+                    setIsShowMobileFilter={setIsShowMobileFilter}
+                  />
                 </div>
               </div>
             </div>
@@ -480,7 +485,12 @@ const NewRegulations = (props) => {
               />
               <h3 style={{ marginBottom: "0px" }}>Filters</h3>
             </div>
-            <NewRegulationFilter />
+            <NewRegulationFilter
+              setIsShowFilter={setIsShowFilter}
+              isShowFilter={isShowFilter}
+              isShowMobileFilter={isShowMobileFilter}
+              setIsShowMobileFilter={setIsShowMobileFilter}
+            />
           </div>
         </div>
         <div className="d-none d-md-block w-100">
@@ -498,6 +508,7 @@ const NewRegulations = (props) => {
                   New Regulations{" "}
                   <img
                     src={filter}
+                    alt="Filter"
                     className="filter-image"
                     onClick={() => getNewRegulationFilterList()}
                   />

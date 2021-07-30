@@ -20,7 +20,7 @@ import {
 } from "../../ReAssignTasks/utilties";
 import "./style.css";
 
-const NewRegulationFilter = () => {
+const NewRegulationFilter = (props) => {
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
   const [listOfIndustries, setListOfIndustry] = useState([]);
   const [listOfIssuers, setListOfIssuers] = useState([]);
@@ -141,6 +141,8 @@ const NewRegulationFilter = () => {
     dispatch(setBadges(setBagdesPayload));
     dispatch(setFilterPayload(filterRequestPayload));
     dispatch(setIsFilter(true));
+    props.setIsShowFilter(!props.isShowFilter);
+    props.setIsShowMobileFilter(!props.isShowMobileFilter);
   };
 
   return (

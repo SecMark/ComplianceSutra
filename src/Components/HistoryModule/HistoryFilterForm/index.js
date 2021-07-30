@@ -158,6 +158,7 @@ const HistoryFilterForm = (props) => {
     }
     actionDispatch(adminMenuActions.setCurrentMenu("history"));
     actionDispatch(getHistoryList(historyListPayload));
+    props.setIsShowFilter(!props.isShowFilter);
     // history.push("/compliance-history");
   };
   return (

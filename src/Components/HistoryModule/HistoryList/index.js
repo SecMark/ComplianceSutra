@@ -112,7 +112,7 @@ const HistoryList = (props) => {
               <div className="filter-popup-mobile--wrapper">
                 <h2 style={{ marginBottom: "3rem" }}>Fiters</h2>
                 <div className="filter-wrapper-mobile">
-                  <HistoryFilterForm />
+                  <HistoryFilterForm setIsShowFilter={setIsShowFilter} />
                 </div>
               </div>
             </div>
@@ -297,7 +297,10 @@ const HistoryList = (props) => {
                 <h3 style={{ marginBottom: "0px" }}>Filters</h3>
               </div>
               <div className="filter-wrapper-desktop">
-                <HistoryFilterForm />
+                <HistoryFilterForm
+                  setIsShowFilter={setIsShowFilter}
+                  isShowFilter={isShowFilter}
+                />
               </div>
             </div>
           </div>
@@ -310,6 +313,7 @@ const HistoryList = (props) => {
                   Compliance History{" "}
                   <img
                     src={filter}
+                    alt="Filter"
                     className="history-filter"
                     onClick={() => {
                       const licenseRequestPayload = {
