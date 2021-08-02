@@ -39,7 +39,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
     if (
       userDetails &&
       userDetails.UserID !== undefined &&
-      (userDetails.UserType === 3 || userDetails.UserType === 5)
+      (userDetails.UserType === 3 || userDetails.UserType === 5 || userDetails.UserType === 6)
     ) {
       fetchQuickOverViewSectionData("type1");
       fetchTeamPerformanceData();
@@ -631,7 +631,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                 </div>
                 {userDetails &&
                   userDetails.UserType !== undefined &&
-                  userDetails.UserType === 3 && (
+                  (userDetails.UserType === 3 || userDetails.UserType === 6) && (
                     <div className="sidebar-overview-grid-new shadow bg-white rounded">
                       <div className="take-action-small-title-new">
                         Overview
