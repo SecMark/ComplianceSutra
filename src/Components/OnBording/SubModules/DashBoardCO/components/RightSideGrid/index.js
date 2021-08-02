@@ -480,12 +480,12 @@ function RightSideGrid({
               </div>
               <div className="task-details-sub-title">
                 {getTaskById && getTaskById.TaskName}{" "}
-                <span className="nse-label d-none d-sm-block">
+                <span className="nse-label d-none d-md-block">
                   {getTaskById && getTaskById.LicenseCode}
                 </span>
               </div>
 
-              <div className="d-flex d-block d-sm-none">
+              <div className="d-flex d-block d-md-none">
                 <span className="nse-label ml-0">
                   {getTaskById && getTaskById.LicenseCode}
                 </span>
@@ -558,7 +558,7 @@ function RightSideGrid({
                 </div>
               </div>
 
-              <div className="border-header d-none d-sm-block">
+              <div className="border-header d-none d-md-block">
                 {getTaskById && getTaskById.Status !== "Assigned" && (
                   <div
                     className="approved-label"
@@ -1208,7 +1208,7 @@ function RightSideGrid({
                             className="file-download-title pointer d-flex"
                           >
                             download
-                            <span className="d-none d-sm-block">
+                            <span className="d-none d-md-block">
                               &nbsp;file
                             </span>
                           </a>
@@ -1360,7 +1360,7 @@ function RightSideGrid({
                                           className="file-download-title pointer d-flex"
                                         >
                                           download{" "}
-                                          <span className="d-none d-sm-block">
+                                          <span className="d-none d-md-block">
                                             &nbsp;file
                                           </span>
                                         </a>
@@ -1414,7 +1414,7 @@ function RightSideGrid({
                                       className="file-download-title pointer d-flex"
                                     >
                                       download{" "}
-                                      <span className="d-none d-sm-block">
+                                      <span className="d-none d-md-block">
                                         &nbsp;file
                                       </span>
                                     </a>
@@ -2359,13 +2359,13 @@ function RightSideGrid({
                 <div
                   className={
                     Status === "overdue"
-                      ? "red-week d-block d-sm-none"
-                      : "black-week d-block d-sm-none"
+                      ? "red-week d-block d-md-none"
+                      : "black-week d-block d-md-none"
                   }
                   style={{ cursor: "pointer" }}
                   onClick={(e) => getSelectTaskDetails(task)}
                 >
-                  <div className="d-block d-sm-none">
+                  <div className="d-block d-md-none">
                     {getDayDate(task.EndDate, 2)}
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     {task && task.Status && task.Status !== "Assigned" && (
@@ -2425,7 +2425,7 @@ function RightSideGrid({
                 </div>
                 {task.Status !== "Assigned" && (
                   <p
-                    className="pink-label-text d-none d-sm-block"
+                    className="pink-label-text d-none d-md-block"
                     style={{
                       backgroundColor:
                         task && task.Status
@@ -2480,7 +2480,7 @@ function RightSideGrid({
             </div>
           </div>
         </div>
-        <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
+        <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-md-block">
           <div
             className="circle-front-text"
             style={{ width: "fit-content", cursor: "pointer" }}
@@ -2491,7 +2491,7 @@ function RightSideGrid({
           </div>
         </div>
         <div
-          className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block"
+          className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-md-block"
           style={{ cursor: "pointer" }}
           onClick={(e) => getSelectTaskDetails(task)}
         >
@@ -2499,7 +2499,7 @@ function RightSideGrid({
             <div className="d-flex">
               {userDetails.UserType === 4 ? (
                 task.ApproverName === "Assign" ? null : (
-                  <div className="circle-name d-none d-sm-block">
+                  <div className="circle-name d-none d-md-block">
                     <div className="circle-text">
                       {userDetails.UserType === 4 &&
                         getInitials(task.ApproverName)}
@@ -2507,20 +2507,20 @@ function RightSideGrid({
                   </div>
                 )
               ) : (
-                <div className="circle-name d-none d-sm-block">
+                <div className="circle-name d-none d-md-block">
                   <div className="circle-text">
                     {getInitials(task.AssignedName)}
                   </div>
                 </div>
               )}
               {userDetails.UserType === 4 ? (
-                <div className="circle-front-text d-none d-sm-block">
+                <div className="circle-front-text d-none d-md-block">
                   {task.ApproverName === "Assign"
                     ? "No Approver"
                     : task.ApproverName}
                 </div>
               ) : (
-                <div className="circle-front-text d-none d-sm-block">
+                <div className="circle-front-text d-none d-md-block">
                   {_getAssignedName(task.AssignedName)}
                 </div>
               )}
@@ -2543,8 +2543,8 @@ function RightSideGrid({
               <div
                 className={
                   Status === "overdue"
-                    ? "red-week d-none d-sm-block"
-                    : "black-week d-none d-sm-block"
+                    ? "red-week d-none d-md-block"
+                    : "black-week d-none d-md-block"
                 }
                 style={{ cursor: "pointer" }}
                 onClick={(e) => getSelectTaskDetails(task)}
@@ -2558,14 +2558,14 @@ function RightSideGrid({
               >
                 {
                   <img
-                    className="d-none d-sm-block"
+                    className="d-none d-md-block"
                     src={keyboardArrowRightBlack}
                     alt="Right Arrow"
                   />
                 }
                 {task.AssignedTo !== 0 && (
                   <img
-                    className="d-block d-sm-none"
+                    className="d-block d-md-none"
                     src={keyboardArrowRightBlack}
                     alt="Right Arrow"
                   />
@@ -2580,7 +2580,7 @@ function RightSideGrid({
                   </div>
                 )}
                 {task.AssignedTo === 0 && (
-                  <div className="only-mobile-assign-add d-block d-sm-none">
+                  <div className="only-mobile-assign-add d-block d-md-none">
                     <div
                       className="assign-user-icon"
                       onMouseOver={() =>
@@ -2590,7 +2590,7 @@ function RightSideGrid({
                     >
                       <img
                         src={assignIconCircle}
-                        className="d-block d-sm-none"
+                        className="d-block d-md-none"
                         alt="Assign Circle"
                       />
                     </div>
@@ -2990,7 +2990,7 @@ function RightSideGrid({
                         />
                       </div>
                       <div className="float-left">
-                        <div className="this-Month d-none d-sm-block">
+                        <div className="this-Month d-none d-md-block">
                           Completed
                         </div>
                         <div className="count-total">
@@ -3009,7 +3009,7 @@ function RightSideGrid({
                         />
                       </div>
                       <div className="float-left">
-                        <div className="this-Month d-none d-sm-block">
+                        <div className="this-Month d-none d-md-block">
                           Scheduled
                         </div>
                         <div className="count-total">
@@ -3023,25 +3023,25 @@ function RightSideGrid({
             </div>
           )}
           <div className="d-flex mobile-height-dasboardView">
-            <div className="companies-sub-title w-25 d-none d-sm-block">
+            <div className="companies-sub-title w-25 d-none d-md-block">
               Tasks
             </div>
             {!searchBoxShowMobile && (
               <div className="w-75 d-flex pl-0">
-                <div className="companies-sub-title d-block d-sm-none">
+                <div className="companies-sub-title d-block d-md-none">
                   Tasks
                 </div>
               </div>
             )}
 
-            <div className="w-75 d-none d-sm-block">
+            <div className="w-75 d-none d-md-block">
               {!searchBoxShow && (
                 <div className="only-search-icon" onClick={() => handleFocus()}>
                   <img src={searchIcon} alt="sidebar Check Icon" />
                 </div>
               )}
               {searchBoxShow && (
-                <div className="searchBox d-none d-sm-block" ref={innerSearch}>
+                <div className="searchBox d-none d-md-block" ref={innerSearch}>
                   <div className="input-group form-group">
                     <img
                       className="IconGray"
@@ -3076,8 +3076,8 @@ function RightSideGrid({
             <div
               className={
                 searchBoxShowMobile
-                  ? "col-12 d-block d-sm-none"
-                  : "w-25 d-block d-sm-none mobile"
+                  ? "col-12 d-block d-md-none"
+                  : "w-25 d-block d-md-none mobile"
               }
             >
               {!searchBoxShowMobile && (
@@ -3189,7 +3189,7 @@ function RightSideGrid({
               (searchBoxShow === false &&
                 displayTask === "2" &&
                 !isMobile)) && (
-              <span className="take-action d-none d-sm-block">
+              <span className="take-action d-none d-md-block">
                 <ul className="pull-right" style={{ float: "right" }}>
                   <span
                     style={{ fontSize: "10px", backgroundColor: "transparent" }}
@@ -3856,7 +3856,7 @@ function RightSideGrid({
 
       {isTaskListOpen && (
         <div className="row ">
-          <div className="col-3 new-side-bar d-none d-sm-block">
+          <div className="col-3 new-side-bar d-none d-md-block">
             <div
               id="test"
               className={
@@ -3866,7 +3866,7 @@ function RightSideGrid({
               }
             >
               <div className="all-companies-task-grid-2 inside-padding-sidebar">
-                <div className="all-companies-title-sidebar w-100 d-none d-sm-block">
+                <div className="all-companies-title-sidebar w-100 d-none d-md-block">
                   {user.UserType === 4 && (
                     <div className="right-side-top-new-strip">
                       <div className="w-100 mb-3">
@@ -4436,12 +4436,12 @@ function RightSideGrid({
                   </div>
                   <div className="task-details-sub-title">
                     {getTaskById && getTaskById.TaskName}{" "}
-                    <span className="nse-label d-none d-sm-block">
+                    <span className="nse-label d-none d-md-block">
                       {getTaskById && getTaskById.LicenseCode}
                     </span>
                   </div>
 
-                  <div className="d-flex d-block d-sm-none">
+                  <div className="d-flex d-block d-md-none">
                     <span className="nse-label ml-0">
                       {getTaskById && getTaskById.LicenseCode}
                     </span>
@@ -4514,7 +4514,7 @@ function RightSideGrid({
                     </div>
                   </div>
 
-                  <div className="border-header d-none d-sm-block">
+                  <div className="border-header d-none d-md-block">
                     {getTaskById && getTaskById.Status !== "Assigned" && (
                       <div
                         className="approved-label"
@@ -5245,7 +5245,7 @@ function RightSideGrid({
                                 className="file-download-title pointer d-flex"
                               >
                                 download
-                                <span className="d-none d-sm-block">
+                                <span className="d-none d-md-block">
                                   &nbsp;file
                                 </span>
                               </a>
@@ -5402,7 +5402,7 @@ function RightSideGrid({
                                               className="file-download-title pointer d-flex"
                                             >
                                               download{" "}
-                                              <span className="d-none d-sm-block">
+                                              <span className="d-none d-md-block">
                                                 &nbsp;file
                                               </span>
                                             </a>
@@ -5455,7 +5455,7 @@ function RightSideGrid({
                                           className="file-download-title pointer d-flex"
                                         >
                                           download{" "}
-                                          <span className="d-none d-sm-block">
+                                          <span className="d-none d-md-block">
                                             &nbsp;file
                                           </span>
                                         </a>

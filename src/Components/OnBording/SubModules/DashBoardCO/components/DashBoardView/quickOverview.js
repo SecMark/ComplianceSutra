@@ -413,7 +413,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   return (
     <div className="row">
       {
-        <div className="col-12 col-sm-3 col-md-3 col-xl-3 new-side-bar">
+        <div className="col-12 col-md-3 col-xl-3 new-side-bar">
           <div className="scroll-inside-new">
             <div
               className={
@@ -431,7 +431,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                   <br /> overview for you!
                 </div>
                 <>
-                  <div className="d-block d-sm-none">
+                  <div className="d-block d-md-none">
                     <span
                       className="bold-title-sidebar mr-4"
                       style={{ width: "32%", color: "#2c2738" }}

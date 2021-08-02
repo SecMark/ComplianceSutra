@@ -112,7 +112,7 @@ function DashBoardView({ history }) {
   return (
     <div>
       <div className="row dashboard-view-mobile-top">
-        <div className="mobile-head d-block d-sm-none">
+        <div className="mobile-head d-block d-md-none">
           <div className="d-flex">
             <div
               className="w-25"
@@ -139,7 +139,7 @@ function DashBoardView({ history }) {
         style={{ height: "auto" }}
       >
         {!isMobile && (
-          <div className="left-fixed d-none d-sm-block">
+          <div className="left-fixed d-none d-md-block">
             <div className="on-boarding">
               <SideBarInputControl
                 isTaskListOpen={isTaskListOpen}

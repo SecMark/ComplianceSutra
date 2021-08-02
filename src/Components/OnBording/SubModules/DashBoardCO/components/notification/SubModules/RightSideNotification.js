@@ -184,13 +184,13 @@ function NotificationGrid(props) {
         <div id="sideBarParent" className="">
           <div id="sideBarChild" className="leftSideBarFixed">
             <MobileLeftSidebar
-              className="d-block d-sm-none"
+              className="d-block d-md-none"
               close={() => closeMobileSidebar()}
             />
           </div>
         </div>
       )}
-      <div className="mobile-head mobile-top-pyd d-block d-sm-none">
+      <div className="mobile-head mobile-top-pyd d-block d-md-none">
         <div className="d-flex">
           <div className="w-25">
             <img
@@ -218,13 +218,13 @@ function NotificationGrid(props) {
               <div className="Filter-drop-down">
                 <ul>
                   <li>
-                    <p className="filter-by d-none d-sm-block">Filter by:</p>
+                    <p className="filter-by d-none d-md-block">Filter by:</p>
                   </li>
                   <li>
                     <Dropdown
-                      className="d-none d-sm-block"
+                      className="d-none d-md-block"
                       arrowClosed={
-                        <span className="arrow-closed d-none d-sm-block" />
+                        <span className="arrow-closed d-none d-md-block" />
                       }
                       onChange={onCategoryChange}
                       arrowOpen={<span className="arrow-open" />}
@@ -235,7 +235,7 @@ function NotificationGrid(props) {
                   </li>
                   <li>
                     <span
-                      className="dots-div dropIcon d-block d-sm-none"
+                      className="dots-div dropIcon d-block d-md-none"
                       ref={innnerDropdown}
                     >
                       {showFilter ? (
