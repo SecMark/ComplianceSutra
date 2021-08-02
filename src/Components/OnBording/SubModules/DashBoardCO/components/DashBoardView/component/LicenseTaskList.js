@@ -3,21 +3,17 @@ import moment from "moment";
 import "../style.css";
 import viewAllArow from "../../../../../../../assets/Icons/viewAllArow.png";
 import viewAllArowTop from "../../../../../../../assets/Icons/viewAllArowTop.png";
-// import "../BoardView/style.css"
 import keyboardArrowRightBlack from "../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
-import axios, { post } from "axios";
-import { withRouter } from "react-router-dom";
+import axios from "axios";
 import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
 import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
 import downArrow from "../../../../../../../assets/Icons/downArrow.png";
 import upArrow from "../../../../../../../assets/Icons/topArrowAccordian.png";
-import { useSelector, useDispatch, connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { actions as notificationActions } from "../../notification/Redux/actions.js";
 import { setNotificationTaskId } from "../../notification/Redux/Action";
 
 export default function LicenseTaskList(props) {
-  // console.log(props);
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const [assignRowCount, setAssignRowCount] = useState([]);
@@ -26,9 +22,6 @@ export default function LicenseTaskList(props) {
   const [showUserToolTip, setShowUserToolTip] = useState("");
   const [expandedFlags, setExpandedFlags] = useState([]);
   const userDetails = state && state.auth && state.auth.loginInfo;
-  useEffect(() => {
-    console.log("gello");
-  }, []);
 
   useEffect(() => {
     const payload = {
@@ -61,7 +54,6 @@ export default function LicenseTaskList(props) {
         initials += names[names.length - 1].substring(0, 1).toUpperCase();
       } else if (names.length == 1) {
         initials = names[0].substring(0, 2).toUpperCase();
-        // initials += names[names.length - 1].substring(0, 1).toUpperCase()
       }
     }
     return initials;
@@ -156,17 +148,10 @@ export default function LicenseTaskList(props) {
         >
           <div className="col-10 col-md-6 col-sm-6 col-xl-6">
             <div className="all-companies-sub-title">
-              {/* <img id={task.TaskId} style={{ cursor: "pointer" }}
-                  src={task.Status === "Approved" ? completeTaskIcon : sidebarCheckIcon}
-                  alt="sidebar Check Icon"
-                  onClick={() => _handleApproveTaskOnCheckBoxClick(task.TaskId)} /> */}
               <div
                 onClick={(e) => getSelectTaskDetails(task)}
                 style={{ cursor: "pointer", display: "flex" }}
               >
-                {/* <div class="graybox-left">
-                    <span class="all-companies-nse-label d-block d-sm-none">{task.LicenseCode}</span>
-                  </div> */}
                 <span className="pink-label-title-right">
                   <div className="overdue-title">{task.TaskName}</div>
                   <div
@@ -190,8 +175,7 @@ export default function LicenseTaskList(props) {
                           task && task.Status
                             ? task.Status === "Assign"
                               ? "#fcf3cd"
-                              : // task.Status === "Completed By User"  ? "#cdfcd8 " :
-                              task.Status === "Completed By User"
+                              : task.Status === "Completed By User"
                               ? moment(task.EndDate).isBefore(today)
                                 ? "#cdfcd8"
                                 : "#ffefea"
@@ -209,8 +193,7 @@ export default function LicenseTaskList(props) {
                               ? moment(task.EndDate).isBefore(today)
                                 ? "#7fba7a"
                                 : "#ff5f31"
-                              : // task.Status === "Completed By User" ? "#7fba7a" :
-                              task.Status === "Approved"
+                              : task.Status === "Approved"
                               ? "#7fba7a"
                               : task.Status === "Assigned"
                               ? "#f8c102"
@@ -274,16 +257,6 @@ export default function LicenseTaskList(props) {
                     </div>
                   </div>
                 )}
-                {/* // <div className="circle-name d-none d-sm-block">
-                  //   <div className="circle-text">
-                  //     {
-                  //        userDetails.UserType === 4 ?
-                  //        getInitials(task.ApproverName === "Assign" ? "no approver" : task.ApproverName)
-                  //        :
-                  //         getInitials(task.AssignedName)
-                  //     }
-                  //   </div>
-                  // </div> */}
                 {props.user.UserType === 4 ? (
                   <div className="circle-front-text d-none d-sm-block">
                     {task.ApproverName === "Assign"
@@ -350,26 +323,23 @@ export default function LicenseTaskList(props) {
                       </div>
                     </div>
                   )}
-                  {
-                    // task.AssignedTo > 0 &&
-                    task.AssignedTo === 0 && (
-                      <div className="only-mobile-assign-add d-block d-sm-none">
-                        <div
-                          className="assign-user-icon"
-                          onMouseOver={() =>
-                            setShowUserToolTip(`Tooltip${task.TaskId}`)
-                          }
-                          onMouseOut={() => setShowUserToolTip("")}
-                        >
-                          <img
-                            src={assignIconCircle}
-                            className="d-block d-sm-none"
-                            alt="Assign Circle"
-                          />
-                        </div>
+                  {task.AssignedTo === 0 && (
+                    <div className="only-mobile-assign-add d-block d-sm-none">
+                      <div
+                        className="assign-user-icon"
+                        onMouseOver={() =>
+                          setShowUserToolTip(`Tooltip${task.TaskId}`)
+                        }
+                        onMouseOut={() => setShowUserToolTip("")}
+                      >
+                        <img
+                          src={assignIconCircle}
+                          className="d-block d-sm-none"
+                          alt="Assign Circle"
+                        />
                       </div>
-                    )
-                  }
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -381,7 +351,6 @@ export default function LicenseTaskList(props) {
   const renderSidebarTaskList = (task, Status, listType) => {
     return (
       <Link
-        // to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
           dispatch(setNotificationTaskId(task.TaskId));
@@ -398,11 +367,6 @@ export default function LicenseTaskList(props) {
         >
           <div className="col-10 pl-0">
             <div className="all-companies-sub-title">
-              {/* <div className="graybox-left">
-                <span className="all-companies-nse-label">
-                  {task.LicenseCode}
-                </span>{" "}
-              </div> */}
               <div
                 className="pink-label-title-right"
                 onClick={(e) => getSelectTaskDetails(task)}
@@ -444,124 +408,121 @@ export default function LicenseTaskList(props) {
     <div>
       <div className="task-list-grid">
         <div className="">
-          {
-            companyTaskData &&
-            props.sideBarTaskList === false &&
-            companyTaskData.length > 0
-              ? companyTaskData.map((item, index) => {
-                  return (
-                    <>
-                      {item.Status && item.Status !== "Norec" && (
-                        <div className="take-action customHeight">
-                          <div className="task-list-grid">
-                            {item.Status && (
+          {companyTaskData &&
+          props.sideBarTaskList === false &&
+          companyTaskData.length > 0
+            ? companyTaskData.map((item, index) => {
+                return (
+                  <>
+                    {item.Status && item.Status !== "Norec" && (
+                      <div className="take-action customHeight">
+                        <div className="task-list-grid">
+                          {item.Status && (
+                            <div
+                              className="upcoming-btn"
+                              onClick={() => {
+                                expandedFlags.includes(index)
+                                  ? handleExpandList("hide", index)
+                                  : handleExpandList("show", index);
+                              }}
+                            >
                               <div
-                                className="upcoming-btn"
-                                onClick={() => {
-                                  expandedFlags.includes(index)
-                                    ? handleExpandList("hide", index)
-                                    : handleExpandList("show", index);
-                                }}
+                                style={{ cursor: "pointer" }}
+                                className="upcoming-title"
                               >
-                                <div
-                                  style={{ cursor: "pointer" }}
-                                  className="upcoming-title"
-                                >
-                                  {item.Status}
-                                  <span className="black-circle">
-                                    <p className="black-circle-text">
-                                      {item.Details.length}
-                                    </p>
-                                  </span>
-                                  {expandedFlags.includes(index) ? (
-                                    <img
-                                      src={upArrow}
-                                      className="arrowDown"
-                                      alt="Arrow Up"
-                                      style={{ cursor: "pointer" }}
-                                    />
-                                  ) : (
-                                    <img
-                                      src={downArrow}
-                                      className="arrowDown"
-                                      style={{ cursor: "pointer" }}
-                                      alt="Arrow down"
-                                    />
-                                  )}
-                                </div>
+                                {item.Status}
+                                <span className="black-circle">
+                                  <p className="black-circle-text">
+                                    {item.Details.length}
+                                  </p>
+                                </span>
+                                {expandedFlags.includes(index) ? (
+                                  <img
+                                    src={upArrow}
+                                    className="arrowDown"
+                                    alt="Arrow Up"
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                ) : (
+                                  <img
+                                    src={downArrow}
+                                    className="arrowDown"
+                                    style={{ cursor: "pointer" }}
+                                    alt="Arrow down"
+                                  />
+                                )}
                               </div>
-                            )}
+                            </div>
+                          )}
 
-                            {
-                              <>
+                          {
+                            <>
+                              {!expandedFlags.includes(index) &&
+                                item.Details.slice(
+                                  0,
+                                  assignRowCount[item.Status.trim()]
+                                ).map((task) => {
+                                  return (
+                                    <>
+                                      {task.LicenseCode !== "Norec" &&
+                                        renderTaskList(
+                                          task,
+                                          item.Status.trim(),
+                                          1
+                                        )}
+                                    </>
+                                  );
+                                })}
+                              <div>
                                 {!expandedFlags.includes(index) &&
-                                  item.Details.slice(
-                                    0,
-                                    assignRowCount[item.Status.trim()]
-                                  ).map((task) => {
-                                    return (
-                                      <>
-                                        {task.LicenseCode !== "Norec" &&
-                                          renderTaskList(
-                                            task,
-                                            item.Status.trim(),
-                                            1
-                                          )}
-                                      </>
-                                    );
-                                  })}
-                                <div>
-                                  {!expandedFlags.includes(index) &&
-                                    item.Details.length > 3 && (
-                                      <>
-                                        {assignRowCount[item.Status.trim()] >
-                                          3 && (
-                                          <div
-                                            onClick={() =>
-                                              AssignShowLessMore(item.Status, 3)
-                                            }
-                                            className="viewAll showLess"
-                                          >
-                                            Show Less{" "}
-                                            <img
-                                              src={viewAllArowTop}
-                                              alt="Show Less"
-                                            />
-                                          </div>
-                                        )}
-                                        {assignRowCount[item.Status.trim()] ===
-                                          3 && (
-                                          <div
-                                            onClick={() =>
-                                              AssignShowLessMore(
-                                                item.Status,
-                                                item.Details.length
-                                              )
-                                            }
-                                            className="viewAll"
-                                          >
-                                            View All ({item.Details.length - 3}{" "}
-                                            MORE)
-                                            <img
-                                              src={viewAllArow}
-                                              alt="view All Arow"
-                                            />
-                                          </div>
-                                        )}
-                                      </>
-                                    )}
-                                </div>
-                              </>
-                            }
-                          </div>
+                                  item.Details.length > 3 && (
+                                    <>
+                                      {assignRowCount[item.Status.trim()] >
+                                        3 && (
+                                        <div
+                                          onClick={() =>
+                                            AssignShowLessMore(item.Status, 3)
+                                          }
+                                          className="viewAll showLess"
+                                        >
+                                          Show Less{" "}
+                                          <img
+                                            src={viewAllArowTop}
+                                            alt="Show Less"
+                                          />
+                                        </div>
+                                      )}
+                                      {assignRowCount[item.Status.trim()] ===
+                                        3 && (
+                                        <div
+                                          onClick={() =>
+                                            AssignShowLessMore(
+                                              item.Status,
+                                              item.Details.length
+                                            )
+                                          }
+                                          className="viewAll"
+                                        >
+                                          View All ({item.Details.length - 3}{" "}
+                                          MORE)
+                                          <img
+                                            src={viewAllArow}
+                                            alt="view All Arow"
+                                          />
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                              </div>
+                            </>
+                          }
                         </div>
-                      )}
-                    </>
-                  );
-                })
-              : ""
-            // <div>Data Not Available</div>
-          }
+                      </div>
+                    )}
+                  </>
+                );
+              })
+            : ""}
         </div>
         <>
           {companyTaskData &&
@@ -578,24 +539,6 @@ export default function LicenseTaskList(props) {
                           className="upcoming-title"
                         >
                           {item.Status}
-                          {/* <span className="black-circle">
-                              <p className="black-circle-text">
-                                {item.Details.length}
-                              </p>
-                            </span>
-                            {expandedFlags.includes(index) ? (
-                              <img
-                                src={upArrow}
-                                className="arrowDown"
-                                alt="Arrow Up"
-                              />
-                            ) : (
-                              <img
-                                src={downArrow}
-                                className="arrowDown"
-                                alt="Arrow down"
-                              />
-                            )} */}
                         </div>
                       </div>
                       {item.Status.trim() != "overdue" &&
