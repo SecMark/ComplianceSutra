@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { isMobile } from "react-device-detect";
 import HelpData from "../../HelpData/Help.json";
 import QuestionAnswer from "./QuestionAndAnswers/QuestionAnswer";
-import LeftSideBar from "../../CommonModules/SideBar/LeftSideBar";
 import sideBarlogo from "../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../assets/Icons/togglemobile.png";
 import { BsFillQuestionCircleFill } from "react-icons/bs";

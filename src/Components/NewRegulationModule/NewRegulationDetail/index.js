@@ -1,5 +1,5 @@
 import React from "react";
-import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
+
 import closeIcon from "../../../assets/Icons/closeIcon.png";
 
 const NewRegulationDetail = ({

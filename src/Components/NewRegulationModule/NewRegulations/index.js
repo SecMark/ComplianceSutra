@@ -1,13 +1,11 @@
-import React, { useState, useReducer, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import filter from "../../../assets/Icons/Filters.png";
-import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import MobileLeftSidebar from "../../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../../assets/Icons/togglemobile.png";
 import { isMobile } from "react-device-detect";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
 import filterImage from "../../../assets/Icons/filter_background.png";
-import searchIcon from "../../../assets/Icons/searchIcon.png";
 import { withRouter } from "react-router";
 import { ImSearch } from "react-icons/im";
 
@@ -28,7 +26,6 @@ import NewRegulationDetail from "../NewRegulationDetail";
 import NewRegulationFilter from "../NewRegulationFilter";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
 import NewRegulationSearchResult from "../NewRegulationSearchResult";
-import Cobg from "../../../assets/Images/Onboarding/co-bg.png";
 
 import "./style.css";
 import NewRegulationSearchBadge from "../NewRegulationSearchBadge";

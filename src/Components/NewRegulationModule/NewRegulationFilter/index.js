@@ -200,16 +200,6 @@ const NewRegulationFilter = (props) => {
                 {"* " + constant.errorMessage.errorDueToGreaterDate}
               </small>
             )}
-          {/* {state.UpdatesReducer.from !== "" &&
-            state.UpdatesReducer.from.length === 3 &&
-            isMoreThanOneYearFromToday(state.UpdatesReducer.from) !==
-              undefined &&
-            isMoreThanOneYearFromToday(state.UpdatesReducer.from) && (
-              <small className="d-block">
-                {"* " +
-                  constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
-              </small>
-            )} */}
         </p>
       </div>
       <div>
@@ -229,15 +219,7 @@ const NewRegulationFilter = (props) => {
                 {"* " + constant.errorMessage.errorDueToGreaterDate}
               </small>
             )}
-          {/* {state.UpdatesReducer.to !== "" &&
-            state.UpdatesReducer.to.length === 3 &&
-            isMoreThanOneYearFromToday(state.UpdatesReducer.to) !== undefined &&
-            isMoreThanOneYearFromToday(state.UpdatesReducer.to) && (
-              <small className="d-block">
-                {"* " +
-                  constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
-              </small>
-            )} */}
+
           {state.UpdatesReducer.to !== "" &&
             state.UpdatesReducer.to.length === 3 &&
             state.UpdatesReducer.from !== "" &&

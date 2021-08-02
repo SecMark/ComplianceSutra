@@ -107,9 +107,6 @@ function VeryOTP({ history, currentStep }) {
     let emailFromLink = splitEmailAndType[0];
     let typeFromLink = data[2];
     getUserId(emailFromLink, typeFromLink);
-    // if (mobile_number !== undefined) {
-    //   setMobileNumber(mobile_number)
-    // }
   }, []);
 
   useEffect(() => {
@@ -362,9 +359,6 @@ function VeryOTP({ history, currentStep }) {
         }
       });
   };
-  //  else {
-  //   //toast.error("Mobile number is not generated")
-  // }
 
   useEffect(() => {
     let myInterval = setInterval(() => {
@@ -469,41 +463,6 @@ function VeryOTP({ history, currentStep }) {
                   with verified mobile
                 </p>
 
-                {/* <p className="login_title"><img className="right-back-arrow" src={leftArrow} alt="" /> Let's secure your account<br />
-                      with verified mobile</p>                  */}
-                {/* <div className="send-otp">                
-                  <p className="disc-text">This helps you prevent unauthorized access to your<br />
-                   account. And you don't have to remember any password</p>
-                    <p className="will-send-text">We will send OTP on +91 9876543211 <span className="change">CHANGE</span></p>
-                     <button className="btn save-details common-button">SECURE NOW</button>
-                  </div> */}
-                {/*
-                 <div className="verify-otp">                 
-                  <p className="disc-text">Please enter the verification code sent to your phone no.</p>
-                    <p className="will-send-text"> +91 987****210 <span className="mobile-change">CHANGE</span></p>
-                   
-                     <div className="form-group">
-                        <input type="text" className="form-control" id="OTP" placeholder="Enter 5 digit OTP" required />
-                     </div> 
-                     <p style={{ display: "flex" }} className="Resend-OTP-in"> Resend OTP in:<span className="second">{minutes === 0 && seconds === 0
-                          ? null
-                          : <p style={{ fontSize: 10 }}> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</p>
-                        }</span></p>
-                     <button className="btn save-details common-button">VERIFY</button>
-                  </div>
-                   */}
-
-                {/* <div className="verify-otp">                 
-                     <p className="disc-text">Please enter the verification code sent to your phone no.</p>
-                     <p className="will-send-text"> +91 987****210 <span className="mobile-change">CHANGE</span></p>                        
-                     <div className="form-group">
-                        <input type="text" className="form-control" id="OTP" placeholder="Enter 5 digit OTP" required />
-                     </div> 
-                     <p> <span className="resend-text">Didn't receive an OTP?
-                      </span><span className="resend">RESEND</span></p>
-                     <button className="btn save-details common-button">VERIFY</button>
-                  </div> */}
-
                 {isEnableSecureOTP === false && (
                   <div>
                     <div className="send-otp">
@@ -576,22 +535,7 @@ function VeryOTP({ history, currentStep }) {
                             required
                           />
                         </div>
-                        {/* <input
-                            type="text"
-                            name="phoneNumber"
-                            value={phoneNumber}
-                            onChange={handelChange}
-                            className={
-                              "form-control " +
-                              (phoneNumberErr !== ""
-                                ? "input-error"
-                                : "")
-                            }
-                            id="OTP"
-                            maxLength={10}
-                            placeholder="Enter mobile number"
-                            required
-                          /> */}
+
                         {countryCode === false || values.countryCode === "" ? (
                           <p
                             className="input-error-message"
@@ -704,18 +648,6 @@ function VeryOTP({ history, currentStep }) {
                     </button>
                   </div>
                 )}
-                {/* <span className="change">CHANGE</span> */}
-                {/* <div className="verify-otp">                 
-                  <p className="disc-text">Please enter the verification code sent to your phone no.</p>
-                    <p className="will-send-text"> +91 987****210 </p>
-                    <p className="will-send-text"> +91 987****210 <span className="change">Edit</span></p>
-                    <p> <span className="resend-text">Didn't receive the OTP?
-                    </span><span className="resend">RESEND</span></p> 
-                     <div className="form-group">
-                        <input type="text" className="form-control" id="OTP" placeholder="Enter 6 digit OTP" required />
-                     </div> 
-                     <button className="btn save-details common-button">VERIFY</button>
-                  </div> */}
               </div>
               <div className="bottom-logo-strip">
                 <div className="row aligncenter">
