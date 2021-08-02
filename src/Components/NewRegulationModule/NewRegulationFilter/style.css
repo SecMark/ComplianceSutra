@@ -1,5 +1,4 @@
 .searchable {
-  /* width: 274px !important; */
   width: 100% !important;
 }
 @media screen and (min-width: 767px) {
@@ -55,12 +54,6 @@ p.warnings > small {
   .searchable {
     width: 100% !important;
   }
-  /* .view-updates {
-    margin-top: 70px;
-  }
-  .view-updates-active {
-    margin-top: 70px;
-  } */
 }
 
 .searchable__controls__list__item {
