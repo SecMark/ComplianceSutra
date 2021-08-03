@@ -4,16 +4,13 @@ import SideBarInputControl from "../../../../components/LeftSideBar";
 import TaskListView from "./RightSideView";
 import Cobg from "../../../../../../../../assets/Images/Onboarding/co-bg.png";
 import { actions as taskReportActions } from "../../../../redux/actions";
-import { toast } from "react-toastify";
 import { withRouter } from 'react-router-dom';
 import QuickOverViewSection from "../../quickOverview";
-import { actions as adminMenuActions } from "../../../../MenuRedux/actions";
 function DashBoardView({ history }) {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
 
     const [isTaskListOpen, setIsTaskListOpen] = useState(false);
-    const [isTaskApproved, setIsTaskApproved] = useState(false);
 
     const taskList =
         state &&
@@ -74,21 +71,10 @@ function DashBoardView({ history }) {
         )
     }, [state.adminMenu.currentMenu]);
 
-    useEffect(() => {
-        // if(window.location.href.includes("dashboard") && state.adminMenu.currentMenu!=="taskList"){
-        //   dispatch(adminMenuActions.setCurrentMenu("dashboard"));
-        // }
-
-    }, [])
-
-
-
-
     return (
         <div className="row co-dashboard">
             <div className=" left-fixed ">
                 <div className="on-boarding">
-                    {/* <SideBar /> */}
                     <SideBarInputControl
                         isTaskListOpen={isTaskListOpen}
                         setIsTaskListOpen={setIsTaskListOpen}
@@ -105,7 +91,6 @@ function DashBoardView({ history }) {
                     <TaskListView
 
                     />)}
-
             </div>
         </div>
     );
