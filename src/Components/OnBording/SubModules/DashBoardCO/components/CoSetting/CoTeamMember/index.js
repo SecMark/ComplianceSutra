@@ -534,12 +534,10 @@ function CoManagment({ handleClose }) {
   };
 
   const handleChangeInputBoxRole = (event) => {
-    console.log(event.target.value);
-    setInputTeamMember({ ...inputTeamMember, ["role"]: event.target.value });
+    setInputTeamMember({ ...inputTeamMember, ["role"]: event });
   };
 
   const handleChangeInputBoxRoleMobile = (event) => {
-
     setInputTeamMember({ ...inputTeamMember, ["role"]: event.target.value });
     onConfirmChangeRole(currentRow, openPopupIndex, event.target.value);
     closeChangeRole();
@@ -552,7 +550,6 @@ function CoManagment({ handleClose }) {
     setIsValidEmail(true);
     setAlreadyExist(false);
     const { name, value } = e.target;
-    console.log(name);
     if (name === "fullName") {
       const re = /^[a-z|A-Z_ ]*$/;
       if (e.target.value && !re.test(e.target.value)) {
@@ -560,7 +557,6 @@ function CoManagment({ handleClose }) {
       }
     }
     if (name === "email") {
-      console.log("hello");
       onValidateEmail(e);
     }
     setInputTeamMember({ ...inputTeamMember, [name]: e.target.value });
@@ -675,7 +671,10 @@ function CoManagment({ handleClose }) {
       entityID: 0,
       licID: 0,
       uUserID: 0,
-      utype: _userRole && parseInt(_userRole.value),
+      utype:
+        _userRole && typeof _userRole === "object"
+          ? parseInt(_userRole.value)
+          : parseInt(_userRole),
       // notificationList: "",
       // pwd: "",
       fullName: inputTeamMember.fullName,
@@ -1321,18 +1320,19 @@ function CoManagment({ handleClose }) {
                   </div>
                 </td>
                 <td>
-                  <select
-                    className="select-role"
-                    placeholder="Select role"
+                  <Dropdown
+                    style={{ width: 240 }}
                     onChange={(value) => handleChangeInputBoxRole(value)}
-                  >
-                    <option disabled selected>
-                      Select Role
-                    </option>
-                    {optionsInputBoxRole.map(({ label, value }) => (
-                      <option value={value}> {label} </option>
-                    ))}
-                  </select>
+                    arrowClosed={<span className="arrow-closed" />}
+                    arrowOpen={<span className="arrow-open" />}
+                    options={optionsInputBoxRole}
+                    value={
+                      inputTeamMember.role.length === 0
+                        ? null
+                        : inputTeamMember.role
+                    }
+                    placeholder="Select role"
+                  />
                 </td>
 
                 <td>
