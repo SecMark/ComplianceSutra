@@ -539,7 +539,6 @@ function CoManagment({ handleClose }) {
   };
 
   const handleChangeInputBoxRoleMobile = (event) => {
-
     setInputTeamMember({ ...inputTeamMember, ["role"]: event.target.value });
     onConfirmChangeRole(currentRow, openPopupIndex, event.target.value);
     closeChangeRole();
@@ -675,7 +674,7 @@ function CoManagment({ handleClose }) {
       entityID: 0,
       licID: 0,
       uUserID: 0,
-      utype: _userRole && parseInt(_userRole.value),
+      utype: inputTeamMember.role,
       // notificationList: "",
       // pwd: "",
       fullName: inputTeamMember.fullName,

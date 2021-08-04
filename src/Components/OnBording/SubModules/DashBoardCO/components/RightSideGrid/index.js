@@ -5303,14 +5303,15 @@ function RightSideGrid({
                       (userDetails.UserType === 3 ||
                         userDetails.UserType === 5)) ? (
                       <>
+                        {/* check here */}
                         {getTaskById &&
                         getTaskById.Status &&
-                        (getTaskById.Status === "Assigned" ||
-                          getTaskById.Status === "Request Rejected") &&
-                        getTaskById &&
-                        getTaskById.Status &&
+                        getTaskById.TaskStatus !== 1 &&
+                        // (getTaskById.Status === "Assigned" ||
+                        // getTaskById.Status === "Request Rejected") &&
                         (getTaskById.TaskStatus === 0 ||
-                          getTaskById.TaskStatus === 3) ? (
+                          getTaskById.TaskStatus === 3 ||
+                          getTaskById.TaskStatus === 4) ? (
                           (user && user.UserType && user.UserType === 4) ||
                           (user &&
                             user.UserType &&
