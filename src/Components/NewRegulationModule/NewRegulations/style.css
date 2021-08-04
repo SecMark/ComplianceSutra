@@ -440,7 +440,7 @@ p.description-text-search-active {
 .mobile-header-buttons-group {
   display: flex;
   align-items: center;
-  flex: 0.35;
+  flex: 0.28;
   justify-content: space-between;
 }
 .filter-counter {
@@ -529,6 +529,10 @@ p.description-text-search-active {
   .regulation-details-popup-mobile--wrapper {
     width: 85%;
     margin: auto;
+  }
+  .mobile-header-buttons-group {
+    flex: 0.2;
+    justify-content: space-between;
   }
 }
 
