@@ -64,7 +64,8 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                             className={`${
                               list?.Status === "Approval Pending"
                                 ? "approval-day"
-                                : list?.Status == "Assigned"
+                                : list?.Status == "Assigned" ||
+                                  list?.Status == "Approved"
                                 ? "assigned-day"
                                 : "approval-day"
                             }`}

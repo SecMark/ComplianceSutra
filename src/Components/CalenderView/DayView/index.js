@@ -51,7 +51,7 @@ const DayView = ({ daysData, userDetails }) => {
                   className={`${
                     day?.Status === "Approval Pending"
                       ? "approval-day"
-                      : day?.Status == "Assigned"
+                      : day?.Status == "Assigned" || day?.Status == "Approved"
                       ? "assigned-day"
                       : "approval-day"
                   }`}
