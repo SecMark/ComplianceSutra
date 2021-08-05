@@ -149,6 +149,7 @@
   letter-spacing: 0.24px;
   text-align: left;
   color: #828282;
+  word-wrap: break-word;
 }
 
 .week-detail h2 {
