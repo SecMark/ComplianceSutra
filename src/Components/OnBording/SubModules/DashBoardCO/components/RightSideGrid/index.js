@@ -2423,7 +2423,8 @@ function RightSideGrid({
                     )}
                   </div>
                 </div>
-                {task.Status !== "Assigned" && (
+
+                {task.Status && (
                   <p
                     className="pink-label-text d-none d-md-block"
                     style={{
@@ -4515,7 +4516,7 @@ function RightSideGrid({
                   </div>
 
                   <div className="border-header d-none d-md-block">
-                    {getTaskById && getTaskById.Status !== "Assigned" && (
+                    {getTaskById && (
                       <div
                         className="approved-label"
                         style={{
