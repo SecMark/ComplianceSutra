@@ -364,7 +364,7 @@ function CoSettingRightGrid({ handleClose, history }) {
         .post("/api/GetOTP", payload)
         .then(function (response) {
           // handle success
-          if (response && response.data && response.data.Status) {
+          if (response && response.data && response.data.Status != "False") {
             setOtpInValid(true);
             setIsOtpVerfied(true);
             setOtpModal(false);
