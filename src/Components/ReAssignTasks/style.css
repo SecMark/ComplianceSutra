@@ -127,10 +127,6 @@ button.re-assign {
   margin-top: 0.5rem;
 }
 
-/* Small devices (landscape phones, 576px and up) */
-/* @media (min-width: 576px) {} */
-
-/* Medium devices (tablets, 768px and up) */
 @media screen and (max-width: 768px) {
   .re-container {
     width: 100vw;
@@ -195,7 +191,3 @@ button.re-assign {
     font-size: 0.6rem;
   }
 }
-
-/* Large devices (desktops, 992px and up) */
-/* @media (min-width: 992px) {
-} */

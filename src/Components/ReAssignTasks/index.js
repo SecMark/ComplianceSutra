@@ -636,8 +636,6 @@ function ReAssignTasksModal({
         <div className="main-content">
           {Object.entries(assignTo).length === 0 && (
             <div className="members-list">
-              {/* {data && data.length > 0 ? (
-                data.map((member) => { */}
               {searchUsers(searchValue, data) &&
               searchUsers(searchValue, data).length > 0 ? (
                 searchUsers(searchValue, data).map((member) => {

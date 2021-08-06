@@ -21,10 +21,12 @@ function AddedCompanyLicenses() {
               <div className="row">
                 <div className="col-lg-12">
                   <div className="header_logo">
-                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                      <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
-                      <span className="camp">COMPLIANCE SUTRA</span>
-                    {/* </a> */}
+                    <img
+                      src={comtech}
+                      alt="COMPLIANCE SUTRA"
+                      title="COMPLIANCE SUTRA"
+                    />
+                    <span className="camp">COMPLIANCE SUTRA</span>
                   </div>
                 </div>
               </div>
@@ -84,10 +86,12 @@ function AddedCompanyLicenses() {
                     </p>
                   </div>
                   <div className="col-6 text-right-logo">
-                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                      {/* <span className="powerBy">Powered by</span> */}
-                      <img className="header_logo footer-logo-secmark" src={secmark} alt="SECMARK" title="SECMARK" />
-                    {/* </a> */}
+                    <img
+                      className="header_logo footer-logo-secmark"
+                      src={secmark}
+                      alt="SECMARK"
+                      title="SECMARK"
+                    />
                   </div>
                 </div>
               </div>

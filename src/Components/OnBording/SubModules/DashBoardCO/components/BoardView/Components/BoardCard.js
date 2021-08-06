@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
-import mobileSteperIcon from "../../../../../../../assets/Icons/mobileSteperIcon.png";
+import React from "react";
 import "../style.css";
 import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
-import { withRouter, Link } from "react-router-dom";
-import { useSelector, useDispatch, connect } from "react-redux";
-import { actions as notificationActions } from "../../notification/Redux/actions";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { actions as taskDetailsModalOpen } from "../../../MenuRedux/actions";
 import moment from "moment";
 function CustomCard(props) {
@@ -123,9 +121,11 @@ function CustomCard(props) {
     var dateObj = new Date(date);
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (dateObj.toLocaleDateString() == today.toLocaleDateString()) {
+    if (dateObj.toLocaleDateString() === today.toLocaleDateString()) {
       return "Today";
-    } else if (dateObj.toLocaleDateString() == yesterday.toLocaleDateString()) {
+    } else if (
+      dateObj.toLocaleDateString() === yesterday.toLocaleDateString()
+    ) {
       return "Yesterday";
     } else {
       return flag === 1
@@ -173,13 +173,6 @@ function CustomCard(props) {
                 {currentItem && currentItem.LicenseCode}
               </div>
               <div className="w-100 d-flex pb-20">
-                {/* <div className="checkIcon">
-                                <img
-                                    className="three-dot three-dot-small"
-                                    src={mobileSteperIcon}
-                                    alt="three Dots Icon"
-                                />
-                            </div> */}
                 <div className="checkIconText">
                   {currentItem && currentItem.TaskName}
                 </div>

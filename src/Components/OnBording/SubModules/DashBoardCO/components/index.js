@@ -16,7 +16,6 @@ import HelpSection from "../../../../HelpSection/Help";
 import SingleNotification from "../../../../../CustomNotification/SingleNotification";
 import api from "../../../../../../src/apiServices";
 import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
-// import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
@@ -96,7 +95,6 @@ function Dashboard({ history }) {
       window.location.href.includes("dashboard") &&
       state.adminMenu.currentMenu !== "taskList"
     ) {
-      console.log(isTaskListOpen);
       if (isTaskListOpen) {
         setIsTaskListOpen(false);
       }
@@ -147,7 +145,6 @@ function Dashboard({ history }) {
       api
         .post("/api/Notifications", payload)
         .then(function (response) {
-          console.log(response);
           var date1 = new Date(); //current time
           if (response && response.data && response.data.length > 0) {
             let notification = response && response.data;
@@ -201,7 +198,6 @@ function Dashboard({ history }) {
     <div className="row co-dashboard fix-top">
       <div className=" left-fixed ">
         <div className="on-boarding">
-          {/* <SideBar /> */}
           <SideBarInputControl
             isTaskListOpen={isTaskListOpen}
             setIsTaskListOpen={setIsTaskListOpen}
@@ -232,13 +228,7 @@ function Dashboard({ history }) {
             </div>
           </>
         )}
-        {state && state.adminMenu.currentMenu === "history" && (
-          // {History List}
-          <HistoryList />
-        )}
-        {/* {state && state.adminMenu.currentMenu === "historyFilter" && (
-          <HistoryFilter />
-        )} */}
+        {state && state.adminMenu.currentMenu === "history" && <HistoryList />}
         {state && state.adminMenu.currentMenu === "new-regulations" && (
           <NewRegulations />
         )}

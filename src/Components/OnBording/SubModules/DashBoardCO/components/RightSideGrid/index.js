@@ -165,9 +165,7 @@ function RightSideGrid({
   useEffect(() => {
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
-    console.log(state.NotificationRedu);
     if (task_id) {
-      console.log(state.NotificationRedu?.taskID);
       getSelectTaskDetails();
     }
   }, [state.NotificationRedu?.taskID]);
@@ -1814,7 +1812,6 @@ function RightSideGrid({
     }
   };
   const getSelectTaskDetails = (e) => {
-    console.log("hello");
     setShowFiles(true);
     setShowComments(false);
     setCurrentDropDown("");
@@ -1826,13 +1823,11 @@ function RightSideGrid({
 
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
-    console.log(state.NotificationRedu);
 
     if (task_id !== null && e === undefined) {
       if (localStorage.expandedFlagss) {
         let getItem = localStorage.getItem("expandedFlagss");
         let getItemArr = getItem && getItem.split(",");
-        console.log("getItemArr => ", getItemArr);
         const nuevo =
           getItemArr &&
           getItemArr.length > 0 &&
@@ -5308,8 +5303,6 @@ function RightSideGrid({
                         {getTaskById &&
                         getTaskById.Status &&
                         getTaskById.TaskStatus !== 1 &&
-                        // (getTaskById.Status === "Assigned" ||
-                        // getTaskById.Status === "Request Rejected") &&
                         (getTaskById.TaskStatus === 0 ||
                           getTaskById.TaskStatus === 3 ||
                           getTaskById.TaskStatus === 4) ? (

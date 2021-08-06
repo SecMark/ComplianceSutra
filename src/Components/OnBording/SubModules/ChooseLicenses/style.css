@@ -131,14 +131,6 @@ p {
 
 .choose-licenses .choose-licenses-title {
   padding: 37px 32px 0px;
-  /*height: calc(100% - 0px); */
-}
-
-.choose-licenses .choose-licenses-title img {
-  /* margin-bottom: 40px;
-    width: 52px;
-    margin-right: 20px;
-    height: 52px; */
 }
 
 .choose-licenses .search-icon {
@@ -205,7 +197,6 @@ p {
 
 .choose-licenses .accordian-grid {
   border-bottom: 1px solid #f6f6f6;
-  /* height: 64px; */
   padding: 15px 32px;
 }
 
@@ -252,9 +243,7 @@ p {
 
 .accordian-grid-active {
   background-image: linear-gradient(to bottom, #f6f8fb, #f6f8fb);
-  /* padding-left: 9px;
-    padding-top: 15px;
-    padding-bottom: 15px; */
+
   margin-bottom: 10px;
   padding: 15px ​32px 6px;
 }
@@ -377,20 +366,6 @@ div#contentGeneral:last-child {
   width: 100%;
 }
 
-/* .accordian-grid-active .tasks-count {
-    width: 48px;
-    height: 17px;
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 25px;
-    letter-spacing: 0px;
-    text-align: left;
-    color: #aeaeae;
-  } */
-
 .accordian-grid-active .tasks-count {
   padding: 0px 0px 0px 0px;
   font-family: Poppins;
@@ -464,8 +439,6 @@ div#contentGeneral:last-child {
   width: 100%;
 }
 .searchBox .input-group-append {
-  /* margin-left: -44px;
-  z-index: 9; */
   z-index: 9;
   position: absolute;
   right: 3px;
@@ -533,7 +506,6 @@ div#contentGeneral:last-child {
   color: #2c2738;
 }
 .search-detail-grid {
-  /* margin-top:15px; */
   margin-bottom: 15px;
 }
 .searchGrid {
@@ -567,8 +539,6 @@ div#contentGeneral:last-child {
 }
 
 .bottom-logo-strip-drower .common-button-drower {
-  /* border-radius: 4px !important; */
-  /* background-color: #6c5dd3 !important; */
   height: 43px;
   text-transform: uppercase !important;
   width: 186px;
@@ -663,7 +633,7 @@ div#contentGeneral:last-child {
 .assign-icon img {
   background-size: auto;
   height: auto;
-  width:44px;
+  width: 44px;
 }
 @media (min-width: 1200px) {
   .sideBarFixed .container,
@@ -676,7 +646,7 @@ div#contentGeneral:last-child {
 }
 
 @media screen and (max-width: 767px) {
-  .mobile-right-0{
+  .mobile-right-0 {
     padding-right: 0px !important;
     margin-right: 0px !important;
   }
@@ -685,10 +655,10 @@ div#contentGeneral:last-child {
     margin-top: 0px;
     margin-right: 7px;
   }
-  
-.drower .count-task-num {
-  text-align: left;
-}
+
+  .drower .count-task-num {
+    text-align: left;
+  }
   .accordian-grid-active .tasks-count {
     padding: 0px 0px 0px 90px;
     line-height: 20px;
@@ -705,9 +675,6 @@ div#contentGeneral:last-child {
   }
   .searchGrid {
     padding: 20px ​44px 0px;
-    /* max-height: 173px;
-  overflow-y: auto;
-  overflow-x: hidden; */
   }
   .serchlist-title {
     margin: 0px 0px 0px;
@@ -848,7 +815,6 @@ div#contentGeneral:last-child {
     text-align: right;
   }
   .bottom-right-bg-drower1 {
-    /* position: absolute; */
     width: 166.4px;
     top: -28px;
     right: -47px;
