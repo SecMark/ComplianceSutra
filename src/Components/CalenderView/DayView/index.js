@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
 import { setNotificationTaskId } from "../../OnBording/SubModules/DashBoardCO/components/notification/Redux/Action";
@@ -8,7 +8,7 @@ import "./style.css";
 const DayView = ({ daysData, userDetails }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  console.log(userDetails);
+
   const getNameInitials = (name) => {
     if (name != undefined) {
       let initials = "";

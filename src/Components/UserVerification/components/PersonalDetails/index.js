@@ -3,7 +3,7 @@ import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadig
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmail, checkPersonalDetailsForm } from "../utility.js";
+import { checkPersonalDetailsForm } from "../utility.js";
 import { actions as personalDetailsAction } from "../../redux/actions";
 import { withRouter } from "react-router-dom";
 import SideBarInputControl from "../WebStepper.js";
@@ -53,12 +53,9 @@ function PersonalDetails({ history }) {
     api
       .post("/api/availabilityCheck", payload)
       .then((result) => {
-        console.log(result.data.Status);
         setMobileNumberValid(result.data.Status);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -95,7 +92,7 @@ function PersonalDetails({ history }) {
     const mobileNumberReg = /^[0-9]{0,10}$/;
     let passwordRE =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-]{8,16}$/;
-    // let passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
+
     if (name === "mobileNumber") {
       if (!mobileNumberReg.test(event.target.value)) {
         return "";
@@ -218,7 +215,7 @@ function PersonalDetails({ history }) {
     if (emailFromLink !== "" && typeFromLink !== "") {
       let countryCode;
       let strr = values.countryCode;
-      // countryCode = strr.replace(/\D/g, '');
+
       countryCode = strr;
       dispatch(
         personalDetailsAction.userDataSaveRequest({
@@ -278,7 +275,6 @@ function PersonalDetails({ history }) {
     <div className="row">
       <div className="col-3 col-sm-4 col-md-4 col-xl-3 left-fixed">
         <div className="on-boarding">
-          {/* <SideBar /> */}
           <SideBarInputControl currentStep={1} />
         </div>
       </div>
@@ -295,14 +291,12 @@ function PersonalDetails({ history }) {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="header_logo">
-                      {/* <a href="#" style={{'cursor': 'auto'}}> */}
                       <img
                         src={comtech}
                         alt="COMPLIANCE SUTRA"
                         title="COMPLIANCE SUTRA"
                       />
                       <span className="camp">COMPLIANCE SUTRA</span>
-                      {/* </a> */}
                     </div>
                   </div>
                 </div>
@@ -391,14 +385,7 @@ function PersonalDetails({ history }) {
                               onKeyPress={(e) => handleKeyDown(e)}
                             />
                           </div>
-                          {/* {
-                        values.mobileNumber === "" && values.countryCode !== "" && 
-                         errors.countryCodeErr === "true" && (
-                          <p className="input-error-message">
-                             Country code is invalid
-                          </p>
-                        )
-                      } */}
+
                           {values.countryCode !== "" &&
                             errors.countryCodeErr === "true" && (
                               <p className="input-error-message">
@@ -437,7 +424,6 @@ function PersonalDetails({ history }) {
                               (values.designation === ""
                                 ? " "
                                 : " success-input-form-control")
-                              // +(values.designation !== "" ? " success-input-form-control" : "")
                             }
                             id="Designation"
                             placeholder="Eg. Compliance Officer, Team Leader"
@@ -604,7 +590,6 @@ function PersonalDetails({ history }) {
                     </button>
                   </div>
                   <div className="col-6 text-right d-none d-sm-block">
-                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
                     <span className="powerBy">Powered by</span>
                     <img
                       className="header_logo footer-logo-secmark"
@@ -612,7 +597,6 @@ function PersonalDetails({ history }) {
                       alt="SECMARK"
                       title="SECMARK"
                     />
-                    {/* </a> */}
                   </div>
                 </div>
               </div>

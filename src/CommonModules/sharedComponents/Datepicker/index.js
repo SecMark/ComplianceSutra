@@ -22,7 +22,6 @@ const Datepicker = ({
       }
     });
     dispatch({ type: actionType, payload: dateArr });
-    console.log("hello there");
   };
   return (
     <div className="form-group">

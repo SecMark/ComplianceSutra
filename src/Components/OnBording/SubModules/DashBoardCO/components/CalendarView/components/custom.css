@@ -1,27 +1,26 @@
-.pad-12{
-    padding: 10px;
+.pad-12 {
+  padding: 10px;
 }
-.calendarCustomModal{
-        background: #b2dbbf;
-        width: 100%  !important;
-        max-width: 894px !important;
-         height: auto  !important;
-        display: inline-block  !important;
-        text-align: left  !important;
-        vertical-align: middle  !important;
-        /* box-shadow: 0 12px 15px 0 rgb(0 0 0 / 25%)  !important; */
-        margin: 0px  !important;
-        padding: 0px  !important;
-        position: relative;
+.calendarCustomModal {
+  background: #b2dbbf;
+  width: 100% !important;
+  max-width: 894px !important;
+  height: auto !important;
+  display: inline-block !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+  margin: 0px !important;
+  padding: 0px !important;
+  position: relative;
 }
 .calendarCustomModal .border-header {
-    width: 100%;
+  width: 100%;
 }
-.fc .fc-toolbar-title{
-    font-family: Poppins;
+.fc .fc-toolbar-title {
+  font-family: Poppins;
   font-size: 14px !important;
-  font-weight: 500  !important;
-  font-stretch: normal  !important;
+  font-weight: 500 !important;
+  font-stretch: normal !important;
   font-style: normal;
   line-height: normal;
   letter-spacing: 0px;
@@ -30,10 +29,10 @@
   margin: 0px 10px;
 }
 .fc-h-event {
-    display: block;
-    width: 100%;
-    background-color: #2c2738;
-    padding: 10px 0px 0px 0px;
+  display: block;
+  width: 100%;
+  background-color: #2c2738;
+  padding: 10px 0px 0px 0px;
   height: 100;
   justify-content: space-between;
   opacity: 0.53;
@@ -48,223 +47,227 @@
   color: #2c2738;
 }
 
-.monthViewContainer{
-    width: 50px;
-    height: auto;
-    font-family: Arial,Poppins;
-    font-size: 20px;
-    font-weight: 600;
-    display: block;
-    background-color: #f1f3ff;
-    padding: 5px 5px 5px 5px;
-    justify-content: space-between;
-    opacity: 0.53;
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
-    border-color: transparent;
+.monthViewContainer {
+  width: 50px;
+  height: auto;
+  font-family: Arial, Poppins;
+  font-size: 20px;
+  font-weight: 600;
+  display: block;
+  background-color: #f1f3ff;
+  padding: 5px 5px 5px 5px;
+  justify-content: space-between;
+  opacity: 0.53;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  border-color: transparent;
 }
 .monthViewContainer .fc-event-title {
-    color: #2c2738 !important;
+  color: #2c2738 !important;
 }
-.fc-state-active, .fc-state-down {
-    background-color: 'red';
-    background-image: none;
-    box-shadow: inset 0 2px 4px rgb(0 0 0 / 15%), 0 1px 2px rgb(0 0 0 / 5%);
+.fc-state-active,
+.fc-state-down {
+  background-color: "red";
+  background-image: none;
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 15%), 0 1px 2px rgb(0 0 0 / 5%);
 }
 .monthViewContainer .monthView {
-    color: #2c2738;
+  color: #2c2738;
 }
-.full-calender-container .fc-toolbar-chunk>div {
-    display: flex;
-    padding-right: 15px;
-    margin-top: 10px;
+.full-calender-container .fc-toolbar-chunk > div {
+  display: flex;
+  padding-right: 15px;
+  margin-top: 10px;
 }
 .full-calender-container .fc .fc-daygrid-day-top {
-    flex-direction: column;
-    padding-left: 5px;
-    padding-top: 5px;
+  flex-direction: column;
+  padding-left: 5px;
+  padding-top: 5px;
 }
-.full-calender-container .fc-toolbar-chunk>div .fc-button .fc-icon {
-    font-size: 20px;
+.full-calender-container .fc-toolbar-chunk > div .fc-button .fc-icon {
+  font-size: 20px;
 }
-.full-calender-container .fc-toolbar-chunk>div .fc-prev-button.fc-button, 
-.full-calender-container .fc-toolbar-chunk>div .fc-button.fc-next-button {
-    background: transparent;
-    border-color: snow;
-    color: #000;
-    padding-top: 1px;
-    margin-top: -5px;
+.full-calender-container .fc-toolbar-chunk > div .fc-prev-button.fc-button,
+.full-calender-container .fc-toolbar-chunk > div .fc-button.fc-next-button {
+  background: transparent;
+  border-color: snow;
+  color: #000;
+  padding-top: 1px;
+  margin-top: -5px;
 }
-.full-calender-container .fc-toolbar-chunk>div .fc-button {
-    background: #f7f4fe;
-    color: rgb(27 29 33 / 60%);
-    /* padding: 7px 16px; */
-    border-color: transparent;
-    text-transform: capitalize;
-    font-size: 10px;
-    font-weight: normal;
+.full-calender-container .fc-toolbar-chunk > div .fc-button {
+  background: #f7f4fe;
+  color: rgb(27 29 33 / 60%);
+  border-color: transparent;
+  text-transform: capitalize;
+  font-size: 10px;
+  font-weight: normal;
 }
-.full-calender-container .fc-toolbar-chunk>div .fc-button.fc-button-active {
-    background: #6c5dd3 !important;
-    color: #fff !important;
-    border-radius: 0px;
-    font-weight: normal;
-    /* padding: 7px 16px; */
-    margin-left: -5px;
-    margin-right: -5px;
-    border-color: transparent;
-    z-index: 9;
-    font-family: 'Poppins';
-    font-size: 10px;
-    text-transform: capitalize;
+.full-calender-container .fc-toolbar-chunk > div .fc-button.fc-button-active {
+  background: #6c5dd3 !important;
+  color: #fff !important;
+  border-radius: 0px;
+  font-weight: normal;
+  margin-left: -5px;
+  margin-right: -5px;
+  border-color: transparent;
+  z-index: 9;
+  font-family: "Poppins";
+  font-size: 10px;
+  text-transform: capitalize;
 }
-.full-calender-container .fc-toolbar-chunk>div .fc-button.fc-button-active:focus,
-.full-calender-container .fc-toolbar-chunk>div .fc-button:active {
-    box-shadow: none;
+.full-calender-container
+  .fc-toolbar-chunk
+  > div
+  .fc-button.fc-button-active:focus,
+.full-calender-container .fc-toolbar-chunk > div .fc-button:active {
+  box-shadow: none;
 }
-.full-calender-container .fc-toolbar-chunk>div .fc-button:active,
-.full-calender-container .fc-toolbar-chunk>div .fc-button:focus {
-    box-shadow: none !important;
-    border-color: transparent;
+.full-calender-container .fc-toolbar-chunk > div .fc-button:active,
+.full-calender-container .fc-toolbar-chunk > div .fc-button:focus {
+  box-shadow: none !important;
+  border-color: transparent;
   border-radius: 4px;
   height: 28px;
   color: #ffffff;
   background-color: #6c5dd3;
 }
-.full-calender-container .fc-toolbar-chunk>div .fc-button:nth-of-type(1) {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+.full-calender-container .fc-toolbar-chunk > div .fc-button:nth-of-type(1) {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
-.full-calender-container .fc-toolbar-chunk>div .fc-button:nth-of-type(3) {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+.full-calender-container .fc-toolbar-chunk > div .fc-button:nth-of-type(3) {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 .full-calender-container .fc-daygrid-day {
-    height: auto;
+  height: auto;
 }
 .full-calender-container .fc-toolbar-title {
-    font-size: 16px;
+  font-size: 16px;
 }
-.weekView .title{
-    font-family: Poppins;
-    font-size: 10px;
-    font-weight: 500;
-    color: #ffffff;
-    text-align: left;
+.weekView .title {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  color: #ffffff;
+  text-align: left;
 }
-.weekView .subTitle{
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: 300;
-    color: #ffffff;
-    text-align: left;
+.weekView .subTitle {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  color: #ffffff;
+  text-align: left;
 }
 .weekView .approvalPending {
-    background: #ffefea;
-    color: #ff5f31;
-    font-family: Poppins;
-    font-size: 10px;
-    text-align: left;
+  background: #ffefea;
+  color: #ff5f31;
+  font-family: Poppins;
+  font-size: 10px;
+  text-align: left;
 }
 .weekView .name {
-    text-align: left;
+  text-align: left;
 }
 .weekView .date {
-    font-family: Poppins;
-    font-size: 10px;
-    text-align: left;
+  font-family: Poppins;
+  font-size: 10px;
+  text-align: left;
 }
 .weekView .viewDetails {
-    text-align: left;
-    font-family: Poppins;
-    font-size: 10px;
+  text-align: left;
+  font-family: Poppins;
+  font-size: 10px;
 }
 .weekView .name .shortName {
-    background: #eae8ff;
-    border-radius: 10px;
-    width: 20px;
-    height: 20px;
-    padding: 5px 5px;
+  background: #eae8ff;
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
+  padding: 5px 5px;
 }
-.md-full-event{
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: center;
+.md-full-event {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
 }
 .fc-daygrid-event {
-    position: relative;
-    white-space: inherit;
-    border-radius: 3px
+  position: relative;
+  white-space: inherit;
+  border-radius: 3px;
 }
 .fc .fc-popover {
-    position: absolute;
-    z-index: 9999;
-    box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
+  position: absolute;
+  z-index: 9999;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
 }
 .fc .fc-button-group {
-    position: relative;
-    display: inline-flex;
-    vertical-align: middle;
-    margin-top: 20px;
-    width: 210px !important;
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  margin-top: 20px;
+  width: 210px !important;
 }
 
 .full-calender-container .fc .fc-daygrid-more-link {
-    width: 100%;
-    height: 100%;
-    margin: 12px 0 0;
-    font-family: Poppins;
-    font-size: 9px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0px;
-    text-align: left;
-    color: #6c5dd3;
-    text-decoration: none;
-    padding-left: 5px;
-    background-color: transparent;
+  width: 100%;
+  height: 100%;
+  margin: 12px 0 0;
+  font-family: Poppins;
+  font-size: 9px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #6c5dd3;
+  text-decoration: none;
+  padding-left: 5px;
+  background-color: transparent;
 }
 .fc .fc-daygrid-day.fc-day-today {
-    background-color:#fff9f9;
+  background-color: #fff9f9;
 }
-.full-calender-container .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
-    background: #6c5dd3;
-    border-radius: 24px;
-    width: -moz-fit-content;
-    width: fit-content;
-    color: #fff !important;
-    width: 24px;
-    height: 24px;
-    font-size: 13px;
-    text-align: center;
-    line-height: 18px;
+.full-calender-container
+  .fc
+  .fc-daygrid-day.fc-day-today
+  .fc-daygrid-day-number {
+  background: #6c5dd3;
+  border-radius: 24px;
+  width: -moz-fit-content;
+  width: fit-content;
+  color: #fff !important;
+  width: 24px;
+  height: 24px;
+  font-size: 13px;
+  text-align: center;
+  line-height: 18px;
 }
-
 
 .dayViewContainer {
-    margin-right: 2px;
-    background-color: #e5d9ff !important;
-    border: inherit !important;
-    padding: 18px 24px !important;
-    border-radius: 4px !important; 
-    margin-bottom: 22px !important;
+  margin-right: 2px;
+  background-color: #e5d9ff !important;
+  border: inherit !important;
+  padding: 18px 24px !important;
+  border-radius: 4px !important;
+  margin-bottom: 22px !important;
 }
 .dayViewContainer .overdue-title {
-    object-fit: contain;
-    /* margin: 2px 88px 1px 8px; */
+  object-fit: contain;
+  /* margin: 2px 88px 1px 8px; */
   font-family: Poppins;
   font-size: 12px;
   font-weight: 500;
@@ -276,82 +279,81 @@
   color: #1b1d21;
 }
 .dayViewContainer .all-companies-nse-label {
-    width: auto;
-    padding: 2px 5px;
-    height: 18px;
-    object-fit: contain;
-    border-radius: 2px;
-    background-color: #f7f4fe;
-    font-size: 10px;
-    font-weight: normal;
-    margin: 0px 0px;
-    font-family: Poppins;
-    color: #b3abc4;
-    font-stretch: normal;
-    font-style: normal;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.2px;
+  width: auto;
+  padding: 2px 5px;
+  height: 18px;
+  object-fit: contain;
+  border-radius: 2px;
+  background-color: #f7f4fe;
+  font-size: 10px;
+  font-weight: normal;
+  margin: 0px 0px;
+  font-family: Poppins;
+  color: #b3abc4;
+  font-stretch: normal;
+  font-style: normal;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
 }
-.dayViewContainer  .pink-label-text {
-    width: -moz-fit-content;
-    width: fit-content;
-    height: 18px;
-    object-fit: contain;
-    font-family: Poppins;
-    font-size: 10px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 16px;
-    letter-spacing: 0.2px;
-    text-align: center;
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-    color: #ff5f31;
-    margin-left: 0px;
-    margin-top: 6px;
-    background-color: #ffefea;
-    padding: 2px 5px;   
-    border-radius: 2px;
+.dayViewContainer .pink-label-text {
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 18px;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  color: #ff5f31;
+  margin-left: 0px;
+  margin-top: 6px;
+  background-color: #ffefea;
+  padding: 2px 5px;
+  border-radius: 2px;
 }
 .dayViewContainer .circle-front-text {
-    object-fit: contain;
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: 300;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.24px;
-    text-align: left;
-    color: #828282;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #828282;
 }
 .dayViewContainer .black-week {
-    object-fit: contain;
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.24px;
-    text-align: left;
-    color: #1b1d21;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #1b1d21;
 }
 
-
-.weekViewContainer{
-    width: auto;
-    height: auto;
-    margin: 8px 3.5px 8px 4px !important;
-    padding: 12px 8px !important;
-    border-radius: 4px !important;
-    border: inherit !important;
-    background-color: #cdf1ea !important;
+.weekViewContainer {
+  width: auto;
+  height: auto;
+  margin: 8px 3.5px 8px 4px !important;
+  padding: 12px 8px !important;
+  border-radius: 4px !important;
+  border: inherit !important;
+  background-color: #cdf1ea !important;
 }
-.weekViewContainer .week-card-title{
-    width: auto;
+.weekViewContainer .week-card-title {
+  width: auto;
   height: auto;
   margin: 8px 0;
   font-family: Poppins;
@@ -365,8 +367,8 @@
   color: #1b1d21;
 }
 .weekViewContainer .circle-front-text {
-    object-fit: contain;
-    margin: 12px 33px 12px 0;
+  object-fit: contain;
+  margin: 12px 33px 12px 0;
   font-family: Poppins;
   font-size: 12px;
   font-weight: normal;
@@ -378,8 +380,8 @@
   color: #828282;
 }
 .weekViewContainer .circle-front-name {
-    object-fit: contain;
-    margin: 2px 0px 0px 0px;
+  object-fit: contain;
+  margin: 2px 0px 0px 0px;
   font-family: Poppins;
   font-size: 12px;
   font-weight: normal;
@@ -390,174 +392,171 @@
   text-align: left;
   color: #828282;
 }
-.weekViewContainer .new-task-list{
-    display: inline-block;
+.weekViewContainer .new-task-list {
+  display: inline-block;
 }
 .weekViewContainer .md-full-event {
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
 }
-
 
 .monthViewContainer {
-    width: 100%;
-    height: auto;
-    margin: 8px 20px 2px 8px;
-    background-color: #fff  !important;
-    border: inherit  !important;
+  width: 100%;
+  height: auto;
+  margin: 8px 20px 2px 8px;
+  background-color: #fff !important;
+  border: inherit !important;
 }
 .monthViewContainer .view-more-tasks {
-    width: 100%;
-    height: auto;
-    margin: 12px 0 0;
-    font-family: Poppins;
-    font-size: 10px !important;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0px;
-    text-align: left;
-    color: #6c5dd3 !important;
-    text-transform: uppercase;
-  }
-.monthViewContainer .new-task-list{    
-    text-align: left;
-    /* display: inline-flex; */
+  width: 100%;
+  height: auto;
+  margin: 12px 0 0;
+  font-family: Poppins;
+  font-size: 10px !important;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #6c5dd3 !important;
+  text-transform: uppercase;
+}
+.monthViewContainer .new-task-list {
+  text-align: left;
 }
 .fc-daygrid-day-number {
-    position: relative;
-    z-index: 4;
-    padding: 4px;
-    opacity: 0.5;
-    font-family: Poppins;
-    font-size: 15px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.01px;
-    text-align: left;
-    color:#2c2738 !important;
+  position: relative;
+  z-index: 4;
+  padding: 4px;
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738 !important;
 }
 .fc .fc-col-header-cell-cushion {
-    display: inline-block;
-    padding: 2px 4px;
-    margin: 11px 37px 16px 11px;
-    /* opacity: 0.5; */
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0px;
-    text-align: center;
-    color: rgb(44 39 56 / 50%);
+  display: inline-block;
+  padding: 2px 4px;
+  margin: 11px 37px 16px 11px;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: center;
+  color: rgb(44 39 56 / 50%);
 }
-.title-tooltip-white{
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: 200;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
-    color: #ffffff;
-    margin-top: 10px;
+.title-tooltip-white {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 200;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+  margin-top: 10px;
 }
 .right-title-tooltip {
-    opacity: 0.61;
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: 300;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.24px;
-    text-align: left;
-    color: #ffffff;
+  opacity: 0.61;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #ffffff;
 }
 .tooltip-right-text {
-    opacity: 0.6;
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: 200;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
-    color: #ffffff;
-    padding-top: 0px;
-    margin-top: 0px;
-    text-align: right;
-    margin-bottom: 0px;
+  opacity: 0.6;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 200;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+  padding-top: 0px;
+  margin-top: 0px;
+  text-align: right;
+  margin-bottom: 0px;
 }
-.view-tooltip{
-    font-family: Poppins;
-    font-size: 10px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.02px;
-    text-align: left;
-    cursor: pointer;
-    color: #ffffff;
-    text-transform: uppercase;
-    margin-bottom: 4px;
+.view-tooltip {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  cursor: pointer;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
 .two-digin-circle-tooltip {
-    height: 20px !important;
-    width: 20px !important;
-    line-height: 12px !important;
-    border-radius: 50%;
-    margin: 0 8px 16px 0;
-    padding: 5px 5px 4px;
-    background-color: #f1f3ff;
-    color: white;
-    text-transform: uppercase;
-    text-align: center;
-    font-size: 8px;
-    font-weight: 500;
-    color: rgb(44 39 56 / 53%);
+  height: 20px !important;
+  width: 20px !important;
+  line-height: 12px !important;
+  border-radius: 50%;
+  margin: 0 8px 16px 0;
+  padding: 5px 5px 4px;
+  background-color: #f1f3ff;
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 8px;
+  font-weight: 500;
+  color: rgb(44 39 56 / 53%);
 }
-.fc .fc-dayGridDay-button{
-    width: 70px !important;
+.fc .fc-dayGridDay-button {
+  width: 70px !important;
 }
-.fc .fc-dayGridMonth-button{
-    width: 70px !important;
+.fc .fc-dayGridMonth-button {
+  width: 70px !important;
 }
-.fc .fc-dayGridWeek-button{
-    width: 70px !important;
+.fc .fc-dayGridWeek-button {
+  width: 70px !important;
 }
-.fc a{
-    text-decoration: none  !important;
+.fc a {
+  text-decoration: none !important;
 }
 .full-calender-container .fc-theme-standard .fc-scrollgrid {
-    border: 0px solid #ddd;
-    border: 0px solid var(--fc-border-color, #ddd);
+  border: 0px solid #ddd;
+  border: 0px solid var(--fc-border-color, #ddd);
 }
-.full-calender-container .all-companies-nse-label{
-    background-color: #f1f3ff;
-    color: rgb(44 39 56 / 53%);
+.full-calender-container .all-companies-nse-label {
+  background-color: #f1f3ff;
+  color: rgb(44 39 56 / 53%);
 }
-.full-calender-container .graybox-left{
-    width: auto;
+.full-calender-container .graybox-left {
+  width: auto;
 }
 .fc-daygrid-day-events .fc-daygrid-event-harness {
-    display: inline-block;
+  display: inline-block;
 }
 @media screen and (max-width: 767px) {
-    .fc .fc-toolbar {
-        display: grid !important;
-    }    
+  .fc .fc-toolbar {
+    display: grid !important;
+  }
 }
