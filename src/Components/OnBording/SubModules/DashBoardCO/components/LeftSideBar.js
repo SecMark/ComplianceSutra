@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-// import SideBarBg from "../../../../assets/Images/Onboarding/side-bar-bg.png";
 import dashBoardActiveIcon from "../../../../../assets/Icons/dashBoardActiveIcon.png";
 import sideBarlogo from "../../../../../assets/Icons/sideBarlogo.png";
-import circleClock from "../../../../../assets/Icons/circleClock.png";
-import questionIcon from "../../../../../assets/Icons/questionIcon.png";
-import questionIconActive from "../../../../../assets/Icons/HelpBlackActive.png";
-import listIcon from "../../../../../assets/Icons/listIcon.png";
 import SideBaruser from "../../../../../assets/Icons/sideBaruser.png";
 import HelpBlackActive from "../../../../../assets/Icons/HelpBlackActive.png";
 import HelpGreyActive from "../../../../../assets/Icons/HelpGreyActive.png";
@@ -44,7 +39,6 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const dispatch = useDispatch();
   const toastId = React.useRef(null);
   const userDetails = state && state.auth && state.auth.loginInfo;
-
   const [openProfile, setOpenProfile] = useState(false);
   const userID =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
@@ -253,7 +247,6 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Bell"
             />
           </div>
-          {/* <div className={!openProfile && state && state.adminMenu.currentMenu === "notfications" ? "taskIcon-active" : "taskIcon"}> */}
 
           <div
             className={
@@ -380,13 +373,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               </div>
             )}
           </div>
-          {/* <div className="taskIcon">
-            <img src={taskIcon} alt="taskIcon" />
-          </div> */}
         </div>
-        {/* <div className="user">
-          <img src={SideBaruser} alt="SideBaruser" />
-        </div> */}
       </div>
     </div>
   );

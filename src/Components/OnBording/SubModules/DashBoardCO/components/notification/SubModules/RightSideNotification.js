@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import CheckIcon from "../../../.././../../../assets/Icons/notification-check.png";
-import ArrowIcon from "../../../.././../../../assets/Icons/notification-icon.png";
-import RedIcon from "../../../.././../../../assets/Icons/notification-icon-red.png";
-import threeDots from "../../../.././../../../assets/Icons/threeDots.PNG";
 import mobileDropDown from "../../../.././../../../assets/Icons/mobileDropDown.png";
 import sideBarlogo from "../../../../../../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../../../../../../assets/Icons/togglemobile.png";
@@ -14,15 +11,12 @@ import { actions as coActions } from "../../../redux/actions";
 import { isMobile } from "react-device-detect";
 import { useOuterClick } from "./outerClick.js";
 import { Link } from "react-router-dom";
-import { actions as notificationActions } from "../Redux/actions";
 import NoResultFound from "../../../../../../../CommonModules/sharedComponents/NoResultFound";
 import { setNotificationTaskId } from "../Redux/Action";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
 
 function NotificationGrid(props) {
-  // console.log("state => ",state);
-
   const [showMarkDrop, setShowMarkDrop] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -155,9 +149,11 @@ function NotificationGrid(props) {
     var dateObj = new Date(date);
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (dateObj.toLocaleDateString() == today.toLocaleDateString()) {
+    if (dateObj.toLocaleDateString() === today.toLocaleDateString()) {
       return "Today";
-    } else if (dateObj.toLocaleDateString() == yesterday.toLocaleDateString()) {
+    } else if (
+      dateObj.toLocaleDateString() === yesterday.toLocaleDateString()
+    ) {
       return "Yesterday";
     } else {
       let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(
@@ -183,7 +179,6 @@ function NotificationGrid(props) {
   const [options, setOptions] = useState([]);
 
   const innnerDropdown = useOuterClick((e) => {
-    // console.log("inside inner dropdown");
     setShowFilter(false);
   });
   const openHBMenu = () => {
@@ -285,7 +280,6 @@ function NotificationGrid(props) {
                           style={{ height: "18px", marginRight: "5px" }}
                         />
                       )}
-                      {/* <li><span className="dots-div dropIcon d-block d-sm-none" ref={innnerDropdown}><img src={mobileDropDown} onClick={filterDropDown} /> */}
                       {showFilter && (
                         <div className="drop-div top-pt">
                           {options.map((ele) => {
@@ -325,7 +319,6 @@ function NotificationGrid(props) {
                         ? item.notificationOfDay.map((element) => {
                             return (
                               <>
-                                {/* <div className={element.isRead == 0 ? "white-background" : "grey-background"}> */}
                                 {element.Comment !== null &&
                                 element.Comment !== undefined &&
                                 element.Comment !== "" ? (
@@ -354,7 +347,6 @@ function NotificationGrid(props) {
                                       <div className="row">
                                         <div className="col-md-9">
                                           <ul className="list-gride">
-                                            {/* <li><img src={element.notificationType === 'Approvals' ? CheckIcon : element.notificationType === 'Requests' ? ArrowIcon : RedIcon} alt="" /></li> */}
                                             <li>
                                               <img
                                                 src={CheckIcon}
@@ -362,9 +354,6 @@ function NotificationGrid(props) {
                                                 className="assignedImage"
                                               />
                                             </li>
-                                            {/* {element.notificationType === 'Approvals' && <li className="normal-text"><span className="bold-text">{element.user} </span>has completed a task assigned to them - <span className="bold-text">Uploading of Holding Statement</span></li>}
-                                                {element.notificationType === 'Requests' && <li className="normal-text"><span className="bold-text">{element.user} </span>has requested to reassign a task - <span className="bold-text">Client Funding Report</span></li>}
-                                                {element.notificationType === 'Updates' && <li className="normal-text"><span className="bold-text"> New regulatory changes introduced by SEBI. Click to know more </span></li>} */}
                                             <li
                                               className="normal-text d-block d-sm-none"
                                               dangerouslySetInnerHTML={{

@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import styled, { createGlobalStyle, css } from "styled-components";
-import threeDots from "../../../../../../assets/Icons/threeDots.PNG";
-import mobileSteperIcon from "../../../../../../assets/Icons/mobileSteperIcon.png";
+import styled from "styled-components";
 import { useSelector, useDispatch, connect } from "react-redux";
-import assignIconCircle from "../../../../../../assets/Icons/assignIconCircle.png";
 import { actions as taskReportActions } from "../../redux/actions";
 import CustomCard from "./Components/BoardCard";
 import MyLaneHeader from "./Components/BoardHeader";
@@ -13,7 +10,6 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const [taskData, setTaskData] = useState([]);
-  console.log(currentBoardViewBy);
 
   const getCurrentEntityId = (viewType) => {
     let entityID = "";
@@ -58,7 +54,6 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
     }
   }, [taskList]);
 
-  console.log(taskList);
   const data1 = () => {
     let arr1 = [];
 
@@ -127,12 +122,10 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
   `;
 
   const components = {
-    // GlobalStyle: MyGlobalStyle, // global style created with method `createGlobalStyle` of `styled-components`
     LaneHeader: MyLaneHeader,
     Card: CustomCard,
     ScrollableLane: ScrollableLane,
     data: data1(),
-    // AddCardLink: MyAddCardLink,
   };
   return (
     <div className="row">

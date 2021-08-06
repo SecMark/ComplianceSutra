@@ -1,98 +1,96 @@
-div#navigationBar\ mobile-navigation-drower{
-    height: 100vh;
+div#navigationBar\ mobile-navigation-drower {
+  height: 100vh;
   width: 254px;
-  /* background-color: red; */
   position: fixed;
   margin: 0 43.6px 0 0;
   padding: 34px 0 21px 16px;
-  /* object-fit: contain; */
   box-shadow: 0 3px 36px 0 rgb(44 39 56 / 8%);
   background-color: #f6f9fb;
   z-index: 9999;
-  }
-  div#navigationBar\ mobile-navigation-drower .first-icon-list-mobile {
-    margin-top: 83px !important;
-  }
-  div#navigationBar\ mobile-navigation-drower .activeMobile{
-    margin: 30px 80px 32px 0px;
-      font-family: Poppins;
-      font-size: 18px;
-      font-weight: 500;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: normal;
-      letter-spacing: normal;
-      text-align: left;
-      color: #2c2738;
-  }
-  div#navigationBar\ mobile-navigation-drower .inactiveMobile{
-    margin: 24px 18px 32px 0px;
-    font-family: Poppins;
-    font-size: 18px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
-    color: #b4a8c0;
-  }
-  div#navigationBar\ mobile-navigation-drower .devider-line {
-    width: 222px;
-    height: 1px;
-    margin-bottom: 35px;
-    margin-top: 35px;
-    object-fit: contain;
-    background-color: #eee8fc;
-    margin-left: 3px;
-  }
-  div#navigationBar\ mobile-navigation-drower .edit-label-option img {
-    margin-right: 6px !important;
-  }
-  div#navigationBar\ mobile-navigation-drower  .logout-label-option img {
-    margin-right: 6px !important;
-  }
-  div#navigationBar\ mobile-navigation-drower .edit-option-box {
-    width: 70%;
-    height: 90px;
-    object-fit: contain;
-    position: absolute;
-    border-radius: 4px;
-    padding: 8px 6px;
-    box-shadow: inherit;
-    background-color: inherit;
-    left: 68px;
-    z-index: 99999;
-  }
-  div#navigationBar\ mobile-navigation-drower .inactiveMobile img {
-    margin-right: 46px;
-  }
-  div#navigationBar\ mobile-navigation-drower .down-arrow-mobile {
-    margin-right: 0px !important;
-    float: right;
-    transform: rotate(180deg);
-    margin-top: 5px;
-  }
-  div#navigationBar\ mobile-navigation-drower .top-arrow-mobile {
-    margin-right: 0px !important;
-    float: right;
-    transform: rotate(0deg);
-    margin-top: 5px;
-  }
-  div#navigationBar\ mobile-navigation-drower .taskList-mobile img {
-    margin-right: 46px;
-  }
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 99999;
-    transition: 1s;
-    background-color: rgba(0, 0, 0, 0.48);
-  }
-  @media (max-width: 767px) {
+}
+div#navigationBar\ mobile-navigation-drower .first-icon-list-mobile {
+  margin-top: 83px !important;
+}
+div#navigationBar\ mobile-navigation-drower .activeMobile {
+  margin: 30px 80px 32px 0px;
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #2c2738;
+}
+div#navigationBar\ mobile-navigation-drower .inactiveMobile {
+  margin: 24px 18px 32px 0px;
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #b4a8c0;
+}
+div#navigationBar\ mobile-navigation-drower .devider-line {
+  width: 222px;
+  height: 1px;
+  margin-bottom: 35px;
+  margin-top: 35px;
+  object-fit: contain;
+  background-color: #eee8fc;
+  margin-left: 3px;
+}
+div#navigationBar\ mobile-navigation-drower .edit-label-option img {
+  margin-right: 6px !important;
+}
+div#navigationBar\ mobile-navigation-drower .logout-label-option img {
+  margin-right: 6px !important;
+}
+div#navigationBar\ mobile-navigation-drower .edit-option-box {
+  width: 70%;
+  height: 90px;
+  object-fit: contain;
+  position: absolute;
+  border-radius: 4px;
+  padding: 8px 6px;
+  box-shadow: inherit;
+  background-color: inherit;
+  left: 68px;
+  z-index: 99999;
+}
+div#navigationBar\ mobile-navigation-drower .inactiveMobile img {
+  margin-right: 46px;
+}
+div#navigationBar\ mobile-navigation-drower .down-arrow-mobile {
+  margin-right: 0px !important;
+  float: right;
+  transform: rotate(180deg);
+  margin-top: 5px;
+}
+div#navigationBar\ mobile-navigation-drower .top-arrow-mobile {
+  margin-right: 0px !important;
+  float: right;
+  transform: rotate(0deg);
+  margin-top: 5px;
+}
+div#navigationBar\ mobile-navigation-drower .taskList-mobile img {
+  margin-right: 46px;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  transition: 1s;
+  background-color: rgba(0, 0, 0, 0.48);
+}
+@media (max-width: 767px) {
   div#navigationBar\ mobile-navigation-drower {
     margin: 0 43.6px 0 0px;
   }
@@ -112,16 +110,12 @@ div#navigationBar\ mobile-navigation-drower{
 
   .leftSideBarFixed {
     position: fixed;
-    top:0;
+    top: 0;
     height: 100vh;
     width: 100%;
     left: -100%;
     bottom: 0;
     z-index: 99999;
     transition: 1s;
-    
-}
-   /* .setting-side-bar {
-    padding: 35px 24px !important;  
-  } */
+  }
 }

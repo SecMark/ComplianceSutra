@@ -1,10 +1,8 @@
 /* header css  start*/
 
 .dropdown-email .dropdown-user-list {
-  /* width: 318px; */
   width: 278px;
   height: 108px;
-  /* margin: 148px 49px 111px 29px; */
   object-fit: contain;
   border-radius: 4px;
   box-shadow: 0 3px 6px 0 rgb(0 0 0 / 16%);
@@ -97,9 +95,6 @@
 }
 
 .accordian-collapus-header {
-  /* display: flex; */
-  /* width: 96%;
-  margin-left: 7px; */
   width: 100%;
   margin-left: 0px;
 }
@@ -107,9 +102,7 @@
 .accordian-data-history {
   width: 100%;
   margin-left: 0px;
-  /* width: 96%;
-  margin-left: 7px; */
-  /* height: 44px; */
+
   margin-top: 18px;
 }
 
@@ -118,11 +111,8 @@
   height: 1px;
   object-fit: contain;
   background-color: #e4e4e4;
-  /* display: none; */
 }
-.accordian-data-history > div {
-  /* border-bottom: 1px solid #e4e4e4; */
-}
+
 .space-btn {
   margin-bottom: 18px;
 }
@@ -294,7 +284,6 @@
 .table th {
   padding: 1rem;
   vertical-align: top;
-  /* border-top: 1px solid #dee2e6; */
   font-family: Poppins;
   font-size: 13px;
   font-weight: normal;
@@ -365,9 +354,6 @@
 }
 
 .dropdown-user-list {
-  /* width: 328px;
-    height: 172px; */
-  /* margin: 148px 49px 111px 29px; */
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 3px 6px 0 rgb(0 0 0 / 16%);
@@ -386,8 +372,6 @@
   display: flex;
 }
 .dropdown-email {
-  /* width: 146px;
-    height: 16px; */
   opacity: 0.61;
   font-family: Poppins;
   font-size: 11px;
@@ -401,8 +385,6 @@
 }
 
 .dropdown-user-name {
-  /* width: 95px;
-    height: 19px; */
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -429,8 +411,6 @@
 }
 
 .dropDown-blueLink {
-  /* width: 71px;
-    height: 17px; */
   font-family: Poppins;
   font-size: 12px;
   font-weight: 300;
@@ -449,8 +429,6 @@
 }
 
 .SecMark-Expert-Review {
-  /* width: 181px;
-    height: 17px; */
   margin-right: 10px;
   font-family: Poppins;
   font-size: 12px;
@@ -466,7 +444,6 @@
   display: flex;
 }
 .bottom-logo-strip .review-box {
-  /* width: 348px; */
   width: 265px;
   height: 54px;
   margin: -6px 36px 0px 24px;
@@ -587,27 +564,6 @@
   letter-spacing: normal;
   text-align: left;
   color: #ffffff;
-  /* width: 274px;
-  background-color: #1b1d21;
-  color: #fff;
-  border-radius: 8px;
-  height: 56px;
-  padding: 10px 8px;
-  position: relative;
-  z-index: 999;
-  bottom: 125%;
-  right: 0px;
-  margin-right: 0px;
-  transition: opacity 0.3s;
-  font-family: Poppins;
-  font-size: 12px;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: left;
-  color: #ffffff; */
 }
 .right-tooltip .tooltiptext::after {
   content: "";
@@ -671,16 +627,7 @@
 .font-normal-text {
   font-weight: normal;
 }
-/* .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 45%;
-  margin-left: -60px;
-  border-width: 10px;
-  border-style: solid;
-  border-color: #1b1d21 transparent transparent transparent;
-} */
+
 .tooltiptext2::after {
   content: "";
   position: absolute;
@@ -856,7 +803,6 @@ img.mobileUser-icon {
   right: 0px;
 }
 .assigntask2 .downArrow {
-  /* position: absolute; */
   cursor: pointer;
   box-sizing: border-box;
   height: 10px;
@@ -867,7 +813,6 @@ img.mobileUser-icon {
   transform: rotate(45deg);
   transition: border-width 150ms ease-in-out;
   margin-top: 0px;
-  /* left: 0px; */
 }
 
 .capmtech-review-model {
@@ -878,7 +823,6 @@ img.mobileUser-icon {
   border-image-slice: 1;
   border-width: 5px;
   border-radius: 9px;
-  /* border-image-source: linear-gradient(90deg, rgba(20,207,255,1 ) 0%, rgba(163,41,255,1) 100%); */
   border-color: transparent;
   background: #fff;
 }
@@ -906,7 +850,6 @@ img.mobileUser-icon {
 }
 .capmtech-review-model .title {
   font-family: Poppins;
-  /* font-size: 33px; */
   font-size: 28px;
   font-weight: 500;
   font-stretch: normal;
@@ -969,13 +912,12 @@ img.mobileUser-icon {
   }
   .spacing-alignment {
     padding-left: 0px;
-}
-.spacing-alignment-border {
-  padding-left: 16px;
-}
+  }
+  .spacing-alignment-border {
+    padding-left: 16px;
+  }
 
   .accordian-data-history > div {
-    /* border-bottom: 1px solid #e4e4e4; */
     width: 100%;
   }
   .get-main-assign-task .container {
@@ -1063,9 +1005,6 @@ img.mobileUser-icon {
     width: 98px;
   }
   .accordian-data-history .assign-status {
-    /* line-height: inherit;
-  text-align: right !important;
-  margin-right: 26px; */
     line-height: inherit;
     text-align: left !important;
     margin-right: 0px;
@@ -1135,17 +1074,14 @@ img.mobileUser-icon {
 
 /* for safari */
 
-/* @media screen and (-webkit-min-device-pixel-ratio: 0) { */
-  .assigntask1 .downArrow {
-    position: absolute;
-    /* top: 0; */
-    cursor: pointer;
-    box-sizing: border-box;
-    height: 10px;
-    width: 10px;
-    border-style: solid;
-    border-color: #000;
-    border-width: 0px 2px 2px 0px;
-    transform: rotate(45deg);
-  }
-/* } */
+.assigntask1 .downArrow {
+  position: absolute;
+  cursor: pointer;
+  box-sizing: border-box;
+  height: 10px;
+  width: 10px;
+  border-style: solid;
+  border-color: #000;
+  border-width: 0px 2px 2px 0px;
+  transform: rotate(45deg);
+}
