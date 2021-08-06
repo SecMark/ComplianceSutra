@@ -606,7 +606,8 @@ function VeryOTP({ history, currentStep }) {
                           )}
                         </span>
                       </p>
-                    )}
+                  
+                  )}
                     {showResendSection && (
                       <p>
                         {" "}

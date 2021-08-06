@@ -527,7 +527,6 @@ function RightSideGrid({
   };
 
   const AssignDisplay = () => {
-    // setCurrentDropDown("open")
     if (currentDropDown === "open") {
       setCurrentDropDown("");
     } else {
@@ -650,14 +649,12 @@ function RightSideGrid({
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleCheckEmailAvailability(event);
-      // handleApproveTask(event);
     }
   };
 
   const handleAssignKeyDown = (e) => {
     if (e.key === "Enter") {
       handleCheckAssignToEmailAvailability(e);
-      // handleAssignToTask(e)
     }
   };
   const handleAssignToTask = (e) => {
@@ -912,8 +909,7 @@ function RightSideGrid({
                           task && task.Status
                             ? task.Status === "Assign"
                               ? "#fcf3cd"
-                              : // task.Status === "Completed By User"  ? "#cdfcd8 " :
-                              task.Status === "Completed By User"
+                              : task.Status === "Completed By User"
                               ? moment(task.ActualTaskEndDate).isBefore(today)
                                 ? "#cdfcd8"
                                 : "#ffefea"
@@ -931,8 +927,7 @@ function RightSideGrid({
                               ? moment(task.ActualTaskEndDate).isBefore(today)
                                 ? "#7fba7a"
                                 : "#ff5f31"
-                              : // task.Status === "Completed By User" ? "#7fba7a" :
-                              task.Status === "Approved"
+                              : task.Status === "Approved"
                               ? "#7fba7a"
                               : task.Status === "Assigned"
                               ? "#f8c102"
@@ -1059,26 +1054,23 @@ function RightSideGrid({
                       </div>
                     </div>
                   )}
-                  {
-                    // task.AssignedTo > 0 &&
-                    task.AssignedTo === 0 && (
-                      <div className="only-mobile-assign-add d-block d-sm-none">
-                        <div
-                          className="assign-user-icon"
-                          onMouseOver={() =>
-                            setShowUserToolTip(`Tooltip${task.TaskId}`)
-                          }
-                          onMouseOut={() => setShowUserToolTip("")}
-                        >
-                          <img
-                            src={assignIconCircle}
-                            className="d-block d-sm-none"
-                            alt="Assign Circle"
-                          />
-                        </div>
+                  {task.AssignedTo === 0 && (
+                    <div className="only-mobile-assign-add d-block d-sm-none">
+                      <div
+                        className="assign-user-icon"
+                        onMouseOver={() =>
+                          setShowUserToolTip(`Tooltip${task.TaskId}`)
+                        }
+                        onMouseOut={() => setShowUserToolTip("")}
+                      >
+                        <img
+                          src={assignIconCircle}
+                          className="d-block d-sm-none"
+                          alt="Assign Circle"
+                        />
                       </div>
-                    )
-                  }
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1142,8 +1134,7 @@ function RightSideGrid({
                         task && task.Status
                           ? task.Status === "Assign"
                             ? "#fcf3cd"
-                            : // task.Status === "Completed By User"  ? "#cdfcd8 " :
-                            task.Status === "Completed By User"
+                            : task.Status === "Completed By User"
                             ? moment(task.ActualTaskEndDate).isBefore(today)
                               ? "#cdfcd8"
                               : "#ffefea"
@@ -1161,8 +1152,7 @@ function RightSideGrid({
                             ? moment(task.ActualTaskEndDate).isBefore(today)
                               ? "#7fba7a"
                               : "#ff5f31"
-                            : // task.Status === "Completed By User" ? "#7fba7a" :
-                            task.Status === "Approved"
+                            : task.Status === "Approved"
                             ? "#7fba7a"
                             : task.Status === "Assigned"
                             ? "#f8c102"
@@ -1439,14 +1429,9 @@ function RightSideGrid({
                     </div>
                   </div>
 
-                  {/* )} */}
                   <div className="w-75 d-none d-sm-block">
                     {!searchBoxShow && (
-                      <div
-                        className="only-search-icon"
-                        // onClick={() => setsearchBoxShow(true)}
-                        onClick={handleFocus}
-                      >
+                      <div className="only-search-icon" onClick={handleFocus}>
                         <img src={searchIcon} alt="sidebar Check Icon" />
                       </div>
                     )}
@@ -1953,11 +1938,6 @@ function RightSideGrid({
                                     <p className="red-circle-overide">
                                       {item.Details.length}
                                     </p>
-                                    {/* <img
-                                className="redArrowTop"
-                                src={redArrowTop}
-                                alt="redArrowTop"
-                              /> */}
                                     {!expandedFlags.includes(index) ? (
                                       <img
                                         src={redArrowTop}
@@ -1971,14 +1951,6 @@ function RightSideGrid({
                                         }}
                                       />
                                     ) : (
-                                      // <img
-                                      //   src={downArrow}
-                                      //   className="redArrowTop arrowDown"
-                                      //   alt="Arrow down"
-                                      //   style={{width:"10px", height:"7px",marginTop: "8px",marginLeft:"9px"}}
-
-                                      // />
-
                                       <img
                                         src={redArrowTop}
                                         className="redArrowTop arrowDown"
@@ -1995,9 +1967,6 @@ function RightSideGrid({
                                   </div>
                                 )}
                                 {item.Status.trim() === "Pending" && (
-                                  // <div className="action-title">{"Take Action"}
-                                  /* <span className="" style={{backgroundColor:"#000",color:"#fff",borderRadius:"50%" , fontSize:"12px"}}>{item.Details.length}</span>&nbsp;&nbsp; */
-                                  // </div>
                                   <div
                                     className="upcoming-btn"
                                     style={{
@@ -2088,87 +2057,71 @@ function RightSideGrid({
                                     </div>
                                   </div>
                                 )}
-                                {/* {item.Status.trim() === "overdue" &&
-                          item.Details.slice(
-                            0,
-                            rowCount[item.Status.trim()]
-                          ).map((task) => {
-                            return (
-                              <>{renderTaskList(task, item.Status.trim(), 1)}</>
-                            )
-                          })} */}
-                                {
-                                  // item.Status.trim() === "overdue" &&
-                                  // item.Status.trim() === "Pending"
-                                  //   ? true
-                                  //   :
-                                  (item.Status.trim() === "Upcoming"
-                                    ? expandedFlags.includes(index)
-                                    : item.Status.trim() === "Completed"
-                                    ? expandedFlags.includes(index)
-                                    : item.Status.trim() === "overdue"
-                                    ? !expandedFlags.includes(index)
-                                    : item.Status.trim() === "Pending"
-                                    ? !expandedFlags.includes(index)
-                                    : !expandedFlags.includes(index)) && (
-                                    <>
-                                      {item.Details.slice(
-                                        0,
-                                        rowCount[item.Status.trim()]
-                                      ).map((task) => {
-                                        return (
-                                          <>
-                                            {renderTaskList(
-                                              task,
-                                              item.Status.trim(),
-                                              1
-                                            )}
-                                          </>
-                                        );
-                                      })}
-                                      <div>
-                                        {item.Details.length > 3 && (
-                                          <>
-                                            {rowCount[item.Status.trim()] >
-                                              3 && (
-                                              <div
-                                                onClick={() =>
-                                                  showLessMore(item.Status, 3)
-                                                }
-                                                className="viewAll showLess"
-                                              >
-                                                Show Less{" "}
-                                                <img
-                                                  src={viewAllArowTop}
-                                                  alt="Show Less"
-                                                />
-                                              </div>
-                                            )}
-                                            {rowCount[item.Status.trim()] ===
-                                              3 && (
-                                              <div
-                                                onClick={() =>
-                                                  showLessMore(
-                                                    item.Status,
-                                                    item.Details.length
-                                                  )
-                                                }
-                                                className="viewAll"
-                                              >
-                                                View All (
-                                                {item.Details.length - 3} More)
-                                                <img
-                                                  src={viewAllArow}
-                                                  alt="view All Arow"
-                                                />
-                                              </div>
-                                            )}
-                                          </>
-                                        )}
-                                      </div>
-                                    </>
-                                  )
-                                }
+                                {(item.Status.trim() === "Upcoming"
+                                  ? expandedFlags.includes(index)
+                                  : item.Status.trim() === "Completed"
+                                  ? expandedFlags.includes(index)
+                                  : item.Status.trim() === "overdue"
+                                  ? !expandedFlags.includes(index)
+                                  : item.Status.trim() === "Pending"
+                                  ? !expandedFlags.includes(index)
+                                  : !expandedFlags.includes(index)) && (
+                                  <>
+                                    {item.Details.slice(
+                                      0,
+                                      rowCount[item.Status.trim()]
+                                    ).map((task) => {
+                                      return (
+                                        <>
+                                          {renderTaskList(
+                                            task,
+                                            item.Status.trim(),
+                                            1
+                                          )}
+                                        </>
+                                      );
+                                    })}
+                                    <div>
+                                      {item.Details.length > 3 && (
+                                        <>
+                                          {rowCount[item.Status.trim()] > 3 && (
+                                            <div
+                                              onClick={() =>
+                                                showLessMore(item.Status, 3)
+                                              }
+                                              className="viewAll showLess"
+                                            >
+                                              Show Less{" "}
+                                              <img
+                                                src={viewAllArowTop}
+                                                alt="Show Less"
+                                              />
+                                            </div>
+                                          )}
+                                          {rowCount[item.Status.trim()] ===
+                                            3 && (
+                                            <div
+                                              onClick={() =>
+                                                showLessMore(
+                                                  item.Status,
+                                                  item.Details.length
+                                                )
+                                              }
+                                              className="viewAll"
+                                            >
+                                              View All (
+                                              {item.Details.length - 3} More)
+                                              <img
+                                                src={viewAllArow}
+                                                alt="view All Arow"
+                                              />
+                                            </div>
+                                          )}
+                                        </>
+                                      )}
+                                    </div>
+                                  </>
+                                )}
                               </div>
                             </div>
                           </div>

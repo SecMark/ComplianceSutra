@@ -318,7 +318,7 @@ const NewRegulations = (props) => {
                 </div>
               </div>
             )}
-            <div className="new-regulations-mobile-header">
+            <div className="new-regulations-mobile-header justify-content-between">
               {showSearchBoxMobile ? (
                 <div className="TopSearch">
                   <div className="SearchIcon">
@@ -422,7 +422,7 @@ const NewRegulations = (props) => {
                               {updates?.Submissiondate &&
                                 getHighlightedText(
                                   moment(updates.Submissiondate).format(
-                                    "Do MMM"
+                                    "Do MMM YYYY"
                                   ),
                                   searchValue
                                 )}

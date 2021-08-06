@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import SideBarInputControl from "../../../../components/LeftSideBar";
-import TaskListView from "./RightSideView";
-import Cobg from "../../../../../../../../assets/Images/Onboarding/co-bg.png";
 import delayCloseIcon from "../../../../../../../../assets/Icons/delayCloseIcon.png";
 import keyboardArrowRightBlack from "../../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
 import { BACKEND_BASE_URL } from "../../../../../../../../apiServices/baseurl";
-import axios, { post } from "axios";
+import axios from "axios";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import { actions as notificationActions } from "../../../notification/Redux/actions.js";
 
@@ -35,7 +31,6 @@ function RiskAndDelayTaskList({ history, click, setClick }) {
         initials += names[names.length - 1].substring(0, 1).toUpperCase();
       } else if (names.length == 1) {
         initials = names[0].substring(0, 2).toUpperCase();
-        // initials += names[names.length - 1].substring(0, 1).toUpperCase()
       }
     }
     return initials;
@@ -65,7 +60,6 @@ function RiskAndDelayTaskList({ history, click, setClick }) {
                 licCode: task.liccode,
                 EntityCode: EntityName,
               });
-              // console.log("Reassign => ",Object.assign(data,{licCode: task.liccode,EntityCode : EntityName}))
               rowCount.push(newObjData);
             });
           });
@@ -104,7 +98,6 @@ function RiskAndDelayTaskList({ history, click, setClick }) {
                   licCode: task.liccode,
                   EntityCode: EntityName,
                 });
-                // console.log("Reassign => ",Object.assign(data,{licCode: task.liccode,EntityCode : EntityName}))
                 rowCount.push(newObjData);
               });
             });
@@ -117,19 +110,12 @@ function RiskAndDelayTaskList({ history, click, setClick }) {
   }, []);
 
   useEffect(() => {
-    // setTimeout(() => {
     const riskAndDelayArr = [...riskArr, ...delayArr];
     setRiskOrDelayArr(riskAndDelayArr);
-    // }, 1000);
   }, [riskArr, delayArr]);
 
   return (
     <>
-      {/* <div className="d-flex mobile-height-dasboardView">
-                <div className="companies-sub-title w-100 d-none d-sm-block">
-                    Tasks
-                </div>
-            </div> */}
       <div className="task-grid-scroll customScrollSecond scroll-btm">
         <div className="mobile-dashboard-view">
           <div className="take-action">
@@ -196,8 +182,7 @@ function RiskAndDelayTaskList({ history, click, setClick }) {
                                             ? task.Status ===
                                               "Completed By User"
                                               ? "#7fba7a"
-                                              : // task.Status === "Completed By User" ? "#7fba7a" :
-                                              task.Status === "Approved"
+                                              : task.Status === "Approved"
                                               ? "#7fba7a"
                                               : task.Status === "Assigned"
                                               ? "#f8c102"

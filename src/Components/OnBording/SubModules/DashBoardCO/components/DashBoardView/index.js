@@ -6,17 +6,8 @@ import TaskListView from "./TaskListView";
 import Cobg from "../../../../../../assets/Images/Onboarding/co-bg.png";
 import sideBarlogo from "../../../../../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../../../../../assets/Icons/togglemobile.png";
-import btnicon from "../../../../../../assets/Icons/btn-icon.png";
-import siderBarbtnArrow from "../../../../../../assets/Icons/siderBarbtnArrow.png";
-import actionArrow from "../../../../../../assets/Icons/actionArrow.png";
-import complteTaskIcon from "../../../../../../assets/Icons/complteTaskIcon.png";
-import inprogressicon from "../../../../../../assets/Icons/inprogressicon.png";
-import scheduledIcon from "../../../../../../assets/Icons/scheduledIcon.png";
-import siderBarbtnArrowTop from "../../../../../../assets/Icons/siderBarbtnArrowTop.png";
 import { actions as taskReportActions } from "../../redux/actions";
 import { isMobile } from "react-device-detect";
-import CustomCard from "./BoardCard";
-import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import QuickOverViewSection from "./quickOverview";
 import { actions as adminMenuActions } from "../../MenuRedux/actions";
@@ -30,7 +21,6 @@ function DashBoardView({ history }) {
   const [isTaskApproved, setIsTaskApproved] = useState(false);
   const [click, setClick] = useState("");
   const [listView, setListView] = useState("0");
-  console.log("listView DV=> ", listView);
 
   const taskList =
     state &&
@@ -122,7 +112,7 @@ function DashBoardView({ history }) {
   return (
     <div>
       <div className="row dashboard-view-mobile-top">
-        <div className="mobile-head d-block d-sm-none">
+        <div className="mobile-head d-block d-md-none">
           <div className="d-flex">
             <div
               className="w-25"
@@ -149,9 +139,8 @@ function DashBoardView({ history }) {
         style={{ height: "auto" }}
       >
         {!isMobile && (
-          <div className="left-fixed d-none d-sm-block">
+          <div className="left-fixed d-none d-md-block">
             <div className="on-boarding">
-              {/* <SideBar /> */}
               <SideBarInputControl
                 isTaskListOpen={isTaskListOpen}
                 setIsTaskListOpen={setIsTaskListOpen}

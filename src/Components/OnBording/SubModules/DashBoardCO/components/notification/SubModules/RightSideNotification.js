@@ -17,6 +17,8 @@ import { Link } from "react-router-dom";
 import { actions as notificationActions } from "../Redux/actions";
 import NoResultFound from "../../../../../../../CommonModules/sharedComponents/NoResultFound";
 import { setNotificationTaskId } from "../Redux/Action";
+import axios from "axios";
+import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
 
 function NotificationGrid(props) {
   // console.log("state => ",state);
@@ -25,8 +27,10 @@ function NotificationGrid(props) {
   const [showFilter, setShowFilter] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [notifications, setNotification] = useState(null);
+
+  const [notificationList, setNotificationList] = useState([]);
   const [notificationsBackup, setNotificationBackup] = useState(null);
-  const [navigationHideShow, setNavigationHideShow] = useState(false);
+
   const dotsDropdown = () => {
     setShowMarkDrop(!showMarkDrop);
   };
@@ -37,6 +41,10 @@ function NotificationGrid(props) {
   const dispatch = useDispatch();
   const loggedUser = state && state.auth && state.auth.loginInfo;
   useEffect(() => {
+    getNotificationData();
+  }, [state.taskReport.userNotifications]);
+
+  const getNotificationData = () => {
     const tempNotification =
       state &&
       state.taskReport &&
@@ -65,13 +73,14 @@ function NotificationGrid(props) {
         (a, b) => new Date(b.date) - new Date(a.date)
       );
     }
+    setNotificationList(tempFinalArray);
     setNotification(tempFinalArray);
     setNotificationBackup(tempFinalArray);
     setSelectedCategory({
       value: "All Notifications",
       label: "All Notifications",
     });
-  }, [state.taskReport.userNotifications]);
+  };
 
   useEffect(() => {
     dispatch(
@@ -81,23 +90,35 @@ function NotificationGrid(props) {
     );
   }, []);
 
-  const onCategoryChange = (e) => {
-    setSelectedCategory(e);
-    let tempFinalArray = [];
-    if (e.value == "All Notifications" || e.value == "Approvals") {
-      setNotification(notificationsBackup);
+  const onCategoryChange = async (event) => {
+    const { value } = event;
+    await getNotificationData();
+
+    if (value !== "All Notifications") {
+      const filteredNotification = notificationList[0].notificationOfDay.filter(
+        (types) => types.notificationTpe === value
+      );
+      if (filteredNotification.length !== 0) {
+        let dateObj = [
+          {
+            date: notifications[0].date,
+            notificationOfDay: filteredNotification,
+          },
+        ];
+        setNotification(dateObj);
+      } else {
+        setNotification([
+          {
+            date: notifications[0].date,
+            notificationOfDay: [],
+          },
+        ]);
+      }
     } else {
-      // notificationsBackup.map((item) => {
-      //    let objArray = filterNotification(item, e.value)
-      //    let tempObj = { date: item.date, notificationOfDay: objArray }
-      //    tempFinalArray.push(tempObj)
-      // })
-      setNotification(tempFinalArray);
+      getNotificationData();
     }
   };
-  const filterNotification = (arr, type) => {
-    return arr.notificationOfDay.filter((e) => e.notificationType === type);
-  };
+
   const isToday = (date) => {
     var today = new Date();
     var dateObj = new Date(date);
@@ -159,12 +180,7 @@ function NotificationGrid(props) {
       drawerChild.style.left = "-100%";
     }
   };
-  const options = [
-    { value: "All Notifications", label: "All Notifications" },
-    { value: "Approvals", label: "Approvals" },
-    // { value: 'Updates', label: 'Updates' },
-    // { value: 'Requests', label: 'Requests' }
-  ];
+  const [options, setOptions] = useState([]);
 
   const innnerDropdown = useOuterClick((e) => {
     // console.log("inside inner dropdown");
@@ -178,19 +194,38 @@ function NotificationGrid(props) {
       drawerChild.style.left = "0%";
     }
   };
+
+  useEffect(() => {
+    fetchNotificationType();
+  }, []);
+
+  const fetchNotificationType = async () => {
+    let arrayOfList = [];
+    const { data } = await axios.post(
+      `${BACKEND_BASE_URL}api/Notifications`,
+      {}
+    );
+
+    data.NotificationType.map((types) => {
+      arrayOfList.push({ value: types.description, label: types.description });
+    });
+
+    setOptions(arrayOfList);
+  };
+
   return (
     <div className="co-dash-notification-grid-right">
       {isMobile && (
         <div id="sideBarParent" className="">
           <div id="sideBarChild" className="leftSideBarFixed">
             <MobileLeftSidebar
-              className="d-block d-sm-none"
+              className="d-block d-md-none"
               close={() => closeMobileSidebar()}
             />
           </div>
         </div>
       )}
-      <div className="mobile-head mobile-top-pyd d-block d-sm-none">
+      <div className="mobile-head mobile-top-pyd d-block d-md-none">
         <div className="d-flex">
           <div className="w-25">
             <img
@@ -218,24 +253,23 @@ function NotificationGrid(props) {
               <div className="Filter-drop-down">
                 <ul>
                   <li>
-                    <p className="filter-by d-none d-sm-block">Filter by:</p>
+                    <p className="filter-by d-none d-md-block">Filter by:</p>
                   </li>
                   <li>
                     <Dropdown
-                      className="d-none d-sm-block"
+                      className="d-none d-md-block"
                       arrowClosed={
-                        <span className="arrow-closed d-none d-sm-block" />
+                        <span className="arrow-closed d-none d-md-block" />
                       }
                       onChange={onCategoryChange}
                       arrowOpen={<span className="arrow-open" />}
                       options={options}
-                      value={selectedCategory}
                       placeholder="Select an option"
                     />
                   </li>
                   <li>
                     <span
-                      className="dots-div dropIcon d-block d-sm-none"
+                      className="dots-div dropIcon d-block d-md-none"
                       ref={innnerDropdown}
                     >
                       {showFilter ? (
@@ -269,16 +303,6 @@ function NotificationGrid(props) {
                       )}
                     </span>
                   </li>
-
-                  {/* This required in full release but not in beta... DO NOT DELETE COMMENTED CODE */}
-
-                  {/* <li><span className="dots-div" ><img src={threeDots} onClick={dotsDropdown} />
-                              {showMarkDrop && <div className="drop-div">
-                                 <p className="dots-option">Mark all read</p>
-                                 <p className="dots-option">Mark all unread</p>
-                              </div>}
-                           </span>
-                           </li> */}
                 </ul>
               </div>
             </div>
@@ -291,7 +315,7 @@ function NotificationGrid(props) {
             notifications.map((item) => {
               return (
                 <>
-                  {item.notificationOfDay.length > 0 && (
+                  {item.notificationOfDay.length > 0 ? (
                     <div className="today-grid">
                       <p className="gride-heading">
                         {getDeviderSection(item.date)}
@@ -384,15 +408,25 @@ function NotificationGrid(props) {
                           })
                         : "--"}
                     </div>
+                  ) : (
+                    <div className="no-notification-label">
+                      No new notifications. We'll notify you when something new
+                      arrives
+                    </div>
                   )}
                 </>
               );
             })}
-          {notifications != null && notifications.length <= 0 && (
-            <div className="no-notification-label">
-              No new notifications. We'll notify you when something new arrives
-            </div>
-          )}
+          {notifications &&
+            notifications != null &&
+            notifications.length <= 0 &&
+            notifications[0] &&
+            notifications[0].notificationOfDay.length !== 0 && (
+              <div className="no-notification-label">
+                No new notifications. We'll notify you when something new
+                arrives
+              </div>
+            )}
         </div>
       </div>
     </div>
