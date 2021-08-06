@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
+import "antd/dist/antd.css"; 
 import { DatePicker } from "antd";
 import "./style.css";
 import moment from "moment";

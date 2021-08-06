@@ -3,7 +3,6 @@ import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import api from "../../../../../../../apiServices"
-import { types } from '../../../redux/actions';
 
 function CoNotification({ settingData, handleClose }) {
    const [isEmailChecked, setEmailChecked] = useState(false)
@@ -63,7 +62,6 @@ function CoNotification({ settingData, handleClose }) {
       api.post("/api/CoSettings", payload)
          .then(function (response) {
             if (response && response.data && response.data[0]) {
-               //  setSettingsData(response.data[0])
             } else {
             }
          })
@@ -150,22 +148,6 @@ function CoNotification({ settingData, handleClose }) {
                      </div>
                   </div>
                </div>
-               {/* <div className="row mar-bottom">
-                  <div className="col-9">
-                     <div className="notification-div">
-                        <p className="bolder-text">WhatsApp Notifications</p>
-                        <p className="normal-text">You'll receive all CAPMTech notifications on your registered mobile number</p>
-                     </div>
-                  </div>
-                  <div className="col-3">
-                     <div className="check-box">
-                        <label className="switch" id="whatsapp">
-                           <input htmlFor="whatsapp" id="whatsappSetting" type="checkbox" checked={isWAppChecked} onClick={(e) => onSliderChange(e, "Whatsup")} />
-                           <span className="slider round"></span>
-                        </label>
-                     </div>
-                  </div>
-               </div> */}
                <div className="row mar-bottom">
                   <div className="col-9">
                      <div className="notification-div">

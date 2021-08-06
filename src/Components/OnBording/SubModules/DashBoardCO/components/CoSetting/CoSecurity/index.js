@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import "./style.css"
 import api from "../../../../../../../apiServices"
-import eyeIcon from "../../../../../../../assets/Icons/eye.png"
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png"
 import { toast } from "react-toastify"
 import { useDispatch, useSelector } from "react-redux"
@@ -129,7 +128,6 @@ function CoSetting({ handleClose }) {
           /^[a-zA-Z]*$/.test(event.target.value) &&
           /(?=.*?[A-Z])(?=.*?[a-z])./.test(event.target.value)
         ) {
-          // else if (/(?=.*?[A-Z])(?=.*?[a-z])./.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: false,
@@ -144,18 +142,12 @@ function CoSetting({ handleClose }) {
             [uppercaseandlowercase]: true,
           }))
         } else if (/(?=.*?[A-Za-z])(?=.*?[0-9])/.test(event.target.value)) {
-          // else if (/(?=.*?[A-Za-z])(?=.*?[0-9])./.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: true,
             [uppercaseandlowercase]: false,
           }))
         }
-        // else if (/^[A-Z0-9]*$/.test(event.target.value)) {
-        //   setPasswordState(prevState => ({
-        //     ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: false
-        //   }));
-        // }
         else {
           setPasswordState((prevState) => ({
             ...prevState,
@@ -165,14 +157,7 @@ function CoSetting({ handleClose }) {
         }
       }
     }
-    // if (name === "currentPassword") {
-    //   let inputKey = "currentPasswordErr"
-    //   if (!passwordRE.test(event.target.value)) {
-    //     setErrors({ ...errors, [inputKey]: "Password is invalid" })
-    //   } else {
-    //     setErrors({ ...errors, [inputKey]: "" });
-    //   }
-    // }
+
     if (name === "confirmPassword") {
       let inputKey = "confirmPasswordErr"
       if (!passwordRE.test(event.target.value)) {
@@ -339,7 +324,6 @@ function CoSetting({ handleClose }) {
 
         </div>
       </div>
-      {/* <div className="personal-mgt-title">{showSectionTitle}</div> */}
       <div class="border-header d-none d-sm-block"></div>
       {section === "security" && (
         <div className="scroll-sction">
@@ -351,14 +335,6 @@ function CoSetting({ handleClose }) {
                   <p className="password-text">
                     Change the password of your account
                   </p>
-                  {/* <div className="form-group">
-                    <input
-                      type={showPassword}
-                      className="form-control countryCode-sucess"
-                    />
-                    <img onClick={() => onShowPasswordClick()} style={{ cursor: "pointer" }}
-                      src={eyeIcon} alt="" />
-                  </div> */}
                 </div>
               </div>
               <div className="col-12 col-sm-6 col-md-6 col-xl-6">
@@ -376,30 +352,6 @@ function CoSetting({ handleClose }) {
               </div>
             </div>
           </div>
-          {/* <div className="channel-div">
-            <p className="cheading">2 Factor Authentication (2FA)</p>
-            <div className="row mar-bottom">
-              <div className="col-9">
-                <div className="">
-                  <p className="bolder-text">Enable 2FA Authentication</p>
-                  <p className="normal-text">Every time you log in we will send you a OTP on your registered
-                  mobile number
-            </p>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="check-box">
-                  <label class="switch" id="email">
-                    <input
-                      onClick={(e) => onSliderChange(e, "TwoWayAuth")}
-                      checked={twoFactortAuth}
-                      htmlFor="email" type="checkbox" />
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div> */}
         </div>
       )}
       {section === "change-password" && (
@@ -573,9 +525,6 @@ function CoSetting({ handleClose }) {
                         : "")
                     }
                   />
-                  {/* {values.confirmPassword !== "" && errors && errors.confirmPasswordErr !== "" && <p className="input-error-message">
-                    Password is invalid
-                </p>} */}
                   {isValidate && values.confirmPassword === "" && (
                     <p className="input-error-message absPosition">
                       Please enter confirm password
@@ -663,4 +612,5 @@ function CoSetting({ handleClose }) {
     </div>
   )
 }
+
 export default CoSetting

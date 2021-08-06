@@ -6,8 +6,6 @@ import { actions as loginActions } from "../../../../../../Authectication/redux/
 import { withRouter } from "react-router-dom"
 import { actions as adminMenuActions } from "../../../MenuRedux/actions"
 import {actions as notficationActions} from "../../notification/Redux/actions"
-import sideBarlogo from "../../../../../../../assets/Icons/sideBarlogo.png"
-import togglemobile from "../../../../../../../assets/Icons/togglemobile.png"
 import MobileLeftSidebar from "../../MobileLeftSidebar"
 import { isMobile } from "react-device-detect"
 
@@ -30,10 +28,6 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
         setNavigationHideShow(false)
         const drawerParent = document.getElementById("sideBarParent");
         const drawerChild = document.getElementById("sideBarChild");
-        // if (drawerParent) {
-        //     drawerParent.classList.remove("overlay");
-        //     drawerChild.style.left = "-100%";
-        // }
     }
     const openHBMenu = () => {
         const drawerParent = document.getElementById("sideBarParent");
@@ -43,7 +37,6 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
             drawerParent.classList.add("overlay");
             drawerChild.style.left = "0%";
         }
-        //  setNavigationHideShow(!navigationHideShow)
     }
 
   const tabChange = (index) => {
@@ -71,9 +64,6 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
                     <MobileLeftSidebar className="d-block d-sm-none" close={() => closeMobileSidebar()} />
                 </div>
             </div>}
-            {/* <div className="mobile-head-setting mobile-top-pyd-setting d-block d-sm-none">
-               
-            </div> */}
       <div className="get-main-settingCo">
         <p className="setting-title">Settings</p>
         <div className="menu-items">

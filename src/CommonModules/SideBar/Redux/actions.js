@@ -1,8 +1,6 @@
 import { createAction } from "redux-actions";
 
-
 const ACTIVE_MENU_ACTIONS = 'CAPMTECH/ACTIVE_MENU_ACTIONS';
-
 const SETTING_ACTIVE_TAB = 'CAPMTECH/SETTING_ACTIVE_TAB'
 
 const setCurrentMenu = createAction(ACTIVE_MENU_ACTIONS);

@@ -2,10 +2,6 @@ import React, { useState } from "react";
 import "./style.css";
 import closeBlack from "../../../../../../assets/Icons/closeBlack.png";
 import fileIcon from "../../../../../../assets/Icons/fileIcon.png";
-import keyboardArrowRightBlack from "../../../../../../assets/Icons/keyboardArrowRightBlack.png";
-import downArrow from "../../../../../../assets/Icons/downArrow.png";
-import sidebarCheckIcon from "../../../../../../assets/Icons/sidebarCheckIcon.png";
-import completeTaskIcon from "../../../../../../assets/Icons/emailVerify.png";
 import { toast } from "react-toastify";
 import moment from "moment";
 

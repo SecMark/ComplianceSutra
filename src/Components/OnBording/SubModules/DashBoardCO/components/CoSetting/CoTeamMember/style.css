@@ -10,13 +10,7 @@
   padding-right: 48px;
   padding-top: 56px;
   object-fit: contain;
-  /* -webkit-backdrop-filter: blur(50px);
-  backdrop-filter: blur(50px);
-  background-color: rgb(255 255 255 / 55%); */
 }
-/* .setPlaceHolder{
-  padding-left: 42px !important;
-} */
 .testing-modal {
   position: absolute;
   left: 50%;
@@ -37,8 +31,6 @@
 }
 
 .co-team-member .table td:last-child {
-  /* padding: 0px important !important;
-  padding: 0px; */
   width: 70px;
 }
 .co-team-member .table td {
@@ -65,15 +57,6 @@
 .table_legenda {
   table-layout: fixed;
 }
-/* .table_legenda th {
-  overflow-wrap: break-word;
-}
-.table_legenda tr {
-  overflow-wrap: break-word;
-} */
-/* .dropList {
-  overflow-wrap: break-word;
-} */
 .nameCirle {
   overflow-wrap: break-word;
   line-height: 19px;
@@ -83,10 +66,7 @@
   overflow-x: hidden;
   height: 400px;
 }
-/* .co-team-member .scroll-personal-grid table thead, .co-team-member .scroll-personal-grid table tbody {
-  width: 100%;
-  display: table;
-} */
+
 .scroll-personal-grid::-webkit-scrollbar {
   width: 8px;
 }
@@ -179,7 +159,6 @@
 .co-team-member .save-changes-personal-btn {
   width: 147px;
   height: 43px;
-  /* margin: 231px 651px 0 0; */
   object-fit: contain;
   border-radius: 4px;
   background-color: #e4e4e4;
@@ -252,7 +231,6 @@
   position: relative;
 }
 .co-team-member .subsidiaries {
-  /* margin: 32px 378px 12.5px 0; */
   object-fit: contain;
   opacity: 0.5;
   font-family: Poppins;
@@ -278,7 +256,6 @@
   text-transform: uppercase;
 }
 .co-team-member .bk-Securities {
-  /* margin: 0 0px 24px 0; */
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -289,9 +266,7 @@
   text-align: left;
   color: #2c2738;
 }
-/* .co-team-member .task-detail-data {
-  margin: 20px 0px;
-} */
+
 .big-height {
   height: 250px !important;
 }
@@ -370,7 +345,6 @@
 .co-team-member .add-licence-btn {
   width: 166px;
   height: 44px;
-  /* margin: 0 0 0 191px; */
   border-radius: 4px;
   background-color: #6c5dd3;
   font-family: Poppins;
@@ -420,8 +394,6 @@
   margin-bottom: 16px;
   font-style: normal;
   line-height: 28px;
-  /* display: flex; */
-  /* letter-spacing: 0.24px; */
   color: #575757;
   height: 30px;
   margin-bottom: 0px;
@@ -567,7 +539,6 @@
 }
 .co-team-member .company-delete-right-bottom {
   width: 215px;
-  /* height: 48px; */
   padding: 15px 16px 14px 12px;
   border-radius: 4px;
   background-color: #f0efff;
@@ -585,7 +556,6 @@
 }
 .co-team-member .Dropdown-control {
   width: 165px;
-  /* max-width: 240px; */
   height: 40px;
   border: none;
   border: none;
@@ -688,7 +658,6 @@
 }
 .co-team-member .three-dot {
   width: 3px;
-  /* margin-left: 61px; */
   height: 12px;
   vertical-align: middle;
   position: relative;
@@ -832,7 +801,6 @@
   height: 16px;
 }
 .co-team-member .cancelLink {
-  /* margin: 12px 0 12px 24px; */
   font-family: Poppins;
   font-size: 12px;
   font-weight: 500;
@@ -881,7 +849,6 @@
 .co-team-member .focusRemove .form-control {
   box-shadow: none !important;
   border: none !important;
-  /* width: 125px; */
   width: 200px;
   height: 40px;
   opacity: 0.5;
@@ -1049,9 +1016,7 @@
     padding-top: 0px;
     object-fit: contain;
   }
-  /* .co-team-member .searchBox .form-control::placeholder{
-    padding-left:0px;
-  } */
+
   .co-team-member .Dropdown-menu {
     width: 100%;
     max-width: 94%;
@@ -1310,7 +1275,6 @@
   }
   .co-team-member .searchBox .form-group .form-control {
     width: 91vw;
-    /* max-width: 690px; */
   }
   .co-team-member .searchBox .form-group .form-control:focus {
     height: 47px;

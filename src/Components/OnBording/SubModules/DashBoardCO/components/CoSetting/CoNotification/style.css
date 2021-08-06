@@ -8,7 +8,6 @@
   margin: 20px 20px 20px 0px;
   padding-left: 48px;
   padding-top: 56px;
-  /* background-color: rgb(255 255 255 / 55%); */
 }
 .scroll-sction{
   overflow-y: auto;
@@ -53,7 +52,6 @@
 
 }
 .normal-text{
-  /* opacity: 0.5; */
   font-family: Poppins;
   font-size: 12px;
   font-weight: normal;
@@ -144,7 +142,6 @@
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 32px;
-    /* background-color: rgb(255 255 255 / 55%); */
 }
 .co-notification .scroll-sction {
   overflow-y: inherit;

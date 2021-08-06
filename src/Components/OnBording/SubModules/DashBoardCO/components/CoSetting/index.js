@@ -12,7 +12,6 @@ import CoNotification from './CoNotification';
 import CoAccount from './CoAccount';
 import CoSecurity from './CoSecurity';
 import MobileSettingSideBar from "../CoSetting/MobileSettingSideBar"
-import CoChangePassword from './CoChangePassword';
 import CoTeamMember from './CoTeamMember';
 import {actions as adminMenuActions } from "../../MenuRedux/actions"
 import SettingSideBar from './SettingSideBar';
@@ -30,9 +29,7 @@ function CoSetting({ history }) {
   const dispatch = useDispatch()
   const [notificationSetting, setNotificationSetting] = useState(null)
   const [selectedTabKey, setSelectedTabKey] = useState(0)
-  // console.log("state => ",state);
   const [navigationHideShow, setNavigationHideShow] = useState(false);
-
   const [showHB, setShowHBMenu] = useState(false)
   const userID = state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID
   useEffect(() => {
@@ -66,14 +63,6 @@ function CoSetting({ history }) {
   }
 
   const closeMobileSidebar = () => {
-    // // const drawerParent = document.getElementById("sideBarParent");
-    // // const drawerChild = document.getElementById("sideBarChild");
-    // // console.log(drawerParent,"drawerParent")
-    // // if (drawerParent) {
-    // //     drawerParent.classList.add("overlay");
-    // //     drawerChild.style.left = "0%";
-    // // }
-
     const drawerParent = document.getElementById("sideBarParent");
     const drawerChild = document.getElementById("sideBarChild");
     if (drawerParent) {
@@ -106,9 +95,6 @@ function CoSetting({ history }) {
         {state.adminMenu.activeTab === "account" && <CoAccount activeTabKey={selectedTabKey} />}
         {state.adminMenu.activeTab === "notifications" && <CoNotification activeTabKey={selectedTabKey} settingData={notificationSetting} />}
         {state.adminMenu.activeTab === "security" && <CoSecurity activeTabKey={selectedTabKey} />}
-        {/*<CoChangePassword /> */}
-        {/* <CoAccount />  */}
-        {/* <CoSecurity />  */}
         {state.adminMenu.activeTab === "team-member" && <CoTeamMember activeTabKey={selectedTabKey} />}
       </div>}
         {showHB === false &&

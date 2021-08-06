@@ -1,15 +1,9 @@
 import React, { useState, useEffect, useRef } from "react"
 import "./style.css"
-import assignIcon from "../../../../../../../assets/Icons/assignIcon.png"
 import RightImageBg from "../../../../../../../assets/Images/Onboarding/RectangleOnboadign.png"
 import closeIcon from "../../../../../../../assets/Icons/closeIcon.png"
-import closeIconGray from "../../../../../../../assets/Icons/closeIconGray.png"
-import searchIcon from "../../../../../../../assets/Icons/searchIcon.png"
 import { useDispatch, useSelector } from "react-redux"
 import { actions as coActions } from "../../../redux/actions"
-import { isMobile } from "react-device-detect"
-// import Spinner from '../../../Spinner'
-
 import assignIcon1 from "../../../../../../../assets/Icons/assignIcon.png"
 import assignIcon3 from "../../../../../../../assets/Icons/assignIcon2.png"
 import assignIcon5 from "../../../../../../../assets/Icons/assignIcon3.png"
@@ -289,43 +283,10 @@ function ChooseLicenses({ fields, close }) {
             <p className="licenses-title">
               {" "}
               Choose License
-              {/* <span className="search-icon"><img onClick={() => setSearchEnable(true)} src={search} alt="search Icon" /></span> */}
             </p>
           </div>
         </div>
-        {/* {searchEnable && <div className="searchBox">
-                    <div className="input-group form-group">
-                        <img className="IconGray" src={searchIcon} alt="search Icon" />
-                        <input
-                            className="form-control"
-                            type="text"
-                            value={searchText}
-                            onChange={(e) => handleSearch(e)}
-                            id="example-search-input"
-                        />
-                        <span className="input-group-append">
-                            <button onClick={() => closeSearch()} className="btn border-start-0 border-top-0 border-bottom-0 border-0 ms-n5" type="button">
-                                <img src={closeIconGray} alt="close Icon" />
-                            </button>
-                        </span>
-                    </div>
-
-                </div>
-                } */}
         <div className="scroll-div">
-          {/* {searchEnable && searchLiecenseData && (searchLiecenseData).length > 0 &&
-                        searchLiecenseData.map((data, key) =>
-                        (<div className="searchGrid search-list">
-                            <div className="col-12 d-block d-sm-none pl-0">
-                                <div className="serchlist-title">
-                                    Search Results:
-                            </div>
-                            </div>
-                            <div className="search-detail-grid">
-                                {data[1].map((subTask) => renderChekboxInSearch(subTask, data[0]))}
-                            </div>
-                        </div>))} */}
-
           <div className="scroll-div">
             {licenseList &&
               licenseList.length > 0 &&

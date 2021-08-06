@@ -9,9 +9,6 @@
   padding-left: 48px;
   padding-top: 56px;
   object-fit: contain;
-  /* -webkit-backdrop-filter: blur(50px);
-  backdrop-filter: blur(50px);
-  background-color: rgb(255 255 255 / 55%); */
 }
 .co-personal-grid .scroll-personal-grid{
   overflow-y: auto;
@@ -104,7 +101,6 @@
 .co-personal-grid .save-changes-personal-btn{
   width: 147px;
   height: 43px;
-  /* margin: 231px 651px 0 0; */
   object-fit: contain;
   border-radius: 4px;
   background-color: #e4e4e4;
@@ -177,7 +173,6 @@
   position: relative;
 }
 .co-personal-grid .subsidiaries{
-  /* margin: 32px 378px 12.5px 0; */
   object-fit: contain;
   opacity: 0.5;
   font-family: Poppins;
@@ -203,7 +198,6 @@
   text-transform: uppercase;
 }
 .co-personal-grid .bk-Securities {
-  /* margin: 0 0px 24px 0; */
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -213,9 +207,6 @@
   letter-spacing: 0px;
   text-align: left;
   color: #2c2738;
-}
-.co-personal-grid .task-detail-data {
-  /* margin: 20px 0px; */
 }
 .co-personal-grid .holding-list-normal-title {
   opacity: 0.64;
@@ -238,7 +229,6 @@
   margin-bottom: 16px;
   font-style: normal;
   line-height: normal;
-  /* letter-spacing: 0.24px; */
   color: #2c2738;
   margin-bottom: 0px;
 }
@@ -288,7 +278,6 @@
 .co-personal-grid .add-licence-btn{
   width: 166px;
   height: 44px;
-  /* margin: 0 0 0 191px; */
   border-radius: 4px;
   background-color: #6c5dd3;
   font-family: Poppins;
@@ -338,7 +327,6 @@
   margin-bottom: 16px;
   font-style: normal;
   line-height: 28px;
-  /* letter-spacing: 0.24px; */
   color: #575757;
   height: 30px;
   margin-bottom: 0px;
@@ -351,7 +339,6 @@
 }
 .co-personal-grid .activeName {
   background-color: rgb(228 228 228 / 40%);
-  /* padding: 0px 7px; */
 }
 
 .co-personal-grid .buttonprimary {
@@ -500,15 +487,12 @@
 }
 .co-personal-grid .company-delete-right-bottom{
   width: 280px;
-  /* height: 48px; */
   padding: 15px 16px 14px;
   border-radius: 4px;
   background-color: #f0efff;
   float: right;
 }
 .co-personal-grid .Dropdown-control{
-  /* width: 120px; */
-  /* max-width: 240px; */
   width: 190px;
   height: 40px;  
   border: none;
@@ -613,7 +597,6 @@
   color: #2c2738;
   margin-bottom: 0px;
   display: flex;
-  /* justify-content: space-between; */
   min-width: 120px;
 }
 .co-personal-grid .scroll-personal-grid .settingCompanyTable {
@@ -623,17 +606,14 @@
 }
 
 /* Css for Delete Confirmation Model*/
-
 .model-design-delete-company {
   background-image: url("../../../../../../../assets/Images/teammember/modelBg.png");
   background-repeat: no-repeat;
   width: 373px;
   height: 228px;
-  /* margin: 198px 262px 0 263px; */
   padding: 26px 18px 26px 18px;
   object-fit: contain;
   border-radius: 8px;
-  /* opacity: 0.6; */
    background-image: linear-gradient(to top, #a329ff, #14cfff);
 }
 
@@ -708,7 +688,6 @@
     text-align: left;
     vertical-align: middle;
     background: #ffffff;
-    /* box-shadow: 0 12px 15px 0 rgb(0 0 0 / 25%); */
     margin: 0px;
     padding: 2px;
     position: relative;
@@ -789,7 +768,6 @@
 }
 .co-personal-grid .company-details-mobile-view .mobile-edit-option {
   text-transform: uppercase;
-  /* color: #fff; */
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;

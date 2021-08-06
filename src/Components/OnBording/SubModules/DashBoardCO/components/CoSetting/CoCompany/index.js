@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import "./style.css";
-import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
 import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
 import redCheck from "../../../../../../../assets/Icons/redCheck.png";
 import plusIcon2 from "../../../../../../../assets/Icons/plusIcon3.png";
@@ -14,7 +13,6 @@ import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
 import mobileAssignIconSmall from "../../../../../../../assets/Icons/mobileAssignIconSmall.png";
 import { toast } from "react-toastify";
-import Dropdown from 'react-dropdown';
 import { actions as coActions } from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import LicenseDrawer from "../ChooseLicenses";
@@ -26,7 +24,6 @@ import { isMobile } from "react-device-detect"
 function CoManagment({handleClose}) {
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
-
     const [editShow, setEditShow] = useState(false)
     const [doEdit, setdoEdit] = useState(undefined)
     const [showAdd, setShowAdd] = useState(false)
@@ -51,7 +48,6 @@ function CoManagment({handleClose}) {
         if (assignPromptIndex != undefined && !e.target.id.includes("assign-prompt"))
             setAssignPromptIndex(undefined)
     });
-
 
     const loggedUser = state && state.auth && state.auth.loginInfo && state.auth.loginInfo
 
@@ -178,9 +174,7 @@ function CoManagment({handleClose}) {
             if (addEditStatus === "Success" && selectedIndex != undefined) {
                 setToastType(1)
                 toast.success("Company details added");
-                //document.getElementById("toasterPrompt").classList.add("show");
                 setTimeout(() => {
-                    //document.getElementById("toasterPrompt").classList.remove("show");
                     setSelectedCompany(undefined)
                     setSelectedIndex(undefined)
                     setCompanyDetails([])
@@ -192,9 +186,7 @@ function CoManagment({handleClose}) {
                     toast.error("Something went wrong")                    
                 }
 
-                //document.getElementById("toasterPrompt").classList.add("show");
                 setTimeout(() => {
-                    //document.getElementById("toasterPrompt").classList.remove("show");
                 }, 5000);
             }
         }
@@ -329,13 +321,9 @@ function CoManagment({handleClose}) {
 
         setTimeout(() => {
 
-            // if (item.isExist === false) {
                 if (companyList[index].EntityName != "" &&
-                    //companyList[index].selectedCompany != null &&
                     companyList[index].selectedCategory != null &&
-                    //companyList[index].coUserID != null &&
                     companyList[index].companyNameError === "") {
-
                     let Button = document.getElementById("addLicense" + index);
                     if(Button!=null){
                         Button.className = "btn buttonprimary";
@@ -350,20 +338,7 @@ function CoManagment({handleClose}) {
                     }
 
                 }
-            
-            // else {
-            //     const isSameLicenses = checkWithPreviousLicenses(selectedCompany.selectedLicenseArray, companyList[index].selectedLicenseArray)
-            //     if (companyList[index].EntityType === selectedCompany.EntityType &&
-            //         companyList[index].Category === selectedCompany.Category &&
-            //         companyList[index].coUserID === selectedCompany.coUserID &&
-            //         isSameLicenses === true) {
-            //         setSelectedIndex(undefined)
-            //         setSelectedCompany(undefined)
-            //     }
-            // }
-
         }, 100);
-
     }
 
     const validateExistingName = (e, index) => {
@@ -401,9 +376,7 @@ function CoManagment({handleClose}) {
                 } else {
                     companyList[index].companyNameError = ""
                     if (
-                        //companyList[index].selectedCompany != null &&
                         companyList[index].selectedCategory != null &&
-                        //companyList[index].coUserID != null &&
                         (!companyList[index].isExist)) {
                         let Button = document.getElementById("addLicense" + index)
                         Button.className = "btn buttonprimary";
@@ -514,10 +487,8 @@ function CoManagment({handleClose}) {
                 center={true}
                 showCloseIcon={false}
                 onClose={() => handleDeleteClick(null, 3)}
-                //modalId="governance"
                 styles={{ width: 373, height: 210, overflow: 'hidden' }}
-                onOverlayClick={() => handleDeleteClick(null, 3)}
-            
+                onOverlayClick={() => handleDeleteClick(null, 3)}   
             >
                 <div className="model-design-delete-company big-height-company">
                     <div className="delete-record-title">Delete company record?</div>
@@ -588,7 +559,6 @@ function CoManagment({handleClose}) {
     }
 
     const handleUserSearch = (e) => {
-
         setUserSearchText(e.target.value)
         if (e.target.value === "") {
             setUserData(userDataBackup)
@@ -640,7 +610,6 @@ function CoManagment({handleClose}) {
         return(
             <>
             { <div className="company-detail-mobile-box">
-                  {/* {item.EntityName!= "" &&  <div className="brokrage-title">{item.EntityName}</div>} */}
                     <div class="">
                     <div class="input-box-mobile">
                         <input
@@ -658,126 +627,26 @@ function CoManagment({handleClose}) {
                         </div>
 
                         <div className="input-box-mobile">
-                        {/* {companyTypes && companyTypes.length > 0 && 
-                        <Dropdown
-                            arrowClosed={<span className="arrow-closed" />}
-                            arrowOpen={<span className="arrow-open" />}
-                            options={companyTypes} value={item.selectedCompany}
-                            placeholder="Select Type"
-                            onChange={(e) => (selectedIndex === undefined || selectedIndex === index) ? handelChange(e, "companyType", index, item) : true} 
-                        />} */}
                             {companyTypes && companyTypes.length > 0 && <Searchable
                                 value={item.selectedCompany}
                                 className="form-control border-0"
-                                placeholder={item.EntityType ? item.EntityType : "Select Type"} // by default "Search"
-                                notFoundText="No result found" // by default "No result found"
+                                placeholder={item.EntityType ? item.EntityType : "Select Type"} 
+                                notFoundText="No result found" 
                                 options={companyTypes}
                                  onSelect={(e) => (selectedIndex === undefined || selectedIndex === index) ? handelChange(e, "companyType", index, item) : true}
-                                listMaxHeight={200} //by default 140
+                                listMaxHeight={200} 
                             /> }
-                            {/* <input type="text" class="form-control border-0" placeholder="Select Type" name="companyType" autocomplete="off" value="" />
-                            <div class="dropdown-user-list display-none" id="CompanyTypeMobile-0">
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">None</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Individual</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Partnership Firm</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">HUF</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">LLP</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Pvt. Ltd.</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Ltd.</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Co-op Bank</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Co-op Society</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">One Person Company</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Sole Propriter</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Corporate Body</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                            </div> */}
                         </div>
                         <div class="input-box-mobile">
-                            {/* {categoryTypes && categoryTypes.length > 0 &&
-                            <Dropdown
-                                arrowClosed={<span className="arrow-closed" />}
-                                arrowOpen={<span className="arrow-open" />}
-                                options={categoryTypes} value={item.selectedCategory}
-                                placeholder="Select Category"
-                                onChange={(e) => (selectedIndex === undefined || selectedIndex === index) ? handelChange(e, "companyCategory", index, item) : true} 
-                            />} */}
-
                             {categoryTypes && categoryTypes.length > 0 && <Searchable
                                 value={item.selectedCompany}
                                 className="form-control border-0"
-                                placeholder={item.Category ? item.Category : "Select Category"} // by default "Search"
-                                notFoundText="No result found" // by default "No result found"
+                                placeholder={item.Category ? item.Category : "Select Category"} 
+                                notFoundText="No result found" 
                                 options={categoryTypes}
                                  onSelect={(e) => (selectedIndex === undefined || selectedIndex === index) ? handelChange(e, "companyCategory", index, item) : true}
-                                listMaxHeight={200} //by default 140
+                                listMaxHeight={200} 
                             /> }
-                                               
-                            {/* <input type="text" autocomplete="off" class="form-control border-0" placeholder="Select Category" name="category" value="" />
-                            <div class="dropdown-user-list display-none" id="CategoryMobile-0">
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Advisory Services</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">ALL</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Depository Participants</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">General</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">General1</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Non Banking Activity</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                                <div class="user-list-row">
-                                    <div class="dropdown-email">Stock Broking</div>
-                                    <div class="border-dropdown"></div>
-                                </div>
-                            </div> */}
                         </div>
                         <div className="flex mb-3">
                             <div className="col-3 pl-0 pr-0">
@@ -790,7 +659,6 @@ function CoManagment({handleClose}) {
                                     </div>}
                                 
                                 {!item.isExist && item.coUserID === undefined && <div className="assign-circle-text" onClick={() => (selectedIndex === undefined || selectedIndex === index) ? showBlock() : true}><img src={mobileAssignIconSmall} alt="close Gray Icon" /> assign</div>}
-                                {/* <img src={mobileAssignIconSmall} alt="close Gray Icon" /> assign</div> */}
                                 <div id="drawerParent2" className="">
                                     <div id="drawerChild2" className="sideBarAssignTaskSettings">
                                     <div className="d-flex" style={{padding:20,paddingLeft:0}}>
@@ -833,43 +701,6 @@ function CoManagment({handleClose}) {
                                     </div>          
                                 </div>
                             </div>
-                                {/* {assignPromptIndex === index &&
-                                                    <div ref={innerRef} className="col-9" id={"assign-prompt " + index}>
-                                                        <div className="bottom-tool-tip">
-                                                            <div className="shadow-tooltip">
-                                                                <div className="">
-                                                                    <div className="tool-tip-head">
-                                                                        <div className="add-Email">
-                                                                            <div className="form-group">
-                                                                                <input type="text"
-                                                                                    className="form-control"
-                                                                                    placeholder="Enter name or email"
-                                                                                    onChange={(e) => handleUserSearch(e)}
-                                                                                    value={userSearchText} />
-                                                                            </div>
-                                                                            <span className="or-devider"> or</span>
-                                                                            <button className="btn save-details assign-me" onClick={() => handelChange(loggedUser, "complianceOfficer", index, item)}>Assign to me</button>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="divide-space"><div className="space-border-header"></div></div>
-                                                                    <div className="email-list-box">
-                                                                        {userData && userData.length > 0 && userData.map((user) => {
-                                                                            return (
-                                                                                <>
-                                                                                    <div className="email-list-row" onClick={() => handelChange(user, "complianceOfficer", index, item)}>
-                                                                                        <span className="name-circle">{getNameInitials(user.UserName)}</span>
-                                                                                        <span className="name-of-emailer">{user.UserName}</span>
-                                                                                        <span className="last-email-box">{user.userEmail}</span>
-                                                                                    </div>
-                                                                                </>
-                                                                            )
-                                                                        })
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>} */}
                             </div>
                         </div>
                         {item.selectedLicenseArray.length > 0 && <div className="flex">
@@ -1003,7 +834,6 @@ function CoManagment({handleClose}) {
                             close={(data, action) => close(data, action)} />}
                     </div>
                 </div>
-
             }
             {deleteBoxHideShow && renderConfirmationModel()}
             <div className="d-flex">
@@ -1016,60 +846,9 @@ function CoManagment({handleClose}) {
             </div>
             <div className="border-header d-none d-sm-block"></div>
             <div class="d-block d-sm-none">
-                {/* { companyDetailsBackup && companyDetailsBackup.map((item,index)=>
-                {
-                return (<>
-                <div class="company-details-mobile-view">
-                    <div class="d-flex">
-                        <div class="col-10 pl-0">
-                            <div className="d-flex"> 
-                                <div class="bk-seq-title-mobile">{item.EntityName}</div>
-                                <div class="license-count-selected-mobile">{item.selectedLicenseArray.length}</div>
-                            </div>
-                        </div>
-                        <div class="col-2 pr-0">
-                            <div class="mobile-edit-option" onClick={() => setData(index)}>edit</div>
-                            
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="col-12 pl-0 pb-2">
-                            <div className="">
-                                <div class="comapany-label-mobile">{item.EntityType}</div>
-                                <div class="comapany-label-mobile">{item.Category}</div>                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="col-10 pl-0">
-                            <div className="d-flex">
-                                <div class="license-count-mobile">{getNameInitials(item.CO)}</div>
-                                <div class="bk-seq-title-bottom-mobile">{item.CO}</div>
-                            </div>
-                        </div>
-                        <div class="col-2 pr-0">
-                            <div class="edit-delete">
-                                <div class="">
-                                    { companyDetailsBackup.length > 1 && <img className="" src={whiteDeleteIcon} alt="white Delete Icon" onClick={() => handleDeleteClick(item, 1)}/>}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                {editShow && doEdit != undefined && doEdit == index && editCompanymobile(item,index)}
-                </>
-                )})} */}
-                
                 <div className="col-12 pl-0 pr-0">
                     {companyDetails && companyDetails.map((item,index)=> addNewCompanymobile(item,index))}
-                    {/* <div class="col-12 pl-0">
-                            <caption className="add-company-link" onClick={() => (selectedIndex === undefined) ? handleAddCompany() : null} >
-                                Add another company
-                            </caption>
-                    </div>  */}
                 </div>
-
                 <div class="col-12 pl-0">
                     <caption className="add-company-link" onClick={() => (selectedIndex === undefined) ? handleAddCompany() : null} >
                         Add another company
@@ -1122,37 +901,25 @@ function CoManagment({handleClose}) {
                                                 {companyTypes && companyTypes.length > 0 && <Searchable
                                                     value={item.selectedCompany}
                                                     className="form-control border-0"
-                                                    placeholder={item.EntityType ? item.EntityType : "Select Type"} // by default "Search"
-                                                    notFoundText="No result found" // by default "No result found"
+                                                    placeholder={item.EntityType ? item.EntityType : "Select Type"} 
+                                                    notFoundText="No result found" 
                                                     options={companyTypes}
                                                     onSelect={(e) => (selectedIndex === undefined || selectedIndex === index) ? handelChange(e, "companyType", index, item) : true}
-                                                    listMaxHeight={200} //by default 140
+                                                    listMaxHeight={200} 
                                                 /> }
-                                                    {/* {companyTypes && companyTypes.length > 0 && <Dropdown
-                                                        arrowClosed={<span className="arrow-closed" />}
-                                                        arrowOpen={<span className="arrow-open" />}
-                                                        options={companyTypes} value={item.selectedCompany}
-                                                        placeholder="Select an option"
-                                                        onChange={(e) => (selectedIndex === undefined || selectedIndex === index) ? handelChange(e, "companyType", index, item) : true} />} */}
                                                 </div>
                                             </td>
                                             <td className="dropList">
                                                 <div className="holding-list-bold-title">
                                                 {categoryTypes && categoryTypes.length > 0 && <Searchable
-                                                    //value={item.selectedCategory}
                                                     className="form-control border-0"
-                                                    placeholder= {item.Category ? item.Category : "Select Category"} // by default "Search"
-                                                    notFoundText="No result found" // by default "No result found"
+                                                    placeholder= {item.Category ? item.Category : "Select Category"} 
+                                                    notFoundText="No result found" 
                                                     options={categoryTypes}
                                                     onSelect={(e) => (selectedIndex === undefined || selectedIndex === index) ? handelChange(e, "companyCategory", index, item) : true}
-                                                    listMaxHeight={200} //by default 140
+                                                    listMaxHeight={200} 
                                                 /> }
-                                                    {/* {categoryTypes && categoryTypes.length > 0 && <Dropdown
-                                                        arrowClosed={<span className="arrow-closed" />}
-                                                        arrowOpen={<span className="arrow-open" />}
-                                                        options={categoryTypes} value={item.selectedCategory}
-                                                        placeholder="Select an option"
-                                                        onChange={(e) => (selectedIndex === undefined || selectedIndex === index) ? handelChange(e, "companyCategory", index, item) : true} />} */}
+
                                                 </div>
                                             </td>
                                             <td>
@@ -1237,10 +1004,7 @@ function CoManagment({handleClose}) {
                 </div>
             </div>
         </div>
-
-
     )
 }
-
 
 export default CoManagment;

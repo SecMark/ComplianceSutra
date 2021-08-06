@@ -8,7 +8,6 @@
   margin: 20px 20px 20px 0px;
   padding-left: 48px;
   padding-top: 56px;
-  /* background-color: rgb(255 255 255 / 55%); */
 }
 .co-account .personal-mgt-title {
   font-family: Poppins;
@@ -60,11 +59,9 @@
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
-    /* line-height: normal; */
     letter-spacing: 0.02px;
     text-align: center;
     color: #ffffff;
-    /* padding: 3px 7px; */
     margin-left: 15px;
     border-radius: 24px;
     margin-top: 5px;
@@ -145,8 +142,7 @@
     -ms-transform: translateX(26px);
     transform: translateX(26px);
   }
-  
-  /* Rounded sliders */
+
   .co-account .slider.round {
     border-radius: 34px;
   }
@@ -155,12 +151,6 @@
     border-radius: 50%;
   }
 
-
-
-
-
-
-  
   /* Css For License Drawer*/
 
   /* header css  start*/
@@ -296,14 +286,6 @@ p {
 
 .choose-licenses .choose-licenses-title {
   padding: 37px 32px 0px;
-  /*height: calc(100% - 0px); */
-}
-
-.choose-licenses .choose-licenses-title img {
-  /* margin-bottom: 40px;
-    width: 52px;
-    margin-right: 20px;
-    height: 52px; */
 }
 
 .choose-licenses .search-icon {
@@ -370,7 +352,6 @@ p {
 
 .choose-licenses .accordian-grid {
   border-bottom: 1px solid #f6f6f6;
-  /* height: 64px; */
   padding: 15px 32px;
 }
 
@@ -648,7 +629,6 @@ div#contentGeneral:last-child {
     color: #2c2738;
 }
 .search-detail-grid{
-  /* margin-top:15px; */
   margin-bottom:15px;
 }
 .searchGrid {
@@ -682,8 +662,6 @@ div#contentGeneral:last-child {
 }
 
 .bottom-logo-strip-drower .common-button-drower {
-  /* border-radius: 4px !important; */
-  /* background-color: #6c5dd3 !important; */
   height: 43px;
   text-transform: uppercase !important;
   width: 186px;
@@ -869,9 +847,6 @@ div#contentGeneral:last-child {
 }
 .co-account .searchGrid {
   padding: 20px ​44px 0px;
-  /* max-height: 173px;
-  overflow-y: auto;
-  overflow-x: hidden; */
 }
 .co-account .serchlist-title{
   margin: 0px -9px 0px;
@@ -903,9 +878,9 @@ div#contentGeneral:last-child {
   border-color: #6c5dd3 !important;
   outline: 0 !important;
   border: 2px solid #6c5dd3 !important;
-  box-shadow: inherit !important;
-  
+  box-shadow: inherit !important;  
 }
+
 .co-account .searchBox .form-control:focus {
   box-shadow: none;
   border: 2px solid #6c5dd3 !important;
@@ -918,9 +893,9 @@ div#contentGeneral:last-child {
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
- 
   line-height: normal;
 }
+
 .co-account .btn.mb-2.save-details.common-button-next {
   border-radius: 4px !important;
   background-color: #6c5dd3 !important;
@@ -930,20 +905,24 @@ div#contentGeneral:last-child {
   text-align: center;
   cursor: pointer;
 }
+
 .co-account .btn.mb-2.save-details.common-button-next:hover {
   background-color: #8680ff !important;
   color: #fff !important;
 }
+
 .co-account .btn.mb-2.save-details.common-button-next:focus:not(:focus-visible) {
   outline: 0;
   background-color: #000 !important;
   box-shadow: none !important;
   color: #fff !important;
 }
+
 .co-account .search-detail-grid .two-icon .custom-control {
   margin-top: 5px;
   margin-right: 7px;
 }
+
 .co-account .searchGrid .list-search {
     line-height: 0px;
   }
@@ -952,6 +931,7 @@ div#contentGeneral:last-child {
     padding-left: 26px;
     margin-bottom: 12px;
 }
+
 .co-account .assign-icon {
     width: 32px;
     height: 32px;

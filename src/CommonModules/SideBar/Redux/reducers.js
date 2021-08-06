@@ -16,8 +16,6 @@ const actionHandler = {
 
 };
 
-
-
 export default handleActions(actionHandler, {
     currentMenu: "taskList",
     activeTab:"personal"

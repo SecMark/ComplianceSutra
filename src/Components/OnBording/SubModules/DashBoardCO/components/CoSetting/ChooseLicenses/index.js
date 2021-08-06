@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
 import "./style.css"
-import assignIcon from "../../../../../../../assets/Icons/assignIcon.png"
 import RightImageBg from "../../../../../../../assets/Images/Onboarding/RectangleOnboadign.png"
 import search from "../../../../../../../assets/Icons/search.png"
 import closeIcon from "../../../../../../../assets/Icons/closeIcon.png"
@@ -8,7 +7,6 @@ import closeIconGray from "../../../../../../../assets/Icons/closeIconGray.png"
 import searchIcon from "../../../../../../../assets/Icons/searchIcon.png"
 import { useDispatch, useSelector } from "react-redux"
 import { actions as coActions } from "../../../redux/actions"
-
 import assignIcon1 from "../../../../../../../assets/Icons/assignIcon.png"
 import assignIcon3 from "../../../../../../../assets/Icons/assignIcon2.png"
 import assignIcon5 from "../../../../../../../assets/Icons/assignIcon3.png"
@@ -335,7 +333,6 @@ function ChooseLicenses({ fields, close }) {
     )
   }
 
-
   const chooseImage = (index) => {
     if(index==0 || index%5==0){
       return assignIcon1;
@@ -466,9 +463,7 @@ function ChooseLicenses({ fields, close }) {
                             </div>
                           </div>
                           <div className="assign-icon">
-                            {/* <img src={assignIcon} alt="assignIcon" /> */}
                             <img src={chooseImage(index)} alt="assignIcon" />
-                            {/* src={chooseImage(index)} */}
                           </div>
                           <div className="gst-type-licence">
                             {item[0]}

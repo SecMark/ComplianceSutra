@@ -9,9 +9,6 @@
   padding-left: 48px;
   padding-top: 56px;
   object-fit: contain;
-  /* -webkit-backdrop-filter: blur(50px);
-  backdrop-filter: blur(50px);
-  background-color: rgb(255 255 255 / 55%); */
 }
 .co-manangment-grid .border-header {
   width: 798px;
@@ -330,7 +327,6 @@
     margin-bottom: 32px;
   }
 }
-
 
 .absPosition{
   position: absolute;

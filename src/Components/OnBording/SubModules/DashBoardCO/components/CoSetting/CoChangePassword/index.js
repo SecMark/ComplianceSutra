@@ -37,15 +37,6 @@ function CoAccount() {
 
             </form>  
             <div class="row aligncenter">
-                     {/* <div class="col-12">
-                        <div className="form-row">
-                           <label className="col-form-label" for="name">Confirm password:</label>
-                           <input type="text" className="form-control right-input-row" placeholder="Enter your password" name="name" />
-                        </div>
-                     </div> */}
-                    {/* <div class="col-12">
-                        <button class="btn save-changes-btn">save changes</button>
-                    </div> */}
                     <div class="col-3">
                         <button class="btn save-changes-blue-btn">save password</button>
                     </div>
@@ -53,17 +44,6 @@ function CoAccount() {
                         <div className="discard-label-link">Cancel</div>
                     </div>
                 </div>         
-            
-                {/* <div class="bottom-logo-strip personal-details">
-                    <div class="row aligncenter">
-                        <div class="col-3">
-                            <button class="btn save-changes-blue-btn">save changes</button>
-                        </div>
-                        <div class="col-9">
-                            <div className="discard-label-link">discard changes</div>
-                        </div>
-                    </div>
-                </div> */}
          </div>
        
     )

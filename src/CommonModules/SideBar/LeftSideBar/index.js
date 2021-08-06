@@ -1,24 +1,19 @@
 import React, { useState } from "react";
 import "./style.css";
-
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
 import SideBaruser from "../../../assets/Icons/sideBaruser.png";
-
 import sidebarActive from "../../../assets/Icons/sidebar-active.png";
 import sidebarRightActive from "../../../assets/Icons/task_alt_black_24dp (1).png";
 import dashboardBlackActive from "../../../assets/Icons/dashboard_black.png";
 import dashboardGreyActive from "../../../assets/Icons/dashboard_grey.png";
 import updateActive from "../../../assets/Icons/update_active.png";
-
 import historyListActive from "../../../assets/Icons/history_active.png";
 import historyListInActive from "../../../assets/Icons/history_unactive.png";
-import HelpBlackActive from "../../../assets/Icons/HelpBlackActive.png";
 import HelpGreyActive from "../../../assets/Icons/HelpGreyActive.png";
 import sidebarBell from "../../../assets/Icons/sidebarBell.png";
 import sidebarBellActive from "../../../assets/Icons/bellSelected.png";
 import settingActive from "../../../assets/Icons/activeSetting.png";
 import userActive from "../../../assets/Icons/dropdownUser.png";
-
 import sidebarSettingIcon from "../../../assets/Icons/sidebarSettingIcon.png";
 import editpen from "../../../assets/Icons/editpen.png";
 import LogoutIcon from "../../../assets/Icons/LogoutIcon.png";
@@ -278,13 +273,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               </div>
             )}
           </div>
-          {/* <div className="taskIcon">
-            <img src={taskIcon} alt="taskIcon" />
-          </div> */}
         </div>
-        {/* <div className="user">
-          <img src={SideBaruser} alt="SideBaruser" />
-        </div> */}
       </div>
     </div>
   );

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./style.css";
 import { Modal } from "react-responsive-modal";
-import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
-import deleteIcon from "../../../../../../../assets/Icons/deleteIcon.png";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import { actions as coActions } from "../../../redux/actions";
 import validator from "validator";
@@ -264,7 +262,6 @@ function CoSettingRightGrid({ handleClose, history }) {
     }
     setValuesChanged(true);
     setValues({ ...values, [name]: event.target.value });
-    // }
   };
 
   const renderVerifyDialog = () => {
@@ -503,15 +500,6 @@ function CoSettingRightGrid({ handleClose, history }) {
       </form>
       <div className="bottom-logo-strip personal-details">
         <div className="row aligncenter">
-          {/* <div class="col-12">
-                        <div className="form-row">
-                           <label className="col-form-label" for="name">Confirm password:</label>
-                           <input type="text" className="form-control right-input-row" placeholder="Enter your password" name="name" />
-                        </div>
-                     </div> */}
-          {/* <div class="col-12">
-                        <button class="btn save-changes-btn">save changes</button>
-                    </div> */}
           <div className="col-12 col-sm-12 col-md-12 col-xl-12 flex">
             <button
               className={
@@ -544,4 +532,5 @@ function CoSettingRightGrid({ handleClose, history }) {
     </div>
   );
 }
+
 export default CoSettingRightGrid;
