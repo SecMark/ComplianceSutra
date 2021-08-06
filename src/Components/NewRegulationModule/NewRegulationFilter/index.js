@@ -76,10 +76,10 @@ const NewRegulationFilter = (props) => {
       state.UpdatesReducer.to.length !== 0 &&
       state.UpdatesReducer.to.length === 3 &&
       isSameOrBeforeToday(state.UpdatesReducer.to) &&
-      !isDifferenceIsMoreThanOneYear(
-        state.UpdatesReducer.from,
-        state.UpdatesReducer.to
-      ) &&
+      // !isDifferenceIsMoreThanOneYear(
+      //   state.UpdatesReducer.from,
+      //   state.UpdatesReducer.to
+      // ) &&
       !isToDateBeforeFromDate(
         state.UpdatesReducer.from,
         state.UpdatesReducer.to
@@ -220,7 +220,7 @@ const NewRegulationFilter = (props) => {
               </small>
             )}
 
-          {state.UpdatesReducer.to !== "" &&
+          {/* {state.UpdatesReducer.to !== "" &&
             state.UpdatesReducer.to.length === 3 &&
             state.UpdatesReducer.from !== "" &&
             state.UpdatesReducer.from.length === 3 &&
@@ -235,7 +235,7 @@ const NewRegulationFilter = (props) => {
               <small className="d-block">
                 {"* " + constant.errorMessage.errorDueToRange}
               </small>
-            )}
+            )} */}
           {state.UpdatesReducer.to !== "" &&
             state.UpdatesReducer.to.length === 3 &&
             state.UpdatesReducer.from !== "" &&
