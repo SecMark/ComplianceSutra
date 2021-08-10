@@ -21,7 +21,6 @@ function DashBoardView({ history }) {
   const [isTaskApproved, setIsTaskApproved] = useState(false);
   const [click, setClick] = useState("");
   const [listView, setListView] = useState("0");
-
   const taskList =
     state &&
     state.taskReport &&
@@ -85,7 +84,7 @@ function DashBoardView({ history }) {
   }, [state.adminMenu.currentMenu]);
 
   useEffect(() => {
-    if (userDetails.UserType === 3) {
+    if (userDetails.UserType === 3 || userDetails.UserType === 0) {
       if (window.location.href.includes("dashboard-view")) {
         dispatch(adminMenuActions.setCurrentMenu("dashboard"));
       }

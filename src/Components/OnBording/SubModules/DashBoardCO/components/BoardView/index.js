@@ -137,7 +137,8 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
               laneStyle={
                 userDetails.UserType === 3 ||
                 userDetails.UserType === 5 ||
-                userDetails.UserType === 6
+                userDetails.UserType === 6 ||
+                userDetails.UserType === 0
                   ? {
                       maxHeight: "98vh",
                       maxWidth: "100%",

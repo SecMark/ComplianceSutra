@@ -1279,7 +1279,8 @@ function RightSideGrid({
           {showFiles && (
             <div className="file-grid-data">
               {(user && user.UserType && user.UserType === 4) ||
-              (user && user.UserType && user.UserType === 3) ? (
+              (user && user.UserType && user.UserType === 3) ||
+              (user && user.UserType && user.UserType === 0) ? (
                 <>
                   {getTaskById &&
                   getTaskById.Status &&
@@ -1288,7 +1289,8 @@ function RightSideGrid({
                   getTaskById.Status &&
                   getTaskById.TaskStatus === 0 ? (
                     (user && user.UserType && user.UserType === 4) ||
-                    (user && user.UserType && user.UserType === 3) ? (
+                    (user && user.UserType && user.UserType === 3) ||
+                    (user && user.UserType && user.UserType === 0) ? (
                       <>
                         {" "}
                         <div className="row">
@@ -1443,8 +1445,9 @@ function RightSideGrid({
                 getTaskById.Status &&
                 getTaskById.TaskStatus === 1) ? (
                 (user && user.UserType && user.UserType === 3) ||
-                user.UserType === 4 ||
-                (user.UserType === 5 && " ")
+                (user && user.UserType && user.UserType === 0) ||
+                (user && user.UserType && user.UserType === 4) ||
+                (user && user.UserType && user.UserType === 5 && " ")
               ) : getTaskById &&
                 getTaskById.Status &&
                 getTaskById.Status === "Assigned" &&
@@ -1495,6 +1498,7 @@ function RightSideGrid({
                   getTaskById.Status &&
                   getTaskById.TaskStatus === 4) ? (
                 (user && user.UserType && user.UserType === 3) ||
+                user.UserType === 0 ||
                 (user && user.UserType && user.UserType === 5) ? (
                   <div class="btn-toolbar text-center well">
                     <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">

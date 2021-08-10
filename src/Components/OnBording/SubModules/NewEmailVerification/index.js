@@ -23,7 +23,7 @@ function VerifyEmailErrorPage() {
   const [showSupportText, setShowSupportText] = React.useState(false);
   const userDetails = state && state.auth && state.auth.loginInfo;
   const onLogoutClick = () => {
-    if (userDetails.UserType === 3) {
+    if (userDetails.UserType === 0 || userDetails.UserType === 3) {
       dispatch(adminMenuActions.setCurrentMenu("dashboard"));
     } else {
       dispatch(adminMenuActions.setCurrentMenu("taskList"));

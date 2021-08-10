@@ -11,9 +11,11 @@ import siderBarbtnArrow from "../../../../../../assets/Icons/siderBarbtnArrow.pn
 import actionArrow from "../../../../../../assets/Icons/actionArrow.png";
 import complteTaskIcon from "../../../../../../assets/Icons/complteTaskIcon.png";
 import scheduledIcon from "../../../../../../assets/Icons/scheduledIcon.png";
+import path75 from "../../../../../../assets/Icons/Path 75.png";
 import siderBarbtnArrowTop from "../../../../../../assets/Icons/siderBarbtnArrowTop.png";
 import { useSelector } from "react-redux";
 import { isMobile } from "react-device-detect";
+import { MdArrowForward } from "react-icons/md";
 
 let percentage;
 function QuickOverView({ click, setClick, setListView, listView }) {
@@ -33,7 +35,8 @@ function QuickOverView({ click, setClick, setListView, listView }) {
       userDetails.UserID !== undefined &&
       (userDetails.UserType === 3 ||
         userDetails.UserType === 5 ||
-        userDetails.UserType === 6)
+        userDetails.UserType === 6 ||
+        userDetails.UserType === 0)
     ) {
       fetchQuickOverViewSectionData("type1");
       fetchTeamPerformanceData();
@@ -457,6 +460,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                 {userDetails &&
                   userDetails.UserID !== undefined &&
                   (userDetails.UserType === 3 ||
+                    userDetails.UserType === 0 ||
                     userDetails.UserType === 6) && (
                     <div
                       className={
@@ -522,6 +526,24 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                   </div>
                 )}
                 <div className="two-btn-new"></div>
+                {userDetails.UserType === 0 && (
+                  <>
+                    {/* Payment Issues Message Box */}
+                    <div className="d-flex align-items-center justify-content-between payment-stats">
+                      <img
+                        src={path75}
+                        alt="problem"
+                        className="payment-stats__image"
+                      />
+                      <p className="mb-0 payment-stats__message">
+                        38 Customers have not made payments this month
+                      </p>
+                      <button className="payment-stats__button">
+                        <MdArrowForward />
+                      </button>
+                    </div>
+                  </>
+                )}
                 {thingOnTrack &&
                   Object.entries(thingOnTrack).length !== 0 &&
                   thingOnTrack.RiskTask !== 0 &&
@@ -600,6 +622,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                 {userDetails &&
                   userDetails.UserType !== undefined &&
                   (userDetails.UserType === 3 ||
+                    userDetails.UserType === 0 ||
                     userDetails.UserType === 6) && (
                     <div className="sidebar-overview-grid-new shadow bg-white rounded">
                       <div className="take-action-small-title-new">

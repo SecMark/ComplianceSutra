@@ -13,6 +13,7 @@ const loginReq = function* loginReq({ payload }) {
       console.log("login response", data);
       if (
         (data && data.UserType === 3) ||
+        data.UserType === 0 ||
         data.UserType === 5 ||
         data.UserType === 6
       ) {

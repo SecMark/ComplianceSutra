@@ -121,7 +121,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   });
 
   const onLogoutClick = () => {
-    if (userDetails.UserType === 3) {
+    if (userDetails.UserType === 3 || userDetails.UserType === 0) {
       dispatch(adminMenuActions.setCurrentMenu("dashboard"));
     } else {
       dispatch(adminMenuActions.setCurrentMenu("taskList"));
@@ -175,7 +175,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
         <div className="first-icon-list">
           {(userDetails.UserType === 3 ||
             userDetails.UserType === 5 ||
-            userDetails.UserType === 6) && (
+            userDetails.UserType === 6 ||
+            userDetails.UserType === 0) && (
             <div
               className={
                 !openProfile &&

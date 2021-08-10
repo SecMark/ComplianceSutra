@@ -92,7 +92,7 @@ function RightSideGrid({
   const [taskListDisplay, setTaskListDisplay] = useState("1");
   const [displayTask, setDisplayTask] = useState("1");
   const [mobileViewBy, setMobileViewBy] = useState(false);
-
+  const [isClientView, setIsClientView] = useState(false);
   const getTaskById =
     state &&
     state.taskReport &&
@@ -100,11 +100,11 @@ function RightSideGrid({
     state.taskReport.taskReportById.taskReportById;
 
   useEffect(() => {
-    if (taskList != undefined && taskList.length > 0) {
+    if (taskList !== undefined && taskList.length > 0) {
       let tempArr = [];
       let tempRowCount = {};
       taskList.map((item) => {
-        if (item.Details.length >= 1 && item.Details[0].TaskId != 0) {
+        if (item.Details.length >= 1 && item.Details[0].TaskId !== 0) {
           tempArr.push({ ...item });
           tempRowCount[item.Status.trim()] = 3;
         }
@@ -123,7 +123,7 @@ function RightSideGrid({
       state.taskReport.getUserByRole &&
       state.taskReport.getUserByRole.getUserByRole;
 
-    if (ApproverUsers != undefined) {
+    if (ApproverUsers !== undefined) {
       let temp = [];
       ApproverUsers &&
         ApproverUsers.length > 0 &&
@@ -160,11 +160,19 @@ function RightSideGrid({
 
   useEffect(() => {
     if (taskListDisplay === "1") {
-      const payload = {
+      let payload = {
         entityid: "",
         userID: user.UserID,
         usertype: user.UserType,
       };
+      if (isClientView) {
+        payload = {
+          entityid: "",
+          userID: user.UserID,
+          usertype: user.UserType,
+          isClientTasks: true,
+        };
+      }
       axios
         .post(`${BACKEND_BASE_URL}/api/getTaskReport`, payload)
         .then((response) => {
@@ -172,7 +180,7 @@ function RightSideGrid({
           let tempArr = [];
           let tempRowCount = {};
           fileData.map((item) => {
-            if (item.Details.length >= 1 && item.Details[0].TaskId != 0) {
+            if (item.Details.length >= 1 && item.Details[0].TaskId !== 0) {
               tempArr.push({ ...item });
               tempRowCount[item.Status.trim()] = 3;
             }
@@ -185,7 +193,7 @@ function RightSideGrid({
           console.log("error => ", error);
         });
     }
-  }, [taskListDisplay]);
+  }, [taskListDisplay, isClientView]);
 
   const innerRefDrop = useDropdownOuterClick((e) => {
     if (openBoardDrD === true && !e.target.id.includes("dropDown")) {
@@ -257,7 +265,7 @@ function RightSideGrid({
 
   const getInitials = (str) => {
     var initials = " ";
-    if (str != "" && str) {
+    if (str !== "" && str) {
       var names = str.split(" "),
         initials = names[0].substring(0, 1).toUpperCase();
       if (names.length > 1) {
@@ -270,7 +278,7 @@ function RightSideGrid({
   };
 
   const getAllFile = () => {
-    if (getTaskById != undefined) {
+    if (getTaskById !== undefined) {
       const taskId = getTaskById.TaskId;
       const payload = {
         taskID: taskId,
@@ -803,7 +811,7 @@ function RightSideGrid({
   const handleSearch = (searchText) => {
     setSearchValue(searchText);
     let tempArr = [];
-    if (searchText != "") {
+    if (searchText !== "") {
       taskList &&
         taskList.forEach((obj1) => {
           obj1.Details.forEach((obj2) => {
@@ -973,7 +981,7 @@ function RightSideGrid({
             style={{ cursor: "pointer" }}
             onClick={(e) => getSelectTaskDetails(task)}
           >
-            {task.AssignedTo != 0 ? (
+            {task.AssignedTo !== 0 ? (
               <div className="d-flex new-task-list">
                 {userDetails.UserType === 4 ? (
                   task.ApproverName === "Assign" ? null : (
@@ -1198,7 +1206,7 @@ function RightSideGrid({
           style={{ cursor: "pointer" }}
           onClick={(e) => getSelectTaskDetails(task)}
         >
-          {task.AssignedTo != 0 ? (
+          {task.AssignedTo !== 0 ? (
             <div className="" z style={{ display: "none" }}>
               {userDetails.UserType === 4 ? (
                 task.ApproverName === "Assign" ? null : (
@@ -1413,9 +1421,38 @@ function RightSideGrid({
               )}
               <>
                 <div className="d-flex mobile-height-dasboardView">
-                  <div className="companies-sub-title w-25 d-none d-sm-block">
-                    Tasks
-                  </div>
+                  {userDetails.UserType === 0 ? (
+                    <div className="d-none d-sm-flex">
+                      <div
+                        className="companies-sub-title pr-2"
+                        style={{
+                          color: !isClientView
+                            ? "rgb(44, 39, 56)"
+                            : "rgba(153, 153, 153, 0.6)",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => setIsClientView(false)}
+                      >
+                        Tasks
+                      </div>
+                      <div
+                        className="companies-sub-title px-2"
+                        style={{
+                          color: isClientView
+                            ? "rgb(44, 39, 56)"
+                            : "rgba(153, 153, 153, 0.6)",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => setIsClientView(true)}
+                      >
+                        Clients
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="companies-sub-title w-25 d-none d-sm-block">
+                      Tasks
+                    </div>
+                  )}
 
                   <div className="d-flex pl-0">
                     <div
@@ -1523,7 +1560,7 @@ function RightSideGrid({
                   className="task-details-file-grid task-details-file-grid-dashboard custimDesignTask"
                   style={{ position: "relative" }}
                 >
-                  {searchValue != "" && (
+                  {searchValue !== "" && (
                     <div className="file-title">Search Results: </div>
                   )}
                   {searchValue === "" && (
@@ -1737,7 +1774,7 @@ function RightSideGrid({
                     "task-grid-scroll customScrollSecond newHeigt"
                   }
                 >
-                  {searchValue != "" && (
+                  {searchValue !== "" && (
                     <div
                       className="take-action"
                       style={{
