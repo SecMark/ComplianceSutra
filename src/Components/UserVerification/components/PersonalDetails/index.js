@@ -9,13 +9,16 @@ import { withRouter } from "react-router-dom";
 import SideBarInputControl from "../WebStepper.js";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
+import Select from "react-select";
 import "./style.css";
 import MobileStepper from "../MobileStepper.js";
 
-function PersonalDetails({ history }) {
+function PersonalDetails({ history, location }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
+  const params = new URLSearchParams(location.search);
+  const userType = params.get("type");
   const [isValidate, setIsValidate] = useState(false);
   const [values, setValues] = useState({
     fullName: "",
@@ -26,6 +29,12 @@ function PersonalDetails({ history }) {
     password: "",
     confirmPassword: "",
   });
+  const options = [
+    { value: "NSE", label: "NSE" },
+    { value: "BSE", label: "BSE" },
+    { value: "CDS", label: "CDS" },
+  ];
+
   const [mobileNumberValid, setMobileNumberValid] = useState("true");
 
   const [errors, setErrors] = useState({
@@ -36,7 +45,7 @@ function PersonalDetails({ history }) {
     designationErr: "",
   });
   const [whatappFlag, setWhatappFlag] = useState(false);
-  const [isCompanyNameValid, setIsCompanyNameValid] = useState(true);
+
   const [passwordState, setPasswordState] = useState({
     minlength: false,
     uppercaseandlowercase: false,
@@ -414,31 +423,59 @@ function PersonalDetails({ history }) {
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Designation</label>
-                          <input
-                            type="text"
-                            className={
-                              "form-control " +
-                              (isValidate && values.designation === ""
-                                ? "input-error"
-                                : "") +
-                              (values.designation === ""
-                                ? " "
-                                : " success-input-form-control")
-                            }
-                            id="Designation"
-                            placeholder="Eg. Compliance Officer, Team Leader"
-                            value={values.designation}
-                            onChange={onChangeHandler("designation")}
-                            onKeyPress={(e) => handleKeyDown(e)}
-                          />
-                          {isValidate && values.designation === "" && (
-                            <p className="input-error-message">
-                              Designation is required
-                            </p>
+                          {userType == 8 ? (
+                            <div>
+                              <input
+                                type="text"
+                                placeholder="Expert Reviewer"
+                                value="Expert Reviewer"
+                                disabled="true"
+                                className="success-input-form-control"
+                              />
+                            </div>
+                          ) : (
+                            <div>
+                              <input
+                                type="text"
+                                className={
+                                  "form-control " +
+                                  (isValidate && values.designation === ""
+                                    ? "input-error"
+                                    : "") +
+                                  (values.designation === ""
+                                    ? " "
+                                    : " success-input-form-control")
+                                }
+                                id="Designation"
+                                placeholder="Eg. Compliance Officer, Team Leader"
+                                value={values.designation}
+                                onChange={onChangeHandler("designation")}
+                                onKeyPress={(e) => handleKeyDown(e)}
+                              />
+                              {isValidate && values.designation === "" && (
+                                <p className="input-error-message">
+                                  Designation is required
+                                </p>
+                              )}
+                            </div>
                           )}
                         </div>
                       </div>
-                      <div className="col-md-6 col-xs-12">&nbsp;</div>
+
+                      <div className="col-md-6 col-xs-12">
+                        {userType == 8 ? (
+                          <div>
+                            Expert in
+                            <Select
+                              options={options}
+                              isMulti
+                              className="form-group"
+                            />
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Password</label>
