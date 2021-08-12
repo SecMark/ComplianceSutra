@@ -5,7 +5,7 @@ import secmark from "../../../../assets/Images/secmark.png";
 import { useDispatch, useSelector } from "react-redux";
 import { checkPersonalDetailsForm } from "../utility.js";
 import { actions as personalDetailsAction } from "../../redux/actions";
-import { withRouter } from "react-router-dom";
+import { withRouter, useParams } from "react-router-dom";
 import SideBarInputControl from "../WebStepper.js";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
@@ -20,6 +20,7 @@ function PersonalDetails({ history, location }) {
 
   const params = new URLSearchParams(location.search);
   const userType = params.get("type");
+
   const [isValidate, setIsValidate] = useState(false);
   const [values, setValues] = useState({
     fullName: "",
