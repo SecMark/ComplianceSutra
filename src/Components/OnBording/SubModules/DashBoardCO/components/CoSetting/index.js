@@ -30,7 +30,7 @@ function CoSetting({ history }) {
   const dispatch = useDispatch();
   const [notificationSetting, setNotificationSetting] = useState(null);
   const [selectedTabKey, setSelectedTabKey] = useState(0);
-  // console.log("state => ",state);
+
   const [navigationHideShow, setNavigationHideShow] = useState(false);
 
   const [showHB, setShowHBMenu] = useState(false);
@@ -69,14 +69,6 @@ function CoSetting({ history }) {
   };
 
   const closeMobileSidebar = () => {
-    // // const drawerParent = document.getElementById("sideBarParent");
-    // // const drawerChild = document.getElementById("sideBarChild");
-    // // console.log(drawerParent,"drawerParent")
-    // // if (drawerParent) {
-    // //     drawerParent.classList.add("overlay");
-    // //     drawerChild.style.left = "0%";
-    // // }
-
     const drawerParent = document.getElementById("sideBarParent");
     const drawerChild = document.getElementById("sideBarChild");
     if (drawerParent) {

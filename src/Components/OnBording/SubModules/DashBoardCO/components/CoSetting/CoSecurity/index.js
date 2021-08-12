@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import api from "../../../../../../../apiServices";
-import eyeIcon from "../../../../../../../assets/Icons/eye.png";
+
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -144,7 +144,6 @@ function CoSetting({ handleClose }) {
           /^[a-zA-Z]*$/.test(event.target.value) &&
           /(?=.*?[A-Z])(?=.*?[a-z])./.test(event.target.value)
         ) {
-          // else if (/(?=.*?[A-Z])(?=.*?[a-z])./.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: false,
@@ -159,19 +158,12 @@ function CoSetting({ handleClose }) {
             [uppercaseandlowercase]: true,
           }));
         } else if (/(?=.*?[A-Za-z])(?=.*?[0-9])/.test(event.target.value)) {
-          // else if (/(?=.*?[A-Za-z])(?=.*?[0-9])./.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: true,
             [uppercaseandlowercase]: false,
           }));
-        }
-        // else if (/^[A-Z0-9]*$/.test(event.target.value)) {
-        //   setPasswordState(prevState => ({
-        //     ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: false
-        //   }));
-        // }
-        else {
+        } else {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: false,
@@ -180,14 +172,7 @@ function CoSetting({ handleClose }) {
         }
       }
     }
-    // if (name === "currentPassword") {
-    //   let inputKey = "currentPasswordErr"
-    //   if (!passwordRE.test(event.target.value)) {
-    //     setErrors({ ...errors, [inputKey]: "Password is invalid" })
-    //   } else {
-    //     setErrors({ ...errors, [inputKey]: "" });
-    //   }
-    // }
+
     if (name === "confirmPassword") {
       let inputKey = "confirmPasswordErr";
       if (!passwordRE.test(event.target.value)) {

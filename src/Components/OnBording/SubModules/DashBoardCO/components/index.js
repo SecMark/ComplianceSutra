@@ -96,7 +96,6 @@ function Dashboard({ history }) {
       window.location.href.includes("dashboard") &&
       state.adminMenu.currentMenu !== "taskList"
     ) {
-      console.log(isTaskListOpen);
       if (isTaskListOpen) {
         setIsTaskListOpen(false);
       }

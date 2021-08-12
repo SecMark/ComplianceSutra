@@ -211,7 +211,6 @@ const MonthView = ({
                       todayDate === compareDate && "current-day"
                     } d-flex justify-content-center align-items-center`}
                   >
-                    {/* <div className="current-day d-flex justify-content-center align-items-center"> */}
                     <h5
                       className="m-0"
                       style={{
@@ -237,31 +236,6 @@ const MonthView = ({
                       >
                         <div className="button-code m-0">
                           {list[0]?.LicenseCode}
-                          {/* <div className="tooltip-container">
-                            <h2 className="tooltip-title">
-                              {list[0]?.TaskName}
-                            </h2>
-                            <div className="tooltip-company-detail">
-                              <span className="tooltip-compant-name">
-                                {list[0]?.EntityName}
-                              </span>
-                              <p>
-                                <span className="circle-dp-tooltip">
-                                  {getIntialName(list[0]?.AssignedName)}
-                                </span>{" "}
-                                <span className="user-name-tooltip">
-                                  {list[0]?.AssignedName}
-                                </span>
-                              </p>
-                            </div>
-
-                            <button
-                              className="tooltip-view-detail-button"
-                              onClick={() => viewDetail(list[0]?.TaskId)}
-                            >
-                              View Detail
-                            </button>
-                          </div> */}
                         </div>
                         <h6 className="right-item-task-name mb-0">
                           {list[0]?.TaskName}
@@ -282,31 +256,6 @@ const MonthView = ({
                       >
                         <div className="button-code m-0">
                           {list[0]?.LicenseCode}
-                          {/* <div className="tooltip-container">
-                            <h2 className="tooltip-title">
-                              {list[0]?.TaskName}
-                            </h2>
-                            <div className="tooltip-company-detail">
-                              <span className="tooltip-compant-name">
-                                {list[0]?.EntityName}
-                              </span>
-                              <p>
-                                <span className="circle-dp-tooltip">
-                                  {getIntialName(list[0]?.AssignedName)}
-                                </span>{" "}
-                                <span className="user-name-tooltip">
-                                  {list[0]?.AssignedName}
-                                </span>
-                              </p>
-                            </div>
-
-                            <button
-                              className="tooltip-view-detail-button"
-                              onClick={() => viewDetail(list[0]?.TaskId)}
-                            >
-                              View Detail
-                            </button>
-                          </div> */}
                         </div>
                         <h6 className="right-item-task-name mb-0">
                           {list[0]?.TaskName}
