@@ -9,9 +9,10 @@ import { withRouter } from "react-router-dom";
 import SideBarInputControl from "../WebStepper.js";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
-import Select from "react-select";
+import Dropdown from "./Dropdown/Dropdown";
 import "./style.css";
 import MobileStepper from "../MobileStepper.js";
+import Constants from "../../../../CommonModules/sharedComponents/constants/constant";
 
 function PersonalDetails({ history, location }) {
   const dispatch = useDispatch();
@@ -423,7 +424,7 @@ function PersonalDetails({ history, location }) {
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Designation</label>
-                          {userType == 8 ? (
+                          {userType == Constants.ExpertUser ? (
                             <div>
                               <input
                                 type="text"
@@ -463,15 +464,11 @@ function PersonalDetails({ history, location }) {
                       </div>
 
                       <div className="col-md-6 col-xs-12">
-                        {userType == 8 ? (
-                          <div>
-                            Expert in
-                            <Select
-                              options={options}
-                              isMulti
-                              className="form-group"
-                            />
-                          </div>
+                        {userType == Constants.ExpertUser ? (
+                          <Dropdown
+                            options={options}
+                            className="form-control"
+                          />
                         ) : (
                           ""
                         )}

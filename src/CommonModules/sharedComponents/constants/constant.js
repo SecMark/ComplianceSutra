@@ -49,4 +49,6 @@ export default {
     "Saturday",
     "Sunday",
   ],
+
+  ExpertUser: "8",
 };
