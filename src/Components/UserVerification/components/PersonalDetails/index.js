@@ -424,7 +424,7 @@ function PersonalDetails({ history, location }) {
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Designation</label>
-                          {userType == Constants.ExpertUser ? (
+                          {(userType == Constants.ExpertUser && (
                             <div>
                               <input
                                 type="text"
@@ -434,7 +434,7 @@ function PersonalDetails({ history, location }) {
                                 className="success-input-form-control"
                               />
                             </div>
-                          ) : (
+                          )) || (
                             <div>
                               <input
                                 type="text"
@@ -464,14 +464,13 @@ function PersonalDetails({ history, location }) {
                       </div>
 
                       <div className="col-md-6 col-xs-12">
-                        {userType == Constants.ExpertUser ? (
+                        {(userType == Constants.ExpertUser && (
                           <Dropdown
                             options={options}
                             className="form-control"
                           />
-                        ) : (
-                          ""
-                        )}
+                        )) ||
+                          ""}
                       </div>
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
