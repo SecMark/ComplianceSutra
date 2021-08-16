@@ -1,6 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { Route, Switch } from "react-router-dom";
 
 import Header from "../CommonModules/Header";
 import Compliance from "../Components/ComplianceModule";
@@ -48,10 +47,8 @@ import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import Loading from "../CommonModules/sharedComponents/Loader";
+import ExperReview from "../Components/ExpertReviewModule";
 
-const ERDashboard = lazy(() =>
-  import("../Components/ExpertReviewModule/Dashboard")
-);
 // import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
 // import HistoryList from "../Components/HistoryModule/HistoryList";
@@ -191,10 +188,10 @@ export default function AppRouter() {
           <Route exact path="/new-regulations" component={DashBoardCO} />
           <Route exact path="/help" component={DashBoardCO} />
 
-          {/* Expert Reviewer Routes */}
-          <Suspense fallback={Loading}>
-            <Route exact path="/er-dashboard" component={ERDashboard} />
-          </Suspense>
+          {/* Expert Review */}
+          <Switch>
+            <Route path="/expert-review" component={ExperReview}></Route>
+          </Switch>
         </div>
       </>
     </div>
