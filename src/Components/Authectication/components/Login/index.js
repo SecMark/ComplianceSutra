@@ -8,10 +8,13 @@ import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadig
 import SideBar from "../../../../Components/OnBording/SubModules/SideBar";
 import { actions as signInSignUpActions } from "../../redux/actions";
 import validator from "validator";
+import PassEyeToggle from "../EyeToggle/PassEyeToggle";
 
 function Login({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+
+  const [Passwordtype, ToggleIco] = PassEyeToggle();
 
   const [values, setValues] = useState({
     LoginId: "",
@@ -162,7 +165,7 @@ function Login({ history }) {
                     <label htmlFor="Company Email">Password</label>
                     <div className="">
                       <input
-                        type="password"
+                        type={Passwordtype}
                         className={
                           "form-control" +
                           (errors && errors.passwordErr !== ""
@@ -177,6 +180,9 @@ function Login({ history }) {
                         onChange={onChangeHandler("Pwd")}
                         onKeyPress={handleKeyPress}
                       />
+
+                    <span className="password-toggle-ico">{ToggleIco}</span> 
+
                       {/* {errors && errors.passwordErr !== "" && <p className="input-error-message">
                                                 Password is invalid
                                      </p>} */}

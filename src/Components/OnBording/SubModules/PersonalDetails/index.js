@@ -11,10 +11,16 @@ import SideBarInputControl from "../SideBarInputControl";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
 import MobileStepper from "../mobileStepper";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PasswordToggle from "../../Hooks/PasswordToggle";
+import ConfirmToggle from "../../Hooks/ConfirmToggle";
 
 function PersonalDetails({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const  [PasswordInputType, ToggleIcon] = PasswordToggle();
+  const  [ConfirmPasswordInputType, ToggleIconic] = ConfirmToggle();
 
   //const guestUser = state && state.auth && state.auth.guestUser;
   const quote_id = state && state.auth && state.auth.quote_id;
@@ -535,7 +541,7 @@ function PersonalDetails({ history }) {
                         <div className="form-group">
                           <label htmlFor="Company Email">Password</label>
                           <input
-                            type="password"
+                            type={PasswordInputType}
                             className={
                               "form-control " +
                               (values.password !== "" &&
@@ -562,6 +568,9 @@ function PersonalDetails({ history }) {
                             onChange={onChangeHandler("password")}
                             onKeyPress={(e) => handleKeyDown(e)}
                           />
+                            <span className="password-toggle-icon">{ToggleIcon}</span> 
+
+
                           {isValidate && values.password === "" && (
                             <p className="input-error-message">
                               Please enter password
@@ -630,7 +639,7 @@ function PersonalDetails({ history }) {
                             Confirm Password
                           </label>
                           <input
-                            type="password"
+                            type={ConfirmPasswordInputType}
                             className={
                               "form-control " +
                               (values.confirmPassword !== "" &&
@@ -660,6 +669,9 @@ function PersonalDetails({ history }) {
                             onChange={onChangeHandler("confirmPassword")}
                             onKeyPress={(e) => handleKeyDown(e)}
                           />
+
+                            <span className="password-toggle-iconic">{ToggleIconic}</span> 
+
                           {/* {values.confirmPassword !== "" && errors && errors.confirmPasswordErr !== "" && <p className="input-error-message">
                             Confirm password is invalid
                           </p>} */}

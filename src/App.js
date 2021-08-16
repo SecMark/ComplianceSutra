@@ -10,6 +10,8 @@ import { actions as notificationActions } from "./Components/OnBording/SubModule
 import CoSetting from "./Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
 import MultipleNotification from "../src/CustomNotification/MultipleNotification";
 import SingleNotification from "../src/CustomNotification/SingleNotification";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 function App() {
   return <MainApp />;
 }
@@ -23,6 +25,9 @@ function MainApp() {
   console.warn = () => {};
   console.error = () => {};
   const browserHistory = createHashHistory();
+
+  library.add(faEye,faEyeSlash);
+
 
   return (
     <>
