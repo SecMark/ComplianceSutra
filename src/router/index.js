@@ -1,5 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
+
 import Header from "../CommonModules/Header";
 import Compliance from "../Components/ComplianceModule";
 import CapmTechLandingPage from "../Components/CapmTechLandingPage";
@@ -46,6 +48,11 @@ import MultiCompanyQuickOverView from "../Components/OnBording/SubModules/DashBo
 import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/MultiTeamMemberView/index";
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
+import Loading from "../CommonModules/sharedComponents/Loader";
+
+const ERDashboard = lazy(() =>
+  import("../Components/ExpertReviewModule/Dashboard")
+);
 // import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
 // import HistoryList from "../Components/HistoryModule/HistoryList";
@@ -222,6 +229,11 @@ export default function AppRouter() {
           <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route exact path="/new-regulations" component={DashBoardCO} />
           <Route exact path="/help" component={DashBoardCO} />
+
+          {/* Expert Reviewer Routes */}
+          <Suspense fallback={Loading}>
+            <Route exact path="/er-dashboard" component={ERDashboard} />
+          </Suspense>
         </div>
       </>
     </div>
