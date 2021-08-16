@@ -15,7 +15,6 @@ const differenceInDate = (a, b) => {
 const isSameOrAfterToday = (date) => {
   const todayDate = moment().format("YYYY-MM-DD");
   if (date.length !== 0) {
-    console.log("dataaa", date);
     const dateInRequiredFormat = moment(date?.join("-"), "DD-MM-YYYY").format(
       "YYYY-MM-DD"
     );

@@ -294,9 +294,7 @@ function RightSideGrid({
           let fileData = response.data;
           setFileList(fileData);
         })
-        .catch((error) => {
-          console.log("error => ", error);
-        });
+        .catch((error) => {});
     }
   };
 

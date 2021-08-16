@@ -1,41 +1,38 @@
-.css-crousel .carousel .thumbs-wrapper{
-    display: none;
+.css-crousel .carousel .thumbs-wrapper {
+  display: none;
 }
 
-.css-crousel .carousel-slider .carousel-status{
-    display: none;
-}
-.css-crousel .carousel .control-dots{
-    /* display: none; */
+.css-crousel .carousel-slider .carousel-status {
+  display: none;
 }
 .css-crousel .carousel .control-dots {
-    /* display: none; */
-    float: left;
-    text-align: left;
 }
-.css-crousel .carousel-slider{
-    width: 100%  !important;
-    height: auto;
+.css-crousel .carousel .control-dots {
+  float: left;
+  text-align: left;
+}
+.css-crousel .carousel-slider {
+  width: 100% !important;
+  height: auto;
 }
 
 .css-crousel .carousel .control-prev.control-arrow {
-    display: none;
+  display: none;
 }
 .css-crousel .carousel .control-next.control-arrow {
-    display: none;
-
+  display: none;
 }
 
 .carousel .control-dots .dot {
-    transition: opacity .25s ease-in;
-    opacity: 0.16;
-    filter: alpha(opacity=30);
-    box-shadow: inherit !important;
-    background: #fff;
-    border-radius: 50%;
-    width: 8px;
-    height: 8px;
-    cursor: pointer;
-    display: inline-block;
-    margin: 0 5px !important;
+  transition: opacity 0.25s ease-in;
+  opacity: 0.16;
+  filter: alpha(opacity=30);
+  box-shadow: inherit !important;
+  background: #fff;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 5px !important;
 }

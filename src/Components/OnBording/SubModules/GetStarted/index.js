@@ -74,10 +74,6 @@ function GetStart({ history }) {
         })
       );
       setTimeout(() => {
-        console.log(
-          "state.complianceOfficer.isVerifiedEmail => ",
-          state.complianceOfficer.isVerifiedEmail
-        );
         let status = state.complianceOfficer.isVerifiedEmail;
       }, [100]);
     } else if (!checkBoxState) {
@@ -98,7 +94,6 @@ function GetStart({ history }) {
       <div className="col-3 left-fixed">
         <div className="on-boarding">
           <SideBar />
-          {/* <SideBarInputControl /> */}
         </div>
       </div>
       <div className="col-12 padding-right">
@@ -114,14 +109,12 @@ function GetStart({ history }) {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="header_logo">
-                      {/* <a href="#" style={{'cursor': 'auto'}}> */}
                       <img
                         src={comtech}
                         alt="COMPLIANCE SUTRA"
                         title="COMPLIANCE SUTRA"
                       />
                       <span className="camp">COMPLIANCE SUTRA</span>
-                      {/* </a> */}
                     </div>
                   </div>
                 </div>
@@ -215,7 +208,6 @@ function GetStart({ history }) {
                       </p>
                     </div>
                     <div className="col-md-6 col-xs-12 d-none d-sm-block text-right">
-                      {/* <a href="#" style={{'cursor': 'auto'}}> */}
                       <span className="powerBy">Powered by</span>
                       <img
                         className="header_logo footer-logo-secmark"
@@ -223,7 +215,6 @@ function GetStart({ history }) {
                         alt="SECMARK"
                         title="SECMARK"
                       />
-                      {/* </a> */}
                     </div>
                   </div>
                 </div>
