@@ -3,7 +3,7 @@ import "./style.css";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
-import leftArrow from "../../../../assets/Icons/leftArrow.png";
+
 import { useDispatch, useSelector } from "react-redux";
 import SideBarInputControl from "../SideBarInputControl";
 import { actions as otpVerificationActions } from "../../redux/actions";
@@ -84,19 +84,19 @@ function VeryOTP({ history, currentStep }) {
   const validateCountryCode = (e) => {
     let strr = e.target.value;
     let str = strr.replace(/\D/g, "");
-    console.log("str => ", strr);
+
     if (str === "") {
       str = "91";
     }
     let payload = {
       cntryCode: str,
     };
-    console.log(payload);
+
     api
       .post("/api/CountryCodeCheck", payload)
       .then(function (response) {
         // handle success
-        console.log("response => ", response);
+
         if (response && response.data && response.data.Status === "True") {
           setCountryCode(true);
         } else {
@@ -109,7 +109,7 @@ function VeryOTP({ history, currentStep }) {
         }
       });
   };
-  console.log("bomnumber => ", mobileNumber);
+
   const handelChange = (e) => {
     setDisabled(false);
     const { name, value } = e.target;
@@ -160,11 +160,10 @@ function VeryOTP({ history, currentStep }) {
       phn: mobileNumber,
       email: email,
     };
-    console.log(payload);
+
     api
       .post("/api/sendmsgwithverificationcode", payload)
       .then(function (response) {
-        console.log(response.data);
         // handle success
         if (response && response.data && response.data.statuscode === "200") {
           toast.success(
@@ -174,9 +173,7 @@ function VeryOTP({ history, currentStep }) {
           toast.error("something went wrong please try again !!!");
         }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch(function (error) {});
     setSeconds(59);
   };
 
@@ -211,7 +208,6 @@ function VeryOTP({ history, currentStep }) {
     api
       .post("/api/availabilityCheck", payload)
       .then(function (response) {
-        console.log("availabaility res => ", response);
         if (response && response.data && response.data.Status === "false") {
           if (countryCode) {
             const adminPWD =
@@ -224,7 +220,7 @@ function VeryOTP({ history, currentStep }) {
 
             let countryCode;
             let strr = values.countryCode;
-            // countryCode = strr.replace(/\D/g, '');
+
             countryCode = strr;
 
             setTimeout(() => {
@@ -295,9 +291,6 @@ function VeryOTP({ history, currentStep }) {
         }
       });
   };
-  //  else {
-  //   //toast.error("Mobile number is not generated")
-  // }
 
   useEffect(() => {
     let myInterval = setInterval(() => {
@@ -376,14 +369,12 @@ function VeryOTP({ history, currentStep }) {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="header_logo">
-                      {/* <a href="#" style={{'cursor': 'auto'}}> */}
                       <img
                         src={comtech}
                         alt="COMPLIANCE SUTRA"
                         title="COMPLIANCE SUTRA"
                       />
                       <span className="camp">COMPLIANCE SUTRA</span>
-                      {/* </a> */}
                     </div>
                   </div>
                 </div>
@@ -397,50 +388,10 @@ function VeryOTP({ history, currentStep }) {
               </div>
               <div className="wrapper_login">
                 <p className="login_title">
-                  {/* <img
-                    className="right-back-arrow"
-                    src={leftArrow}
-                    alt=""
-                  />{" "} */}
                   Let's secure your account
                   <br />
                   with verified mobile
                 </p>
-
-                {/* <p className="login_title"><img className="right-back-arrow" src={leftArrow} alt="" /> Let's secure your account<br />
-                      with verified mobile</p>                  */}
-                {/* <div className="send-otp">                
-                  <p className="disc-text">This helps you prevent unauthorized access to your<br />
-                   account. And you don't have to remember any password</p>
-                    <p className="will-send-text">We will send OTP on +91 9876543211 <span className="change">CHANGE</span></p>
-                     <button className="btn save-details common-button">SECURE NOW</button>
-                  </div> */}
-                {/*
-                 <div className="verify-otp">                 
-                  <p className="disc-text">Please enter the verification code sent to your phone no.</p>
-                    <p className="will-send-text"> +91 987****210 <span className="mobile-change">CHANGE</span></p>
-                   
-                     <div className="form-group">
-                        <input type="text" className="form-control" id="OTP" placeholder="Enter 5 digit OTP" required />
-                     </div> 
-                     <p style={{ display: "flex" }} className="Resend-OTP-in"> Resend OTP in:<span className="second">{minutes === 0 && seconds === 0
-                          ? null
-                          : <p style={{ fontSize: 10 }}> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</p>
-                        }</span></p>
-                     <button className="btn save-details common-button">VERIFY</button>
-                  </div>
-                   */}
-
-                {/* <div className="verify-otp">                 
-                     <p className="disc-text">Please enter the verification code sent to your phone no.</p>
-                     <p className="will-send-text"> +91 987****210 <span className="mobile-change">CHANGE</span></p>                        
-                     <div className="form-group">
-                        <input type="text" className="form-control" id="OTP" placeholder="Enter 5 digit OTP" required />
-                     </div> 
-                     <p> <span className="resend-text">Didn't receive an OTP?
-                      </span><span className="resend">RESEND</span></p>
-                     <button className="btn save-details common-button">VERIFY</button>
-                  </div> */}
 
                 {isEnableSecureOTP === false && (
                   <div>
@@ -606,8 +557,7 @@ function VeryOTP({ history, currentStep }) {
                           )}
                         </span>
                       </p>
-                  
-                  )}
+                    )}
                     {showResendSection && (
                       <p>
                         {" "}
@@ -628,31 +578,17 @@ function VeryOTP({ history, currentStep }) {
                     </button>
                   </div>
                 )}
-                {/* <span className="change">CHANGE</span> */}
-                {/* <div className="verify-otp">                 
-                  <p className="disc-text">Please enter the verification code sent to your phone no.</p>
-                    <p className="will-send-text"> +91 987****210 </p>
-                    <p className="will-send-text"> +91 987****210 <span className="change">Edit</span></p>
-                    <p> <span className="resend-text">Didn't receive the OTP?
-                    </span><span className="resend">RESEND</span></p> 
-                     <div className="form-group">
-                        <input type="text" className="form-control" id="OTP" placeholder="Enter 6 digit OTP" required />
-                     </div> 
-                     <button className="btn save-details common-button">VERIFY</button>
-                  </div> */}
               </div>
               <div className="bottom-logo-strip">
                 <div className="row aligncenter">
                   <div className="col-6"></div>
                   <div className="col-6 d-none d-sm-block text-right">
-                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
                     <img
                       className="header_logo footer-logo-secmark"
                       src={secmark}
                       alt="SECMARK"
                       title="SECMARK"
                     />
-                    {/* </a> */}
                   </div>
                 </div>
               </div>

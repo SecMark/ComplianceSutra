@@ -34,7 +34,6 @@ function PendingActionTaskList({ history, click, setClick }) {
   };
 
   useEffect(() => {
-    console.log("1");
     const payload = {
       entityid: "P",
       userID: userID,

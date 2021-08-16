@@ -173,7 +173,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           state.taskReport &&
           state.taskReport.coDetailsInsUpdDelInfo &&
           state.taskReport.coDetailsInsUpdDelInfo.data;
-        console.log(updEmail);
+
         let logInfo = { ...loggedUser };
         logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID;
         dispatch(logInfoActions.updateEmailInfo(logInfo));
@@ -298,7 +298,6 @@ function CoSettingRightGrid({ handleClose, history }) {
     api
       .post("/api/sendmsgwithverificationcode", payload)
       .then(function (response) {
-        console.log(response.data);
         // handle success
         if (response && response.data && response.data.statuscode === "200") {
           toast.success(
@@ -308,9 +307,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           toast.error("something went wrong please try again !!!");
         }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch(function (error) {});
     setSeconds(59);
   };
 

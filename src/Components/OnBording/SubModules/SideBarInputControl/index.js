@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SideBarBg from "../../../../assets/Images/Onboarding/side-bar-bg.png";
 import Stepper from "react-js-stepper";
 
@@ -11,13 +11,7 @@ function SideBarInputControl({ currentStep }) {
     { title: "Assign Tasks" },
     { title: "Secure your account" },
   ];
-  const handleOnClickNext = () => {
-    let nextStep = activeStep + 1;
-    setActiveStep(nextStep);
-  };
-  const handleOnClickStepper = (step) => {
-    setActiveStep(step);
-  };
+
   return (
     <div className="side-bar">
       <div className="side-bar-image-outer">
@@ -28,12 +22,7 @@ function SideBarInputControl({ currentStep }) {
         </span>
       </div>
       <div className="side-bar-stpper">
-        <Stepper
-          steps={steps}
-          activeStep={activeStep}
-          // onSelect={handleOnClickStepper}
-          showNumber={false}
-        />
+        <Stepper steps={steps} activeStep={activeStep} showNumber={false} />
       </div>
     </div>
   );

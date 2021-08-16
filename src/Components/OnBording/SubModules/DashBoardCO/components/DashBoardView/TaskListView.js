@@ -181,9 +181,7 @@ function RightSideGrid({
           setRowCount(tempRowCount);
           setListTaskData(sortedArray);
         })
-        .catch((error) => {
-          console.log("error => ", error);
-        });
+        .catch((error) => {});
     }
   }, [taskListDisplay]);
 
@@ -612,7 +610,6 @@ function RightSideGrid({
         loginty: "AdminEmail",
       })
       .then((response) => {
-        console.log("inside resposnse => ", response);
         if (response && response.data && response.data.Status === "True") {
           setEmailAvaliableCheck(true);
         } else {
@@ -626,7 +623,6 @@ function RightSideGrid({
   };
 
   const handleCheckAssignToEmailAvailability = (event) => {
-    console.log("selectedUser => ", selectedUser);
     axios
       .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
         loginID: selectedUser,
@@ -641,9 +637,7 @@ function RightSideGrid({
           handleAssignToTask(event);
         }
       })
-      .catch((err) => {
-        console.log("error =>  ", err);
-      });
+      .catch((err) => {});
   };
 
   const handleKeyDown = (event) => {

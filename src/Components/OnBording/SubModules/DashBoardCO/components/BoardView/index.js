@@ -13,7 +13,6 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const [taskData, setTaskData] = useState([]);
-  console.log(currentBoardViewBy);
 
   const getCurrentEntityId = (viewType) => {
     let entityID = "";

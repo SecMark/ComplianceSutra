@@ -3,12 +3,11 @@ import "./styles.css";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
-import privacyTip from "../../../../assets/Icons/privacyTip.png";
+
 import SideBar from "../SideBar";
 import apiServices from "../../../../apiServices";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { actions as emailActions } from "../../../OnBording/redux/actions";
 import { useHistory, useLocation, useParams } from "react-router";
 import { actions as adminMenuActions } from "../DashBoardCO/MenuRedux/actions";
 import { actions as notficationActions } from "../DashBoardCO/components/notification/Redux/actions";
@@ -18,7 +17,7 @@ function VerifyEmailErrorPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const url_params = useParams();
+
   const state = useSelector((state) => state);
   const [showSupportText, setShowSupportText] = React.useState(false);
   const userDetails = state && state.auth && state.auth.loginInfo;
@@ -61,7 +60,6 @@ function VerifyEmailErrorPage() {
       <div className="col-3 left-fixed">
         <div className="on-boarding">
           <SideBar />
-          {/* <SideBarInputControl /> */}
         </div>
       </div>
       <div className="col-12 padding-right">
@@ -77,14 +75,12 @@ function VerifyEmailErrorPage() {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="header_logo">
-                      {/* <a href="#" style={{'cursor': 'auto'}}> */}
                       <img
                         src={comtech}
                         alt="COMPLIANCE SUTRA"
                         title="COMPLIANCE SUTRA"
                       />
                       <span className="camp">COMPLIANCE SUTRA</span>
-                      {/* </a> */}
                     </div>
                   </div>
                 </div>
@@ -101,26 +97,12 @@ function VerifyEmailErrorPage() {
               <div className="bottom-logo-strip-verify">
                 <div className="row aligncenter">
                   <div className="col-md-8 col-xs-12">
-                    {/* <p
-                      style={{ cursor: "pointer" }}
-                      onClick={() => resendEmail()}
-                      className="account-link-black"
-                    >
-                      {" "}
-                      Did not receive an email?{" "}
-                      <span className="login-link contact-spacing ml-2">
-                        {" "}
-                        RESEND
-                      </span>
-                    </p> */}
-
                     {showSupportText && (
                       <p className="account-link">
                         {/* Did not receive an email? */}
                         Need help? Reach out to us 'at:
                         <span
                           style={{ cursor: "pointer" }}
-                          // onClick={() => resendEmail()}
                           className="login-link-black contact-spacing"
                         >
                           {" "}
@@ -136,7 +118,6 @@ function VerifyEmailErrorPage() {
                     )}
                   </div>
                   <div className="col-md-4 col-xs-12 d-none d-sm-block text-right">
-                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
                     <span className="powerBy">Powered by</span>
                     <img
                       className="header_logo footer-logo-secmark"
@@ -144,7 +125,6 @@ function VerifyEmailErrorPage() {
                       alt="SECMARK"
                       title="SECMARK"
                     />
-                    {/* </a> */}
                   </div>
                 </div>
               </div>
