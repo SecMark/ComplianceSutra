@@ -33,7 +33,7 @@ export const routes = [
     component: ERProfile,
   },
   {
-    path: `${constant.ExpertReviewerBaseUrl}/taskhistoryfilter`,
+    path: `${constant.ExpertReviewerBaseUrl}/task-history`,
     component: ERTaskHistoryFilter,
   },
   {
