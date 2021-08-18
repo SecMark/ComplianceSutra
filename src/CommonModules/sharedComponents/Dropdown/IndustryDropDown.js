@@ -9,7 +9,7 @@ import {
 } from "../../../Components/HistoryModule/redux/actions";
 import "./style.css";
 
-function MultiSelectLicenseDropdown({ lableTitle, options, dispatch,cssstyle }) {
+function MultiSelectIndustryDropdown({ lableTitle, options, dispatch,cssstyle }) {
   const [isOpen, setIsOpen] = useState(false);
   const state = useSelector((state) => state);
 
@@ -88,4 +88,4 @@ function MultiSelectLicenseDropdown({ lableTitle, options, dispatch,cssstyle }) 
   );
 }
 
-export default MultiSelectLicenseDropdown;
+export default MultiSelectIndustryDropdown;
