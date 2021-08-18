@@ -504,6 +504,13 @@
   color: #6c5dd3;
 }
 
+.password-icon {
+  position: absolute;
+  top: 38px;
+  right: 20px;
+  cursor: pointer;
+}
+
 
 @media screen and (max-width: 767px) {
   .bottom-logo-strip-parent-fix {
