@@ -11,15 +11,13 @@ const ERNotifications = lazy(() =>
   import("../../../Components/ExpertReviewModule/Notifications/Notifications")
 );
 
-const ERTaskHistoryFilter = lazy(()=>
+const ERTaskHistoryFilter = lazy(() =>
   import("../../../Components/ExpertReviewModule/TaskHistoryFilter")
-)
-
+);
 
 const ERTaskDetails = lazy(() =>
   import("../../../Components/ExpertReviewModule/TaskDetails/index")
 );
-
 
 export const routes = [
   {
@@ -35,16 +33,15 @@ export const routes = [
     component: ERProfile,
   },
   {
-<<<<<<< HEAD
     path: `${constant.ExpertReviewerBaseUrl}/notifications`,
     component: ERNotifications,
-=======
+  },
+  {
     path: `${constant.ExpertReviewerBaseUrl}/task-history`,
     component: ERTaskHistoryFilter,
   },
   {
     path: `${constant.ExpertReviewerBaseUrl}/task-details`,
     component: ERTaskDetails,
->>>>>>> cfda8d4d29c26a94e5dfa1548128234ecc824961
   },
 ];
