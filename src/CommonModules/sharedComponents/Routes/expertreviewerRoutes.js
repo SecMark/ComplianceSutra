@@ -9,6 +9,16 @@ const ERProfile = lazy(() =>
 );
 
 
+const ERTaskHistoryFilter = lazy(()=>
+  import("../../../Components/ExpertReviewModule/TaskHistoryFilter")
+)
+
+
+const ERTaskDetails = lazy(() =>
+  import("../../../Components/ExpertReviewModule/TaskDetails/index")
+);
+
+
 export const routes = [
   {
     path: `${constant.ExpertReviewerBaseUrl}/`,
@@ -21,5 +31,13 @@ export const routes = [
   {
     path: `${constant.ExpertReviewerBaseUrl}/profile`,
     component: ERProfile,
+  },
+  {
+    path: `${constant.ExpertReviewerBaseUrl}/task-history`,
+    component: ERTaskHistoryFilter,
+  },
+  {
+    path: `${constant.ExpertReviewerBaseUrl}/task-details`,
+    component: ERTaskDetails,
   },
 ];

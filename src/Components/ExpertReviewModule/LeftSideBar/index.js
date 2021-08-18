@@ -50,7 +50,11 @@ const LeftSideBar = () => {
               : "ER-icon"
           }
         >
-          <img title="Task History" src={historyActive} />
+          <img
+            title="Task History"
+            src={historyActive}
+            onClick={() => navigateTo("task-history")}
+          />
         </div>
 
         <div
