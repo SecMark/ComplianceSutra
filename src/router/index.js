@@ -52,6 +52,9 @@ import Loading from "../CommonModules/sharedComponents/Loader";
 const ERDashboard = lazy(() =>
   import("../Components/ExpertReviewModule/Dashboard")
 );
+const TaskHistoryFilter = lazy(()=> 
+  import("../Components/ExpertReviewModule/TaskHistoryFilter/index.js")
+);
 // import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
 // import HistoryList from "../Components/HistoryModule/HistoryList";
@@ -194,6 +197,7 @@ export default function AppRouter() {
           {/* Expert Reviewer Routes */}
           <Suspense fallback={Loading}>
             <Route exact path="/er-dashboard" component={ERDashboard} />
+            <Route exact path="/er-task-history-filter"  component={TaskHistoryFilter}/>
           </Suspense>
         </div>
       </>
