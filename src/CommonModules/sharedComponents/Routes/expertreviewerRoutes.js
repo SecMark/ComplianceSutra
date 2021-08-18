@@ -7,7 +7,9 @@ const ERDashboard = lazy(() =>
 const ERProfile = lazy(() =>
   import("../../../Components/ExpertReviewModule/Profile")
 );
-
+const ERTaskDetails = lazy(() =>
+  import("../../../Components/ExpertReviewModule/TaskDetails/index")
+);
 
 export const routes = [
   {
@@ -21,5 +23,9 @@ export const routes = [
   {
     path: `${constant.ExpertReviewerBaseUrl}/profile`,
     component: ERProfile,
+  },
+  {
+    path: `${constant.ExpertReviewerBaseUrl}/task-details`,
+    component: ERTaskDetails,
   },
 ];

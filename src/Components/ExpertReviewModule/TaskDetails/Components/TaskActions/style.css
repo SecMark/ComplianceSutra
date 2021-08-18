@@ -1,0 +1,63 @@
+/* AdReferencesModal */
+.add-references__input-label {
+  font-size: 13px;
+  margin-bottom: 0.5rem;
+}
+.add-references__add-more {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-family: "Poppins";
+  color: #6c5dd3;
+  text-align: left;
+  padding: 0 1px;
+}
+.add-references__dropzone {
+  border: 2px dotted #49505749;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 413px;
+  height: 102px;
+}
+.add-references__dropzone-title {
+  font-size: 13px;
+  margin-bottom: 0;
+  color: #1b1d21;
+  opacity: 0.5;
+}
+.add-references__dropzone-title .add-references__dropzone-title--blue {
+  color: #6c5dd3;
+  opacity: 1;
+  font-weight: 500;
+}
+.add-references__button {
+  font-size: 12px;
+  text-transform: uppercase;
+  background-color: #6c5dd3;
+  border: none;
+  outline: none;
+  color: white;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+.add-references__button-stroke {
+  background-color: transparent;
+  color: #6c5dd3;
+  margin: 0 1rem;
+}
+.add-references__attached-links-item {
+  font-size: 1rem;
+  color: #1b1d21;
+}
+.add-references__attached-link {
+  font-size: 10px;
+}

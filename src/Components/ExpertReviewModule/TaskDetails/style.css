@@ -1,0 +1,113 @@
+.task-detail {
+  background-color: transparent;
+  min-height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+}
+/* ==== Side Overview ==== */
+.task-detail__side-overview {
+  background-color: #fff;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  flex: 0.27;
+}
+/* Header */
+.side-overview__header {
+  padding: 2.5rem 1rem 0;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+.side-overview__header--title {
+  position: relative;
+  font-family: Poppins;
+  font-size: 24px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  /* border-bottom: 2px solid #7a73ff; */
+}
+.side-overview__header--title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: #7a73ff;
+}
+.side-overview__header > div {
+  border-bottom: 2px solid #eee8fc;
+}
+.side-overview__header--search-icon {
+  cursor: pointer;
+}
+.side-overview__header--search-box > input {
+  padding-left: 40px;
+  padding-right: 40px;
+  height: 47px;
+  border-radius: 8px;
+}
+.side-overview__header--search-box > input:focus {
+  border: solid 2px #6c5dd3;
+  background-color: #ffffff;
+  box-shadow: inherit;
+}
+.search-box-search,
+.search-box-close {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.search-box-search {
+  left: 4px;
+}
+.search-box-close {
+  right: 12px;
+  cursor: pointer;
+}
+/* Sort By Filters */
+.side-overview__sort-by {
+  padding: 1rem;
+}
+.side-overview__sort-by--item {
+  color: b3abc4;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  text-align: center;
+  line-height: normal;
+  text-transform: capitalize;
+}
+.sort-by-filter {
+  padding: 0 0.3rem;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #f7f4fe;
+}
+.sort-by-filter--active {
+  color: #fff;
+  background-color: #b3abc4;
+}
+/* ========================= */
+/* ==== Task Data ==== */
+.task-detail__task-data {
+  background-color: rgb(183, 180, 180);
+  flex: 0.73;
+  height: 100vh;
+  overflow-y: auto;
+  display: grid;
+  place-items: center;
+}
+
+@media screen and (max-width: 767.99px) {
+  .task-detail__task-data {
+    flex: 1;
+  }
+}
