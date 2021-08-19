@@ -1,11 +1,31 @@
 .management-security-container {
-  margin: 50px 20px 0px 30px;
+  margin: 10px 20px 0px 30px;
   border-radius: 20px;
   border-color: #fff;
   padding: 50px;
   background: #fff;
+  overflow-y: scroll;
+  height: 95vh;
 }
-
+.PasswordContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 85%;
+}
+.PasswordContainer > label {
+  font-weight: 500;
+}
+.PasswordContainer > input {
+  margin-right: -18vw;
+  border: 1px solid #eee8fc;
+  border-radius: 8px;
+  padding: 5px 10px;
+}
+.PasswordContainer > span {
+  color: #6c5dd3;
+  font-weight: 500;
+  margin: 5px 20px;
+}
 .management-security-header {
   font-family: Poppins;
   font-size: 24px;
