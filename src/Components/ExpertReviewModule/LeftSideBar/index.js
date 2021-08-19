@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
-import checkActive from "../../../assets/ERIcons/check_circle_black.png";
+import checkSmall from "../../../assets/ERIcons/checkSmall.png";
 import notificationActive from "../../../assets/ERIcons/notifications_black.png";
 import historyActive from "../../../assets/ERIcons/history_black.png";
+import profileActive from "../../../assets/ERIcons/profileActive.png"
 import { useHistory, useLocation, withRouter } from "react-router-dom";
 
 import "./style.css";
@@ -30,18 +31,21 @@ const LeftSideBar = () => {
         >
           <img
             title="Dashboard"
-            src={checkActive}
+            src={checkSmall}
             onClick={() => navigateTo("dashboard")}
           />
         </div>
         <div
           className={
             pathname === "/expert-review/notifications"
-              ? "ER-icon-active"
-              : "ER-icon"
+              ? "ER-icone-active"
+              : "ER-icone"
           }
         >
-          <img title="Notification" src={notificationActive} />
+          <img title="Notification"
+           src={notificationActive}
+           onClick={()=> navigateTo("notifications")}
+           />
         </div>
         <div
           className={
@@ -50,7 +54,11 @@ const LeftSideBar = () => {
               : "ER-icon"
           }
         >
-          <img title="Task History" src={historyActive} />
+          <img
+            title="Task History"
+            src={historyActive}
+            onClick={() => navigateTo("task-history")}
+          />
         </div>
 
         <div
@@ -62,7 +70,7 @@ const LeftSideBar = () => {
         >
           <img
             title="Profile"
-            src={historyActive}
+            src={profileActive}
             onClick={() => navigateTo("profile")}
           />
         </div>

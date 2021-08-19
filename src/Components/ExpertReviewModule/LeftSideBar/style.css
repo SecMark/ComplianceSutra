@@ -7,6 +7,7 @@
   height: 100vh;
   position: relative;
   text-align: center;
+  
 }
 
 .ER-main {
@@ -15,27 +16,43 @@
 }
 
 .dashboard-icon {
-  margin-top: 122px;
+  margin-top: 100px;
   cursor: pointer;
 }
 
 .dashboard-icon-active {
-  margin-top: 122px;
+  margin-top: 100px;
   border-right: 2px solid #7a73ff;
   cursor: pointer;
+  
+}
+
+.ER-icone{
+  margin-top: 35px;
+  cursor: pointer;
+}
+
+.ER-icone-active{
+  margin-top: 35px;
+  border-right: 2px solid #7a73ff;
+  cursor: pointer;
+  
 }
 
 .ER-icon {
-  margin-top: 20px;
+  margin-top: 35px;
   cursor: pointer;
+  position: static;
 }
 
 .ER-icon-active {
+  margin-top: 35px;
   border-right: 2px solid #7a73ff;
   cursor: pointer;
 }
 
 .profile-icon {
+  margin-top: 35px;
   position: absolute;
   bottom: 30px;
   right: 17px;
