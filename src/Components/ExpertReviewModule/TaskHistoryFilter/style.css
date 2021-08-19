@@ -1,0 +1,39 @@
+.ER-dashboard-conatiner {
+  display: flex;
+}
+
+
+.ER-task-statics {
+  display: flex;
+  border-bottom: 2px solid #eee8fc;
+  position: relative;
+}
+
+
+.active-task {
+  width: 151px;
+  height: 2px;
+  margin-top: 47px;
+  position: absolute;
+  background-color: #7a73ff;
+}
+.th-details{
+  width: 259px;
+  height: 41px;
+  margin: 36px 950.5px 24px 40px;
+  opacity: 0.6;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+
+
+
+
+

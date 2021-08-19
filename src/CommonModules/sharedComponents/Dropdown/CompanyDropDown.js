@@ -14,6 +14,7 @@ function MultiSelectCompanyDropdown({
   options,
   inputTitle,
   dispatch,
+  cssstyle
 }) {
   const [selectTitle, setSelectTitle] = useState({
     selected: false,
@@ -37,8 +38,8 @@ function MultiSelectCompanyDropdown({
         <label htmlFor="lable-title" className="mb-2">
           {lableTitle}
         </label>
-        <div
-          className="form-control select-container"
+        <div 
+          className={`form-control ${cssstyle === "taskhistory" ? "taskhistory":"select-container"}`}
           id="lable-title"
           onClick={(e) => {
             setIsOpen(!isOpen);
