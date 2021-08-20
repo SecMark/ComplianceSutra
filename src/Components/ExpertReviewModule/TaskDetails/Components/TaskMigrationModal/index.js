@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useCallback } from "react";
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
 import Select from "react-select";
 import { toast } from "react-toastify";
@@ -13,27 +14,30 @@ const options = [
 const TaskMigrationModal = ({ isOpen, setIsOpen }) => {
   const [migrateTo, setMigrateTo] = useState(1);
   const [migrateToReviewer, setMigrateToReviewer] = useState(null);
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (isOpen) {
       setIsOpen(false);
       setMigrateToReviewer(null);
     }
-  };
-  const handleMigrateTask = () => {
-    if (Object.keys(migrateToReviewer).length !== 0) {
+  }, [isOpen]);
+  const handleMigrateTask = useCallback(() => {
+    if (
+      migrateToReviewer !== null &&
+      Object.keys(migrateToReviewer).length !== 0
+    ) {
       toast.dark("Migration Request has been submitted successfully!", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       handleClose();
     }
-  };
+  }, [migrateToReviewer]);
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <h4 class="mb-3">Where do you want to Migrate this task?</h4>
       <div className="task-migration__item d-flex align-items-start mb-3">
         <div
           className="task-migration__item-left"
-          onClick={() => setMigrateTo(1)}
+          onClick={useCallback(() => setMigrateTo(1), [migrateTo])}
         >
           {migrateTo === 1 ? (
             <MdRadioButtonChecked />
@@ -46,7 +50,7 @@ const TaskMigrationModal = ({ isOpen, setIsOpen }) => {
             className={`task-migration__item-heading mb-0 ${
               migrateTo !== 1 && "task-migration__item-heading--unactive"
             }`}
-            onClick={() => setMigrateTo(1)}
+            onClick={useCallback(() => setMigrateTo(1), [migrateTo])}
           >
             Assign task to Fellow Expert Reviewer
           </p>
@@ -65,7 +69,7 @@ const TaskMigrationModal = ({ isOpen, setIsOpen }) => {
       <div className="task-migration__item d-flex align-items-start mt-2">
         <div
           className="task-migration__item-left"
-          onClick={() => setMigrateTo(2)}
+          onClick={useCallback(() => setMigrateTo(2), [migrateTo])}
         >
           {migrateTo === 2 ? (
             <MdRadioButtonChecked />
@@ -78,7 +82,7 @@ const TaskMigrationModal = ({ isOpen, setIsOpen }) => {
             className={`task-migration__item-heading mb-0  ${
               migrateTo !== 2 && "task-migration__item-heading--unactive"
             }`}
-            onClick={() => setMigrateTo(2)}
+            onClick={useCallback(() => setMigrateTo(2), [migrateTo])}
           >
             Migrate task to Super Admin
           </p>

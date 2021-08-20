@@ -1,6 +1,5 @@
-import React, { useState, Suspense, lazy } from "react";
+import React, { useState, Suspense, lazy, useEffect, useCallback } from "react";
 import "./style.css";
-import { useEffect } from "react";
 import migrateFileIcon from "../../../../../assets/Icons/migrate-file.svg";
 import insertFileIcon from "../../../../../assets/Icons/insert-file.svg";
 import Loading from "../../../../../CommonModules/sharedComponents/Loader";
@@ -151,7 +150,10 @@ const TaskDetailRightSide = ({ taskData }) => {
                   taskActionsDisplay === 1 &&
                   "task-data__action-top--item-active"
                 }`}
-                onClick={() => setTaskActionsDisplay(1)}
+                onClick={useCallback(
+                  () => setTaskActionsDisplay(1),
+                  [taskActionsDisplay]
+                )}
               >
                 <span className="action-top__item-title">Attched Files</span>
                 <div className="action-top__item-count">
@@ -163,7 +165,10 @@ const TaskDetailRightSide = ({ taskData }) => {
                   taskActionsDisplay === 2 &&
                   "task-data__action-top--item-active"
                 }`}
-                onClick={() => setTaskActionsDisplay(2)}
+                onClick={useCallback(
+                  () => setTaskActionsDisplay(2),
+                  [taskActionsDisplay]
+                )}
               >
                 <span className="action-top__item-title">Comments</span>
                 <div className="action-top__item-count">
@@ -175,7 +180,10 @@ const TaskDetailRightSide = ({ taskData }) => {
                   taskActionsDisplay === 3 &&
                   "task-data__action-top--item-active"
                 }`}
-                onClick={() => setTaskActionsDisplay(3)}
+                onClick={useCallback(
+                  () => setTaskActionsDisplay(3),
+                  [taskActionsDisplay]
+                )}
               >
                 <span className="action-top__item-title">References</span>
                 <div className="action-top__item-count">

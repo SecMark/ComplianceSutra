@@ -161,7 +161,7 @@
 }
 .task-data__action-top--item-active > span {
   opacity: 1;
-  color: #a39db3;
+  /* color: #a39db3; */
 }
 .task-data__action-top--item-active > .action-top__item-count {
   opacity: 1;

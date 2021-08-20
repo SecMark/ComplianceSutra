@@ -1,7 +1,7 @@
 import React from "react";
 import { MdArrowForward } from "react-icons/md";
 
-const Comments = () => {
+const Comments = React.memo(() => {
   return (
     <div className="mt-3">
       {/* Comment */}
@@ -41,6 +41,6 @@ const Comments = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Comments;
