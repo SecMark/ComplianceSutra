@@ -9,7 +9,7 @@ import {
 } from "../../../Components/HistoryModule/redux/actions";
 import "./style.css";
 
-function MultiSelectLicenseDropdown({ lableTitle, options, dispatch }) {
+function MultiSelectLicenseDropdown({ lableTitle, options, dispatch,cssstyle }) {
   const [isOpen, setIsOpen] = useState(false);
   const state = useSelector((state) => state);
 
@@ -20,7 +20,7 @@ function MultiSelectLicenseDropdown({ lableTitle, options, dispatch }) {
           {lableTitle}:
         </label>
         <div
-          className="form-control select-container"
+          className={`form-control ${cssstyle === "taskhistory" ? "taskhistory":"select-container"}`}
           id="lable-title"
           onClick={(e) => {
             if (options.length === 0) {

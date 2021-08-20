@@ -11,7 +11,7 @@ function ExperReview(props) {
   return (
     <div className="ER-container">
       <LeftSideBar />
-      <div>
+      <div className="ER-routes">
         {/* Expert Reviewer Routes */}
         <Suspense fallback={Loading}>
           {routes.map((route) => (

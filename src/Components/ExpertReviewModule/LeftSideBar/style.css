@@ -16,12 +16,12 @@
 }
 
 .dashboard-icon {
-  margin-top: 100px;
+  margin-top: 70px;
   cursor: pointer;
 }
 
 .dashboard-icon-active {
-  margin-top: 100px;
+  margin-top: 70px;
   border-right: 2px solid #7a73ff;
   cursor: pointer;
   filter: brightness(0.20) invert(.10) sepia(.10) hue-rotate(100deg) saturate(200%);
@@ -29,12 +29,12 @@
 }
 
 .ER-icone{
-  margin-top: 35px;
+  margin-top: 27px;
   cursor: pointer;
 }
 
 .ER-icone-active{
-  margin-top: 35px;
+  margin-top: 27px;
   border-right: 2px solid #7a73ff;
   cursor: pointer;
   filter: brightness(0.20) invert(.10) sepia(.10) hue-rotate(100deg) saturate(200%);
@@ -42,13 +42,13 @@
 }
 
 .ER-icon {
-  margin-top: 35px;
+  margin-top: 27px;
   cursor: pointer;
   position: static;
 }
 
 .ER-icon-active {
-  margin-top: 35px;
+  margin-top: 27px;
   border-right: 2px solid #7a73ff;
   cursor: pointer;
   filter: brightness(0.20) invert(.15) sepia(.15) hue-rotate(100deg) saturate(200%);
