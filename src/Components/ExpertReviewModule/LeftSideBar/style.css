@@ -12,7 +12,7 @@
 
 .ER-main {
   padding: 50px 50px;
-  width: 100%;
+  width: 1390px;
 }
 
 .dashboard-icon {
@@ -24,7 +24,8 @@
   margin-top: 100px;
   border-right: 2px solid #7a73ff;
   cursor: pointer;
-  
+  filter: brightness(0.20) invert(.10) sepia(.10) hue-rotate(100deg) saturate(200%);
+   
 }
 
 .ER-icone{
@@ -36,6 +37,7 @@
   margin-top: 35px;
   border-right: 2px solid #7a73ff;
   cursor: pointer;
+  filter: brightness(0.20) invert(.10) sepia(.10) hue-rotate(100deg) saturate(200%);
   
 }
 
@@ -49,6 +51,7 @@
   margin-top: 35px;
   border-right: 2px solid #7a73ff;
   cursor: pointer;
+  filter: brightness(0.20) invert(.15) sepia(.15) hue-rotate(100deg) saturate(200%);
 }
 
 .profile-icon {
@@ -64,4 +67,5 @@
   bottom: 30px;
   right: 17px;
   cursor: pointer;
+  filter: brightness(0.20) invert(.15) sepia(.15) hue-rotate(100deg) saturate(200%);
 }

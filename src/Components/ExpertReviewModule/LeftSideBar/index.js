@@ -3,7 +3,7 @@ import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
 import checkSmall from "../../../assets/ERIcons/checkSmall.png";
 import notificationActive from "../../../assets/ERIcons/notifications_black.png";
 import historyActive from "../../../assets/ERIcons/history_black.png";
-import profileActive from "../../../assets/ERIcons/profileActive.png"
+import profileActiveLight from "../../../assets/ERIcons/profileActiveLight.png"
 import { useHistory, useLocation, withRouter } from "react-router-dom";
 
 import "./style.css";
@@ -70,7 +70,7 @@ const LeftSideBar = () => {
         >
           <img
             title="Profile"
-            src={profileActive}
+            src={profileActiveLight}
             onClick={() => navigateTo("profile")}
           />
         </div>
