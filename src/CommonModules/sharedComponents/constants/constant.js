@@ -52,4 +52,7 @@ export default {
 
   ExpertUser: "8",
   ExpertReviewerBaseUrl: "/expert-review",
+  MigrateTaskMessages: {
+    success: "Migration Request has been submitted successfully!",
+  },
 };
