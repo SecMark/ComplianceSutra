@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import migrateFileIcon from "../../../../../assets/Icons/migrate-file.svg";
 import insertFileIcon from "../../../../../assets/Icons/insert-file.svg";
 import Loading from "../../../../../CommonModules/sharedComponents/Loader";
+import OverviewStatus from "../../../../../CommonModules/sharedComponents/OverviewStatus";
 const AttachedFileSection = lazy(() => import("../TaskActions/AttachedFile"));
 const CommentSection = lazy(() => import("../TaskActions/Comments"));
 const ReferencesSection = lazy(() => import("../TaskActions/References"));
@@ -37,10 +38,14 @@ const TaskDetailRightSide = ({ taskData }) => {
               {taskData.EntityName}
             </span>
           </div>
-          <p className="task-data__header--status-text">
-            {/* {taskData.Status === "Assign" && "Assign Task"} */}
-            Assign Task
-          </p>
+          <div className="task-data__status-container d-flex">
+            <OverviewStatus status="approved">
+              Task Approved by Approver
+            </OverviewStatus>
+            <OverviewStatus status="approved">
+              Task Approved by You
+            </OverviewStatus>
+          </div>
         </div>
       </div>
       <div
