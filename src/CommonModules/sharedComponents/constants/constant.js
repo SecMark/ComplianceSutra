@@ -52,4 +52,5 @@ export default {
 
   ExpertUser: "8",
   ExpertReviewerBaseUrl: "/expert-review",
+  SuperAdminBaseURL: "/super-admin",
 };
