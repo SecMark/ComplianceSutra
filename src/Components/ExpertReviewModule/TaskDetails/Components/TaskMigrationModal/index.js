@@ -4,7 +4,9 @@ import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import Modal from "../../../../../CommonModules/sharedComponents/Modal";
+import constant from "../../../../../CommonModules/sharedComponents/constants/constant";
 import "./style.css";
+// temprary array for expert reviewer list
 const options = [
   { value: 1, label: "Ashu Kumar" },
   { value: 2, label: "Virat Kohli" },
@@ -25,10 +27,10 @@ const TaskMigrationModal = ({ isOpen, setIsOpen }) => {
       migrateToReviewer !== null &&
       Object.keys(migrateToReviewer).length !== 0
     ) {
-      toast.dark("Migration Request has been submitted successfully!", {
+      toast.dark(constant.MigrateTaskMessages.success, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-      handleClose();
+      handleClose(); // closing modal after migrating task
     }
   }, [migrateToReviewer]);
   return (
