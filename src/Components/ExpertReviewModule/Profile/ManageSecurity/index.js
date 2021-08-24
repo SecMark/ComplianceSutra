@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaEye } from "react-icons/fa";
 
 import "./style.css";
 
@@ -8,9 +9,18 @@ const ManageSecruity = (props) => {
       <h2 className="management-security-header">Security</h2>
       <div className="management-security-main">
         <p>Account Password</p>
-        <div>
+        <div className="PasswordContainer">
           <label>Password</label>
-          <input type="password" />
+          <FaEye
+            style={{
+              position: "absolute",
+              right: "23rem",
+              margin: "7px",
+              color: "grey",
+              top: "11rem",
+            }}
+          />
+          <input type="password" defaultValue="************" />
           <span>Change Password</span>
         </div>
         <div className="manage-security-option">
