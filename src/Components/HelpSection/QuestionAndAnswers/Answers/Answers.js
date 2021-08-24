@@ -2,8 +2,6 @@ import React from "react";
 import "../../style.css";
 
 const Answers = ({ questionDetail }) => {
-  console.log(questionDetail);
-
   return (
     <div className="Right">
       <div className="ContainerHelp">

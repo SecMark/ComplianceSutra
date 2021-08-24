@@ -3,21 +3,16 @@ import moment from "moment";
 import "../style.css";
 import viewAllArow from "../../../../../../../assets/Icons/viewAllArow.png";
 import viewAllArowTop from "../../../../../../../assets/Icons/viewAllArowTop.png";
-// import "../BoardView/style.css"
 import keyboardArrowRightBlack from "../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
-import axios, { post } from "axios";
-import { withRouter } from "react-router-dom";
+import axios from "axios";
 import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
 import downArrow from "../../../../../../../assets/Icons/downArrow.png";
 import upArrow from "../../../../../../../assets/Icons/topArrowAccordian.png";
 import { Link } from "react-router-dom";
-import { actions as notificationActions } from "../../notification/Redux/actions.js";
-import { useSelector, useDispatch, connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setNotificationTaskId } from "../../notification/Redux/Action";
 
 export default function AssignedView(props) {
-  console.log(props);
-  const [rowCount, setRowCount] = useState([]);
   const [assignRowCount, setAssignRowCount] = useState([]);
   const [licensetaskData, setLicensetaskData] = useState([]);
   const [today, setToday] = useState(new Date());
@@ -96,9 +91,11 @@ export default function AssignedView(props) {
     var dateObj = new Date(date);
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (dateObj.toLocaleDateString() == today.toLocaleDateString()) {
+    if (dateObj.toLocaleDateString() === today.toLocaleDateString()) {
       return "Today";
-    } else if (dateObj.toLocaleDateString() == yesterday.toLocaleDateString()) {
+    } else if (
+      dateObj.toLocaleDateString() === yesterday.toLocaleDateString()
+    ) {
       return "Yesterday";
     } else {
       return flag === 1
@@ -140,7 +137,6 @@ export default function AssignedView(props) {
                 <span className="pink-label-title-right">
                   <div className="overdue-title">{task.TaskName}</div>
                   <div
-                    // className="black-week d-block d-sm-none"
                     className="black-week "
                     style={{ cursor: "pointer" }}
                     onClick={(e) => getSelectTaskDetails(task)}
@@ -156,8 +152,7 @@ export default function AssignedView(props) {
                             task && task.Status
                               ? task.Status === "Assign"
                                 ? "#fcf3cd"
-                                : // task.Status === "Completed By User"  ? "#cdfcd8 " :
-                                task.Status === "Completed By User"
+                                : task.Status === "Completed By User"
                                 ? moment(task.EndDate).isBefore(today)
                                   ? "#cdfcd8"
                                   : "#ffefea"
@@ -175,8 +170,7 @@ export default function AssignedView(props) {
                                 ? moment(task.EndDate).isBefore(today)
                                   ? "#7fba7a"
                                   : "#ff5f31"
-                                : // task.Status === "Completed By User" ? "#7fba7a" :
-                                task.Status === "Approved"
+                                : task.Status === "Approved"
                                 ? "#7fba7a"
                                 : task.Status === "Assigned"
                                 ? "#f8c102"
@@ -247,38 +241,10 @@ export default function AssignedView(props) {
                       alt="Right Arrow"
                     />
                   )}
-                  {
-                    // task.AssignedTo > 0 &&
-                    //   task.AssignedTo === 0 && (
-                    //     <div className="only-mobile-assign-add d-block d-sm-none">
-                    //       <div
-                    //         className="assign-user-icon"
-                    //         onMouseOver={() =>
-                    //           setShowUserToolTip(`Tooltip${task.TaskId}`)
-                    //         }
-                    //         onMouseOut={() => setShowUserToolTip("")}
-                    //       >
-                    //         <img
-                    //           src={assignIconCircle}
-                    //           className="d-block d-sm-none"
-                    //           alt="Assign Circle"
-                    //         />
-                    //       </div>
-                    //     </div>
-                    //   )
-                  }
                 </div>
               </div>
             </div>
           </div>
-          {/* {Status === "overdue" && (
-              <div className="redWidth-bottom">
-                <div className="redLine">
-                  {" "}
-                  <img src={RedLine} alt="" />
-                </div>
-              </div>
-            )} */}
         </div>
       </Link>
     );
@@ -295,7 +261,7 @@ export default function AssignedView(props) {
       >
         <div
           className={
-            props.getTaskById && task.TaskId == props.getTaskById.TaskId
+            props.getTaskById && task.TaskId === props.getTaskById.TaskId
               ? " row active-action-card-sidebar "
               : "row action-card-sidebar"
           }
@@ -346,129 +312,122 @@ export default function AssignedView(props) {
       </Link>
     );
   };
-  // console.log("licensetaskData => ",licensetaskData);
 
   return (
     <div>
       <div className="task-list-grid">
         <div className="">
-          {
-            licensetaskData &&
-            props.sideBarTaskList === false &&
-            licensetaskData.length > 0
-              ? licensetaskData.map((item, index) => {
-                  return (
-                    <>
-                      {/* { item.Status !== "Assign" && */}
-                      <div className="take-action customHeight">
-                        <div className="task-list-grid">
-                          {item.Status && (
+          {licensetaskData &&
+          props.sideBarTaskList === false &&
+          licensetaskData.length > 0
+            ? licensetaskData.map((item, index) => {
+                return (
+                  <>
+                    <div className="take-action customHeight">
+                      <div className="task-list-grid">
+                        {item.Status && (
+                          <div
+                            className="upcoming-btn"
+                            onClick={() => {
+                              expandedFlags.includes(index)
+                                ? handleExpandList("hide", index)
+                                : handleExpandList("show", index);
+                            }}
+                          >
                             <div
-                              className="upcoming-btn"
-                              onClick={() => {
-                                expandedFlags.includes(index)
-                                  ? handleExpandList("hide", index)
-                                  : handleExpandList("show", index);
-                              }}
+                              style={{ cursor: "pointer" }}
+                              className="upcoming-title"
                             >
-                              <div
-                                style={{ cursor: "pointer" }}
-                                className="upcoming-title"
-                              >
-                                {item.Status}
-                                <span className="black-circle">
-                                  <p className="black-circle-text">
-                                    {item.Details.length}
-                                  </p>
-                                </span>
-                                {expandedFlags.includes(index) ? (
-                                  <img
-                                    src={upArrow}
-                                    className="arrowDown"
-                                    alt="Arrow Up"
-                                    style={{ cursor: "pointer" }}
-                                  />
-                                ) : (
-                                  <img
-                                    src={downArrow}
-                                    className="arrowDown"
-                                    style={{ cursor: "pointer" }}
-                                    alt="Arrow down"
-                                  />
-                                )}
-                              </div>
+                              {item.Status}
+                              <span className="black-circle">
+                                <p className="black-circle-text">
+                                  {item.Details.length}
+                                </p>
+                              </span>
+                              {expandedFlags.includes(index) ? (
+                                <img
+                                  src={upArrow}
+                                  className="arrowDown"
+                                  alt="Arrow Up"
+                                  style={{ cursor: "pointer" }}
+                                />
+                              ) : (
+                                <img
+                                  src={downArrow}
+                                  className="arrowDown"
+                                  style={{ cursor: "pointer" }}
+                                  alt="Arrow down"
+                                />
+                              )}
                             </div>
-                          )}
+                          </div>
+                        )}
 
-                          {
-                            <>
+                        {
+                          <>
+                            {!expandedFlags.includes(index) &&
+                              item.Details.slice(
+                                0,
+                                assignRowCount[item.Status.trim()]
+                              ).map((task) => {
+                                return (
+                                  <>
+                                    {renderTaskList(
+                                      task,
+                                      item.Status.trim(),
+                                      1
+                                    )}
+                                  </>
+                                );
+                              })}
+                            <div>
                               {!expandedFlags.includes(index) &&
-                                item.Details.slice(
-                                  0,
-                                  assignRowCount[item.Status.trim()]
-                                ).map((task) => {
-                                  return (
-                                    <>
-                                      {renderTaskList(
-                                        task,
-                                        item.Status.trim(),
-                                        1
-                                      )}
-                                    </>
-                                  );
-                                })}
-                              <div>
-                                {!expandedFlags.includes(index) &&
-                                  item.Details.length > 3 && (
-                                    <>
-                                      {assignRowCount[item.Status.trim()] >
-                                        3 && (
-                                        <div
-                                          onClick={() =>
-                                            AssignShowLessMore(item.Status, 3)
-                                          }
-                                          className="viewAll showLess"
-                                        >
-                                          Show Less{" "}
-                                          <img
-                                            src={viewAllArowTop}
-                                            alt="Show Less"
-                                          />
-                                        </div>
-                                      )}
-                                      {assignRowCount[item.Status.trim()] ===
-                                        3 && (
-                                        <div
-                                          onClick={() =>
-                                            AssignShowLessMore(
-                                              item.Status,
-                                              item.Details.length
-                                            )
-                                          }
-                                          className="viewAll"
-                                        >
-                                          View All ({item.Details.length - 3}{" "}
-                                          MORE )
-                                          <img
-                                            src={viewAllArow}
-                                            alt="view All Arow"
-                                          />
-                                        </div>
-                                      )}
-                                    </>
-                                  )}
-                              </div>
-                            </>
-                          }
-                        </div>
+                                item.Details.length > 3 && (
+                                  <>
+                                    {assignRowCount[item.Status.trim()] > 3 && (
+                                      <div
+                                        onClick={() =>
+                                          AssignShowLessMore(item.Status, 3)
+                                        }
+                                        className="viewAll showLess"
+                                      >
+                                        Show Less{" "}
+                                        <img
+                                          src={viewAllArowTop}
+                                          alt="Show Less"
+                                        />
+                                      </div>
+                                    )}
+                                    {assignRowCount[item.Status.trim()] ===
+                                      3 && (
+                                      <div
+                                        onClick={() =>
+                                          AssignShowLessMore(
+                                            item.Status,
+                                            item.Details.length
+                                          )
+                                        }
+                                        className="viewAll"
+                                      >
+                                        View All ({item.Details.length - 3} MORE
+                                        )
+                                        <img
+                                          src={viewAllArow}
+                                          alt="view All Arow"
+                                        />
+                                      </div>
+                                    )}
+                                  </>
+                                )}
+                            </div>
+                          </>
+                        }
                       </div>
-                      {/* // } */}
-                    </>
-                  );
-                })
-              : ""
-            // <div>Data Not Available</div>
-          }
+                    </div>
+                  </>
+                );
+              })
+            : ""}
         </div>
         {licensetaskData &&
           props.sideBarTaskList === true &&

@@ -80,8 +80,7 @@
   padding: 0 12px;
   margin-right: 1rem;
   margin-bottom: 1rem;
-  /* font-size: 13px; */
-  /* font-weight: 500; */
+
   line-height: 28px;
   color: #1b1d21;
   cursor: pointer;
@@ -211,10 +210,6 @@
 }
 .get-main-goverance .input-grid-right {
   width: 252px;
-  /* float: right; */
-  /* margin: 0px 15px;
-    text-align: right;
-    padding-left: 95px; */
 }
 .assign-link {
   margin: 10px 0 9px 171px;
@@ -539,24 +534,6 @@
   left: 100%;
 }
 
-/* @media (min-width: 1650px) {
-  .input-grid-right {
-    padding-left: 140px;
-  }
-}
-
-@media (min-width: 1550px) {
-  .input-grid-right {
-    padding-left: 130px;
-  }
-}
-
-@media (min-width: 1600px) {
-  .input-grid-right {
-    padding-left: 110px;
-  }
-} */
-
 @media screen and (max-width: 767px) {
   .company-licenses-goverance .company-title-goverance {
     width: 100%;
@@ -629,35 +606,35 @@
   vertical-align: middle;
   background: transparent !important;
   box-shadow: none;
-  /* box-shadow: 0 12px 15px 0 rgb(0 0 0 / 25%); */
+
   margin: 24px;
   padding: 2px;
   position: relative;
   overflow-y: unset !important;
 }
 
- #assignTask{
+#assignTask {
   max-width: 627px;
   display: inline-block;
   text-align: left;
   vertical-align: middle;
   background: transparent !important;
   box-shadow: none;
-  /* box-shadow: 0 12px 15px 0 rgb(0 0 0 / 25%); */
+
   margin: 24px;
   padding: 1px;
   position: relative;
   overflow-y: unset !important;
 }
 
-#governance{
+#governance {
   max-width: 627px;
   display: inline-block;
   text-align: left;
   vertical-align: middle;
   background: transparent !important;
   box-shadow: none;
-  /* box-shadow: 0 12px 15px 0 rgb(0 0 0 / 25%); */
+
   margin: 24px;
   padding: 1px;
   position: relative;
@@ -673,15 +650,11 @@
     width: 100%;
     bottom: -100%;
     transition: 0.5s;
-    z-index: 99999999  !important;
+    z-index: 99999999 !important;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
   }
 
-  /* #assignTask{
-    padding-top: 40px;
-  } */
-  
   .capmtech-review-model {
     max-width: 1100px;
     width: 100%;
@@ -691,7 +664,7 @@
     border-radius: 9px;
     border-color: transparent;
     background: #fff;
-    /* padding: 40px; */
+
     margin: 0px;
   }
 
@@ -701,7 +674,7 @@
     overflow: hidden;
     float: right;
     top: -24px;
-}
+  }
 
   .react-responsive-modal-modal {
     max-width: 800px;

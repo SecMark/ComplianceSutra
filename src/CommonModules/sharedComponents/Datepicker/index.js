@@ -22,7 +22,6 @@ const Datepicker = ({
       }
     });
     dispatch({ type: actionType, payload: dateArr });
-    console.log("hello there");
   };
   return (
     <div className="form-group">
@@ -32,7 +31,7 @@ const Datepicker = ({
           style={{ width: "100%", color: "#000", border: "1px solid #ced4da" }}
           format="DD MMMM Y"
           name={name}
-          className={pageName === "newRegulation" ? "date-picker" : ""}
+          className={pageName === "newRegulation" ? "date-picker" : "taskhistoryfilter"}
           onChange={onChangeHandler}
         />
       ) : (

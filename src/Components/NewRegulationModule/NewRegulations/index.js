@@ -1,13 +1,11 @@
-import React, { useState, useReducer, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import filter from "../../../assets/Icons/Filters.png";
-import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import MobileLeftSidebar from "../../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../../assets/Icons/togglemobile.png";
 import { isMobile } from "react-device-detect";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
 import filterImage from "../../../assets/Icons/filter_background.png";
-import searchIcon from "../../../assets/Icons/searchIcon.png";
 import { withRouter } from "react-router";
 import { ImSearch } from "react-icons/im";
 
@@ -28,7 +26,6 @@ import NewRegulationDetail from "../NewRegulationDetail";
 import NewRegulationFilter from "../NewRegulationFilter";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
 import NewRegulationSearchResult from "../NewRegulationSearchResult";
-import Cobg from "../../../assets/Images/Onboarding/co-bg.png";
 
 import "./style.css";
 import NewRegulationSearchBadge from "../NewRegulationSearchBadge";
@@ -87,7 +84,7 @@ const NewRegulations = (props) => {
     setShowHBMenu(false);
   };
 
-  //clear filter
+  // clear filter
   useEffect(() => {
     dispatch(clearFilter());
   }, [false]);
@@ -230,9 +227,14 @@ const NewRegulations = (props) => {
                 onClick={() => setIsShowMobileFilter(!isShowMobileFilter)}
               />
               <div className="filter-popup-mobile--wrapper">
-                <h2 style={{ marginBottom: "2rem" }}>Fiters</h2>
+                <h2 style={{ marginBottom: "2rem" }}>Filter</h2>
                 <div className="filter-wrapper-mobile">
-                  <NewRegulationFilter />
+                  <NewRegulationFilter
+                    setIsShowFilter={setIsShowFilter}
+                    isShowFilter={isShowFilter}
+                    isShowMobileFilter={isShowMobileFilter}
+                    setIsShowMobileFilter={setIsShowMobileFilter}
+                  />
                 </div>
               </div>
             </div>
@@ -316,7 +318,7 @@ const NewRegulations = (props) => {
                 </div>
               </div>
             )}
-            <div className="new-regulations-mobile-header">
+            <div className="new-regulations-mobile-header justify-content-between">
               {showSearchBoxMobile ? (
                 <div className="TopSearch">
                   <div className="SearchIcon">
@@ -420,7 +422,7 @@ const NewRegulations = (props) => {
                               {updates?.Submissiondate &&
                                 getHighlightedText(
                                   moment(updates.Submissiondate).format(
-                                    "Do MMM"
+                                    "Do MMM YYYY"
                                   ),
                                   searchValue
                                 )}
@@ -480,7 +482,12 @@ const NewRegulations = (props) => {
               />
               <h3 style={{ marginBottom: "0px" }}>Filters</h3>
             </div>
-            <NewRegulationFilter />
+            <NewRegulationFilter
+              setIsShowFilter={setIsShowFilter}
+              isShowFilter={isShowFilter}
+              isShowMobileFilter={isShowMobileFilter}
+              setIsShowMobileFilter={setIsShowMobileFilter}
+            />
           </div>
         </div>
         <div className="d-none d-md-block w-100">
@@ -498,6 +505,7 @@ const NewRegulations = (props) => {
                   New Regulations{" "}
                   <img
                     src={filter}
+                    alt="Filter"
                     className="filter-image"
                     onClick={() => getNewRegulationFilterList()}
                   />

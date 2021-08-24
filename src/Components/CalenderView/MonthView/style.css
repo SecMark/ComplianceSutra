@@ -243,9 +243,8 @@
   background: #6969ff;
   border-radius: 50%;
   height: 40px;
-  /* padding: 9px 7px; */
+
   width: 40px;
-  /* color: white; */
 }
 .current-day > h5 {
   color: #fff;

@@ -9,7 +9,7 @@ export default {
     errorDueToRange:
       "Range Cannot be more than 1 year. Please change the selected date.",
     errorDueToReverseDate: "Date should be after ",
-    errorDueToPriorDate: "Date should not be prior to date of registration.",
+    errorDueToPriorDate: "Your tasks starts from",
     errorDueToPreviousDate: "Date should be after today's date.",
     errorDueToMoreThanOneYearDateFromToday:
       "Date should be less than 1 year from today's date.",
@@ -49,4 +49,8 @@ export default {
     "Saturday",
     "Sunday",
   ],
+
+  ExpertUser: "8",
+  ExpertReviewerBaseUrl: "/expert-review",
+  SuperAdminBaseURL: "/super-admin",
 };

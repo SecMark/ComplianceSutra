@@ -177,7 +177,7 @@
   }
 }
 
-/*your are done */
+/*you are done */
 
 .side-bar-stpper {
   position: absolute;
@@ -266,12 +266,9 @@
   position: absolute;
   width: 24px;
   height: 24px;
-  /* width: 18px;
-  height: 18px; */
+
   background-size: cover;
   background-image: url("../../assets/Icons/OnGoingDot.png");
-  /* border: 2px dashed white;
-  border-radius: 50%; */
 }
 
 .side-bar-stpper .stepper-container .stepper-item .stepper-title-active {

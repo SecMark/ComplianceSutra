@@ -7,12 +7,7 @@ import {
 import { actions as adminMenuActions } from "../../../CommonModules/SideBar/Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import {
-  clearLincenseList,
-  clearState,
-  getCompanyList,
-  getHistoryList,
-} from "../redux/actions";
+import { clearLincenseList, getHistoryList } from "../redux/actions";
 import { useHistory, withRouter } from "react-router";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import MultiSelectLicenseDropdown from "../../../CommonModules/sharedComponents/Dropdown/LicenseDropDown";
@@ -27,16 +22,6 @@ const HistoryFilterForm = (props) => {
   const state = useSelector((state) => state);
   const history = useHistory();
   const actionDispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const companyRequestPayload = {
-  //     userID: state.auth.loginInfo?.UserID,
-  //     entityid: constant.companyEntityId,
-  //     usertype: state.auth.loginInfo?.UserType,
-  //   };
-  //   actionDispatch(clearState());
-  //   actionDispatch(getCompanyList(companyRequestPayload));
-  // }, [state.auth.loginInfo?.UserID]);
 
   useEffect(() => {
     if (state.HistoryReducer.companyList.length !== 0) {
@@ -158,7 +143,7 @@ const HistoryFilterForm = (props) => {
     }
     actionDispatch(adminMenuActions.setCurrentMenu("history"));
     actionDispatch(getHistoryList(historyListPayload));
-    // history.push("/compliance-history");
+    props.setIsShowFilter(!props.isShowFilter);
   };
   return (
     <>

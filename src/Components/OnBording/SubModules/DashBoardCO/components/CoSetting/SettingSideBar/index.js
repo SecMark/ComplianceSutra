@@ -1,79 +1,76 @@
-import React, { useState } from "react"
-import "./style.css"
-import logout from "../../../../../../../assets/Icons/logout-icon.PNG"
-import { useSelector, useDispatch } from "react-redux"
-import { actions as loginActions } from "../../../../../../Authectication/redux/actions"
-import { withRouter } from "react-router-dom"
-import { actions as adminMenuActions } from "../../../MenuRedux/actions"
-import {actions as notficationActions} from "../../notification/Redux/actions"
-import sideBarlogo from "../../../../../../../assets/Icons/sideBarlogo.png"
-import togglemobile from "../../../../../../../assets/Icons/togglemobile.png"
-import MobileLeftSidebar from "../../MobileLeftSidebar"
-import { isMobile } from "react-device-detect"
+import React, { useState } from "react";
+import "./style.css";
+import logout from "../../../../../../../assets/Icons/logout-icon.PNG";
+import { useSelector, useDispatch } from "react-redux";
+import { actions as loginActions } from "../../../../../../Authectication/redux/actions";
+import { withRouter } from "react-router-dom";
+import { actions as adminMenuActions } from "../../../MenuRedux/actions";
+import { actions as notficationActions } from "../../notification/Redux/actions";
+
+import MobileLeftSidebar from "../../MobileLeftSidebar";
+import { isMobile } from "react-device-detect";
 
 function SettingSideBar({ activeTabKey, handleTabChange, history }) {
-  const [activeLinkIndex, setActiveLinkIndex] = useState(0)
-  const [navigationHideShow, setNavigationHideShow] = useState(false)
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
+  const [activeLinkIndex, setActiveLinkIndex] = useState(0);
+  const [navigationHideShow, setNavigationHideShow] = useState(false);
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const userDetails = state && state.auth && state.auth.loginInfo
+  const userDetails = state && state.auth && state.auth.loginInfo;
 
   const onLogoutClick = () => {
-        dispatch(loginActions.createLogoutAction())
-        dispatch(adminMenuActions.setCurrentBoardViewTaskId(null));
-        dispatch(notficationActions.setTaskID(null))
-        dispatch(adminMenuActions.setCurrentCalendarViewTaskId(null))
-        history.push("/login")
+    dispatch(loginActions.createLogoutAction());
+    dispatch(adminMenuActions.setCurrentBoardViewTaskId(null));
+    dispatch(notficationActions.setTaskID(null));
+    dispatch(adminMenuActions.setCurrentCalendarViewTaskId(null));
+    history.push("/login");
+  };
+  const closeMobileSidebar = () => {
+    setNavigationHideShow(false);
+    const drawerParent = document.getElementById("sideBarParent");
+    const drawerChild = document.getElementById("sideBarChild");
+  };
+  const openHBMenu = () => {
+    const drawerParent = document.getElementById("sideBarParent");
+    const drawerChild = document.getElementById("sideBarChild");
+    console.log(drawerParent, "drawerParent");
+    if (drawerParent) {
+      drawerParent.classList.add("overlay");
+      drawerChild.style.left = "0%";
     }
-    const closeMobileSidebar = () => {
-        setNavigationHideShow(false)
-        const drawerParent = document.getElementById("sideBarParent");
-        const drawerChild = document.getElementById("sideBarChild");
-        // if (drawerParent) {
-        //     drawerParent.classList.remove("overlay");
-        //     drawerChild.style.left = "-100%";
-        // }
-    }
-    const openHBMenu = () => {
-        const drawerParent = document.getElementById("sideBarParent");
-        const drawerChild = document.getElementById("sideBarChild");
-        console.log(drawerParent,"drawerParent")
-        if (drawerParent) {
-            drawerParent.classList.add("overlay");
-            drawerChild.style.left = "0%";
-        }
-        //  setNavigationHideShow(!navigationHideShow)
-    }
+  };
 
   const tabChange = (index) => {
-    handleTabChange(index)
-    history.push("/settings")
+    handleTabChange(index);
+    history.push("/settings");
     if (index === 0) {
-      dispatch(adminMenuActions.setActiveTabInSetting("personal"))
+      dispatch(adminMenuActions.setActiveTabInSetting("personal"));
     } else if (index === 1) {
-      dispatch(adminMenuActions.setActiveTabInSetting("company"))
+      dispatch(adminMenuActions.setActiveTabInSetting("company"));
     } else if (index === 2) {
-      dispatch(adminMenuActions.setActiveTabInSetting("account"))
+      dispatch(adminMenuActions.setActiveTabInSetting("account"));
     } else if (index === 3) {
-      dispatch(adminMenuActions.setActiveTabInSetting("notifications"))
+      dispatch(adminMenuActions.setActiveTabInSetting("notifications"));
     } else if (index === 4) {
-      dispatch(adminMenuActions.setActiveTabInSetting("security"))
+      dispatch(adminMenuActions.setActiveTabInSetting("security"));
     } else if (index === 5) {
-      dispatch(adminMenuActions.setActiveTabInSetting("team-member"))
+      dispatch(adminMenuActions.setActiveTabInSetting("team-member"));
     } else {
     }
-  }
-    return (
-        <div className="setting-side-bar">
-            {isMobile && <div id="sideBarParent" className="">
-                <div id="sideBarChild" className="leftSideBarFixed">
-                    <MobileLeftSidebar className="d-block d-sm-none" close={() => closeMobileSidebar()} />
-                </div>
-            </div>}
-            {/* <div className="mobile-head-setting mobile-top-pyd-setting d-block d-sm-none">
-               
-            </div> */}
+  };
+  return (
+    <div className="setting-side-bar">
+      {isMobile && (
+        <div id="sideBarParent" className="">
+          <div id="sideBarChild" className="leftSideBarFixed">
+            <MobileLeftSidebar
+              className="d-block d-sm-none"
+              close={() => closeMobileSidebar()}
+            />
+          </div>
+        </div>
+      )}
+
       <div className="get-main-settingCo">
         <p className="setting-title">Settings</p>
         <div className="menu-items">
@@ -190,7 +187,7 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default withRouter(SettingSideBar)
+export default withRouter(SettingSideBar);
