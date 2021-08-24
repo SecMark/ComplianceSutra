@@ -7,6 +7,7 @@ import UserIcon from "../../../assets/Icons/UserIcon.png";
 import BadgeIcon from "../../../assets/Icons/BadgeIcon.png";
 import PaymentIcon from "../../../assets/Icons/PaymentIcon.png";
 import SideBaruser from "../../../assets/Icons/sideBaruser.png";
+import notificationActive from "../../../assets/ERIcons/notifications_black.png";
 import { useHistory, useLocation, withRouter } from "react-router-dom";
 
 import "./style.css";
@@ -48,6 +49,14 @@ const LeftSideBar = () => {
               title="Tasks"
               src={ContactIcon}
               alt="sidebar Active"
+            />
+          </div>
+          <div className={"taskIcon"}>
+            <img
+              style={{ cursor: "pointer", width: "18px" }}
+              title="Notification"
+              title="Notification"
+              src={notificationActive}
             />
           </div>
           <div className="devider-line devider-line-set"></div>
