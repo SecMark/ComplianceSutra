@@ -8,10 +8,20 @@ import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadig
 import SideBar from "../../../../Components/OnBording/SubModules/SideBar";
 import { actions as signInSignUpActions } from "../../redux/actions";
 import validator from "validator";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 function Login({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const [visible, setVisibility] = useState(false);
+
+  const Icon = (<FontAwesomeIcon icon={  visible ? "eye-slash" : "eye" }
+  onClick={() => setVisibility(visiblity => !visiblity)}
+  />
+  )
+  const InputType = visible ? "text" : "password";
+  
 
   const [values, setValues] = useState({
     LoginId: "",
@@ -162,7 +172,7 @@ function Login({ history }) {
                     <label htmlFor="Company Email">Password</label>
                     <div className="">
                       <input
-                        type="password"
+                        type={InputType}
                         className={
                           "form-control" +
                           (errors && errors.passwordErr !== ""
@@ -177,6 +187,9 @@ function Login({ history }) {
                         onChange={onChangeHandler("Pwd")}
                         onKeyPress={handleKeyPress}
                       />
+
+                          <span className="password-toggle-ico">{Icon}</span> 
+
                       {/* {errors && errors.passwordErr !== "" && <p className="input-error-message">
                                                 Password is invalid
                                      </p>} */}
