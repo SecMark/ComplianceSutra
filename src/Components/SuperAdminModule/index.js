@@ -22,7 +22,7 @@ function SuperAdmin(props) {
       <div>
         <QuickOverview />
       </div>
-      <div className="ER-routes">
+      <div className="col-12 right-side-bar-new">
         <Suspense fallback={Loading}>
           {routes.map((route) => (
             <Route exact path={route.path} component={route.component}></Route>

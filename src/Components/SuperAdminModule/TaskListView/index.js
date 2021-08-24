@@ -184,7 +184,7 @@ function RightSideGrid({
   //     setOpenBoardDrp(false);
   //   }
   // });
-  
+
   useEffect(() => {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
@@ -1372,781 +1372,670 @@ function RightSideGrid({
   // });
 
   return (
-    <>
-      {click === "riskAndDelays" ? (
-        <div className="all-companies-task-grid mobile-dashboard-view">
-          {/* <RiskAndDelaysTaskList
-            click={click}
-            setClick={setClick}
-            user={user}
-          /> */}
+    <div className="all-companies-task-grid mobile-dashboard-view">
+      <div className="d-flex mobile-height-dasboardView">
+        <div className="companies-sub-title w-25 d-none d-sm-block">
+          <span>Tasks</span>
+          <span className="text-muted ml-3">Clients</span>
         </div>
-      ) : click === "pendingAction" ? (
-        <div className="all-companies-task-grid mobile-dashboard-view">
-          {/* <PendingAction click={click} setClick={setClick} user={user} /> */}
-        </div>
-      ) : (
-        <>
-          {visibleRejectTaskModal && renderRejectTaskModal()}
-          {!isTaskListOpen && (
-            <div className="all-companies-task-grid mobile-dashboard-view">
-              {isMobile && (
-                <div id="sideBarParent" className="">
-                  <div id="sideBarChild" className="leftSideBarFixed">
-                    {/* <MobileLeftSidebar
-                      className="d-block d-sm-none"
-                      close={() => closeMobileSidebar()}
-                    /> */}
-                  </div>
-                </div>
-              )}
-              <>
-                <div className="d-flex mobile-height-dasboardView">
-                  <div className="companies-sub-title w-25 d-none d-sm-block">
-                    Tasks
-                  </div>
 
-                  <div className="d-flex pl-0">
-                    <div
-                      className="overview-mobile d-block d-sm-none"
-                      onClick={() => setListView("0")}
-                    >
-                      Overview
-                    </div>
-                    <div className="companies-sub-title d-block d-sm-none">
-                      Tasks
-                    </div>
-                  </div>
+        {/* <div className="d-flex pl-0">
+          <div
+            className="overview-mobile d-block d-sm-none"
+            onClick={() => setListView("0")}
+          >
+            Overview
+          </div>
+          <div className="companies-sub-title d-block d-sm-none">Tasks</div>
+        </div> */}
 
-                  <div className="w-75 d-none d-sm-block">
-                    {!searchBoxShow && (
-                      <div className="only-search-icon" onClick={handleFocus}>
-                        <img src={searchIcon} alt="sidebar Check Icon" />
-                      </div>
-                    )}
-                    {searchBoxShow && (
-                      <div
-                        className="searchBox d-none d-sm-block"
-                        ref={"innerSearch"}
-                      >
-                        <div className="input-group form-group">
-                          <img
-                            className="IconGray"
-                            src={searchIcon}
-                            alt="search Icon"
-                          />
-                          <input
-                            ref={searchInput}
-                            autofocus
-                            className="form-control mozilla-py"
-                            type="text"
-                            placeholder="Search for teams,licenses, Companies etc"
-                            onChange={(e) => handleSearch(e.target.value)}
-                            value={searchValue}
-                          />
-                          <span className="input-group-append">
-                            <button
-                              className="btn border-start-0 border-top-0 border-bottom-0 border-0 ms-n5"
-                              type="button"
-                            >
-                              <img
-                                src={closeIconGray}
-                                alt="close Icon"
-                                onClick={() => clearSearch()}
-                              />
-                            </button>
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div
-                    className={
-                      searchBoxShowMobile
-                        ? "col-12 d-block d-sm-none"
-                        : "col-5 d-block d-sm-none mobile"
-                    }
+        <div className="w-75 d-none d-sm-block">
+          {!searchBoxShow && (
+            <div className="only-search-icon" onClick={handleFocus}>
+              <img src={searchIcon} alt="sidebar Check Icon" />
+            </div>
+          )}
+          {searchBoxShow && (
+            <div className="searchBox d-none d-sm-block" ref={"innerSearch"}>
+              <div className="input-group form-group">
+                <img className="IconGray" src={searchIcon} alt="search Icon" />
+                <input
+                  ref={searchInput}
+                  autofocus
+                  className="form-control mozilla-py"
+                  type="text"
+                  placeholder="Search for teams,licenses, Companies etc"
+                  onChange={(e) => handleSearch(e.target.value)}
+                  value={searchValue}
+                />
+                <span className="input-group-append">
+                  <button
+                    className="btn border-start-0 border-top-0 border-bottom-0 border-0 ms-n5"
+                    type="button"
                   >
-                    {!searchBoxShowMobile && (
-                      <div
-                        className="only-search-icon"
-                        onClick={() => setsearchBoxShowMobile(true)}
-                      >
-                        <img src={searchIcon} alt="sidebar Check Icon" />
-                      </div>
-                    )}
-                    {searchBoxShowMobile && (
-                      <div className="searchBox" ref={"innerSearchMobile"}>
-                        <div className="input-group form-group">
-                          <img
-                            className="IconGray"
-                            src={searchIcon}
-                            alt="search Icon"
-                          />
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Search for teams,licenses, Companies etc"
-                            onChange={(e) => handleSearch(e.target.value)}
-                            value={searchValue}
-                          />
-                          <span className="input-group-append">
-                            <button
-                              className="btn border-start-0 border-top-0 border-bottom-0 border-0 ms-n5"
-                              type="button"
-                            >
-                              <img
-                                src={closeIconGray}
-                                onClick={() => clearSearch()}
-                                alt="close Icon"
-                              />
-                            </button>
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                    <img
+                      src={closeIconGray}
+                      alt="close Icon"
+                      onClick={() => clearSearch()}
+                    />
+                  </button>
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
 
-                <div
-                  className="task-details-file-grid task-details-file-grid-dashboard custimDesignTask"
-                  style={{ position: "relative" }}
-                >
-                  {searchValue != "" && (
-                    <div className="file-title">Search Results: </div>
-                  )}
-                  {searchValue === "" && (
-                    <span>
-                      <span
-                        className={
-                          displayTask === "1"
-                            ? "file-title-active"
-                            : "file-title-inactive"
-                        }
-                        style={{ cursor: "pointer" }}
-                        onClick={(e) => {
-                          setDisplayTask("1");
-                          setTaskListDisplay("1");
-                        }}
-                      >
-                        List
-                      </span>
-                      {displayTask === "1" && (
-                        <div className="file-title-progress"></div>
-                      )}
-                      <span
-                        className={
-                          displayTask === "3"
-                            ? "file-title-active"
-                            : "file-title-inactive"
-                        }
-                        style={{ marginLeft: "40px", cursor: "pointer" }}
-                        onClick={(e) => {
-                          setDisplayTask("3");
-                          setTaskListDisplay("");
-                        }}
-                      >
-                        Calendar
-                      </span>
-                      {displayTask === "3" && (
-                        <div
-                          className="file-title-progress"
-                          style={{ left: "67px", width: "90px" }}
-                        ></div>
-                      )}
-                      <span
-                        className={
-                          displayTask === "2"
-                            ? "file-title-active"
-                            : "file-title-inactive"
-                        }
-                        style={{ marginLeft: "40px", cursor: "pointer" }}
-                        onClick={(e) => {
-                          setDisplayTask("2");
-                          setTaskListDisplay("");
-                        }}
-                      >
-                        Board
-                      </span>
-                      {displayTask === "2" && (
-                        <div
-                          className="file-title-progress"
-                          style={{ left: "190px", width: "65px" }}
-                        ></div>
-                      )}
-                    </span>
-                  )}
-                  {((searchValue === "" && displayTask === "1") ||
-                    (searchValue === "" && displayTask === "2")) && (
-                    <div className="take-action mb-0 d-none d-sm-block">
-                      <ul className="pull-right" style={{ float: "right" }}>
-                        <span
-                          style={{
-                            fontSize: "10px",
-                            backgroundColor: "transparent",
-                          }}
-                        >
-                          View by
-                        </span>
-                        <span
-                          className={
-                            displayTask === "1"
-                              ? taskListDisplay === "1" && "active"
-                              : currentBoardViewBy === "status" && "active"
-                          }
-                          style={{
-                            fontSize: "10px",
-                            marginLeft: "10px",
-                            paddingLeft: "6px",
-                            paddingRight: "6px",
-                            cursor: "pointer",
-                          }}
-                          onClick={(e) => {
-                            if (displayTask === "1") {
-                              setTaskListDisplay("1");
-                              setDisplayTask("1");
-                            }
-                            if (displayTask === "2") {
-                              setCurrentBoardViewBy("status");
-                            }
-                          }}
-                        >
-                          Status
-                        </span>
-                        <span
-                          className={
-                            displayTask === "1"
-                              ? taskListDisplay === "2" && "active"
-                              : currentBoardViewBy === "company" && "active"
-                          }
-                          style={{
-                            fontSize: "11px",
-                            marginLeft: "10px",
-                            paddingLeft: "6px",
-                            paddingRight: "6px",
-                            cursor: "pointer",
-                          }}
-                          onClick={(e) => {
-                            if (displayTask === "1") {
-                              setTaskListDisplay("2");
-                              setDisplayTask("1");
-                            }
-                            if (displayTask === "2") {
-                              setCurrentBoardViewBy("company");
-                            }
-                          }}
-                        >
-                          Company
-                        </span>
-                        <span
-                          className={
-                            displayTask === "1"
-                              ? taskListDisplay === "3" && "active"
-                              : currentBoardViewBy === "license" && "active"
-                          }
-                          style={{
-                            fontSize: "11px",
-                            marginLeft: "10px",
-                            paddingLeft: "6px",
-                            paddingRight: "6px",
-                            cursor: "pointer",
-                          }}
-                          onClick={(e) => {
-                            if (displayTask === "1") {
-                              setTaskListDisplay("3");
-                              setDisplayTask("1");
-                            }
-                            if (displayTask === "2") {
-                              setCurrentBoardViewBy("license");
-                            }
-                          }}
-                        >
-                          License
-                        </span>
-                        <span
-                          className={
-                            displayTask === "1"
-                              ? taskListDisplay === "4" && "active"
-                              : currentBoardViewBy === "team-member" && "active"
-                          }
-                          style={{
-                            fontSize: "11px",
-                            marginLeft: "10px",
-                            paddingLeft: "6px",
-                            paddingRight: "6px",
-                            cursor: "pointer",
-                          }}
-                          onClick={(e) => {
-                            if (displayTask === "1") {
-                              setTaskListDisplay("4");
-                              setDisplayTask("1");
-                            }
-                            if (displayTask === "2") {
-                              setCurrentBoardViewBy("team-member");
-                            }
-                          }}
-                        >
-                          Team
-                        </span>
-                      </ul>
-                    </div>
-                  )}
-                </div>
-                {displayTask === "2" && searchValue === "" && (
-                  <div>
-                    <div
-                      className="take-action"
-                      style={{ height: "72vh", overflowY: "hidden" }}
-                    >
-                      {taskData && taskData.length > 0 && (
-                        <div className="task-list-grid">
-                          {/* <BoardView
+        <div
+          className={
+            searchBoxShowMobile
+              ? "col-12 d-block d-sm-none"
+              : "col-5 d-block d-sm-none mobile"
+          }
+        >
+          {!searchBoxShowMobile && (
+            <div
+              className="only-search-icon"
+              onClick={() => setsearchBoxShowMobile(true)}
+            >
+              <img src={searchIcon} alt="sidebar Check Icon" />
+            </div>
+          )}
+          {searchBoxShowMobile && (
+            <div className="searchBox" ref={"innerSearchMobile"}>
+              <div className="input-group form-group">
+                <img className="IconGray" src={searchIcon} alt="search Icon" />
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Search for teams,licenses, Companies etc"
+                  onChange={(e) => handleSearch(e.target.value)}
+                  value={searchValue}
+                />
+                <span className="input-group-append">
+                  <button
+                    className="btn border-start-0 border-top-0 border-bottom-0 border-0 ms-n5"
+                    type="button"
+                  >
+                    <img
+                      src={closeIconGray}
+                      onClick={() => clearSearch()}
+                      alt="close Icon"
+                    />
+                  </button>
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div
+        className="task-details-file-grid task-details-file-grid-dashboard custimDesignTask"
+        style={{ position: "relative" }}
+      >
+        {searchValue != "" && (
+          <div className="file-title">Search Results: </div>
+        )}
+        {searchValue === "" && (
+          <span>
+            <span
+              className="status"
+              style={{
+                fontSize: "10px",
+                paddingLeft: "6px",
+                paddingRight: "6px",
+                cursor: "pointer",
+                backgroundColor: "#b3abc4",
+                color: "#fff",
+                borderRadius: "20px",
+                padding: "2px 6px 2px",
+              }}
+            >
+              Personal
+            </span>
+            <span
+              className="active"
+              style={{
+                fontSize: "10px",
+                marginLeft: "10px",
+                paddingLeft: "6px",
+                paddingRight: "6px",
+                cursor: "pointer",
+                backgroundColor: "#b3abc4",
+                color: "#fff",
+                borderRadius: "20px",
+                padding: "2px 6px 2px",
+              }}
+            >
+              Expert Review
+            </span>
+          </span>
+        )}
+        {((searchValue === "" && displayTask === "1") ||
+          (searchValue === "" && displayTask === "2")) && (
+          <div className="take-action mb-0 d-none d-sm-block">
+            <ul className="pull-right" style={{ float: "right" }}>
+              <span
+                style={{
+                  fontSize: "10px",
+                  backgroundColor: "transparent",
+                }}
+              >
+                Sort by
+              </span>
+              <span
+                className={
+                  displayTask === "1"
+                    ? taskListDisplay === "1" && "active"
+                    : currentBoardViewBy === "status" && "active"
+                }
+                style={{
+                  fontSize: "10px",
+                  marginLeft: "10px",
+                  paddingLeft: "6px",
+                  paddingRight: "6px",
+                  cursor: "pointer",
+                }}
+                onClick={(e) => {
+                  if (displayTask === "1") {
+                    setTaskListDisplay("1");
+                    setDisplayTask("1");
+                  }
+                  if (displayTask === "2") {
+                    setCurrentBoardViewBy("status");
+                  }
+                }}
+              >
+                Task Status
+              </span>
+              <span
+                className={
+                  displayTask === "1"
+                    ? taskListDisplay === "2" && "active"
+                    : currentBoardViewBy === "company" && "active"
+                }
+                style={{
+                  fontSize: "11px",
+                  marginLeft: "10px",
+                  paddingLeft: "6px",
+                  paddingRight: "6px",
+                  cursor: "pointer",
+                }}
+                onClick={(e) => {
+                  if (displayTask === "1") {
+                    setTaskListDisplay("2");
+                    setDisplayTask("1");
+                  }
+                  if (displayTask === "2") {
+                    setCurrentBoardViewBy("company");
+                  }
+                }}
+              >
+                Task Type
+              </span>
+              <span
+                className={
+                  displayTask === "1"
+                    ? taskListDisplay === "3" && "active"
+                    : currentBoardViewBy === "license" && "active"
+                }
+                style={{
+                  fontSize: "11px",
+                  marginLeft: "10px",
+                  paddingLeft: "6px",
+                  paddingRight: "6px",
+                  cursor: "pointer",
+                }}
+                onClick={(e) => {
+                  if (displayTask === "1") {
+                    setTaskListDisplay("3");
+                    setDisplayTask("1");
+                  }
+                  if (displayTask === "2") {
+                    setCurrentBoardViewBy("license");
+                  }
+                }}
+              >
+                Task Name
+              </span>
+            </ul>
+          </div>
+        )}
+      </div>
+      {displayTask === "2" && searchValue === "" && (
+        <div>
+          <div
+            className="take-action"
+            style={{ height: "72vh", overflowY: "hidden" }}
+          >
+            {taskData && taskData.length > 0 && (
+              <div className="task-list-grid">
+                {/* <BoardView
                             setCurrentBoardViewBy={setCurrentBoardViewBy}
                             currentBoardViewBy={currentBoardViewBy}
                           /> */}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-                {displayTask === "3" && searchValue === "" && (
-                  <div>
-                    <div className="take-action" style={{ height: "72vh" }}>
-                      {taskData && taskData.length > 0 && (
-                        <div className="task-list-grid">
-                          {/* <View getSelectTaskDetails={getSelectTaskDetails} /> */}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-                <div
-                  className={
-                    displayTask === "1" &&
-                    "task-grid-scroll customScrollSecond newHeigt"
-                  }
-                >
-                  {searchValue != "" && (
-                    <div
-                      className="take-action"
-                      style={{
-                        marginBottom: "0px",
-                        paddingBottom: "0px",
-                        paddingTop: "20px",
-                        height: "70vh",
-                      }}
-                    >
-                      {searchData.length > 0 &&
-                        searchData.map((task) => {
-                          return (
-                            <>{renderTaskList(task.data, task.Status, 2)}</>
-                          );
-                        })}
-                    </div>
-                  )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {displayTask === "3" && searchValue === "" && (
+        <div>
+          <div className="take-action" style={{ height: "72vh" }}>
+            {taskData && taskData.length > 0 && (
+              <div className="task-list-grid">
+                {/* <View getSelectTaskDetails={getSelectTaskDetails} /> */}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      <div
+        className={
+          displayTask === "1" && "task-grid-scroll customScrollSecond newHeigt"
+        }
+      >
+        {searchValue != "" && (
+          <div
+            className="take-action"
+            style={{
+              marginBottom: "0px",
+              paddingBottom: "0px",
+              paddingTop: "20px",
+              height: "70vh",
+            }}
+          >
+            {searchData.length > 0 &&
+              searchData.map((task) => {
+                return <>{renderTaskList(task.data, task.Status, 2)}</>;
+              })}
+          </div>
+        )}
 
-                  {isMobile && displayTask === "1" && (
-                    <>
-                      <div
-                        className="dropdown-mobile"
-                        onClick={(e) => {
-                          if (mobileViewBy) {
-                            setMobileViewBy(false);
-                          } else {
-                            setMobileViewBy(true);
-                          }
-                        }}
-                      >
-                        {taskListDisplay === "1"
-                          ? "By Status"
-                          : taskListDisplay === "2"
-                          ? "Company"
-                          : taskListDisplay === "3"
-                          ? "License"
-                          : taskListDisplay === "4"
-                          ? "Team"
-                          : "View By"}
+        {isMobile && displayTask === "1" && (
+          <>
+            <div
+              className="dropdown-mobile"
+              onClick={(e) => {
+                if (mobileViewBy) {
+                  setMobileViewBy(false);
+                } else {
+                  setMobileViewBy(true);
+                }
+              }}
+            >
+              {taskListDisplay === "1"
+                ? "By Status"
+                : taskListDisplay === "2"
+                ? "Company"
+                : taskListDisplay === "3"
+                ? "License"
+                : taskListDisplay === "4"
+                ? "Team"
+                : "View By"}
+              <img
+                className="drop-down-bottom-arrow"
+                src={dropdownBottomArrow}
+                alt="dropdownBottomArrow"
+              />
+            </div>
+            {mobileViewBy && (
+              <div ref={"innerRefDrop"} className="dropdown-open">
+                <div
+                  className=""
+                  onClick={(e) => {
+                    setTaskListDisplay("4");
+                    setDisplayTask("1");
+                    setMobileViewBy(false);
+                  }}
+                >
+                  <div className="icon-text-inline">
+                    <span
+                      className={
+                        taskListDisplay === "4"
+                          ? "float-left dropdown-active-link"
+                          : "float-left change-role"
+                      }
+                    >
+                      By Team
+                    </span>
+                    <span className="float-right change-role">
+                      {taskListDisplay === "4" && (
                         <img
-                          className="drop-down-bottom-arrow"
-                          src={dropdownBottomArrow}
-                          alt="dropdownBottomArrow"
+                          className="dropdownCheck"
+                          src={dropdownCheckIcon}
+                          alt="dropdownCheckIcon"
                         />
-                      </div>
-                      {mobileViewBy && (
-                        <div ref={"innerRefDrop"} className="dropdown-open">
-                          <div
-                            className=""
-                            onClick={(e) => {
-                              setTaskListDisplay("4");
-                              setDisplayTask("1");
-                              setMobileViewBy(false);
-                            }}
-                          >
-                            <div className="icon-text-inline">
-                              <span
-                                className={
-                                  taskListDisplay === "4"
-                                    ? "float-left dropdown-active-link"
-                                    : "float-left change-role"
-                                }
-                              >
-                                By Team
-                              </span>
-                              <span className="float-right change-role">
-                                {taskListDisplay === "4" && (
-                                  <img
-                                    className="dropdownCheck"
-                                    src={dropdownCheckIcon}
-                                    alt="dropdownCheckIcon"
-                                  />
-                                )}
-                              </span>
-                            </div>
-                          </div>
+                      )}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    setTaskListDisplay("3");
+                    setDisplayTask("1");
+                    setMobileViewBy(false);
+                  }}
+                  className=""
+                >
+                  <div className="icon-text-inline">
+                    <span
+                      className={
+                        taskListDisplay === "3"
+                          ? "float-left dropdown-active-link"
+                          : "float-left change-role"
+                      }
+                    >
+                      By License
+                    </span>
+                    <span className="float-right change-role">
+                      {taskListDisplay === "3" && (
+                        <img
+                          className="dropdownCheck"
+                          src={dropdownCheckIcon}
+                          alt="dropdownCheckIcon"
+                        />
+                      )}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    setTaskListDisplay("1");
+                    setDisplayTask("1");
+                    setMobileViewBy(false);
+                  }}
+                  className=""
+                >
+                  <div className="icon-text-inline">
+                    <span
+                      className={
+                        taskListDisplay === "1"
+                          ? "float-left dropdown-active-link"
+                          : "float-left change-role"
+                      }
+                    >
+                      By Status
+                    </span>
+                    <span className="float-right change-role">
+                      {taskListDisplay === "1" && (
+                        <img
+                          className="dropdownCheck"
+                          src={dropdownCheckIcon}
+                          alt="dropdownCheckIcon"
+                        />
+                      )}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    setTaskListDisplay("2");
+                    setDisplayTask("1");
+                    setMobileViewBy(false);
+                  }}
+                  className=""
+                >
+                  <div className="icon-text-inline">
+                    <span
+                      className={
+                        taskListDisplay === "2"
+                          ? "float-left dropdown-active-link"
+                          : "float-left change-role"
+                      }
+                    >
+                      By Company
+                    </span>
+                    <span className="float-right change-role">
+                      {taskListDisplay === "2" && (
+                        <img
+                          className="dropdownCheck"
+                          src={dropdownCheckIcon}
+                          alt="dropdownCheckIcon"
+                        />
+                      )}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+        {taskListDisplay === "1" &&
+          displayTask === "1" &&
+          searchValue === "" &&
+          listTaskData &&
+          listTaskData.length > 0 &&
+          listTaskData.map((item, index) => {
+            return (
+              <>
+                <div className="mobile-dashboard-view">
+                  <div className="take-action">
+                    <div className="task-list-grid">
+                      {item.Status.trim() === "overdue" && (
+                        <div
+                          className="action-title upcoming-btn"
+                          style={{
+                            color: "#f22727",
+                            fontWeight: "500",
+                            display: "flex",
+                            width: "fit-content",
+                          }}
+                          onClick={() => {
+                            expandedFlags.includes(index)
+                              ? handleExpandList("hide", index)
+                              : handleExpandList("show", index);
+                          }}
+                        >
+                          {"Overdue"}{" "}
+                          <p className="red-circle-overide">
+                            {item.Details.length}
+                          </p>
+                          {!expandedFlags.includes(index) ? (
+                            <img
+                              src={redArrowTop}
+                              className="redArrowTop arrowDown"
+                              alt="Arrow Up"
+                              style={{
+                                width: "18px",
+                                height: "18px",
+                                marginTop: "2px",
+                                marginLeft: "9px",
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src={redArrowTop}
+                              className="redArrowTop arrowDown"
+                              alt="Arrow Up"
+                              style={{
+                                width: "18px",
+                                height: "18px",
+                                marginTop: "2px",
+                                marginLeft: "9px",
+                                transform: "rotate(180deg)",
+                              }}
+                            />
+                          )}
+                        </div>
+                      )}
+                      {item.Status.trim() === "Pending" && (
+                        <div
+                          className="upcoming-btn"
+                          style={{
+                            cursor: "pointer",
+                            width: "fit-content",
+                          }}
+                          onClick={() => {
+                            expandedFlags.includes(index)
+                              ? handleExpandList("hide", index)
+                              : handleExpandList("show", index);
+                          }}
+                        >
                           <div
                             style={{ cursor: "pointer" }}
-                            onClick={(e) => {
-                              setTaskListDisplay("3");
-                              setDisplayTask("1");
-                              setMobileViewBy(false);
-                            }}
-                            className=""
+                            className="upcoming-title"
                           >
-                            <div className="icon-text-inline">
-                              <span
-                                className={
-                                  taskListDisplay === "3"
-                                    ? "float-left dropdown-active-link"
-                                    : "float-left change-role"
-                                }
-                              >
-                                By License
-                              </span>
-                              <span className="float-right change-role">
-                                {taskListDisplay === "3" && (
-                                  <img
-                                    className="dropdownCheck"
-                                    src={dropdownCheckIcon}
-                                    alt="dropdownCheckIcon"
-                                  />
-                                )}
-                              </span>
-                            </div>
-                          </div>
-                          <div
-                            style={{ cursor: "pointer" }}
-                            onClick={(e) => {
-                              setTaskListDisplay("1");
-                              setDisplayTask("1");
-                              setMobileViewBy(false);
-                            }}
-                            className=""
-                          >
-                            <div className="icon-text-inline">
-                              <span
-                                className={
-                                  taskListDisplay === "1"
-                                    ? "float-left dropdown-active-link"
-                                    : "float-left change-role"
-                                }
-                              >
-                                By Status
-                              </span>
-                              <span className="float-right change-role">
-                                {taskListDisplay === "1" && (
-                                  <img
-                                    className="dropdownCheck"
-                                    src={dropdownCheckIcon}
-                                    alt="dropdownCheckIcon"
-                                  />
-                                )}
-                              </span>
-                            </div>
-                          </div>
-                          <div
-                            style={{ cursor: "pointer" }}
-                            onClick={(e) => {
-                              setTaskListDisplay("2");
-                              setDisplayTask("1");
-                              setMobileViewBy(false);
-                            }}
-                            className=""
-                          >
-                            <div className="icon-text-inline">
-                              <span
-                                className={
-                                  taskListDisplay === "2"
-                                    ? "float-left dropdown-active-link"
-                                    : "float-left change-role"
-                                }
-                              >
-                                By Company
-                              </span>
-                              <span className="float-right change-role">
-                                {taskListDisplay === "2" && (
-                                  <img
-                                    className="dropdownCheck"
-                                    src={dropdownCheckIcon}
-                                    alt="dropdownCheckIcon"
-                                  />
-                                )}
-                              </span>
-                            </div>
+                            {"Take Action"}
+                            <span className="black-circle">
+                              <p className="black-circle-text">
+                                {item.Details.length}
+                              </p>
+                            </span>
+                            {!expandedFlags.includes(index) ? (
+                              <img
+                                src={upArrow}
+                                className="arrowDown"
+                                alt="Arrow Up"
+                              />
+                            ) : (
+                              <img
+                                src={downArrow}
+                                className="arrowDown"
+                                alt="Arrow down"
+                              />
+                            )}
                           </div>
                         </div>
                       )}
-                    </>
-                  )}
-                  {taskListDisplay === "1" &&
-                    displayTask === "1" &&
-                    searchValue === "" &&
-                    listTaskData &&
-                    listTaskData.length > 0 &&
-                    listTaskData.map((item, index) => {
-                      return (
+                      {(item.Status.trim() === "Upcoming" ||
+                        item.Status.trim() === "Completed") && (
+                        <div
+                          className="upcoming-btn"
+                          style={{
+                            cursor: "pointer",
+                            width: "fit-content",
+                          }}
+                          onClick={() => {
+                            expandedFlags.includes(index)
+                              ? handleExpandList("hide", index)
+                              : handleExpandList("show", index);
+                          }}
+                        >
+                          <div
+                            style={{ cursor: "pointer" }}
+                            className={
+                              item.Status.trim() === "Upcoming"
+                                ? "upcoming-title"
+                                : "complete-title"
+                            }
+                          >
+                            {item.Status.trim() === "Upcoming"
+                              ? "Upcoming"
+                              : "Completed"}
+                            <span
+                              className={
+                                item.Status.trim() === "Upcoming"
+                                  ? "black-circle"
+                                  : "green-circle"
+                              }
+                            >
+                              <p className="black-circle-text">
+                                {item.Details.length}
+                              </p>
+                            </span>
+                            {!expandedFlags.includes(index) ? (
+                              <img
+                                src={downArrow}
+                                className="arrowDown"
+                                alt="Arrow down"
+                              />
+                            ) : (
+                              <img
+                                src={upArrow}
+                                className="arrowDown"
+                                alt="Arrow Up"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      {(item.Status.trim() === "Upcoming"
+                        ? expandedFlags.includes(index)
+                        : item.Status.trim() === "Completed"
+                        ? expandedFlags.includes(index)
+                        : item.Status.trim() === "overdue"
+                        ? !expandedFlags.includes(index)
+                        : item.Status.trim() === "Pending"
+                        ? !expandedFlags.includes(index)
+                        : !expandedFlags.includes(index)) && (
                         <>
-                          <div className="mobile-dashboard-view">
-                            <div className="take-action">
-                              <div className="task-list-grid">
-                                {item.Status.trim() === "overdue" && (
+                          {item.Details.slice(
+                            0,
+                            rowCount[item.Status.trim()]
+                          ).map((task) => {
+                            return (
+                              <>{renderTaskList(task, item.Status.trim(), 1)}</>
+                            );
+                          })}
+                          <div>
+                            {item.Details.length > 3 && (
+                              <>
+                                {rowCount[item.Status.trim()] > 3 && (
                                   <div
-                                    className="action-title upcoming-btn"
-                                    style={{
-                                      color: "#f22727",
-                                      fontWeight: "500",
-                                      display: "flex",
-                                      width: "fit-content",
-                                    }}
-                                    onClick={() => {
-                                      expandedFlags.includes(index)
-                                        ? handleExpandList("hide", index)
-                                        : handleExpandList("show", index);
-                                    }}
+                                    onClick={() => showLessMore(item.Status, 3)}
+                                    className="viewAll showLess"
                                   >
-                                    {"Overdue"}{" "}
-                                    <p className="red-circle-overide">
-                                      {item.Details.length}
-                                    </p>
-                                    {!expandedFlags.includes(index) ? (
-                                      <img
-                                        src={redArrowTop}
-                                        className="redArrowTop arrowDown"
-                                        alt="Arrow Up"
-                                        style={{
-                                          width: "18px",
-                                          height: "18px",
-                                          marginTop: "2px",
-                                          marginLeft: "9px",
-                                        }}
-                                      />
-                                    ) : (
-                                      <img
-                                        src={redArrowTop}
-                                        className="redArrowTop arrowDown"
-                                        alt="Arrow Up"
-                                        style={{
-                                          width: "18px",
-                                          height: "18px",
-                                          marginTop: "2px",
-                                          marginLeft: "9px",
-                                          transform: "rotate(180deg)",
-                                        }}
-                                      />
-                                    )}
+                                    Show Less{" "}
+                                    <img src={viewAllArowTop} alt="Show Less" />
                                   </div>
                                 )}
-                                {item.Status.trim() === "Pending" && (
+                                {rowCount[item.Status.trim()] === 3 && (
                                   <div
-                                    className="upcoming-btn"
-                                    style={{
-                                      cursor: "pointer",
-                                      width: "fit-content",
-                                    }}
-                                    onClick={() => {
-                                      expandedFlags.includes(index)
-                                        ? handleExpandList("hide", index)
-                                        : handleExpandList("show", index);
-                                    }}
+                                    onClick={() =>
+                                      showLessMore(
+                                        item.Status,
+                                        item.Details.length
+                                      )
+                                    }
+                                    className="viewAll"
                                   >
-                                    <div
-                                      style={{ cursor: "pointer" }}
-                                      className="upcoming-title"
-                                    >
-                                      {"Take Action"}
-                                      <span className="black-circle">
-                                        <p className="black-circle-text">
-                                          {item.Details.length}
-                                        </p>
-                                      </span>
-                                      {!expandedFlags.includes(index) ? (
-                                        <img
-                                          src={upArrow}
-                                          className="arrowDown"
-                                          alt="Arrow Up"
-                                        />
-                                      ) : (
-                                        <img
-                                          src={downArrow}
-                                          className="arrowDown"
-                                          alt="Arrow down"
-                                        />
-                                      )}
-                                    </div>
+                                    View All ({item.Details.length - 3} More)
+                                    <img
+                                      src={viewAllArow}
+                                      alt="view All Arow"
+                                    />
                                   </div>
                                 )}
-                                {(item.Status.trim() === "Upcoming" ||
-                                  item.Status.trim() === "Completed") && (
-                                  <div
-                                    className="upcoming-btn"
-                                    style={{
-                                      cursor: "pointer",
-                                      width: "fit-content",
-                                    }}
-                                    onClick={() => {
-                                      expandedFlags.includes(index)
-                                        ? handleExpandList("hide", index)
-                                        : handleExpandList("show", index);
-                                    }}
-                                  >
-                                    <div
-                                      style={{ cursor: "pointer" }}
-                                      className={
-                                        item.Status.trim() === "Upcoming"
-                                          ? "upcoming-title"
-                                          : "complete-title"
-                                      }
-                                    >
-                                      {item.Status.trim() === "Upcoming"
-                                        ? "Upcoming"
-                                        : "Completed"}
-                                      <span
-                                        className={
-                                          item.Status.trim() === "Upcoming"
-                                            ? "black-circle"
-                                            : "green-circle"
-                                        }
-                                      >
-                                        <p className="black-circle-text">
-                                          {item.Details.length}
-                                        </p>
-                                      </span>
-                                      {!expandedFlags.includes(index) ? (
-                                        <img
-                                          src={downArrow}
-                                          className="arrowDown"
-                                          alt="Arrow down"
-                                        />
-                                      ) : (
-                                        <img
-                                          src={upArrow}
-                                          className="arrowDown"
-                                          alt="Arrow Up"
-                                        />
-                                      )}
-                                    </div>
-                                  </div>
-                                )}
-                                {(item.Status.trim() === "Upcoming"
-                                  ? expandedFlags.includes(index)
-                                  : item.Status.trim() === "Completed"
-                                  ? expandedFlags.includes(index)
-                                  : item.Status.trim() === "overdue"
-                                  ? !expandedFlags.includes(index)
-                                  : item.Status.trim() === "Pending"
-                                  ? !expandedFlags.includes(index)
-                                  : !expandedFlags.includes(index)) && (
-                                  <>
-                                    {item.Details.slice(
-                                      0,
-                                      rowCount[item.Status.trim()]
-                                    ).map((task) => {
-                                      return (
-                                        <>
-                                          {renderTaskList(
-                                            task,
-                                            item.Status.trim(),
-                                            1
-                                          )}
-                                        </>
-                                      );
-                                    })}
-                                    <div>
-                                      {item.Details.length > 3 && (
-                                        <>
-                                          {rowCount[item.Status.trim()] > 3 && (
-                                            <div
-                                              onClick={() =>
-                                                showLessMore(item.Status, 3)
-                                              }
-                                              className="viewAll showLess"
-                                            >
-                                              Show Less{" "}
-                                              <img
-                                                src={viewAllArowTop}
-                                                alt="Show Less"
-                                              />
-                                            </div>
-                                          )}
-                                          {rowCount[item.Status.trim()] ===
-                                            3 && (
-                                            <div
-                                              onClick={() =>
-                                                showLessMore(
-                                                  item.Status,
-                                                  item.Details.length
-                                                )
-                                              }
-                                              className="viewAll"
-                                            >
-                                              View All (
-                                              {item.Details.length - 3} More)
-                                              <img
-                                                src={viewAllArow}
-                                                alt="view All Arow"
-                                              />
-                                            </div>
-                                          )}
-                                        </>
-                                      )}
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            </div>
+                              </>
+                            )}
                           </div>
                         </>
-                      );
-                    })}
-                  {/* License View Temp test */}
-                  <div className="task-list-grid">
-                    {/* {taskListDisplay === "3" && (
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          })}
+        {/* License View Temp test */}
+        <div className="task-list-grid">
+          {/* {taskListDisplay === "3" && (
                       <LicenseTaskList user={user} sideBarTaskList={false} />
                     )} */}
-                  </div>
-                  {/* Company view Display */}
-                  <div className="task-list-grid">
-                    {/* {taskListDisplay === "2" && (
+        </div>
+        {/* Company view Display */}
+        <div className="task-list-grid">
+          {/* {taskListDisplay === "2" && (
                       <CompanyTaskList user={user} sideBarTaskList={false} />
                     )} */}
-                  </div>
+        </div>
 
-                  {/* Assigned View  */}
-                  <div className="Assign View">
-                    {/* {taskListDisplay === "4" && (
+        {/* Assigned View  */}
+        <div className="Assign View">
+          {/* {taskListDisplay === "4" && (
                       <AssigneList
                         assignRowCount
                         user={user}
                         sideBarTaskList={false}
                       />
                     )} */}
-                  </div>
-                </div>
-              </>
-            </div>
-          )}
-        </>
-      )}
-    </>
+        </div>
+      </div>
+    </div>
   );
 }
 
