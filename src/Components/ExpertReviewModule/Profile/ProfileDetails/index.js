@@ -35,6 +35,7 @@ const ProfileDetails = () => {
     multiValueLabel: () => ({
       backgroundColor: "#f7f4fe",
       padding: 2,
+      margin: 3,
 
       borderRadius: 8,
     }),
@@ -44,11 +45,12 @@ const ProfileDetails = () => {
     control: () => ({
       paddingTop: 1,
       display: "flex",
+      flexDirection: "column",
     }),
     container: () => ({
       border: "none",
       width: "400px",
-      marginLeft: "180px",
+      marginLeft: "130px",
       zIndex: 1,
     }),
     menu: () => ({
@@ -62,8 +64,8 @@ const ProfileDetails = () => {
     }),
 
     dropdownIndicator: () => ({
-      color: "black",
       paddingRight: 10,
+      cursor: "pointer",
     }),
     clearIndicator: () => ({
       display: "none",
@@ -74,8 +76,15 @@ const ProfileDetails = () => {
     return (
       components.DropdownIndicator && (
         <components.DropdownIndicator {...props}>
-          <IoAddCircle style={{ color: "#6c5dd3" }} />
-          <span style={{ color: "#6c5dd3" }}>Add license</span>
+          <IoAddCircle style={{ color: "#6c5dd3", marginRight: "3" }} />
+          <span
+            style={{
+              color: "#6c5dd3",
+              fontWeight: "500",
+            }}
+          >
+            ADD NEW
+          </span>
         </components.DropdownIndicator>
       )
     );
@@ -89,12 +98,13 @@ const ProfileDetails = () => {
       <div className="DetailsForm">
         <form action="">
           <div className="FormElement">
-            Email-Id:
+            <p>Email-Id:</p>
             <MdLock
               style={{
                 position: "absolute",
-                right: "19rem",
+                right: "17.5rem",
                 margin: "7px",
+                top: "8.6rem",
               }}
             />
             <input
@@ -104,20 +114,20 @@ const ProfileDetails = () => {
             />
           </div>
           <div className="FormElement">
-            Full Name:
+            <p>Full Name:</p>
             <input type="text" defaultValue="Ramesh Kumar"></input>
           </div>
           <div className="FormElement">
-            Phone Number:
-            <input type="text" defaultValue="9434721588" />
+            <p>Phone Number:</p>
+            <input type="text" defaultValue="+91  9434721588" />
           </div>
           <div className="FormElement">
-            Designation:
+            <p>Designation:</p>
             <input type="text" defaultValue="Expert Reviewer" />
           </div>
         </form>
         <div className="FormElement">
-          License Expert in:
+          <p>License Expert in:</p>
           <Select
             components={{ DropdownIndicator }}
             isMulti
@@ -127,7 +137,7 @@ const ProfileDetails = () => {
           />
         </div>
         <div className="FormElement">
-          License Expert in:
+          <p>Industry Expert in:</p>
           <Select
             components={{ DropdownIndicator }}
             isMulti
