@@ -285,7 +285,6 @@ function NotificationGrid(props) {
                           style={{ height: "18px", marginRight: "5px" }}
                         />
                       )}
-                      {/* <li><span className="dots-div dropIcon d-block d-sm-none" ref={innnerDropdown}><img src={mobileDropDown} onClick={filterDropDown} /> */}
                       {showFilter && (
                         <div className="drop-div top-pt">
                           {options.map((ele) => {

@@ -1,5 +1,6 @@
 .logo {
   padding-left: 10px !important;
+
 }
 .ER-left-bar {
   background-color: #f6f9fb;
@@ -7,44 +8,68 @@
   height: 100vh;
   position: relative;
   text-align: center;
+  
 }
 
 .ER-main {
   padding: 50px 50px;
-  width: 100%;
 }
 
 .dashboard-icon {
-  margin-top: 122px;
+  margin-top: 70px;
   cursor: pointer;
+  opacity: 0.20;
 }
 
 .dashboard-icon-active {
-  margin-top: 122px;
-  border-right: 2px solid #7a73ff;
+  margin-top: 70px;
+  border-right: 2.8px solid #7a73ff;
   cursor: pointer;
+  opacity: 1;
+}
+
+.ER-icone{
+  margin-top: 27px;
+  cursor: pointer;
+  opacity: 0.20;
+}
+
+.ER-icone-active{
+  margin-top: 27px;
+  border-right: 2.8px solid #7a73ff;
+  cursor: pointer;
+  opacity: 1;
 }
 
 .ER-icon {
-  margin-top: 20px;
+  margin-top: 27px;
   cursor: pointer;
+  position: static;
+  opacity: 0.20;
 }
 
 .ER-icon-active {
-  border-right: 2px solid #7a73ff;
+  margin-top: 27px;
+  border-right: 2.8px solid #7a73ff;
   cursor: pointer;
+  opacity: 1;
 }
 
 .profile-icon {
-  position: absolute;
+  margin-top: 360px;
   bottom: 30px;
   right: 17px;
   cursor: pointer;
+  opacity: 0.20;
 }
 
 .profile-icon-active {
-  position: absolute;
+  margin-top: 360px;
+  border-right: 2.8px solid #7a73ff;
+  color: red !important;
   bottom: 30px;
   right: 17px;
   cursor: pointer;
+  opacity: 1;
 }
+

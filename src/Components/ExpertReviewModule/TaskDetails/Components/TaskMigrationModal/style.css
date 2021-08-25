@@ -1,0 +1,16 @@
+.task-migration__item-left,
+.task-migration__item-heading {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: normal;
+}
+.task-migration__item-heading,
+.task-migration__item-right {
+  color: #2c2738;
+}
+.task-migration__item-left {
+  color: #6c5dd3;
+}
+.task-migration__item-heading--unactive {
+  opacity: 0.5;
+}
