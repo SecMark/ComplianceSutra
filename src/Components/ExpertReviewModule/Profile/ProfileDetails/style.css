@@ -7,7 +7,6 @@
   margin-top: 2vh;
   padding: 2.5rem 4rem;
   box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
-  overflow-y: scroll;
 }
 #Line {
   width: 100%;
@@ -18,17 +17,25 @@
 .DetailsForm {
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 75%;
 }
 .FormElement {
   display: flex;
+  width: 100%;
   justify-content: space-between;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  /* font-weight: 500; */
+}
+.FormElement > p {
+  width: 40%;
+  font-weight: 500;
+  font-size: 14px;
 }
 .FormElement > input {
   border-radius: 5px;
   width: 50%;
-  text-align: center;
+  text-align: initial;
+  padding: 5px 12px;
   border: solid 1px #e4e4e4;
   margin-right: 5px;
 }
@@ -36,12 +43,13 @@
   display: flex;
   width: 60%;
   justify-content: space-between;
+  margin-top: 2vh;
 }
 .ProfileSubmit > button {
   border: none;
   background-color: #6c5dd3;
-  border-radius: 10px;
-  padding: 5px 15px;
+  border-radius: 7px;
+  padding: 8px 20px;
   color: #fff;
 }
 
