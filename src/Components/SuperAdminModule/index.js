@@ -10,21 +10,28 @@ import { routes } from "../../CommonModules/sharedComponents/Routes/superAdminRo
 
 function SuperAdmin(props) {
   return (
-    <div
-      className="row co-dashboard remove-scroll-b"
-      style={{ height: "auto" }}
-    >
-      <div className="left-fixed d-none d-md-block">
-        <div className="on-boarding">
-          <LeftSideBar />
+    <div className="container-fluid pl-0">
+      <div
+        className="row co-dashboard remove-scroll-b"
+        style={{ height: "auto" }}
+      >
+        <div className="left-fixed d-none d-md-block">
+          <div className="on-boarding">
+            <LeftSideBar />
+          </div>
+        </div>
+        <div style={{ width: "94vw", marginLeft: "6vw" }}>
+          <Suspense fallback={Loading}>
+            {routes.map((route) => (
+              <Route
+                exact
+                path={route.path}
+                component={route.component}
+              ></Route>
+            ))}
+          </Suspense>
         </div>
       </div>
-
-      <Suspense fallback={Loading}>
-        {routes.map((route) => (
-          <Route exact path={route.path} component={route.component}></Route>
-        ))}
-      </Suspense>
     </div>
   );
 }
