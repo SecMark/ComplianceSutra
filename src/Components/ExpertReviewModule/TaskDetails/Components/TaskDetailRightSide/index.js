@@ -4,6 +4,8 @@ import migrateFileIcon from "../../../../../assets/Icons/migrate-file.svg";
 import insertFileIcon from "../../../../../assets/Icons/insert-file.svg";
 import Loading from "../../../../../CommonModules/sharedComponents/Loader";
 import TaskMigrationModal from "../TaskMigrationModal";
+import RejectTaskModal from "../TaskActions/RejectTaskModal";
+import TaskStatusBox from "../../../../../CommonModules/sharedComponents/TaskStatusBox";
 const AttachedFileSection = lazy(() => import("../TaskActions/AttachedFile"));
 const CommentSection = lazy(() => import("../TaskActions/Comments"));
 const ReferencesSection = lazy(() => import("../TaskActions/References"));
@@ -12,6 +14,7 @@ const TaskDetailRightSide = ({ taskData }) => {
   const [isTaskMigrationOpen, setIsTaskMigrationOpen] = useState(false);
   const [headerHeight, setHeaderHight] = useState(0);
   const [footerHeight, setFooterHeight] = useState(0);
+  const [isRejectTaskOpen, setIsRejectTaskOpen] = useState(false);
   useEffect(() => {
     const headerRef = document
       .querySelector(".task-data__header")
@@ -31,6 +34,10 @@ const TaskDetailRightSide = ({ taskData }) => {
         isOpen={isTaskMigrationOpen}
         setIsOpen={setIsTaskMigrationOpen}
       />
+      <RejectTaskModal
+        isOpen={isRejectTaskOpen}
+        setIsOpen={setIsRejectTaskOpen}
+      />
       <div className="task-data__container position-relative">
         <div className="task-data__header">
           <div className="position-relative">
@@ -45,10 +52,12 @@ const TaskDetailRightSide = ({ taskData }) => {
                 {taskData.EntityName}
               </span>
             </div>
-            <p className="task-data__header--status-text">
-              {/* {taskData.Status === "Assign" && "Assign Task"} */}
-              Assign Task
-            </p>
+            <div className="position-absolute d-flex task-data__header-status">
+              <TaskStatusBox status="pending">Approval Pending</TaskStatusBox>
+              <TaskStatusBox status="rejected">
+                You rejected this task
+              </TaskStatusBox>
+            </div>
           </div>
         </div>
         <div
@@ -212,7 +221,10 @@ const TaskDetailRightSide = ({ taskData }) => {
           <button className="task-action__cta task-action__cta--green mr-3">
             Approve Task
           </button>
-          <button className="task-action__cta task-action__cta--red">
+          <button
+            className="task-action__cta task-action__cta--red"
+            onClick={() => setIsRejectTaskOpen(true)}
+          >
             Reject Task
           </button>
         </div>

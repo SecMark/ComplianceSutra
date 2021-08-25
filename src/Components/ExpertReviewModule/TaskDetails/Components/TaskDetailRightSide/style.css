@@ -49,21 +49,9 @@
 .task-data-fields > .w-100.d-flex {
   margin: 0.5rem 0;
 }
-.task-data__header--status-text {
+.task-data__header-status {
   position: absolute;
-  bottom: -8px;
-  padding: 0.25rem;
-  border-radius: 2px;
-  height: 20px;
-  margin: 0;
-  line-height: 12px;
-  font-size: 12px;
-  font-weight: 500;
-  text-align: left;
-  background-color: #80f5c0;
-  color: #41d290;
-  width: fit-content;
-  z-index: 1;
+  bottom: -10px;
 }
 .task-data__main {
   overflow-y: auto;
