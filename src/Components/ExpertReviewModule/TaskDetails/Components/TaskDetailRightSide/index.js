@@ -52,9 +52,6 @@ const TaskDetailRightSide = ({ taskData }) => {
                 {taskData.EntityName}
               </span>
             </div>
-            {/* <p className="task-data__header--status-text"> */}
-            {/* Assign Task */}
-            {/* </p> */}
             <div className="position-absolute d-flex task-data__header-status">
               <TaskStatusBox status="pending">Approval Pending</TaskStatusBox>
               <TaskStatusBox status="rejected">
