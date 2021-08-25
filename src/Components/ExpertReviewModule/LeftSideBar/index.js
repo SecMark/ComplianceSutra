@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
-import checkSmall from "../../../assets/ERIcons/checkSmall.png";
-import notificationActive from "../../../assets/ERIcons/notifications_black.png";
-import historyActive from "../../../assets/ERIcons/history_black.png";
-import profileActiveLight from "../../../assets/ERIcons/profileActiveLight.png"
+import history_active from "../../../assets/ERIcons/history_active.png";
+import profileActive from "../../../assets/ERIcons/profileActive.png"
 import { useHistory, useLocation, withRouter } from "react-router-dom";
+import checkSmallBlack from "../../../assets/ERIcons/checkSmallBlack.png"
+import notificationBlack from  "../../../assets/ERIcons/notificationBlack.png"
 
 import "./style.css";
 
@@ -29,12 +29,16 @@ const LeftSideBar = () => {
               : "dashboard-icon"
           }
         >
-          <img
+        <div className="image">
+        <img
             title="Dashboard"
-            src={checkSmall}
+            src={checkSmallBlack} 
             onClick={() => navigateTo("dashboard")}
-          />
+         />
+         </div>
+      
         </div>
+
         <div
           className={
             pathname === "/expert-review/notifications"
@@ -42,11 +46,13 @@ const LeftSideBar = () => {
               : "ER-icone"
           }
         >
+
           <img title="Notification"
-           src={notificationActive}
+           src={notificationBlack}
            onClick={()=> navigateTo("notifications")}
            />
         </div>
+
         <div
           className={
             pathname === "/expert-review/task-history"
@@ -54,11 +60,12 @@ const LeftSideBar = () => {
               : "ER-icon"
           }
         >
-          <img
+            <img
             title="Task History"
-            src={historyActive}
+            src={history_active}
             onClick={() => navigateTo("task-history")}
           />
+
         </div>
 
         <div
@@ -70,7 +77,7 @@ const LeftSideBar = () => {
         >
           <img
             title="Profile"
-            src={profileActiveLight}
+            src={profileActive}
             onClick={() => navigateTo("profile")}
           />
         </div>
