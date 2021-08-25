@@ -2,7 +2,6 @@ import React from "react";
 import { Suspense } from "react";
 import { Route } from "react-router";
 import LeftSideBar from "./LeftSideBar";
-import QuickOverview from "./QuickOverview";
 import Loading from "../../CommonModules/sharedComponents/Loader";
 
 import "./style.css";

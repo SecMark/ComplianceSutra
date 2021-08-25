@@ -301,31 +301,40 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                 </div>
               </>
 
-              <div
-                className="take-action-grid-new shadow rounded"
-                style={{ backgroundColor: "#52d9b4" }}
-              >
-                <div className="take-action-large-title-new text-white">
-                  Business Insights : May'21
+              <div className="take-action-grid-new shadow rounded business-card-grid">
+                <h6 className="text-white title">Business Insights : May'21</h6>
+                <div className="row text-white">
+                  <div className="col">
+                    <span className="font-weight-bold text-lg">122</span>
+                    <span className="ml-1">+4%</span>
+                    <div className="text-sm">New Signups</div>
+                  </div>
+                  <div className="col">
+                    <span className="font-weight-bold text-lg">122</span>
+                    <span className="ml-1">+4%</span>
+                    <div className="text-sm">New Subscriptions</div>
+                  </div>
                 </div>
-                <div className="action-bottom-grid">
+                {/* <div className="action-bottom-grid">
                   <div className="left-grid-action">
                     <div className="take-action-left-new text-white">
-                      122 <span>+4%</span>
+                      <span className="font-weight-bold">122</span>
+                      <span>+4%</span>
                     </div>
                     <div className="take-action-left-new text-white">
                       New Signups
                     </div>
                   </div>
                   <div className="right-grid-action">
-                    <div className="take-action-right-new text-white">
-                      104 <span>+10%</span>
+                    <div className="take-action-right-new text-white ">
+                      <span className="font-weight-bold">104</span>
+                      <span>+10%</span>
                     </div>
                     <div className="take-action-left-new text-white">
                       New Subscriptions
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               <div
@@ -333,7 +342,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                 style={{ backgroundColor: "#ef5d5d" }}
               >
                 <div className="action-bottom-grid">
-                  <div className="left-grid-action">
+                  <div className="left-grid-action mt-1">
                     <div className="">
                       <img
                         className="btn-icon-new"
@@ -342,14 +351,14 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                       />
                     </div>
                   </div>
-                  <div className="take-action-small-title-new text-white">
-                    36 Customers have not made payments
+                  <div className="alert-action-small-title text-white">
+                    36 Customers have not made payments this month
                   </div>
                   <div className="right-grid-action">
                     <div className="take-action-right-new">
                       <img
                         className="btn-icon-new"
-                        src={complteTaskIcon}
+                        src={scheduledIcon}
                         alt="btn-icon"
                       />
                     </div>

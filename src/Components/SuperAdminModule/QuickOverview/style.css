@@ -1230,6 +1230,36 @@ button.btn.-new:focus {
   height: calc(100vh - 10vw) !important;
   overflow: auto;
 }
+.take-action-large-title-new {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.business-card-grid {
+  margin: 0px 0px 24px;
+  border-radius: 12px !important;
+  border: solid 1px #ebf1ff;
+  background-color: #52d9b4;
+  padding: 20px 20px;
+  margin-bottom: 23px;
+}
+.business-card-grid .title {
+  margin-top: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+.business-card-grid .text-lg {
+  font-size: 21px;
+  font-weight: 600;
+}
+.business-card-grid .text-sm {
+  font-size: 10px;
+}
+.alert-action-small-title {
+  font-size: 10px;
+}
+
 @media (max-width: 767px) {
   .all-companies-task-grid-1 {
     height: calc(100vh - 10vw) !important;
