@@ -1,47 +1,47 @@
 import { lazy } from "react";
 import constant from "../constants/constant";
 
-const ERDashboard = lazy(() =>
-  import("../../../Components/SuperAdminModule/TaskListView")
+const SADashboard = lazy(() =>
+  import("../../../Components/SuperAdminModule/Dashboard")
 );
-const ERProfile = lazy(() =>
+const SAProfile = lazy(() =>
   import("../../../Components/SuperAdminModule/Profile")
 );
-const ERNotifications = lazy(() =>
+const SANotifications = lazy(() =>
   import("../../../Components/SuperAdminModule/Notifications/Notifications")
 );
 
-const ERTaskHistoryFilter = lazy(() =>
+const SATaskHistoryFilter = lazy(() =>
   import("../../../Components/SuperAdminModule/TaskHistoryFilter")
 );
 
-const ERTaskDetails = lazy(() =>
+const SATaskDetails = lazy(() =>
   import("../../../Components/SuperAdminModule/TaskDetails/index")
 );
 
 export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/`,
-    component: ERDashboard,
+    component: SADashboard,
   },
   {
     path: `${constant.SuperAdminBaseURL}/dashboard`,
-    component: ERDashboard,
+    component: SADashboard,
   },
   {
     path: `${constant.SuperAdminBaseURL}/profile`,
-    component: ERProfile,
+    component: SAProfile,
   },
   {
     path: `${constant.SuperAdminBaseURL}/notifications`,
-    component: ERNotifications,
+    component: SANotifications,
   },
   {
     path: `${constant.SuperAdminBaseURL}/task-history`,
-    component: ERTaskHistoryFilter,
+    component: SATaskHistoryFilter,
   },
   {
     path: `${constant.SuperAdminBaseURL}/task-details`,
-    component: ERTaskDetails,
+    component: SATaskDetails,
   },
 ];

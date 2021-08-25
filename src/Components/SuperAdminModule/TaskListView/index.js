@@ -23,6 +23,7 @@ import searchIcon from "../../../assets/Icons/searchIcon.png";
 // import { useOuterClick } from "../RightSideGrid/outerClick.js";
 import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 import { useSelector, useDispatch, connect } from "react-redux";
+import QuickOverview from "../QuickOverview";
 // import { actions as taskReportActions } from "../../redux/actions";
 // import MobileLeftSidebar from "../MobileLeftSidebar";
 import axios, { post } from "axios";

@@ -19,16 +19,12 @@ function SuperAdmin(props) {
           <LeftSideBar />
         </div>
       </div>
-      <div>
-        <QuickOverview />
-      </div>
-      <div className="col-12 right-side-bar-new">
-        <Suspense fallback={Loading}>
-          {routes.map((route) => (
-            <Route exact path={route.path} component={route.component}></Route>
-          ))}
-        </Suspense>
-      </div>
+
+      <Suspense fallback={Loading}>
+        {routes.map((route) => (
+          <Route exact path={route.path} component={route.component}></Route>
+        ))}
+      </Suspense>
     </div>
   );
 }

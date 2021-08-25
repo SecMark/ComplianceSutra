@@ -17,7 +17,7 @@ const LeftSideBar = () => {
   const { pathname } = useLocation();
 
   const navigateTo = (screen) => {
-    history.push(`/expert-review/${screen}`);
+    history.push(`/super-admin/${screen}`);
   };
 
   return (

@@ -134,7 +134,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <span className="overdue-date">21 May</span>
-              <span>></span>
+              <span>&gt;</span>
             </div>
             <img src={deadline} />
           </div>
@@ -270,7 +270,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <span className="date">21 May</span>
-              <span>></span>
+              <span></span>
             </div>
           </div>
         </div>
