@@ -6,7 +6,7 @@
 .NotificationHeader {
   display: flex;
   justify-content: space-between;
-  padding: 2% 8%;
+  padding: 2% 3%;
   position: relative;
 }
 .NotificationFilter {
@@ -28,6 +28,10 @@
   color: #575757;
   border-radius: 8px;
   font-weight: 300;
+}
+.ListPoint > ul > li > div > span {
+  display: inline-block;
+  margin-left: 15px;
 }
 .ListPoint {
   margin-bottom: -1.2rem;

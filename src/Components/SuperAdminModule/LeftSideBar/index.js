@@ -33,6 +33,7 @@ const LeftSideBar = () => {
               title="Dashboard"
               src={DashboardIcon}
               alt="sidebar Active"
+              onClick={() => navigateTo("dashboard")}
             />
           </div>
           <div className="taskIcon">
@@ -55,8 +56,9 @@ const LeftSideBar = () => {
             <img
               style={{ cursor: "pointer", width: "18px" }}
               title="Notification"
-              title="Notification"
+              alt="Notification"
               src={notificationActive}
+              onClick={() => navigateTo("notifications")}
             />
           </div>
           <div className="devider-line devider-line-set"></div>

@@ -83,8 +83,8 @@ const ERNotifications = () => {
           </div>
           <Popup />
         </div>
-        <NotificationList />
-        <NotificationList />
+        <NotificationList title="Today" />
+        <NotificationList title="Yesterday" />
       </div>
     </div>
   );
