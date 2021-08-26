@@ -1,24 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
-import constant from "../../../../CommonModules/sharedComponents/constants/constant";
 import moment from "moment";
 import RightArrow from "../../../../assets/Icons/keyboardArrowRightBlack.png";
-import {
-  clearState,
-  getCompanyList,
-  getLicenseList,
-  setSuccess,
-} from "../redux/actions";
-import { withRouter } from "react-router";
-import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
-import NoResultFound from "../../../../CommonModules/sharedComponents/NoResultFound";
 
 function TaskHistoryResult() {
-  // state for desktop design
-  const [navigationHideShow, setNavigationHideShow] = useState(false);
   const state = useSelector((state) => state); // state
-  console.log(state);
   const dispatch = useDispatch(); // dispatch
 
   return (
@@ -38,7 +25,7 @@ function TaskHistoryResult() {
           </thead>
           <tbody className="tablebody">
             {state.HistoryReducer.historyList.map((list) => (
-              <tr >
+              <tr>
                 <td className="th-date">
                   {moment(list.Completed).format("DD MMMM YYYY")}
                 </td>
@@ -56,7 +43,11 @@ function TaskHistoryResult() {
                   >
                     {list.Status}
                   </button>
-                  <img className="rightarrow" src={RightArrow} alt="rightarrow"/>
+                  <img
+                    className="rightarrow"
+                    src={RightArrow}
+                    alt="rightarrow"
+                  />
                 </td>
               </tr>
             ))}
