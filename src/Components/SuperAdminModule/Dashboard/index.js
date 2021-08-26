@@ -9,8 +9,9 @@ import QuickOverview from "../QuickOverview";
 import "./style.css";
 
 const Dashboard = () => {
+  const [navTab, setNav] = useState("Tasks");
   const [sortBy, setSortBy] = useState("Task Status");
-  const [navTab, setNav] = useState(1);
+  const [listTab, setListTab] = useState("Personal");
 
   return (
     <div className="row">
@@ -21,77 +22,52 @@ const Dashboard = () => {
         <div className="ER-main">
           <div className="ER-task-statics row">
             <h5
-              className={navTab === 1 ? "ml-2 mt-2" : "ml-2 mt-2 text-muted"}
-              onClick={() => setNav(1)}
+              className={navTab === "Tasks" ? "mt-2" : "mt-2 text-muted"}
+              onClick={() => setNav("Tasks")}
             >
-              Tasks
+              <span className="ml-1">Tasks</span>
+              {navTab === "Tasks" && <div className="nav-title-progress"></div>}
             </h5>
             <h5
-              className={navTab === 2 ? "ml-2 mt-2" : " ml-2 mt-2 text-muted"}
-              onClick={() => setNav(2)}
+              className={navTab === "Clients" ? "mt-2" : " mt-2 text-muted"}
+              onClick={() => setNav("Clients")}
             >
-              Clients
+              <span className="ml-4">Clients</span>
+              {navTab === "Clients" && (
+                <div className="nav-title-progress ml-4"></div>
+              )}
             </h5>
-            {/* <div className="active-task"></div> */}
-            {/* <div className="task-statics row">
-              <div className="static-card">
-                <img src={complteTaskIcon} alt="complte-Task-icon" />
-                <span>Completed</span>
-                <span>00</span>
-              </div>
-              <div className="static-card">
-                <img src={scheduledIcon} alt="complte-Task-icon" />
-                <span>Scheduled</span>
-                <span>00</span>
-              </div>
-              <div className="static-card">
-                <img src={complteTaskIcon} alt="complte-Task-icon" />
-                <span>Rejected</span>
-                <span>02</span>
-              </div>
-            </div> */}
             <div className="ER-search-input mb-2">
               <input
                 className="form-control ER-search"
                 placeholder="Search for Tasks"
-              />{" "}
+              />
             </div>
           </div>
 
           <div className="row">
             <div className="col mt-3">
               <span
-                className=""
-                style={{
-                  fontSize: "10px",
-                  paddingLeft: "6px",
-                  paddingRight: "6px",
-                  cursor: "pointer",
-                  backgroundColor: "#b3abc4",
-                  color: "#fff",
-                  borderRadius: "20px",
-                  padding: "2px 6px 2px",
-                  marginRight: "5px",
-                }}
+                className={
+                  listTab === "Personal"
+                    ? "list-tabs-btn-active"
+                    : "list-tabs-btn-inactive"
+                }
+                onClick={() => setListTab("Personal")}
               >
                 Personal
               </span>
               <span
-                className=""
-                style={{
-                  fontSize: "10px",
-                  paddingLeft: "6px",
-                  paddingRight: "6px",
-                  cursor: "pointer",
-                  // backgroundColor: "#b3abc4",
-                  color: "#b3abc4",
-                  borderRadius: "20px",
-                  padding: "2px 6px 2px",
-                }}
+                className={
+                  listTab === "Expert Review"
+                    ? "list-tabs-btn-active"
+                    : "list-tabs-btn-inactive"
+                }
+                onClick={() => setListTab("Expert Review")}
               >
                 Expert Review
               </span>
-            </div>{" "}
+            </div>
             <div className="col">
               <ul className="sort-by-filter">
                 <span className="sort-by">Sort by</span>
@@ -145,7 +121,7 @@ const Dashboard = () => {
                     />
                   </div>
                 </div>
-                <img src={deadline} />
+                {/* <img src={deadline} /> */}
                 <div className="ER-task-detail">
                   <button className="code">Good and Service Tax</button>
                   <div>
@@ -154,14 +130,14 @@ const Dashboard = () => {
                         style={{ color: "red", marginRight: "5px" }}
                       />
                       <p className="company-name">
-                        Good and Service tax - 3B form{" "}
+                        Good and Service tax - 3B form
                       </p>
                     </div>
                     <button className="ER-status-button">Task Approved</button>
                   </div>
                   <div className="detail-name align-left-always">
                     <p>
-                      <span className="circle-dp"></span>{" "}
+                      <span className="circle-dp"></span>
                       <span className="user-name">
                         Kedia Financial Securities
                       </span>
@@ -170,15 +146,15 @@ const Dashboard = () => {
                   <span className="overdue-date">21 May</span>
                   <span>{">"}</span>
                 </div>
-                <img src={deadline} />
+                {/* <img src={deadline} /> */}
                 <div className="ER-task-detail">
                   <button className="code">Good and Service Tax</button>
                   <span className="company-name">
-                    Good and Service tax - 3B form{" "}
+                    Good and Service tax - 3B form
                   </span>
                   <div className="detail-name align-left-always">
                     <p>
-                      <span className="circle-dp"></span>{" "}
+                      <span className="circle-dp"></span>
                       <span className="user-name">
                         Kedia Financial Securities
                       </span>
@@ -187,7 +163,7 @@ const Dashboard = () => {
                   <span className="overdue-date">21 May</span>
                   <span>{">"}</span>
                 </div>
-                <img src={deadline} />
+                {/* <img src={deadline} /> */}
               </div>
             </div>
 
@@ -209,11 +185,11 @@ const Dashboard = () => {
                 <div className="ER-task-detail">
                   <button className="code">Good and Service Tax</button>
                   <span className="company-name">
-                    Good and Service tax - 3B form{" "}
+                    Good and Service tax - 3B form
                   </span>
                   <div className="detail-name align-left-always">
                     <p>
-                      <span className="circle-dp"></span>{" "}
+                      <span className="circle-dp"></span>
                       <span className="user-name">
                         Kedia Financial Securities
                       </span>
@@ -225,11 +201,11 @@ const Dashboard = () => {
                 <div className="ER-task-detail">
                   <button className="code">Good and Service Tax</button>
                   <span className="company-name">
-                    Good and Service tax - 3B form{" "}
+                    Good and Service tax - 3B form
                   </span>
                   <div className="detail-name align-left-always">
                     <p>
-                      <span className="circle-dp"></span>{" "}
+                      <span className="circle-dp"></span>
                       <span className="user-name">
                         Kedia Financial Securities
                       </span>
@@ -263,11 +239,11 @@ const Dashboard = () => {
                 <div className="ER-task-detail">
                   <button className="code">Good and Service Tax</button>
                   <span className="company-name">
-                    Good and Service tax - 3B form{" "}
+                    Good and Service tax - 3B form
                   </span>
                   <div className="detail-name align-left-always">
                     <p>
-                      <span className="circle-dp"></span>{" "}
+                      <span className="circle-dp"></span>
                       <span className="user-name">
                         Kedia Financial Securities
                       </span>
@@ -279,11 +255,11 @@ const Dashboard = () => {
                 <div className="ER-task-detail">
                   <button className="code">Good and Service Tax</button>
                   <span className="company-name">
-                    Good and Service tax - 3B form{" "}
+                    Good and Service tax - 3B form
                   </span>
                   <div className="detail-name align-left-always">
                     <p>
-                      <span className="circle-dp"></span>{" "}
+                      <span className="circle-dp"></span>
                       <span className="user-name">
                         Kedia Financial Securities
                       </span>
@@ -324,7 +300,7 @@ const Dashboard = () => {
 
                   <div className="detail-name align-left-always">
                     <p>
-                      <span className="circle-dp"></span>{" "}
+                      <span className="circle-dp"></span>
                       <span className="user-name">
                         Kedia Financial Securities
                       </span>
@@ -336,11 +312,11 @@ const Dashboard = () => {
                 <div className="ER-task-detail">
                   <button className="code">Good and Service Tax</button>
                   <span className="company-name">
-                    Good and Service tax - 3B form{" "}
+                    Good and Service tax - 3B form
                   </span>
                   <div className="detail-name align-left-always">
                     <p>
-                      <span className="circle-dp"></span>{" "}
+                      <span className="circle-dp"></span>
                       <span className="user-name">
                         Kedia Financial Securities
                       </span>

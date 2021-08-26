@@ -116,11 +116,9 @@
   justify-content: space-between;
   margin-top: 15px;
   align-items: center;
-
 }
 .task-list-grid :hover {
   background: #f1f1f1;
-
 }
 
 .ER-search-input {
@@ -293,6 +291,38 @@
   line-height: 1.54;
   letter-spacing: 0.02px;
   text-align: left;
-
   color: #6c5dd3;
+}
+
+.nav-title-progress {
+  width: 70px;
+  position: absolute;
+  height: 2px;
+  border-radius: 1px;
+  margin-top: 15px;
+  background-color: #7a73ff;
+}
+
+.list-tabs-btn-active {
+  font-size: 10px;
+  padding-left: 6px;
+  padding-right: 6px;
+  cursor: pointer;
+  background-color: #b3abc4;
+  color: #fff;
+  border-radius: 20px;
+  padding: 2px 6px 2px;
+  margin-right: 5px;
+}
+
+.list-tabs-btn-inactive {
+  font-size: 10px;
+  padding-left: 6px;
+  padding-right: 6px;
+  cursor: pointer;
+  background-color: #f7f4fe;
+  color: #b3abc4;
+  border-radius: 20px;
+  padding: 2px 6px 2px;
+  margin-right: 5px;
 }
