@@ -7,6 +7,10 @@ import { actions as coActions } from "../../../redux/actions";
 import { isMobile } from "react-device-detect";
 import PaymentSection from "../../../../../../PaymentModule/PaymentSection";
 import UpgradeYourAccount from "../../../../../../PaymentModule/UpgradeYourAccount";
+import ChooseLicenses from "./LicenseDrawer";
+import Payment from "../../../../../../../CommonModules/sharedComponents/Drawer/Payment";
+import { BsPencil } from "react-icons/bs";
+import { RiRefreshFill } from "react-icons/ri";
 
 function CoAccount({ handleClose }) {
   const state = useSelector((state) => state);
@@ -19,8 +23,42 @@ function CoAccount({ handleClose }) {
   const [isUpgradeYourAccountOpen, setIsUpgradeYourAccountOpen] =
     useState(false);
   const [isPaidMember, setIsPaidMember] = useState(false);
+
+  useEffect(() => {
+    initialDispatch();
+  }, []);
+
+  useEffect(() => {
+    const accountInfo =
+      state &&
+      state.taskReport &&
+      state.taskReport.coAccountInfo &&
+      state.taskReport.coAccountInfo.coAccount;
+
+    if (accountInfo != undefined) {
+      const count = accountInfo[0].Flag;
+      setFlagcount(count);
+      if (count > 0) {
+        setIsSliderCheck(true);
+      } else {
+        setIsSliderCheck(false);
+      }
+    }
+  }, [state.taskReport.coAccountInfo]);
+
+  useEffect(() => {
+    const updateStatus =
+      state && state.taskReport && state.taskReport.coAccountUpdStatus;
+  }, []);
+
+  const [isShowFilter, setIsShowFilter] = useState(false);
+  const [isShowPayment, setIsShowPayment] = useState(false);
+  const [erServiceStatus, seterServiceStatus] = useState("Active");
+
   const loggedUser =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
+
+  const companyDetail = state && state?.taskReport?.coAccountInfo?.coAccount;
 
   useEffect(() => {
     initialDispatch();
@@ -41,24 +79,6 @@ function CoAccount({ handleClose }) {
       })
     );
   };
-
-  useEffect(() => {
-    const accountInfo =
-      state &&
-      state.taskReport &&
-      state.taskReport.coAccountInfo &&
-      state.taskReport.coAccountInfo.coAccount;
-
-    if (accountInfo != undefined) {
-      const count = accountInfo[0].Flag;
-      setFlagcount(count);
-      if (count > 0) {
-        setIsSliderCheck(true);
-      } else {
-        setIsSliderCheck(false);
-      }
-    }
-  }, [state.taskReport.coAccountInfo]);
 
   useEffect(() => {
     const updateStatus =
@@ -94,6 +114,27 @@ function CoAccount({ handleClose }) {
       drawerChild.style.transition = "1.5s linear;";
       drawerChild.style.bottom = "-100%";
     }
+  };
+  const close = (data, action) => {
+    if (!isMobile) {
+      const drawerParent = document.getElementById("drawerParent");
+      const drawerChild = document.getElementById("drawerChild");
+      if (drawerParent) {
+        drawerParent.classList.remove("overlay");
+        drawerChild.style.transition = "1.5s linear;";
+        drawerChild.style.right = "-100%";
+      }
+      setIsShowFilter(false);
+    } else {
+      const drawerParent = document.getElementById("drawerParentMobile");
+      const drawerChild = document.getElementById("drawerChildMobile");
+      if (drawerParent) {
+        drawerParent.classList.remove("overlayAccount");
+        drawerChild.style.transition = "1.5s linear;";
+        drawerChild.style.bottom = "-100%";
+      }
+    }
+
     if (action == 1) {
       const licenseIDgrpStr =
         data.selectedLicenseArray.length > 0
@@ -139,48 +180,6 @@ function CoAccount({ handleClose }) {
       }
     }
   };
-
-  const close = (data, action) => {
-    if (!isMobile) {
-      const drawerParent = document.getElementById("drawerParent");
-      const drawerChild = document.getElementById("drawerChild");
-      if (drawerParent) {
-        drawerParent.classList.remove("overlay");
-        drawerChild.style.transition = "1.5s linear;";
-        drawerChild.style.right = "-100%";
-      }
-      setLicenseDrawerHideShow(false);
-    } else {
-      const drawerParent = document.getElementById("drawerParentMobile");
-      const drawerChild = document.getElementById("drawerChildMobile");
-      if (drawerParent) {
-        drawerParent.classList.remove("overlayAccount");
-        drawerChild.style.transition = "1.5s linear;";
-        drawerChild.style.bottom = "-100%";
-      }
-    }
-
-    if (action == 1) {
-      const licenseIDgrpStr =
-        data.selectedLicenseArray.length > 0
-          ? data.selectedLicenseArray.join(",")
-          : "";
-      dispatch(
-        coActions.coAccountUpdateRequest({
-          gUserID: loggedUser.UserID,
-          settingType: 3,
-          actionFlag: 2,
-          entityID: 0,
-          licID: licenseIDgrpStr,
-          uUserID: 0,
-          utype: 0,
-          notificationList: "",
-          pwd: "",
-        })
-      );
-    }
-  };
-
   const onSliderChange = () => {
     setIsSliderCheck(!isSliderCheck);
   };
@@ -207,8 +206,156 @@ function CoAccount({ handleClose }) {
       }
     }
   };
+
+  const paymentDrawer = () => {
+    setIsShowFilter(false);
+    setIsShowPayment(!isShowPayment);
+  };
   return (
     <div className="co-account ">
+      <div
+        className={`license-popup ${isShowFilter && "popup-open"}`}
+        style={{
+          boxShadow: isShowFilter
+            ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
+            : "none",
+        }}
+      >
+        <div className="container">
+          <ChooseLicenses
+            fields={fields}
+            close={(data, action) => close(data, action)}
+            paymentDrawer={paymentDrawer}
+          />
+        </div>
+      </div>
+
+      {/* Payment Drawer */}
+      <div
+        className={`license-popup ${isShowPayment && "popup-open"}`}
+        style={{
+          boxShadow: isShowPayment
+            ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
+            : "none",
+        }}
+      >
+        <div className="">
+          <Payment paymentDrawer={paymentDrawer} />
+        </div>
+      </div>
+
+      {/* <div className="co-account ">
+        <div className="d-flex">
+          <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
+            <div className="personal-mgt-title">Account</div>
+          </div>
+          <div className="col-2 col-sm-12 col-md-12 col-xl-12 d-block d-sm-none">
+            <img
+              className="close-icon-personal"
+              src={closeBlack}
+              alt="close Black"
+              onClick={() => {
+                setIsShowPayment(!isShowPayment);
+              }}
+            />
+          </div>
+        </div>
+
+        <div class="border-header d-none d-sm-block"></div>
+        <div className="scroll-sction">
+          <div className="channel-div">
+            <div className="row pl-0">
+              <div className="col-9">
+                <div className="acc-div">
+                  <div className="licences-toggle">
+                    <p className="normaltext">
+                      COMPLIANCE SUTRA Expert &nbsp;
+                      <span className="d-none d-sm-block">
+                        {" "}
+                        License Review
+                      </span>{" "}
+                    </p>
+                    <p className="normaltext d-block d-sm-none">
+                      {" "}
+                      License Review{" "}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-3">
+                <button
+                  className={
+                    erServiceStatus === "Active"
+                      ? "service-status-active"
+                      : "service-status"
+                  }
+                >
+                  {erServiceStatus}
+                </button>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col mt-2">
+                <button
+                  className="service-setup"
+                  onClick={() => setIsShowFilter(!isShowFilter)}
+                >
+                  setup now
+                </button>
+                <button className="service-read-more">read more</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="active-license-detail">
+            <div className="row pl-0 active-license">
+              <div className="col-9">
+                <p>Active Licences and Subsidaries</p>
+              </div>
+              <div className="col-3">
+                <p style={{ color: "#6c5dd3", textAlign: "right" }}>
+                  <BsPencil />
+                  Edit
+                </p>
+              </div>
+            </div>
+
+            <div className="row pl-0 active-license-buttons">
+              <div className="col">
+                {companyDetail?.[0]?.Palns?.map((licenses) => (
+                  <button>{licenses.LicenseCode}</button>
+                ))}
+              </div>
+            </div>
+
+            <div className="row pl-0 active-license">
+              <div className="col-9">
+                <p>Subscription</p>
+              </div>
+              <div className="col-3">
+                <p style={{ color: "#6c5dd3", textAlign: "right" }}>
+                  <RiRefreshFill
+                    style={{
+                      color: "#6c5dd3",
+                      fontSize: "15px",
+                    }}
+                  />
+                  Change
+                </p>
+              </div>
+            </div>
+
+            <div className="row pl-0 active-license-buttons">
+              <div className="col">
+                <button>Monthly plan @₹1244</button>
+                <button>Validity till 15 Aug</button>
+              </div>
+            </div>
+          </div>
+          <button className="deactivate-service">Deactivate Service</button>
+        </div>
+      </div> */}
+
       {!isMobile && (
         <div id="drawerParent" className="">
           <div id="drawerChild" className="sideBarFixed">
@@ -265,54 +412,107 @@ function CoAccount({ handleClose }) {
                           {" "}
                           License Review
                         </span>{" "}
-                        <span className="review">{flagCount}</span>
                       </p>
                       <p className="normaltext d-block d-sm-none">
                         {" "}
                         License Review{" "}
                       </p>
                     </div>
-                    {isSliderCheck && isMobile && (
-                      <p
-                        style={{
-                          cursor: "pointer",
-                          opacity: isSliderCheck > 0 ? 1 : 0.7,
-                        }}
-                        onClick={() => onAddLicenseLabelClick()}
-                        className="add-remove"
-                      >
-                        Add/remove licenses
-                      </p>
-                    )}
-                    {isSliderCheck && !isMobile && (
-                      <p
-                        style={{
-                          cursor: "pointer",
-                          opacity: isSliderCheck > 0 ? 1 : 0.7,
-                        }}
-                        onClick={() => onAddLicenseLabelClick()}
-                        className="add-remove"
-                      >
-                        Add/remove licenses
-                      </p>
-                    )}
                   </div>
                 </div>
                 <div className="col-3">
-                  <div className="check-box-acc">
-                    <label class="switch" id="licenses">
-                      <input
-                        htmlFor="licenses"
-                        id="licenseSetting"
-                        type="checkbox"
-                        checked={isSliderCheck}
-                        onClick={(e) => onSliderChange()}
-                      />
-                      <span class="slider round"></span>
-                    </label>
+                  <button
+                    className={
+                      erServiceStatus === "Active"
+                        ? "service-status-active"
+                        : "service-status"
+                    }
+                  >
+                    {erServiceStatus}
+                  </button>
+                </div>
+              </div>
+
+              {erServiceStatus !== "Active" && (
+                <div className="row">
+                  <div className="col mt-2">
+                    <button
+                      className="service-setup"
+                      onClick={() => setIsShowFilter(!isShowFilter)}
+                    >
+                      setup now
+                    </button>
+                    <button className="service-read-more">read more</button>
                   </div>
                 </div>
+              )}
 
+              {erServiceStatus === "Active" && (
+                <div>
+                  <div className="active-license-detail">
+                    <div className="row pl-0 active-license">
+                      <div className="col-9">
+                        <p>Active Licences and Subsidaries</p>
+                      </div>
+                      <div className="col-3" onClick={openLicenseDrawer}>
+                        <p
+                          style={{
+                            color: "#6c5dd3",
+                            textAlign: "right",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <BsPencil />
+                          Edit
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="row pl-0 active-license-buttons">
+                      <div className="col">
+                        {companyDetail?.[0]?.Palns?.map((licenses) => (
+                          <button>{licenses.LicenseCode}</button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="row pl-0 active-license">
+                      <div className="col-9">
+                        <p>Subscription</p>
+                      </div>
+                      <div className="col-3">
+                        <p
+                          style={{
+                            color: "#6c5dd3",
+                            textAlign: "right",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <RiRefreshFill
+                            style={{
+                              color: "#6c5dd3",
+                              fontSize: "15px",
+                            }}
+                          />
+                          Change
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="row pl-0 active-license-buttons">
+                      <div className="col">
+                        <button>Monthly plan @₹1244</button>
+                        <button>Validity till 15 Aug</button>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="deactivate-service">
+                    Deactivate Service
+                  </button>
+                </div>
+              )}
+
+              <div style={{ width: "600px" }}>
                 <PaymentSection
                   openLicenseDrawer={openLicenseDrawer}
                   setUpgradeYourPlan={setIsUpgradeYourAccountOpen}

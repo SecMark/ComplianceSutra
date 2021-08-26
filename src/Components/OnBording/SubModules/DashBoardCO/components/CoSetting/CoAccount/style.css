@@ -115,6 +115,95 @@
   right: 0;
   bottom: 0;
   background-color: #e4e4e4;
+}
+.co-account .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.co-account .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e4e4e4;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.co-account .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.co-account .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.co-account input:checked + .slider {
+  background-color: #6c5dd3;
+}
+
+.co-account input:focus + .slider {
+  box-shadow: 0 0 1px #6c5dd3;
+}
+
+.co-account input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.co-account .slider.round {
+  border-radius: 34px;
+}
+
+.co-account .slider.round:before {
+  border-radius: 50%;
+}
+
+/* Css For License Drawer*/
+
+
+.co-account input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.co-account .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.co-account .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e4e4e4;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -1015,4 +1104,116 @@ div#contentGeneral:last-child {
     margin-bottom: 0.5rem;
     font-size: 1rem;
   }
+}
+
+.service-status {
+  background: #fcdede;
+  padding: 5px;
+  border: none;
+  text-transform: uppercase;
+  color: #e3513a;
+}
+
+.service-status-active {
+  background-color: #e4f1e4;
+  padding: 5px;
+  border: none;
+  text-transform: uppercase;
+  color: #7fba7a;
+}
+
+.service-setup {
+  border: none;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  font-size: 15px;
+  background: #6c5dd3;
+  color: #fff;
+  border-radius: 2px;
+}
+
+.service-read-more {
+  border: none;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  font-size: 15px;
+  background: #fff;
+  color: #6c5dd3;
+}
+
+.license-popup {
+  width: 800px;
+  height: 100vh;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  position: absolute;
+  right: -800px;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  transition: all 300ms ease;
+}
+
+.active-license {
+  margin-top: 10px;
+}
+
+.active-license p {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+
+.active-license-buttons button {
+  border: none;
+  background: #f7f4fe;
+  color: #9386ad;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: center;
+  border-radius: 16px;
+  padding: 5px 10px;
+  margin-right: 5px;
+}
+
+.active-license-detail {
+  padding: 16px 10px;
+  object-fit: contain;
+  border-radius: 8px;
+  background-color: rgba(246, 248, 251, 0.54);
+  width: 600px;
+  margin-top: 10px;
+}
+
+.deactivate-service {
+  background: #fff;
+  text-transform: uppercase;
+  border: none;
+  margin-top: 10px;
+
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+}
+
+p.grey-text {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 }
