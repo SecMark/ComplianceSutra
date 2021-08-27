@@ -49,6 +49,7 @@ import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardC
 import Loading from "../CommonModules/sharedComponents/Loader";
 import ExperReview from "../Components/ExpertReviewModule";
 import SuperAdmin from "../Components/SuperAdminModule";
+import UserManagement from "../Components/UserManagementModule";
 
 // import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
@@ -197,6 +198,11 @@ export default function AppRouter() {
           {/* Admin Review */}
           <Switch>
             <Route path="/super-admin" component={SuperAdmin}></Route>
+          </Switch>
+
+          {/* user management Review */}
+          <Switch>
+            <Route path="/user-management" component={UserManagement}></Route>
           </Switch>
         </div>
       </>
