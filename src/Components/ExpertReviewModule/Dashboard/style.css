@@ -1,12 +1,7 @@
 .ER-dashboard-conatiner {
   display: flex;
 }
-.taskIcon {
-  padding: 10px;
-}
-.taskIcon-active {
-  padding: 10px;
-}
+
 
 .ER-task-statics {
   display: flex;
