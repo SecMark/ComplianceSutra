@@ -6,7 +6,6 @@ import { routerMiddleware } from "connected-react-router"
 import createSagaMiddleware from "redux-saga"
 import createRootReducer from "./reducers"
 import sagas from "./sagas"
-import NotificationReducers from "../Components/OnBording/SubModules/DashBoardCO/components/notification/Redux/Reducers/NotificationRedu"
 
 export const history = createBrowserHistory()
 

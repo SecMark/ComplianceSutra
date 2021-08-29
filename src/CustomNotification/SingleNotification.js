@@ -5,7 +5,7 @@ import { actions as notificationActions } from "../Components/OnBording/SubModul
 import bellSelected from "../assets/Icons/bellSelected.png";
 
 function SingleNotification(props) {
-  const state = useSelector((state) => state);
+
   const dispatch = useDispatch();
   let text = "";
   let taskId = 0;

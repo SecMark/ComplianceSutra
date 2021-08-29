@@ -9,25 +9,21 @@ export default {
     errorDueToRange:
       "Range Cannot be more than 1 year. Please change the selected date.",
     errorDueToReverseDate: "Date should be after ",
-    errorDueToPriorDate: "Your tasks starts from",
+    errorDueToPriorDate: "Date should not be prior to date of registration.",
     errorDueToPreviousDate: "Date should be after today's date.",
     errorDueToMoreThanOneYearDateFromToday:
       "Date should be less than 1 year from today's date.",
     errorDueToBeforeDate: "Date should not be prior to today's date.",
+    errorDueToPriorDate: "Date should not be prior to date of registration.",
+    errorDueToPreviousDate: "Date should be after today's date.",
+    errorDueToMoreThanOneYearDateFromToday:
+      "Date should be less than 1 year from today's date.",
   },
   filterFlag: "A",
   status: "status",
   license: "license",
   company: "company",
   team: "team",
-  list: "list",
-  calender: "calender",
-  board: "board",
-  day: "day",
-  month: "month",
-  week: "week",
-  increment: "increment",
-  decrement: "decrement",
   ReAssignFilterTypes: {
     migrateAllTasksInDateRange: "MIGRATE_ALL_TASKS_IN_DATE_RANGE",
     migrateAllTasksOfParticularDate: "MIGRATE_ALL_TASKS_OF_PARTICULAR_DATE",
@@ -54,5 +50,43 @@ export default {
   ExpertReviewerBaseUrl: "/expert-review",
   MigrateTaskMessages: {
     success: "Migration Request has been submitted successfully!",
+    MembershipDetails: {
+      recommendedText: "RECOMMENDED",
+      plans: [
+        {
+          id: 1,
+          name: "Monthly",
+          users: 5,
+          isRecommended: false,
+          isDefaultSelected: false,
+        },
+        {
+          id: 2,
+          name: "Annual",
+          users: 10,
+          isRecommended: true,
+          isDefaultSelected: true,
+        },
+      ],
+    },
+    MembershipDetails: {
+      recommendedText: "RECOMMENDED",
+      plans: [
+        {
+          id: 1,
+          name: "Monthly",
+          users: 5,
+          isRecommended: false,
+          isDefaultSelected: false,
+        },
+        {
+          id: 2,
+          name: "Annual",
+          users: 10,
+          isRecommended: true,
+          isDefaultSelected: true,
+        },
+      ],
+    },
   },
 };
