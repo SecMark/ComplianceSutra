@@ -2,6 +2,7 @@
   width: 65vw;
   height: 100vh;
   padding-top: 5vh;
+  margin-left: 59px;
 }
 .NotificationHeader {
   display: flex;
@@ -67,4 +68,7 @@
 .MenuItem2 {
   background-color: white;
   border: none;
+}
+.h4{
+  margin-left: -50;
 }
