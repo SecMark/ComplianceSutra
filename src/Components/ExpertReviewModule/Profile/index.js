@@ -3,7 +3,7 @@ import ManageNotification from "./ManageNotification";
 import ManageSecruity from "./ManageSecurity";
 import MigrationRequest from "./MigrationRequest";
 import ProfileOptions from "./ProfileOptions";
-
+import ProfileDetails from "./ProfileDetails/index";
 import "./style.css";
 import TaskManagement from "./TaskManagement";
 
@@ -22,7 +22,7 @@ const Profile = (props) => {
         />
       </div>
       <div className="ER-options-select">
-        {options === "edit" && ""}
+        {options === "edit" && <ProfileDetails />}
         {options === "notification" && <ManageNotification />}
         {options === "task" && <TaskManagement />}
         {options === "security" && <ManageSecruity />}

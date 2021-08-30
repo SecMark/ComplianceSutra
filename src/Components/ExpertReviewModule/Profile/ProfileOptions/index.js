@@ -1,7 +1,18 @@
 import React from "react";
 import "./style.css";
+import { FaPowerOff } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { createHashHistory } from "history";
+
+import { actions as loginActions } from "../../../Authectication/redux/actions";
 
 const ProfileOptions = ({ option, selectProfileOption }) => {
+  const dispatch = useDispatch();
+  const history = createHashHistory();
+  const onClickLogout = () => {
+    dispatch(loginActions.createLogoutAction());
+    history.push("/login");
+  };
   return (
     <div className="ER-profile-options">
       <div>
@@ -41,6 +52,12 @@ const ProfileOptions = ({ option, selectProfileOption }) => {
             Migration Requests
           </li>
         </ul>
+      </div>
+      <div className="LogoutButton">
+        <button onClick={onClickLogout}>
+          <FaPowerOff style={{ marginRight: "8px" }} />
+          Logout
+        </button>
       </div>
     </div>
   );

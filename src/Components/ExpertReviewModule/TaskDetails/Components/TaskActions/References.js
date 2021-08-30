@@ -1,10 +1,9 @@
 import insertFileIcon from "../../../../../assets/Icons/insert-file.svg";
 import { MdAddCircle } from "react-icons/md";
-import { useState } from "react";
+import React, { useState } from "react";
 import AddReferencesModal from "./AddReferencesModal";
-const References = () => {
+const References = React.memo(() => {
   const [isAddReferencesOpen, setIsAddReferencesOpen] = useState(false);
-
   return (
     <>
       <AddReferencesModal
@@ -55,5 +54,5 @@ const References = () => {
       </div>
     </>
   );
-};
+});
 export default References;
