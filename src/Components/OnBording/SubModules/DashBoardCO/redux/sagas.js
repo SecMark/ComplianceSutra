@@ -115,25 +115,32 @@ const postCommentBytaskID = function* postCommentBytaskID({ payload }) {
     );
   }
 };
-
+const getTaskFilesById = function* getTaskFilesById({ payload }) {
+  try {
+    const { data, status } = yield call(api.getTaskFiles, payload);
+    if (status === 200) {
+      yield put(actions.getTaskFilesByIdSucess({ taskFiles: data }));
+    } else {
+      yield put(actions.getTaskFilesByIdFailed());
+    }
+  } catch (error) {
+    yield put(actions.getTaskFilesByIdFailed());
+  }
+};
 const postUploadFileById = function* postUploadFileById({ payload }) {
+  console.log(payload);
   // debugger
   try {
     const { data, status } = yield call(api.postUploadFile, payload);
-    // console.log(status);
-    if (status === 200) {
-      // console.log("getUsersByRole  => ", status);
+    console.log(status);
+    if (status === 201) {
       yield put(actions.postUploadFileByIDSuccess({ postUploadFile: data }));
-      toast.success(data && data.Message);
+      toast.success("Attachement successfully added!");
     } else {
       toast.success(data && data.Message);
       yield put(actions.postUploadFileByIDFailed({ postUploadFile: {} }));
     }
   } catch (err) {
-    // toast.error(
-    //     (err && err.response && err.response.data && err.response.data.message) ||
-    //         'Something went to wrong, Please try after sometime',
-    // );
     yield put(actions.postUploadFileByIDFailed({ postUploadFile: {} }));
   }
 };
@@ -361,6 +368,7 @@ export default function* sagas() {
   yield takeLatest(types.GET_USER_BY_ROLE, userRequestByRole);
   yield takeLatest(types.GET_TASK_COMMENTS_BY_TASK_ID, taskCommentBytaskID);
   yield takeLatest(types.POST_TASK_COMMENT_BY_TASK_ID, postCommentBytaskID);
+  yield takeLatest(types.GET_TASK_FILES_BY_TASK_ID, getTaskFilesById);
   yield takeLatest(types.POST_UPLOAD_FILE_BY_TASK_ID, postUploadFileById);
   yield takeLatest(types.POST_ASSIGN_TASK_BY_TASKID, postAssignTask);
   yield takeLatest(types.GET_AVAILABILITY_CHECK, userAvailabilityCheck);

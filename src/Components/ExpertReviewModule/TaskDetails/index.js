@@ -1,28 +1,36 @@
-import React, { useState, Suspense } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import "./style.css";
 import searchIcon from "../../../.../../assets/Icons/searchIcon.png";
 import closeIconGray from "../../../.../../assets/Icons/closeIconGray.png";
 import { useOuterClick } from "../../OnBording/SubModules/DashBoardCO/components/RightSideGrid/outerClick";
 import TaskDetailRightSide from "./Components/TaskDetailRightSide";
 import Loading from "../../../CommonModules/sharedComponents/Loader";
-const TasksListByStatus = React.lazy(() =>
-  import("./Components/TasksListByStatus")
-);
-const TasksListByCompany = React.lazy(() =>
+const TasksListByStatus = lazy(() => import("./Components/TasksListByStatus"));
+const TasksListByCompany = lazy(() =>
   import("./Components/TasksListByCompany")
 );
-const TaskListByTeam = React.lazy(() => import("./Components/TaskListByTeam"));
+const TaskListByTeam = lazy(() => import("./Components/TaskListByTeam"));
+const TaskListByLicense = lazy(() => import("./Components/TaskListByLicense"));
+const TaskListBySearch = lazy(() => import("./Components/TaskListBySearch"));
 const sortByFilters = ["status", "company", "licenses", "team"];
-const TaskDetailView = () => {
+const TaskDetailView = ({ closeTaskDetails }) => {
   const [currentOpenedTask, setCurrentOpenedTask] = useState({});
-  const [isTaskDetailOpen, setIsTaskDetailOpen] = useState(false);
   const [isSearchBoxOpen, setIsSearchBoxOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [currentFilterIndex, setCurrentFilterIndex] = useState(0);
-  const handleSearchBoxClose = (e) => {
+  const handleSearchBoxClose = (typeOfClick) => {
     if (isSearchBoxOpen) {
-      setSearchValue("");
-      setIsSearchBoxOpen(false);
+      if (
+        searchValue !== "" &&
+        typeOfClick &&
+        typeOfClick === "search-box-close"
+      ) {
+        setSearchValue("");
+        setIsSearchBoxOpen(false);
+      }
+      if (searchValue === "") {
+        setIsSearchBoxOpen(false);
+      }
     }
   };
   const overviewSearchBoxRef = useOuterClick(handleSearchBoxClose);
@@ -48,7 +56,7 @@ const TaskDetailView = () => {
                 />
                 <span
                   className="search-box-close"
-                  onClick={handleSearchBoxClose}
+                  onClick={() => handleSearchBoxClose("search-box-close")}
                 >
                   <img src={closeIconGray} alt="close icon" />
                 </span>
@@ -89,16 +97,24 @@ const TaskDetailView = () => {
         )}
         {/* Tasks */}
         <div className="side-overview__tasks">
+          {searchValue !== "" && (
+            <div className="tasks__by-status">
+              {/* View By Status */}
+              <Suspense fallback={<Loading isInline />}>
+                <TaskListBySearch
+                  setCurrentTask={setCurrentOpenedTask}
+                  currentTask={currentOpenedTask}
+                  searchValue={searchValue}
+                />
+              </Suspense>
+            </div>
+          )}
           {searchValue === "" &&
             sortByFilters[currentFilterIndex] === "status" && (
               <div className="tasks__by-status">
                 {/* View By Status */}
                 <Suspense fallback={<Loading isInline />}>
-                  <TasksListByStatus
-                    search={searchValue}
-                    setCurrentTask={setCurrentOpenedTask}
-                    currentTask={currentOpenedTask}
-                  />
+                  <TasksListByStatus />
                 </Suspense>
               </div>
             )}
@@ -116,10 +132,14 @@ const TaskDetailView = () => {
             )}
           {searchValue === "" &&
             sortByFilters[currentFilterIndex] === "licenses" && (
-              <div>
+              <div className="tasks__by-status">
                 {/* View By Company */}
-                {/* <TaskListByLicense currentTask={currentOpenedTask}
-                  setCurrentTask={setCurrentOpenedTask} /> */}
+                <Suspense fallback={<Loading isInline />}>
+                  <TaskListByLicense
+                    currentTask={currentOpenedTask}
+                    setCurrentTask={setCurrentOpenedTask}
+                  />
+                </Suspense>
               </div>
             )}
           {searchValue === "" && sortByFilters[currentFilterIndex] === "team" && (
@@ -137,7 +157,10 @@ const TaskDetailView = () => {
       </div>
       {/* ==== Task Detail ==== */}
       <div className="task-detail__task-data">
-        <TaskDetailRightSide taskData={currentOpenedTask} />
+        <TaskDetailRightSide
+          taskData={currentOpenedTask}
+          closeTaskDetails={closeTaskDetails}
+        />
       </div>
     </div>
   );
