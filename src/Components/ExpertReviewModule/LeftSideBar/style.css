@@ -5,26 +5,16 @@
 .ER-left-bar {
   background-color: #f6f9fb;
   padding-top: 30px;
-<<<<<<< Updated upstream
-  height: 100%;
-  position: relative;
-  text-align: center;
-  
-=======
   height: 100vh;
   position: absolute;
   text-align: center; 
   overflow-y: hidden;
->>>>>>> Stashed changes
 }
 
 .ER-main {
   padding: 50px 50px;
-<<<<<<< Updated upstream
-=======
   width: 1390px;
   margin-left: 50px;
->>>>>>> Stashed changes
 }
 
 .ER-left-bar .ER-main{
