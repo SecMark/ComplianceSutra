@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import plusIcon3 from "../../../assets/Icons/plusIcon3.png";
+import { AiOutlinePlus } from "react-icons/ai";
 import UserList from "./components/UserList";
 import UserRoleList from "./components/UserRoleList";
 import "./style.css";
@@ -24,22 +24,24 @@ const Dashboard = () => {
           </div>
           <div className="row">
             {sortBy === "Roles" && (
-              <div className="col mt-3">
-                <div className="row">
-                  <span className="mt-2 ml-2">Show:</span>
-                  <select
-                    className="form-select ml-2"
-                    style={{ width: "200px", height: "40px", padding: "5px" }}
-                  >
-                    <option selected>All Results</option>
-                  </select>
+              <div className="col-md-4">
+                <div className="col mt-3">
+                  <div className="row">
+                    <span className="mt-2 ml-2">Show:</span>
+                    <select
+                      className="form-select ml-2"
+                      style={{ width: "200px", height: "40px", padding: "5px" }}
+                    >
+                      <option selected>All Results</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             )}
             <div className="col">
               <ul className="sort-by-filter">
                 <span className="sort-by add-btn">
-                  <img src={plusIcon3} alt="plus" />
+                  <AiOutlinePlus size={18} className="m-1" />
                   ADD NEW USER
                 </span>
                 <span className="sort-by">Sort by</span>

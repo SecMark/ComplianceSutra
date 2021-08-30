@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import downArrow from "../../../../../assets/Icons/downArrow.png";
-import topArrow from "../../../../../assets/Icons/topArrow.png";
-import Collapsible from "react-collapsible";
-import { Table } from "react-bootstrap";
+import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { getUsers } from "../../redux/actions/user";
 
@@ -60,7 +57,7 @@ const Clients = () => {
       <div className="ER-task-container mt-0">
         <div className="ER-take-action">
           <div className="task-list-grid">
-            <Table className="table">
+            <table className="table">
               <thead>
                 <tr>
                   <th>STATUS</th>
@@ -82,6 +79,7 @@ const Clients = () => {
                           <label className="switch">
                             <input
                               type="checkbox"
+                              value={item.StatusActive}
                               checked={item.StatusActive === 0 ? true : false}
                               disabled={item.StatusActive === 2 ? true : false}
                             />
@@ -131,15 +129,11 @@ const Clients = () => {
                       </td>
                       <td>{item.LicExpertee}</td>
                       <td>
-                        <img
-                          className="float-right"
-                          src={
-                            collapse && collapse[index] && collapse[index].open
-                              ? topArrow
-                              : downArrow
-                          }
-                          alt="btn Arrow"
-                        />
+                        {collapse && collapse[index] && collapse[index].open ? (
+                          <AiOutlineArrowUp size={18} color="#000000" />
+                        ) : (
+                          <AiOutlineArrowDown size={18} color="#000000" />
+                        )}
                       </td>
                     </tr>
                     {collapse && collapse[index] && collapse[index].open && (
@@ -167,7 +161,7 @@ const Clients = () => {
                   </tbody>
                 );
               })}
-            </Table>
+            </table>
           </div>
         </div>
       </div>
