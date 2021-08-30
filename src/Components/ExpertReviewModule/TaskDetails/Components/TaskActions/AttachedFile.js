@@ -39,7 +39,9 @@ const AttachedFile = React.memo(({ taskId }) => {
   useEffect(() => {
     dispatch(
       taskReportActions.getTaskFilesById({
-        TaskId: taskId,
+        taskID: taskId,
+        actionFlag: 0,
+        ftype: 0,
       })
     );
   }, []);

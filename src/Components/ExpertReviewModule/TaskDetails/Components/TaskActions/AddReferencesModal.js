@@ -51,10 +51,10 @@ const AddReferencesModal = ({ isOpen, setIsOpen, taskId }) => {
     );
   };
   const handleAddAttachement = () => {
-    if (linksList.length !== 0 && fileList.length === 0) {
+    if (isURL(linkInput) && fileList.length === 0) {
       handleLinkUpload(linkInput);
     }
-    if (linksList.length === 0 && fileList.length !== 0) {
+    if (linkInput === "" && fileList.length !== 0) {
       handleFileUpload(fileList);
     }
     if (linksList.length !== 0 && fileList.length !== 0) {

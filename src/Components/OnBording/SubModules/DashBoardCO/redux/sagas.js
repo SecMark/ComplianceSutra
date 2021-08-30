@@ -70,9 +70,16 @@ const taskCommentBytaskID = function* taskCommentBytaskID({ payload }) {
     const { data, status } = yield call(api.getTaskComments, payload);
     // console.log("payload ==> ",payload)
     if (status === 200) {
-      yield put(
-        actions.taskCommentsByTaskIdSuccess({ getTaskCommentByRole: data })
-      );
+      if (payload.link === 1) {
+        yield put(
+          actions.taskCommentsByTaskIdSuccess({ getTaskLinksByRole: data })
+        );
+      }
+      if (payload.link === 0) {
+        yield put(
+          actions.taskCommentsByTaskIdSuccess({ getTaskCommentByRole: data })
+        );
+      }
       toast.success(data && data.Message);
     } else {
       toast.success(data && data.Message);
@@ -119,7 +126,12 @@ const getTaskFilesById = function* getTaskFilesById({ payload }) {
   try {
     const { data, status } = yield call(api.getTaskFiles, payload);
     if (status === 200) {
-      yield put(actions.getTaskFilesByIdSucess({ taskFiles: data }));
+      if (payload.ftype === 0) {
+        yield put(actions.getTaskFilesByIdSucess({ taskFiles: data }));
+      }
+      if (payload.ftype === 1) {
+        yield put(actions.getTaskFilesByIdSucess({ taskFilesReference: data }));
+      }
     } else {
       yield put(actions.getTaskFilesByIdFailed());
     }

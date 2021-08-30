@@ -3,6 +3,8 @@ import { MdAddCircle } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import AddReferencesModal from "./AddReferencesModal";
 import { useDispatch, useSelector } from "react-redux";
+import { actions as taskReportActions } from "../../../../OnBording/SubModules/DashBoardCO/redux/actions";
+import { BACKEND_BASE_URL } from "../../../../../apiServices/baseurl";
 const References = React.memo(({ taskId }) => {
   const [linkRefs, setLinkRefs] = useState([]);
   const [fileRefs, setFileRefs] = useState([]);
@@ -14,21 +16,39 @@ const References = React.memo(({ taskId }) => {
     state &&
     state.taskReport &&
     state.taskReport.taskFilesById &&
-    state.taskReport.taskFilesById.taskFiles;
+    state.taskReport.taskFilesById.taskFilesReference;
   const links =
     state &&
     state.taskReport &&
     state.taskReport.getTaskCommentByRole &&
-    state.taskReport.getTaskCommentByRole.getTaskCommentByRole;
+    state.taskReport.getTaskCommentByRole.getTaskLinksByRole;
 
   useEffect(() => {
     if (files && files !== undefined && files.length !== 0) {
-      setFileRefs(files);
+      setFileRefs(files[0].Files);
     }
     if (links && links !== undefined && links.length !== 0) {
-      setLinkRefs(files);
+      setLinkRefs(links);
     }
   }, [files, links]);
+  // useEffect(() => {
+  //   console.log(fileRefs);
+  // }, [fileRefs]);
+  useEffect(() => {
+    dispatch(
+      taskReportActions.taskCommentsByTaskIdRequest({
+        taskid: taskId,
+        link: 1,
+      })
+    );
+    dispatch(
+      taskReportActions.getTaskFilesById({
+        taskID: taskId,
+        actionFlag: 0,
+        ftype: 1,
+      })
+    );
+  }, []);
   return (
     <>
       <AddReferencesModal
@@ -39,18 +59,53 @@ const References = React.memo(({ taskId }) => {
         lilnkRefs={linkRefs}
       />
       <div className="mt-4">
-        <div className="d-flex task-data__file-actions justify-content-between my-2">
-          <p className="task-data__field-value d-flex align-items-center task-action__file-name">
-            <img src={insertFileIcon} alt="file" /> Holding Statement.pdf
-          </p>
-          <button className="task-data__migrate-file-button task-action__button task-action__button--view">
-            View
-          </button>
-          <button className="task-data__migrate-file-button task-action__button task-action__button--download">
-            Download
-          </button>
-        </div>
-        <div className="d-flex task-data__file-actions justify-content-between my-2">
+        {linkRefs &&
+          linkRefs.length !== 0 &&
+          linkRefs.map((link) => {
+            console.log("linksRef : ", linkRefs);
+            return (
+              <div className="d-flex task-data__file-actions justify-content-between my-2">
+                <p className="task-data__field-value d-flex align-items-center task-action__file-name">
+                  <img src={insertFileIcon} alt="file" /> {link.Comment}{" "}
+                  By&nbsp;&nbsp;
+                  <strong>{link.B[0].UserName}</strong>
+                </p>
+                <a
+                  href={link.Comment}
+                  className="task-data__migrate-file-button task-action__button task-action__button--view"
+                >
+                  View
+                </a>
+                {/* <button className="task-data__migrate-file-button task-action__button task-action__button--download">
+                  Download
+                </button> */}
+              </div>
+            );
+          })}
+        {fileRefs &&
+          fileRefs.length !== 0 &&
+          fileRefs.map((item) => {
+            return (
+              <div className="d-flex task-data__file-actions justify-content-between my-2">
+                <p className="task-data__field-value d-flex align-items-center task-action__file-name">
+                  <img src={insertFileIcon} alt="file" /> {item.FileName}
+                </p>
+                <button className="task-data__migrate-file-button task-action__button task-action__button--view">
+                  View
+                </button>
+                <a
+                  href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${taskId}&flag=downloadtaskfiles&file=${item.FileName}`}
+                  className="task-data__migrate-file-button task-action__button task-action__button--download"
+                  style={{
+                    lineHeight: "normal",
+                  }}
+                >
+                  Download
+                </a>
+              </div>
+            );
+          })}
+        {/* <div className="d-flex task-data__file-actions justify-content-between my-2">
           <p className="task-data__field-value d-flex align-items-center task-action__file-name">
             <img src={insertFileIcon} alt="file" /> Validation Form.pdf
           </p>
@@ -71,7 +126,7 @@ const References = React.memo(({ taskId }) => {
           <button className="task-data__migrate-file-button task-action__button task-action__button--download">
             Download
           </button>
-        </div>
+      </div> */}
         <button
           className="task-data__add-references d-flex align-items-center my-3"
           onClick={() => setIsAddReferencesOpen(true)}

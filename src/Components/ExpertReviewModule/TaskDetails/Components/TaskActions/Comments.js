@@ -19,6 +19,7 @@ const Comments = React.memo(({ taskId }) => {
     dispatch(
       taskReportActions.taskCommentsByTaskIdRequest({
         taskid: taskId,
+        link: 0,
       })
     );
   }, []);

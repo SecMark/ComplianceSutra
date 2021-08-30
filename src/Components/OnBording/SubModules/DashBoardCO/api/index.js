@@ -8,7 +8,7 @@ const getUsersByRole = (payload) => api.post("/api/getUsersByRole", payload);
 
 const getTaskComments = (payload) =>
   api.post(
-    `/api/bindTaskComments?taskid=${payload.taskid}&link=${payload.ftype || 0}`
+    `/api/bindTaskComments?taskid=${payload.taskid}&link=${payload.link || 0}`
   );
 
 const postTaskComments = (payload) => api.post("/api/TaskComments", payload);
