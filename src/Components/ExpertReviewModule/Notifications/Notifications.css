@@ -1,41 +1,75 @@
 .NotificationMain {
-  width: 65vw;
+  width: 100vw;
   height: 100vh;
   padding-top: 5vh;
+  overflow-y: scroll;
 }
 .NotificationHeader {
   display: flex;
   justify-content: space-between;
   padding: 2% 8%;
   position: relative;
+  width: 80%;
+  margin-bottom: -2vh;
+}
+.NotificationHeader > div > h4 {
+  margin-left: -3rem;
 }
 .NotificationFilter {
   display: flex;
   margin-left: 18vw;
+  margin-right: -3rem;
 }
-.ListMain {
-  padding: 2rem;
-}
+
 #Day {
   color: #696969b0;
+  margin-top: 3rem;
+  margin-bottom: 0.5rem;
+  margin-left: -1rem;
 }
-.ListPoint > ul > li {
-  background: #f9f7ff;
-  list-style: none;
+.ListMain {
+  width: 70vw;
+  margin-left: 5vw;
+  font-family: Poppins;
+  margin-top: -5vh;
+}
+.ListElement {
+  font-weight: 600;
   display: flex;
+  margin-bottom: 1rem;
+}
+.ListPoint {
+  background: #f9f7ff;
+  display: flex;
+  width: 70vw;
   justify-content: space-between;
   padding: 1rem 2rem;
   color: #575757;
-  border-radius: 8px;
+  border-radius: 4px;
   font-weight: 300;
-}
-.ListPoint {
   margin-bottom: -1.2rem;
-  margin-left: -2.5rem;
+  margin-left: -2rem;
+  color: #575757;
+}
+.ListDesc {
+  display: flex;
+  width: 80%;
+  padding-left: -1rem;
+}
+
+.ListPoint > div > p {
+  list-style: none;
+  font-weight: 500;
+  font-size: 12px;
+  padding-top: 5px;
+}
+.ListPoint > div > p > b {
+  margin: 0 4px;
+  font-weight: 550;
 }
 #TimeArrived {
   color: #202020;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .Menu {
@@ -43,7 +77,8 @@
   border: none;
   cursor: pointer;
   max-width: 1vw;
-  margin-left: -2vw;
+  margin-left: -5vw;
+  margin-top: -2vh;
 }
 
 .MenuList {
@@ -52,10 +87,10 @@
   border: 1px solid rgba(201, 199, 199, 0.144);
   box-shadow: 0px 2px 5px #5757579a;
   position: absolute;
-  right: -3vw;
-  top: 8vh;
+  right: 2vw;
+  top: 9vh;
   width: 10vw;
-  padding: 8px 2px;
+  padding: 10px 2px;
 
   border-radius: 5px;
 }

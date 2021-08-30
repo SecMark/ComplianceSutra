@@ -1,18 +1,17 @@
 import React, { useState } from "react";
+
 import "./Notifications.css";
 import Select from "react-select";
 import NotificationList from "./NotificationList/NotificationList";
-import Popup from "./Notificationpopup/Popup";
+import Popup from "./NotificationPopup/Popup";
 
 const ERNotifications = () => {
   const [read, setRead] = useState(false);
 
-  const ReadAll = () => {
-    setRead(true);
-  };
   const SelectedFilter = (e) => {
     console.log(e.value);
   };
+
   const options = [
     { value: "All", label: "All Notifications" },
     { value: "Submitted", label: " New Submitted Tasks" },
@@ -83,8 +82,7 @@ const ERNotifications = () => {
           </div>
           <Popup />
         </div>
-        <NotificationList />
-        <NotificationList />
+        <NotificationList options={options} />
       </div>
     </div>
   );

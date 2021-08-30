@@ -9,7 +9,12 @@ const Popup = () => {
     <div className="PopupMain">
       <div>
         <button className="Menu" onClick={() => setShowMenu(!showMenu)}>
-          <BiDotsVerticalRounded />
+          <BiDotsVerticalRounded
+            style={{
+              height: "2rem",
+              width: "1.5rem",
+            }}
+          />
         </button>
       </div>
       {(showMenu && (
