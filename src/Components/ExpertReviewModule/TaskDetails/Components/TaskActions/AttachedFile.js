@@ -1,6 +1,6 @@
 import insertFileIcon from "../../../../../assets/Icons/insert-file.svg";
-
-const AttachedFile = () => {
+import React from "react";
+const AttachedFile = React.memo(() => {
   return (
     <div className="mt-4">
       <div className="d-flex task-data__file-actions justify-content-between my-2">
@@ -27,6 +27,6 @@ const AttachedFile = () => {
       </div>
     </div>
   );
-};
+});
 
 export default AttachedFile;

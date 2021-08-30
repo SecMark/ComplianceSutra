@@ -278,6 +278,15 @@
     color: #aeaeae;
   }
   /* bottom logo */
+
+  .password-toggle-ico{
+    position: absolute;
+    top: 300px;
+    right: 659px;
+    z-index: 1000;
+    cursor: pointer;
+    color: #6c5dd3;
+  }
   
 
   @media screen and (max-width: 767px) {
