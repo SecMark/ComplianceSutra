@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import plusIcon3 from "../../../assets/Icons/plusIcon3.png";
 import UserList from "../UserList";
-import TaskList from "../TaskList";
+import UserRoleList from "../UserRoleList";
 import "./style.css";
 
 const Dashboard = () => {
@@ -99,7 +99,7 @@ const Dashboard = () => {
           {sortBy === "Alphabatically" ? (
             <UserList />
           ) : sortBy === "Roles" ? (
-            <TaskList />
+            <UserRoleList />
           ) : null}
         </div>
       </div>

@@ -16,7 +16,11 @@ const SATaskHistoryFilter = lazy(() =>
 );
 
 const SATaskDetails = lazy(() =>
-  import("../../../Components/SuperAdminModule/TaskDetails/index")
+  import("../../../Components/SuperAdminModule/TaskDetails")
+);
+
+const UserManagement = lazy(() =>
+  import("../../../Components/SuperAdminModule/UserManagement")
 );
 
 export const routes = [
@@ -43,5 +47,9 @@ export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/task-details`,
     component: SATaskDetails,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/user-management`,
+    component: UserManagement,
   },
 ];

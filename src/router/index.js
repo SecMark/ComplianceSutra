@@ -49,7 +49,6 @@ import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardC
 import Loading from "../CommonModules/sharedComponents/Loader";
 import ExperReview from "../Components/ExpertReviewModule";
 import SuperAdmin from "../Components/SuperAdminModule";
-import UserManagement from "../Components/UserManagementModule";
 
 // import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
@@ -132,23 +131,17 @@ export default function AppRouter() {
             component={PersonalDetailsTM}
           />
           <Route exact path="/login" component={Login} />
-
           <Route exact path="/forgot-password" component={ForgotPassword} />
           <Route exact path="/change-password" component={ChangePassword} />
-
           <Route exact path="/governance" component={Governance} />
-
           <Route exact path="/settings" component={CoSetting} />
-
           <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
           <Route
             exact
             path="/redirect-dashboard"
             component={RedirectToDashboard}
           />
-
           <Route exact path="/notifications" component={Notification} />
-
           <Route exact path="/calendar-view" component={CalendarView} />
           <Route
             exact
@@ -185,24 +178,16 @@ export default function AppRouter() {
             path="/pending-action-task-list"
             component={PendingAction}
           />
-
           <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route exact path="/new-regulations" component={DashBoardCO} />
           <Route exact path="/help" component={DashBoardCO} />
-
           {/* Expert Review */}
           <Switch>
             <Route path="/expert-review" component={ExperReview}></Route>
           </Switch>
-
           {/* Admin Review */}
           <Switch>
             <Route path="/super-admin" component={SuperAdmin}></Route>
-          </Switch>
-
-          {/* user management Review */}
-          <Switch>
-            <Route path="/user-management" component={UserManagement}></Route>
           </Switch>
         </div>
       </>

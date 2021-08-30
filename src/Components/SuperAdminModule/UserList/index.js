@@ -1,13 +1,47 @@
 import React, { useState } from "react";
-import { AiFillInfoCircle, AiFillCheckCircle } from "react-icons/ai";
-import plusIcon3 from "../../../assets/Icons/plusIcon3.png";
 import downArrow from "../../../assets/Icons/downArrow.png";
-import togglemobile from "../../../assets/Icons/togglemobile.png";
+import topArrow from "../../../assets/Icons/topArrow.png";
 import Collapsible from "react-collapsible";
 import { Table } from "react-bootstrap";
 import "./style.css";
 
 const Clients = () => {
+  const [userList, setUserList] = useState([
+    { name: "" },
+    { name: "" },
+    { name: "" },
+  ]);
+  const [collapse, setCollapse] = useState(userList);
+
+  const openCloseCollapsible = (index) => {
+    let list = [...collapse];
+    console.log(list);
+    if (collapse[index].open === false) {
+      list &&
+        list.map((item, key) => {
+          if (key === index) {
+            list[index].open = true;
+          } else {
+            list[key].open = false;
+          }
+        });
+      setCollapse(list);
+    } else {
+      let list = [...collapse];
+      list &&
+        list.map((item, key) => {
+          if (key === index) {
+            list[index].open = false;
+          } else {
+            list[key].open = false;
+          }
+        });
+      setCollapse(list);
+    }
+
+    console.log(collapse);
+  };
+
   return (
     <>
       <div className="ER-task-container mt-0">
@@ -26,10 +60,10 @@ const Clients = () => {
                   <th></th>
                 </tr>
               </thead>
-              {[1, 2, 3, 4, 5].map((item, index) => {
+              {userList.map((item, index) => {
                 return (
                   <tbody key={index}>
-                    <tr>
+                    <tr onClick={() => openCloseCollapsible(index)}>
                       <th>
                         <span class="check-box">
                           <label className="switch">
@@ -87,42 +121,46 @@ const Clients = () => {
                         </div>
                       </td>
                       <td>PFM, NSE, BSE...</td>
-                      <td
-                        data-toggle="collapse"
-                        data-target={`.multi-collapse${index}`}
-                        aria-controls={`multiCollapse${index}`}
-                      >
-                        <img src={downArrow} alt="" />
+                      <td>
+                        <img
+                          className="float-right"
+                          src={
+                            collapse && collapse[index] && collapse[index].open
+                              ? topArrow
+                              : downArrow
+                          }
+                          alt="btn Arrow"
+                        />
                       </td>
                     </tr>
-                    <tr
-                      class={`collapse multi-collapse${index}`}
-                      id={`multiCollapse${index}`}
-                    >
-                      <td></td>
-                      <td>
-                        <div className="text-muted">Associated Clients</div>
-                      </td>
-                      <td></td>
-                      <td>
-                        <div>BK securities</div>
-                        <div>BK securities</div>
-                        <div>BK securities</div>
-                      </td>
-                      <td>
-                        <div className="text-muted">Active From</div>
-                        <div className="text-muted">Active From</div>
-                        <div className="text-muted">Active From</div>
-                      </td>
-                      <td>
-                        <div>May 03, 2021</div>
-                        <div>May 03, 2021</div>
-                        <div>May 03, 2021</div>
-                      </td>
-                      <td>
-                        <span className="edit-btn">Edit</span>
-                      </td>
-                    </tr>
+                    {collapse && collapse[index] && collapse[index].open && (
+                      <tr>
+                        <td></td>
+                        <td>
+                          <div className="text-muted">Associated Clients</div>
+                        </td>
+                        <td></td>
+                        <td>
+                          <div>BK securities</div>
+                          <div>BK securities</div>
+                          <div>BK securities</div>
+                        </td>
+                        <td>
+                          <div className="text-muted">Active From</div>
+                          <div className="text-muted">Active From</div>
+                          <div className="text-muted">Active From</div>
+                        </td>
+                        <td>
+                          <div>May 03, 2021</div>
+                          <div>May 03, 2021</div>
+                          <div>May 03, 2021</div>
+                        </td>
+                        <td></td>
+                        <td>
+                          <span className="edit-btn">Edit</span>
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 );
               })}

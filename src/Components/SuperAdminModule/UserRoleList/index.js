@@ -6,7 +6,7 @@ import deadline from "../../../assets/ERIcons/deadline.png";
 import downArrow from "../../../assets/Icons/downArrow.png";
 import { AiFillInfoCircle, AiFillCheckCircle } from "react-icons/ai";
 
-const TaskList = () => {
+const UserRoleList = () => {
   return (
     <>
       <div className="ER-task-container mt-0">
@@ -175,7 +175,7 @@ const TaskList = () => {
                   <div class="circle-front-text d-none d-sm-block mail">
                     Rashika Singh
                   </div>
-                </div>{" "}
+                </div>
               </span>
               <div className="detail-name">
                 <span className="user-name">testuser@gmail.com</span>
@@ -196,4 +196,4 @@ const TaskList = () => {
   );
 };
 
-export default TaskList;
+export default UserRoleList;
