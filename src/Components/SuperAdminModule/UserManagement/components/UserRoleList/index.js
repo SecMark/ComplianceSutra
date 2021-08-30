@@ -1,10 +1,6 @@
-import React, { useState } from "react";
-import complteTaskIcon from "../../../assets/Icons/complteTaskIcon.png";
-import scheduledIcon from "../../../assets/Icons/scheduledIcon.png";
-import viewall from "../../../assets/ERIcons/viewall.png";
-import deadline from "../../../assets/ERIcons/deadline.png";
-import downArrow from "../../../assets/Icons/downArrow.png";
-import { AiFillInfoCircle, AiFillCheckCircle } from "react-icons/ai";
+import React from "react";
+import viewall from "../../../../../assets/ERIcons/viewall.png";
+import downArrow from "../../../../../assets/Icons/downArrow.png";
 
 const UserRoleList = () => {
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import downArrow from "../../../assets/Icons/downArrow.png";
-import topArrow from "../../../assets/Icons/topArrow.png";
+import downArrow from "../../../../../assets/Icons/downArrow.png";
+import topArrow from "../../../../../assets/Icons/topArrow.png";
 import Collapsible from "react-collapsible";
 import { Table } from "react-bootstrap";
 import "./style.css";

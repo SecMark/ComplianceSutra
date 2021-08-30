@@ -38,7 +38,6 @@ const Dashboard = () => {
               />
             </div>
           </div>
-
           {navTab === "Tasks" ? <TaskList /> : <ClientList />}
         </div>
       </div>

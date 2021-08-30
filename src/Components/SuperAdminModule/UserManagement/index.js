@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import plusIcon3 from "../../../assets/Icons/plusIcon3.png";
-import UserList from "../UserList";
-import UserRoleList from "../UserRoleList";
+import UserList from "./components/UserList";
+import UserRoleList from "./components/UserRoleList";
 import "./style.css";
 
 const Dashboard = () => {
