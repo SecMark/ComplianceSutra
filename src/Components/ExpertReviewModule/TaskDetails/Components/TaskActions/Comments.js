@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdArrowForward } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getIntialName } from "../../../../../CommonModules/helpers/GetIntialName.helper";
@@ -15,15 +15,15 @@ const Comments = React.memo(({ taskId }) => {
     state.taskReport &&
     state.taskReport.getTaskCommentByRole &&
     state.taskReport.getTaskCommentByRole.getTaskCommentByRole;
-  const getComments = useCallback((taskId) => {
+  const getComments = (taskId) => {
     dispatch(
       taskReportActions.taskCommentsByTaskIdRequest({
         taskid: taskId,
         link: 0,
       })
     );
-  }, []);
-  const postComment = useCallback((taskId, comment) => {
+  };
+  const postComment = (taskId, comment) => {
     dispatch(
       taskReportActions.postTaskCommentByTaskID({
         actionFlag: 1,
@@ -33,7 +33,7 @@ const Comments = React.memo(({ taskId }) => {
         link: 0,
       })
     );
-  }, []);
+  };
   useEffect(() => {
     if (comments && comments !== undefined && comments.length !== 0) {
       setTaskComments(comments);
@@ -43,7 +43,7 @@ const Comments = React.memo(({ taskId }) => {
   }, [comments]);
   useEffect(() => {
     getComments(taskId);
-  }, [taskId]);
+  }, []);
   return (
     <div className="mt-3">
       <div>

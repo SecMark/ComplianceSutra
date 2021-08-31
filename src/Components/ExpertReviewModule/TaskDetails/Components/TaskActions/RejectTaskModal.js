@@ -4,10 +4,15 @@ import { toast } from "react-toastify";
 import { MdAttachment, MdInsertDriveFile } from "react-icons/md";
 import Modal from "../../../../../CommonModules/sharedComponents/Modal";
 import "./style.css";
-const RejectTaskModal = ({ isOpen, setIsOpen }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { actions as taskReportActions } from "../../../../OnBording/SubModules/DashBoardCO/redux/actions";
+const RejectTaskModal = ({ isOpen, setIsOpen, taskId }) => {
   const [feedbackInput, setFeedbackInput] = useState("");
   const [fileList, setFileList] = useState([]);
   const [isRejectTaskEnable, setIsRejectTaskEnable] = useState(false);
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const userDetails = state && state.auth && state.auth.loginInfo;
   const handleClose = () => {
     if (isOpen) {
       setIsOpen(false);
@@ -32,13 +37,29 @@ const RejectTaskModal = ({ isOpen, setIsOpen }) => {
     });
     setFileList(filesArray);
   };
-  const handleRejectTask = () => {
-    if (isRejectTaskEnable) {
-      toast.dark("GST task for BK Securities is rejected!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      handleClose();
-    }
+
+  const handleFinalRejectTask = () => {
+    dispatch(
+      taskReportActions.taskAssignByTaskID({
+        taskID: taskId,
+        userType: 1,
+        email: "",
+        invitee: "",
+        isApproved: 3,
+        loginID: userDetails.UserID,
+        userDetails,
+      })
+    );
+    dispatch(
+      taskReportActions.postTaskCommentByTaskID({
+        actionFlag: 1,
+        taskID: taskId,
+        comment: feedbackInput,
+        commentBy: userDetails.UserID,
+        link: 0,
+      })
+    );
+    handleClose();
   };
   useEffect(() => {
     if (fileList.length !== 0 || feedbackInput !== "") {
@@ -102,7 +123,7 @@ const RejectTaskModal = ({ isOpen, setIsOpen }) => {
             cursor: !isRejectTaskEnable && "not-allowed",
             opacity: !isRejectTaskEnable && "0.5",
           }}
-          onClick={handleRejectTask}
+          onClick={handleFinalRejectTask}
         >
           Yes, Reject Task
         </button>

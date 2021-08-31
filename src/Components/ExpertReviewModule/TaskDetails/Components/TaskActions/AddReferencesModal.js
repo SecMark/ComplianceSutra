@@ -10,7 +10,7 @@ import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { actions as taskReportActions } from "../../../../OnBording/SubModules/DashBoardCO/redux/actions";
 
-const AddReferencesModal = ({ isOpen, setIsOpen, taskId }) => {
+const AddReferencesModal = ({ isOpen, setIsOpen, taskId, fetchReference }) => {
   const [linkInput, setLinkInput] = useState("");
   const [linksList, setLinksList] = useState([]);
   const [fileList, setFileList] = useState([]);
@@ -61,6 +61,7 @@ const AddReferencesModal = ({ isOpen, setIsOpen, taskId }) => {
       handleFileUpload(fileList);
       handleLinkUpload(linkInput);
     }
+    fetchReference();
     handleClose();
   };
   const handleUploadFile = (file) => {

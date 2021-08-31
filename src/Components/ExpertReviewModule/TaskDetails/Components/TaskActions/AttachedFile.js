@@ -79,30 +79,32 @@ const AttachedFile = React.memo(({ taskId }) => {
           );
         })}
       {taskFiles && taskFiles.length === 0 && <p>No Files Available</p>}
-      <Dropzone
-        multiple={true}
-        maxSize={26214400}
-        accept=".png,.jpg,
+      {false && (
+        <Dropzone
+          multiple={true}
+          maxSize={26214400}
+          accept=".png,.jpg,
       application/pdf,application/rtf,application/msword,image/bmp,
       application/vnd.ms-excel,image/tiff,image/tif,image/jpeg,
       application/ms-excel,
       .tiff,.pdf,.doc,.docx,
       .XLS,.xlsx,.CSV,.zip,.rar,.txt"
-        onDrop={(acceptedFiles) => handleUploadFile(acceptedFiles)}
-      >
-        {({ getRootProps, getInputProps }) => (
-          <div {...getRootProps({ className: "add-references__dropzone" })}>
-            <input {...getInputProps()} />
-            <img src={fileUploadIcon} alt="file-upload-icon" className="" />
-            <p className="add-references__dropzone-title">
-              Drag and drop your files here or{" "}
-              <span className="add-references__dropzone-title--blue">
-                Upload files
-              </span>
-            </p>
-          </div>
-        )}
-      </Dropzone>
+          onDrop={(acceptedFiles) => handleUploadFile(acceptedFiles)}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div {...getRootProps({ className: "add-references__dropzone" })}>
+              <input {...getInputProps()} />
+              <img src={fileUploadIcon} alt="file-upload-icon" className="" />
+              <p className="add-references__dropzone-title">
+                Drag and drop your files here or{" "}
+                <span className="add-references__dropzone-title--blue">
+                  Upload files
+                </span>
+              </p>
+            </div>
+          )}
+        </Dropzone>
+      )}
       {fileList.length > 0 &&
         fileList.map((item) => {
           const { name } = item;

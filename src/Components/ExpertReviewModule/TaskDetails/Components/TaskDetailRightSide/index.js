@@ -1,14 +1,14 @@
 import React, { useState, Suspense, lazy, useEffect, useCallback } from "react";
 import "./style.css";
 import migrateFileIcon from "../../../../../assets/Icons/migrate-file.svg";
-import closeIcon from "../../../../../assets/Icons/closeIcon.png";
 import Loading from "../../../../../CommonModules/sharedComponents/Loader";
 import TaskMigrationModal from "../TaskMigrationModal";
 import RejectTaskModal from "../TaskActions/RejectTaskModal";
 import TaskStatusBox from "../../../../../CommonModules/sharedComponents/TaskStatusBox";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { MdClose } from "react-icons/md";
+import { actions as taskReportActions } from "../../../../OnBording/SubModules/DashBoardCO/redux/actions";
 const AttachedFileSection = lazy(() => import("../TaskActions/AttachedFile"));
 const CommentSection = lazy(() => import("../TaskActions/Comments"));
 const ReferencesSection = lazy(() => import("../TaskActions/References"));
@@ -20,7 +20,9 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
   const [isRejectTaskOpen, setIsRejectTaskOpen] = useState(false);
   const [taskDetails, setTaskDetails] = useState({});
   const state = useSelector((state) => state);
+  const dispatch = useDispatch();
   const taskData = state?.taskReport?.taskReportById?.taskReportById;
+  const userDetails = state && state.auth && state.auth.loginInfo;
   useEffect(() => {
     const headerRef = document
       .querySelector(".task-data__header")
@@ -39,15 +41,31 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
       setTaskDetails(taskData);
     }
   }, [taskData]);
+
+  const handleApproveTask = (taskId) => {
+    dispatch(
+      taskReportActions.taskAssignByTaskID({
+        taskID: taskId,
+        isApproved: 1,
+        userType: 1,
+        email: "",
+        invitee: "",
+        loginID: userDetails.UserID,
+        userDetails,
+      })
+    );
+  };
   return (
     <>
       <TaskMigrationModal
         isOpen={isTaskMigrationOpen}
         setIsOpen={setIsTaskMigrationOpen}
+        taskId={taskDetails.TaskId}
       />
       <RejectTaskModal
         isOpen={isRejectTaskOpen}
         setIsOpen={setIsRejectTaskOpen}
+        taskId={taskDetails.TaskId}
       />
       <div className="task-data__container position-relative">
         <span className="task-data__close" onClick={closeTaskDetails}>
@@ -85,14 +103,6 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
           }}
         >
           <div className="row my-4 task-data-fields">
-            {/* <div className="w-100 d-flex">
-              <div className="col-6 col-md-5">
-                <p className="task-data__field-key">Task Received On</p>
-              </div>
-              <div className="col-6">
-                <p className="task-data__field-value">08 May, 03:56pm</p>
-              </div>
-            </div> */}
             <div className="w-100 d-flex">
               <div className="col-6 col-md-5">
                 <p className="task-data__field-key">Submission Status</p>
@@ -237,17 +247,22 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
             )}
           </div>
         </div>
-        <div className="task-action__cta-container mt-3">
-          <button className="task-action__cta task-action__cta--green mr-3">
-            Approve Task
-          </button>
-          <button
-            className="task-action__cta task-action__cta--red"
-            onClick={() => setIsRejectTaskOpen(true)}
-          >
-            Reject Task
-          </button>
-        </div>
+        {taskDetails.Status !== "Approved" && (
+          <div className="task-action__cta-container mt-3">
+            <button
+              onClick={() => handleApproveTask(taskDetails.TaskId)}
+              className="task-action__cta task-action__cta--green mr-3"
+            >
+              Approve Task
+            </button>
+            <button
+              className="task-action__cta task-action__cta--red"
+              onClick={() => setIsRejectTaskOpen(true)}
+            >
+              Reject Task
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

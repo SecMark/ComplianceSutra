@@ -99,11 +99,22 @@ const postCommentBytaskID = function* postCommentBytaskID({ payload }) {
       yield put(
         actions.postTaskCommentByTaskIDSuccess({ postTaskCommentById: data })
       );
-      yield put(
-        actions.taskCommentsByTaskIdRequest({
-          taskid: payload.taskID,
-        })
-      );
+      if (payload.link === 0) {
+        yield put(
+          actions.taskCommentsByTaskIdRequest({
+            taskid: payload.taskID,
+            link: 0,
+          })
+        );
+      }
+      if (payload.link === 1) {
+        yield put(
+          actions.taskCommentsByTaskIdRequest({
+            taskid: payload.taskID,
+            link: 1,
+          })
+        );
+      }
       toast.success(data && data.Message);
     } else {
       toast.success(data && data.Message);
@@ -163,7 +174,16 @@ const postAssignTask = function* postAssignTask({ payload }) {
     const { data, status } = yield call(api.postAssignTask, payload);
     // console.log(status);
     if (status === 200) {
-      // console.log("postAssignTask  => ", status);
+      if (payload.isApproved === 1) {
+        toast.dark("Task Approved Successfully!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
+      if (payload.isApproved === 3) {
+        toast.dark("Task Rejected Successfully!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
       yield put(actions.taskAssignByTaskIDSuccess({ postAssignTask: data }));
       yield put(
         actions.taskReportByIdRequest({
