@@ -1,0 +1,36 @@
+.spacing {
+  padding: 20px;
+}
+.form-control-label {
+  opacity: 0.64;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+.form-control {
+  background-color: #f7f7f7;
+  border: 1px solid #f7f7f7;
+  font-size: 13px;
+}
+.form-control::placeholder {
+  color: #575757;
+  font-size: 12px;
+  opacity: 0.64;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
