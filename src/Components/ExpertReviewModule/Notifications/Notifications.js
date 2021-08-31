@@ -6,19 +6,10 @@ import NotificationList from "./NotificationList/NotificationList";
 import Popup from "./NotificationPopup/Popup";
 
 const ERNotifications = () => {
-  const [read, setRead] = useState(false);
-
   const SelectedFilter = (e) => {
     console.log(e.value);
   };
 
-  const options = [
-    { value: "All", label: "All Notifications" },
-    { value: "Submitted", label: " New Submitted Tasks" },
-    { value: "Rejected", label: "Rejected tasks" },
-    { value: "Approved", label: "Approved tasks" },
-    { value: "Migration", label: "Migration Requests" },
-  ];
   const customStyles = {
     menu: (provided) => ({
       ...provided,
@@ -66,23 +57,7 @@ const ERNotifications = () => {
   return (
     <div>
       <div className="NotificationMain">
-        <div className="NotificationHeader">
-          <div>
-            <h4>Notifications</h4>
-          </div>
-          <div className="NotificationFilter">
-            Filter by:
-            <Select
-              options={options}
-              styles={customStyles}
-              defaultValue={options[0]}
-              value={options.value}
-              onChange={SelectedFilter}
-            />
-          </div>
-          <Popup />
-        </div>
-        <NotificationList options={options} />
+        <NotificationList customStyles={customStyles} />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import CheckIcon from "../../../../assets/Icons/check.png";
-
 import "../Notifications.css";
+import Select from "react-select";
+import Popup from "../NotificationPopup/Popup";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { actions as coActions } from "../../../OnBording/SubModules/DashBoardCO/redux/actions";
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
 
-const NotificationList = () => {
+const NotificationList = ({ customStyles }) => {
   const [notificationList, setNotificationList] = useState([]);
   const [notifications, setNotification] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -55,7 +55,7 @@ const NotificationList = () => {
         (a, b) => new Date(b.date) - new Date(a.date)
       );
     }
-    console.log(tempFinalArray);
+
     setNotificationList(tempFinalArray);
     setNotification(tempFinalArray);
     setNotificationBackup(tempFinalArray);
@@ -72,14 +72,16 @@ const NotificationList = () => {
     );
   }, []);
 
-  const onCategoryChange = async (event) => {
+  const onOptionChange = async (event) => {
     const { value } = event;
     await getNotificationData();
-
     if (value !== "All Notifications") {
-      const filteredNotification = notificationList[0].notificationOfDay.filter(
-        (types) => types.notificationTpe === value
-      );
+      const filteredNotification = notificationList
+        .map((el) => el)
+        .notificationOfDay.filter((types) => types.notificationTpe === value);
+
+      console.log(filteredNotification);
+
       if (filteredNotification.length !== 0) {
         let dateObj = [
           {
@@ -171,109 +173,134 @@ const NotificationList = () => {
     });
 
     setOptions(arrayOfList);
+    console.log(arrayOfList);
   };
 
   return (
-    <div className="ListMain">
-      {notifications != null &&
-        notifications.length > 0 &&
-        notifications.map((item) => {
-          return (
-            <>
-              {item.notificationOfDay.length > 0 ? (
-                <div>
-                  <p id="Day">{getDeviderSection(item.date)}</p>
-                  {item.notificationOfDay && item.notificationOfDay.length !== 0
-                    ? item.notificationOfDay.map((element) => {
-                        console.log(element);
-                        return (
-                          <>
-                            {element.Comment !== null &&
-                            element.Comment !== undefined &&
-                            element.Comment !== "" ? (
-                              <Link
-                                to="/dashboard"
-                                style={{ textDecoration: "none" }}
-                                onClick={() => {
-                                  if (loggedUser && loggedUser.UserType !== 6) {
-                                    dispatch(
-                                      setNotificationTaskId(element.TaskId)
-                                    );
-                                  }
-                                }}
-                                style={{
-                                  pointerEvents: `${
-                                    loggedUser && loggedUser.UserType === 6
-                                      ? "none"
-                                      : "auto"
-                                  }`,
-                                }}
-                              >
-                                <div>
-                                  <div className="ListElement">
-                                    <div className="ListPoint">
-                                      <div className="ListDesc">
-                                        <AiOutlineCheckCircle
-                                          style={{
-                                            margin: 4,
-                                            marginLeft: "-10px",
-                                            marginRight: 2,
-                                            color: "#9e8fff",
-                                            border: "none",
-                                            width: "3rem",
-                                            height: "1.4rem",
-                                          }}
-                                        />
+    <div>
+      <div className="NotificationHeader">
+        <div>
+          <h4>Notifications</h4>
+        </div>
+        <div className="NotificationFilter">
+          Filter by:
+          <Select
+            options={options}
+            styles={customStyles}
+            defaultValue={{
+              value: "All Notifications",
+              label: "All Notifications",
+            }}
+            value={options.value}
+            onChange={onOptionChange}
+          />
+        </div>
+        <Popup />
+      </div>
+      <div className="ListMain">
+        {notifications != null &&
+          notifications.length > 0 &&
+          notifications.map((item) => {
+            return (
+              <>
+                {item.notificationOfDay.length > 0 ? (
+                  <div>
+                    <p id="Day">{getDeviderSection(item.date)}</p>
+                    {item.notificationOfDay &&
+                    item.notificationOfDay.length !== 0
+                      ? item.notificationOfDay.map((element) => {
+                          return (
+                            <>
+                              {element.Comment !== null &&
+                              element.Comment !== undefined &&
+                              element.Comment !== "" ? (
+                                <Link
+                                  to="/dashboard"
+                                  style={{ textDecoration: "none" }}
+                                  onClick={() => {
+                                    if (
+                                      loggedUser &&
+                                      loggedUser.UserType !== 6
+                                    ) {
+                                      dispatch(
+                                        setNotificationTaskId(element.TaskId)
+                                      );
+                                    }
+                                  }}
+                                  style={{
+                                    pointerEvents: `${
+                                      loggedUser && loggedUser.UserType === 6
+                                        ? "none"
+                                        : "auto"
+                                    }`,
+                                  }}
+                                >
+                                  <div>
+                                    <div className="ListElement">
+                                      <div className="ListPoint">
+                                        <div className="ListDesc">
+                                          <AiOutlineCheckCircle
+                                            style={{
+                                              margin: 4,
+                                              marginLeft: "-10px",
+                                              marginRight: 2,
+                                              color: "#9e8fff",
+                                              border: "none",
+                                              width: "3rem",
+                                              height: "1.4rem",
+                                            }}
+                                          />
 
-                                        <p
-                                          dangerouslySetInnerHTML={{
-                                            __html: element.Comment,
-                                          }}
-                                        ></p>
-                                      </div>
+                                          <p
+                                            dangerouslySetInnerHTML={{
+                                              __html: element.Comment,
+                                            }}
+                                          ></p>
+                                        </div>
 
-                                      <div>
-                                        {isToday(element.date) && (
-                                          <p id="TimeArrived">
-                                            {gethourCalculation(element.date)}
-                                          </p>
-                                        )}
-                                        {!isToday(element.date) && (
-                                          <p id="TimeArrived">
-                                            {getTimeCalculation(element.date)}
-                                          </p>
-                                        )}
+                                        <div>
+                                          {isToday(element.date) && (
+                                            <p id="TimeArrived">
+                                              {gethourCalculation(element.date)}
+                                            </p>
+                                          )}
+                                          {!isToday(element.date) && (
+                                            <p id="TimeArrived">
+                                              {getTimeCalculation(element.date)}
+                                            </p>
+                                          )}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              </Link>
-                            ) : (
-                              <div></div>
-                            )}
-                          </>
-                        );
-                      })
-                    : "--"}
-                </div>
-              ) : (
-                <div>
-                  No new notifications. We'll notify you when something new
-                  arrives
-                </div>
-              )}
-            </>
-          );
-        })}
-      {notifications &&
-        notifications != null &&
-        notifications.length <= 0 &&
-        notifications[0] &&
-        notifications[0].notificationOfDay.length !== 0 && (
-          <div>
-            No new notifications. We'll notify you when something new arrives
-          </div>
-        )}
+                                </Link>
+                              ) : (
+                                <div></div>
+                              )}
+                            </>
+                          );
+                        })
+                      : "--"}
+                  </div>
+                ) : (
+                  <div>
+                    No new notifications. We'll notify you when something new
+                    arrives
+                  </div>
+                )}
+              </>
+            );
+          })}
+        {notifications &&
+          notifications != null &&
+          notifications.length <= 0 &&
+          notifications[0] &&
+          notifications[0].notificationOfDay.length !== 0 && (
+            <div>
+              No new notifications. We'll notify you when something new arrives
+            </div>
+          )}
+      </div>
     </div>
   );
 };
