@@ -37,13 +37,13 @@ const ManageNotification = (props) => {
       case "SMS":
         setSMSChecked(isEnable === 0 ? false : true);
         break;
-      case "Daily":
+      case "DailyTasks":
         setDailyChecked(isEnable === 0 ? false : true);
         break;
-      case "Urgent":
+      case "UrgentTasks":
         setUrgentChecked(isEnable === 0 ? false : true);
         break;
-      case "TaskMigration":
+      case "TaskMigrationApprovals":
         setTaskMigrationChecked(isEnable === 0 ? false : true);
         break;
     }
@@ -93,10 +93,10 @@ const ManageNotification = (props) => {
       case "Daily":
         setDailyChecked(!isDailyChecked);
         break;
-      case "Urgent":
+      case "UTasks":
         setUrgentChecked(!isUrgentChecked);
         break;
-      case "TaskMigration":
+      case "MTasks":
         setTaskMigrationChecked(!isTaskMigrationChecked);
         break;
     }
@@ -232,7 +232,7 @@ const ManageNotification = (props) => {
               id="licenseSetting"
               type="checkbox"
               checked={isUrgentChecked}
-              onClick={(e) => onSliderChange(e, "Urgent")}
+              onClick={(e) => onSliderChange(e, "UTasks")}
             />
             <span class="slider round"></span>
           </label>
@@ -254,7 +254,7 @@ const ManageNotification = (props) => {
               id="licenseSetting"
               type="checkbox"
               checked={isTaskMigrationChecked}
-              onClick={(e) => onSliderChange(e, "TaskMigration")}
+              onClick={(e) => onSliderChange(e, "MTasks")}
             />
             <span class="slider round"></span>
           </label>
