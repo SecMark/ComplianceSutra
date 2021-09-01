@@ -1,10 +1,68 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import { useDispatch,useSelector } from "react-redux";
 import "./style.css";
+import api from "../../../../apiServices";
 import Select, { components } from "react-select";
 import { IoAddCircle } from "react-icons/io5";
 import { MdLock } from "react-icons/md";
 
 const ProfileDetails = () => {
+  const state = useSelector((state)=>state);
+  const dispatch = useDispatch();
+  const [email,setEmail] = useState(null);
+  const [number,setNumber] =useState(null);
+  const [values, setValues] = useState({
+    userName: "",
+    designation: "",
+    emailId: "",
+    mobileNo: "",
+    countrycode: "",
+  });
+  useEffect(() => {
+    const _name =
+      state &&
+      state.taskReport &&
+      state.taskReport.userAvailability &&
+      state.taskReport.userAvailability.availabilityInfo &&
+      state.taskReport.userAvailability.availabilityInfo.UserName;
+    const _designation =
+      state &&
+      state.taskReport &&
+      state.taskReport.userAvailability &&
+      state.taskReport.userAvailability.availabilityInfo &&
+      state.taskReport.userAvailability.availabilityInfo.Designation;
+    const _emailId =
+      state &&
+      state.taskReport &&
+      state.taskReport.userAvailability &&
+      state.taskReport.userAvailability.availabilityInfo &&
+      state.taskReport.userAvailability.availabilityInfo.EmailID;
+    const _mobile =
+      state &&
+      state.taskReport &&
+      state.taskReport.userAvailability &&
+      state.taskReport.userAvailability.availabilityInfo &&
+      state.taskReport.userAvailability.availabilityInfo.Mobile;
+    const _userInfo =
+      state &&
+      state.taskReport &&
+      state.taskReport.userAvailability &&
+      state.taskReport.userAvailability.availabilityInfo;
+
+    let userObj = {
+      userName: _name != "" && _name != undefined ? _name : "",
+      designation:
+        _designation != "" && _designation != undefined ? _designation : "",
+      emailId: _emailId != "" && _emailId != undefined ? _emailId : "",
+      mobileNo: _mobile != "" && _mobile != undefined ? Number(_mobile) : "",
+      countrycode:
+        _userInfo !== "" && _userInfo !== undefined
+          ? _userInfo.countrycode
+          : "",
+    };
+
+    setValues(userObj);
+  }, [state.taskReport.userAvailability]);
   const LicenseOptions = [
     { value: "NSE", label: "NSE", isFixed: "true" },
     { value: "BSE", label: "BSE", isFixed: true },
@@ -110,20 +168,27 @@ const ProfileDetails = () => {
             <input
               type="text"
               defaultValue="rameshkumar@secmark.co.in"
+              value={values.emailId}
               disabled
             />
           </div>
           <div className="FormElement">
             <p>Full Name:</p>
-            <input type="text" defaultValue="Ramesh Kumar"></input>
+            <input type="text" defaultValue="Ramesh Kumar"
+            value={values.userName}
+            ></input>
           </div>
           <div className="FormElement">
             <p>Phone Number:</p>
-            <input type="text" defaultValue="+91  9434721588" />
+            <input type="text" defaultValue="+91  9434721588" 
+            value={values.mobileNo}
+            />
           </div>
           <div className="FormElement">
             <p>Designation:</p>
-            <input type="text" defaultValue="Expert Reviewer" />
+            <input type="text" defaultValue="Expert Reviewer" 
+            value={values.designation}
+            />
           </div>
         </form>
         <div className="FormElement">
