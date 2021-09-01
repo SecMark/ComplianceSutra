@@ -19,6 +19,12 @@ const ERTaskDetails = lazy(() =>
   import("../../../Components/ExpertReviewModule/TaskDetails/index")
 );
 
+// const Thankyou = lazy(() =>
+// import("../../../Components/ExpertReviewModule/Thankyou/thankyou")
+// );
+
+
+
 export const routes = [
   {
     path: `${constant.ExpertReviewerBaseUrl}/`,
@@ -44,4 +50,9 @@ export const routes = [
     path: `${constant.ExpertReviewerBaseUrl}/task-details`,
     component: ERTaskDetails,
   },
+
+  // {
+  //   path: `${constant.ExpertReviewerBaseUrl}/thankyou`,
+  //   component: Thankyou,
+  // },
 ];
