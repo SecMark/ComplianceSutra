@@ -12,6 +12,7 @@ import NotificationRedu from "../Components/OnBording/SubModules/DashBoardCO/com
 import HistoryReducer from "../Components/HistoryModule/redux/reducers";
 import UpdatesReducer from "../Components/NewRegulationModule/redux/reducers";
 import CalenderReducer from "../Components/CalenderView/redux/reducers";
+import PaymentReducer from "../Components/ExpertReviewModule/Redux/reducers";
 
 const createRootReducer = (history) =>
   combineReducers({
@@ -26,6 +27,7 @@ const createRootReducer = (history) =>
     HistoryReducer,
     UpdatesReducer,
     CalenderReducer,
+    PaymentReducer,
   });
 
 export default createRootReducer;

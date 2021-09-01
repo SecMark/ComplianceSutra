@@ -1,9 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
 import RightImageBg from "../../../assets/Images/Onboarding/RectangleOnboadign.png";
+import { makePayment } from "../../../Components/ExpertReviewModule/Redux/actions";
 import "./style.css";
 
 const Payment = ({ paymentDrawer }) => {
+  const state = useSelector((state) => state);
+
+  const [choosedPlan, setChoosedPlans] = useState({});
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    setChoosedPlans({});
+    const paymentDetail = state?.PaymentReducer?.paymentDetail;
+    const filterPlan = paymentDetail.filter((plan) => plan.Plans === "Monthly");
+    setChoosedPlans(filterPlan[0]);
+  }, []);
+
+  const choosePlan = (planType) => {
+    const paymentDetail = state?.PaymentReducer?.paymentDetail;
+    const filterPlan = paymentDetail.filter((plan) => planType === plan.Plans);
+    setChoosedPlans(filterPlan[0]);
+  };
+
+  const createPayment = () => {
+    const paymentPayload = {
+      flag: 2,
+      cntrolid: choosedPlan.cntrlid,
+      plan: choosedPlan.Plans === "Monthly" ? 0 : 1,
+    };
+
+    dispatch(makePayment(paymentPayload));
+    history.push("/thankyou");
+  };
+
+  // useEffect(() => {
+  //   if (state?.PaymentReducer?.isPaymentDone) {
+  //     history.push("/thankyou");
+  //   }
+  // }, [state?.PaymentReducer?.isPaymentDone]);
+
   return (
     <>
       <div className="get-main">
@@ -30,15 +69,26 @@ const Payment = ({ paymentDrawer }) => {
               <p className="licenses-title"> Confirm & Make Payment</p>
               <div className="row subscription-option">
                 <div className="col-6">
-                  <input type="radio" name="subscription-type" />
+                  <input
+                    type="radio"
+                    name="subscription-type"
+                    checked
+                    value="Monthly"
+                    onClick={(e) => choosePlan(e.target.value)}
+                  />
                   <label>Monthly</label>
-                  <p>₹1244/per License per month</p>
+                  {/* <p>₹6,000/per License per month</p> */}
                 </div>
 
                 <div className="col-6">
-                  <input type="radio" name="subscription-type" />
+                  <input
+                    type="radio"
+                    name="subscription-type"
+                    onClick={(e) => choosePlan(e.target.value)}
+                    value="Yearly"
+                  />
                   <label>Annual</label>
-                  <p>₹15,600/per license per year</p>
+                  {/* <p>₹15,600/per license per year</p> */}
                 </div>
               </div>
             </div>
@@ -49,24 +99,26 @@ const Payment = ({ paymentDrawer }) => {
                 <p>August 21, 2021</p>
               </div>
               <div>
-                <p>Total Charges (5 Licenses)</p>
-                <p>₹6000</p>
+                <p>Total Charges ({choosedPlan?.liccnt} Licenses)</p>
+                <p>₹{choosedPlan.Amount}</p>
               </div>
               <div>
-                <p>Discount (15%)</p>
-                <p>-₹1200</p>
+                <p>Discount ({choosedPlan?.Discamt}%)</p>
+                <p>{choosedPlan?.Discamt == 0 ? "0" : choosedPlan?.Discamt}</p>
               </div>
               <div>
                 <p>Taxes (GST 15%)</p>
-                <p>₹900</p>
+                <p>₹{choosedPlan.TaxAmt}</p>
               </div>
               <div className="total-amount">
                 <p>Total Amount</p>
-                <p>₹8,630</p>
+                <p>₹{choosedPlan.TotalAmt}</p>
               </div>
             </div>
 
-            <button className="make-payment">make payment</button>
+            <button className="make-payment" onClick={createPayment}>
+              make payment
+            </button>
           </div>
         </div>
       </div>

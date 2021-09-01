@@ -926,9 +926,10 @@ button.btn.-new:focus {
 .task-details-file-grid.custimDesignTask .take-action {
   position: absolute;
   right: 0;
-  top: 0px;
+  top: 36px;
   padding: 0;
-  width: auto;
+  /* width: auto; */
+  width: 100%;
   height: auto;
 }
 .task-details-file-grid.custimDesignTask .take-action ul span {

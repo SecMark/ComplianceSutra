@@ -85,13 +85,13 @@
   line-height: normal;
   text-transform: capitalize;
 }
-.sort-by-filter {
+span.sort-by-filter {
   padding: 0 0.3rem;
   border-radius: 12px;
   cursor: pointer;
   background-color: #f7f4fe;
 }
-.sort-by-filter--active {
+span.sort-by-filter--active {
   color: #fff;
   background-color: #b3abc4;
 }

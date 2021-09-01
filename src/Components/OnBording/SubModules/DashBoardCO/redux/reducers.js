@@ -33,20 +33,18 @@ const actionHandler = {
     taskReportById: payload,
   }),
 
-
   [types.GET_USER_BY_ROLE]: (state) => ({
     ...state,
     getUserByRole: {},
   }),
   [types.GET_USER_FAILED_BY_ROLE]: (state, { payload }) => ({
     ...state,
-    getUserByRole: payload
+    getUserByRole: payload,
   }),
   [types.GET_USER_SUCCESS_BY_ROLE]: (state, { payload }) => ({
     ...state,
     getUserByRole: payload,
   }),
-
 
   [types.GET_TASK_COMMENTS_BY_TASK_ID]: (state) => ({
     ...state,
@@ -61,46 +59,57 @@ const actionHandler = {
     getTaskCommentByRole: payload,
   }),
 
-
   [types.POST_TASK_COMMENT_BY_TASK_ID]: (state) => ({
     ...state,
-    postTaskCommentById: {}
+    postTaskCommentById: {},
   }),
   [types.POST_TASK_COMMENTS_FAILED_BY_TASK_ID]: (state, { payload }) => ({
     ...state,
-    postTaskCommentById: {}
+    postTaskCommentById: {},
   }),
   [types.POST_TASK_COMMENTS_SUCCESS_BY_TASK_ID]: (state, { payload }) => ({
     ...state,
     postTaskCommentById: payload,
   }),
 
+  [types.GET_TASK_FILES_BY_TASK_ID]: (state) => ({
+    ...state,
+    taskFilesById: {},
+  }),
+  [types.GET_TASK_FILES_FAILED_BY_TASK_ID]: (state) => ({
+    ...state,
+    taskFilesById: {},
+  }),
+  [types.GET_TASK_FILES_SUCESS_BY_TASK_ID]: (state, { payload }) => ({
+    ...state,
+    taskFilesById: payload,
+  }),
+
   [types.POST_UPLOAD_FILE_BY_TASK_ID]: (state) => ({
     ...state,
-    postUploadFile: {}
+    postUploadFile: {},
   }),
   [types.POST_UPLOAD_FILE_FAILED_BY_TASK_ID]: (state, { payload }) => ({
     ...state,
-    postUploadFile: {}
+    postUploadFile: {},
   }),
   [types.POST_UPLOAD_FILE_SUCCESS_BY_TASK_ID]: (state, { payload }) => ({
     ...state,
-    postUploadFile: payload
+    postUploadFile: payload,
   }),
 
   [types.POST_ASSIGN_TASK_BY_TASKID]: (state) => ({
     ...state,
-    postAssignTask: {}
+    postAssignTask: {},
   }),
   [types.POST_ASSIGN_TASK_FAILED_BY_TASKID]: (state, { payload }) => ({
     ...state,
-    postAssignTask: {}
+    postAssignTask: {},
   }),
   [types.POST_ASSIGN_TASK_SUCCESS_BY_TASKID]: (state, { payload }) => ({
     ...state,
-    postAssignTask: payload
+    postAssignTask: payload,
   }),
-
 
   [types.GET_AVAILABILITY_CHECK]: (state) => ({
     ...state,
@@ -115,20 +124,24 @@ const actionHandler = {
     userAvailability: {},
   }),
 
-
   [types.CO_PERSONAL_DETAILS_INS_UPD_DEL_REQUEST]: (state) => ({
     ...state,
     coDetailsInsUpdDelInfo: {},
   }),
-  [types.CO_PERSONAL_DETAILS_INS_UPD_DEL_REQUEST_SUCCESS]: (state, { payload }) => ({
+  [types.CO_PERSONAL_DETAILS_INS_UPD_DEL_REQUEST_SUCCESS]: (
+    state,
+    { payload }
+  ) => ({
     ...state,
     coDetailsInsUpdDelInfo: payload,
   }),
-  [types.CO_PERSONAL_DETAILS_INS_UPD_DEL_REQUEST_FAILED]: (state, { payload }) => ({
+  [types.CO_PERSONAL_DETAILS_INS_UPD_DEL_REQUEST_FAILED]: (
+    state,
+    { payload }
+  ) => ({
     ...state,
     coDetailsInsUpdDelInfo: payload,
   }),
-
 
   [types.GET_ENTITY_LICENSE_TASK_REQUEST]: (state) => ({
     ...state,
@@ -156,7 +169,6 @@ const actionHandler = {
     companyTypeInfo: {},
   }),
 
-
   [types.INS_CERTIFICATE_DETAILS_REQUEST]: (state) => ({
     ...state,
     CompanyAddEditStatus: {},
@@ -182,7 +194,6 @@ const actionHandler = {
     ...state,
     userNotifications: {},
   }),
-
 
   [types.GET_CO_ACCOUNT_REQUEST]: (state) => ({
     ...state,
@@ -223,7 +234,6 @@ const actionHandler = {
     coAccountUpdStatus: payload,
   }),
 
-
   [types.CO_COMPANY_DELETE_REQUEST]: (state) => ({
     ...state,
     companyDeleteStatus: {},
@@ -236,12 +246,7 @@ const actionHandler = {
     ...state,
     companyDeleteStatus: payload,
   }),
-
-
-
 };
-
-
 
 export default handleActions(actionHandler, {
   currentMenu: "taskList",
@@ -261,6 +266,5 @@ export default handleActions(actionHandler, {
   coAccountInfo: {},
   coAccountLicenses: {},
   coAccountUpdStatus: {},
-  companyDeleteStatus: {}
-
+  companyDeleteStatus: {},
 });

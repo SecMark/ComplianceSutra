@@ -44,6 +44,7 @@ import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
+import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 
 export default function AppRouter() {
   return (
@@ -172,6 +173,8 @@ export default function AppRouter() {
           <Switch>
             <Route path="/expert-review" component={ExperReview}></Route>
           </Switch>
+
+          <Route exact path="/thankyou" component={Thankyou} />
         </div>
       </>
     </div>
