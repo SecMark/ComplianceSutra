@@ -22,10 +22,8 @@
   color: #2c2738;
 }
 .co-account .scroll-sction {
-  overflow-y: auto;
   height: calc(100vh - 200px);
-  overflow-x: hidden;
-  padding-right: 0%;
+
 }
 .co-account .border-header {
   width: 100%;
@@ -182,7 +180,6 @@
 }
 
 /* Css For License Drawer*/
-
 
 .co-account input:checked + .slider:before {
   -webkit-transform: translateX(26px);

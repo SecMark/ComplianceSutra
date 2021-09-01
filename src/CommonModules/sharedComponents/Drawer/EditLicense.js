@@ -11,9 +11,8 @@ import assignIcon5 from "../../../assets/Icons/assignIcon3.png";
 import assignIcon2 from "../../../assets/Icons/assignIcon4.png";
 import assignIcon4 from "../../../assets/Icons/assignIcon5.png";
 import constant from "../constants/constant";
-import { getPayment } from "../../../Components/ExpertReviewModule/Redux/actions";
 
-function ChooseLicenses({ fields, close, paymentDrawer }) {
+function EditLicenses({ fields, close }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const [licenseList, setLicenseList] = useState({});
@@ -185,9 +184,6 @@ function ChooseLicenses({ fields, close, paymentDrawer }) {
       flag: 1,
       pmtArray: JSON.stringify(paymentArray),
     };
-
-    dispatch(getPayment(getPaymentDetailPayload));
-    paymentDrawer();
   };
   const setCerificateDetailsMobile = () => {
     var fieldObj = { ...fields };
@@ -317,7 +313,7 @@ function ChooseLicenses({ fields, close, paymentDrawer }) {
             </div>
             <p className="licenses-title">
               {" "}
-              Choose Licenses for Expert Review
+              Choose Licenses
               {/* <span className="search-icon"><img onClick={() => setSearchEnable(true)} src={search} alt="search Icon" /></span> */}
             </p>
           </div>
@@ -449,4 +445,4 @@ function ChooseLicenses({ fields, close, paymentDrawer }) {
     </div>
   );
 }
-export default ChooseLicenses;
+export default EditLicenses;
