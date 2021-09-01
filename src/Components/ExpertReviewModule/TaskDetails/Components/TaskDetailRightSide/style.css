@@ -12,6 +12,18 @@
   background-color: #fff;
   overflow: hidden;
 }
+.task-data__close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  cursor: pointer;
+  z-index: 9;
+  font-size: 1.5rem;
+  color: #1b1d21;
+}
+.task-data__close > img {
+  cursor: pointer;
+}
 .task-data__header--license-title {
   font-family: Poppins;
   font-size: 10px;

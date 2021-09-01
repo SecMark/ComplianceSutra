@@ -1,20 +1,28 @@
 import React, { useState, Suspense, lazy, useEffect, useCallback } from "react";
 import "./style.css";
 import migrateFileIcon from "../../../../../assets/Icons/migrate-file.svg";
-import insertFileIcon from "../../../../../assets/Icons/insert-file.svg";
 import Loading from "../../../../../CommonModules/sharedComponents/Loader";
 import TaskMigrationModal from "../TaskMigrationModal";
 import RejectTaskModal from "../TaskActions/RejectTaskModal";
 import TaskStatusBox from "../../../../../CommonModules/sharedComponents/TaskStatusBox";
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import { MdClose } from "react-icons/md";
+import { actions as taskReportActions } from "../../../../OnBording/SubModules/DashBoardCO/redux/actions";
 const AttachedFileSection = lazy(() => import("../TaskActions/AttachedFile"));
 const CommentSection = lazy(() => import("../TaskActions/Comments"));
 const ReferencesSection = lazy(() => import("../TaskActions/References"));
-const TaskDetailRightSide = ({ taskData }) => {
+const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
   const [taskActionsDisplay, setTaskActionsDisplay] = useState(1);
   const [isTaskMigrationOpen, setIsTaskMigrationOpen] = useState(false);
   const [headerHeight, setHeaderHight] = useState(0);
   const [footerHeight, setFooterHeight] = useState(0);
   const [isRejectTaskOpen, setIsRejectTaskOpen] = useState(false);
+  const [taskDetails, setTaskDetails] = useState({});
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const taskData = state?.taskReport?.taskReportById?.taskReportById;
+  const userDetails = state && state.auth && state.auth.loginInfo;
   useEffect(() => {
     const headerRef = document
       .querySelector(".task-data__header")
@@ -27,35 +35,61 @@ const TaskDetailRightSide = ({ taskData }) => {
       0;
     setHeaderHight(Math.trunc(headerRef));
     setFooterHeight(Math.trunc(footerRef));
+  }, [taskDetails]);
+  useEffect(() => {
+    if (taskData !== undefined && Object.keys(taskData).length !== 0) {
+      setTaskDetails(taskData);
+    }
   }, [taskData]);
+
+  const handleApproveTask = (taskId) => {
+    dispatch(
+      taskReportActions.taskAssignByTaskID({
+        taskID: taskId,
+        isApproved: 1,
+        userType: 1,
+        email: "",
+        invitee: "",
+        loginID: userDetails.UserID,
+        userDetails,
+      })
+    );
+  };
   return (
     <>
       <TaskMigrationModal
         isOpen={isTaskMigrationOpen}
         setIsOpen={setIsTaskMigrationOpen}
+        taskId={taskDetails.TaskId}
       />
       <RejectTaskModal
         isOpen={isRejectTaskOpen}
         setIsOpen={setIsRejectTaskOpen}
+        taskId={taskDetails.TaskId}
       />
       <div className="task-data__container position-relative">
+        <span className="task-data__close" onClick={closeTaskDetails}>
+          <MdClose />
+        </span>
         <div className="task-data__header">
           <div className="position-relative">
             <span className="task-data__header--license-title">
-              {taskData.LicenseCode}
+              {taskDetails.LicenseCode}
             </span>
             <div className="d-flex align-items-md-center mb-4 flex-column flex-md-row align-items-start">
               <p className="mb-0 task-data__header--title">
-                {taskData.TaskName}
+                {taskDetails.TaskName}
               </p>
               <span className="task-data__header--entity-name ml-0 ml-md-3 mt-2 mt-md-0">
-                {taskData.EntityName}
+                {taskDetails.EntityName}
               </span>
             </div>
             <div className="position-absolute d-flex task-data__header-status">
-              <TaskStatusBox status="pending">Approval Pending</TaskStatusBox>
-              <TaskStatusBox status="rejected">
-                You rejected this task
+              <TaskStatusBox status={taskDetails.AprStatus}>
+                {taskDetails.AprStatus}
+              </TaskStatusBox>
+              <TaskStatusBox status={taskDetails.ExStatus}>
+                {taskDetails.ExStatus}
               </TaskStatusBox>
             </div>
           </div>
@@ -69,14 +103,6 @@ const TaskDetailRightSide = ({ taskData }) => {
           }}
         >
           <div className="row my-4 task-data-fields">
-            <div className="w-100 d-flex">
-              <div className="col-6 col-md-5">
-                <p className="task-data__field-key">Task Received On</p>
-              </div>
-              <div className="col-6">
-                <p className="task-data__field-value">08 May, 03:56pm</p>
-              </div>
-            </div>
             <div className="w-100 d-flex">
               <div className="col-6 col-md-5">
                 <p className="task-data__field-key">Submission Status</p>
@@ -100,7 +126,9 @@ const TaskDetailRightSide = ({ taskData }) => {
                 <p className="task-data__field-key">Compliance Officer</p>
               </div>
               <div className="col-6">
-                <p className="task-data__field-value">Manoj Bajpay</p>
+                <p className="task-data__field-value">
+                  {taskDetails.AssignedFromUserName}
+                </p>
               </div>
             </div>
             <div className="w-100 d-flex">
@@ -108,7 +136,9 @@ const TaskDetailRightSide = ({ taskData }) => {
                 <p className="task-data__field-key">Due Date</p>
               </div>
               <div className="col-6">
-                <p className="task-data__field-value">30 May, 2021</p>
+                <p className="task-data__field-value">
+                  {moment(taskDetails.EndDate).format("DD MMM, YYYY")}
+                </p>
               </div>
             </div>
             <div className="w-100 d-flex">
@@ -116,32 +146,32 @@ const TaskDetailRightSide = ({ taskData }) => {
                 <p className="task-data__field-key">Status</p>
               </div>
               <div className="col-6">
-                <p className="task-data__field-value">Review Pending</p>
+                <p className="task-data__field-value">{taskDetails.Status}</p>
               </div>
             </div>
             <div className="w-100 d-flex">
               <div className="col-6 col-md-5">
-                <p className="task-data__field-key">
-                  Approver's Reviews Status
-                </p>
+                <p className="task-data__field-key">Approver's Review Status</p>
               </div>
               <div className="col-6 d-flex align-items-center">
-                <img src={insertFileIcon} alt="file icon" />
+                {/* <img src={insertFileIcon} alt="file icon" /> */}
                 <p className="task-data__field-value">
-                  Task Approved on Mar 08, 2021
+                  {taskDetails.AprStatus}
                 </p>
               </div>
             </div>
-            <div className="w-100 d-flex">
-              <div className="col-6 col-md-5">
-                <p className="task-data__field-key">Contact Details</p>
+            {taskDetails && taskDetails.ApproverName !== "Assign" && (
+              <div className="w-100 d-flex">
+                <div className="col-6 col-md-5">
+                  <p className="task-data__field-key">Contact Details</p>
+                </div>
+                <div className="col-6">
+                  <p className="task-data__field-value">
+                    +919971226214 | Ashu Kumar
+                  </p>
+                </div>
               </div>
-              <div className="col-6">
-                <p className="task-data__field-value">
-                  +919971226214 | Ashu Kumar
-                </p>
-              </div>
-            </div>
+            )}
             <div className="col-12 my-2">
               <button
                 className="task-data__migrate-file-button mx-0 d-flex align-items-end"
@@ -202,35 +232,40 @@ const TaskDetailRightSide = ({ taskData }) => {
             </div>
             {taskActionsDisplay === 1 && (
               <Suspense fallback={<Loading isInline isSmall />}>
-                <AttachedFileSection />
+                <AttachedFileSection taskId={taskDetails.TaskId} />
               </Suspense>
             )}
             {taskActionsDisplay === 2 && (
               <Suspense fallback={<Loading isInline isSmall />}>
-                <CommentSection />
+                <CommentSection taskId={taskDetails.TaskId} />
               </Suspense>
             )}
             {taskActionsDisplay === 3 && (
               <Suspense fallback={<Loading isInline isSmall />}>
-                <ReferencesSection />
+                <ReferencesSection taskId={taskDetails.TaskId} />
               </Suspense>
             )}
           </div>
         </div>
-        <div className="task-action__cta-container mt-3">
-          <button className="task-action__cta task-action__cta--green mr-3">
-            Approve Task
-          </button>
-          <button
-            className="task-action__cta task-action__cta--red"
-            onClick={() => setIsRejectTaskOpen(true)}
-          >
-            Reject Task
-          </button>
-        </div>
+        {taskDetails.Status !== "Approved" && (
+          <div className="task-action__cta-container mt-3">
+            <button
+              onClick={() => handleApproveTask(taskDetails.TaskId)}
+              className="task-action__cta task-action__cta--green mr-3"
+            >
+              Approve Task
+            </button>
+            <button
+              className="task-action__cta task-action__cta--red"
+              onClick={() => setIsRejectTaskOpen(true)}
+            >
+              Reject Task
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
-};
+});
 
 export default TaskDetailRightSide;
