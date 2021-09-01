@@ -1,9 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, withRouter } from "react-router";
 import { AiOutlineClose } from "react-icons/ai";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
 import "./style.css";
+import StepperProgressIcon from "../../../../../assets/Icons/stepper-progress-cricle.svg";
+import StepperCheckIcon from "../../../../../assets/Icons/sidebarCheckIcon.png";
+import StepperCheckIconActive from "../../../../../assets/Icons/check.png";
 
+const roles = [
+  {
+    value: "team-member",
+    lable: "Team Member",
+  },
+  {
+    value: "super-admin",
+    lable: "Super Admin",
+  },
+];
 const AddEditUser = (props) => {
+  const [stepper, setStepper] = useState({
+    stepperAcitveSlide: 1,
+    stepperCompletedSlides: [],
+  });
+  // const handleAddNewRoleClick = () => {
+  //   if (currentSelectedRole !== "") {
+  //     selectedRoles([...selectedRoles, currentSelectedRole]);
+  //     setCurrentSelectedRole("");
+  //   }
+  // };
+  const handleStepClick = (step) => {
+    const completedSlides = stepper.stepperCompletedSlides;
+    if (completedSlides.includes(step)) {
+      setStepper({
+        ...stepper,
+        stepperCompletedSlides: completedSlides.filter((item) => item !== step),
+        stepperAcitveSlide: step,
+      });
+    }
+  };
+  useEffect(() => {
+    console.log(stepper);
+  }, [stepper]);
   return (
     <div className="spacing">
       <div className="row">
@@ -17,57 +55,228 @@ const AddEditUser = (props) => {
           <h3 style={{ color: "#2c2738" }}>Add New Team Member</h3>
           <hr />
           {/* Progress Bar Over Here */}
+          <div className="stepper mb-5 d-flex align-items-center justify-content-center">
+            <div className="stepper-item position-relative d-flex align-items-center">
+              <img
+                src={
+                  stepper.stepperAcitveSlide === 1
+                    ? StepperProgressIcon
+                    : stepper.stepperCompletedSlides.includes(1)
+                    ? StepperCheckIconActive
+                    : StepperCheckIcon
+                }
+                onClick={() => handleStepClick(1)}
+                className="stepper-image"
+                alt="progress"
+              />
+              <div className="stepper-horizontal-line"></div>
+              {stepper.stepperAcitveSlide === 1 && (
+                <p className="stepper-text stepper-text--left position-absolute">
+                  Add Basic Details
+                </p>
+              )}
+            </div>
+            <div className="stepper-item position-relative d-flex align-items-center">
+              <img
+                onClick={() => handleStepClick(2)}
+                src={
+                  stepper.stepperAcitveSlide === 2
+                    ? StepperProgressIcon
+                    : stepper.stepperCompletedSlides.includes(2)
+                    ? StepperCheckIconActive
+                    : StepperCheckIcon
+                }
+                className="stepper-image"
+                alt="progress"
+              />
+              <div className="stepper-horizontal-line"></div>
+              {stepper.stepperAcitveSlide === 2 && (
+                <p className="stepper-text stepper-text--center position-absolute">
+                  Add Expert Review Details
+                </p>
+              )}
+            </div>
+            <div className="stepper-item position-relative d-flex align-items-center">
+              <img
+                src={
+                  stepper.stepperAcitveSlide === 3
+                    ? StepperProgressIcon
+                    : stepper.stepperCompletedSlides.includes(3)
+                    ? StepperCheckIconActive
+                    : StepperCheckIcon
+                }
+                className="stepper-image"
+                alt="progress"
+              />
+              {stepper.stepperAcitveSlide === 3 && (
+                <p className="stepper-text stepper-text--right position-absolute">
+                  Review Details & Confirm
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col-md-12">
-          <h6 style={{ color: "#2c2738" }}>Personal Details</h6>
+      {stepper.stepperAcitveSlide === 1 && (
+        <div className="row">
+          <div className="col-md-12">
+            <h6 style={{ color: "#2c2738" }}>Personal Details</h6>
+          </div>
+          <div className="col-md-6">
+            <label className="form-control-label">Team Member's Name</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter Full Name"
+            />
+          </div>
+          <div className="col-md-6">
+            <label className="form-control-label">Email ID</label>
+            <div className="d-flex">
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter Email ID"
+                style={{
+                  borderRadius: "0px",
+                }}
+              />
+              <select
+                className="form-control"
+                style={{
+                  borderLeft: "1px solid #f1f1f1",
+                  borderRadius: "0px",
+                }}
+              >
+                <option>@secmark.in</option>
+              </select>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <label className="form-control-label">Mobile No.</label>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Enter Mobile No"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="10"
+            />
+          </div>
+          <div className="col-md-6">
+            <label className="form-control-label">
+              Current Address Pincode
+            </label>
+            <div className="d-flex justify-content-between">
+              <input
+                type="number"
+                className="form-control mr-2"
+                placeholder="6 Digits"
+                style={{ width: "100px" }}
+              />
+              <select className="form-control">
+                <option value="" disabled={true} selected={true}>
+                  City, State
+                </option>
+                <option value="">New Delhi, Delhi</option>
+                <option value="">Uttrakhand</option>
+              </select>
+            </div>
+          </div>
+          <div className="col-md-12 mt-4">
+            <h6 style={{ color: "#2c2738" }}>Internal Role Details</h6>
+          </div>
+
+          {/* ADD NEW ROLE INPUT */}
+          <div className="col-md-6">
+            <label className="form-control-label">Select Role</label>
+            <label className="form-control-label">Select Role</label>
+            <div className="d-flex flex-column align-items-start">
+              <select className="form-control">
+                <option value="" disabled selected>
+                  Select Team Member's Role
+                </option>
+                <option value="team-member" id="1">
+                  Team Member
+                </option>
+                <option value="super-admin" id="2">
+                  Super Admin
+                </option>
+              </select>
+              <button className="stroke-button my-3">add new role</button>
+            </div>
+          </div>
+          <div className="col-md-12 mt-4">
+            <h6>Certification Details</h6>
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="" className="form-control-label">
+              Select Certification
+            </label>
+            <select id="certificate-validity" className="form-control">
+              <option>License Compliance Check</option>
+            </select>
+          </div>
+          <div className="col-md-6">
+            <label
+              htmlFor="certificate-validity"
+              className="form-control-label"
+            >
+              Certificate Validity till
+            </label>
+            <select id="certificate-validity" className="form-control">
+              <option>1 year</option>
+            </select>
+          </div>
+          <div className="col-md-12">
+            <button className="stroke-button my-4 d-block">
+              add new cirtification
+            </button>
+            <button
+              className="primary-button mt-3 d-block"
+              onClick={() =>
+                setStepper({
+                  ...stepper,
+                  stepperAcitveSlide: 2,
+                  stepperCompletedSlides: [
+                    ...stepper.stepperCompletedSlides,
+                    1,
+                  ],
+                })
+              }
+            >
+              Next
+            </button>
+          </div>
         </div>
-        <div className="col-md-6">
-          <label className="form-control-label">Team Member's Name</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Enter Full Name"
-          />
+      )}
+      {stepper.stepperAcitveSlide === 2 && (
+        <div>
+          <h2>Slide 2</h2>
+          <button
+            className="primary-button mt-3 d-block"
+            onClick={() =>
+              setStepper({
+                ...stepper,
+                stepperAcitveSlide: 3,
+                stepperCompletedSlides: [...stepper.stepperCompletedSlides, 2],
+              })
+            }
+          >
+            Next
+          </button>
         </div>
-        <div className="col-md-6">
-          <label className="form-control-label">Email ID</label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Enter Email ID"
-          />
+      )}
+      {stepper.stepperAcitveSlide === 3 && (
+        <div>
+          <h2>Slide 3</h2>
+          {/* <button
+            className="primary-button mt-3 d-block"
+            onClick={() => setStepper({ ...stepper, stepperAcitveSlide: 3 })}
+          >
+            Next
+          </button> */}
         </div>
-        <div className="col-md-6">
-          <label className="form-control-label">Mobile No.</label>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Enter Mobile No"
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-            maxlength="10"
-          />
-        </div>
-        <div className="col-md-6">
-          <label className="form-control-label">Current Address Pincode</label>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="6 Digits"
-          />
-        </div>
-        <div className="col-md-12 mt-4">
-          <h6 style={{ color: "#2c2738" }}>Internal Role Details</h6>
-        </div>
-        <div className="col-md-6">
-          <label className="form-control-label">Select Role</label>
-          <select className="form-control">
-            <option>Team Member</option>
-            <option>Super Admin</option>
-          </select>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
