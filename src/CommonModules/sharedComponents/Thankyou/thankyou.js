@@ -2,8 +2,18 @@ import React from 'react'
 import "./thankyou.css"
 import background from "../../../assets/Images/backimage.png";
 import check from "../../../assets/ERIcons/check.png"
+import { useHistory } from 'react-router';
 
-function thankyou() {
+
+ function Thankyou() {
+
+    const history = useHistory()
+
+        setTimeout(() => {
+        history.push('/settings')
+        }, 3000)
+
+
     return (
         <div className="backimg" style={{ backgroundImage: `url(${background})` }}>
        
@@ -23,4 +33,4 @@ function thankyou() {
     )
 }
 
-export default thankyou
+export default Thankyou
