@@ -3,7 +3,7 @@
   min-height: 100vh;
   max-height: 100vh;
   width: 100%;
-  margin-left: 54px;
+  padding-left: 54px;
 }
 /* ==== Side Overview ==== */
 .task-detail__side-overview {
