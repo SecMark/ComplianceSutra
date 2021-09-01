@@ -882,7 +882,7 @@ const TaskListItem = ({ filterdList, category, setShowTaskDetails }) => {
         <div className="col-2">
           <button className="code">{filterdList.LicenseCode}</button>
         </div>
-        <div className="col-6 mb-4">
+        <div className="col-6 mb-2">
           <div className="overdue-company">
             {category && (
               <AiFillInfoCircle
