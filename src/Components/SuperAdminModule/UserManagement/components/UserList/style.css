@@ -28,8 +28,8 @@ span.sort-by.add-btn {
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 23px;
+  width: 34px;
+  height: 19px;
   outline: none;
 }
 .switch input {
@@ -41,7 +41,7 @@ span.sort-by.add-btn {
   position: absolute;
   cursor: pointer;
   top: 0;
-  left: 0;
+  left: -5px;
   right: 0;
   bottom: 0;
   background-color: #ccc;
@@ -52,10 +52,10 @@ span.sort-by.add-btn {
 .slider:before {
   position: absolute;
   content: "";
-  height: 15px;
-  width: 15px;
-  left: 4px;
-  bottom: 4px;
+  height: 13px;
+  width: 13px;
+  left: 3px;
+  bottom: 3.5px;
   background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
@@ -72,6 +72,21 @@ input:checked + .slider:before {
   -ms-transform: translateX(20px);
   transform: translateX(20px);
 }
-.task-list-grid :hover {
-  background: inherit !important;
+
+.circle-front-text {
+  color: #575757;
+  font-weight: 500;
+}
+.user-role {
+  background-color: #f1f3ff;
+  font-size: 10px;
+  margin: 2px;
+  padding: 2px 4px;
+}
+.client-circle {
+  background-color: rgb(0, 0, 0) !important;
+  border-radius: 50%;
+}
+.client-circle .circle-text {
+  color: #fff !important;
 }

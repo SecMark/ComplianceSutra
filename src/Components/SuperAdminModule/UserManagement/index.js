@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiFillPlusSquare } from "react-icons/ai";
 import UserList from "./components/UserList";
 import UserRoleList from "./components/UserRoleList";
+import ClientList from "./components/ClientList";
+import LicenceList from "./components/LicenceList";
+import StatusList from "./components/StatusList";
 import "./style.css";
 
 const Dashboard = () => {
@@ -23,7 +26,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="row">
-            {sortBy === "Roles" && (
+            {sortBy !== "Alphabatically" && (
               <div className="col-md-4">
                 <div className="col mt-3">
                   <div className="row">
@@ -41,7 +44,7 @@ const Dashboard = () => {
             <div className="col">
               <ul className="sort-by-filter">
                 <span className="sort-by add-btn">
-                  <AiOutlinePlus size={18} className="m-1" />
+                  <AiFillPlusSquare size={18} className="m-1" />
                   ADD NEW USER
                 </span>
                 <span className="sort-by">Sort by</span>
@@ -102,6 +105,12 @@ const Dashboard = () => {
             <UserList />
           ) : sortBy === "Roles" ? (
             <UserRoleList />
+          ) : sortBy === "Clients" ? (
+            <ClientList />
+          ) : sortBy === "License" ? (
+            <LicenceList />
+          ) : sortBy === "Status" ? (
+            <StatusList />
           ) : null}
         </div>
       </div>

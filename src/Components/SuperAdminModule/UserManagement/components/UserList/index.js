@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
+import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { getUsers } from "../../redux/actions/user";
 
@@ -56,7 +56,7 @@ const Clients = () => {
     <>
       <div className="ER-task-container mt-0">
         <div className="ER-take-action">
-          <div className="task-list-grid">
+          <div className="">
             <table className="table">
               <thead>
                 <tr>
@@ -100,29 +100,13 @@ const Clients = () => {
                         </div>
                       </td>
                       <td>
-                        <span
-                          style={{
-                            backgroundColor: "#f1f3ff",
-                            fontSize: "10px",
-                            margin: "2px",
-                            padding: "2px",
-                          }}
-                        >
-                          {item.UserRole}
-                        </span>
+                        <span className="user-role">{item.UserRole}</span>
                       </td>
                       <td>{item.Mobile}</td>
                       <td>{item.EmailID}</td>
                       <td>
                         <div class="d-flex new-task-list">
-                          <div
-                            class="circle-name d-sm-block"
-                            style={{
-                              backgroundColor: "#000",
-                              color: "#fff !important",
-                              borderRadius: "50%",
-                            }}
-                          >
+                          <div class="circle-name d-sm-block client-circle">
                             <div class="circle-text">{item.NoofClients}</div>
                           </div>
                         </div>
@@ -130,9 +114,9 @@ const Clients = () => {
                       <td>{item.LicExpertee}</td>
                       <td>
                         {collapse && collapse[index] && collapse[index].open ? (
-                          <AiOutlineArrowUp size={18} color="#000000" />
+                          <AiOutlineUp size={18} color="#000000" />
                         ) : (
-                          <AiOutlineArrowDown size={18} color="#000000" />
+                          <AiOutlineDown size={18} color="#000000" />
                         )}
                       </td>
                     </tr>
