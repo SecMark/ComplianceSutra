@@ -25,6 +25,10 @@ span.sort-by.add-btn {
   border-top: none;
 }
 
+tr.expandable > td > .inner {
+  overflow: hidden;
+}
+
 .switch {
   position: relative;
   display: inline-block;

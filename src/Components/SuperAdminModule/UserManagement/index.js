@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiFillPlusSquare } from "react-icons/ai";
 import UserList from "./components/UserList";
-import UserRoleList from "./components/UserRoleList";
+import RoleList from "./components/RoleList";
 import ClientList from "./components/ClientList";
 import LicenceList from "./components/LicenceList";
 import StatusList from "./components/StatusList";
@@ -104,7 +104,7 @@ const Dashboard = () => {
           {sortBy === "Alphabatically" ? (
             <UserList />
           ) : sortBy === "Roles" ? (
-            <UserRoleList />
+            <RoleList />
           ) : sortBy === "Clients" ? (
             <ClientList />
           ) : sortBy === "License" ? (

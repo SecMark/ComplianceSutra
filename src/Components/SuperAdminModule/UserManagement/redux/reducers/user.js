@@ -5,7 +5,7 @@ import {
 } from "../types/user";
 
 const initialState = {
-  loading: false,
+  isLoading: false,
   userList: [],
 };
 
@@ -14,18 +14,18 @@ function userList(state = initialState, action) {
     case GET_USER_REQUEST:
       return {
         ...state,
-        loading: true,
+        isLoading: true,
       };
     case GET_USER_SUCCESS:
       return {
         ...state,
         userList: action.payload,
-        loading: false,
+        isLoading: false,
       };
     case GET_USER_FAILURE:
       return {
         ...state,
-        loading: false,
+        isLoading: false,
       };
 
     default:
