@@ -100,12 +100,26 @@ span.sort-by-filter--active {
 /* ========================= */
 /* ==== Task Data ==== */
 .task-detail__task-data {
-  background-color: rgb(183, 180, 180);
+  /* background-color: rgb(183, 180, 180); */
   flex: 0.73;
   height: 100vh;
   overflow-y: auto;
   display: grid;
   place-items: center;
+}
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  opacity: 0.34;
+}
+.background-image > img {
+  width: 100%;
+  height: 100%;
 }
 
 @media screen and (max-width: 767.99px) {

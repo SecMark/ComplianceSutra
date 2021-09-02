@@ -25,29 +25,33 @@ const References = React.memo(({ taskId }) => {
   useEffect(() => {
     if (files && files !== undefined && files.length !== 0) {
       setFileRefs(files[0].Files);
+    } else {
+      setFileRefs([]);
     }
     if (links && links !== undefined && links.length !== 0) {
       setLinkRefs(links);
+    } else {
+      setLinkRefs([]);
     }
-  }, [files, links]);
-  const fetchReferences = () => {
+  }, [files, links, taskId]);
+  const fetchReferences = (taskid) => {
     dispatch(
       taskReportActions.taskCommentsByTaskIdRequest({
-        taskid: taskId,
+        taskid: taskid,
         link: 1,
       })
     );
     dispatch(
       taskReportActions.getTaskFilesById({
-        taskID: taskId,
+        taskID: taskid,
         actionFlag: 0,
         ftype: 1,
       })
     );
   };
   useEffect(() => {
-    fetchReferences();
-  }, []);
+    fetchReferences(taskId);
+  }, [taskId]);
   return (
     <>
       <AddReferencesModal
@@ -62,7 +66,6 @@ const References = React.memo(({ taskId }) => {
         {linkRefs &&
           linkRefs.length !== 0 &&
           linkRefs.map((link) => {
-            console.log("linksRef : ", linkRefs);
             return (
               <div className="d-flex task-data__file-actions justify-content-between my-2">
                 <p className="task-data__field-value d-flex align-items-center task-action__file-name">
@@ -84,7 +87,6 @@ const References = React.memo(({ taskId }) => {
         {fileRefs &&
           fileRefs.length !== 0 &&
           fileRefs.map((item) => {
-            console.log(item);
             return (
               <div className="d-flex task-data__file-actions justify-content-between my-2">
                 <p className="task-data__field-value d-flex align-items-center task-action__file-name">

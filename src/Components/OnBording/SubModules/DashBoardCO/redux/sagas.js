@@ -169,20 +169,41 @@ const postUploadFileById = function* postUploadFileById({ payload }) {
 };
 
 const postAssignTask = function* postAssignTask({ payload }) {
+  const actualPayload = {
+    taskID: payload.taskID,
+    isApproved: payload.isApproved,
+    userType: payload.userType,
+    email: payload.email,
+    invitee: payload.invitee,
+    loginID: payload.loginID,
+    userDetails: payload.userDetails,
+  };
   // debugger
   try {
-    const { data, status } = yield call(api.postAssignTask, payload);
+    const { data, status } = yield call(api.postAssignTask, actualPayload);
     // console.log(status);
     if (status === 200) {
-      if (payload.isApproved === 1) {
-        toast.dark("Task Approved Successfully!", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
+      if (
+        payload.isApproved === 1 &&
+        payload.userDetails.IscreateBySecmark === 1
+      ) {
+        toast.dark(
+          `${payload.LicenseCode} task for ${payload.EntityName} is approved successfully!`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
       }
-      if (payload.isApproved === 3) {
-        toast.dark("Task Rejected Successfully!", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
+      if (
+        payload.isApproved === 3 &&
+        payload.userDetails.IscreateBySecmark === 1
+      ) {
+        toast.dark(
+          `${payload.LicenseCode} task for ${payload.EntityName} is rejected successfully!`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
       }
       yield put(actions.taskAssignByTaskIDSuccess({ postAssignTask: data }));
       yield put(

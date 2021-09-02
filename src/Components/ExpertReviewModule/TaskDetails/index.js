@@ -2,6 +2,7 @@ import React, { useState, Suspense, lazy } from "react";
 import "./style.css";
 import searchIcon from "../../../.../../assets/Icons/searchIcon.png";
 import closeIconGray from "../../../.../../assets/Icons/closeIconGray.png";
+import backgroundImage from "../../../.../../assets/ERIcons/background.png";
 import { useOuterClick } from "../../OnBording/SubModules/DashBoardCO/components/RightSideGrid/outerClick";
 import TaskDetailRightSide from "./Components/TaskDetailRightSide";
 import Loading from "../../../CommonModules/sharedComponents/Loader";
@@ -156,7 +157,10 @@ const TaskDetailView = ({ closeTaskDetails }) => {
         </div>
       </div>
       {/* ==== Task Detail ==== */}
-      <div className="task-detail__task-data">
+      <div className="task-detail__task-data position-relative">
+        <div className="background-image">
+          <img src={backgroundImage} alt="" />
+        </div>
         <TaskDetailRightSide
           taskData={currentOpenedTask}
           closeTaskDetails={closeTaskDetails}
