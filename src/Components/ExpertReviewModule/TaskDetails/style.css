@@ -3,6 +3,7 @@
   min-height: 100vh;
   max-height: 100vh;
   width: 100%;
+  padding-left: 54px;
 }
 /* ==== Side Overview ==== */
 .task-detail__side-overview {
@@ -90,6 +91,7 @@ span.sort-by-filter {
   border-radius: 12px;
   cursor: pointer;
   background-color: #f7f4fe;
+  margin: 0;
 }
 span.sort-by-filter--active {
   color: #fff;
