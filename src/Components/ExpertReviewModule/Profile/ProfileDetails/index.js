@@ -1,5 +1,5 @@
-import React,{useState,useEffect} from "react";
-import { useDispatch,useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./style.css";
 import api from "../../../../apiServices";
 import Select, { components } from "react-select";
@@ -7,10 +7,10 @@ import { IoAddCircle } from "react-icons/io5";
 import { MdLock } from "react-icons/md";
 
 const ProfileDetails = () => {
-  const state = useSelector((state)=>state);
+  const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [email,setEmail] = useState(null);
-  const [number,setNumber] =useState(null);
+  const [email, setEmail] = useState(null);
+  const [number, setNumber] = useState(null);
   const [values, setValues] = useState({
     userName: "",
     designation: "",
@@ -87,15 +87,16 @@ const ProfileDetails = () => {
     multiValue: () => ({
       border: "none",
       color: "#9386ad",
+      backgroundColor: "#f7f4fe",
       fontSize: "85%",
       display: "flex",
-    }),
-    multiValueLabel: () => ({
-      backgroundColor: "#f7f4fe",
       padding: 2,
       margin: 3,
 
       borderRadius: 8,
+    }),
+    multiValueLabel: () => ({
+      backgroundColor: "#f7f4fe",
     }),
     indicatorSeparator: () => ({
       backgroundColor: "#f7f4fe",
@@ -117,8 +118,13 @@ const ProfileDetails = () => {
       overflowY: "scroll",
     }),
 
-    multiValueRemove: () => ({
-      display: "none",
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: data.color,
+      ":hover": {
+        backgroundColor: data.color,
+        color: "black",
+      },
     }),
 
     dropdownIndicator: () => ({
@@ -157,37 +163,43 @@ const ProfileDetails = () => {
         <form action="">
           <div className="FormElement">
             <p>Email-Id:</p>
-            <MdLock
-              style={{
-                position: "absolute",
-                right: "17.5rem",
-                margin: "7px",
-                top: "8.6rem",
-              }}
-            />
+
             <input
               type="text"
               defaultValue="rameshkumar@secmark.co.in"
               value={values.emailId}
               disabled
             />
+            <MdLock
+              style={{
+                right: "26.5rem",
+                top: "9.1rem",
+                position: "absolute",
+              }}
+            />
           </div>
           <div className="FormElement">
             <p>Full Name:</p>
-            <input type="text" defaultValue="Ramesh Kumar"
-            value={values.userName}
+            <input
+              type="text"
+              defaultValue="Ramesh Kumar"
+              value={values.userName}
             ></input>
           </div>
           <div className="FormElement">
             <p>Phone Number:</p>
-            <input type="text" defaultValue="+91  9434721588" 
-            value={values.mobileNo}
+            <input
+              type="text"
+              defaultValue="+91  9434721588"
+              value={values.mobileNo}
             />
           </div>
           <div className="FormElement">
             <p>Designation:</p>
-            <input type="text" defaultValue="Expert Reviewer" 
-            value={values.designation}
+            <input
+              type="text"
+              defaultValue="Expert Reviewer"
+              value={values.designation}
             />
           </div>
         </form>
