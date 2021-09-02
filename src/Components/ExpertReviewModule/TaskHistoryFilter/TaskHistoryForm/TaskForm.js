@@ -14,6 +14,7 @@ import MultiSelectLicenseDropdown from "../../../../CommonModules/sharedComponen
 import MultiSelectCompanyDropdown from "../../../../CommonModules/sharedComponents/Dropdown/CompanyDropDown";
 import MultiSelectIndustryDropdown from "../../../../CommonModules/sharedComponents/Dropdown/IndustryDropDown";
 import "./style.css";
+import { clearState } from "../../../HistoryModule/redux/actions";
 
 function TaskForm() {
   const [differenceInDays, setDifferenceInDays] = useState(0);
@@ -145,6 +146,9 @@ function TaskForm() {
     actionDispatch(adminMenuActions.setCurrentMenu("history"));
     actionDispatch(getHistoryList(historyListPayload));
   };
+  useEffect(()=>{
+    actionDispatch(clearState())
+  },[])
   return (
     <div>
       <div>
@@ -154,7 +158,6 @@ function TaskForm() {
           </label>
           <div className="TF-datepicker">
             <Datepicker
-              value={state.HistoryReducer.from}
               name="from"
               dispatch={actionDispatch}
               actionType="SELECT_FROM_DATE"
@@ -189,7 +192,6 @@ function TaskForm() {
           </label>
           <div className="TF-datepicker">
             <Datepicker
-              value={state.HistoryReducer.to}
               name="to"
               dispatch={actionDispatch}
               actionType="SELECT_TO_DATE"
