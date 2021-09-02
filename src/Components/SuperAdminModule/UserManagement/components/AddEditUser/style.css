@@ -110,3 +110,6 @@ button.primary-button--outlined {
 .review-details__text--label {
   opacity: 0.64;
 }
+.selected-role--form-control {
+  width: 57%;
+}

@@ -1,33 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, withRouter } from "react-router";
 import { AiOutlineClose } from "react-icons/ai";
-import { MdCheckCircle } from "react-icons/md";
-import "react-dropdown/style.css";
 import "./style.css";
 import StepperProgressIcon from "../../../../../assets/Icons/stepper-progress-cricle.svg";
 import StepperCheckIcon from "../../../../../assets/Icons/check-icon-disable.svg";
 import StepperCheckIconActive from "../../../../../assets/Icons/check-icon.svg";
-const internalRolesData = [
-  {
-    id: 1,
-    value: 5,
-    label: "Team Member",
-  },
-  {
-    id: 2,
-    value: 0,
-    label: "Super Admin",
-  },
-];
+import InteralRolesDropdown from "./InteralRolesDropdown";
 const AddEditUser = (props) => {
   const [stepper, setStepper] = useState({
     stepperAcitveSlide: 1,
     stepperCompletedSlides: [],
   });
   const [internalRoles, setInternalRoles] = useState([]);
-  useEffect(() => {
-    console.log(internalRoles);
-  }, [internalRoles]);
   const [currentInternalRoleInput, setCurrentInternalRoleInput] = useState({});
   const handleStepClick = (step) => {
     // Changing Steps
@@ -40,34 +24,7 @@ const AddEditUser = (props) => {
       });
     }
   };
-  const handleInternalRolesInputChange = (e, type) => {
-    const role = parseInt(e.target.value);
-    if (!type) {
-      setCurrentInternalRoleInput(
-        internalRolesData.find((element) => element.value === role)
-      );
-    } else if (type && type === "selected") {
-      console.log(role);
-    }
-  };
-  const handleAddNewRole = () => {
-    if (
-      currentInternalRoleInput &&
-      Object.keys(currentInternalRoleInput).length !== 0
-    ) {
-      if (
-        internalRoles.findIndex(
-          (element) => element.value === currentInternalRoleInput.value
-        ) === -1
-      ) {
-        setInternalRoles([...internalRoles, currentInternalRoleInput]);
-        setCurrentInternalRoleInput({});
-      }
-    }
-  };
-  // useEffect(() => {
-  //   console.log(currentInternalRoleInput);
-  // }, [currentInternalRoleInput]);
+
   return (
     <div className="spacing">
       <div className="row">
@@ -208,86 +165,16 @@ const AddEditUser = (props) => {
               </select>
             </div>
           </div>
+          {/* Internal Roles Details */}
           <div className="col-md-12 mt-4">
             <h6 style={{ color: "#2c2738" }}>Internal Role Details</h6>
           </div>
-
-          {/* ADD NEW ROLE INPUT */}
-          <div className="col-md-6">
-            <div className="d-flex flex-column align-items-start">
-              {/* Selected Roles List */}
-              <div className="selected-roles-list w-100">
-                {internalRoles &&
-                  internalRoles.length !== 0 &&
-                  internalRoles.map((selectedRole, index) => {
-                    return (
-                      <div className="selected-role my-2">
-                        <label className="form-control-label">
-                          Select Role {index !== 0 && index + 1}
-                        </label>
-                        <select
-                          className="form-control"
-                          onChange={(e) =>
-                            handleInternalRolesInputChange(e, "selected")
-                          }
-                        >
-                          {internalRolesData.map((item) => {
-                            return (
-                              <option
-                                key={item.id}
-                                selected={selectedRole.value === item.value}
-                                value={item.value}
-                              >
-                                {item.label}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </div>
-                    );
-                  })}
-              </div>
-              {/* Select Internal Role Input */}
-              <label className="form-control-label">
-                Select Role{" "}
-                {internalRoles.length !== 0 && internalRoles.length + 1}
-              </label>
-              <select
-                className="form-control"
-                onChange={handleInternalRolesInputChange}
-              >
-                <option
-                  value=""
-                  disabled
-                  selected={Object.keys(currentInternalRoleInput).length === 0}
-                >
-                  Select Role
-                </option>
-                {internalRolesData.map((item) => {
-                  return (
-                    <option key={item.id} value={item.value}>
-                      {item.label}
-                    </option>
-                  );
-                })}
-              </select>
-              {internalRoles.length < internalRolesData.length - 1 && (
-                <button
-                  className="stroke-button my-3"
-                  onClick={() => handleAddNewRole()}
-                  disabled={Object.keys(currentInternalRoleInput).length === 0}
-                  style={{
-                    opacity:
-                      Object.keys(currentInternalRoleInput).length === 0
-                        ? "0.6"
-                        : "1",
-                  }}
-                >
-                  add new role
-                </button>
-              )}
-            </div>
-          </div>
+          <InteralRolesDropdown
+            internalRoles={internalRoles}
+            setInternalRoles={setInternalRoles}
+            currentInternalRoleInput={currentInternalRoleInput}
+            setCurrentInternalRoleInput={setCurrentInternalRoleInput}
+          />
           {/* Certification Details */}
           <div className="col-md-12 mt-4">
             <h6>Certification Details</h6>
