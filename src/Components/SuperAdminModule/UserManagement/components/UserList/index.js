@@ -6,7 +6,6 @@ import { getUsers } from "../../redux/actions/user";
 
 const UserTableRow = ({ user }) => {
   const [expanded, setExpanded] = useState(false);
-  const expanderBody = useRef(null);
 
   const toggleExpander = () => {
     if (!expanded) {
@@ -35,7 +34,7 @@ const UserTableRow = ({ user }) => {
 
   return (
     <>
-      <tr key="main">
+      <tr>
         <th>
           <span class="check-box">
             <label className="switch">
@@ -75,14 +74,14 @@ const UserTableRow = ({ user }) => {
         <td>{user.LicExpertee}</td>
         <td>
           {expanded ? (
-            <AiOutlineUp size={18} color="#000000" onClick={toggleExpander} />
+            <AiOutlineUp size={15} color="#000000" onClick={toggleExpander} />
           ) : (
-            <AiOutlineDown size={18} color="#000000" onClick={toggleExpander} />
+            <AiOutlineDown size={15} color="#000000" onClick={toggleExpander} />
           )}
         </td>
       </tr>
       {expanded && (
-        <tr key="tr-expander">
+        <tr>
           <td colSpan={8} style={{ padding: "15px 30px 30px 0" }}>
             <div className="row">
               <div className="col-md-1">-</div>
