@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../Notifications.css";
 import Select from "react-select";
-import Popup from "../NotificationPopup/Popup";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { actions as coActions } from "../../../OnBording/SubModules/DashBoardCO/redux/actions";
@@ -15,10 +16,12 @@ const NotificationList = ({ customStyles }) => {
   const [notificationList, setNotificationList] = useState([]);
   const [notifications, setNotification] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [showMenu, setShowMenu] = useState(false);
   const [notificationsBackup, setNotificationBackup] = useState(null);
   const [options, setOptions] = useState([]);
-  const [itemRead, setItemRead] = useState(false);
 
+  const [allRead, setAllRead] = useState(false);
+  const [allUnread, setAllUnread] = useState(false);
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const loggedUser = state && state.auth && state.auth.loginInfo;
@@ -72,36 +75,58 @@ const NotificationList = ({ customStyles }) => {
     );
   }, []);
 
+  const ListPoint = () => {
+    if (allRead) {
+      return "ListPoint whiteBackground";
+    } else if (allUnread) {
+      return "ListPoint purpleBackground";
+    } else return "ListPoint";
+  };
+  const onAllReadClick = () => {
+    setAllRead(true);
+    setAllUnread(false);
+    setShowMenu(false);
+  };
+
+  const onAllUnreadClick = () => {
+    setAllUnread(true);
+    setAllRead(false);
+    setShowMenu(false);
+  };
+
   const onOptionChange = async (event) => {
-    const { value } = event;
-    await getNotificationData();
-    if (value !== "All Notifications") {
-      const filteredNotification = notificationList
-        .map((el) => el)
-        .notificationOfDay.filter((types) => types.notificationTpe === value);
+    let tempArray = [];
+    for (let i = 0; i < notificationList.length; i++) {
+      const { value } = event;
+      await getNotificationData();
+      if (value !== "All Notifications") {
+        const filteredNotification = notificationList[
+          i
+        ].notificationOfDay.filter((types) => types.notificationTpe === value);
 
-      console.log(filteredNotification);
-
-      if (filteredNotification.length !== 0) {
-        let dateObj = [
-          {
+        if (filteredNotification.length !== 0) {
+          let dateObj = {
             date: notifications[0].date,
             notificationOfDay: filteredNotification,
-          },
-        ];
-        setNotification(dateObj);
+          };
+
+          tempArray.push(dateObj);
+        }
       } else {
-        setNotification([
-          {
-            date: notifications[0].date,
-            notificationOfDay: [],
-          },
-        ]);
+        getNotificationData();
       }
-    } else {
-      getNotificationData();
     }
+    if (tempArray.length > 0) setNotification(tempArray);
+    else
+      setNotification([
+        {
+          date: notifications[0].date,
+          notificationOfDay: [],
+        },
+      ]);
+    console.log(tempArray);
   };
+
   const isToday = (date) => {
     var today = new Date();
     var dateObj = new Date(date);
@@ -173,7 +198,6 @@ const NotificationList = ({ customStyles }) => {
     });
 
     setOptions(arrayOfList);
-    console.log(arrayOfList);
   };
 
   return (
@@ -195,7 +219,29 @@ const NotificationList = ({ customStyles }) => {
             onChange={onOptionChange}
           />
         </div>
-        <Popup />
+        <div className="PopupMain">
+          <div>
+            <button className="Menu" onClick={() => setShowMenu(!showMenu)}>
+              <BiDotsVerticalRounded
+                style={{
+                  height: "2rem",
+                  width: "1.5rem",
+                }}
+              />
+            </button>
+          </div>
+          {(showMenu && (
+            <div className="MenuList">
+              <button className="MenuItem1" onClick={onAllReadClick}>
+                Mark all Read
+              </button>
+              <button className="MenuItem2" onClick={onAllUnreadClick}>
+                Mark all Unread
+              </button>
+            </div>
+          )) ||
+            null}
+        </div>
       </div>
       <div className="ListMain">
         {notifications != null &&
@@ -237,7 +283,7 @@ const NotificationList = ({ customStyles }) => {
                                 >
                                   <div>
                                     <div className="ListElement">
-                                      <div className="ListPoint">
+                                      <div className={ListPoint()}>
                                         <div className="ListDesc">
                                           <AiOutlineCheckCircle
                                             style={{

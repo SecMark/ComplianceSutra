@@ -1,15 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./Notifications.css";
-import Select from "react-select";
+
 import NotificationList from "./NotificationList/NotificationList";
-import Popup from "./NotificationPopup/Popup";
 
 const ERNotifications = () => {
-  const SelectedFilter = (e) => {
-    console.log(e.value);
-  };
-
   const customStyles = {
     menu: (provided) => ({
       ...provided,

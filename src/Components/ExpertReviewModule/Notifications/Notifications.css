@@ -103,3 +103,9 @@
   background-color: white;
   border: none;
 }
+.whiteBackground {
+  background-color: white;
+}
+.purpleBackground {
+  background-color: #f9f7ff;
+}
