@@ -43,7 +43,7 @@ const Comments = React.memo(({ taskId }) => {
   }, [comments]);
   useEffect(() => {
     getComments(taskId);
-  }, []);
+  }, [taskId]);
   return (
     <div className="mt-3">
       <div>

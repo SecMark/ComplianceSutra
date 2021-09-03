@@ -23,6 +23,7 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
   const dispatch = useDispatch();
   const taskData = state?.taskReport?.taskReportById?.taskReportById;
   const userDetails = state && state.auth && state.auth.loginInfo;
+  console.log(userDetails);
   useEffect(() => {
     const headerRef = document
       .querySelector(".task-data__header")
@@ -52,6 +53,8 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
         invitee: "",
         loginID: userDetails.UserID,
         userDetails,
+        LicenseCode: taskDetails.LicenseCode,
+        EntityName: taskDetails.EntityName,
       })
     );
   };
@@ -66,6 +69,8 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
         isOpen={isRejectTaskOpen}
         setIsOpen={setIsRejectTaskOpen}
         taskId={taskDetails.TaskId}
+        licenseCode={taskDetails.LicenseCode}
+        entityName={taskDetails.EntityName}
       />
       <div className="task-data__container position-relative">
         <span className="task-data__close" onClick={closeTaskDetails}>
@@ -85,10 +90,30 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
               </span>
             </div>
             <div className="position-absolute d-flex task-data__header-status">
-              <TaskStatusBox status={taskDetails.AprStatus}>
+              <TaskStatusBox
+                status={
+                  taskDetails.AprStatus === "Not Started"
+                    ? "pending"
+                    : taskDetails.AprStatus === "Approved by Approver"
+                    ? "approved"
+                    : taskDetails.AprStatus === "Rejected by Approver"
+                    ? "rejected"
+                    : "pending"
+                }
+              >
                 {taskDetails.AprStatus}
               </TaskStatusBox>
-              <TaskStatusBox status={taskDetails.ExStatus}>
+              <TaskStatusBox
+                status={
+                  taskDetails.ExStatus === "Not Started"
+                    ? "pending"
+                    : taskDetails.ExStatus === "Approved by Expert"
+                    ? "approved"
+                    : taskDetails.ExStatus === "Rejected by Expert"
+                    ? "rejected"
+                    : "pending"
+                }
+              >
                 {taskDetails.ExStatus}
               </TaskStatusBox>
             </div>
@@ -167,7 +192,7 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
                 </div>
                 <div className="col-6">
                   <p className="task-data__field-value">
-                    +919971226214 | Ashu Kumar
+                    {`${taskDetails.ApproverMobile} | ${taskDetails.ApproverName}`}
                   </p>
                 </div>
               </div>
@@ -196,7 +221,7 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
               >
                 <span className="action-top__item-title">Attched Files</span>
                 <div className="action-top__item-count">
-                  <span>2</span>
+                  <span>{taskDetails.NormalattachCount || 0}</span>
                 </div>
               </div>
               <div
@@ -211,7 +236,7 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
               >
                 <span className="action-top__item-title">Comments</span>
                 <div className="action-top__item-count">
-                  <span>1</span>
+                  <span>{taskDetails.NormalCommentCount || 0}</span>
                 </div>
               </div>
               <div
@@ -226,7 +251,10 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
               >
                 <span className="action-top__item-title">References</span>
                 <div className="action-top__item-count">
-                  <span>3</span>
+                  <span>
+                    {taskDetails.LinkCommentCount +
+                      taskDetails.RefattachCount || 0}
+                  </span>
                 </div>
               </div>
             </div>
@@ -247,7 +275,10 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
             )}
           </div>
         </div>
-        {taskDetails.Status !== "Approved" && (
+        {!(
+          taskDetails.Status === "Approved" ||
+          taskDetails.Status === "Request Rejected"
+        ) && (
           <div className="task-action__cta-container mt-3">
             <button
               onClick={() => handleApproveTask(taskDetails.TaskId)}

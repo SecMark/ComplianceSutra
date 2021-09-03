@@ -6,7 +6,13 @@ import Modal from "../../../../../CommonModules/sharedComponents/Modal";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { actions as taskReportActions } from "../../../../OnBording/SubModules/DashBoardCO/redux/actions";
-const RejectTaskModal = ({ isOpen, setIsOpen, taskId }) => {
+const RejectTaskModal = ({
+  isOpen,
+  setIsOpen,
+  taskId,
+  licenseCode,
+  entityName,
+}) => {
   const [feedbackInput, setFeedbackInput] = useState("");
   const [fileList, setFileList] = useState([]);
   const [isRejectTaskEnable, setIsRejectTaskEnable] = useState(false);
@@ -48,6 +54,8 @@ const RejectTaskModal = ({ isOpen, setIsOpen, taskId }) => {
         isApproved: 3,
         loginID: userDetails.UserID,
         userDetails,
+        LicenseCode: licenseCode,
+        EntityName: entityName,
       })
     );
     dispatch(

@@ -44,7 +44,7 @@ const AttachedFile = React.memo(({ taskId }) => {
         ftype: 0,
       })
     );
-  }, []);
+  }, [taskId]);
 
   useEffect(() => {
     if (files && files !== undefined && files.length !== 0) {

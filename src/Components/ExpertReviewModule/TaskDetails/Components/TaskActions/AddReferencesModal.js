@@ -61,7 +61,7 @@ const AddReferencesModal = ({ isOpen, setIsOpen, taskId, fetchReference }) => {
       handleFileUpload(fileList);
       handleLinkUpload(linkInput);
     }
-    fetchReference();
+    fetchReference(taskId);
     handleClose();
   };
   const handleUploadFile = (file) => {
