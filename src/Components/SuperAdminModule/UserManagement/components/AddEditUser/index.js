@@ -5,7 +5,13 @@ import "./style.css";
 import StepperProgressIcon from "../../../../../assets/Icons/stepper-progress-cricle.svg";
 import StepperCheckIcon from "../../../../../assets/Icons/check-icon-disable.svg";
 import StepperCheckIconActive from "../../../../../assets/Icons/check-icon.svg";
-import InteralRolesDropdown from "./InteralRolesDropdown";
+import SelectDataDropdown from "./SelectDataDropown";
+import CertificationsDropdown from "./CertificationsDropdown";
+import {
+  internalRolesData,
+  reviewerExpertiesList,
+  associatedClientsList,
+} from "./data";
 const AddEditUser = (props) => {
   const [stepper, setStepper] = useState({
     stepperAcitveSlide: 1,
@@ -13,6 +19,20 @@ const AddEditUser = (props) => {
   });
   const [internalRoles, setInternalRoles] = useState([]);
   const [currentInternalRoleInput, setCurrentInternalRoleInput] = useState({});
+  const [certifications, setCertifications] = useState([]);
+  const [currentCertificationInput, setCurrentCertificationInput] = useState(
+    {}
+  );
+  const [reviewerExperties, setReviewerExperties] = useState([]);
+  const [reviewerExpertiseInput, setReviewerExpertiesInput] = useState({});
+  const [associatedClients, setAssociatedClients] = useState([]);
+  const [associatedClientsInput, setAssociatedClientsInput] = useState({});
+  useEffect(() => {
+    console.log(currentCertificationInput);
+  }, [currentCertificationInput]);
+  useEffect(() => {
+    console.log(currentInternalRoleInput);
+  }, []);
   const handleStepClick = (step) => {
     // Changing Steps
     const completedSlides = stepper.stepperCompletedSlides;
@@ -169,50 +189,27 @@ const AddEditUser = (props) => {
           <div className="col-md-12 mt-4">
             <h6 style={{ color: "#2c2738" }}>Internal Role Details</h6>
           </div>
-          <InteralRolesDropdown
-            internalRoles={internalRoles}
-            setInternalRoles={setInternalRoles}
-            currentInternalRoleInput={currentInternalRoleInput}
-            setCurrentInternalRoleInput={setCurrentInternalRoleInput}
+          <SelectDataDropdown
+            options={internalRolesData}
+            selectedList={internalRoles}
+            setSelectedList={setInternalRoles}
+            currentInput={currentInternalRoleInput}
+            setCurrentInput={setCurrentInternalRoleInput}
+            labelText="Select Role"
+            addNewButtonText="add new role"
+            deleteButtonText="delete role"
           />
           {/* Certification Details */}
           <div className="col-md-12 mt-4">
             <h6>Certification Details</h6>
           </div>
-          <div className="col-md-6">
-            <label htmlFor="" className="form-control-label">
-              Select Certification
-            </label>
-            <select id="certificate-validity" className="form-control">
-              <option>License Compliance Check</option>
-            </select>
-          </div>
-          <div className="col-md-6">
-            <label
-              htmlFor="certificate-validity"
-              className="form-control-label"
-            >
-              Certificate Validity till
-            </label>
-            <select id="certificate-validity" className="form-control">
-              <option>1 year</option>
-            </select>
-          </div>
-          <div className="col-md-6">
-            <label
-              htmlFor="certificate-validity"
-              className="form-control-label"
-            >
-              Date of Validity
-            </label>
-            <select id="certificate-validity" className="form-control">
-              <option>1 year</option>
-            </select>
-          </div>
+          <CertificationsDropdown
+            certifications={certifications}
+            setCertifications={setCertifications}
+            currentCertificationInput={currentCertificationInput}
+            setCurrentCertificationInput={setCurrentCertificationInput}
+          />
           <div className="col-md-12">
-            <button className="stroke-button my-4 d-block">
-              add new cirtification
-            </button>
             <button
               className="primary-button mt-3 d-block"
               onClick={() =>
@@ -235,46 +232,35 @@ const AddEditUser = (props) => {
         <div className="row">
           <div className="col-12">
             <h6>Reviewer's Expertise Details</h6>
-            <div className="col-md-6 mx-0 px-0">
-              <label
-                htmlFor="license-expertise"
-                className="form-control-label mt-2"
-              >
-                License Expertise
-              </label>
-              <select id="license-expertise" className="form-control px-0">
-                <option disabled selected>
-                  Select a license
-                </option>
-                <option>NSE</option>
-              </select>
-              <button className="stroke-button mt-3 px-0">
-                add new license
-              </button>
-            </div>
           </div>
+          <SelectDataDropdown
+            options={reviewerExpertiesList}
+            selectedList={reviewerExperties}
+            setSelectedList={setReviewerExperties}
+            currentInput={reviewerExpertiseInput}
+            setCurrentInput={setReviewerExpertiesInput}
+            labelText="Select License Expertise"
+            addNewButtonText="add new license"
+            deleteButtonText="delete license"
+          />
           <div className="col-12 mt-5">
             <h6>Associated Client Details</h6>
-            <div className="col-md-6 mx-0 px-0">
-              <label
-                htmlFor="license-expertise"
-                className="form-control-label mt-2"
-              >
-                Add a client
-              </label>
-              <select id="license-expertise" className="form-control px-0">
-                <option disabled selected>
-                  Select client to allocate
-                </option>
-                <option>NSE</option>
-              </select>
-              <button className="stroke-button mt-3 px-0">
-                add a new client
-              </button>
-            </div>
           </div>
+          <SelectDataDropdown
+            options={associatedClientsList}
+            selectedList={associatedClients}
+            setSelectedList={setAssociatedClients}
+            currentInput={associatedClientsInput}
+            setCurrentInput={setAssociatedClientsInput}
+            labelText="select client"
+            addNewButtonText="add new client"
+            deleteButtonText="delete client"
+          />
           <div className="col-12 mt-5">
-            <button className="primary-button primary-button--outlined mr-3">
+            <button
+              className="primary-button primary-button--outlined mr-3"
+              onClick={() => handleStepClick(stepper.stepperAcitveSlide - 1)}
+            >
               go back
             </button>
             <button
@@ -396,9 +382,15 @@ const AddEditUser = (props) => {
               Bombay Stock Exchange (BSE)
             </p>
           </div>
-          <div className="col-12">
+          <div className="col-12 d-flex align-items-center mt-4">
             <button
-              className="primary-button mt-3 d-block"
+              className="primary-button primary-button--outlined mr-3"
+              onClick={() => handleStepClick(stepper.stepperAcitveSlide - 1)}
+            >
+              go back
+            </button>
+            <button
+              className="primary-button"
               onClick={() => setStepper({ ...stepper, stepperAcitveSlide: 3 })}
             >
               confirm & add member
