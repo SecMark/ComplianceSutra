@@ -7,7 +7,7 @@ import DeActivateAccountModal from "../../../CommonModules/sharedComponents/Moda
 import "./style.css";
 
 function PaymentSection({
-  openLicenseDrawer,
+  setIsShowEditLicense,
   setUpgradeYourPlan,
   isPaidMember,
   setIsPaidMember,
@@ -58,7 +58,7 @@ function PaymentSection({
       <div className="payment-detail-plan">
         <h2 className="payment-type">Your Licenses</h2>
         <div className="edit-container">
-          <button className="edit-button" onClick={() => openLicenseDrawer()}>
+          <button className="edit-button" onClick={setIsShowEditLicense}>
             Edit License
           </button>
           <h2 className="payment-trail">5</h2>

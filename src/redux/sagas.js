@@ -9,6 +9,7 @@ import userTypeSagas from "../Components/UserVerification/redux/sagas";
 import historySaga from "../Components/HistoryModule/redux/saga";
 import updatesSaga from "../Components/NewRegulationModule/redux/saga";
 import calenderViewSaga from "../Components/CalenderView/redux/saga";
+import paymentSaga from "../Components/ExpertReviewModule/Redux/saga";
 
 function* watchAndLog() {
   yield takeEvery("*", function* logger(action) {
@@ -31,5 +32,6 @@ export default function* root() {
     fork(updatesSaga),
     fork(calenderViewSaga),
     fork(userTypeSagas),
+    fork(paymentSaga),
   ]);
 }

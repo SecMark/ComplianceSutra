@@ -7,16 +7,62 @@ import fileUploadIcon from "../../../../../assets/Icons/fileUploadIcon.png";
 import { MdAddCircle, MdLink, MdInsertDriveFile } from "react-icons/md";
 import isURL from "validator/lib/isURL";
 import "./style.css";
-const AddReferencesModal = ({ isOpen, setIsOpen }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { actions as taskReportActions } from "../../../../OnBording/SubModules/DashBoardCO/redux/actions";
+
+const AddReferencesModal = ({ isOpen, setIsOpen, taskId, fetchReference }) => {
   const [linkInput, setLinkInput] = useState("");
   const [linksList, setLinksList] = useState([]);
   const [fileList, setFileList] = useState([]);
+  const state = useSelector((state) => state);
+  const userDetails = state && state.auth && state.auth.loginInfo;
+  const dispatch = useDispatch();
   const handleLinkAddMore = () => {
-    console.log("handlelinkaddmoreclicked");
     if (linkInput !== "" && isURL(linkInput)) {
       setLinksList([...linksList, linkInput]);
       setLinkInput("");
     }
+  };
+  const handleLinkUpload = (comment) => {
+    dispatch(
+      taskReportActions.postTaskCommentByTaskID({
+        actionFlag: 1,
+        taskID: taskId,
+        comment,
+        commentBy: userDetails.UserID,
+        link: 1,
+      })
+    );
+  };
+
+  const handleFileUpload = (file) => {
+    let formData = [];
+    formData = new FormData();
+    for (let i = 0; i < file.length; i++) {
+      formData.append("file", file[i]);
+    }
+    dispatch(
+      taskReportActions.postUploadFileByID({
+        taskid: taskId,
+        fileData: formData,
+        ftype: 1,
+        userId: userDetails.UserID,
+      })
+    );
+  };
+  const handleAddAttachement = () => {
+    if (isURL(linkInput) && fileList.length === 0) {
+      handleLinkUpload(linkInput);
+    }
+    if (linkInput === "" && fileList.length !== 0) {
+      handleFileUpload(fileList);
+    }
+    if (linksList.length !== 0 && fileList.length !== 0) {
+      handleFileUpload(fileList);
+      handleLinkUpload(linkInput);
+    }
+    fetchReference(taskId);
+    handleClose();
   };
   const handleUploadFile = (file) => {
     const _fileList = (fileList && fileList[0] && fileList[0].Files) || [];
@@ -78,13 +124,13 @@ const AddReferencesModal = ({ isOpen, setIsOpen }) => {
               </div>
             ))}
         </div>
-        <button
+        {/* <button
           className="add-references__add-more mt-2"
           onClick={handleLinkAddMore}
           disabled={!linkInput !== "" && !isURL(linkInput)}
         >
           add more <MdAddCircle />
-        </button>
+        </button> */}
       </div>
       <div className="add-references__input-item mt-4 mb-2">
         <p className="task-data__field-value add-references__input-label">
@@ -128,7 +174,23 @@ const AddReferencesModal = ({ isOpen, setIsOpen }) => {
           })}
       </div>
       <div className="add-references__input-title mt-5 mb-2">
-        <button className="add-references__button">add attachment</button>
+        <button
+          className="add-references__button"
+          onClick={handleAddAttachement}
+          disabled={
+            !isURL(linkInput) && linksList.length === 0 && fileList.length === 0
+          }
+          style={{
+            opacity:
+              !isURL(linkInput) &&
+              linksList.length === 0 &&
+              fileList.length === 0
+                ? "0.6"
+                : "1",
+          }}
+        >
+          add attachment
+        </button>
         <button
           className="add-references__button add-references__button-stroke"
           onClick={handleClose}

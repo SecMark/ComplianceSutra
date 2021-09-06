@@ -6,6 +6,7 @@ import "./style.css";
 
 const MigrationRequest = (props) => {
   const [openMigrateModal, setOpenMigrateModal] = useState(false);
+  
   return (
     <div className="migration-request-container">
       <h2 className="migration-header">Migration Requests</h2>
@@ -85,7 +86,7 @@ const MigrationRequest = (props) => {
 
               <button
                 className="decline-request"
-                onClick={() => setOpenMigrateModal(!openMigrateModal)}
+                onClick={() => setOpenMigrateModal(false)}
               >
                 decline request
               </button>

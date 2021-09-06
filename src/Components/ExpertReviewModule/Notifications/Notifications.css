@@ -2,7 +2,11 @@
   width: 100vw;
   height: 100vh;
   padding-top: 5vh;
+
   overflow-y: scroll;
+
+  margin-left: 59px;
+
 }
 .NotificationHeader {
   display: flex;
@@ -103,9 +107,14 @@
   background-color: white;
   border: none;
 }
+
 .whiteBackground {
   background-color: white;
 }
 .purpleBackground {
   background-color: #f9f7ff;
+
+.h4{
+  margin-left: -50;
+
 }

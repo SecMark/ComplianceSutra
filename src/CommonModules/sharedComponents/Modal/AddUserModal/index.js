@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HiMinusSm, HiPlus } from "react-icons/hi";
 import { AiOutlineInfo } from "react-icons/ai";
 import cross from "../../../../assets/Icons/closeIcon1.png";
 
 import "./style.css";
 
-function AddUserModal({ closeModal }) {
-  const close = () => {
-    closeModal();
-  };
+function AddUserModal({ setAddUser }) {
+
+  const [count, setCount] = useState(5);
+
+  useEffect(() => {
+    console.log("lelel", count);
+    if (count < 0) setCount(0);
+  }, [count]);
 
   return (
     <div className="modal-container">
@@ -17,7 +21,7 @@ function AddUserModal({ closeModal }) {
           <div className="modal-body-container">
             <div className="header">
               <h3>Add User</h3>
-              <img src={cross} alt="" onClick={close} />
+              <img src={cross} alt="" onClick={() => setAddUser(false)} />
             </div>
             <div className="select-section">
               <button className="info-button">
@@ -28,11 +32,21 @@ function AddUserModal({ closeModal }) {
               </span>
             </div>
             <div className="counter-buttons">
-              <button className="counter">
+              <button
+                className="counter"
+                onClick={() => {
+                  setCount((count) => count - 5);
+                }}
+              >
                 <HiMinusSm />
               </button>
-              <h2 className="counter-count">25</h2>
-              <button className="counter">
+              <h2 className="counter-count">{count < 0 ? 0 : count}</h2>
+              <button
+                className="counter"
+                onClick={() => {
+                  setCount((count) => count + 5);
+                }}
+              >
                 <HiPlus />
               </button>
             </div>

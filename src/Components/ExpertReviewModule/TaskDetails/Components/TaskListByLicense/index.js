@@ -5,8 +5,9 @@ import upArrow from "../../../../../assets/Icons/topArrowAccordian.png";
 import api from "../../../../../apiServices/";
 import { useSelector } from "react-redux";
 import NoTaskFound from "../NoTasksFound";
-const TaskListByTeam = ({ currentTask, setCurrentTask }) => {
+const TaskListByLicense = ({ currentTask, setCurrentTask }) => {
   const [expendedViewAll, setExpendedViewAll] = useState([]);
+  // const [countDetails, setCountDetails] = useState({});
   const [tasksList, setTasksList] = useState([]);
   const state = useSelector((state) => state);
   const userDetails = state && state.auth && state.auth.loginInfo;
@@ -25,7 +26,7 @@ const TaskListByTeam = ({ currentTask, setCurrentTask }) => {
   useEffect(() => {
     api
       .post("/api/getTaskReport", {
-        entityid: "3",
+        entityid: "1",
         userID: userDetails.UserID,
         usertype: userDetails.UserType,
       })
@@ -33,12 +34,15 @@ const TaskListByTeam = ({ currentTask, setCurrentTask }) => {
         if (response && response.data && response.data.length !== 0) {
           const data = response.data;
           let temporaryArray = [];
+          // let rowCounts = {};
           data.forEach((item) => {
             if (item?.Details.length >= 1 && item.Status.trim() !== "Norec") {
               temporaryArray.push({ ...item });
+              // rowCounts[item.Status.trim()] = item.Details.length;
             }
           });
           let sortedArray = temporaryArray.sort((a, b) => a.ORD - b.ORD);
+          // setCountDetails(rowCounts);
           setTasksList(sortedArray);
         }
       });
@@ -111,4 +115,4 @@ const TaskListByTeam = ({ currentTask, setCurrentTask }) => {
   );
 };
 
-export default TaskListByTeam;
+export default TaskListByLicense;
