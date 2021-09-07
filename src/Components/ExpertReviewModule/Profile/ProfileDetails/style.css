@@ -31,6 +31,22 @@
   font-weight: 500;
   font-size: 14px;
 }
+.lockemail{
+  border-radius: 5px;
+  width: 50%;
+  text-align: initial;
+  padding: 5px 12px;
+  border: solid 1px #e4e4e4;
+  margin-right: 5px;
+  background-color: #fafafa;
+}
+.lockemail > input{
+  width: 100%;
+  outline: none;
+  text-align: initial;
+  border: 0;
+ 
+}
 .FormElement > input {
   border-radius: 5px;
   width: 50%;
