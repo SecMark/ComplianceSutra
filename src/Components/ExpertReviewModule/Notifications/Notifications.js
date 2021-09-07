@@ -27,12 +27,20 @@ const ERNotifications = () => {
       color: "black",
       paddingRight: 4,
     }),
-
+    option: () => ({
+      color: "black",
+      padding: "10px",
+      borderBottom: "1px solid #e4e4e4",
+      "&:hover": {
+        backgroundColor: "#f7f4fe",
+      },
+    }),
     singleValueLabel: () => ({
       backgroundColor: "white",
       padding: 2,
       margin: 2,
       borderRadius: 8,
+      color: "black",
     }),
     singleValue: () => ({
       border: "none",
@@ -44,9 +52,11 @@ const ERNotifications = () => {
       backgroundColor: "#f7f4fe",
     }),
     control: () => ({
-      backgroundColor: "#e4e4e4",
+      backgroundColor: "#e4e4e45c",
       display: "flex",
       borderRadius: 7,
+      color: "black",
+      fontWeight: "500",
     }),
   };
   return (

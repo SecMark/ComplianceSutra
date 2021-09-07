@@ -21,7 +21,7 @@ const ProfileDetails = () => {
     emailId: "",
     mobileNo: "",
   });
-
+  const [error,setError] = useState("");
   const [LicenceValue, setLicenceValue] = useState([]);
 
   const loggedUser = state && state.auth && state.auth.loginInfo;
@@ -124,9 +124,12 @@ const ProfileDetails = () => {
     selectedOptions.forEach((element) => {
       licarray.push(element.value);
     });
+    setError("");
     setLicenceValue(licarray);
     setValuesChanged(true);
   };
+
+  
 
   const onSubmit = () => {
     let payload = {
@@ -142,6 +145,14 @@ const ProfileDetails = () => {
     dispatch(coActions.coDetailsInsUpdDelRequest(payload));
     setValuesChanged(false);
   };
+  const onHandelSubmit = ()=>{
+    if(LicenceValue.length===0){
+        setError("please select at least one licence")
+    }
+    else{
+      onSubmit()
+    }
+}
 
   const customStyles = {
     multiValue: () => ({
@@ -209,6 +220,7 @@ const ProfileDetails = () => {
           >
             ADD NEW
           </span>
+          <h3 className="dropdownerror">{error}</h3>
         </components.DropdownIndicator>
       )
     );
@@ -223,7 +235,7 @@ const ProfileDetails = () => {
         <form action="">
           <div className="FormElement">
             <p>Email-Id:</p>
-
+            <div className="lockemail">
             <input
               type="text"
               defaultValue="rameshkumar@secmark.co.in"
@@ -235,9 +247,11 @@ const ProfileDetails = () => {
               style={{
                 right: "26.5rem",
                 top: "9.1rem",
-                position: "absolute",
+                
               }}
             />
+            </div>
+            
           </div>
           <div className="FormElement">
             <p>Full Name:</p>
@@ -269,6 +283,7 @@ const ProfileDetails = () => {
         </form>
         <div className="FormElement">
           <p>License Expert in:</p>
+          
           <Select
             components={{ DropdownIndicator }}
             isMulti
@@ -277,7 +292,9 @@ const ProfileDetails = () => {
             options={LicenseOptions || []}
             onChange={onDropDownChnage}
           />
+          
         </div>
+        
         {/* <div className="FormElement">
           <p>Industry Expert in:</p>
           <Select
@@ -289,7 +306,7 @@ const ProfileDetails = () => {
           />
         </div> */}
         <div className="ProfileSubmit">
-          <button disabled={valuesChanged === false} onClick={() => onSubmit()}>
+          <button disabled={valuesChanged === false} onClick={() => onHandelSubmit()}>
             SAVE CHANGES
           </button>
           {valuesChanged && (

@@ -20,7 +20,7 @@
 }
 .NotificationFilter {
   display: flex;
-  margin-left: 18vw;
+  margin-left: 22vw;
   margin-right: -3rem;
 }
 
@@ -80,7 +80,7 @@
   border: none;
   cursor: pointer;
   max-width: 1vw;
-  margin-left: -5vw;
+  margin-left: -3vw;
   margin-top: -2vh;
 }
 
@@ -90,21 +90,26 @@
   border: 1px solid rgba(201, 199, 199, 0.144);
   box-shadow: 0px 2px 5px #5757579a;
   position: absolute;
-  right: 2vw;
-  top: 9vh;
-  width: 10vw;
-  padding: 10px 2px;
+  right: -1vw;
+  top: 9.5vh;
+  width: 14vw;
+  padding: 0.8rem 1rem 0.6rem 0.2rem;
 
   border-radius: 5px;
+  background-color: white;
 }
 .MenuItem1 {
   background-color: white;
   border: none;
   border-bottom: 1px solid #adacac4b;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
 }
 .MenuItem2 {
   background-color: white;
   border: none;
+  text-align: left;
 }
 
 .whiteBackground {
@@ -113,6 +118,7 @@
 .purpleBackground {
   background-color: #f9f7ff;
 }
-.h4 {
+/* h4{
   margin-left: -50;
-}
+
+} */
