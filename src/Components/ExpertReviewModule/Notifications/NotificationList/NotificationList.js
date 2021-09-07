@@ -11,7 +11,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
-
+import NoResultFound from "../../../../CommonModules/sharedComponents/NoResultFound";
 const NotificationList = ({ customStyles }) => {
   const [notificationList, setNotificationList] = useState([]);
   const [notifications, setNotification] = useState(null);
@@ -243,10 +243,9 @@ const NotificationList = ({ customStyles }) => {
             null}
         </div>
       </div>
-      <div className="ListMain">
-        {notifications != null &&
-          notifications.length > 0 &&
-          notifications.map((item) => {
+      {notifications != null && notifications.length > 0 ? (
+        <div className="ListMain">
+          {notifications.map((item) => {
             return (
               <>
                 {item.notificationOfDay.length > 0 ? (
@@ -337,16 +336,12 @@ const NotificationList = ({ customStyles }) => {
               </>
             );
           })}
-        {notifications &&
-          notifications != null &&
-          notifications.length <= 0 &&
-          notifications[0] &&
-          notifications[0].notificationOfDay.length !== 0 && (
-            <div>
-              No new notifications. We'll notify you when something new arrives
-            </div>
-          )}
-      </div>
+        </div>
+      ) : (
+        <div className="pt-2 pl-5">
+          <NoResultFound text=" No new notifications. We'll notify you when something new arrives" />
+        </div>
+      )}
     </div>
   );
 };

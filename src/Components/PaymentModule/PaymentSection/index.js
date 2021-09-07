@@ -3,8 +3,16 @@ import AddUserModal from "../../../CommonModules/sharedComponents/Modal/AddUserM
 import UpgradePlanModal from "../../../CommonModules/sharedComponents/Modal/UpgradePlanModal";
 import CancelSubscriptionModal from "../../../CommonModules/sharedComponents/Modal/CancelSubsriptionModal";
 import DeActivateAccountModal from "../../../CommonModules/sharedComponents/Modal/DeActivateAccountModal";
+import constant from "../../../CommonModules/sharedComponents/constants/constant";
+import {
+  clearLicense,
+  getPayment,
+  mainSelectedLicense,
+} from "../../ExpertReviewModule/Redux/actions";
+import { actions as coActions } from "../../../Components/OnBording/SubModules/DashBoardCO/redux/actions";
 
 import "./style.css";
+import { useDispatch, useSelector } from "react-redux";
 
 function PaymentSection({
   setIsShowEditLicense,
@@ -18,6 +26,11 @@ function PaymentSection({
     useState(false);
   const [isDeactivatedAccountModalOpen, setIsDeactivatedAccountModalOpen] =
     useState(false);
+  const [licenseList, setLicenseList] = useState({});
+  const [selectedLiecenseIdArray, setSelectedLicenseIdArray] = useState([]);
+
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const closeDeActivatedModal = () => {
     setIsDeactivatedAccountModalOpen(!isDeactivatedAccountModalOpen);
@@ -29,7 +42,82 @@ function PaymentSection({
   const closeCancelSubscriptionModal = () => {
     setIsCancelSubscriptionModalOpen(!isCancelSubscriptionModalOpen);
   };
+  const loggedUser =
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
 
+  const openUpgradeModal = async () => {
+    getLicenseDetail();
+    setIsUpgradeModalOpen(!isUpgradeModalOpen);
+  };
+
+  const getLicenseDetail = () => {
+    const selectedLicense = [];
+    const coLicensesData =
+      state &&
+      state.taskReport &&
+      state.taskReport.coAccountLicenses &&
+      state.taskReport.coAccountLicenses.coLicenses;
+
+    if (coLicensesData != undefined) {
+      let LicenseList = [];
+      let tempSelectedLicenses = [];
+      coLicensesData &&
+        coLicensesData.length > 0 &&
+        coLicensesData.map((item) => {
+          let tempArray = [];
+          item.GEN_License &&
+            item.GEN_License.length > 0 &&
+            item.GEN_License.map((element) => {
+              let LicenseObj = {
+                Category: element.Category,
+                LicenseCode: element.LicenseCode,
+                LicenseId:
+                  element.GEN_EntityApplicableLicenses[0].ApplicableLicenseId,
+                Flag: element.GEN_EntityApplicableLicenses[0].Flag,
+                EntityId: element.GEN_EntityApplicableLicenses[0].EntityGroupID,
+              };
+              if (element.GEN_EntityApplicableLicenses[0].Flag > 0) {
+                tempSelectedLicenses.push(
+                  element.GEN_EntityApplicableLicenses[0].ApplicableLicenseId
+                );
+              }
+              tempArray.push(LicenseObj);
+            });
+          let finalObj = {
+            EntityName: item.EntityName,
+            LicenseList: tempArray,
+          };
+
+          LicenseList.push(finalObj);
+        });
+      setLicenseList(LicenseList);
+      setSelectedLicenseIdArray(tempSelectedLicenses);
+
+      LicenseList.map((data) => {
+        data.LicenseList.map((licenseListData) => {
+          selectedLicense.push(licenseListData);
+        });
+      });
+
+      const paymentArray = selectedLicense.map((licenses) => {
+        return {
+          gid: state?.auth?.loginInfo.UserID,
+          eid: licenses.EntityId,
+          cat: constant.complianceOfficer,
+          prodid: licenses.LicenseCode,
+        };
+      });
+
+      const getPaymentDetailPayload = {
+        flag: 1,
+        pmtArray: JSON.stringify(paymentArray),
+      };
+      dispatch(getPayment(getPaymentDetailPayload));
+      dispatch(mainSelectedLicense(paymentArray));
+    } else {
+      console.log("nothing 123");
+    }
+  };
   return (
     <>
       {isAddUserModalOpen && <AddUserModal closeModal={closeAddUserModal} />}
@@ -37,7 +125,10 @@ function PaymentSection({
         <DeActivateAccountModal closeModal={closeDeActivatedModal} />
       )}
       {isUpgradeModalOpen && (
-        <UpgradePlanModal setUpgradeYourPlan={setUpgradeYourPlan} />
+        <UpgradePlanModal
+          setUpgradeYourPlan={setUpgradeYourPlan}
+          setIsUpgradeModalOpen={setIsUpgradeModalOpen}
+        />
       )}
 
       {isCancelSubscriptionModalOpen && (
@@ -97,7 +188,7 @@ function PaymentSection({
       {!isPaidMember && (
         <button
           className="upgrade-button d-none d-md-block"
-          onClick={() => setIsUpgradeModalOpen(!isUpgradeModalOpen)}
+          onClick={() => openUpgradeModal()}
         >
           upgrade now
         </button>

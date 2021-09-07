@@ -20,6 +20,8 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { setNotificationTaskId } from "../../OnBording/SubModules/DashBoardCO/components/notification/Redux/Action";
 import TaskDetailView from "../TaskDetails";
+import axios from "axios";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 
 const Dashboard = () => {
   const [sortBy, setSortBy] = useState("Task Status");
@@ -33,6 +35,7 @@ const Dashboard = () => {
   const [showHtoDoIt, setShowHtoDoIt] = useState(false);
   const [today, setToday] = useState(new Date());
   const [currentTaskData, setCurrentTaskData] = useState([]);
+  const [thingOnTrack, setThingOnTrack] = useState({});
 
   const handleTaskDetailsClose = () => {
     if (isTaskDetailsShow) {
@@ -116,6 +119,7 @@ const Dashboard = () => {
         usertype: userDetails.UserType,
       })
     );
+    fetchQuickOverViewSectionData();
   }, []);
 
   const viewAll = (type, symbol) => {
@@ -240,6 +244,29 @@ const Dashboard = () => {
       str = `${name.slice(0, 9)}...`;
     }
     return str;
+  };
+
+  const fetchQuickOverViewSectionData = (type) => {
+    const payload = {
+      entityid: "0",
+      userID: userDetails.UserID,
+      usertype: userDetails.UserType,
+    };
+    axios
+      .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
+      .then((response) => {
+        if (response && response.data && response.data.length > 0) {
+          if (type === "type1") {
+            let temp = response.data[0];
+            setThingOnTrack(temp);
+            console.log(thingOnTrack);
+          } else if (type === "type2") {
+            let temp = response.data[0];
+            setThingOnTrack(temp);
+          }
+        }
+      })
+      .catch((error) => {});
   };
 
   const renderTaskList = useCallback(

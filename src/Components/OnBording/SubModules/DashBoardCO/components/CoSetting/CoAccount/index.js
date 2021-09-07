@@ -12,6 +12,7 @@ import Payment from "../../../../../../../CommonModules/sharedComponents/Drawer/
 import { BsPencil } from "react-icons/bs";
 import { RiRefreshFill } from "react-icons/ri";
 import EditLicenses from "../../../../../../../CommonModules/sharedComponents/Drawer/EditLicense";
+import { clearLicense } from "../../../../../../ExpertReviewModule/Redux/actions";
 
 function CoAccount({ handleClose }) {
   const state = useSelector((state) => state);
@@ -29,6 +30,7 @@ function CoAccount({ handleClose }) {
 
   useEffect(() => {
     initialDispatch();
+    dispatch(clearLicense());
   }, []);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ function CoAccount({ handleClose }) {
       const count = accountInfo[0].Flag;
       setFlagcount(count);
       if (count > 0) {
-        setIsSliderCheck(true);
+        setIsSliderCheck(false);
       } else {
         setIsSliderCheck(false);
       }
@@ -57,6 +59,7 @@ function CoAccount({ handleClose }) {
   const [isShowFilter, setIsShowFilter] = useState(false);
   const [isShowPayment, setIsShowPayment] = useState(false);
   const [erServiceStatus, seterServiceStatus] = useState("InActive");
+  const [isMainPayment, setIsMainPayment] = useState(false);
 
   const loggedUser =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
@@ -72,7 +75,7 @@ function CoAccount({ handleClose }) {
       coActions.getCoAccountRequest({
         gUserID: loggedUser.UserID,
         settingType: 3,
-        actionFlag: 0,
+        actionFlag: 1,
         entityID: 0,
         licID: 0,
         uUserID: 0,
@@ -128,6 +131,8 @@ function CoAccount({ handleClose }) {
         drawerChild.style.right = "-100%";
       }
       setIsShowFilter(false);
+      setIsSliderCheck(false);
+      setIsMainPayment(false);
     } else {
       const drawerParent = document.getElementById("drawerParentMobile");
       const drawerChild = document.getElementById("drawerChildMobile");
@@ -182,6 +187,10 @@ function CoAccount({ handleClose }) {
 
   const onSliderChange = () => {
     setIsSliderCheck(!isSliderCheck);
+    if (!isSliderCheck) {
+      setIsShowFilter(true);
+      setIsMainPayment(true);
+    }
   };
 
   const openLicenseDrawer = () => {
@@ -209,27 +218,31 @@ function CoAccount({ handleClose }) {
 
   const paymentDrawer = () => {
     setIsShowFilter(false);
+    //setIsSliderCheck(!isSliderCheck);
+    //setIsMainPayment(false);
     setIsShowPayment(!isShowPayment);
   };
   return (
     <>
-      <div
-        className={`license-popup ${isShowFilter && "popup-open"}`}
-        style={{
-          boxShadow: isShowFilter
-            ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
-            : "none",
-        }}
-      >
-        <div className="">
-          <ChooseLicenses
-            fields={fields}
-            close={(data, action) => close(data, action)}
-            paymentDrawer={paymentDrawer}
-          />
+      {isShowFilter && (
+        <div
+          className={`license-popup ${isShowFilter && "popup-open"}`}
+          style={{
+            boxShadow: isShowFilter
+              ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
+              : "none",
+          }}
+        >
+          <div className="">
+            <ChooseLicenses
+              fields={fields}
+              close={(data, action) => close(data, action)}
+              paymentDrawer={paymentDrawer}
+              isMainPayment={isMainPayment}
+            />
+          </div>
         </div>
-      </div>
-
+      )}
       {/* Payment Drawer */}
       <div
         className={`license-popup ${isShowPayment && "popup-open"}`}
@@ -240,27 +253,32 @@ function CoAccount({ handleClose }) {
         }}
       >
         <div className="">
-          <Payment paymentDrawer={paymentDrawer} />
-        </div>
-      </div>
-
-      {/* Edit License */}
-      <div
-        className={`license-popup ${isShowEditLicense && "popup-open"}`}
-        style={{
-          boxShadow: isShowEditLicense
-            ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
-            : "none",
-        }}
-      >
-        <div className="">
-          <EditLicenses
-            fields={fields}
-            close={(data, action) => editclose(data, action)}
+          <Payment
+            paymentDrawer={paymentDrawer}
+            setIsSliderCheck={setIsSliderCheck}
+            isMainPayment={isMainPayment}
           />
         </div>
       </div>
 
+      {/* Edit License */}
+      {isShowEditLicense && (
+        <div
+          className={`license-popup ${isShowEditLicense && "popup-open"}`}
+          style={{
+            boxShadow: isShowEditLicense
+              ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
+              : "none",
+          }}
+        >
+          <div className="">
+            <EditLicenses
+              fields={fields}
+              close={(data, action) => editclose(data, action)}
+            />
+          </div>
+        </div>
+      )}
       <div className="co-account ">
         {!isMobile && (
           <div id="drawerParent" className="">
@@ -441,6 +459,7 @@ function CoAccount({ handleClose }) {
               setIsPaidMember={setIsPaidMember}
               isShowEditLicense={isShowEditLicense}
               setIsShowEditLicense={setIsShowEditLicense}
+              setIsMainPayment={setIsMainPayment}
             />
           </>
         )}

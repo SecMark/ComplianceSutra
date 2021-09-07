@@ -6,7 +6,6 @@
   overflow-y: scroll;
 
   margin-left: 59px;
-
 }
 .NotificationHeader {
   display: flex;
@@ -113,8 +112,7 @@
 }
 .purpleBackground {
   background-color: #f9f7ff;
-
-.h4{
+}
+.h4 {
   margin-left: -50;
-
 }

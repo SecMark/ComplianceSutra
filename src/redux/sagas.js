@@ -14,8 +14,7 @@ import paymentSaga from "../Components/ExpertReviewModule/Redux/saga";
 function* watchAndLog() {
   yield takeEvery("*", function* logger(action) {
     const state = yield select();
-    console.debug("action", action);
-    console.debug("state after", state);
+
   });
 }
 

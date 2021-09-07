@@ -11,6 +11,10 @@ import assignIcon5 from "../../../assets/Icons/assignIcon3.png";
 import assignIcon2 from "../../../assets/Icons/assignIcon4.png";
 import assignIcon4 from "../../../assets/Icons/assignIcon5.png";
 import constant from "../constants/constant";
+import {
+  getPayment,
+  mainSelectedLicense,
+} from "../../../Components/ExpertReviewModule/Redux/actions";
 
 function EditLicenses({ fields, close }) {
   const state = useSelector((state) => state);
@@ -175,16 +179,20 @@ function EditLicenses({ fields, close }) {
       return {
         gid: state?.auth?.loginInfo.UserID,
         eid: licenses.EntityId,
-        cat: constant.expertReview,
+        cat: constant.complianceOfficer,
         prodid: licenses.LicenseCode,
       };
     });
-
-    const getPaymentDetailPayload = {
+    dispatch(mainSelectedLicense(paymentArray));
+    const payload = {
       flag: 1,
       pmtArray: JSON.stringify(paymentArray),
     };
+    dispatch(getPayment(payload));
+
+    callClose(2);
   };
+
   const setCerificateDetailsMobile = () => {
     var fieldObj = { ...fields };
     fieldObj.selectedLicenseArray = selectedLiecenseIdArray;
