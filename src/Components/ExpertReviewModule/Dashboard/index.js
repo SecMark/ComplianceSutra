@@ -246,7 +246,7 @@ const Dashboard = () => {
     return str;
   };
 
-  const fetchQuickOverViewSectionData = (type) => {
+  const fetchQuickOverViewSectionData = () => {
     const payload = {
       entityid: "0",
       userID: userDetails.UserID,
@@ -255,15 +255,10 @@ const Dashboard = () => {
     axios
       .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
       .then((response) => {
+        console.log(response);
         if (response && response.data && response.data.length > 0) {
-          if (type === "type1") {
-            let temp = response.data[0];
-            setThingOnTrack(temp);
-            console.log(thingOnTrack);
-          } else if (type === "type2") {
-            let temp = response.data[0];
-            setThingOnTrack(temp);
-          }
+          let temp = response.data[0];
+          setThingOnTrack(temp);
         }
       })
       .catch((error) => {});
@@ -540,17 +535,31 @@ const Dashboard = () => {
               <div className="static-card">
                 <img src={complteTaskIcon} alt="complte-Task-icon" />
                 <span>Completed</span>
-                <span>00</span>
+                <span>
+                  {thingOnTrack && thingOnTrack.CompletedTask !== "Norec"
+                    ? thingOnTrack.CompletedTask
+                    : "00"}
+                </span>
               </div>
               <div className="static-card">
                 <img src={scheduledIcon} alt="complte-Task-icon" />
                 <span>Scheduled</span>
-                <span>00</span>
+                <span>
+                  {" "}
+                  {thingOnTrack && thingOnTrack.SchedulededTask !== "Norec"
+                    ? thingOnTrack.SchedulededTask
+                    : "00"}
+                </span>
               </div>
               <div className="static-card">
                 <img src={complteTaskIcon} alt="complte-Task-icon" />
                 <span>Rejected</span>
-                <span>02</span>
+                <span>
+                  {" "}
+                  {thingOnTrack && thingOnTrack.RiskTask !== "Norec"
+                    ? thingOnTrack.RiskTask
+                    : "00"}
+                </span>
               </div>
             </div>
             <div className="ER-search-input">

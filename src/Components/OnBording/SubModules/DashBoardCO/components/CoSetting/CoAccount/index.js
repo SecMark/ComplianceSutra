@@ -58,7 +58,7 @@ function CoAccount({ handleClose }) {
 
   const [isShowFilter, setIsShowFilter] = useState(false);
   const [isShowPayment, setIsShowPayment] = useState(false);
-  const [erServiceStatus, seterServiceStatus] = useState("InActive");
+  const [erServiceStatus, seterServiceStatus] = useState("Active");
   const [isMainPayment, setIsMainPayment] = useState(false);
 
   const loggedUser =
