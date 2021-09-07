@@ -41,7 +41,7 @@
   background-color: #fafafa;
 }
 .lockemail > input{
-  width: 100%;
+  width: 90%;
   outline: none;
   text-align: initial;
   border: 0;
@@ -67,6 +67,10 @@
   border-radius: 7px;
   padding: 8px 20px;
   color: #fff;
+}
+.dropdownerror{
+  font-size: 12px;
+  color: red;
 }
 
 #Discard {
