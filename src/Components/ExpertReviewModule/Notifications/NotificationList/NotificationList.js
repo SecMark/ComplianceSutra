@@ -112,19 +112,16 @@ const NotificationList = ({ customStyles }) => {
 
           tempArray.push(dateObj);
         }
-      } else {
-        getNotificationData();
-      }
+        if (tempArray.length > 0) setNotification(tempArray);
+        else
+          setNotification([
+            {
+              date: notifications[0].date,
+              notificationOfDay: [],
+            },
+          ]);
+      } else getNotificationData();
     }
-    if (tempArray.length > 0) setNotification(tempArray);
-    else
-      setNotification([
-        {
-          date: notifications[0].date,
-          notificationOfDay: [],
-        },
-      ]);
-    console.log(tempArray);
   };
 
   const isToday = (date) => {
