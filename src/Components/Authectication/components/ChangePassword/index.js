@@ -8,7 +8,7 @@ import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import SideBar from "../../../OnBording/SubModules/SideBar";
 import { actions as signInSignUpActions } from "../../../Authectication/redux/actions";
-import apiServices from "../../../../apiServices";
+import api from "../../../../apiServices";
 function ChangePassword({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -143,14 +143,15 @@ function ChangePassword({ history }) {
       invitation: "A",
     };
     if (email !== "") {
-      apiServices
-        .post("/api/getEmailbody", obj)
+      api
+        .get("getEmailbody", { params: { uInput: obj } })
         .then(function (response) {
           if (
             response &&
             response.data &&
-            response.data.data[0] &&
-            response.data.data[0].Status === "True"
+            response.data.message &&
+            response.data.message.data[0] &&
+            response.data.message.data[0].Status === "True"
           ) {
           } else {
             toast.success("The link you followed expired");

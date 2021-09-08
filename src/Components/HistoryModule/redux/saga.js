@@ -13,7 +13,7 @@ function* fetchCompanyList(action) {
     const { data, status } = yield call(api.getTaskReport, action.payload);
     if (status === 200) {
       yield put(setSuccess(true));
-      yield put(setCompanyList(data));
+      yield put(setCompanyList(data.message));
     } else {
     }
   } catch (error) {
@@ -25,7 +25,7 @@ function* fetchLicenseList(action) {
   try {
     const { data, status } = yield call(api.getTaskReport, action.payload);
     if (status === 200) {
-      yield put(setLicenseList(data));
+      yield put(setLicenseList(data.message));
     } else {
     }
   } catch (error) {
@@ -38,9 +38,9 @@ function* fetchHistoryList(action) {
     const { data, status } = yield call(api.getTaskReport, action.payload);
 
     if (status === 200) {
-      yield put(setHistoryList(data));
+      yield put(setHistoryList(data.message));
       yield put(setSuccess(true));
-    } 
+    }
   } catch (error) {
     yield put(setHistoryList([]));
     yield put(setSuccess(true));

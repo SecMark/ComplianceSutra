@@ -25,14 +25,23 @@ const TaskListByLicense = ({ currentTask, setCurrentTask }) => {
   };
   useEffect(() => {
     api
-      .post("/api/getTaskReport", {
-        entityid: "1",
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
+      .get("getTaskReport", {
+        params: {
+          uInput: {
+            entityid: "1",
+            userID: userDetails.UserID,
+            usertype: userDetails.UserType,
+          },
+        },
       })
       .then((response) => {
-        if (response && response.data && response.data.length !== 0) {
-          const data = response.data;
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.length !== 0
+        ) {
+          const data = response.data.message;
           let temporaryArray = [];
           // let rowCounts = {};
           data.forEach((item) => {

@@ -62,9 +62,9 @@ function PersonalDetails({ history, location }) {
       loginty: "AdminMobile",
     };
     api
-      .post("/api/availabilityCheck", payload)
+      .get("availabilityCheck", { params: { uInput: payload } })
       .then((result) => {
-        setMobileNumberValid(result.data.Status);
+        setMobileNumberValid(result.data.message.Status);
       })
       .catch((error) => {});
   };
@@ -263,16 +263,20 @@ function PersonalDetails({ history, location }) {
       cntryCode: str,
     };
     api
-      .post("/api/CountryCodeCheck", payload)
+      .get("CountryCodeCheck", { params: { uInput: payload } })
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "True"
+        ) {
           setCountryCode(true);
           let inputKey = "countryCodeErr";
           setErrors({ ...errors, [inputKey]: "" });
         } else {
           setCountryCode(false);
-          // setErrors(errors);
           let inputKey = "countryCodeErr";
           setErrors({ ...errors, [inputKey]: "true" });
         }
@@ -482,7 +486,7 @@ function PersonalDetails({ history, location }) {
                               "form-control " +
                               ((isValidate && values.password === "") ||
                               (values.password !== "" &&
-                                  errors.passwordErr !== "")
+                                errors.passwordErr !== "")
                                 ? "input-error"
                                 : "") +
                               (values.password !== ""

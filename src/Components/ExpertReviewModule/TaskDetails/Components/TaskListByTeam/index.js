@@ -24,14 +24,23 @@ const TaskListByTeam = ({ currentTask, setCurrentTask }) => {
   };
   useEffect(() => {
     api
-      .post("/api/getTaskReport", {
-        entityid: "3",
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
+      .get("getTaskReport", {
+        params: {
+          uInput: {
+            entityid: "3",
+            userID: userDetails.UserID,
+            usertype: userDetails.UserType,
+          },
+        },
       })
       .then((response) => {
-        if (response && response.data && response.data.length !== 0) {
-          const data = response.data;
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.length !== 0
+        ) {
+          const data = response.data.message;
           let temporaryArray = [];
           data.forEach((item) => {
             if (item?.Details.length >= 1 && item.Status.trim() !== "Norec") {

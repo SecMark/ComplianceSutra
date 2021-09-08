@@ -176,10 +176,15 @@ function CoManagment({ handleClose }) {
       // mobile: "",
     };
     api
-      .post("/api/CoSettings", payload)
+      .get("CoSettings", { params: { uInput: payload } })
       .then(function (response) {
-        if (response && response.data && response.data.length > 0) {
-          setMemberData(response.data);
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.length > 0
+        ) {
+          setMemberData(response.data.message);
         } else {
         }
       })
@@ -297,10 +302,19 @@ function CoManagment({ handleClose }) {
       // mobile: "",
     };
     api
-      .post("/api/CoSettings", payload)
+      .get("CoSettings", {
+        params: {
+          uInput: payload,
+        },
+      })
       .then(function (response) {
-        if (response && response.data && response.data.length > 0) {
-          if (response.data[0].Status === "Updated") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.length > 0
+        ) {
+          if (response.data.message[0].Status === "Updated") {
             toast.success("Deleted records sucessfully");
             getSettingData();
             setVisible(false);
@@ -525,10 +539,14 @@ function CoManagment({ handleClose }) {
     };
     if (userType) {
       api
-        .post("/api/CoSettings", payload)
+        .get("CoSettings", { params: { uInput: payload } })
         .then(function (response) {
-          if (response && response.data && response.data.length > 0) {
-            if (response.data[0].Status === "Updated") {
+          if (
+            response &&
+            response.data.message &&
+            response.data.message.length > 0
+          ) {
+            if (response.data.message[0].Status === "Updated") {
               toast.success("User role changed sucessfully");
               getSettingData();
             }
@@ -603,9 +621,14 @@ function CoManagment({ handleClose }) {
           loginty: "AdminEmail",
         };
         await api
-          .post("/api/availabilityCheck", payload)
+          .get("availabilityCheck", { params: { uInput: payload } })
           .then(function (response) {
-            if (response && response.data && response.data.Status === "True") {
+            if (
+              response &&
+              response.data.message &&
+              response.data.message &&
+              response.data.message.Status === "True"
+            ) {
               setIsValidEmail(false);
             } else {
               setIsValidEmail(true);
@@ -709,10 +732,10 @@ function CoManagment({ handleClose }) {
     };
     if (_userRole) {
       api
-        .post("/api/CoSettings", payload)
+        .get("CoSettings", { params: { uInput: payload } })
         .then(function (response) {
-          if (response && response.data) {
-            if (response.data.Status === false) {
+          if (response && response.data && response.data.message) {
+            if (response.data.message.Status === false) {
               toast.error("Something went wrong !!!");
             } else {
               toast.success("The invitation has been sent through email");

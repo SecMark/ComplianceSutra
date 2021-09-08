@@ -65,10 +65,15 @@ const ManageNotification = (props) => {
       mobile: "",
     };
     api
-      .post("/api/CoSettings", payload)
+      .get("CoSettings", { params: { uInput: payload } })
       .then(function (response) {
-        if (response && response.data && response.data[0]) {
-          setSettingsData(response.data[0]);
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message[0]
+        ) {
+          setSettingsData(response.data.message[0]);
         } else {
         }
       })
@@ -114,10 +119,15 @@ const ManageNotification = (props) => {
       pwd: "",
     };
     api
-      .post("/api/CoSettings", payload)
+      .get("CoSettings", { params: { uInput: payload } })
       .then(function (response) {
-        if (response && response.data && response.data[0]) {
-          setSettingsData(response.data[0]);
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message[0]
+        ) {
+          setSettingsData(response.data.message[0]);
         } else {
         }
       })

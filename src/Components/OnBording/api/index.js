@@ -1,28 +1,69 @@
 import api from "../../../apiServices";
 
-const verifyEmail = (payload) => api.post("/api/availabilityCheck", payload);
+const verifyEmail = (payload) =>
+  api.get("availabilityCheck", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 const checkEmailVerifiedThroughEmail = (payload) =>
-  api.post("/api/ins_upd_del_User", payload);
-const companyType = (payload) => api.post("/api/BindCompanyType", payload);
+  api.get("ins_upd_del_User", {
+    params: {
+      uInput: payload,
+    },
+  });
+const companyType = (payload) =>
+  api.get("BindCompanyType", {
+    params: {
+      uInput: payload,
+    },
+  });
 const sendOTP = (payload) =>
-  api.post("api/sendmsgwithverificationcode", payload);
-const verifyOTP = (payload) => api.post("api/GetOTP");
+  api.get("sendmsgwithverificationcode", {
+    params: {
+      uInput: payload,
+    },
+  });
+const verifyOTP = (payload) =>
+  api.get("GetOTP", {
+    params: {
+      uInput: payload,
+    },
+  });
 const insertCerificateDetailsService = (payload) =>
-  api.post("api/InsertCertifateDetailsArray", payload);
-const insertTempTask = (payload) => api.post("api/insertTempTask", payload);
-const getAssignedTaskData = (payload) => api.post("api/GetEntityLicenseTask", payload);
-const getGovernanceCompanyData = (payload) => api.post("api/GetEntityCategory", payload);
-
+  api.get("InsertCertifateDetailsArray", {
+    params: {
+      uInput: payload,
+    },
+  });
+const insertTempTask = (payload) =>
+  api.get("insertTempTask", {
+    params: {
+      uInput: payload,
+    },
+  });
+const getAssignedTaskData = (payload) =>
+  api.get("GetEntityLicenseTask", {
+    params: {
+      uInput: payload,
+    },
+  });
+const getGovernanceCompanyData = (payload) =>
+  api.get("GetEntityCategory", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 export default {
   verifyEmail,
-    insertTempTask,
+  insertTempTask,
   checkEmailVerifiedThroughEmail,
   companyType,
   sendOTP,
   verifyOTP,
   getGovernanceCompanyData,
   insertCerificateDetailsService,
-  getAssignedTaskData
+  getAssignedTaskData,
 };

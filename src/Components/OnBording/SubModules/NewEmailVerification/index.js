@@ -41,15 +41,22 @@ function VerifyEmailErrorPage() {
         actionFlag: 2,
         adminEmail: email,
       };
-      apiServices.post("/api/ins_upd_del_User", payload).then((response) => {
-        if (response && response.data && response.data.UserDetails) {
-          toast.success("Emain verified succesfully!");
-          onLogoutClick();
-        } else {
-          toast.error("Something went wrong");
-          onLogoutClick();
-        }
-      });
+      apiServices
+        .get("ins_upd_del_User", { params: { uInput: payload } })
+        .then((response) => {
+          if (
+            response &&
+            response.data &&
+            response.data.message &&
+            response.data.message.UserDetails
+          ) {
+            toast.success("Emain verified succesfully!");
+            onLogoutClick();
+          } else {
+            toast.error("Something went wrong");
+            onLogoutClick();
+          }
+        });
     } else {
       toast.error("Verification link is invalid");
       onLogoutClick();

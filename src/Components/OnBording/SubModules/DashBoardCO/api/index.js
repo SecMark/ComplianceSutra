@@ -1,21 +1,48 @@
 import api from "../../../../../apiServices";
 
-const getTaskReport = (payload) => api.post("/api/getTaskReport", payload);
+const getTaskReport = (payload) =>
+  api.get("getTaskReport", {
+    params: {
+      uInput: payload,
+    },
+  });
 
-const getTaskReportByID = (payload) => api.post("/api/GetTask", payload);
+const getTaskReportByID = (payload) =>
+  api.get("GetTask", {
+    params: {
+      uInput: payload,
+    },
+  });
 
-const getUsersByRole = (payload) => api.post("/api/getUsersByRole", payload);
+const getUsersByRole = (payload) =>
+  api.get("getUsersByRole", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 const getTaskComments = (payload) =>
-  api.post(
-    `/api/bindTaskComments?taskid=${payload.taskid}&link=${payload.link || 0}`
-  );
+  api.get(`bindTaskComments`, {
+    params: {
+      uInput: { taskid: `${payload.taskid}`, link: `${payload.link || 0}` },
+    },
+  });
 
-const postTaskComments = (payload) => api.post("/api/TaskComments", payload);
-const getTaskFiles = (payload) => api.post("/api/getTaskfile", payload);
+const postTaskComments = (payload) =>
+  api.get("TaskComments", {
+    params: {
+      uInput: payload,
+    },
+  });
+const getTaskFiles = (payload) =>
+  api.get("getTaskfile", {
+    params: {
+      uInput: payload,
+    },
+  });
 const postUploadFile = ({ taskid, fileData, userId, ftype }) =>
   api.post(
-    `/api/UploadFile?Taskid=${taskid}&Userid=${userId}&ftype=${ftype}`,
+    `UploadFile?Taskid=${taskid}&Userid=${userId}&ftype=${ftype}`,
     fileData,
     {
       headers: {
@@ -23,31 +50,75 @@ const postUploadFile = ({ taskid, fileData, userId, ftype }) =>
       },
     }
   );
-// const postUploadFile = (payload) =>
-//   api.post(`/api/UploadFile?Taskid=${payload.TaskId}`);
 
-const postAssignTask = (payload) => api.post("/api/ChangeTaskStatus", payload);
+const postAssignTask = (payload) =>
+  api.get("ChangeTaskStatus", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 const getAvailabilityCheck = (payload) =>
-  api.post("/api/availabilityCheck", payload);
+  api.get("availabilityCheck", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 const postCodetailsInsUpdDel = (payload) =>
-  api.post("/api/ins_upd_del_User", payload);
+  api.get("ins_upd_del_User", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 const GetEntityLicenseTask = (payload) =>
-  api.post("api/GetEntityLicenseTask", payload);
+  api.get("GetEntityLicenseTask", {
+    params: {
+      uInput: payload,
+    },
+  });
 
-const GetCOCompanyType = (payload) => api.post("api/BindCompanyType", payload);
+const GetCOCompanyType = (payload) =>
+  api.get("BindCompanyType", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 const insertCerificateDetailsArray = (payload) =>
-  api.post("api/InsertCertifateDetailsArray", payload);
+  api.get("InsertCertifateDetailsArray", {
+    params: {
+      uInput: payload,
+    },
+  });
 
-const getAllNotifications = (payload) => api.post("api/Notifications", payload);
+const getAllNotifications = (payload) =>
+  api.get("Notifications", {
+    params: {
+      uInput: payload,
+    },
+  });
 
-const coSettingCommonApi = (payload) => api.post("api/CoSettings", payload);
+const coSettingCommonApi = (payload) =>
+  api.get("CoSettings", {
+    params: {
+      uInput: payload,
+    },
+  });
 
-const migrateTasks = (payload) => api.post("api/Migrate", payload);
-const getTeamMembers = (payload) => api.post("api/Migrate", payload);
+const migrateTasks = (payload) =>
+  api.get("Migrate", {
+    params: {
+      uInput: payload,
+    },
+  });
+const getTeamMembers = (payload) =>
+  api.get("Migrate", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 export default {
   getTaskReport,

@@ -10,9 +10,10 @@ import moment from "moment";
 import Dropzone from "react-dropzone";
 import { useOuterClick } from "../../../RightSideGrid/outerClick.js";
 import { BACKEND_BASE_URL } from "../../../../../../../../apiServices/baseurl";
-import { useSelector, useDispatch, connect } from "react-redux";
+import api from "../../../../../../../../apiServices";
+import { useSelector, useDispatch } from "react-redux";
 import { actions as taskReportActions } from "../../../../redux/actions";
-import axios, { post } from "axios";
+import { post } from "axios";
 import { withRouter } from "react-router-dom";
 import deleteBlack from "../../../../../../../../assets/Icons/deleteBlack.png";
 
@@ -73,7 +74,7 @@ function RightSideGrid({
       state.taskReport.getUserByRole &&
       state.taskReport.getUserByRole.getUserByRole;
 
-    if (ApproverUsers != undefined) {
+    if (ApproverUsers !== undefined) {
       let temp = [];
       ApproverUsers &&
         ApproverUsers.length > 0 &&
@@ -98,10 +99,10 @@ function RightSideGrid({
         taskID: taskId,
         actionFlag: 0,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+      api
+        .get("getTaskFile", { params: { uInput: payload } })
         .then((response) => {
-          let fileData = response.data;
+          let fileData = response.data.message;
           setFileList(fileData);
         })
         .catch((error) => {});
@@ -166,7 +167,7 @@ function RightSideGrid({
 
   const getInitials = (str) => {
     var initials = " ";
-    if (str != "" && str) {
+    if (str !== "" && str) {
       var names = str.split(" "),
         initials = names[0].substring(0, 1).toUpperCase();
       if (names.length > 1) {
@@ -177,16 +178,16 @@ function RightSideGrid({
   };
 
   const getAllFile = () => {
-    if (getTaskById != undefined) {
+    if (getTaskById !== undefined) {
       const taskId = getTaskById.TaskId;
       const payload = {
         taskID: taskId,
         actionFlag: 0,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+      api
+        .get("getTaskFile", { params: { uInput: payload } })
         .then((response) => {
-          let fileData = response.data;
+          let fileData = response.data.message;
           setFileList(fileData);
         })
         .catch((error) => {});
@@ -200,14 +201,15 @@ function RightSideGrid({
         TaskFileId: file.TaskFileId,
         actionFlag: 3,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+      api
+        .get("getTaskFile", { params: { uInput: payload } })
         .then((response) => {
           if (
             response &&
             response.data &&
-            response.data[0] &&
-            response.data[0].Status === "Deleted"
+            response.data.message &&
+            response.data.message[0] &&
+            response.data.message[0].Status === "Deleted"
           ) {
             getAllFile();
             toast.success("File deleted successfully");
@@ -474,13 +476,22 @@ function RightSideGrid({
   };
 
   const handleCheckEmailAvailability = (event) => {
-    axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
+    api
+      .get(`availabilityCheck`, {
+        params: {
+          uInput: {
+            loginID: selectedUser,
+            loginty: "AdminEmail",
+          },
+        },
       })
       .then((response) => {
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "True"
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -493,13 +504,22 @@ function RightSideGrid({
   };
 
   const handleCheckAssignToEmailAvailability = (event) => {
-    axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
+    api
+      .get(`availabilityCheck`, {
+        params: {
+          uInput: {
+            loginID: selectedUser,
+            loginty: "AdminEmail",
+          },
+        },
       })
       .then((response) => {
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "True"
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -803,13 +823,13 @@ function RightSideGrid({
               </div>
             </div>
             <div className="task-detail-data">
-              {userDetails.UserType != 4 && (
+              {userDetails.UserType !== 4 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Assigned to</div>
                   </div>
                   <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                    {getTaskById && getTaskById.AssignedTo != 0 ? (
+                    {getTaskById && getTaskById.AssignedTo !== 0 ? (
                       <div className="holding-list-bold-title">
                         {getTaskById &&
                         getTaskById.AssignedToUserName === "" ? null : (
@@ -874,7 +894,7 @@ function RightSideGrid({
                                           }
                                         />
                                         {emailAvaliableCheck &&
-                                          selectedUser != "" && (
+                                          selectedUser !== "" && (
                                             <div
                                               className=""
                                               style={{
@@ -957,7 +977,7 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-              {userDetails.UserType != 3 && (
+              {userDetails.UserType !== 3 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Assigned by</div>
@@ -977,13 +997,13 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-              {userDetails.UserType != 5 && (
+              {userDetails.UserType !== 5 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Approver</div>
                   </div>
                   <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                    {getTaskById && getTaskById.ApproverName != "Assign" ? (
+                    {getTaskById && getTaskById.ApproverName !== "Assign" ? (
                       <div className="holding-list-bold-title">
                         {getTaskById &&
                         getTaskById.ApproverName === "" ? null : (
@@ -1051,7 +1071,7 @@ function RightSideGrid({
                                           }
                                         />
                                         {emailAvaliableCheck &&
-                                          selectedUser != "" && (
+                                          selectedUser !== "" && (
                                             <div
                                               className=""
                                               style={{
@@ -1147,7 +1167,7 @@ function RightSideGrid({
                   </div>
                 </div>
               </div>
-              {userDetails.UserType != 4 && (
+              {userDetails.UserType !== 4 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Deadline</div>
@@ -1161,7 +1181,7 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-              {userDetails.UserType != 4 && (
+              {userDetails.UserType !== 4 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Status</div>
@@ -1187,7 +1207,7 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-              {completedDate && isTaskApproved && userDetails.UserType != 4 && (
+              {completedDate && isTaskApproved && userDetails.UserType !== 4 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">
@@ -1533,7 +1553,7 @@ function RightSideGrid({
                             comment.B &&
                             comment.B[0] &&
                             comment.B[0].UserName &&
-                            comment.B[0].UserName != ""
+                            comment.B[0].UserName !== ""
                             ? comment.B[0].UserName
                             : "No Username"
                         )}
@@ -1545,7 +1565,7 @@ function RightSideGrid({
                             comment.B &&
                             comment.B[0] &&
                             comment.B[0].UserName &&
-                            comment.B[0].UserName != ""
+                            comment.B[0].UserName !== ""
                               ? comment.B[0].UserName
                               : "No Username"}
                           </div>

@@ -17,9 +17,8 @@ import { Link } from "react-router-dom";
 import { actions as notificationActions } from "../Redux/actions";
 import NoResultFound from "../../../../../../../CommonModules/sharedComponents/NoResultFound";
 import { setNotificationTaskId } from "../Redux/Action";
-import axios from "axios";
-import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
-
+// import axios from "axios";
+import api from "../../../../../../../apiServices";
 function NotificationGrid(props) {
   // console.log("state => ",state);
 
@@ -201,12 +200,9 @@ function NotificationGrid(props) {
 
   const fetchNotificationType = async () => {
     let arrayOfList = [];
-    const { data } = await axios.post(
-      `${BACKEND_BASE_URL}api/Notifications`,
-      {}
-    );
+    const { data } = await api.get("Notifications", { params: { uInput: {} } });
 
-    data.NotificationType.map((types) => {
+    data.message.NotificationType.map((types) => {
       arrayOfList.push({ value: types.description, label: types.description });
     });
 

@@ -60,14 +60,15 @@ const updateMobileNumberOTP = function* updateMobileNumberOTP({ payload }) {
         email: payload.adminEmail,
       };
       apiServices
-        .post("/api/sendmsgwithverificationcode", obj)
+        .get("sendmsgwithverificationcode", { params: { uInput: obj } })
         .then(function (response) {
           // handle success
           if (
             response &&
             response.data &&
-            response.data.otp !== "" &&
-            response.data.statuscode === "200"
+            response.data.message &&
+            response.data.message.otp !== "" &&
+            response.data.message.statuscode === "200"
           ) {
             toast.success(
               "The OTP has been sent to your registered mobile number"
@@ -80,7 +81,7 @@ const updateMobileNumberOTP = function* updateMobileNumberOTP({ payload }) {
           if (error) {
           }
         });
-      toast.success(data && data.Message);
+      toast.success(data && data.message.Message);
     }
   } catch (err) {}
 };

@@ -1,131 +1,139 @@
-import React, { useEffect, useState } from "react"
-import "./style.css"
-import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png"
-import comtech from "../../../../assets/Images/CapmTech.png"
-import secmark from "../../../../assets/Images/secmark.png"
-import leftArrow from "../../../../assets/Icons/leftArrow.png"
-import downArrow from "../../../../assets/Icons/downArrow.png"
-import assignIcon from "../../../../assets/Icons/assignIcon.png"
-import mobileUserAssign from "../../../../assets/Icons/mobileUserAssign.png"
-import inputRightArrow from "../../../../assets/Icons/inputRightArrow.png"
-import assignIcon2 from "../../../../assets/Icons/assignIcon2.png"
-import assignIcon3 from "../../../../assets/Icons/assignIcon3.png"
-import assignIconCircle from "../../../../assets/Icons/assignIconCircle.png"
-import assignIcon4 from "../../../../assets/Icons/assignIcon4.png"
-import assignIcon5 from "../../../../assets/Icons/assignIcon5.png"
-import topArrow from "../../../../assets/Icons/topArrow.png"
-import closeIconWhite from "../../../../assets/Icons/whiteClose.png"
-import moment from "moment"
-import { Modal } from "react-responsive-modal"
-import AccordianDownArrow from "../../../../assets/Icons/AccordianDownArrow.png"
-import topArrowAccordian from "../../../../assets/Icons/topArrowAccordian.png"
-import dropdownUser from "../../../../assets/Icons/dropdownUser.png"
-import dropdownBlueIcon from "../../../../assets/Icons/dropdownBlueIcon.png"
-import accountCircleIcon from "../../../../assets/Icons/accountCircle.png"
-import modelSquare from "../../../../assets/Icons/modelSquare.png"
-import modelBox from "../../../../assets/Icons/modelBox.png"
-import reviewClose from "../../../../assets/Icons/reviewClose.png"
-import Collapsible from "react-collapsible"
-import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl"
-import SideBarInputControl from "../SideBarInputControl"
-import { useDispatch, useSelector } from "react-redux"
-import { actions as companyActions } from "../../redux/actions"
+import React, { useEffect, useState } from "react";
+import "./style.css";
+import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
+import comtech from "../../../../assets/Images/CapmTech.png";
+import secmark from "../../../../assets/Images/secmark.png";
+import leftArrow from "../../../../assets/Icons/leftArrow.png";
+import downArrow from "../../../../assets/Icons/downArrow.png";
+import assignIcon from "../../../../assets/Icons/assignIcon.png";
+import mobileUserAssign from "../../../../assets/Icons/mobileUserAssign.png";
+import inputRightArrow from "../../../../assets/Icons/inputRightArrow.png";
+import assignIcon2 from "../../../../assets/Icons/assignIcon2.png";
+import assignIcon3 from "../../../../assets/Icons/assignIcon3.png";
+import assignIconCircle from "../../../../assets/Icons/assignIconCircle.png";
+import assignIcon4 from "../../../../assets/Icons/assignIcon4.png";
+import assignIcon5 from "../../../../assets/Icons/assignIcon5.png";
+import topArrow from "../../../../assets/Icons/topArrow.png";
+import closeIconWhite from "../../../../assets/Icons/whiteClose.png";
+import moment from "moment";
+import { Modal } from "react-responsive-modal";
+import AccordianDownArrow from "../../../../assets/Icons/AccordianDownArrow.png";
+import topArrowAccordian from "../../../../assets/Icons/topArrowAccordian.png";
+import dropdownUser from "../../../../assets/Icons/dropdownUser.png";
+import dropdownBlueIcon from "../../../../assets/Icons/dropdownBlueIcon.png";
+import accountCircleIcon from "../../../../assets/Icons/accountCircle.png";
+import modelSquare from "../../../../assets/Icons/modelSquare.png";
+import modelBox from "../../../../assets/Icons/modelBox.png";
+import reviewClose from "../../../../assets/Icons/reviewClose.png";
+import Collapsible from "react-collapsible";
+import api from "../../../../apiServices";
+import SideBarInputControl from "../SideBarInputControl";
+import { useDispatch, useSelector } from "react-redux";
+import { actions as companyActions } from "../../redux/actions";
 import {
   EmailApiRes,
   emailAvaliableCheckFunc,
   isEmail,
   issessionEmail,
   useOuterClick,
-} from "./utils"
-import { withRouter } from "react-router-dom"
-import { toast } from "react-toastify"
-import MobileStepper from "../mobileStepper"
-import AssignDrawerMobile from "../AssignDrawerMobile"
-import axios from "axios"
-import { isMobile } from "react-device-detect"
+} from "./utils";
+import { withRouter } from "react-router-dom";
+import { toast } from "react-toastify";
+import MobileStepper from "../mobileStepper";
+import AssignDrawerMobile from "../AssignDrawerMobile";
+import { isMobile } from "react-device-detect";
 
 function AssignTask({ history }) {
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
-  const [emailListwithTask, setEmailListwithTask] = useState([])
-  const [collapse, setCollapse] = useState([])
-  const [assignPromptHideShow, setAssignPromptHideShow] = useState(false)
-  const [assignField, setAssignField] = useState(undefined)
-  const [showUserToolTip, setShowUserToolTip] = useState("")
-  const [assignExist, setAssignExist] = useState("")
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const [emailListwithTask, setEmailListwithTask] = useState([]);
+  const [collapse, setCollapse] = useState([]);
+  const [assignPromptHideShow, setAssignPromptHideShow] = useState(false);
+  const [assignField, setAssignField] = useState(undefined);
+  const [showUserToolTip, setShowUserToolTip] = useState("");
+  const [assignExist, setAssignExist] = useState("");
 
-  const [assignedEmail, setAssignTaskEmail] = useState([])
+  const [assignedEmail, setAssignTaskEmail] = useState([]);
 
   const innerRef = useOuterClick((e) => {
     if (currentDropDown !== "" && !e.target.id.includes("email-input"))
-      setCurrentDropDown("")
-  })
+      setCurrentDropDown("");
+  });
 
   const handleCheckEmailAvailability = async (value, emailObject) => {
-    let data = false
-    let obj = {}
+    let data = false;
+    let obj = {};
 
     if (isEmail(value) === true) {
       if (issessionEmail(value) === false) {
-        await axios
-          .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-            loginID: value,
-            pwd: "",
-            rememberme: 0,
-            loginty: "AdminEmail",
+        api
+          .get("availabilityCheck", {
+            params: {
+              uInput: {
+                loginID: value,
+                pwd: "",
+                rememberme: 0,
+                loginty: "AdminEmail",
+              },
+            },
           })
           .then((response) => {
-            if (response && response.data && response.data.Status === "True") {
-              data = true
+            if (
+              response &&
+              response.data &&
+              response.data.message &&
+              response.data.message.Status === "True"
+            ) {
+              data = true;
             } else {
-              data = false
+              data = false;
             }
           })
-          .catch((err) => {})
+          .catch((err) => {});
 
         if (data === true) {
-          obj = value
-          setemailError({ ...emailError, [emailObject]: "yes" })
+          obj = value;
+          setemailError({ ...emailError, [emailObject]: "yes" });
         } else {
           setemailError({ ...emailError, [emailObject]: "no" });
-          let emailArr = [...emailList]
-          let obj = {}
-          var emailExists = emailList.filter((item) => item.email === value)
+          let emailArr = [...emailList];
+          let obj = {};
+          var emailExists = emailList.filter((item) => item.email === value);
           if (emailExists.length === 0) {
             if (isEmail(value)) {
-              obj = { email: value }
-              emailArr.push(obj)
+              obj = { email: value };
+              emailArr.push(obj);
             }
-            setEmailList(emailArr)
+            setEmailList(emailArr);
           }
         }
 
-        setAssignTaskEmail([...assignedEmail, obj])
+        setAssignTaskEmail([...assignedEmail, obj]);
       }
     }
-  }
+  };
 
   const cerificateInfo =
-    state && state.complianceOfficer && state.complianceOfficer.cerificateInfo
-  const [taskList, setTaskList] = useState([])
-  const [taskListData, setTaskListData] = useState([])
-  const [fields, setFields] = useState([])
+    state && state.complianceOfficer && state.complianceOfficer.cerificateInfo;
+  const [taskList, setTaskList] = useState([]);
+  const [taskListData, setTaskListData] = useState([]);
+  const [fields, setFields] = useState([]);
 
-  const [licenseData, setLicenseData] = useState([])
-  const [isValidate, setIsValidate] = useState(false)
-  const [assignButtonIndex, setAssignButtonIndex] = useState([])
-  const [taskToAssign, setTaskToAssign] = useState({})
-  const [isTaskAssigned, setTaskAssigned] = useState(false)
-  const [enablesecmarkExpert, setEnablesecmarkExpert] = useState(false)
-  const [activeInvite, setActiveInvite] = useState(false)
-  const [inviteVal, setInviteVal] = useState("")
-  const [emailList, setEmailList] = useState([])
-  const [currentDropDown, setCurrentDropDown] = useState("")
-  const [showToolTip, setShowToolTip] = useState(true)
-  const [activeToolTipIndex, setActiveToolTipIndex] = useState(0)
+  const [licenseData, setLicenseData] = useState([]);
+  const [isValidate, setIsValidate] = useState(false);
+  const [assignButtonIndex, setAssignButtonIndex] = useState([]);
+  const [taskToAssign, setTaskToAssign] = useState({});
+  const [isTaskAssigned, setTaskAssigned] = useState(false);
+  const [enablesecmarkExpert, setEnablesecmarkExpert] = useState(false);
+  const [activeInvite, setActiveInvite] = useState(false);
+  const [inviteVal, setInviteVal] = useState("");
+  const [emailList, setEmailList] = useState([]);
+  const [currentDropDown, setCurrentDropDown] = useState("");
+  const [showToolTip, setShowToolTip] = useState(true);
+  const [activeToolTipIndex, setActiveToolTipIndex] = useState(0);
   const [visibleExpertReviewModal, setVisibleExpertReviewModal] =
-    useState(false)
-  const [emailError, setemailError] = useState([])
+    useState(false);
+  const [emailError, setemailError] = useState([]);
 
   const userID =
     state &&
@@ -136,24 +144,26 @@ function AssignTask({ history }) {
     state.complianceOfficer.personalInfo.data[0][0] &&
     state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
     state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID
+    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
 
   const assignTaskData =
-    state && state.complianceOfficer && state.complianceOfficer.assignedTaskData
+    state &&
+    state.complianceOfficer &&
+    state.complianceOfficer.assignedTaskData;
 
   const handleFields = (e) => {
-    const { value, name } = e.target
+    const { value, name } = e.target;
     if (name === "inviteemail") {
-      setInviteVal(e.target.value)
+      setInviteVal(e.target.value);
     }
     if (name === "secmarkexpert") {
-      setEnablesecmarkExpert(e.target.checked)
+      setEnablesecmarkExpert(e.target.checked);
     }
-  }
+  };
 
   const onSkipTextClick = () => {
-    history.push("/otpverification-co")
-  }
+    history.push("/otpverification-co");
+  };
   const handleInputChange = (
     e,
     dropDownValue,
@@ -164,22 +174,22 @@ function AssignTask({ history }) {
     CompanyIndex
   ) => {
     if (dropDownValue === "") {
-      const { value, name } = e.target
-      let taskListIds = []
+      const { value, name } = e.target;
+      let taskListIds = [];
       item &&
         item.tasks &&
         item.tasks.length > 0 &&
         item.tasks.map((item, index) => {
-          taskListIds.push(item.TaskListId)
-        })
-      const values = [...fields]
+          taskListIds.push(item.TaskListId);
+        });
+      const values = [...fields];
       let temp = {
         email: value,
         licenseID: item.LicenseID,
         taskListID: item.tasks,
         companyName: companyEntityName,
         EntityGroupID: EntityGroupID,
-      }
+      };
       // if (
       //   (values[CompanyIndex] && values[CompanyIndex].obj && values[CompanyIndex].obj[index] && values[CompanyIndex].obj[index].email) ||
       //   (values[CompanyIndex] && values[CompanyIndex].obj && values[CompanyIndex].obj[index] && values[CompanyIndex].obj[index].licenseID)
@@ -194,20 +204,20 @@ function AssignTask({ history }) {
       // } else {
 
       // }
-      let keyName = companyEntityName + EntityGroupID + index
+      let keyName = companyEntityName + EntityGroupID + index;
 
-      handleButtonDisabledOnChange(e.target.value, keyName)
-      values[CompanyIndex].obj[index] = temp
-      setFields(values)
+      handleButtonDisabledOnChange(e.target.value, keyName);
+      values[CompanyIndex].obj[index] = temp;
+      setFields(values);
     } else {
-      const values = [...fields]
+      const values = [...fields];
       let temp = {
         email: dropDownValue,
         licenseID: item.LicenseID,
         taskListID: item.tasks,
         companyName: companyEntityName,
         EntityGroupID: EntityGroupID,
-      }
+      };
       // if (
       //   (values[CompanyIndex] && values[CompanyIndex].obj && values[CompanyIndex].obj[index] && values[CompanyIndex].obj[index].email) ||
       //   (values[CompanyIndex] && values[CompanyIndex].obj && values[CompanyIndex].obj[index] && values[CompanyIndex].obj[index].licenseID)
@@ -220,78 +230,75 @@ function AssignTask({ history }) {
       // } else {
       //   values[CompanyIndex].obj.push(temp);
       // }
-      values[CompanyIndex].obj[index] = temp
-      setFields(values)
-      setCurrentDropDown("")
-
+      values[CompanyIndex].obj[index] = temp;
+      setFields(values);
+      setCurrentDropDown("");
     }
 
-   
-
-    setShowToolTip(false)
-  }
-
+    setShowToolTip(false);
+  };
 
   useEffect(() => {
-    let i = 1
+    let i = 1;
 
     assignTaskData &&
       assignTaskData.length > 0 &&
       assignTaskData.map((task) => {
-        let tempArray = []
+        let tempArray = [];
         task &&
           task.Licenses &&
-          task.Licenses.map((taskItem,index) => {
+          task.Licenses.map((taskItem, index) => {
             if (i > 5) {
-              i = 1
+              i = 1;
             }
-            let obj = { ...taskItem, imageType: i, licenseIndex: index }
-            tempArray.push(obj)
-            i++
-          })
-        task.Licenses = tempArray
-      })
-    setTaskListData(assignTaskData)
+            let obj = { ...taskItem, imageType: i, licenseIndex: index };
+            tempArray.push(obj);
+            i++;
+          });
+        task.Licenses = tempArray;
+      });
+    setTaskListData(assignTaskData);
 
-    let temp = []
-    let fieldArray = []
-    let fieldArrayselectedTask = []
-    let tempfieldsigletask
-    let taskarr = []
+    let temp = [];
+    let fieldArray = [];
+    let fieldArrayselectedTask = [];
+    let tempfieldsigletask;
+    let taskarr = [];
     assignTaskData &&
       assignTaskData.length > 0 &&
       assignTaskData.map((item, index) => {
-        let arr = []
+        let arr = [];
         let licenseObj = {
           email: "",
           licenseID: "",
           taskListID: [],
           companyName: "",
-        }
+        };
         item &&
           item.Licenses.map((item, index) => {
-            arr.push(licenseObj)
-          })
+            arr.push(licenseObj);
+          });
 
         let tempfield = {
           companyName: item.EntityName,
           EntityGroupID: item.EntityId,
           obj: arr,
-        }
-        fieldArray.push(tempfield)
-        temp.push({ open: index === 0 ? true : false })
-      })
-    setFields(fieldArray)
-    setCollapse(temp)
-  }, [assignTaskData])
+        };
+        fieldArray.push(tempfield);
+        temp.push({ open: index === 0 ? true : false });
+      });
+    setFields(fieldArray);
+    setCollapse(temp);
+  }, [assignTaskData]);
   const renderTaskList = (data, _companyName, _LicenseCode, EntityGroupID) => {
     return (
-      data && data.length > 0 && 
+      data &&
+      data.length > 0 &&
       data.map((item, key) => {
-        let newItem = item
+        let newItem = item;
         newItem.id = `${_companyName && _companyName}${
           _LicenseCode && _LicenseCode.replaceAll("\\s", "")
-        }${key}`
+        }${key}`;
         return taskListShow(
           newItem,
           key,
@@ -299,125 +306,125 @@ function AssignTask({ history }) {
           _LicenseCode,
           EntityGroupID,
           data.length
-        )
+        );
       })
-    )
-  }
+    );
+  };
   const handleOnFoucs = (item, itemTask, indexTask) => {
     let str = `CompanyType${
       item.EntityName && item.EntityName.replaceAll("\\s", "")
     }${
       itemTask.LicenseCode && itemTask.LicenseCode.replaceAll("\\s", "")
-    }${indexTask}`
-    setCurrentDropDown(str)
-    setShowToolTip(false)
-  }
+    }${indexTask}`;
+    setCurrentDropDown(str);
+    setShowToolTip(false);
+  };
 
   const createDateFormatYYMMDD = (item) => {
-    var d = new Date()
-    let str = ""
-    var currentMonth = d.getMonth()
-    var currentYear = d.getFullYear()
-    var currentDay = String(d.getDate()).padStart(2, "0")
+    var d = new Date();
+    let str = "";
+    var currentMonth = d.getMonth();
+    var currentYear = d.getFullYear();
+    var currentDay = String(d.getDate()).padStart(2, "0");
     if (parseInt(currentDay) < parseInt(item)) {
-      str = `${currentYear}-${currentMonth + 1}-${item}`
+      str = `${currentYear}-${currentMonth + 1}-${item}`;
     } else {
-      str = `${currentYear}-${currentMonth + 2}-${item}`
-      return str
+      str = `${currentYear}-${currentMonth + 2}-${item}`;
+      return str;
     }
-  }
+  };
   const groupBy = (array, key) => {
     return array.reduce((result, currentValue) => {
       // If an array already present for key, push it to the array. Else create an array and push the object
-      ;(result[currentValue[key]] = result[currentValue[key]] || []).push(
+      (result[currentValue[key]] = result[currentValue[key]] || []).push(
         currentValue
-      )
-      return result
-    }, {}) // empty object is the initial value for result object
-  }
+      );
+      return result;
+    }, {}); // empty object is the initial value for result object
+  };
   const arrayFromObject = (obj) => {
-    var arr = []
+    var arr = [];
     for (var i in obj) {
-      arr.push(obj[i])
+      arr.push(obj[i]);
     }
-    return arr
-  }
+    return arr;
+  };
 
   const groupByProperty = (key) => (array) =>
     array.reduce((objectsByKeyValue, obj) => {
-      const value = obj[key]
-      objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj)
-      return objectsByKeyValue
-    }, {})
+      const value = obj[key];
+      objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+      return objectsByKeyValue;
+    }, {});
 
   const NoneEmpty = (inputArray) => {
     if (inputArray.length) {
-      var currentElement = inputArray[0]
+      var currentElement = inputArray[0];
       for (
         var i = 1, len = inputArray.length;
         i < len && currentElement === "";
         i += 1
       ) {
-        currentElement = currentElement || inputArray[i]
+        currentElement = currentElement || inputArray[i];
       }
       if (currentElement !== null) {
-        return false
+        return false;
       }
-      return true
+      return true;
     }
-  }
+  };
 
   const routeToAssignTask = () => {
-    let createGroupByEmail = []
-    let emailLicenseArr = []
+    let createGroupByEmail = [];
+    let emailLicenseArr = [];
     fields &&
       fields.map((item, index) => {
         item &&
           item.obj &&
           item.obj.map((data, index) => {
-            if (data.email !== "") emailLicenseArr.push(data)
-          })
-      })
-    let temp = groupBy(emailLicenseArr, "email")
-    let tempAssignArr = []
+            if (data.email !== "") emailLicenseArr.push(data);
+          });
+      });
+    let temp = groupBy(emailLicenseArr, "email");
+    let tempAssignArr = [];
     taskToAssign &&
       Object.values(taskToAssign).map((item, index) => {
         let obj = {
           email: item.email,
           EntityGroupID: item.EntityGroupID,
           taskListId: item && item.task && item.task.TaskListId,
-        }
-        tempAssignArr.push(obj)
-      })
-    let newarr = []
+        };
+        tempAssignArr.push(obj);
+      });
+    let newarr = [];
     emailLicenseArr &&
       emailLicenseArr.map((item, index) => {
-        newarr.push(item)
-      })
+        newarr.push(item);
+      });
     tempAssignArr &&
       tempAssignArr.map((item, index) => {
-        newarr.push(item)
-      })
-    let emailList = groupBy(newarr, "email")
-    let entitityArr = []
-    let tempEntityObj = {}
-    let tempLicenseArr = []
-    let taskArr = []
-    let payload = []
+        newarr.push(item);
+      });
+    let emailList = groupBy(newarr, "email");
+    let entitityArr = [];
+    let tempEntityObj = {};
+    let tempLicenseArr = [];
+    let taskArr = [];
+    let payload = [];
 
     Object.entries(emailList).forEach(([key, value]) => {
-      let obj = { email: key }
-      let entity = []
+      let obj = { email: key };
+      let entity = [];
       value.forEach((item) => {
-        let taskarr = []
-        let licenseArr = []
-        let tempObj = {}
+        let taskarr = [];
+        let licenseArr = [];
+        let tempObj = {};
         if (item.hasOwnProperty("licenseID") && item.licenseID !== "") {
           tempEntityObj = {
             eid: item.EntityGroupID,
             licenseID: item.licenseID,
             taskListId: "",
-          }
+          };
         } else if (
           item.hasOwnProperty("taskListId") &&
           item.taskListId !== ""
@@ -426,40 +433,40 @@ function AssignTask({ history }) {
             eid: item.EntityGroupID,
             taskListId: item.taskListId,
             licenseID: "",
-          }
+          };
         }
-        entity.push(tempEntityObj)
-        obj.entity = entity
-      })
-      payload.push(obj)
-    })
-    let json = []
-    let entityGroupBy = []
-    let entitityArrPayload = []
-    let tempObj = {}
-    let entityArr = []
-    let tempentityArr = []
+        entity.push(tempEntityObj);
+        obj.entity = entity;
+      });
+      payload.push(obj);
+    });
+    let json = [];
+    let entityGroupBy = [];
+    let entitityArrPayload = [];
+    let tempObj = {};
+    let entityArr = [];
+    let tempentityArr = [];
     payload &&
       payload.length > 0 &&
       payload.map((item, index) => {
-        let objPayload = {}
-        let result = []
-        let dataPayload = []
+        let objPayload = {};
+        let result = [];
+        let dataPayload = [];
 
         result = item.entity.reduce((r, { eid, licenseID, taskListId }) => {
-          var temp = r.find((o) => eid === o.eid)
+          var temp = r.find((o) => eid === o.eid);
           if (!temp) {
-            r.push((temp = { eid, lid: [], tid: [] }))
+            r.push((temp = { eid, lid: [], tid: [] }));
           }
           if (typeof licenseID === "number") {
-            temp.lid.push(licenseID)
+            temp.lid.push(licenseID);
           }
           if (typeof taskListId === "number") {
-            temp.tid.push(taskListId)
+            temp.tid.push(taskListId);
           }
 
-          return r
-        }, [])
+          return r;
+        }, []);
 
         result &&
           result.map((data, index) => {
@@ -467,28 +474,28 @@ function AssignTask({ history }) {
               eid: data.eid,
               lid: data.lid.join(","),
               tid: data.tid.join(","),
-            }
-            dataPayload.push(objPayload)
-          })
+            };
+            dataPayload.push(objPayload);
+          });
         json = {
           email: item.email,
           COUSERID: userID,
           secReview: enablesecmarkExpert ? 1 : 0,
           history: history,
           entity: dataPayload,
-        }
+        };
 
-        entitityArrPayload.push(json)
-      })
-    dispatch(companyActions.insertTaskListRequest(entitityArrPayload))
-  }
+        entitityArrPayload.push(json);
+      });
+    dispatch(companyActions.insertTaskListRequest(entitityArrPayload));
+  };
 
   const handleSubMenuEmailCheck = (value, taskListId) => {
-    let emailCheck = !isEmail(value)
+    let emailCheck = !isEmail(value);
     if (emailCheck === false) {
-      handleCheckEmailAvailability(value, taskListId)
+      handleCheckEmailAvailability(value, taskListId);
     }
-  }
+  };
 
   const renderDialogBox = () => {
     return (
@@ -525,7 +532,9 @@ function AssignTask({ history }) {
               />
             </div>
             <div className="title">COMPLIANCE SUTRA Expert Review</div>
-            <p className="heading-subtitle">What is COMPLIANCE SUTRA expert review?</p>
+            <p className="heading-subtitle">
+              What is COMPLIANCE SUTRA expert review?
+            </p>
             <p className="subtitle-sescription">
               Secmark Expert review enables you to build strong compliance and
               task completion through assistance on verification of task to
@@ -539,44 +548,44 @@ function AssignTask({ history }) {
           </div>
         </Modal>
       </div>
-    )
-  }
+    );
+  };
   const createDateFormat = (item) => {
-    var d = new Date()
-    let str = ""
-    var currentMonth = d.getMonth()
-    var currentYear = d.getFullYear()
-    var currentDay = String(d.getDate()).padStart(2, "0")
+    var d = new Date();
+    let str = "";
+    var currentMonth = d.getMonth();
+    var currentYear = d.getFullYear();
+    var currentDay = String(d.getDate()).padStart(2, "0");
     if (parseInt(currentDay) < parseInt(item)) {
-      return (str = `${currentYear}-${currentMonth + 1}-${item}`)
+      return (str = `${currentYear}-${currentMonth + 1}-${item}`);
     } else {
-      str = `${currentYear}-${currentMonth + 2}-${item}`
-      return str
+      str = `${currentYear}-${currentMonth + 2}-${item}`;
+      return str;
     }
-  }
+  };
   const userExists = (taskListId) => {
     const found = assignButtonIndex.some(
       (item) => item.taskListId === taskListId
-    )
+    );
     if (found) {
-      return true
+      return true;
     }
-    return false
-  }
+    return false;
+  };
   const capitalize_Words = (str) => {
     if (str) {
       return str.replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-      })
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
     }
-  }
+  };
   useEffect(() => {
     dispatch(
       companyActions.getAssignTaskDataReuest({
         coUserId: userID,
       })
-    )
-  }, [])
+    );
+  }, []);
 
   const handleEmail = (
     e,
@@ -585,23 +594,23 @@ function AssignTask({ history }) {
     _LicenseCode,
     EntityGroupID
   ) => {
-    const { value, name } = e.target
+    const { value, name } = e.target;
     let obj = {
       email: value,
       task: item,
       companyName: companyEntityName,
       EntityGroupID: EntityGroupID,
-    }
-    let tempobj = taskToAssign
+    };
+    let tempobj = taskToAssign;
     if (tempobj && tempobj[item.id] && tempobj[item.id].email) {
-      tempobj[item.id].email = value
-      tempobj[item.id].task = item
+      tempobj[item.id].email = value;
+      tempobj[item.id].task = item;
     } else {
-      tempobj[item.id] = obj
+      tempobj[item.id] = obj;
     }
 
-    setTaskToAssign({ ...taskToAssign, tempobj })
-    handleButtonDisabledOnChange(e.target.value, item.TaskListId)
+    setTaskToAssign({ ...taskToAssign, tempobj });
+    handleButtonDisabledOnChange(e.target.value, item.TaskListId);
 
     // const values = [...taskToAssign];
     // values[index].email = value;
@@ -622,41 +631,40 @@ function AssignTask({ history }) {
     //   values[item.TaskListId] = e.target.value;
     // }
     // setTaskToAssign(values);
-  }
+  };
 
   const handleButtonDisabledOnChange = (email, keysName) => {
-    let keyName = keysName
+    let keyName = keysName;
     if (email !== "") {
       if (isEmail(email) === true) {
         setemailError({
           ...emailError,
           [keyName]: "no",
-        })
+        });
         if (issessionEmail(email) === false) {
           setemailError({
             ...emailError,
             [keyName]: "no",
-          })
+          });
         } else {
           setemailError({
             ...emailError,
             [keyName]: "yes",
-          })
+          });
         }
       } else {
         setemailError({
           ...emailError,
           [keyName]: "yes",
-        })
+        });
       }
-    }
-    else {
+    } else {
       setemailError({
         ...emailError,
         [keyName]: "no",
-      })
+      });
     }
-  }
+  };
 
   const checkEmailFormat = (item) => {
     if (
@@ -665,11 +673,11 @@ function AssignTask({ history }) {
       taskToAssign[item.id].email !== ""
     ) {
       if (!isEmail(taskToAssign[item.id].email)) {
-        return true
+        return true;
       }
-      return false
+      return false;
     }
-  }
+  };
 
   const taskListShow = (
     item,
@@ -684,12 +692,12 @@ function AssignTask({ history }) {
         <div className="row">
           {/* <div className="row" style={{ height: "65px" }}> */}
           <div className="col-4 col-md-3 col-sm-3 col-xl-5">
-            <div className="accordian-data-backend spacing-alignment">{item.TaskListName}</div>
+            <div className="accordian-data-backend spacing-alignment">
+              {item.TaskListName}
+            </div>
           </div>
           <div className="col-4 col-md-5 col-sm-5 col-xl-3">
-            <div className="accordian-data-backend">
-              {item.EventFrequency}
-            </div>
+            <div className="accordian-data-backend">{item.EventFrequency}</div>
           </div>
           <div className="col-4 col-md-4 col-sm-4 col-xl-4">
             <div className="input-padding">
@@ -702,13 +710,13 @@ function AssignTask({ history }) {
                   <div
                     className="assign-status"
                     onClick={(e) => {
-                      const values = [...assignButtonIndex]
+                      const values = [...assignButtonIndex];
                       let obj = {
                         taskListId: item.TaskListId,
                         taskListName: item.TaskListName,
-                      }
-                      values.push(obj)
-                      setAssignButtonIndex(values)
+                      };
+                      values.push(obj);
+                      setAssignButtonIndex(values);
                     }}
                   >
                     Assign
@@ -740,7 +748,7 @@ function AssignTask({ history }) {
                               taskToAssign[item.id] &&
                               taskToAssign[item.id].email,
                             item.TaskListId
-                          )
+                          );
                         }}
                         onChange={(e) => {
                           handleEmail(
@@ -749,7 +757,7 @@ function AssignTask({ history }) {
                             _companyName,
                             _LicenseCode,
                             EntityGroupID
-                          )
+                          );
                         }}
                       />
                       {checkEmailFormat(item) && (
@@ -831,14 +839,14 @@ function AssignTask({ history }) {
                       onMouseOver={() => setShowUserToolTip(item.id)}
                       onMouseOut={() => setShowUserToolTip("")}
                       onClick={() => {
-                        setAssignExist(taskToAssign[item.id].email)
+                        setAssignExist(taskToAssign[item.id].email);
                         handleMobileChildAssignClick(
                           item,
                           _companyName,
                           _LicenseCode,
                           EntityGroupID,
                           "Child"
-                        )
+                        );
                       }}
                     >
                       <img
@@ -857,12 +865,14 @@ function AssignTask({ history }) {
           </div>
           {/* <div className="header-border-blur"></div> */}
           <div className="col-12 spacing-alignment-border">
-            {taskLength - 1 !== key && <div  className="header-border-blur"></div>}
+            {taskLength - 1 !== key && (
+              <div className="header-border-blur"></div>
+            )}
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
   // useEffect(() => {
   //   let arr = [];
   //   let data = [];
@@ -903,14 +913,14 @@ function AssignTask({ history }) {
 
   const sendEmail = (e, item, key) => {
     if (!isEmail(e.target.value) && e.target.name) {
-      return
+      return;
     }
 
     const companyName =
       state &&
       state.complianceOfficer &&
       state.complianceOfficer.emailInfo &&
-      state.complianceOfficer.emailInfo.companyName
+      state.complianceOfficer.emailInfo.companyName;
     const EntityGroupID =
       state &&
       state.complianceOfficer &&
@@ -920,7 +930,7 @@ function AssignTask({ history }) {
       state.complianceOfficer.personalInfo.data[0][0] &&
       state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
       state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-      state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID
+      state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
 
     const userID =
       state &&
@@ -931,27 +941,27 @@ function AssignTask({ history }) {
       state.complianceOfficer.personalInfo.data[0][0] &&
       state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
       state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-      state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID
+      state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
 
-    const email = e.target.value
-    const link = `http://139.162.5.110:9091/#/sign-up-request?email=${email}&companyName=${companyName}`
+    const email = e.target.value;
+    const link = `http://139.162.5.110:9091/#/sign-up-request?email=${email}&companyName=${companyName}`;
     const mail = {
       link: link,
       email: email,
       item: item,
       companyName: companyName,
       date: createDateFormat(item.eventDate),
-    }
+    };
     if (email && companyName && EntityGroupID && userID) {
-      dispatch(companyActions.createTaskMailRequest(mail))
-      var d = new Date()
-      let currentMonth = d.getMonth()
-      let currentYear = d.getFullYear()
-      var dateR = new Date(currentYear, currentMonth, parseInt(item.eventDate))
+      dispatch(companyActions.createTaskMailRequest(mail));
+      var d = new Date();
+      let currentMonth = d.getMonth();
+      let currentYear = d.getFullYear();
+      var dateR = new Date(currentYear, currentMonth, parseInt(item.eventDate));
       var targetDate = moment(createDateFormatYYMMDD(item.eventDate))
         .subtract(5, "day")
-        .toDate()
-      var taskEndDate = moment(targetDate).format("YYYY-MM-DD")
+        .toDate();
+      var taskEndDate = moment(targetDate).format("YYYY-MM-DD");
       const taskJson = {
         actualTaskEndDate: createDateFormatYYMMDD(item.eventDate),
         taskEndDate: taskEndDate,
@@ -961,40 +971,40 @@ function AssignTask({ history }) {
         entityID: EntityGroupID,
         userID: userID,
         actionFlag: 1,
-      }
-      dispatch(companyActions.insertTaskListRequest(taskJson))
-      setTaskAssigned(true)
+      };
+      dispatch(companyActions.insertTaskListRequest(taskJson));
+      setTaskAssigned(true);
     } else {
-      toast.error("something went wrong !!!")
-      return ""
+      toast.error("something went wrong !!!");
+      return "";
     }
-  }
+  };
 
   const onClickArrow = (item, itemTask) => {
-    const arrow = document.getElementById(`arrow${item.EntityName}${itemTask}`)
+    const arrow = document.getElementById(`arrow${item.EntityName}${itemTask}`);
     const SortBar = document.getElementById(
       `content${item.EntityName}${itemTask}`
-    )
+    );
     if (arrow && SortBar) {
       if (
         arrow.classList.contains("downArrow") &&
         SortBar.classList.contains("accordian-bar-with-min")
       ) {
-        arrow.classList.remove("downArrow")
-        arrow.classList.add("upArrow")
-        SortBar.classList.add("filter-price-height")
-        SortBar.classList.add("accordian-bar-with-fullheight")
+        arrow.classList.remove("downArrow");
+        arrow.classList.add("upArrow");
+        SortBar.classList.add("filter-price-height");
+        SortBar.classList.add("accordian-bar-with-fullheight");
       } else if (
         arrow.classList.contains("upArrow") &&
         SortBar.classList.contains("filter-price-height")
       ) {
-        SortBar.classList.remove("filter-price-height")
-        SortBar.classList.remove("accordian-bar-with-fullheight")
-        arrow.classList.remove("upArrow")
-        arrow.classList.add("downArrow")
+        SortBar.classList.remove("filter-price-height");
+        SortBar.classList.remove("accordian-bar-with-fullheight");
+        arrow.classList.remove("upArrow");
+        arrow.classList.add("downArrow");
       }
     }
-  }
+  };
 
   const storeEmails = (
     e,
@@ -1003,28 +1013,27 @@ function AssignTask({ history }) {
     EntityGroupID,
     index
   ) => {
+    let emailObject = companyEntityName + EntityGroupID + index;
 
-    let emailObject = companyEntityName + EntityGroupID + index
-
-    handleCheckEmailAvailability(e.target.value, emailObject)
-  }
+    handleCheckEmailAvailability(e.target.value, emailObject);
+  };
 
   const onClickCompanyName = (index) => {
-    const arrow = document.getElementById(`arrow-company${index}`)
+    const arrow = document.getElementById(`arrow-company${index}`);
     if (collapse[index].open === true) {
-      let list = [...collapse]
-      list[index].open = false
-      setCollapse(list)
-      arrow.classList.remove("upArrow")
-      arrow.classList.add("downArrow")
+      let list = [...collapse];
+      list[index].open = false;
+      setCollapse(list);
+      arrow.classList.remove("upArrow");
+      arrow.classList.add("downArrow");
     } else {
-      let list = [...collapse]
-      list[index].open = true
-      arrow.classList.add("upArrow")
-      arrow.classList.remove("downArrow")
-      setCollapse(list)
+      let list = [...collapse];
+      list[index].open = true;
+      arrow.classList.add("upArrow");
+      arrow.classList.remove("downArrow");
+      setCollapse(list);
     }
-  }
+  };
 
   const handleMobileChildAssignClick = (
     item,
@@ -1039,16 +1048,16 @@ function AssignTask({ history }) {
       groupID: EntityGroupID,
       section: section,
       licensecode: _LicenseCode,
-    }
-    setAssignField(assignObj)
-    setAssignPromptHideShow(true)
-    const drawerParent = document.getElementById("drawerParentMobile")
-    const drawerChild = document.getElementById("drawerChildMobile")
+    };
+    setAssignField(assignObj);
+    setAssignPromptHideShow(true);
+    const drawerParent = document.getElementById("drawerParentMobile");
+    const drawerChild = document.getElementById("drawerChildMobile");
     if (drawerParent) {
-      drawerParent.classList.add("overlayAssignTask")
-      drawerChild.style.bottom = "0px"
+      drawerParent.classList.add("overlayAssignTask");
+      drawerChild.style.bottom = "0px";
     }
-  }
+  };
   const handleMobileAssignClick = (
     indexTask,
     itemTask,
@@ -1064,18 +1073,18 @@ function AssignTask({ history }) {
       groupID: EntityGroupID,
       section: section,
       licenseIndex: index,
-    }
-    setAssignField(assignObj)
-    setAssignPromptHideShow(true)
-    const drawerParent = document.getElementById("drawerParentMobile")
-    const drawerChild = document.getElementById("drawerChildMobile")
+    };
+    setAssignField(assignObj);
+    setAssignPromptHideShow(true);
+    const drawerParent = document.getElementById("drawerParentMobile");
+    const drawerChild = document.getElementById("drawerChildMobile");
     if (drawerParent) {
-      drawerParent.classList.add("overlayAssignTask")
-      drawerChild.style.bottom = "0%"
+      drawerParent.classList.add("overlayAssignTask");
+      drawerChild.style.bottom = "0%";
     }
-  }
+  };
   const closeAssign = (e, flag) => {
-    let obj = { target: { value: e } }
+    let obj = { target: { value: e } };
     if (flag === 1) {
       if (assignField.section === "Parent") {
         handleInputChange(
@@ -1086,7 +1095,7 @@ function AssignTask({ history }) {
           assignField.entityName,
           assignField.groupID,
           assignField.licenseIndex
-        )
+        );
       } else {
         handleEmail(
           obj,
@@ -1094,46 +1103,44 @@ function AssignTask({ history }) {
           assignField.entityName,
           assignField.licensecode,
           assignField.groupID
-        )
+        );
       }
-      storeEmails(obj)
+      storeEmails(obj);
     }
-    setAssignExist("")
-    setAssignPromptHideShow(false)
-    setAssignField(undefined)
-    const drawerParent = document.getElementById("drawerParentMobile")
-    const drawerChild = document.getElementById("drawerChildMobile")
+    setAssignExist("");
+    setAssignPromptHideShow(false);
+    setAssignField(undefined);
+    const drawerParent = document.getElementById("drawerParentMobile");
+    const drawerChild = document.getElementById("drawerChildMobile");
     if (drawerParent) {
-      drawerParent.classList.remove("overlayAssignTask")
-      drawerChild.style.bottom = "-100%"
+      drawerParent.classList.remove("overlayAssignTask");
+      drawerChild.style.bottom = "-100%";
     }
-  }
+  };
 
   useEffect(() => {
     setTimeout(() => {
-      setShowToolTip(false)
-    }, 10000)
-  }, [])
+      setShowToolTip(false);
+    }, 10000);
+  }, []);
 
   const chooseImage = (index) => {
-    if(index==0 || index%5==0){
+    if (index == 0 || index % 5 == 0) {
       return assignIcon;
     }
-    if(index==1 || index%5==1){
+    if (index == 1 || index % 5 == 1) {
       return assignIcon4;
-      
     }
-    if(index==2 || index%5==2){
+    if (index == 2 || index % 5 == 2) {
       return assignIcon2;
     }
-    if(index==3 || index%5==3){
-      return assignIcon5;  
+    if (index == 3 || index % 5 == 3) {
+      return assignIcon5;
     }
-    if(index==4 || index%5==4){
+    if (index == 4 || index % 5 == 4) {
       return assignIcon3;
     }
-  }
-
+  };
 
   return (
     <div className="row">
@@ -1169,7 +1176,11 @@ function AssignTask({ history }) {
                 <div className="col-lg-12">
                   <div className="header_logo">
                     {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                    <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
+                    <img
+                      src={comtech}
+                      alt="COMPLIANCE SUTRA"
+                      title="COMPLIANCE SUTRA"
+                    />
                     <span className="camp">COMPLIANCE SUTRA</span>
                     {/* </a> */}
                   </div>
@@ -1188,7 +1199,7 @@ function AssignTask({ history }) {
                   <span
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                      onSkipTextClick()
+                      onSkipTextClick();
                     }}
                     className="skip-step"
                   >
@@ -1207,7 +1218,7 @@ function AssignTask({ history }) {
                     <span
                       style={{ cursor: "pointer" }}
                       onClick={() => {
-                        onSkipTextClick()
+                        onSkipTextClick();
                       }}
                       className="skip-step d-none d-sm-block"
                     >
@@ -1262,12 +1273,10 @@ function AssignTask({ history }) {
                                   </div>
                                   <div className="assign-icon">
                                     <img
-                                      src={
-                                         chooseImage(itemTask.licenseIndex)
-                                      }
+                                      src={chooseImage(itemTask.licenseIndex)}
                                       // style={{objectFit:"cover",height:"48px"}}
                                       // {
-                                      //   itemTask.imageType !== 1 || itemTask.imageType !== 2 || itemTask.imageType !== 3 || itemTask.imageType !== 4 ? height : "49px",width:"49px" 
+                                      //   itemTask.imageType !== 1 || itemTask.imageType !== 2 || itemTask.imageType !== 3 || itemTask.imageType !== 4 ? height : "49px",width:"49px"
                                       // }
                                       alt=""
                                     />
@@ -1328,8 +1337,8 @@ function AssignTask({ history }) {
                                             <span className="font-normal-text">
                                               Add email to assign this task.
                                             </span>{" "}
-                                            You can also get a COMPLIANCE SUTRA expert
-                                            to review it for you!
+                                            You can also get a COMPLIANCE SUTRA
+                                            expert to review it for you!
                                           </div>
                                         </div>
                                       </div>
@@ -1380,7 +1389,7 @@ function AssignTask({ history }) {
                                         onClick={() => {
                                           setAssignExist(
                                             fields[index].obj[indexTask].email
-                                          )
+                                          );
                                           handleMobileAssignClick(
                                             indexTask,
                                             itemTask,
@@ -1388,7 +1397,7 @@ function AssignTask({ history }) {
                                             item.EntityId,
                                             index,
                                             "Parent"
-                                          )
+                                          );
                                         }}
                                       >
                                         <img
@@ -1431,7 +1440,7 @@ function AssignTask({ history }) {
                                             item.EntityName,
                                             item.EntityId,
                                             index
-                                          )
+                                          );
                                         }}
                                         onFocus={handleOnFoucs.bind(
                                           this,
@@ -1573,7 +1582,7 @@ function AssignTask({ history }) {
                                                       alt="dropdown Blue Icon"
                                                     />
                                                     <div className="SecMark-Expert-Review">
-                                                       Expert Review
+                                                      Expert Review
                                                     </div>
                                                     <div
                                                       style={{
@@ -1699,9 +1708,7 @@ function AssignTask({ history }) {
                     <div className="review-box">
                       <div className="row">
                         <div className="col-9 pr-0">
-                          <div className="pink-title">
-                            Enable expert review
-                          </div>
+                          <div className="pink-title">Enable expert review</div>
                           <div
                             style={{ cursor: "pointer" }}
                             onClick={() => setVisibleExpertReviewModal(true)}
@@ -1756,7 +1763,7 @@ function AssignTask({ history }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default withRouter(AssignTask)
+export default withRouter(AssignTask);

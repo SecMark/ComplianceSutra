@@ -48,6 +48,7 @@ import View from "../../../../../CalenderView/View";
 
 import TextareaAutosize from "react-textarea-autosize";
 import ReAssignTasksModal from "../../../../../ReAssignTasks";
+import api from "../../../../../../apiServices";
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
@@ -285,10 +286,9 @@ function RightSideGrid({
         taskID: taskId,
         actionFlag: 0,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+        api.get('getTaskFile', {params: {uInput: payload}})
         .then((response) => {
-          let fileData = response.data;
+          let fileData = response.data.message;
           setFileList(fileData);
         })
         .catch((error) => {});
@@ -348,10 +348,9 @@ function RightSideGrid({
         userID: user.UserID,
         usertype: user.UserType,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskReport`, payload)
+        api.get('getTaskReport', {params: {uInput: payload}})
         .then((response) => {
-          let fileData = response.data;
+          let fileData = response.data.message;
           let tempArr = [];
           let tempRowCount = {};
           fileData.map((item) => {
@@ -1595,16 +1594,15 @@ function RightSideGrid({
     );
   };
   const getAllFile = () => {
-    if (getTaskById != undefined) {
+    if (getTaskById !== undefined) {
       const taskId = getTaskById.TaskId;
       const payload = {
         taskID: taskId,
         actionFlag: 0,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+      api.get('getTaskFile', {params: {uInput: payload}})
         .then((response) => {
-          let fileData = response.data;
+          let fileData = response.data.message;
           setFileList(fileData);
         })
         .catch((error) => {
@@ -1620,14 +1618,14 @@ function RightSideGrid({
         TaskFileId: file.TaskFileId,
         actionFlag: 3,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+        api.get('getTaskFile', {params: {uInput: payload}})
         .then((response) => {
           if (
             response &&
             response.data &&
-            response.data[0] &&
-            response.data[0].Status === "Deleted"
+            response.data.message &&
+            response.data.message[0] &&
+            response.data.message[0].Status === "Deleted"
           ) {
             getAllFile();
             toast.success("File deleted successfully");
@@ -1781,18 +1779,18 @@ function RightSideGrid({
       taskID = getTaskById && getTaskById.TaskId;
     }
     if (taskID !== null) {
-      axios
-        .post(`${BACKEND_BASE_URL}/api/Circular`, {
+        api.get('Circular', {params: {uInput: {
           taskID: taskID,
           taskFileID: 0,
           actionFlag: 0,
-        })
+        }}})
         .then((response) => {
           if (
             response &&
             response.data &&
-            response.data[0] &&
-            response.data[0].status !== "False"
+            response.data.message &&
+            response.data.message[0] &&
+            response.data.message[0].status !== "False"
           ) {
             if (type === "1") {
               setRecentRegulationData(response.data);
@@ -2047,13 +2045,12 @@ function RightSideGrid({
   };
 
   const handleCheckEmailAvailability = (event) => {
-    axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
-      })
+    api.get('availabilityCheck', {params: {uInput: {
+      loginID: selectedUser,
+      loginty: "AdminEmail",
+    }}})
       .then((response) => {
-        if (response && response.data && response.data.Status === "True") {
+        if (response && response.data && response.data.message && response.data.message.Status === "True") {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -2066,13 +2063,12 @@ function RightSideGrid({
   };
 
   const handleCheckAssignToEmailAvailability = (event) => {
-    axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
+      api.get('availabilityCheck', {params: {uInput: {
         loginID: selectedUser,
         loginty: "AdminEmail",
-      })
+      }}})
       .then((response) => {
-        if (response && response.data && response.data.Status === "True") {
+        if (response && response.data && response.data.message && response.data.message.Status === "True") {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -2698,10 +2694,9 @@ function RightSideGrid({
       userID: userDetails.UserID,
       usertype: userDetails.UserType,
     };
-    axios
-      .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
-      .then((response) => {
-        if (response && response.data && response.data.length > 0) {
+    api.get('DashBoardAnalytics', {params: {uInput: payload}})
+        .then((response) => {
+        if (response && response.data && response.data.message && response.data.message.length > 0) {
           let completedtask = response.data[0].CompletedTask;
           setCompletedTask(completedtask);
           let scheduledTask = response.data[0].SchedulededTask;

@@ -1,13 +1,26 @@
 import api from "../../../apiServices";
 
 const insertUpdateAPIRequest = (payload) =>
-  api.post("/api/ins_upd_del_User", payload);
+  api.get("ins_upd_del_User", {
+    params: {
+      uInput: payload,
+    },
+  });
 const sendOTP = (payload) =>
-  api.post("api/sendmsgwithverificationcode", payload);
-const availabilityCheck = (payload) => api.post("/api/availabilityCheck", payload);
+  api.get("sendmsgwithverificationcode", {
+    params: {
+      uInput: payload,
+    },
+  });
+const availabilityCheck = (payload) =>
+  api.get("availabilityCheck", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 export default {
   insertUpdateAPIRequest,
   sendOTP,
-  availabilityCheck
+  availabilityCheck,
 };

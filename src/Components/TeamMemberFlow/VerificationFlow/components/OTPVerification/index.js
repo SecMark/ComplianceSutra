@@ -19,12 +19,18 @@ function VeryOTP({ history }) {
   const otpInfo =
     state && state.complianceOfficer && state.complianceOfficer.otoInfo;
 
-  const email = state && state.teamMemberFlow && state.teamMemberFlow.personalInfoTM &&
+  const email =
+    state &&
+    state.teamMemberFlow &&
+    state.teamMemberFlow.personalInfoTM &&
     state.teamMemberFlow.personalInfoTM.formDataPersonalTM &&
-    state.teamMemberFlow.personalInfoTM.formDataPersonalTM.adminEmail
-  const mobileNumber = state && state.teamMemberFlow && state.teamMemberFlow.personalInfoTM
-    && state.teamMemberFlow.personalInfoTM.formDataPersonalTM &&
-    state.teamMemberFlow.personalInfoTM.formDataPersonalTM.adminMobile
+    state.teamMemberFlow.personalInfoTM.formDataPersonalTM.adminEmail;
+  const mobileNumber =
+    state &&
+    state.teamMemberFlow &&
+    state.teamMemberFlow.personalInfoTM &&
+    state.teamMemberFlow.personalInfoTM.formDataPersonalTM &&
+    state.teamMemberFlow.personalInfoTM.formDataPersonalTM.adminMobile;
   const handelChange = (e) => {
     const mobileNumberReg = /^[0-9]{0,5}$/;
     if (e.target.name === "otp") {
@@ -35,7 +41,7 @@ function VeryOTP({ history }) {
     setOTP(e.target.value);
   };
   const sendOTPRequest = () => {
-    let payload = {}
+    let payload = {};
     if (mobileNumber && email) {
       payload = {
         phn: email,
@@ -43,21 +49,24 @@ function VeryOTP({ history }) {
       };
 
       api
-        .post("/api/sendmsgwithverificationcode", payload)
+        .get("sendmsgwithverificationcode", { params: { uInput: payload } })
         .then(function (response) {
           // handle success
           if (
             response &&
             response.data &&
-            response.data.otp != "" &&
-            response.data.statuscode === "200"
+            response.data.message &&
+            response.data.message.otp !== "" &&
+            response.data.message.statuscode === "200"
           ) {
             setIsEnabledSecureOTP(true);
-            toast.success("The OTP has been sent to your registered mobile number")
-            setCurrentOTP(response.data.otp);
+            toast.success(
+              "The OTP has been sent to your registered mobile number"
+            );
+            setCurrentOTP(response.data.message.otp);
           } else {
             setCurrentOTP("");
-            toast.error("something went wrong please try again !!!")
+            toast.error("something went wrong please try again !!!");
             setIsEnabledSecureOTP(false);
           }
         })
@@ -67,8 +76,8 @@ function VeryOTP({ history }) {
           }
         });
     } else {
-      toast.error("Please follow verification process")
-      return '';
+      toast.error("Please follow verification process");
+      return "";
     }
   };
 
@@ -81,7 +90,6 @@ function VeryOTP({ history }) {
       setOTP("");
     }
   };
-
 
   return (
     <div className="row">
@@ -104,8 +112,12 @@ function VeryOTP({ history }) {
                   <div className="col-lg-12">
                     <div className="header_logo">
                       {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                        <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
-                        <span className="camp">COMPLIANCE SUTRA</span>
+                      <img
+                        src={comtech}
+                        alt="COMPLIANCE SUTRA"
+                        title="COMPLIANCE SUTRA"
+                      />
+                      <span className="camp">COMPLIANCE SUTRA</span>
                       {/* </a> */}
                     </div>
                   </div>
@@ -126,7 +138,9 @@ function VeryOTP({ history }) {
                     </p>
                     <div className="send-otp">
                       <p className="disc-text">
-                        This helps you prevent unauthorized access to your account. And you don't have to remember any password </p>
+                        This helps you prevent unauthorized access to your
+                        account. And you don't have to remember any password{" "}
+                      </p>
                       <p className="will-send-text">
                         We will send OTP on +91 9876543211{" "}
                       </p>
@@ -187,7 +201,12 @@ function VeryOTP({ history }) {
                   <div className="col-6"></div>
                   <div className="col-6 text-right">
                     {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                      <img className="header_logo footer-logo-secmark" src={secmark} alt="SECMARK" title="SECMARK" />
+                    <img
+                      className="header_logo footer-logo-secmark"
+                      src={secmark}
+                      alt="SECMARK"
+                      title="SECMARK"
+                    />
                     {/* </a> */}
                   </div>
                 </div>

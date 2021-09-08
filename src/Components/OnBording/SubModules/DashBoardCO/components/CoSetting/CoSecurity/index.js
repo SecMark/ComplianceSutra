@@ -69,10 +69,17 @@ function CoSetting({ handleClose }) {
       mobile: "",
     };
     api
-      .post("/api/CoSettings", payload)
+      .get("CoSettings", { params: { uInput: payload } })
       .then(function (response) {
-        if (response && response.data && response.data.length > 0) {
-          setTwoFactorAuth(response.data[0].TwoWayAuth === 0 ? false : true);
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.length > 0
+        ) {
+          setTwoFactorAuth(
+            response.data.message[0].TwoWayAuth === 0 ? false : true
+          );
         } else {
           setTwoFactorAuth(false);
         }
@@ -205,10 +212,15 @@ function CoSetting({ handleClose }) {
       pwd: values.confirmPassword,
     };
     api
-      .post("/api/CoSettings", payload)
+      .get("CoSettings", { params: { uInput: payload } })
       .then(function (response) {
-        if (response && response.data && response.data.data[0]) {
-          if (response.data.data[0].Status === "Sucess") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.data[0]
+        ) {
+          if (response.data.message.data[0].Status === "Sucess") {
             toast.success("Password changed sucessfully");
             setValues({
               currentPassword: "",
@@ -254,9 +266,14 @@ function CoSetting({ handleClose }) {
       mobile: "",
     };
     api
-      .post("/api/CoSettings", payload)
+      .get("CoSettings", { params: { uInput: payload } })
       .then(function (response) {
-        if (response && response.data && response.data[0]) {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message[0]
+        ) {
           setTimeout(() => {
             getSettingData();
           }, 3000);
@@ -276,22 +293,24 @@ function CoSetting({ handleClose }) {
   };
 
   const handleVerifyModalAction = (flag) => {
-    let payload = { loginID: loggedUser.EmailID, pwd: values.currentPassword };
+    let payload = { LoginId: loggedUser.EmailID, Pwd: values.currentPassword };
     api
-      .post("/api/Loginsuccess", payload)
+      .get("Loginsuccess", { params: { uInput: payload } })
       .then(function (response) {
         if (
           response &&
           response.data &&
-          response.data.StatusCode === 200 &&
-          response.data.Message === "SUCCESS"
+          response.data.message &&
+          response.data.message.StatusCode === 200 &&
+          response.data.message.Message === "SUCCESS"
         ) {
           setErrors({ ...errors, ["currentPasswordErr"]: "" });
         } else if (
           response &&
           response.data &&
-          response.data.StatusCode === 201 &&
-          response.data.Message === "FAIL"
+          response.data.message &&
+          response.data.message.StatusCode === 201 &&
+          response.data.message.Message === "FAIL"
         ) {
           setErrors({ ...errors, ["currentPasswordErr"]: "invalid" });
         } else {
@@ -385,9 +404,10 @@ function CoSetting({ handleClose }) {
               <div className="col-9">
                 <div className="">
                   <p className="bolder-text">Enable 2FA Authentication</p>
-                  <p className="normal-text">Every time you log in we will send you a OTP on your registered
-                  mobile number
-            </p>
+                  <p className="normal-text">
+                    Every time you log in we will send you a OTP on your
+                    registered mobile number
+                  </p>
                 </div>
               </div>
               <div className="col-3">
@@ -396,7 +416,9 @@ function CoSetting({ handleClose }) {
                     <input
                       onClick={(e) => onSliderChange(e, "TwoWayAuth")}
                       checked={twoFactortAuth}
-                      htmlFor="email" type="checkbox" />
+                      htmlFor="email"
+                      type="checkbox"
+                    />
                     <span class="slider round"></span>
                   </label>
                 </div>

@@ -40,11 +40,12 @@ import moment from "moment";
 import Dropzone from "react-dropzone";
 import CustomCard from "./BoardCard";
 import { useOuterClick } from "../RightSideGrid/outerClick.js";
+import api from "../../../../../../apiServices";
+import { post } from "axios";
 import { BACKEND_BASE_URL } from "../../../../../../apiServices/baseurl";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { actions as taskReportActions } from "../../redux/actions";
 import MobileLeftSidebar from "../MobileLeftSidebar";
-import axios, { post } from "axios";
 import { withRouter } from "react-router-dom";
 import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png";
 import TextareaAutosize from "react-textarea-autosize";
@@ -190,10 +191,10 @@ function RightSideGrid({
         taskID: taskId,
         actionFlag: 0,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+      api
+        .get(`getTaskFile`, { params: { uInput: payload } })
         .then((response) => {
-          let fileData = response.data;
+          let fileData = response.data.message;
           setFileList(fileData);
         })
         .catch((error) => {});
@@ -288,10 +289,10 @@ function RightSideGrid({
         taskID: taskId,
         actionFlag: 0,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+      api
+        .get(`getTaskFile`, { params: { uInput: payload } })
         .then((response) => {
-          let fileData = response.data;
+          let fileData = response.data.message;
           setFileList(fileData);
         })
         .catch((error) => {});
@@ -305,14 +306,15 @@ function RightSideGrid({
         TaskFileId: file.TaskFileId,
         actionFlag: 3,
       };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+      api
+        .get(`getTaskFile`, { params: { uInput: payload } })
         .then((response) => {
           if (
             response &&
             response.data &&
-            response.data[0] &&
-            response.data[0].Status === "Deleted"
+            response.data.message &&
+            response.data.message[0] &&
+            response.data.message[0].Status === "Deleted"
           ) {
             getAllFile();
             toast.success("File deleted successfully");
@@ -622,14 +624,22 @@ function RightSideGrid({
   };
 
   const handleCheckEmailAvailability = (event) => {
-    axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
+    api
+      .get(`availabilityCheck`, {
+        params: {
+          uInput: {
+            loginID: selectedUser,
+            loginty: "AdminEmail",
+          },
+        },
       })
       .then((response) => {
-        console.log("inside resposnse => ", response);
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "True"
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -643,14 +653,22 @@ function RightSideGrid({
 
   const handleCheckAssignToEmailAvailability = (event) => {
     console.log("selectedUser => ", selectedUser);
-    axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
+    api
+      .get(`availabilityCheck`, {
+        params: {
+          uInput: {
+            loginID: selectedUser,
+            loginty: "AdminEmail",
+          },
+        },
       })
       .then((response) => {
-        console.log("inside resposnse => ", response);
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "True"
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);

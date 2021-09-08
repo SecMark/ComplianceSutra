@@ -8,19 +8,22 @@ import { actions as menuActions } from "../../OnBording/SubModules/DashBoardCO/M
 const loginReq = function* loginReq({ payload }) {
   try {
     const { data } = yield call(api.loginAccount, payload);
-    if (data && data.Message !== "FAIL") {
-      yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
-      console.log("login response", data);
+    if (data && data.message && data.message.Message !== "FAIL") {
+      const responseData = data.message;
+      yield put(
+        actions.signInRequestSuccess({ loginSuccess: true, data: responseData })
+      );
+      console.log("login response", responseData);
       if (
-        data.IscreateBySecmark === 0 &&
-        ((data && data.UserType === 3) ||
-          data.UserType === 5 ||
-          data.UserType === 6)
+        responseData.IscreateBySecmark === 0 &&
+        ((responseData && responseData.UserType === 3) ||
+          responseData.UserType === 5 ||
+          responseData.UserType === 6)
       ) {
         yield put(menuActions.setCurrentMenu("dashboard"));
         yield put(menuActions.setActiveTabInSetting("personal"));
         payload.history.push("/dashboard-view");
-      } else if (data.IscreateBySecmark === 1) {
+      } else if (responseData.IscreateBySecmark === 1) {
         payload.history.push("/expert-review/");
       } else {
         yield put(menuActions.setCurrentMenu("taskList"));
@@ -41,23 +44,20 @@ const loginReq = function* loginReq({ payload }) {
 const updatePasswordReq = function* updatePasswordReq({ payload }) {
   try {
     const { data } = yield call(api.updatePassword, payload);
-    if (data && data.Status === "Sucess") {
+    if (data && data.message && data.message.Status === "Sucess") {
       yield put(actions.updatePasswordRequestSuccess({ resetPassword: true }));
       payload.history.push("/login");
       toast.success("Password changed successfully");
     } else {
-      if (data && data.Status === "Fail") {
+      if (data && data.message && data.message.Status === "Fail") {
         let message = "";
-        message = data.Message;
+        message = data.message.Message;
         toast.error(message && message);
       }
       yield put(actions.updatePasswordRequestFailed({ resetPassword: false }));
     }
   } catch (err) {
-    // toast.error(
-    //     (err && err.response && err.response.data && err.response.data.message) ||
-    //         'Something went to wrong, Please try after sometime',
-    // );
+    toast.error("Something went wrong, Please try again after some time.");
     yield put(actions.updatePasswordRequestFailed({ resetPassword: false }));
   }
 };

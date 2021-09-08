@@ -127,15 +127,16 @@ function VeryOTP({ history, currentStep }) {
     };
 
     api
-      .post("/api/getUserID", payload)
+      .get("getUserID", { params: { uInput: payload } })
       .then(function (response) {
         if (
           response &&
           response.data &&
-          response.data[0] &&
-          response.data[0].UserID
+          response.data.message &&
+          response.data.message[0] &&
+          response.data.message[0].UserID
         ) {
-          setUserID(response.data[0].UserID);
+          setUserID(response.data.message[0].UserID);
         } else {
           setUserID(0);
         }
@@ -156,9 +157,14 @@ function VeryOTP({ history, currentStep }) {
       cntryCode: str,
     };
     api
-      .post("/api/CountryCodeCheck", payload)
+      .get("CountryCodeCheck", { params: { uInput: payload } })
       .then(function (response) {
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "True"
+        ) {
           setCountryCode(true);
         } else {
           setCountryCode(false);
@@ -225,14 +231,15 @@ function VeryOTP({ history, currentStep }) {
       email: emails,
     };
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .get("sendmsgwithverificationcode", { params: { uInput: payload } })
       .then(function (response) {
         // handle success
         if (
           response &&
           response.data &&
-          response.data.otp != "" &&
-          response.data.statuscode === "200"
+          response.data.message &&
+          response.data.message.otp !== "" &&
+          response.data.message.statuscode === "200"
         ) {
           toast.success(
             "The OTP has been sent to your registered mobile number"
@@ -276,9 +283,14 @@ function VeryOTP({ history, currentStep }) {
           : countryCode,
     };
     api
-      .post("/api/availabilityCheck", payload)
+      .get("availabilityCheck", { params: { uInput: payload } })
       .then(function (response) {
-        if (response && response.data && response.data.Status === "false") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "false"
+        ) {
           let location = window.location.href;
           let data = location.split("=");
           let splitEmailAndType = data && data[1].split("&");
@@ -333,14 +345,15 @@ function VeryOTP({ history, currentStep }) {
     };
 
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .get("sendmsgwithverificationcode", { params: { uInput: payload } })
       .then(function (response) {
         // handle success
         if (
           response &&
           response.data &&
-          response.data.otp != "" &&
-          response.data.statuscode === "200"
+          response.data.message &&
+          response.data.message.otp !== "" &&
+          response.data.message.statuscode === "200"
         ) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
@@ -395,13 +408,14 @@ function VeryOTP({ history, currentStep }) {
     };
     if (otp !== "") {
       api
-        .post("/api/GetOTP", payload)
+        .get("GetOTP", { params: { uInput: payload } })
         .then(function (response) {
           // handle success
           if (
             response &&
             response.data &&
-            response.data.otp != "" &&
+            response.data.message &&
+            response.data.message.otp !== "" &&
             response.data.Status === "False"
           ) {
             setOtpInValid(true);

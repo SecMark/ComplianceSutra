@@ -144,12 +144,17 @@ function Dashboard({ history }) {
         userID: userID,
       };
       api
-        .post("/api/Notifications", payload)
+        .get("Notifications", { params: { uInput: payload } })
         .then(function (response) {
-          console.log(response);
           var date1 = new Date(); //current time
-          if (response && response.data && response.data.length > 0) {
-            let notification = response && response.data;
+          if (
+            response &&
+            response.data &&
+            response.data.message &&
+            response.data.message.length > 0
+          ) {
+            let notification =
+              response && response.data && response.data.message;
             var notificationDateTime;
             var date2;
             var timeDiff;

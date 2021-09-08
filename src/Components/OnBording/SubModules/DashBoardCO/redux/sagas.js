@@ -6,12 +6,13 @@ import { toast } from "react-toastify";
 const taskReportRequest = function* taskReportRequest({ payload }) {
   try {
     const { data, status } = yield call(api.getTaskReport, payload);
-    let statusData = data && data[0] && data[0].StatusCode;
+    let statusData =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
     if (status === 200 && statusData !== false) {
-      yield put(actions.taskReportRequestSuccess({ taskReport: data }));
-      toast.success(data && data.Message);
+      yield put(actions.taskReportRequestSuccess({ taskReport: data.message }));
+      toast.success(data && data.message && data.message.Message);
     } else {
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
       yield put(actions.taskReportRequestFailed({ taskReport: [] }));
     }
   } catch (err) {
@@ -28,10 +29,12 @@ const taskReportRequestById = function* taskReportRequestById({ payload }) {
     const { data, status } = yield call(api.getTaskReportByID, payload);
     if (status === 200) {
       // console.log("taskReport By Id => ",data , status);
-      yield put(actions.taskReportByIdRequestSuccess({ taskReportById: data }));
-      toast.success(data && data.Message);
+      yield put(
+        actions.taskReportByIdRequestSuccess({ taskReportById: data.message })
+      );
+      toast.success(data && data.message && data.message.Message);
     } else {
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
       yield put(actions.taskReportByIdRequestFailed({ taskReportById: {} }));
     }
   } catch (err) {
@@ -47,13 +50,16 @@ const userRequestByRole = function* userRequestByRole({ payload }) {
   try {
     const { data, status } = yield call(api.getUsersByRole, payload);
     // console.log(data);
-    let statusCode = data && data[0] && data[0].StatuCode;
-    if (status === 200 && statusCode != false && statusCode !== "norec") {
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatuCode;
+    if (status === 200 && statusCode !== false && statusCode !== "norec") {
       // console.log("getUsersByRole  => ",data , status);
-      yield put(actions.userByRoleRequestSuccess({ getUserByRole: data }));
-      toast.success(data && data.Message);
+      yield put(
+        actions.userByRoleRequestSuccess({ getUserByRole: data.message })
+      );
+      toast.success(data && data.message && data.message.Message);
     } else {
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
       yield put(actions.userByRoleRequestFailed({ getUserByRole: {} }));
     }
   } catch (err) {
@@ -68,21 +74,24 @@ const userRequestByRole = function* userRequestByRole({ payload }) {
 const taskCommentBytaskID = function* taskCommentBytaskID({ payload }) {
   try {
     const { data, status } = yield call(api.getTaskComments, payload);
-    // console.log("payload ==> ",payload)
     if (status === 200) {
       if (payload.link === 1) {
         yield put(
-          actions.taskCommentsByTaskIdSuccess({ getTaskLinksByRole: data })
+          actions.taskCommentsByTaskIdSuccess({
+            getTaskLinksByRole: data.message,
+          })
         );
-      }
-      if (payload.link === 0) {
+      } else {
+        // if (payload.link === 0) {
         yield put(
-          actions.taskCommentsByTaskIdSuccess({ getTaskCommentByRole: data })
+          actions.taskCommentsByTaskIdSuccess({
+            getTaskCommentByRole: data.message,
+          })
         );
       }
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
     } else {
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
       yield put(
         actions.taskCommentsByTaskIdFailed({ getTaskCommentByRole: {} })
       );
@@ -97,7 +106,9 @@ const postCommentBytaskID = function* postCommentBytaskID({ payload }) {
     const { data, status } = yield call(api.postTaskComments, payload);
     if (status === 200) {
       yield put(
-        actions.postTaskCommentByTaskIDSuccess({ postTaskCommentById: data })
+        actions.postTaskCommentByTaskIDSuccess({
+          postTaskCommentById: data.message,
+        })
       );
       if (payload.link === 0) {
         yield put(
@@ -115,9 +126,9 @@ const postCommentBytaskID = function* postCommentBytaskID({ payload }) {
           })
         );
       }
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
     } else {
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
       yield put(
         actions.postTaskCommentByTaskIDFailed({ postTaskCommentById: {} })
       );
@@ -138,10 +149,12 @@ const getTaskFilesById = function* getTaskFilesById({ payload }) {
     const { data, status } = yield call(api.getTaskFiles, payload);
     if (status === 200) {
       if (payload.ftype === 0) {
-        yield put(actions.getTaskFilesByIdSucess({ taskFiles: data }));
+        yield put(actions.getTaskFilesByIdSucess({ taskFiles: data.message }));
       }
       if (payload.ftype === 1) {
-        yield put(actions.getTaskFilesByIdSucess({ taskFilesReference: data }));
+        yield put(
+          actions.getTaskFilesByIdSucess({ taskFilesReference: data.message })
+        );
       }
     } else {
       yield put(actions.getTaskFilesByIdFailed());
@@ -151,16 +164,17 @@ const getTaskFilesById = function* getTaskFilesById({ payload }) {
   }
 };
 const postUploadFileById = function* postUploadFileById({ payload }) {
-  console.log(payload);
   // debugger
   try {
     const { data, status } = yield call(api.postUploadFile, payload);
     console.log(status);
     if (status === 201) {
-      yield put(actions.postUploadFileByIDSuccess({ postUploadFile: data }));
+      yield put(
+        actions.postUploadFileByIDSuccess({ postUploadFile: data.message })
+      );
       toast.success("Attachement successfully added!");
     } else {
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
       yield put(actions.postUploadFileByIDFailed({ postUploadFile: {} }));
     }
   } catch (err) {
@@ -205,7 +219,9 @@ const postAssignTask = function* postAssignTask({ payload }) {
           }
         );
       }
-      yield put(actions.taskAssignByTaskIDSuccess({ postAssignTask: data }));
+      yield put(
+        actions.taskAssignByTaskIDSuccess({ postAssignTask: data.message })
+      );
       yield put(
         actions.taskReportByIdRequest({
           taskid: payload.taskID,
@@ -218,9 +234,9 @@ const postAssignTask = function* postAssignTask({ payload }) {
           usertype: payload.userDetails.UserType,
         })
       );
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
     } else {
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
       yield put(actions.taskAssignByTaskIDFailed({ postAssignTask: {} }));
     }
   } catch (err) {
@@ -231,10 +247,13 @@ const postAssignTask = function* postAssignTask({ payload }) {
 const userAvailabilityCheck = function* userAvailabilityCheck({ payload }) {
   try {
     const { data, status } = yield call(api.getAvailabilityCheck, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
+    if (status === 200 && statusCode !== false) {
       yield put(
-        actions.availabilityCheckRequestSuccess({ availabilityInfo: data })
+        actions.availabilityCheckRequestSuccess({
+          availabilityInfo: data.message,
+        })
       );
     } else {
       yield put(
@@ -249,7 +268,8 @@ const userAvailabilityCheck = function* userAvailabilityCheck({ payload }) {
 const coDetailsInsUpdDelInfo = function* coDetailsInsUpdDelInfo({ payload }) {
   try {
     const { data, status } = yield call(api.postCodetailsInsUpdDel, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
     if (status === 200 && statusCode !== false) {
       if (payload.userType === 1) {
         toast.success("Details Changed Successfully!");
@@ -260,7 +280,7 @@ const coDetailsInsUpdDelInfo = function* coDetailsInsUpdDelInfo({ payload }) {
       yield put(
         actions.coDetailsInsUpdDelRequestSuccess({
           insUpdDelstatus: "Success",
-          data: data,
+          data: data.message,
         })
       );
     } else {
@@ -280,10 +300,13 @@ const coDetailsInsUpdDelInfo = function* coDetailsInsUpdDelInfo({ payload }) {
 const getCoEntityLicenseTask = function* getCoEntityLicenseTask({ payload }) {
   try {
     const { data, status } = yield call(api.GetEntityLicenseTask, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
     if (status === 200 && statusCode != false) {
       yield put(
-        actions.getEntityLicenseTaskRequestSuccess({ entityLicenseInfo: data })
+        actions.getEntityLicenseTaskRequestSuccess({
+          entityLicenseInfo: data.message,
+        })
       );
     } else {
       yield put(
@@ -300,9 +323,12 @@ const getCoEntityLicenseTask = function* getCoEntityLicenseTask({ payload }) {
 const getCOCompnayType = function* getCOCompnayType({ payload }) {
   try {
     const { data, status } = yield call(api.GetCOCompanyType, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
-      yield put(actions.getCompanyTypeRequestSuccess({ CompanyInfo: data }));
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
+    if (status === 200 && statusCode !== false) {
+      yield put(
+        actions.getCompanyTypeRequestSuccess({ CompanyInfo: data.message })
+      );
     } else {
       yield put(actions.getCompanyTypeRequestFailed({ CompanyInfo: {} }));
     }
@@ -318,8 +344,9 @@ const insertCerificateDetailsRequest =
         api.insertCerificateDetailsArray,
         payload
       );
-      let statusCode = data && data[0] && data[0].StatusCode;
-      if (status === 200 && statusCode != false) {
+      let statusCode =
+        data && data.message && data.message[0] && data.message[0].StatusCode;
+      if (status === 200 && statusCode !== false) {
         yield put(
           actions.insCertificateDetailsRequestSuccess({ Status: "Success" })
         );
@@ -338,10 +365,13 @@ const insertCerificateDetailsRequest =
 const getCoNotifications = function* getCoNotifications({ payload }) {
   try {
     const { data, status } = yield call(api.getAllNotifications, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
+    if (status === 200 && statusCode !== false) {
       yield put(
-        actions.getCoNotificationsRequestSuccess({ notifications: data })
+        actions.getCoNotificationsRequestSuccess({
+          notifications: data.message,
+        })
       );
     } else {
       yield put(actions.getCoNotificationsRequestFailed({ notifications: {} }));
@@ -354,9 +384,12 @@ const getCoNotifications = function* getCoNotifications({ payload }) {
 const getCoAccountSetting = function* getCoAccountSetting({ payload }) {
   try {
     const { data, status } = yield call(api.coSettingCommonApi, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
     if (status === 200 && statusCode != false) {
-      yield put(actions.getCoAccountRequestSuccess({ coAccount: data }));
+      yield put(
+        actions.getCoAccountRequestSuccess({ coAccount: data.message })
+      );
     } else {
       yield put(actions.getCoAccountRequestFailed({ coAccount: {} }));
     }
@@ -368,10 +401,11 @@ const getCoAccountSetting = function* getCoAccountSetting({ payload }) {
 const getCoAccountLicenses = function* getCoAccountLicenses({ payload }) {
   try {
     const { data, status } = yield call(api.coSettingCommonApi, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
+    if (status === 200 && statusCode !== false) {
       yield put(
-        actions.getCoAccountLicensesRequestSuccess({ coLicenses: data })
+        actions.getCoAccountLicensesRequestSuccess({ coLicenses: data.message })
       );
     } else {
       yield put(actions.getCoAccountLicensesRequestFailed({ coLicenses: {} }));
@@ -384,8 +418,9 @@ const getCoAccountLicenses = function* getCoAccountLicenses({ payload }) {
 const coAccountUpdate = function* coAccountUpdate({ payload }) {
   try {
     const { data, status } = yield call(api.coSettingCommonApi, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
+    if (status === 200 && statusCode !== false) {
       toast.success("Setting saved successfully.");
       yield put(actions.coAccountUpdateRequestSuccess({ Status: "Success" }));
     } else {
@@ -401,8 +436,9 @@ const coAccountUpdate = function* coAccountUpdate({ payload }) {
 const CompanyDeleteRequest = function* CompanyDeleteRequest({ payload }) {
   try {
     const { data, status } = yield call(api.coSettingCommonApi, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
+    let statusCode =
+      data && data.message && data.message[0] && data.message[0].StatusCode;
+    if (status === 200 && statusCode !== false) {
       toast.success("Company deleted successfully.");
       yield put(actions.deleteCompanyRequestSuccess({ Status: "Success" }));
     } else {

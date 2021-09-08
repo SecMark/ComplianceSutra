@@ -1,12 +1,32 @@
 import api from "../../../apiServices";
 
-const getCountryCodeList = (payload) => api.post("/api/Loginsuccess", payload);
+const getCountryCodeList = (payload) =>
+  api.get("Loginsuccess", {
+    params: {
+      uInput: payload,
+    },
+  });
 
-const getTaskReport = (payload) => api.post("api/getTaskReport", payload);
+const getTaskReport = (payload) =>
+  api.get("getTaskReport", {
+    params: {
+      uInput: payload,
+    },
+  });
 
-const getUpdates = (payload) => api.post("api/Updates", payload);
+const getUpdates = (payload) =>
+  api.get("Updates", {
+    params: {
+      uInput: payload,
+    },
+  });
 
-const getPayments = (payload) => api.post("api/PaymentDetails", payload);
+const getPayments = (payload) =>
+  api.get("PaymentDetails", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 export default {
   getCountryCodeList,

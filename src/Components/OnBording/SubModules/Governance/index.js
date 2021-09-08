@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import axios from "axios";
-import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
+import api from "../../../../apiServices";
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
 import reviewClose from "../../../../assets/Icons/reviewClose.png";
@@ -119,16 +118,25 @@ function Governance({ history }) {
     }
 
     if (isEmail(email) && alreadyAssignToAnother === null) {
-      await axios
-        .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-          loginID: email.trim(),
-          pwd: "",
-          rememberme: 0,
-          loginty: "AdminEmail",
+      await api
+        .get(`availabilityCheck`, {
+          params: {
+            uInput: {
+              loginID: email.trim(),
+              pwd: "",
+              rememberme: 0,
+              loginty: "AdminEmail",
+            },
+          },
         })
         .then(
           (response) => {
-            if (response && response.data && response.data.Status === "True") {
+            if (
+              response &&
+              response.data &&
+              response.data.message &&
+              response.data.message.Status === "True"
+            ) {
               if (role === "co") {
                 let obj = {
                   email: "",

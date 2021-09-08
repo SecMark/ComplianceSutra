@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../../../OnBording/SubModules/SideBar";
 import { getTemplate } from "./ForgotPasswordTemplate";
 import validator from "validator";
-import apiServices from "../../../../apiServices";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
@@ -37,15 +36,16 @@ function ForgotPassword({ history }) {
       email: email,
       invitation: "F",
     };
-    apiServices
-      .post("/api/getEmailbody", obj)
+    api
+      .get("getEmailbody", { params: { uInput: obj } })
       .then(function (response) {
         // handle success
         if (
           response &&
           response.data &&
-          response.data.Status &&
-          response.data.Status === true
+          response.data.message &&
+          response.data.message.Status &&
+          response.data.message.Status === true
         ) {
           toast.success(
             "The reset password link has been sent to your email account successfully"
@@ -72,10 +72,15 @@ function ForgotPassword({ history }) {
     };
     let body;
     api
-      .post("/api/availabilityCheck", payload)
+      .get("availabilityCheck", { params: { uInput: payload } })
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "True"
+        ) {
           sendResetPasswordEmail(values.email);
         } else {
           toast.error("Email is not available please register account");

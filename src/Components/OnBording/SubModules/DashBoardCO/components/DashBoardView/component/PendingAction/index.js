@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import assignIconCircle from "../../../../../../../../assets/Icons/assignIconCircle.png";
 import delayCloseIcon from "../../../../../../../../assets/Icons/delayCloseIcon.png";
 import keyboardArrowRightBlack from "../../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
-import { BACKEND_BASE_URL } from "../../../../../../../../apiServices/baseurl";
-import axios from "axios";
+import api from "../../../../../../../../apiServices";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
@@ -44,10 +43,10 @@ function PendingActionTaskList({ history, click, setClick }) {
       endDate: "",
     };
     if (userID !== undefined)
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskReport`, payload)
+      api
+        .get("getTaskReport", { params: { uInput: payload } })
         .then((response) => {
-          let riskData = response.data;
+          let riskData = response.data.message;
           let rowCount = [];
           riskData.map((item) => {
             let EntityName = item.EntityName;

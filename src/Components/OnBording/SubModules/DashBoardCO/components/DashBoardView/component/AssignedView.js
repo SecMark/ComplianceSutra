@@ -4,8 +4,7 @@ import "../style.css";
 import viewAllArow from "../../../../../../../assets/Icons/viewAllArow.png";
 import viewAllArowTop from "../../../../../../../assets/Icons/viewAllArowTop.png";
 import keyboardArrowRightBlack from "../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
-import axios from "axios";
-import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
+import api from "../../../../../../../apiServices";
 import downArrow from "../../../../../../../assets/Icons/downArrow.png";
 import upArrow from "../../../../../../../assets/Icons/topArrowAccordian.png";
 import { Link } from "react-router-dom";
@@ -51,15 +50,15 @@ export default function AssignedView(props) {
       userID: props.user.UserID,
       usertype: props.user.UserType,
     };
-    axios
-      .post(`${BACKEND_BASE_URL}/api/getTaskReport`, payload)
+    api
+      .get("getTaskReport", { params: { uInput: payload } })
       .then((response) => {
         let rowCount = [];
-        response.data.map((item) => {
+        response.data.message.map((item) => {
           rowCount[item.Status.trim()] = 3;
         });
         setAssignRowCount(rowCount);
-        let fileData = response.data;
+        let fileData = response.data.message;
         setLicensetaskData(fileData);
       })
       .catch((error) => {

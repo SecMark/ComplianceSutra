@@ -90,9 +90,14 @@ function CoSettingRightGrid({ handleClose, history }) {
           loginty: "AdminEmail",
         };
         return await api
-          .post("/api/availabilityCheck", payload)
+          .get("availabilityCheck", { params: { uInput: payload } })
           .then(function (response) {
-            if (response && response.data && response.data.Status === "True") {
+            if (
+              response &&
+              response.data &&
+              response.data.message &&
+              response.data.message.Status === "True"
+            ) {
               setIsValidEmail(false);
               setEmail(null);
               return false;
@@ -175,6 +180,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           state.taskReport.coDetailsInsUpdDelInfo.data;
 
         let logInfo = { ...loggedUser };
+        console.log("UPD Email: ", updEmail);
         logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID;
         dispatch(logInfoActions.updateEmailInfo(logInfo));
         setTimeout(() => {
@@ -232,13 +238,14 @@ function CoSettingRightGrid({ handleClose, history }) {
         pwd: verifyPassword.password,
       };
       api
-        .post("/api/Loginsuccess", payload)
+        .get("Loginsuccess", { params: { uInput: payload } })
         .then(function (response) {
           if (
             response &&
             response.data &&
-            response.data.StatusCode === 200 &&
-            response.data.Message === "SUCCESS"
+            response.data.message &&
+            response.data.message.StatusCode === 200 &&
+            response.data.message.Message === "SUCCESS"
           ) {
             setVerifyPassword({ password: "", passwordError: "" });
             handleFinalSubmit();
@@ -296,10 +303,15 @@ function CoSettingRightGrid({ handleClose, history }) {
       email: "email",
     };
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .get("sendmsgwithverificationcode", { params: { uInput: payload } })
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.statuscode === "200") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.statuscode === "200"
+        ) {
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
@@ -358,10 +370,15 @@ function CoSettingRightGrid({ handleClose, history }) {
     };
     if (otp !== "") {
       api
-        .post("/api/GetOTP", payload)
+        .get("GetOTP", { params: { uInput: payload } })
         .then(function (response) {
           // handle success
-          if (response && response.data && response.data.Status != "False") {
+          if (
+            response &&
+            response.data &&
+            response.data.message &&
+            response.data.message.Status !== "False"
+          ) {
             setOtpInValid(true);
             setIsOtpVerfied(true);
             setOtpModal(false);
@@ -392,10 +409,15 @@ function CoSettingRightGrid({ handleClose, history }) {
     };
 
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .get("sendmsgwithverificationcode", { params: { uInput: payload } })
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.statuscode === "200") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.statuscode === "200"
+        ) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
           toast.success(

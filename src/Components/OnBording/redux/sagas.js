@@ -464,19 +464,20 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
         })
       );
       const { data, status } = yield call(api.verifyEmail, payload);
-      if (status === 200 && data.Status === "false") {
+      if (status === 200 && data.message.Status === "false") {
         let obj = {
           email: payload.LoginID,
           invitation: "V",
         };
         apiServices
-          .post("/api/getEmailbody", obj)
+          .get("getEmailbody", { params: { uInput: obj } })
           .then(function (response) {
             if (
               response &&
               response.data &&
-              response.data.Status &&
-              response.data.Status === true
+              response.data.message &&
+              response.data.message.Status &&
+              response.data.message.Status === true
             ) {
               toast.success(
                 "The verification link has been sent to your email account successfully"
@@ -1060,8 +1061,7 @@ const taskMailRequest = function* taskMailRequest({ payload }) {
       Body: body,
     })
       .then(function (message) {
-        console.log("message", message);
-        if (message === "OK") {
+        if (message.message === "OK") {
           toast.success("mail sent successfully");
         } else {
           toast.error("mail not sent successfully");
@@ -1087,8 +1087,10 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
     );
     if (status === 200) {
       let statusCode, message;
-      statusCode = data && data[0] && data[0].StatusCode;
-      message = data && data[0] && data[0].Message;
+      statusCode =
+        data && data.message && data.message[0] && data.message[0].StatusCode;
+      message =
+        data && data.message && data.message[0] && data.message[0].Message;
       if (statusCode !== undefined && !statusCode) {
         yield put(
           actions.insUpdateDeletAPIRequestSuccess({
@@ -1103,7 +1105,7 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
         yield put(
           actions.insUpdateDeletAPIRequestSuccess({
             formDataPersonalData: payload,
-            data: data,
+            data: data.message,
             userInfo: payload,
             companyName: companyName,
           })
@@ -1134,12 +1136,12 @@ const companyTypeRequest = function* companyTypeRequest({ payload }) {
     const { data, status } = yield call(api.companyType, payload);
     if (status === 200) {
       yield put(
-        actions.companyTypeRequestSuccess({ companyLicenseData: data })
+        actions.companyTypeRequestSuccess({ companyLicenseData: data.message })
       );
       //yield put(push(`/${authData && authData.store_locale}/my-account`));
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
     } else {
-      toast.success(data && data.Message);
+      toast.success(data && data.message && data.message.Message);
       yield put(
         actions.companyTypeRequestFailed({
           companyType: false,
@@ -1318,14 +1320,15 @@ const updateMobileNumberOTP = function* updateMobileNumberOTP({ payload }) {
         email: "",
       };
       apiServices
-        .post("/api/sendmsgwithverificationcode", obj)
+        .get("sendmsgwithverificationcode", { params: { uInput: obj } })
         .then(function (response) {
           // handle success
           if (
             response &&
             response.data &&
-            response.data.otp != "" &&
-            response.data.statuscode === "200"
+            response.data.message &&
+            response.data.message.otp !== "" &&
+            response.data.message.statuscode === "200"
           ) {
             toast.success(
               "The OTP has been sent to your registered mobile number"

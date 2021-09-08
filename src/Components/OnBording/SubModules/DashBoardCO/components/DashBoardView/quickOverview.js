@@ -14,7 +14,7 @@ import scheduledIcon from "../../../../../../assets/Icons/scheduledIcon.png";
 import siderBarbtnArrowTop from "../../../../../../assets/Icons/siderBarbtnArrowTop.png";
 import { useSelector } from "react-redux";
 import { isMobile } from "react-device-detect";
-
+import api from "../../../../../../apiServices";
 let percentage;
 function QuickOverView({ click, setClick, setListView, listView }) {
   const state = useSelector((state) => state);
@@ -68,16 +68,25 @@ function QuickOverView({ click, setClick, setListView, listView }) {
       userID: userDetails.UserID,
       usertype: userDetails.UserType,
     };
-    axios
-      .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
+    api
+      .get("DashBoardAnalytics", {
+        params: {
+          uInput: payload,
+        },
+      })
       .then((response) => {
-        if (response && response.data && response.data.length > 0) {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.length > 0
+        ) {
           if (type === "type1") {
-            setCompanyViewData(response.data);
-            let temp = response.data[0];
+            setCompanyViewData(response.data.message);
+            let temp = response.data.message[0];
             setThingOnTrack(temp);
           } else if (type === "type2") {
-            let temp = response.data[0];
+            let temp = response.data.message[0];
             setThingOnTrack(temp);
           }
         }
@@ -90,11 +99,20 @@ function QuickOverView({ click, setClick, setListView, listView }) {
       userID: userDetails.UserID,
       usertype: userDetails.UserType,
     };
-    axios
-      .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
+    api
+      .get("DashBoardAnalytics", {
+        params: {
+          uInput: payload,
+        },
+      })
       .then((response) => {
-        if (response && response.data && response.data.length > 0) {
-          setTeamPerformanceData(response.data);
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.length > 0
+        ) {
+          setTeamPerformanceData(response.data.message);
         }
       })
       .catch((error) => {});

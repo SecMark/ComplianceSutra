@@ -1,8 +1,12 @@
 import api from "../../../apiServices";
 
 const insertUpdateUserRequets = (payload) =>
-    api.post("/api/ins_upd_del_User", payload);
+  api.get("ins_upd_del_User", {
+    params: {
+      uInput: payload,
+    },
+  });
 
 export default {
-    insertUpdateUserRequets,
+  insertUpdateUserRequets,
 };
