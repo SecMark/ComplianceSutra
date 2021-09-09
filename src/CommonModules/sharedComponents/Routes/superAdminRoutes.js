@@ -1,47 +1,55 @@
 import { lazy } from "react";
 import constant from "../constants/constant";
 
-const ERDashboard = lazy(() =>
-  import("../../../Components/ExpertReviewModule/Dashboard")
+const SADashboard = lazy(() =>
+  import("../../../Components/SuperAdminModule/Dashboard")
 );
-const ERProfile = lazy(() =>
-  import("../../../Components/ExpertReviewModule/Profile")
+const SAProfile = lazy(() =>
+  import("../../../Components/SuperAdminModule/Profile")
 );
-const ERNotifications = lazy(() =>
-  import("../../../Components/ExpertReviewModule/Notifications/Notifications")
-);
-
-const ERTaskHistoryFilter = lazy(() =>
-  import("../../../Components/ExpertReviewModule/TaskHistoryFilter")
+const SANotifications = lazy(() =>
+  import("../../../Components/SuperAdminModule/Notifications/Notifications")
 );
 
-const ERTaskDetails = lazy(() =>
-  import("../../../Components/ExpertReviewModule/TaskDetails/index")
+const SATaskHistoryFilter = lazy(() =>
+  import("../../../Components/SuperAdminModule/TaskHistoryFilter")
+);
+
+const SATaskDetails = lazy(() =>
+  import("../../../Components/SuperAdminModule/TaskDetails")
+);
+
+const UserManagement = lazy(() =>
+  import("../../../Components/SuperAdminModule/UserManagement")
 );
 
 export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/`,
-    component: ERDashboard,
+    component: SADashboard,
   },
   {
     path: `${constant.SuperAdminBaseURL}/dashboard`,
-    component: ERDashboard,
+    component: SADashboard,
   },
   {
     path: `${constant.SuperAdminBaseURL}/profile`,
-    component: ERProfile,
+    component: SAProfile,
   },
   {
     path: `${constant.SuperAdminBaseURL}/notifications`,
-    component: ERNotifications,
+    component: SANotifications,
   },
   {
     path: `${constant.SuperAdminBaseURL}/task-history`,
-    component: ERTaskHistoryFilter,
+    component: SATaskHistoryFilter,
   },
   {
     path: `${constant.SuperAdminBaseURL}/task-details`,
-    component: ERTaskDetails,
+    component: SATaskDetails,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/user-management`,
+    component: UserManagement,
   },
 ];
