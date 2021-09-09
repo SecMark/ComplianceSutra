@@ -1,0 +1,67 @@
+.cs-drawer {
+  opacity: 0;
+  transition: all 300ms ease;
+  pointer-events: none;
+}
+.cs-drawer--open {
+  opacity: 1;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: all;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.248);
+}
+.cs-drawer__container {
+  height: 100vh;
+  background-color: #fff;
+  position: absolute;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  transition: all 300ms ease-in;
+  padding: 2rem;
+}
+.cs-drawer__content {
+  width: 100%;
+  height: 100%;
+  padding-top: 1.5rem;
+}
+.cs-drawer__close-button {
+  font-size: 1.5rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  top: -0.9rem;
+  left: -0.4rem;
+}
+.cs-drawer__horizontal-line {
+  width: 100%;
+  height: 2px;
+  background-color: #eee8fc;
+}
+.cs-drawer__button {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+}
+.cs-drawer__button--stroke {
+  color: #6c5dd3;
+}
+.cs-drawer__button--primary {
+  background-color: #6c5dd3;
+}
+.cs-drawer__button--outlined {
+  color: #6c5dd3;
+  border: 1px solid #6c5dd3;
+}
