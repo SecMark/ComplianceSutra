@@ -4,11 +4,11 @@ import emailVerificationSagas from "../Components/OnBording/redux/sagas";
 import teamMemberSaga from "../Components/TeamMemberFlow/redux/sagas";
 import globalSagas from "../CommonModules/GlobalData/redux/sagas";
 import taskReportSaga from "../Components/OnBording/SubModules/DashBoardCO/redux/sagas";
-
 import userTypeSagas from "../Components/UserVerification/redux/sagas";
 import historySaga from "../Components/HistoryModule/redux/saga";
 import updatesSaga from "../Components/NewRegulationModule/redux/saga";
 import calenderViewSaga from "../Components/CalenderView/redux/saga";
+import userList from "../Components/SuperAdminModule/UserManagement/redux/sagas/user";
 
 function* watchAndLog() {
   yield takeEvery("*", function* logger(action) {
@@ -31,5 +31,6 @@ export default function* root() {
     fork(updatesSaga),
     fork(calenderViewSaga),
     fork(userTypeSagas),
+    fork(userList),
   ]);
 }
