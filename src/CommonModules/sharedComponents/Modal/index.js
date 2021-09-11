@@ -11,7 +11,7 @@ const Modal = ({ children, isOpen, onClose }) => {
       }}
     >
       <div className="modal-background-gradient" ref={modalRef}>
-        <div className="modal-container">{children}</div>
+        <div className="modal-inner-container">{children}</div>
       </div>
     </div>
   );
