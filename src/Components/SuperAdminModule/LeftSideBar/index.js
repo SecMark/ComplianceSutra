@@ -74,15 +74,16 @@ const LeftSideBar = () => {
             <div className="taskIcon">
               <img
                 style={{ cursor: "pointer", width: "18px" }}
-                title="Tasks"
+                title="License"
                 src={BadgeIcon}
                 alt="sidebar Active"
+                onClick={() => navigateTo("license-management")}
               />
             </div>
             <div className="taskIcon">
               <img
                 style={{ cursor: "pointer", width: "18px" }}
-                title="Tasks"
+                title="License"
                 src={PaymentIcon}
                 alt="sidebar Active"
               />

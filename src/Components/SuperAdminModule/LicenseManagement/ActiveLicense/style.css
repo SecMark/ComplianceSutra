@@ -1,0 +1,14 @@
+.license-management-title-progress {
+  width: 124px;
+  position: absolute;
+  height: 2px;
+  border-radius: 1px;
+  margin-top: 8px;
+  background-color: #7a73ff;
+}
+
+.add-new-button {
+  background: #6c5dd3;
+  color: #fff;
+  border-radius: 4px;
+}

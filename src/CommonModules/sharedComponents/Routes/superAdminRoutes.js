@@ -23,6 +23,9 @@ const UserManagement = lazy(() =>
   import("../../../Components/SuperAdminModule/UserManagement")
 );
 
+const ActiveLicense = lazy(() =>
+  import("../../../Components/SuperAdminModule/LicenseManagement/ActiveLicense")
+);
 export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/`,
@@ -51,5 +54,9 @@ export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/user-management`,
     component: UserManagement,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/license-management`,
+    component: ActiveLicense,
   },
 ];
