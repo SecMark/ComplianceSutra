@@ -344,7 +344,7 @@ const AddEditUser = (props) => {
             </p>
           </div>
           <div className="col-6">
-            <p className="review-details__text">Expert Reviwer</p>
+            <p className="review-details__text">Expert Reviewer</p>
           </div>
           <div className="col-12 my-3">
             <div className="d-flex align-items-center">
