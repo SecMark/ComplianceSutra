@@ -2,21 +2,20 @@ import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
 import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import { getUsers } from "../../redux/actions/user";
+import { getUsers, editUserStatus } from "../../redux/actions/user";
 
-const UserTableRow = ({ user }) => {
-  const [expanded, setExpanded] = useState(false);
+const Clients = () => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.userList.isLoading);
+  const userList = useSelector((state) => state.userList.userList);
+  const [expanded, setExpanded] = useState({});
 
-  const toggleExpander = () => {
-    if (!expanded) {
-      setExpanded(true);
-    } else {
-      setExpanded(false);
-    }
-  };
+  useEffect(() => {
+    dispatch(getUsers({ gUserID: "133", settingType: 6, actionFlag: 0 }));
+  }, [dispatch]);
 
   const shortName = (str) => {
-    let fullName = str.split(" ");
+    let fullName = str.split(" ") || [];
     let result = "";
     switch (true) {
       case fullName.length === 1:
@@ -28,85 +27,19 @@ const UserTableRow = ({ user }) => {
     return result.toUpperCase();
   };
 
-  const handleStatus = (status) => {
-    console.log(status);
+  const toggleExpanded = (index, status) => {
+    setExpanded({ ...expanded, [index]: status });
   };
 
-  return (
-    <>
-      <tr>
-        <th>
-          <span class="check-box">
-            <label className="switch">
-              <input
-                type="checkbox"
-                value={user.StatusActive}
-                checked={user.StatusActive === 0 ? true : false}
-                // disabled={user.StatusActive === 2 ? true : false}
-                onChange={() => handleStatus(user.StatusActive)}
-              />
-              <span className="slider"></span>
-            </label>
-          </span>
-        </th>
-        <td>
-          <div class="d-flex new-task-list">
-            <div class="circle-name d-none d-sm-block">
-              <div class="circle-text">{shortName(user.FullName)}</div>
-            </div>
-            <div class="circle-front-text d-none d-sm-block mail">
-              {user.FullName}
-            </div>
-          </div>
-        </td>
-        <td>
-          <span className="user-role">{user.UserRole}</span>
-        </td>
-        <td>{user.Mobile}</td>
-        <td>{user.EmailID}</td>
-        <td>
-          <div class="d-flex new-task-list">
-            <div class="circle-name d-sm-block client-circle">
-              <div class="circle-text">{user.NoofClients}</div>
-            </div>
-          </div>
-        </td>
-        <td>{user.LicExpertee}</td>
-        <td>
-          {expanded ? (
-            <AiOutlineUp size={15} color="#000000" onClick={toggleExpander} />
-          ) : (
-            <AiOutlineDown size={15} color="#000000" onClick={toggleExpander} />
-          )}
-        </td>
-      </tr>
-      {expanded && (
-        <tr>
-          <td colSpan={8} style={{ padding: "15px 30px 30px 0" }}>
-            <div className="row">
-              <div className="col-md-1">-</div>
-              <div className="col-md-1">{user.Clients}</div>
-              <div className="col-md-1"></div>
-              <div className="col-md-1"></div>
-              <div className="col-md-6"></div>
-              <div className="col-md-1"></div>
-              <div className="col-md-1 edit-btn">Edit</div>
-            </div>
-          </td>
-        </tr>
-      )}
-    </>
-  );
-};
-
-const Clients = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.userList.isLoading);
-  const userList = useSelector((state) => state.userList.userList);
-
-  useEffect(() => {
-    dispatch(getUsers({ gUserID: "133", settingType: 6, actionFlag: 0 }));
-  }, [dispatch]);
+  const editStatus = (user) => {
+    const payload = {
+      gUserID: user.UserID,
+      settingType: user.UserType,
+      actionFlag: user.StatusActive === 0 ? 1 : 0,
+    };
+    console.log("payload", payload);
+    dispatch(editUserStatus(payload));
+  };
 
   return (
     <>
@@ -136,7 +69,84 @@ const Clients = () => {
                   </tr>
                 ) : (
                   userList.map((user, index) => (
-                    <UserTableRow key={index} user={user} />
+                    <>
+                      <tr key={index}>
+                        <th>
+                          <span class="">
+                            <label class="switch-btn">
+                              <input
+                                type="checkbox"
+                                value={user.StatusActive}
+                                checked={user.StatusActive === 0 ? true : false}
+                                disabled={
+                                  user.StatusActive === 2 ? true : false
+                                }
+                                onChange={() => editStatus(user)}
+                              />
+                              <span class="slider-btn round"></span>
+                            </label>
+                          </span>
+                        </th>
+                        <td>
+                          <div class="d-flex new-task-list">
+                            <div class="circle-name d-none d-sm-block">
+                              <div class="circle-text">
+                                {shortName(user.FullName)}
+                              </div>
+                            </div>
+                            <div class="circle-front-text d-none d-sm-block mail">
+                              {user.FullName}
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <span className="user-role">{user.UserRole}</span>
+                        </td>
+                        <td>{user.Mobile}</td>
+                        <td>{user.EmailID}</td>
+                        <td>
+                          <div class="d-flex new-task-list">
+                            <div class="circle-name d-sm-block client-circle">
+                              <div class="circle-text">{user.NoofClients}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{user.LicExpertee}</td>
+                        <td>
+                          {expanded[index] ? (
+                            <AiOutlineUp
+                              size={15}
+                              color="#000000"
+                              onClick={() => toggleExpanded(index, false)}
+                            />
+                          ) : (
+                            <AiOutlineDown
+                              size={15}
+                              color="#000000"
+                              onClick={() => toggleExpanded(index, true)}
+                            />
+                          )}
+                        </td>
+                      </tr>
+                      {expanded[index] && (
+                        <tr>
+                          <td
+                            colSpan={8}
+                            style={{ padding: "15px 30px 30px 0" }}
+                          >
+                            <div className="row">
+                              <div className="col-md-1">-</div>
+                              <div className="col-md-1">{user.Clients}</div>
+                              <div className="col-md-1"></div>
+                              <div className="col-md-1"></div>
+                              <div className="col-md-6"></div>
+                              <div className="col-md-1"></div>
+                              <div className="col-md-1 edit-btn">Edit</div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </>
                   ))
                 )}
               </tbody>

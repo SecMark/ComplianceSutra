@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import { getUsers } from "../../redux/actions/user";
+import { getUsers, editUserStatus } from "../../redux/actions/user";
 
 const RoleList = () => {
   const dispatch = useDispatch();
@@ -51,6 +51,15 @@ const RoleList = () => {
     setExpanded4({ ...expanded4, [index]: status });
   };
 
+  const editStatus = (user) => {
+    const payload = {
+      gUserID: user.UserID,
+      settingType: user.UserType,
+      actionFlag: user.StatusActive === 0 ? 1 : 0,
+    };
+    dispatch(editUserStatus(payload));
+  };
+
   return (
     <>
       <div className="ER-task-container mt-0">
@@ -83,20 +92,24 @@ const RoleList = () => {
                           <tr key={index}>
                             <th>
                               <span class="check-box">
-                                <label className="switch">
-                                  <input
-                                    type="checkbox"
-                                    value={user.StatusActive}
-                                    checked={
-                                      user.StatusActive === 0 ? true : false
-                                    }
-                                  />
-                                  <span className="toggle-btn mb-4">
-                                    ACTIVE
-                                  </span>
-                                  <span className="slider"></span>
-                                </label>
+                                <span class="check-box">
+                                  <label class="switch-btn">
+                                    <input
+                                      type="checkbox"
+                                      value={user.StatusActive}
+                                      checked={
+                                        user.StatusActive === 0 ? true : false
+                                      }
+                                      disabled={
+                                        user.StatusActive === 2 ? true : false
+                                      }
+                                      onChange={() => editStatus(user)}
+                                    />
+                                    <span class="slider-btn round"></span>
+                                  </label>
+                                </span>
                               </span>
+                              <span className="toggle-btn-status">ACTIVE</span>
                             </th>
                             <td>
                               <div class="d-flex new-task-list">
@@ -210,20 +223,24 @@ const RoleList = () => {
                           <tr key={index}>
                             <th>
                               <span class="check-box">
-                                <label className="switch">
-                                  <input
-                                    type="checkbox"
-                                    value={user.StatusActive}
-                                    checked={
-                                      user.StatusActive === 0 ? true : false
-                                    }
-                                  />
-                                  <span className="toggle-btn mb-4">
-                                    ACTIVE
-                                  </span>
-                                  <span className="slider"></span>
-                                </label>
+                                <span class="check-box">
+                                  <label class="switch-btn">
+                                    <input
+                                      type="checkbox"
+                                      value={user.StatusActive}
+                                      checked={
+                                        user.StatusActive === 0 ? true : false
+                                      }
+                                      disabled={
+                                        user.StatusActive === 2 ? true : false
+                                      }
+                                      onChange={() => editStatus(user)}
+                                    />
+                                    <span class="slider-btn round"></span>
+                                  </label>
+                                </span>
                               </span>
+                              <span className="toggle-btn-status">ACTIVE</span>
                             </th>
                             <td>
                               <div class="d-flex new-task-list">
@@ -337,20 +354,24 @@ const RoleList = () => {
                           <tr key={index}>
                             <th>
                               <span class="check-box">
-                                <label className="switch">
-                                  <input
-                                    type="checkbox"
-                                    value={user.StatusActive}
-                                    checked={
-                                      user.StatusActive === 0 ? true : false
-                                    }
-                                  />
-                                  <span className="toggle-btn mb-4">
-                                    ACTIVE
-                                  </span>
-                                  <span className="slider"></span>
-                                </label>
+                                <span class="check-box">
+                                  <label class="switch-btn">
+                                    <input
+                                      type="checkbox"
+                                      value={user.StatusActive}
+                                      checked={
+                                        user.StatusActive === 0 ? true : false
+                                      }
+                                      disabled={
+                                        user.StatusActive === 2 ? true : false
+                                      }
+                                      onChange={() => editStatus(user)}
+                                    />
+                                    <span class="slider-btn round"></span>
+                                  </label>
+                                </span>
                               </span>
+                              <span className="toggle-btn-status">ACTIVE</span>
                             </th>
                             <td>
                               <div class="d-flex new-task-list">
@@ -464,16 +485,22 @@ const RoleList = () => {
                           <tr key={index}>
                             <th>
                               <span class="check-box">
-                                <label className="switch">
-                                  <input
-                                    type="checkbox"
-                                    value={user.StatusActive}
-                                    checked={
-                                      user.StatusActive === 0 ? true : false
-                                    }
-                                  />
-                                  <span className="slider"></span>
-                                </label>
+                                <span class="check-box">
+                                  <label class="switch-btn">
+                                    <input
+                                      type="checkbox"
+                                      value={user.StatusActive}
+                                      checked={
+                                        user.StatusActive === 0 ? true : false
+                                      }
+                                      disabled={
+                                        user.StatusActive === 2 ? true : false
+                                      }
+                                      onChange={() => editStatus(user)}
+                                    />
+                                    <span class="slider-btn round"></span>
+                                  </label>
+                                </span>
                               </span>
                             </th>
                             <td>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import { getUsers } from "../../redux/actions/user";
+import { getUsers, editUserStatus } from "../../redux/actions/user";
 
 const StatusList = () => {
   const dispatch = useDispatch();
@@ -21,8 +21,8 @@ const StatusList = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setActive(userList);
-    setinActive(userList);
+    setActive(userList.filter((item) => item.StatusActive === 0));
+    setinActive(userList.filter((item) => item.StatusActive === 1));
   }, [userList]);
 
   const toggleExpanded1 = (index, status) => {
@@ -31,6 +31,16 @@ const StatusList = () => {
 
   const toggleExpanded2 = (index, status) => {
     setExpanded2({ ...expanded2, [index]: status });
+  };
+
+  const editStatus = (user) => {
+    const payload = {
+      gUserID: user.UserID,
+      settingType: user.UserType,
+      actionFlag: user.StatusActive === 0 ? 1 : 0,
+    };
+    console.log(payload);
+    dispatch(editUserStatus(payload));
   };
 
   return (
@@ -65,15 +75,19 @@ const StatusList = () => {
                           <tr key={index}>
                             <th>
                               <span class="check-box">
-                                <label className="switch">
+                                <label class="switch-btn">
                                   <input
                                     type="checkbox"
                                     value={user.StatusActive}
                                     checked={
                                       user.StatusActive === 0 ? true : false
                                     }
+                                    disabled={
+                                      user.StatusActive === 2 ? true : false
+                                    }
+                                    onChange={() => editStatus(user)}
                                   />
-                                  <span className="slider"></span>
+                                  <span class="slider-btn round"></span>
                                 </label>
                               </span>
                             </th>
@@ -138,7 +152,13 @@ const StatusList = () => {
                     })}
                 </tbody>
                 <div>
-                  <span>View All ({active.length - showActive} More)</span>
+                  <span>
+                    View All (
+                    {active.length - showActive > 0
+                      ? active.length - showActive
+                      : 0}
+                    More)
+                  </span>
                   {showActive === 2 ? (
                     <AiOutlineDown
                       size={15}
@@ -189,15 +209,19 @@ const StatusList = () => {
                           <tr key={index}>
                             <th>
                               <span class="check-box">
-                                <label className="switch">
+                                <label class="switch-btn">
                                   <input
                                     type="checkbox"
                                     value={user.StatusActive}
                                     checked={
                                       user.StatusActive === 0 ? true : false
                                     }
+                                    disabled={
+                                      user.StatusActive === 2 ? true : false
+                                    }
+                                    onChange={() => editStatus(user)}
                                   />
-                                  <span className="slider"></span>
+                                  <span class="slider-btn round"></span>
                                 </label>
                               </span>
                             </th>
@@ -262,7 +286,13 @@ const StatusList = () => {
                     })}
                 </tbody>
                 <div>
-                  <span>View All ({inActive.length - showInActive} More)</span>
+                  <span>
+                    View All (
+                    {inActive.length - showInActive > 0
+                      ? inActive.length - showActive
+                      : 0}
+                    More)
+                  </span>
                   {showInActive === 2 ? (
                     <AiOutlineDown
                       size={15}
