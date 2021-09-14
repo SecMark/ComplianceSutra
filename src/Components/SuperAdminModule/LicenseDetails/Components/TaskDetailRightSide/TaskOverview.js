@@ -1,14 +1,18 @@
 import React from "react";
-
+import ToggleButton from "../../../../../CommonModules/sharedComponents/ToggleButton";
 const TaskOverview = () => {
   return (
     <>
-      <div className="w-100 d-flex">
+      <div className="w-100 d-flex align-items-center">
         <div className="col-6 col-md-5">
           <p className="task-data__field-key">Status</p>
         </div>
         <div className="col-6">
-          <p className="task-data__field-value">Toggle</p>
+          <ToggleButton
+            onChangeHandler={(value) => {
+              // Action for toggle
+            }}
+          />
         </div>
       </div>
       <div className="w-100 d-flex">
@@ -43,7 +47,7 @@ const TaskOverview = () => {
           <p className="task-data__field-value">ashu kumar</p>
         </div>
       </div>
-      <div className="col-6 col-md-12 mt-4">
+      <div className="col-12 col-md-6 mt-4">
         <h6>Task Related Details</h6>
       </div>
       <div className="w-100 d-flex">

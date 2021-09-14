@@ -1,25 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import { MdClose } from "react-icons/md";
 import TaskOverview from "./TaskOverview";
 import TaskUpdates from "./TaskUpdates";
-const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
-  const [taskDetails, setTaskDetails] = useState({});
+import TaskReferences from "./TaskReferences";
+const TaskDetailRightSide = React.memo(({ taskData, closeTaskDetails }) => {
+  // const [taskDetails, setTaskDetails] = useState({});
   const [taskDisplay, setTaskDisplay] = useState(1);
-
-  // useEffect(() => {
-  //   const headerRef = document
-  //     .querySelector(".task-data__header")
-  //     .getClientRects()[0].height;
-  //   const footerRef =
-  //     (document.querySelector(".task-action__cta-container") &&
-  //       document
-  //         .querySelector(".task-action__cta-container")
-  //         .getClientRects()[0].height) ||
-  //     0;
-  //   setHeaderHight(Math.trunc(headerRef));
-  //   setFooterHeight(Math.trunc(footerRef));
-  // }, [taskDetails]);
+  const [headerHeight, setHeaderHight] = useState(0);
+  useEffect(() => {
+    const headerRef = document
+      .querySelector(".task-data__header")
+      .getClientRects()[0].height;
+    setHeaderHight(Math.trunc(headerRef));
+  }, [taskDisplay, taskData]);
   // useEffect(() => {
   //   if (taskData !== undefined && Object.keys(taskData).length !== 0) {
   //     setTaskDetails(taskData);
@@ -34,13 +28,8 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
         </span>
         <div className="task-data__header">
           <div className="position-relative task-data__header-details">
-            {/* <span className="task-data__header--license-title">
-              License Title
-            </span> */}
             <div className="d-flex align-items-md-center mb-3 flex-column flex-md-row align-items-start">
-              <p className="mb-0 task-data__header--title">
-                Fill Subsheet for Form 283B
-              </p>
+              <p className="mb-0 task-data__header--title">{taskData.name}</p>
               <span className="task-data__header--entity-name ml-0 ml-md-3 mt-2 mt-md-0">
                 GST
               </span>
@@ -59,10 +48,15 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
             </div>
           </div>
         </div>
-        <div className="task-data__main">
+        <div
+          className="task-data__main"
+          style={{
+            height: `calc(90vh - ${headerHeight}px)`,
+          }}
+        >
           <div className="row my-4 task-data-fields">
             {taskDisplay === 1 && <TaskOverview />}
-            {taskDisplay === 2 && <h1>references</h1>}
+            {taskDisplay === 2 && <TaskReferences />}
             {taskDisplay === 3 && <TaskUpdates />}
           </div>
         </div>
