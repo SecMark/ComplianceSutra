@@ -1,4 +1,4 @@
-.ER-dashboard-conatiner {
+.Super-admin-dashboard-conatiner {
   display: flex;
 }
 .taskIcon {
@@ -8,7 +8,7 @@
   padding: 10px;
 }
 
-.ER-task-statics {
+.Super-admin-task-statics {
   display: flex;
   border-bottom: 2px solid #eee8fc;
   position: relative;
@@ -22,7 +22,7 @@
   background-color: #7a73ff;
 }
 
-.ER-task-statics h3 {
+.Super-admin-task-statics h3 {
   padding-right: 40px;
 }
 .task-statics {
@@ -61,7 +61,7 @@
   width: 24px;
 }
 
-.ER-search {
+.Super-admin-search {
   width: 200px;
   height: 40px;
   margin-left: 40px;
@@ -103,15 +103,15 @@
   cursor: pointer;
 }
 
-.ER-take-action {
+.Super-admin-take-action {
   margin-top: 40px;
 }
 
-.ER-task-container {
+.Super-admin-task-container {
   margin-top: 100px;
 }
 
-.ER-task-detail {
+.Super-admin-task-detail {
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
@@ -121,10 +121,10 @@
   background: #f1f1f1;
 }
 
-.ER-search-input {
+.Super-admin-search-input {
   margin-left: auto;
 }
-.ER-task-detail .code {
+.Super-admin-task-detail .code {
   font-family: Poppins;
   font-size: 10px;
   font-weight: normal;
@@ -138,7 +138,7 @@
   border-radius: 2px;
 }
 
-.ER-task-detail .company-name {
+.Super-admin-task-detail .company-name {
   object-fit: contain;
   font-family: Poppins;
   font-size: 14px;
@@ -152,7 +152,7 @@
   margin: 0;
 }
 
-.ER-task-detail .date {
+.Super-admin-task-detail .date {
   font-family: Poppins;
   font-size: 14px;
   font-weight: normal;
@@ -267,7 +267,7 @@
   margin-top: 7px;
 }
 
-.ER-status-button {
+.Super-admin-status-button {
   font-family: Poppins;
   font-size: 10px;
   font-weight: 500;
@@ -279,10 +279,10 @@
   color: #7fba7a;
   border: none;
 }
-.ER-view-all-conatiner {
+.Super-admin-view-all-conatiner {
   margin-top: 10px;
 }
-.ER-view-all-conatiner span {
+.Super-admin-view-all-conatiner span {
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;

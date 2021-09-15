@@ -5,7 +5,7 @@ import secmark from "../../../../assets/Images/secmark.png";
 import { useDispatch, useSelector } from "react-redux";
 import { checkPersonalDetailsForm } from "../utility.js";
 import { actions as personalDetailsAction } from "../../redux/actions";
-import { withRouter, useParams } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import SideBarInputControl from "../WebStepper.js";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
@@ -482,7 +482,7 @@ function PersonalDetails({ history, location }) {
                               "form-control " +
                               ((isValidate && values.password === "") ||
                               (values.password !== "" &&
-                                errors.passwordErr !== "")
+                                  errors.passwordErr !== "")
                                 ? "input-error"
                                 : "") +
                               (values.password !== ""

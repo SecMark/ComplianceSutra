@@ -11,10 +11,31 @@ import SideBarInputControl from "../SideBarInputControl";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
 import MobileStepper from "../mobileStepper";
+import render from "htmlparser2/node_modules/dom-serializer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 function PersonalDetails({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const [visible, setVisibility] = useState(false);
+  const [visibal,setVisibiliti] = useState(false);
+
+  const Icon = (<FontAwesomeIcon icon={  visible ? "eye-slash" : "eye" }
+  onClick={() => setVisibility(visiblity => !visiblity)}
+  />
+  )
+  const InputType = visible ? "text" : "password";
+
+
+  const Iconic = (<FontAwesomeIcon icon={  visibal ? "eye-slash" : "eye" }
+  onClick={() => setVisibiliti(visiblity => !visiblity)}
+  />
+  )
+  const ConfirmInputType = visibal ? "text" : "password";
+
+
 
   const quote_id = state && state.auth && state.auth.quote_id;
   const [isValidate, setIsValidate] = useState(false);
@@ -270,8 +291,8 @@ function PersonalDetails({ history }) {
         }
       });
   };
-
-  return (
+    
+      return (
     <div className="row get-mobile-personal-detail">
       <div className="col-3 col-sm-4 col-md-4 col-xl-3 left-fixed">
         <div className="on-boarding">
@@ -463,6 +484,7 @@ function PersonalDetails({ history }) {
                             onChange={onChangeHandler("designation")}
                             onKeyPress={(e) => handleKeyDown(e)}
                           />
+
                           {isValidate && values.designation === "" && (
                             <p className="input-error-message">
                               Designation is required
@@ -474,7 +496,7 @@ function PersonalDetails({ history }) {
                         <div className="form-group">
                           <label htmlFor="Company Email">Password</label>
                           <input
-                            type="password"
+                            type={InputType}
                             className={
                               "form-control " +
                               (values.password !== "" &&
@@ -500,7 +522,10 @@ function PersonalDetails({ history }) {
                             value={values.password}
                             onChange={onChangeHandler("password")}
                             onKeyPress={(e) => handleKeyDown(e)}
-                          />
+                          />       
+                          <span className="password-toggle-icon">{Icon}</span> 
+                          
+
                           {isValidate && values.password === "" && (
                             <p className="input-error-message">
                               Please enter password
@@ -556,7 +581,7 @@ function PersonalDetails({ history }) {
                             Confirm Password
                           </label>
                           <input
-                            type="password"
+                            type={ConfirmInputType}
                             className={
                               "form-control " +
                               (values.confirmPassword !== "" &&
@@ -586,6 +611,8 @@ function PersonalDetails({ history }) {
                             onChange={onChangeHandler("confirmPassword")}
                             onKeyPress={(e) => handleKeyDown(e)}
                           />
+
+                          <span className="password-toggle-iconic">{Iconic}</span> 
 
                           {isValidate && values.confirmPassword === "" && (
                             <p className="input-error-message">
@@ -684,6 +711,7 @@ function PersonalDetails({ history }) {
       </div>
     </div>
   );
+                    
 }
 
 export default withRouter(PersonalDetails);

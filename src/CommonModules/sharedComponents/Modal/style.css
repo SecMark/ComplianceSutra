@@ -16,9 +16,25 @@
   border-radius: 9px;
   padding: 6px;
 }
-.modal-container {
+.modal-inner-container {
   background-color: white;
   border-radius: 6px;
   padding: 1.5rem;
-  overflow: hidden;
+  /* overflow: hidden; */
+}
+.modal__button {
+  font-size: 12px;
+  text-transform: uppercase;
+  background-color: #6c5dd3;
+  border: none;
+  outline: none;
+  color: white;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+.modal__button--stroke {
+  background-color: transparent;
+  color: #6c5dd3;
+  margin: 0 1rem;
 }

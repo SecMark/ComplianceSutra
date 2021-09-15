@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import "./style.css";
 import redArrowUp from "../../../../../assets/Icons/redArrowTop.png";
 import upArrow from "../../../../../assets/Icons/topArrowAccordian.png";
-import data from "../../data";
 import moment from "moment";
-const TasksListByStatus = ({ search, setCurrentTask, currentTask }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { actions as taskReportActions } from "../../../../OnBording/SubModules/DashBoardCO/redux/actions";
+import NoTaskFound from "../NoTasksFound";
+const TasksListByStatus = () => {
   const [countDetails, setCountDetails] = useState({});
   const [tasksList, setTasksList] = useState([]);
-  const [expendedFlags, setExpendedFlags] = useState([0]);
+  const [expendedFlags, setExpendedFlags] = useState([]);
   const [expendedViewAll, setExpendedViewAll] = useState([]);
+  const [currentOpenedTask, setCurrentOpenedTask] = useState({});
+  const state = useSelector((state) => state);
+  const currentTask =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReportById &&
+    state.taskReport.taskReportById.taskReportById;
+  const dispatch = useDispatch();
+  const userDetails = state && state.auth && state.auth.loginInfo;
+  const data =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
 
   const handleExpandList = (flag, index) => {
     // Handling expand list
@@ -41,21 +57,56 @@ const TasksListByStatus = ({ search, setCurrentTask, currentTask }) => {
     setExpendedViewAll(temporaryViewAllList);
   };
   useEffect(() => {
+    // Sorting api response
     let temporaryArray = [];
     let rowCounts = {};
-    data.map((item) => {
-      if (item?.Details.length >= 1) {
-        temporaryArray.push({ ...item });
-        rowCounts[item.Status.trim()] = item.Details.length;
-      }
-    });
-    let sortedArray = temporaryArray.sort((a, b) => a.ORD - b.ORD);
-    setCountDetails(rowCounts);
-    setTasksList(sortedArray);
+    if (data !== undefined && data.length !== 0) {
+      data.forEach((item) => {
+        if (item?.Details.length >= 1) {
+          temporaryArray.push({ ...item });
+          rowCounts[item.Status.trim()] = item.Details.length;
+        }
+      });
+      let sortedArray = temporaryArray.sort((a, b) => a.ORD - b.ORD);
+      setCountDetails(rowCounts);
+      setTasksList(sortedArray);
+    }
   }, [data]);
+  useEffect(() => {
+    // Setting current opened task
+    if (currentTask !== undefined && Object.keys(currentTask).length !== 0) {
+      setCurrentOpenedTask(currentTask);
+    }
+  }, [currentTask]);
+
+  useEffect(() => {
+    // Fetching Tasks of a user
+    dispatch(
+      taskReportActions.taskReportRequest({
+        userID: userDetails.UserID,
+        usertype: userDetails.UserType,
+      })
+    );
+  }, []);
+
+  // Dynamically Opening Category of task
+  useEffect(() => {
+    if (tasksList.length !== 0) {
+      tasksList.forEach((item, expendedFlagIndex) => {
+        item.Details.forEach((task, index) => {
+          if (task.TaskId === currentOpenedTask.TaskId) {
+            handleExpandList(true, expendedFlagIndex);
+            if (index > 3) {
+              handleExpandViewAll(true, expendedFlagIndex);
+            }
+          }
+        });
+      });
+    }
+  }, [tasksList]);
   return (
     <>
-      {tasksList.length > 0 &&
+      {tasksList.length !== 0 &&
         tasksList.map((item, index) => {
           const status = item.Status.trim();
           const tasks = item.Details;
@@ -85,7 +136,7 @@ const TasksListByStatus = ({ search, setCurrentTask, currentTask }) => {
                 </div>
               )}
               {/* List for Review Now */}
-              {status === "Pending" && (
+              {status === "Review Now" && (
                 <div
                   onClick={() => {
                     expendedFlags.includes(index)
@@ -161,19 +212,13 @@ const TasksListByStatus = ({ search, setCurrentTask, currentTask }) => {
                 ? expendedFlags.includes(index)
                 : status === "overdue"
                 ? expendedFlags.includes(index)
-                : status === "Pending"
+                : status === "Review Now"
                 ? expendedFlags.includes(index)
-                : !expendedFlags.includes(index)) && (
+                : false) && (
                 <>
                   <div>
                     {tasks.slice(0, 3).map((item, index) => {
-                      return (
-                        <TaskLeftOverview
-                          task={item}
-                          setCurrentTask={setCurrentTask}
-                          currentTask={currentTask}
-                        />
-                      );
+                      return <TaskLeftOverview task={item} />;
                     })}
                   </div>
                   <div>
@@ -200,13 +245,7 @@ const TasksListByStatus = ({ search, setCurrentTask, currentTask }) => {
                       countDetails[status] > 3 && (
                         <>
                           {tasks.slice(3, countDetails[status]).map((item) => {
-                            return (
-                              <TaskLeftOverview
-                                task={item}
-                                setCurrentTask={setCurrentTask}
-                                currentTask={currentTask}
-                              />
-                            );
+                            return <TaskLeftOverview task={item} />;
                           })}
                           <div
                             className="view-all-tasks d-flex align-items-center mx-3 my-3"
@@ -229,17 +268,40 @@ const TasksListByStatus = ({ search, setCurrentTask, currentTask }) => {
             </div>
           );
         })}
+      {tasksList.length === 0 && <NoTaskFound />}
     </>
   );
 };
 
-const TaskLeftOverview = ({ task, setCurrentTask, currentTask }) => {
+const TaskLeftOverview = ({ task }) => {
+  const [currentOpenedTask, setCurrentOpenedTask] = useState({});
+  const dispatch = useDispatch();
+  const currentTask = useSelector(
+    (state) => state?.taskReport?.taskReportById?.taskReportById
+  );
+  const handleTaskClick = useCallback(() => {
+    if (currentOpenedTask.TaskId !== task.TaskId) {
+      dispatch(
+        taskReportActions.taskReportByIdRequest({
+          taskID: task.TaskId,
+        })
+      );
+    }
+  }, [currentOpenedTask.TaskId, task.TaskId]);
+
+  useEffect(() => {
+    if (currentTask !== undefined && Object.keys(currentTask).length !== 0) {
+      setCurrentOpenedTask(currentTask);
+    }
+  }, [currentTask]);
   return (
     <div
       className={`task-overview d-flex align-items-center justify-content-between ${
-        currentTask.TaskId === task.TaskId && "task-overview--selected"
+        currentOpenedTask &&
+        currentOpenedTask.TaskId === task.TaskId &&
+        "task-overview--selected"
       }`}
-      onClick={() => setCurrentTask(task)}
+      onClick={handleTaskClick}
     >
       <div className="d-flex flex-column flex-1 align-items-start task-overview-left">
         <span className="task-overview__license">{task?.LicenseCode}</span>
