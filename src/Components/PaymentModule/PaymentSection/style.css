@@ -1,0 +1,210 @@
+.payment-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+.payment-detail-plan {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+.payment-plan {
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #1b1d21;
+}
+
+.upgrade-button {
+  border-radius: 4px;
+  background-color: #6c5dd3;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #ffffff;
+  padding: 10px;
+  border: none;
+  text-transform: uppercase;
+}
+
+.payment-type {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+}
+.payment-trail {
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: right;
+  color: #2c2738;
+}
+
+.edit-button {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: right;
+  color: #6c5dd3;
+  background: none;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.edit-container {
+  display: flex;
+}
+
+.add-user-container {
+  display: flex;
+}
+
+.add-users-button {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: right;
+  color: #6c5dd3;
+  background: none;
+  border: none;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 767px) {
+  .modal-main,
+  .modal-upgrade-main {
+    width: 90%;
+  }
+  .modal-content {
+    padding: 20px;
+  }
+  .counter-buttons {
+    justify-content: space-between;
+  }
+  .payment-detail {
+    margin-top: 20px;
+  }
+  .payment-detail-plan {
+    margin-top: 7px;
+  }
+  .counter {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+  }
+  .account-info {
+    flex-direction: column;
+  }
+  .account-info h3 {
+    font-size: 2rem;
+    font-weight: 500;
+  }
+  .account-info span {
+    font-size: 0.7rem;
+  }
+  .account-info > div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  .procced-buy {
+    width: 100%;
+    margin-right: 0;
+    margin-top: 0.5rem;
+  }
+  .modal-upgrade-main {
+    padding: 30px 20px;
+  }
+  .modal-upgrade-content {
+    padding: 0;
+  }
+  .upgrade-header > h3 {
+    font-size: 20px;
+  }
+  .upgrade-benefits > h3 {
+    font-size: 15px;
+  }
+}
+
+.plans-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Toggle plan-slider */
+.co-account .plan-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e4e4e4;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.co-account .plan-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.co-account input + .plan-slider {
+  background-color: #6c5dd3;
+}
+
+.co-account input:focus + .plan-slider {
+  box-shadow: 0 0 1px #6c5dd3;
+}
+
+.co-account input:checked + .plan-slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded plan-sliders */
+.co-account .plan-slider.round {
+  border-radius: 34px;
+}
+
+.co-account .plan-slider.round:before {
+  border-radius: 50%;
+}

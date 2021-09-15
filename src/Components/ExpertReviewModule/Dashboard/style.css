@@ -1,12 +1,7 @@
 .ER-dashboard-conatiner {
   display: flex;
 }
-.taskIcon {
-  padding: 10px;
-}
-.taskIcon-active {
-  padding: 10px;
-}
+
 
 .ER-task-statics {
   display: flex;
@@ -62,9 +57,13 @@
 }
 
 .ER-search {
-  width: 200px;
+  width: 270px;
   height: 40px;
   margin-left: 40px;
+  font-size: 1rem;
+}
+.ER-search::placeholder {
+  font-size: 0.8rem;
 }
 
 .sort-by-filter {
@@ -104,7 +103,7 @@
 }
 
 .ER-take-action {
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 .ER-task-container {
@@ -116,11 +115,6 @@
   justify-content: space-between;
   margin-top: 15px;
   align-items: center;
-
-}
-.task-list-grid :hover {
-  background: #f1f1f1;
-
 }
 
 .ER-search-input {
@@ -184,7 +178,7 @@
   font-weight: 500;
   font-stretch: normal;
   font-style: normal;
-  line-height: 14px;
+  line-height: 20px;
   letter-spacing: 0px;
   text-align: left;
   display: flex;
@@ -282,7 +276,7 @@
   border: none;
 }
 .ER-view-all-conatiner {
-  margin-top: 10px;
+  margin-top: 0px;
 }
 .ER-view-all-conatiner span {
   font-family: Poppins;
@@ -295,4 +289,50 @@
   text-align: left;
 
   color: #6c5dd3;
+}
+
+.row .code {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #b3abc4;
+  border: none;
+  border-radius: 2px;
+}
+
+.row .company-name {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.28px;
+  text-align: left;
+  color: #575757;
+  margin: 0;
+}
+
+.row .date {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.28px;
+  text-align: right;
+  color: #000;
+}
+
+.ER-detail-name p {
+  margin: 0;
+  padding: 0;
+  display: flex;
 }

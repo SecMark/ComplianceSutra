@@ -1,9 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
-import Header from "../CommonModules/Header";
-import Compliance from "../Components/ComplianceModule";
-
 import CapmTechLandingPage from "../Components/CapmTechLandingPage";
 import TeamMember from "../Components/TeamMemberFlow/DashBoard";
 import DashBoardView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView";
@@ -46,7 +43,6 @@ import MultiCompanyQuickOverView from "../Components/OnBording/SubModules/DashBo
 import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/MultiTeamMemberView/index";
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
-import Loading from "../CommonModules/sharedComponents/Loader";
 import ExperReview from "../Components/ExpertReviewModule";
 import SuperAdmin from "../Components/SuperAdminModule";
 
@@ -54,19 +50,9 @@ import SuperAdmin from "../Components/SuperAdminModule";
 
 // import HistoryList from "../Components/HistoryModule/HistoryList";
 // import NewRegulations from "../Components/NewRegulationModule/NewRegulations";
+import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 
 export default function AppRouter() {
-  const checkHeader = () => {
-    if (
-      window.location.includes === '/compliance-demo-end"' ||
-      window.location.includes === "/"
-    ) {
-      document.body.style.backgroundColor = "white";
-      return true;
-    }
-    return false;
-  };
-
   return (
     <div>
       <>
@@ -189,6 +175,8 @@ export default function AppRouter() {
           <Switch>
             <Route path="/super-admin" component={SuperAdmin}></Route>
           </Switch>
+
+          <Route exact path="/thankyou" component={Thankyou} />
         </div>
       </>
     </div>

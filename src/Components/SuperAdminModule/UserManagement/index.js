@@ -25,15 +25,15 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div className="col-md-12">
-          <div className="ER-main">
-            <div className="ER-task-statics row">
+          <div className="Super-admin-main">
+            <div className="Super-admin-task-statics row">
               <h5 className="mt-2">
                 <span className="ml-1">User Management</span>
                 <div className="nav-title-progress"></div>
               </h5>
-              <div className="ER-search-input mb-2">
+              <div className="Super-admin-search-input mb-2">
                 <input
-                  className="form-control ER-search"
+                  className="form-control Super-admin-search"
                   placeholder="Search by users"
                 />
               </div>
