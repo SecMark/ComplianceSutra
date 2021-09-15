@@ -5,8 +5,6 @@ import StepperCheckIcon from "../../../../src/assets/Icons/check-icon-disable.pn
 import StepperCheckIconActive from "../../../../src/assets/Icons/check-icon.png";
 import Drawer from "../../../CommonModules/sharedComponents/Drawer"
 import Stepper from '../../../CommonModules/sharedComponents/Stepper';
-import { CKEditor } from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  DatePicker  from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import plusIcon from "../../../../src/assets/Icons/plusIcon.png"
