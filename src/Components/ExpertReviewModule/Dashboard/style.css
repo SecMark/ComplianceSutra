@@ -2,7 +2,6 @@
   display: flex;
 }
 
-
 .ER-task-statics {
   display: flex;
   border-bottom: 2px solid #eee8fc;
@@ -233,6 +232,7 @@
   letter-spacing: 0px;
   text-align: left;
   display: flex;
+  cursor: pointer;
 }
 
 .completed-title .completed-circle {
@@ -335,4 +335,7 @@
   margin: 0;
   padding: 0;
   display: flex;
+}
+.task__down-arrow {
+  transition: all 200ms ease;
 }
