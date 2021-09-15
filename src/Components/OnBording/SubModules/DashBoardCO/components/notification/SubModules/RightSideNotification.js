@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import CheckIcon from "../../../.././../../../assets/Icons/notification-check.png";
-import ArrowIcon from "../../../.././../../../assets/Icons/notification-icon.png";
-import RedIcon from "../../../.././../../../assets/Icons/notification-icon-red.png";
-import threeDots from "../../../.././../../../assets/Icons/threeDots.PNG";
 import mobileDropDown from "../../../.././../../../assets/Icons/mobileDropDown.png";
 import sideBarlogo from "../../../../../../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../../../../../../assets/Icons/togglemobile.png";

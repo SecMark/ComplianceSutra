@@ -1,30 +1,60 @@
 import React, { useState } from "react";
-import UserList from "../../UserManagement/components/UserList";
 import UserRoleList from "../../UserManagement/components/UserRoleList";
 import { AiOutlinePlus } from "react-icons/ai";
 import "./style.css";
+import LicenseList from "../LicenseList";
+import searchIcon from "../../../../assets/Icons/searchIcon.png";
+import Dropdown from "react-dropdown";
 
 const ActiveLicense = (props) => {
   const [openRightTab, setOpenRightTab] = useState(true);
   const [sortBy, setSortBy] = useState("Addtional Date");
 
+  const options = [
+    { value: "4", label: "Team Member" },
+    { value: "3", label: "Compliance Officer" },
+    { value: "5", label: "Approver" },
+  ];
+
+  const filterOptions = [
+    { value: "0", label: "None" },
+    { value: "4", label: "Team Members" },
+    { value: "5", label: "Approvers" },
+    { value: "3", label: "CO" },
+    { value: "az", label: "A > Z" },
+    { value: "za", label: "Z > A" },
+  ];
+
   return (
     <div className="row">
       <div className="col-md-12">
-        <div className="ER-main">
+        <div className="Super-admin-main">
           <div className="row">
             <h4 className="mt-2">
               <span className="ml-1">License Management</span>
             </h4>
-            <div className="ER-search-input mb-2">
-              <input
-                className="form-control ER-search"
-                placeholder="Search by users"
-              />
+            <div className="Super-admin-search-input">
+              <div className="input-group">
+                <img
+                  className="IconGray"
+                  src={searchIcon}
+                  alt="search Icon"
+                  style={{
+                    position: "absolute",
+                    left: "0px",
+                    zIndex: "999",
+                    top: "5px",
+                  }}
+                />
+                <input
+                  className="pl-4 license-search"
+                  placeholder="Search for license"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="ER-task-statics row mt-4">
+          <div className="Super-admin-task-statics row mt-4">
             <h6 className="mt-2">
               <span className="ml-1">Active Licenses</span>
               <div className="license-management-title-progress"></div>
@@ -39,7 +69,7 @@ const ActiveLicense = (props) => {
               <div className="col-md-4">
                 <div className="col mt-3">
                   <div className="row">
-                    <span className="mt-2 ml-2">Show:</span>
+                    <span className="mt-2 ml-2 mt-2">Show:</span>
                     <select
                       className="form-select ml-2"
                       style={{
@@ -55,8 +85,22 @@ const ActiveLicense = (props) => {
               </div>
             )}
 
-            <div className="col">
-              <ul className="sort-by-filter">
+            <div
+              className="col d-flex mt-4 mb-4 show-options"
+              style={{ justifyContent: "space-between" }}
+            >
+              <div className="d-flex">
+                <span className="mt-1">show:</span>
+                <Dropdown
+                  arrowClosed={<span className="arrow-closed" />}
+                  arrowOpen={<span className="arrow-open" />}
+                  placeholder="Select an option"
+                  options={filterOptions}
+                  className="ml-2"
+                />
+              </div>
+
+              <div className="sort-by-filter">
                 <span
                   className="sort-by add-btn"
                   onClick={() => setOpenRightTab(!openRightTab)}
@@ -116,11 +160,11 @@ const ActiveLicense = (props) => {
                 >
                   Status
                 </span>
-              </ul>
+              </div>
             </div>
           </div>
-          {sortBy === "Alphabatically" ? (
-            <UserList />
+          {sortBy === "Addtional Date" ? (
+            <LicenseList />
           ) : sortBy === "Roles" ? (
             <UserRoleList />
           ) : null}

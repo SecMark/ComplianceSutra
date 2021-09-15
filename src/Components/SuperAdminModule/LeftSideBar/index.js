@@ -86,6 +86,7 @@ const LeftSideBar = () => {
                 title="License"
                 src={PaymentIcon}
                 alt="sidebar Active"
+                onClick={() => navigateTo("payment-management")}
               />
             </div>
 
