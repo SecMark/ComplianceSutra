@@ -23,10 +23,10 @@ function VerifyEmailErrorPage() {
   const resendEmail = () => {
     let obj = {
       email: email,
-      invitation: "V",
+      // invitation: "V",
     };
     apiServices
-      .get("getEmailbody", { params: { uInput: obj } })
+      .post("authentication.api.request_email_verification", obj)
       .then(function (response) {
         // handle success
         if (

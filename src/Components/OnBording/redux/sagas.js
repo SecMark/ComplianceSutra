@@ -463,14 +463,14 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
           emailAlreadyExistMessage: false,
         })
       );
-      const { data, status } = yield call(api.verifyEmail, payload);
-      if (status === 200 && data.message.Status === "false") {
+      //   const { data, status } = yield call(api.verifyEmail, payload);
+      //   if (status === 200 && data.message.Status === "false") {
+      if (true) {
         let obj = {
-          email: payload.LoginID,
-          invitation: "V",
+          email: payload.email,
         };
         apiServices
-          .get("getEmailbody", { params: { uInput: obj } })
+          .post("authentication.api.request_email_verification", obj)
           .then(function (response) {
             if (
               response &&
@@ -1087,11 +1087,11 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
     );
     if (status === 200) {
       let statusCode, message;
-      statusCode =
-        data && data.message && data.message[0] && data.message[0].StatusCode;
-      message =
-        data && data.message && data.message[0] && data.message[0].Message;
-      if (statusCode !== undefined && !statusCode) {
+      statusCode = data && data.code;
+      message = data && data.message;
+
+      if (statusCode === 200) {
+        toast.success(message);
         yield put(
           actions.insUpdateDeletAPIRequestSuccess({
             loginSuccess: true,
@@ -1099,23 +1099,32 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
             message: message,
           })
         );
-        toast.error(message && message);
-      } else {
-        let companyName = payload.entityName;
-        yield put(
-          actions.insUpdateDeletAPIRequestSuccess({
-            formDataPersonalData: payload,
-            data: data.message,
-            userInfo: payload,
-            companyName: companyName,
-          })
-        );
-        if (payload.from === "personal-details-co") {
-          toast.success("Personal Information saved successfully");
-          yield delay(1000);
-          payload.history.push("/company-details");
-        }
       }
+      //   if (statusCode !== undefined && !statusCode) {
+      //     yield put(
+      //       actions.insUpdateDeletAPIRequestSuccess({
+      //         loginSuccess: true,
+      //         statusCode: status,
+      //         message: message,
+      //       })
+      //     );
+      //     toast.error(message && message);
+      //   } else {
+      //     let companyName = payload.entityName;
+      //     yield put(
+      //       actions.insUpdateDeletAPIRequestSuccess({
+      //         formDataPersonalData: payload,
+      //         data: data.message,
+      //         userInfo: payload,
+      //         companyName: companyName,
+      //       })
+      //     );
+      //     if (payload.from === "personal-details-co") {
+      //       toast.success("Personal Information saved successfully");
+      //       yield delay(1000);
+      //       payload.history.push("/company-details");
+      //     }
+      //   }
     } else {
       toast.error("something went wrong !!!");
       yield put(

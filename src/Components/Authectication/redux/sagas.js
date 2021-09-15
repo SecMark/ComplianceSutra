@@ -7,18 +7,26 @@ import { actions as menuActions } from "../../OnBording/SubModules/DashBoardCO/M
 
 const loginReq = function* loginReq({ payload }) {
   try {
-    const { data } = yield call(api.loginAccount, payload);
-    if (data && data.message && data.message.Message !== "FAIL") {
-      const responseData = data.message;
+    const { data } = yield call(api.loginAccount, {
+      email: payload.email,
+      password: payload.password,
+    });
+    // if (data && data.message && data.message.Message !== "FAIL") {
+    if (data && data.code === 200) {
+      const responseData = {
+        ...data,
+      };
+      console.log("login response: ", responseData);
       yield put(
         actions.signInRequestSuccess({ loginSuccess: true, data: responseData })
       );
-      console.log("login response", responseData);
+      // console.log("login response", responseData);
       if (
         responseData.IscreateBySecmark === 0 &&
-        ((responseData && responseData.UserType === 3) ||
-          responseData.UserType === 5 ||
-          responseData.UserType === 6)
+        responseData.UserType === 3
+        // ((responseData && responseData.UserType === 3) ||
+        //   responseData.UserType === 5 ||
+        //   responseData.UserType === 6)
       ) {
         yield put(menuActions.setCurrentMenu("dashboard"));
         yield put(menuActions.setActiveTabInSetting("personal"));

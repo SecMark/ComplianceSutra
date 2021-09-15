@@ -8,11 +8,7 @@ const verifyEmail = (payload) =>
   });
 
 const checkEmailVerifiedThroughEmail = (payload) =>
-  api.get("ins_upd_del_User", {
-    params: {
-      uInput: payload,
-    },
-  });
+  api.post("authentication.api.update_password", payload);
 const companyType = (payload) =>
   api.get("BindCompanyType", {
     params: {

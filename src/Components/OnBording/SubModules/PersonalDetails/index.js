@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import comtech from "../../../../assets/Images/CapmTech.png";
@@ -6,7 +6,7 @@ import secmark from "../../../../assets/Images/secmark.png";
 import { useDispatch, useSelector } from "react-redux";
 import { checkPersonalDetailsForm } from "../../utils.js";
 import { actions as personalDetailsAction } from "../../redux/actions";
-import { withRouter } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
 import SideBarInputControl from "../SideBarInputControl";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function PersonalDetails({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const location = useLocation();
 
   const [visible, setVisibility] = useState(false);
   const [visibal, setVisibiliti] = useState(false);
@@ -185,47 +186,49 @@ function PersonalDetails({ history }) {
       onSubmit();
     }
   };
-  const errorMessage =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.message;
-  const email = localStorage.getItem("coemail");
+  // const errorMessage =
+  //   state &&
+  //   state.complianceOfficer &&
+  //   state.complianceOfficer.personalInfo &&
+  //   state.complianceOfficer.personalInfo.message;
+  const key = new URLSearchParams(location.search).get("key");
+  const email = new URLSearchParams(location.search).get("email");
   const onSubmit = () => {
-    setIsValidate(true);
-    if (checkPersonalDetailsForm(values)) {
-      return;
-    }
-    if (
-      errors.passwordErr !== "" ||
-      errors.confirmPasswordErr !== "" ||
-      errors.countryCodeErr === "true"
-    ) {
-      return "";
-    }
-    setIsValidate(false);
-    if (email) {
-      let countryCode;
-      let strr = values.countryCode;
+    // setIsValidate(true);
+    // if (checkPersonalDetailsForm(values)) {
+    //   return;
+    // }
+    // if (
+    //   errors.passwordErr !== "" ||
+    //   errors.confirmPasswordErr !== "" ||
+    //   errors.countryCodeErr === "true"
+    // ) {
+    //   return "";
+    // }
+    // setIsValidate(false);
+    if (email && key) {
+      // let countryCode;
+      // let strr = values.countryCode;
 
-      countryCode = strr;
+      // countryCode = strr;
       dispatch(
         personalDetailsAction.insUpdateDeletAPIRequest({
-          entityName: values.companyName,
-          adminName: values.fullName,
-          adminEmail: email,
-          adminMobile: values.mobileNumber,
-          adminPWD: values.password,
-          isClientTypeUser: 0,
-          userType: 3,
-          actionFlag: 1,
-          designation: values.designation,
-          userID: "",
+          // entityName: values.companyName,
+          // adminName: values.fullName,
+          email,
+          key,
+          // adminMobile: values.mobileNumber,
+          password: values.password,
+          // isClientTypeUser: 0,
+          // userType: 3,
+          // actionFlag: 1,
+          // designation: values.designation,
+          // userID: "",
           history,
-          from: "personal-details-co",
-          whatsupFlag: whatappFlag ? 1 : 0,
-          countrycode:
-            countryCode === "" || countryCode === "+" ? "+91" : countryCode,
+          // from: "personal-details-co",
+          // whatsupFlag: whatappFlag ? 1 : 0,
+          // countrycode:
+          //   countryCode === "" || countryCode === "+" ? "+91" : countryCode,
         })
       );
     } else {
@@ -342,7 +345,7 @@ function PersonalDetails({ history }) {
                   <p className="login_title">Tell us a bit about yourself</p>
                   <div className="form_section about-your-self">
                     <div className="row">
-                      <div className="col-md-6 col-xs-12">
+                      {/* <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="FullName">Full Name </label>
                           <input
@@ -391,7 +394,7 @@ function PersonalDetails({ history }) {
                               maxLength="3"
                               value={values.countryCode}
                               onChange={onChangeHandler("countryCode")}
-                              onBlur={(e) => validateCountryCode(e)}
+                              // onBlur={(e) => validateCountryCode(e)}
                             />
 
                             <input
@@ -503,7 +506,7 @@ function PersonalDetails({ history }) {
                             </p>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Password</label>
@@ -690,17 +693,7 @@ function PersonalDetails({ history }) {
                       onClick={() => onSubmit()}
                       className="btn save-details common-button btn-width"
                       disabled={
-                        values.fullName === "" ||
-                        values.mobileNumber === "" ||
-                        values.countryCode === "" ||
-                        values.companyName === "" ||
-                        values.designation === "" ||
-                        values.password === "" ||
-                        values.confirmPassword === "" ||
-                        errors.passwordErr !== "" ||
-                        errors.confirmPasswordErr !== "" ||
-                        errors.countryCodeErr === "true" ||
-                        values.mobileNumber.length < 10
+                        values.password === "" || values.confirmPassword === ""
                       }
                       style={{ width: 134 }}
                     >
