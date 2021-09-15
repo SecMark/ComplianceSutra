@@ -7,12 +7,24 @@ const getTaskReportByID = (payload) => api.post("/api/GetTask", payload);
 const getUsersByRole = (payload) => api.post("/api/getUsersByRole", payload);
 
 const getTaskComments = (payload) =>
-  api.post(`/api/bindTaskComments?taskid=${payload.taskid}`);
+  api.post(
+    `/api/bindTaskComments?taskid=${payload.taskid}&link=${payload.link || 0}`
+  );
 
 const postTaskComments = (payload) => api.post("/api/TaskComments", payload);
-
-const postUploadFile = (payload) =>
-  api.post(`/api/UploadFile?Taskid=${payload.taskid}`);
+const getTaskFiles = (payload) => api.post("/api/getTaskfile", payload);
+const postUploadFile = ({ taskid, fileData, userId, ftype }) =>
+  api.post(
+    `/api/UploadFile?Taskid=${taskid}&Userid=${userId}&ftype=${ftype}`,
+    fileData,
+    {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    }
+  );
+// const postUploadFile = (payload) =>
+//   api.post(`/api/UploadFile?Taskid=${payload.TaskId}`);
 
 const postAssignTask = (payload) => api.post("/api/ChangeTaskStatus", payload);
 
@@ -43,6 +55,7 @@ export default {
   getUsersByRole,
   getTaskComments,
   postTaskComments,
+  getTaskFiles,
   postUploadFile,
   postAssignTask,
   getAvailabilityCheck,

@@ -10,6 +10,8 @@ import { actions as notificationActions } from "./Components/OnBording/SubModule
 import CoSetting from "./Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
 import MultipleNotification from "../src/CustomNotification/MultipleNotification";
 import SingleNotification from "../src/CustomNotification/SingleNotification";
+import CKEditor from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 function App() {
   return <MainApp />;
 }

@@ -13,8 +13,8 @@ const Dashboard = () => {
         <QuickOverview />
       </div>
       <div className="col-md-9">
-        <div className="ER-main">
-          <div className="ER-task-statics row">
+        <div className="Super-admin-main">
+          <div className="Super-admin-task-statics row">
             <h5
               className={navTab === "Tasks" ? "mt-2" : "mt-2 text-muted"}
               onClick={() => setNav("Tasks")}
@@ -31,9 +31,9 @@ const Dashboard = () => {
                 <div className="nav-title-progress ml-4"></div>
               )}
             </h5>
-            <div className="ER-search-input mb-2">
+            <div className="Super-admin-search-input mb-2">
               <input
-                className="form-control ER-search"
+                className="form-control Super-admin-search"
                 placeholder="Search for Tasks"
               />
             </div>

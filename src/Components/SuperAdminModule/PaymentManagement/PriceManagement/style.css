@@ -1,0 +1,9 @@
+.PriceManagement-profile-main {
+  display: flex;
+  height: 100%;
+}
+
+.PriceManagement-options-select {
+  background-image: url("../../../../../src/assets/ERIcons/background.png");
+  width: 100%;
+}
