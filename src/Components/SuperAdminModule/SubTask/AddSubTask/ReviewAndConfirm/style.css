@@ -1,0 +1,48 @@
+.ReviewConfirm__heading {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.ReviewConfirm__subheadings {
+  opacity: 0.64;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.26px;
+  text-align: left;
+  color: #575757;
+}
+
+.ReviewConfirm__subheadingsAns {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.26px;
+  text-align: left;
+  color: #2c2738;
+}
+
+.ReviewConfirm__heading_Edit {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  text-align: right;
+  color: #6c5dd3;
+  cursor: pointer;
+}

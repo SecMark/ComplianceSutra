@@ -18,6 +18,7 @@
   border-radius: 4px;
   color: white;
   background-color: #6c5dd3;
+  border: 0;
 }
 
 .SuTask-button-goback{
@@ -29,4 +30,16 @@
   border-color: #6c5dd3;
   color: #6c5dd3;
   background-color: white;
+  
+}
+
+.SuTask__addConfirm_button{
+  width: 214px;
+  height: 40px;
+  margin: 0px 23px 0 11px;
+  object-fit: contain;
+  border-radius: 4px;
+  color: white;
+  background-color: #6c5dd3;
+  border: 0;
 }

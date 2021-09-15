@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Stepper from "../../../../CommonModules/sharedComponents/Stepper";
 import AddBasicDetials from "./AddBasicDetails";
 import AddReferences from "./AddReferences";
+import ReviewAndConfirm from "./ReviewAndConfirm";
 import { setSubTaskName } from "../AddSubTask/redux/actions";
 import isURL from "validator/lib/isURL";
 function AddSubTask() {
@@ -98,6 +99,15 @@ function AddSubTask() {
       });
     }
   };
+  const handleEditBasicClick = (step) => {
+    if (step) {
+      setStepper({
+        ...stepper,
+        stepperAcitveSlide: step - 2,
+        stepperCompletedSlides: [...stepper.stepperCompletedSlides, step - 2],
+      });
+    }
+  };
   return (
     <div>
       <h1 className="SubTask-heading">ADD New SubTask Details</h1>
@@ -121,7 +131,12 @@ function AddSubTask() {
             fileUpload={fileUpload}
           />
         )}
-        {stepper.stepperAcitveSlide === 3 && <div>hello 2</div>}
+        {stepper.stepperAcitveSlide === 3 && (
+          <ReviewAndConfirm
+            handleEditBasicClick={handleEditBasicClick}
+            handlePreviousClick={handlePreviousClick}
+          />
+        )}
       </div>
       {stepper.stepperAcitveSlide === 2 && (
         <button
@@ -131,13 +146,18 @@ function AddSubTask() {
           Back
         </button>
       )}
-
-      <button
-        className="SuTask-button"
-        onClick={() => handleNextClick(stepper.stepperAcitveSlide)}
-      >
-        NEXT
-      </button>
+      {stepper.stepperAcitveSlide === 1 || stepper.stepperAcitveSlide === 2 ? (
+        <button
+          className="SuTask-button"
+          onClick={() => handleNextClick(stepper.stepperAcitveSlide)}
+        >
+          NEXT
+        </button>
+      ) : (
+        <button className="SuTask__addConfirm_button">
+          Confirm And Add SubTask
+        </button>
+      )}
     </div>
   );
 }

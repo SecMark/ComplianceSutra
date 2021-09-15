@@ -49,7 +49,6 @@ import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardC
 import Loading from "../CommonModules/sharedComponents/Loader";
 import ExperReview from "../Components/ExpertReviewModule";
 import SuperAdmin from "../Components/SuperAdminModule";
-import SubTask from "../Components/SuperAdminModule/SubTask";
 
 // import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
@@ -191,11 +190,6 @@ export default function AppRouter() {
             <Route path="/super-admin" component={SuperAdmin}></Route>
           </Switch>
           {/* {trial branch} */}
-          <Switch>
-            <Route path="/add-subtask" component={SubTask} >
-
-            </Route>
-          </Switch>
         </div>
       </>
     </div>
