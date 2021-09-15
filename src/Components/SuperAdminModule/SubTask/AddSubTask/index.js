@@ -5,6 +5,7 @@ import Stepper from "../../../../CommonModules/sharedComponents/Stepper";
 import AddBasicDetials from "./AddBasicDetails";
 import AddReferences from "./AddReferences";
 import { setSubTaskName } from "../AddSubTask/redux/actions";
+import isURL from "validator/lib/isURL";
 function AddSubTask() {
   const actionDispatch = useDispatch();
   const steps = [
@@ -29,6 +30,46 @@ function AddSubTask() {
   const [basicDetails, setBasicDetails] = useState({
     subTaskName: "Quaterly review of Stock Exchnage",
   });
+  const [state, setState] = useState({
+    files: [],
+    changedFileIndex: -1,
+  });
+  const [referencesLinks, setReferencesLinks] = useState({
+    linksList: [],
+    linkInput: "",
+  });
+  const handleLinkAddMore = () => {
+    if (referencesLinks.linkInput !== "" && isURL(referencesLinks.linkInput)) {
+      setReferencesLinks({
+        ...referencesLinks,
+        linksList: [...referencesLinks.linksList, referencesLinks.linkInput],
+        linkInput: "",
+      });
+    }
+  };
+
+  const fileUpload = (e) => {
+    let changedFile = e.target.files[0];
+    let uploadedFiles = e.target.files;
+
+    if (state.changedFileIndex >= 0) {
+      setState((prevState) => {
+        const list = [];
+        prevState.files.map((file, i) => {
+          if (i === prevState.changedFileIndex) list.push(changedFile);
+          else list.push(file);
+        });
+        return {
+          files: list,
+          changedFileIndex: -1,
+        };
+      });
+    } else if (state.files.length > 0) {
+      setState((prevState) => {
+        return { files: [...prevState.files, ...uploadedFiles] };
+      });
+    } else setState({ files: [...e.target.files] });
+  };
 
   const handleValueSubmit = () => {
     actionDispatch(setSubTaskName(basicDetails.subTaskName));
@@ -71,7 +112,15 @@ function AddSubTask() {
             handleChnageBasicDetails={handleChnageBasicDetails}
           />
         )}
-        {stepper.stepperAcitveSlide === 2 && (<AddReferences/>)}
+        {stepper.stepperAcitveSlide === 2 && (
+          <AddReferences
+            state={state}
+            referencesLinks={referencesLinks}
+            setReferencesLinks={setReferencesLinks}
+            handleLinkAddMore={handleLinkAddMore}
+            fileUpload={fileUpload}
+          />
+        )}
         {stepper.stepperAcitveSlide === 3 && <div>hello 2</div>}
       </div>
       {stepper.stepperAcitveSlide === 2 && (
