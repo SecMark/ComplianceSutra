@@ -484,6 +484,26 @@
   border-color: #6c5dd3 !important;
   background-color: #6c5dd3 !important;
 }
+
+.password-toggle-icon{
+  position: absolute;
+  top: 36px;
+  right: 30px;
+  z-index: 1000;
+  cursor: pointer;
+  color: #6c5dd3;
+}
+
+.password-toggle-iconic{
+
+  position: absolute;
+  top: 36px;
+  right: 30px;
+  z-index: 1000;
+  cursor: pointer;
+  color: #6c5dd3;
+}
+
 @media screen and (max-width: 767px) {
   .bottom-logo-strip-parent-fix {
     padding-top: 36px;

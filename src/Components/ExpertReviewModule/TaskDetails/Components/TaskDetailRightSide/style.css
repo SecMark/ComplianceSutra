@@ -12,6 +12,18 @@
   background-color: #fff;
   overflow: hidden;
 }
+.task-data__close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  cursor: pointer;
+  z-index: 9;
+  font-size: 1.5rem;
+  color: #1b1d21;
+}
+.task-data__close > img {
+  cursor: pointer;
+}
 .task-data__header--license-title {
   font-family: Poppins;
   font-size: 10px;
@@ -49,21 +61,9 @@
 .task-data-fields > .w-100.d-flex {
   margin: 0.5rem 0;
 }
-.task-data__header--status-text {
+.task-data__header-status {
   position: absolute;
-  bottom: -8px;
-  padding: 0.25rem;
-  border-radius: 2px;
-  height: 20px;
-  margin: 0;
-  line-height: 12px;
-  font-size: 12px;
-  font-weight: 500;
-  text-align: left;
-  background-color: #80f5c0;
-  color: #41d290;
-  width: fit-content;
-  z-index: 1;
+  bottom: -10px;
 }
 .task-data__main {
   overflow-y: auto;
@@ -161,7 +161,7 @@
 }
 .task-data__action-top--item-active > span {
   opacity: 1;
-  color: #a39db3;
+  /* color: #a39db3; */
 }
 .task-data__action-top--item-active > .action-top__item-count {
   opacity: 1;

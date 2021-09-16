@@ -22,6 +22,7 @@
   border-bottom-left-radius: 24px;
   transition: all 300ms ease-in;
   padding: 2rem;
+  overflow: auto;
 }
 .cs-drawer__content {
   width: 100%;
@@ -37,7 +38,7 @@
   padding: 0;
   margin: 0;
   top: -0.9rem;
-  left: -0.4rem;
+  left: 0.6rem;
 }
 .cs-drawer__horizontal-line {
   width: 100%;
@@ -64,4 +65,87 @@
 .cs-drawer__button--outlined {
   color: #6c5dd3;
   border: 1px solid #6c5dd3;
+}
+module/CircularManagement
+svg:not(:root) {
+  overflow: hidden;
+  margin-left: 12px;
+
+.subscription-option label {
+  font-family: Poppins;
+  font-size: 21px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.48;
+  letter-spacing: 0.01px;
+  text-align: right;
+  color: #2c2738;
+  margin-left: 10px;
+}
+
+.subscription-option input[type="radio"]:checked {
+  color: teal;
+}
+
+.subscription-option p {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.01px;
+  color: #828282;
+  margin-left: 20px;
+}
+
+.subsription-price-details {
+  background: #f6f8fb;
+  width: 800px;
+  padding: 20px 30px;
+}
+
+.subsription-price-details div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subsription-price-details p {
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+
+.total-amount {
+  margin-top: 15px;
+}
+
+.total-amount p {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.01px;
+  text-align: right;
+  color: #2c2738;
+}
+
+.make-payment {
+  border: none;
+  padding: 10px 20px;
+  margin: 20px 30px;
+  color: #fff;
+  background: #6c5dd3;
+  border-radius: 2px;
+  text-transform: uppercase;
+ SuperAdminModule
 }

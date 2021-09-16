@@ -12,6 +12,8 @@ import UpdatesReducer from "../Components/NewRegulationModule/redux/reducers";
 import CalenderReducer from "../Components/CalenderView/redux/reducers";
 import userList from "../Components/SuperAdminModule/UserManagement/redux/reducers/user";
 import SubTaskReducer from "../Components/SuperAdminModule/SubTask/AddSubTask/redux/reducers";
+import PaymentReducer from "../Components/ExpertReviewModule/Redux/reducers";
+
 
 const createRootReducer = () =>
   combineReducers({
@@ -27,7 +29,8 @@ const createRootReducer = () =>
     UpdatesReducer,
     CalenderReducer,
     userList,
-    SubTaskReducer
+    SubTaskReducer,
+    PaymentReducer,
   });
 
 export default createRootReducer;

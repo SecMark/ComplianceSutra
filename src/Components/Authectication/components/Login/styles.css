@@ -1,335 +1,341 @@
 /* header css  start*/
 .get-main {
-    height: 100vh;
-    padding-bottom: 60px;
-    position: relative;
-  }
+  height: 100vh;
+  padding-bottom: 60px;
+  position: relative;
+}
 
-  .get-main-login{
-    padding-bottom: 60px;
-    position: relative;
-    height: 100vh;
-  }
-  .get-started-header {
-    padding-top: 40px;
-  }
-  .header_logo {
-    object-fit: contain;
-  }
-  .header_logo img {
-    width: 32px;
-  }
-  .header_logo a:hover {
-    text-decoration: none;
-  }
-  .header_logo .camp {
-    font-family: Poppins;
-    font-size: 18px;
-    font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.04;
-    letter-spacing: normal;
-    text-align: left;
-    position: relative;
-    color: #1b1d21;
-    top: 3px;
-    left: 6px;
-  }
-  
-  .header .testLabelRight {
-    justify-content: flex-end;
-    align-items: center;
-    display: flex;
-  }
-  .header .testing-label {
-    font-size: 14px;
-    font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1;
-    letter-spacing: normal;
-    text-align: right;
-    color: #000000;
-    margin-bottom: 0px;
-  }
-  /* header css  end*/
-  .comtech_login {
-    margin-top: 40px;
-    /* height: calc(100% - 0px); */
-  }
-  .comtech_login .comtech_login_title {
-    font-size: 33px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.01px;
-    text-align: left;
-    color: #2c2738;
-    margin-bottom: 15px;
-    font-family: "Poppins", sans-serif;
-  }
-  .comtech_login .comtech_form_wrapper {
-    max-width: 560px;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  .comtech_form_wrapper span {
-    opacity: 0.8;
-    font-family: Poppins;
-    font-size: 13px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: 0.02px;
-    text-align: left;
-    color: #6c5dd3;
-    line-height: 40px;
-    padding-left: 20px;
+.get-main-login {
+  padding-bottom: 60px;
+  position: relative;
+  height: 100vh;
+}
+.get-started-header {
+  padding-top: 40px;
+}
+.header_logo {
+  object-fit: contain;
+}
+.header_logo img {
+  width: 32px;
+}
+.header_logo a:hover {
+  text-decoration: none;
+}
+.header_logo .camp {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.04;
+  letter-spacing: normal;
+  text-align: left;
+  position: relative;
+  color: #1b1d21;
+  top: 3px;
+  left: 6px;
+}
+
+.header .testLabelRight {
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+}
+.header .testing-label {
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: right;
+  color: #000000;
+  margin-bottom: 0px;
+}
+/* header css  end*/
+.comtech_login {
+  margin-top: 40px;
+  /* height: calc(100% - 0px); */
+}
+.comtech_login .comtech_login_title {
+  font-size: 33px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+}
+.comtech_login .comtech_form_wrapper {
+  max-width: 560px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.comtech_form_wrapper span {
+  opacity: 0.8;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+  line-height: 40px;
+  padding-left: 20px;
 }
 .forgot-pass a {
-    text-decoration: none;
-    color: #6c5dd3;
-    opacity: 0.8;
+  text-decoration: none;
+  color: #6c5dd3;
+  opacity: 0.8;
 }
-  .comtech_form_wrapper label {
-    font-family: "Poppins", sans-serif;
-    font-size: 13px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 23px;
-    letter-spacing: 0px;
-    text-align: left;
-    color: #2c2738;
-  }
-  
-  .comtech_form_wrapper .form-control {
-    width: 358px;
-    height: 40px;
-    opacity: 0.5;
-    border-radius: 8px;
-    border: solid 1px #e4e4e4;
-    background-color: #ffffff;
-    font-family: Poppins;
-    font-size: 13px;
-    font-weight: 300;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0px;
-    text-align: left;
-    color: #aeaeae;
-  }
-  
-  .comtech_form_wrapper .form-control:focus {
-    box-shadow: none;
-    border: 2px solid #6c5dd3;
-    background-color: white !important;
-    opacity: 1;
-    color: #2c2738;
-  }
-  .get-main-login .common-button-login {
-    border-radius: 4px !important;
-    background-color: #6c5dd3 !important;
-    height: 43px;
-    text-transform: uppercase !important;
-    width: 87px !important;
-    text-align: center;
-    font-family: Poppins;
-    font-size: 13px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal; 
-    line-height: normal;
-    letter-spacing: 0.02px;
-    color: #ffffff;
-    margin-top: 17px;
-  }
-  .common-button-login:focus:not(:focus-visible) {
-    outline: 0;
-    background-color: #000000 !important;
-    box-shadow: none !important;
-    color: white !important;
+.comtech_form_wrapper label {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 23px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+
+.comtech_form_wrapper .form-control {
+  width: 358px;
+  height: 40px;
+  opacity: 0.5;
+  border-radius: 8px;
+  border: solid 1px #e4e4e4;
+  background-color: #ffffff;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #aeaeae;
+}
+
+.comtech_form_wrapper .form-control:focus {
+  box-shadow: none;
+  border: 2px solid #6c5dd3;
+  background-color: white !important;
+  opacity: 1;
+  color: #2c2738;
+}
+.get-main-login .common-button-login {
+  border-radius: 4px !important;
+  background-color: #6c5dd3 !important;
+  height: 43px;
+  text-transform: uppercase !important;
+  width: 87px !important;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  color: #ffffff;
+  margin-top: 17px;
+}
+.common-button-login:focus:not(:focus-visible) {
+  outline: 0;
+  background-color: #000000 !important;
+  box-shadow: none !important;
+  color: white !important;
 }
 .common-button-login:hover {
-    color: #fff;
-    text-decoration: none;
+  color: #fff;
+  text-decoration: none;
 }
-  .activate-link {
-    opacity: 0.42;
+.activate-link {
+  opacity: 0.42;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+  margin-top: 10px;
+}
+
+.comtech_form_wrapper .login_button {
+  background-color: #6c5dd3;
+  min-width: 130px;
+  height: 43px;
+  text-transform: uppercase;
+  font-size: 13px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 500;
+  font-family: "Poppins";
+  margin-top: 25px;
+}
+
+.verify-email {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #ffffff;
+}
+.comtech_form_wrapper .form-group {
+  /* min-height: 91px !important; */
+  min-height: 100px !important;
+  margin-bottom: 0px;
+}
+.comtech_form_wrapper.input-error-message {
+  padding-top: 8px !important;
+  margin-bottom: 0px !important;
+}
+.input-front-forget-link {
+  display: flex;
+}
+.login-forgot span.forgot-pass {
+  /* line-height: 64px; */
+  margin: 19px 15px;
+}
+/* login section */
+
+/* bottom logo */
+
+.login-bottom .bottom-logo-strip {
+  position: absolute;
+  bottom: 20px;
+  max-width: 83%;
+  width: 100%;
+}
+.aligncenter {
+  align-items: center;
+}
+.bottom_logo a {
+  text-decoration: none;
+}
+.bottom_logo .powerBy {
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -1px;
+  text-align: left;
+  color: #11142d;
+  text-decoration: none;
+}
+.login-bottom .bottom-logo-strip a {
+  text-decoration: none;
+}
+.login-link {
+  opacity: 1;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+}
+.account-link {
+  opacity: 0.8;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+
+.powerBy {
+  font-family: Poppins;
+  font-size: 11px;
+  font-weight: 200;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 3.36;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #aeaeae;
+}
+/* bottom logo */
+
+.password-toggle-ico {
+  position: absolute;
+  top: 303px;
+  right: 44vw;
+
+  cursor: pointer;
+  color: #6c5dd3;
+}
+
+@media screen and (max-width: 767px) {
+  .get-main-login .container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .left-fixed {
+    display: none;
+  }
+  .input-front-forget-link {
+    display: block;
+  }
+  .comtech_form_wrapper span {
+    padding-left: 0px;
+  }
+  .comtech_form_wrapper .form-control {
+    width: 100%;
+    height: 40px;
+  }
+  .common-button-login {
+    width: 87px !important;
+  }
+  .comtech_login .comtech_login_title {
     font-family: Poppins;
-    font-size: 13px;
+    font-size: 23px;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
-    letter-spacing: 0px;
+    letter-spacing: normal;
     text-align: left;
     color: #2c2738;
-    margin-top: 10px;
+    margin-bottom: 40px;
   }
-  
-  .comtech_form_wrapper .login_button {
-    background-color: #6c5dd3;
-    min-width: 130px;
-    height: 43px;
-    text-transform: uppercase;
-    font-size: 13px;
-    border-radius: 4px;
-    color: #fff;
-    font-weight: 500;
-    font-family: "Poppins";
-    margin-top: 25px;
-  }
-  
-  .verify-email {
-    font-family: Poppins;
-    font-size: 13px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.02px;
-    text-align: left;
-    color: #ffffff;
-  }
-  .comtech_form_wrapper .form-group {
-    /* min-height: 91px !important; */
-    min-height: 100px !important;
-    margin-bottom: 0px;
-  }
-  .comtech_form_wrapper.input-error-message {
-    padding-top: 8px !important;
-    margin-bottom: 0px !important;
-  }
-  .input-front-forget-link{
-      display: flex;
-  }
-  .login-forgot span.forgot-pass {
-    /* line-height: 64px; */
-    margin: 19px 15px;
-}
-  /* login section */
-  
-  /* bottom logo */
-  
- .login-bottom .bottom-logo-strip {
-    position: absolute;
-    bottom: 20px;
-    max-width: 83%;
-    width: 100%;
-  }
-  .aligncenter {
-    align-items: center;
-  }
-  .bottom_logo a {
-    text-decoration: none;
-  }
-  .bottom_logo .powerBy {
-    font-size: 14px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: -1px;
-    text-align: left;
-    color: #11142d;
-    text-decoration: none;
-  }
-  .login-bottom .bottom-logo-strip a {
-    text-decoration: none;
-  }
-  .login-link {
-    opacity: 1;
-    font-family: Poppins;
-    font-size: 13px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.02px;
-    text-align: left;
-    color: #6c5dd3;
-  }
-  .account-link {
+  .login-bottom .bottom-logo-strip .account-link {
     opacity: 0.8;
     font-family: Poppins;
     font-size: 12px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0px;
-    text-align: left;
-    color: #2c2738;
   }
-  
-  .powerBy {
-    font-family: Poppins;
-    font-size: 11px;
-    font-weight: 200;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 3.36;
-    letter-spacing: 0.7px;
-    text-align: left;
-    color: #aeaeae;
+  .get-login-mobile .padding-right {
+    padding-left: 14px;
   }
-  /* bottom logo */
-  
-
-  @media screen and (max-width: 767px) {
-
-    .get-main-login .container{
-      padding-left: 20px !important;
-      padding-right: 20px !important;
-    }
-    .left-fixed {
-        display: none;
-    }
-    .input-front-forget-link{
-        display: block;
-    }
-    .comtech_form_wrapper span {
-        padding-left: 0px;
-    }
-    .comtech_form_wrapper .form-control {
-        width: 100%;
-        height: 40px;
-    }
-    .common-button-login {
-      width: 87px !important;
-    }
-    .comtech_login .comtech_login_title {
-      font-family: Poppins;
-      font-size: 23px;
-      font-weight: 500;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: normal;
-      letter-spacing: normal;
-      text-align: left;
-      color: #2c2738;
-      margin-bottom: 40px;
-    }
-    .login-bottom .bottom-logo-strip .account-link {
-      opacity: 0.8;
-      font-family: Poppins;
-      font-size: 12px;
-    }
-    .get-login-mobile .padding-right {
-      padding-left: 14px;
-    }
-        .bottom-logo-strip {
-      position: relative;
-      padding-top: 0px;
-    }
-
-    .login-bottom .bottom-logo-strip {
-      position: relative !important;
-      padding-top: 115px;
-    }
-    
+  .bottom-logo-strip {
+    position: relative;
+    padding-top: 0px;
   }
+
+  .login-bottom .bottom-logo-strip {
+    position: relative !important;
+    padding-top: 115px;
+  }
+}
