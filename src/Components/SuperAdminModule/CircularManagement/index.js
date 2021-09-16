@@ -236,9 +236,11 @@ const Circular = () =>{
                                   /> */}
 
                         <div className="Associated-Circular-Documents"> Associated Circular Documents</div>
-
+                        <div className="plusicon-3">
+                          <AiFillPlusCircle/>
+                        </div>
                         <div className="add-3">
-                        <AiFillPlusCircle className="plusicon-3"/>
+                    
                            Add New File</div>
                         
                         <div className="LD">  License Related Details</div>
@@ -271,26 +273,27 @@ const Circular = () =>{
                                   <option>Select a Mainlicense</option>
                         </select>
                         </div>
-
                         <div className="Delete">Delete</div>
-                      
-                        <div className="Addnew">
-                        <AiFillPlusCircle className="plusicon"/>
-                        {/* <img  src={plusIcon}/> */}
-                       
-                        <span class="add">
-                          Add New License
-                        </span>
-                        <AiFillPlusCircle className="plusicon-1"/>
-                        <span class="add-1">
-                          Add Sub license
-                        </span> 
-                        <AiFillPlusCircle className="plusicon-2"/>
-                        <span class="add-2">
-                          Add Subtask
-                        </span> 
 
-                        </div>
+                            <div className="plusicon">
+                            <AiFillPlusCircle />
+                            </div>
+                            <div className="add">
+                                Add New License
+                            </div>
+
+                            <div className="plusicon-1">
+                                <AiFillPlusCircle /></div>
+                            <div class="add-1">
+                                  Add Sub license
+                            </div>  
+                            <div className="plusicon-2">
+                                <AiFillPlusCircle /></div>
+                            <div className="add-2">
+                                  Add Subtask
+                            </div>  
+
+                   
                        
                         <br></br>
                         <div className="button">

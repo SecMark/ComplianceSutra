@@ -39,7 +39,6 @@ function MainApp() {
           <Route component={AppRouter} />
         </Switch>
       </Router>
-
     </>
   );
 }

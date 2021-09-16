@@ -2,6 +2,7 @@
 svg:not(:root) {
   overflow: hidden; 
   margin-right: 202px;
+ 
 }
 
 .title{
@@ -547,22 +548,27 @@ button, input, optgroup, select, textarea {
 } */
 .plusicon{
   color:slateblue;
+  margin-left: -11px;
+  
 }
 .plusicon-1{
   color:slateblue;
-  margin-left: 58px;
+  margin-left: 150px;
+  margin-top: -19px;
 }
 .plusicon-2{
   color:slateblue;
-  margin-left: 60px;
+  margin-left: 313px;
+  margin-top: -20px;
 }
 .plusicon-3{
   color: #6c5dd3;
+  margin-left: -12px;
 }
 .add{
-  width: 86px;
+  width: 111px;
   height: 19px;
-  margin-left: -199px;
+  margin-left: 20px;
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -573,11 +579,12 @@ button, input, optgroup, select, textarea {
   text-align: left;
   color: #6c5dd3;
   cursor: pointer;
+  margin-top: -18px;
 }
 .add-1{
-  width: 86px;
+  width: 105px;
   height: 19px;
-  margin-left: -199px;
+  margin-left: 181px;
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -588,11 +595,12 @@ button, input, optgroup, select, textarea {
   text-align: left;
   color: #6c5dd3;
   cursor: pointer;
+  margin-top: -20px;
 }
 .add-2{
   width: 86px;
   height: 19px;
-  margin-left: -200px;
+  margin-left: 345px;
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -603,6 +611,7 @@ button, input, optgroup, select, textarea {
   text-align: left;
   color: #6c5dd3;
   cursor: pointer;
+  margin-top: -20px;
 }
 .add-3{
   margin-left: 18px;
@@ -617,7 +626,6 @@ button, input, optgroup, select, textarea {
   letter-spacing: 0.02px;
   cursor: pointer;
 }
-
 
 
 
