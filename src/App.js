@@ -23,7 +23,10 @@ function MainApp() {
         <Switch>
           <Route component={AppRouter} />
         </Switch>
+ module/CircularManagement
+      </Router>
       </BrowserRouter>
+ SuperAdminModule
     </>
   );
 }

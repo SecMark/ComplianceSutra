@@ -4,6 +4,7 @@ import UserList from "./components/UserList";
 import UserRoleList from "./components/UserRoleList";
 import AddEditUser from "./components/AddEditUser";
 import "./style.css";
+import Drawer from "../../../CommonModules/sharedComponents/Drawer"
 
 const Dashboard = () => {
   const [sortBy, setSortBy] = useState("Alphabatically");
