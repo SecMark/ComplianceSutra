@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import UserList from "./components/UserList";
-import UserRoleList from "./components/UserRoleList";
+import RoleList from "./components/RoleList";
+import ClientList from "./components/ClientList";
+import LicenceList from "./components/LicenceList";
+import StatusList from "./components/StatusList";
 import AddEditUser from "./components/AddEditUser";
 import "./style.css";
+import Drawer from "../../../CommonModules/sharedComponents/Drawer";
 
 const Dashboard = () => {
   const [sortBy, setSortBy] = useState("Alphabatically");
@@ -25,21 +29,21 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div className="col-md-12">
-          <div className="ER-main">
-            <div className="ER-task-statics row">
+          <div className="Super-admin-main">
+            <div className="Super-admin-task-statics row">
               <h5 className="mt-2">
                 <span className="ml-1">User Management</span>
                 <div className="nav-title-progress"></div>
               </h5>
-              <div className="ER-search-input mb-2">
+              <div className="Super-admin-search-input mb-2">
                 <input
-                  className="form-control ER-search"
+                  className="form-control Super-admin-search"
                   placeholder="Search by users"
                 />
               </div>
             </div>
             <div className="row">
-              {sortBy === "Roles" && (
+              {sortBy !== "Alphabatically" && (
                 <div className="col-md-4">
                   <div className="col mt-3">
                     <div className="row">
@@ -125,7 +129,13 @@ const Dashboard = () => {
             {sortBy === "Alphabatically" ? (
               <UserList />
             ) : sortBy === "Roles" ? (
-              <UserRoleList />
+              <RoleList />
+            ) : sortBy === "Clients" ? (
+              <ClientList />
+            ) : sortBy === "License" ? (
+              <LicenceList />
+            ) : sortBy === "Status" ? (
+              <StatusList />
             ) : null}
           </div>
         </div>

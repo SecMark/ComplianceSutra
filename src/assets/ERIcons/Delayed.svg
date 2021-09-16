@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="66" height="24" viewBox="0 0 66 24">
+    <g>
+        <g>
+            <path fill="#fcf3cd" d="M2.1 0h61.8A2.049 2.049 0 0 1 66 2v20a2.049 2.049 0 0 1-2.1 2H2.1A2.049 2.049 0 0 1 0 22V2a2.049 2.049 0 0 1 2.1-2z" transform="translate(-496 -128) translate(-272 -419) translate(768 547)"/>
+            <text fill="#f8c102" font-family="Poppins-Medium, Poppins" font-size="12px" font-weight="500" transform="translate(-496 -128) translate(-272 -419) translate(775 564)">
+                <tspan x="0" y="0">DELAYED</tspan>
+            </text>
+        </g>
+    </g>
+</svg>
