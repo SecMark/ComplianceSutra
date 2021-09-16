@@ -8,7 +8,7 @@ const verifyEmail = (payload) =>
   });
 
 const checkEmailVerifiedThroughEmail = (payload) =>
-  api.post("authentication.api.update_password", payload);
+  api.post("update_password", payload);
 const companyType = (payload) =>
   api.get("BindCompanyType", {
     params: {

@@ -200,11 +200,15 @@ function NotificationGrid(props) {
 
   const fetchNotificationType = async () => {
     let arrayOfList = [];
-    const { data } = await api.get("Notifications", { params: { uInput: {} } });
+    try {
+      const { data } = await api.get("Notifications", { params: { uInput: {} } });
+      data.message.NotificationType.map((types) => {
+        arrayOfList.push({ value: types.description, label: types.description });
+      });
+    }catch(err) {
+      
+    }
 
-    data.message.NotificationType.map((types) => {
-      arrayOfList.push({ value: types.description, label: types.description });
-    });
 
     setOptions(arrayOfList);
   };

@@ -286,7 +286,8 @@ function RightSideGrid({
         taskID: taskId,
         actionFlag: 0,
       };
-        api.get('getTaskFile', {params: {uInput: payload}})
+      api
+        .get("getTaskFile", { params: { uInput: payload } })
         .then((response) => {
           let fileData = response.data.message;
           setFileList(fileData);
@@ -325,6 +326,7 @@ function RightSideGrid({
       setSearchValue("");
     }
   });
+
   const _defineDropDownOptions = (viewType) => {
     let str = "";
     if (viewType === "status") {
@@ -342,13 +344,21 @@ function RightSideGrid({
   };
 
   useEffect(() => {
+    const userDetails = state && state.auth && state.auth.loginInfo;
+    console.log("Tasks: ", userDetails);
     if (taskListDisplay === "1") {
       const payload = {
         entityid: "",
         userID: user.UserID,
         usertype: user.UserType,
       };
-        api.get('getTaskReport', {params: {uInput: payload}})
+      api
+        .get("getTaskReport", {
+          params: { uInput: payload },
+          headers: {
+            Authorization: `token ${userDetails.api_key}:${userDetails.api_secret}`,
+          },
+        })
         .then((response) => {
           let fileData = response.data.message;
           let tempArr = [];
@@ -397,14 +407,14 @@ function RightSideGrid({
       setSelectedUser("");
     }
   });
-  const userDetails = state && state.auth && state.auth.loginInfo;
 
   const getCommentsbyId =
     state &&
     state.taskReport &&
     state.taskReport.getTaskCommentByRole &&
     state.taskReport.getTaskCommentByRole.getTaskCommentByRole;
-
+  const userDetails = state && state.auth && state.auth.loginInfo;
+  console.log("Tasks: ", userDetails);
   const getInitials = (str) => {
     var initials = " ";
     if (str != "" && str) {
@@ -1600,7 +1610,8 @@ function RightSideGrid({
         taskID: taskId,
         actionFlag: 0,
       };
-      api.get('getTaskFile', {params: {uInput: payload}})
+      api
+        .get("getTaskFile", { params: { uInput: payload } })
         .then((response) => {
           let fileData = response.data.message;
           setFileList(fileData);
@@ -1618,7 +1629,8 @@ function RightSideGrid({
         TaskFileId: file.TaskFileId,
         actionFlag: 3,
       };
-        api.get('getTaskFile', {params: {uInput: payload}})
+      api
+        .get("getTaskFile", { params: { uInput: payload } })
         .then((response) => {
           if (
             response &&
@@ -1779,11 +1791,16 @@ function RightSideGrid({
       taskID = getTaskById && getTaskById.TaskId;
     }
     if (taskID !== null) {
-        api.get('Circular', {params: {uInput: {
-          taskID: taskID,
-          taskFileID: 0,
-          actionFlag: 0,
-        }}})
+      api
+        .get("Circular", {
+          params: {
+            uInput: {
+              taskID: taskID,
+              taskFileID: 0,
+              actionFlag: 0,
+            },
+          },
+        })
         .then((response) => {
           if (
             response &&
@@ -2045,12 +2062,22 @@ function RightSideGrid({
   };
 
   const handleCheckEmailAvailability = (event) => {
-    api.get('availabilityCheck', {params: {uInput: {
-      loginID: selectedUser,
-      loginty: "AdminEmail",
-    }}})
+    api
+      .get("availabilityCheck", {
+        params: {
+          uInput: {
+            loginID: selectedUser,
+            loginty: "AdminEmail",
+          },
+        },
+      })
       .then((response) => {
-        if (response && response.data && response.data.message && response.data.message.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "True"
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -2063,12 +2090,22 @@ function RightSideGrid({
   };
 
   const handleCheckAssignToEmailAvailability = (event) => {
-      api.get('availabilityCheck', {params: {uInput: {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
-      }}})
+    api
+      .get("availabilityCheck", {
+        params: {
+          uInput: {
+            loginID: selectedUser,
+            loginty: "AdminEmail",
+          },
+        },
+      })
       .then((response) => {
-        if (response && response.data && response.data.message && response.data.message.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.Status === "True"
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -2694,9 +2731,15 @@ function RightSideGrid({
       userID: userDetails.UserID,
       usertype: userDetails.UserType,
     };
-    api.get('DashBoardAnalytics', {params: {uInput: payload}})
-        .then((response) => {
-        if (response && response.data && response.data.message && response.data.message.length > 0) {
+    api
+      .get("DashBoardAnalytics", { params: { uInput: payload } })
+      .then((response) => {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.length > 0
+        ) {
           let completedtask = response.data[0].CompletedTask;
           setCompletedTask(completedtask);
           let scheduledTask = response.data[0].SchedulededTask;

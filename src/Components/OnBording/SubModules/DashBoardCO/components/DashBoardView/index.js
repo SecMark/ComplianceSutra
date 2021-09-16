@@ -55,7 +55,7 @@ function DashBoardView({ history }) {
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
 
   const userDetails = state && state.auth && state.auth.loginInfo;
-
+  console.log(userDetails);
   const companyName =
     state &&
     state.complianceOfficer &&
