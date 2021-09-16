@@ -130,7 +130,7 @@ const LicenseList = () => {
                             <td>Monthly</td>
                             <td>13 May 2021</td>
                             <td>11 May 2021</td>
-                            <td>></td>
+                            <td>{">"}</td>
                           </tr>
 
                           <tr>
@@ -147,7 +147,7 @@ const LicenseList = () => {
                             <td>Monthly</td>
                             <td>13 May 2021</td>
                             <td>11 May 2021</td>
-                            <td>></td>
+                            <td>{">"}</td>
                           </tr>
                         </tbody>
                       </table>
