@@ -8,6 +8,7 @@ import Stepper from '../../../CommonModules/sharedComponents/Stepper';
 import  DatePicker  from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import plusIcon from "../../../../src/assets/Icons/plusIcon.png"
+import { AiFillPlusCircle } from "react-icons/ai";
 
 
 
@@ -236,8 +237,8 @@ const Circular = () =>{
 
                         <div className="Associated-Circular-Documents"> Associated Circular Documents</div>
 
-                        <div className="Abstract-3D-Kite">
-                        <img  src={plusIcon}/>
+                        <div className="add-3">
+                        <AiFillPlusCircle className="plusicon-3"/>
                            Add New File</div>
                         
                         <div className="LD">  License Related Details</div>
@@ -272,21 +273,22 @@ const Circular = () =>{
                         </div>
 
                         <div className="Delete">Delete</div>
-
+                      
                         <div className="Addnew">
-                        
-                        <img  src={plusIcon}/>
-                        <span class="Abstract-3D-Kit">
+                        <AiFillPlusCircle className="plusicon"/>
+                        {/* <img  src={plusIcon}/> */}
+                       
+                        <span class="add">
                           Add New License
                         </span>
-                        <img  src={plusIcon}/>
-                        <span class="Abstract-3D-Kit">
+                        <AiFillPlusCircle className="plusicon-1"/>
+                        <span class="add-1">
                           Add Sub license
-                        </span>
-                        <img  src={plusIcon}/>
-                        <span class="Abstract-3D-Kit">
+                        </span> 
+                        <AiFillPlusCircle className="plusicon-2"/>
+                        <span class="add-2">
                           Add Subtask
-                        </span>
+                        </span> 
 
                         </div>
                        

@@ -66,6 +66,10 @@
   color: #6c5dd3;
   border: 1px solid #6c5dd3;
 }
+svg:not(:root) {
+  overflow: hidden;
+  margin-left: 12px;
+}
 .subscription-option label {
   font-family: Poppins;
   font-size: 21px;

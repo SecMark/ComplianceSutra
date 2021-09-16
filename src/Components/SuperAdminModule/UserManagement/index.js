@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import UserList from "./components/UserList";
-import UserRoleList from "./components/UserRoleList";
+import RoleList from "./components/RoleList";
+import ClientList from "./components/ClientList";
+import LicenceList from "./components/LicenceList";
+import StatusList from "./components/StatusList";
 import AddEditUser from "./components/AddEditUser";
 import "./style.css";
-import Drawer from "../../../CommonModules/sharedComponents/Drawer"
+import Drawer from "../../../CommonModules/sharedComponents/Drawer";
 
 const Dashboard = () => {
   const [sortBy, setSortBy] = useState("Alphabatically");
@@ -40,7 +43,7 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="row">
-              {sortBy === "Roles" && (
+              {sortBy !== "Alphabatically" && (
                 <div className="col-md-4">
                   <div className="col mt-3">
                     <div className="row">
@@ -126,7 +129,13 @@ const Dashboard = () => {
             {sortBy === "Alphabatically" ? (
               <UserList />
             ) : sortBy === "Roles" ? (
-              <UserRoleList />
+              <RoleList />
+            ) : sortBy === "Clients" ? (
+              <ClientList />
+            ) : sortBy === "License" ? (
+              <LicenceList />
+            ) : sortBy === "Status" ? (
+              <StatusList />
             ) : null}
           </div>
         </div>

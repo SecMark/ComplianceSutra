@@ -418,34 +418,7 @@ svg:not(:root) {
   text-align: left;
   color: #575757;
 }
-.Abstract-3D-Kit {
-  width: 86px;
-  height: 19px;
-  margin: 1px 0 0 4px;
-  font-family: Poppins;
-  font-size: 13px;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.54;
-  letter-spacing: 0.02px;
-  text-align: left;
-  color: #6c5dd3;
-}
-.Abstract-3D-Kite{
-  width: 105px;
-  height: 19px;
-  margin: 1px 0 0 4px;
-  font-family: Poppins;
-  font-size: 13px;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.54;
-  letter-spacing: 0.02px;
-  text-align: left;
-  color: #6c5dd3;
-}
+
 .LD {
   width: 208px;
   height: 25px;
@@ -520,6 +493,7 @@ button, input, optgroup, select, textarea {
   letter-spacing: 0.02px;
   text-align: left;
   color: #6c5dd3;
+  cursor: pointer;
 }
 
 .SubLicense-impacted-by-the-Circular {
@@ -536,21 +510,6 @@ button, input, optgroup, select, textarea {
   letter-spacing: 0.24px;
   text-align: left;
   color: #575757;
-}
-
-.Abstract-3D-Kit{
-  width: 89px;
-  height: 19px;
-  margin: 1px 55px 0 4px;
-  font-family: Poppins;
-  font-size: 13px;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.54;
-  letter-spacing: 0.02px;
-  text-align: left;
-  color: #6c5dd3;
 }
 
 .Date{
@@ -586,6 +545,81 @@ button, input, optgroup, select, textarea {
 /* .plusIcon{
   margin-left: ;
 } */
+.plusicon{
+  color:slateblue;
+}
+.plusicon-1{
+  color:slateblue;
+  margin-left: 58px;
+}
+.plusicon-2{
+  color:slateblue;
+  margin-left: 60px;
+}
+.plusicon-3{
+  color: #6c5dd3;
+}
+.add{
+  width: 86px;
+  height: 19px;
+  margin-left: -199px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+  cursor: pointer;
+}
+.add-1{
+  width: 86px;
+  height: 19px;
+  margin-left: -199px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+  cursor: pointer;
+}
+.add-2{
+  width: 86px;
+  height: 19px;
+  margin-left: -200px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+  cursor: pointer;
+}
+.add-3{
+  margin-left: 18px;
+  margin-top: -20px;
+  color: slateblue;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  cursor: pointer;
+}
+
+
+
 
 
 

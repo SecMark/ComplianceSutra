@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UserRoleList from "../../UserManagement/components/UserRoleList";
+import UserList from "../../UserManagement/components/UserList";
 import { AiOutlinePlus } from "react-icons/ai";
 import "./style.css";
 import LicenseList from "../LicenseList";
@@ -166,7 +166,7 @@ const ActiveLicense = (props) => {
           {sortBy === "Addtional Date" ? (
             <LicenseList />
           ) : sortBy === "Roles" ? (
-            <UserRoleList />
+            <UserList />
           ) : null}
         </div>
       </div>
