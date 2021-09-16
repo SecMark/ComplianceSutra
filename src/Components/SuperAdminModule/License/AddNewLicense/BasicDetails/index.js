@@ -224,7 +224,16 @@ const SABasicDetails = ({ setBasicDetails, basicDetails }) => {
               <label>Expert Review Service </label>
 
               <Select
-                options={countryOptions}
+                options={[
+                  {
+                    value: "Available",
+                    label: "Available",
+                  },
+                  {
+                    value: "Unavailable",
+                    label: "Unavailable",
+                  },
+                ]}
                 styles={customStyles}
                 placeholder="Select an option"
                 onChange={(e) => {

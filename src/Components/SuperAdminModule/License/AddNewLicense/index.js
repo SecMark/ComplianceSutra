@@ -78,14 +78,32 @@ const SALicense = () => {
       });
     }
   };
-  console.log(stepper.stepperAcitveSlide);
+  const handleBackClick = (step) => {
+    if (step) {
+      setStepper({
+        ...stepper,
+        stepperAcitveSlide: step - 1,
+        stepperCompletedSlides: stepper.stepperCompletedSlides.filter(
+          (item) => item !== step
+        ),
+      });
+    }
+  };
+  const onSubmitClick = (step) => {
+    setIsOpen(false);
+  };
   return (
     <div>
       <button onClick={() => setIsOpen(!isOpen)}>ADD</button>
       <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className="AddLicenseMain">
           <h5>Add New License</h5>
-          <Stepper steps={steps} stepper={stepper} setStepper={setStepper} />
+          <Stepper
+            steps={steps}
+            stepper={stepper}
+            setStepper={setStepper}
+            step={steps}
+          />
           {(stepper.stepperAcitveSlide === 1 && (
             <SABasicDetails
               setBasicDetails={setBasicDetails}
@@ -99,20 +117,59 @@ const SALicense = () => {
                 color={color}
                 setColor={setColor}
               />
-            ))}
-
-          {/* <SASubTasks
-            options={ColorOptions}
-            setSubTasks={setSubTasks}
-            subTasks={subTasks}
-          /> */}
-          {/* <SALicenseSummary basicDetails={basicDetails} /> */}
-          <button
-            className="NextButton"
+            )) ||
+            (stepper.stepperAcitveSlide === 3 && (
+              <SASubTasks
+                options={ColorOptions}
+                setSubTasks={setSubTasks}
+                subTasks={subTasks}
+              />
+            )) || (
+              <SALicenseSummary
+                basicDetails={basicDetails}
+                stepper={stepper}
+                setStepper={setStepper}
+                subTasks={subTasks}
+                color={color}
+              />
+            )}
+          {stepper.stepperAcitveSlide && stepper.stepperAcitveSlide > 1 && (
+            <button
+              className="cs-drawer__button cs-drawer__button--stroke"
+              onClick={() => handleBackClick(stepper.stepperAcitveSlide)}
+              style={{
+                border: "1px solid #6c5dd3",
+                borderRadius: "5px",
+              }}
+            >
+              Go Back
+            </button>
+          )}
+          {stepper.stepperAcitveSlide && stepper.stepperAcitveSlide < 4 && (
+            <button
+              className="cs-drawer__button cs-drawer__button--primary"
+              onClick={() => handleNextClick(stepper.stepperAcitveSlide)}
+              style={{ margin: "1rem" }}
+            >
+              Next
+            </button>
+          )}
+          {stepper.stepperAcitveSlide && stepper.stepperAcitveSlide === 4 && (
+            <button
+              className="cs-drawer__button cs-drawer__button--primary"
+              onClick={onSubmitClick}
+              style={{ margin: "1rem" }}
+            >
+              Confirm and Submit
+            </button>
+          )}
+          {/* <button
+            className="cs-drawer__button cs-drawer__button--primary"
+            style={{ margin: "1rem" }}
             onClick={() => handleNextClick(stepper.stepperAcitveSlide)}
           >
             NEXT
-          </button>
+          </button> */}
         </div>
       </Drawer>
     </div>

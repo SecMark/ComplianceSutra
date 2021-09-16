@@ -4,6 +4,7 @@ import { IoIosAddCircle } from "react-icons/io";
 
 import "../style.css";
 const SASubTasks = ({ options, setSubTasks, subTasks }) => {
+  const subtasksArray = [1, 2, 3];
   const customStyles = {
     menu: (provided) => ({
       ...provided,
@@ -60,10 +61,11 @@ const SASubTasks = ({ options, setSubTasks, subTasks }) => {
       fontWeight: "600",
     }),
   };
-
+  console.log(subtasksArray);
   return (
     <div className="SASubtasks">
       <h6>Subtask Details</h6>
+
       <div className="SubtaskContainer">
         <label>Select Subtask 1</label>
         <div>
@@ -139,7 +141,7 @@ const SASubTasks = ({ options, setSubTasks, subTasks }) => {
           </button>
         </div>
       </div>
-      <button>
+      <button style={{ margin: "2rem 1rem" }}>
         <IoIosAddCircle
           style={{
             marginRight: "7px",
