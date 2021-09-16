@@ -68,12 +68,32 @@ const SALicense = () => {
   ];
   const [licenseColor, setLicenseColor] = useState(ColorOptions);
 
+  // const handleNextClick = (step) => {
+  //   if (step) {
+  //     setStepper({
+  //       ...stepper,
+  //       stepperAcitveSlide: step + 1,
+  //       stepperCompletedSlides: [...stepper.stepperCompletedSlides, step],
+  //     });
+  //   }
+  // };
   const handleNextClick = (step) => {
     if (step) {
       setStepper({
         ...stepper,
         stepperAcitveSlide: step + 1,
         stepperCompletedSlides: [...stepper.stepperCompletedSlides, step],
+      });
+    }
+  };
+  const handleBackClick = (step) => {
+    if (step) {
+      setStepper({
+        ...stepper,
+        stepperAcitveSlide: step - 1,
+        stepperCompletedSlides: stepper.stepperCompletedSlides.filter(
+          (item) => item !== step
+        ),
       });
     }
   };
@@ -100,7 +120,18 @@ const SALicense = () => {
             setSubTasks={setSubTasks}
             subTasks={subTasks}
           />
-          <button className="NextButton" onClick={handleNextClick}>
+          {stepper.stepperAcitveSlide && stepper.stepperAcitveSlide > 1 && (
+            <button
+              className="cs-drawer__button cs-drawer__button--stroke"
+              onClick={() => handleBackClick(stepper.stepperAcitveSlide)}
+            >
+              Back
+            </button>
+          )}
+          <button
+            className="cs-drawer__button cs-drawer__button--primary"
+            onClick={() => handleNextClick(stepper.stepperAcitveSlide)}
+          >
             NEXT
           </button>
         </div>
