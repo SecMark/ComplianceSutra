@@ -2,23 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import ReAssignTasksModal from "../../../../../../ReAssignTasks";
 import api from "../../../../../../../apiServices";
-import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
-import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
 import redCheck from "../../../../../../../assets/Icons/redCheck.png";
-import grayCheck from "../../../../../../../assets/Icons/grayCheck.png";
 import greenCheck from "../../../../../../../assets/Icons/greenCheck.png";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import changeRoleClose from "../../../../../../../assets/Icons/changeRoleClose.png";
 import dropDownIcon from "../../../../../../../assets/Icons/dropDownIcon.png";
-import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
-import smallClose from "../../../../../../../assets/Icons/smallClose.png";
-import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
 import threeDots from "../../../../../../../assets/Icons/threeDots.PNG";
 import teamSearch from "../../../../../../../assets/Icons/teamSearch.png";
 import closeIconGray from "../../../../../../../assets/Icons/closeIconGray.png";
 import searchIcon from "../../../../../../../assets/Icons/searchIcon.png";
-import circleDot from "../../../../../../../assets/Icons/circleDot.png";
-import { actions as teamactions } from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useOuterClick } from "../../RightSideGrid/outerClick";
 import { Modal } from "react-responsive-modal";
@@ -188,7 +180,33 @@ function CoManagment({ handleClose }) {
         }
       });
   };
-
+  const onChangeRoleClick = (type, item, index) => {
+    if (item.id) {
+      api.post(`/api/getUserTask?userID=${item.id}`).then((response) => {
+        if (response && response.data && response.data.Status === true) {
+          if (type === "desktop") {
+            changeRole(index);
+            setOpenPopupIndex("");
+          } else if (type === "mobile") {
+            changeRoleMobile(item, index);
+            setOpenPopupIndex("");
+          }
+        } else if (
+          response &&
+          response.data &&
+          response.data.Status === false
+        ) {
+          toast.error(
+            "Please re-assign all your tasks first then change the role."
+          );
+          setOpenPopupIndex("");
+        } else {
+          toast.error("Something went wrong. Please try again after some time");
+          setOpenPopupIndex("");
+        }
+      });
+    }
+  };
   const mobileFilterRef = useOuterClick((e) => {
     if (showMobileFilter === true) {
       setShowMobileFilter(false);
@@ -533,26 +551,23 @@ function CoManagment({ handleClose }) {
     setFields(list);
   };
 
-  const handleChangeInputBoxRole = (event) => {
-    console.log(event.target.value);
-    setInputTeamMember({ ...inputTeamMember, ["role"]: event.target.value });
+  const handleChangeInputBoxRole = (value) => {
+    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
   };
 
-  const handleChangeInputBoxRoleMobile = (event) => {
-
-    setInputTeamMember({ ...inputTeamMember, ["role"]: event.target.value });
-    onConfirmChangeRole(currentRow, openPopupIndex, event.target.value);
-    closeChangeRole();
+  const handleChangeInputBoxRoleMobile = (value) => {
+    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
   };
 
   const handleChangeRoleMobile = (value) => {
     setInputTeamMember({ ...inputTeamMember, ["role"]: value });
+    onConfirmChangeRole(currentRow, openPopupIndex, value);
+    closeChangeRole();
   };
   const onChangeHandler = (name) => (e) => {
     setIsValidEmail(true);
     setAlreadyExist(false);
     const { name, value } = e.target;
-    console.log(name);
     if (name === "fullName") {
       const re = /^[a-z|A-Z_ ]*$/;
       if (e.target.value && !re.test(e.target.value)) {
@@ -560,7 +575,6 @@ function CoManagment({ handleClose }) {
       }
     }
     if (name === "email") {
-      console.log("hello");
       onValidateEmail(e);
     }
     setInputTeamMember({ ...inputTeamMember, [name]: e.target.value });
@@ -675,7 +689,10 @@ function CoManagment({ handleClose }) {
       entityID: 0,
       licID: 0,
       uUserID: 0,
-      utype: _userRole && parseInt(_userRole.value),
+      utype:
+        _userRole && typeof _userRole === "object"
+          ? parseInt(_userRole.value)
+          : parseInt(_userRole),
       // notificationList: "",
       // pwd: "",
       fullName: inputTeamMember.fullName,
@@ -1032,8 +1049,9 @@ function CoManagment({ handleClose }) {
                                 <div
                                   style={{ cursor: "pointer" }}
                                   onClick={() => {
-                                    changeRoleMobile(item, index);
-                                    setOpenPopupIndex("");
+                                    onChangeRoleClick("mobile", item, index);
+                                    // changeRoleMobile(item, index);
+                                    // setOpenPopupIndex("");
                                   }}
                                   className="change-role"
                                 >
@@ -1139,7 +1157,7 @@ function CoManagment({ handleClose }) {
             <div className="col-10 pl-0">
               <Dropdown
                 style={{ width: 240 }}
-                onChange={(value) => handleChangeInputBoxRoleMobile(value)}
+                onChange={(value) => handleChangeRoleMobile(value)}
                 arrowClosed={<span className="arrow-closed" />}
                 arrowOpen={<span className="arrow-open" />}
                 options={roleOptionMobile}
@@ -1224,7 +1242,7 @@ function CoManagment({ handleClose }) {
               <label className="label-mobile">Role</label>
               <Dropdown
                 style={{ width: 240 }}
-                onChange={(value) => handleChangeRoleMobile(value)}
+                onChange={(value) => handleChangeInputBoxRoleMobile(value)}
                 arrowClosed={<span className="arrow-closed" />}
                 arrowOpen={<span className="arrow-open" />}
                 options={optionsInputBoxRole}
@@ -1321,18 +1339,19 @@ function CoManagment({ handleClose }) {
                   </div>
                 </td>
                 <td>
-                  <select
-                    className="select-role"
-                    placeholder="Select role"
+                  <Dropdown
+                    style={{ width: 240 }}
                     onChange={(value) => handleChangeInputBoxRole(value)}
-                  >
-                    <option disabled selected>
-                      Select Role
-                    </option>
-                    {optionsInputBoxRole.map(({ label, value }) => (
-                      <option value={value}> {label} </option>
-                    ))}
-                  </select>
+                    arrowClosed={<span className="arrow-closed" />}
+                    arrowOpen={<span className="arrow-open" />}
+                    options={optionsInputBoxRole}
+                    value={
+                      inputTeamMember.role.length === 0
+                        ? null
+                        : inputTeamMember.role
+                    }
+                    placeholder="Select role"
+                  />
                 </td>
 
                 <td>
@@ -1478,8 +1497,9 @@ function CoManagment({ handleClose }) {
                               <div
                                 style={{ cursor: "pointer" }}
                                 onClick={() => {
-                                  changeRole(index);
-                                  setOpenPopupIndex("");
+                                  onChangeRoleClick("desktop", item, index);
+                                  // changeRole(index);
+                                  // setOpenPopupIndex("");
                                 }}
                                 className="change-role"
                               >

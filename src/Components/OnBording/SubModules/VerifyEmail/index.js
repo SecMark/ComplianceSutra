@@ -1,20 +1,19 @@
 import React from "react";
 import "./style.css";
-import { getTemplate } from "./emailTemplate"
+
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
 import privacyTip from "../../../../assets/Icons/privacyTip.png";
 import SideBar from "../SideBar";
-import apiServices from "../../../../apiServices"
-import { toast } from "react-toastify"
+import apiServices from "../../../../apiServices";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { actions as emailActions } from "../../../OnBording/redux/actions";
 
 function VerifyEmailErrorPage() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [showSupportText, setShowSupportText] = React.useState(false)
+  const [showSupportText, setShowSupportText] = React.useState(false);
   const email =
     state &&
     state.complianceOfficer &&
@@ -22,40 +21,23 @@ function VerifyEmailErrorPage() {
     state.complianceOfficer.verifyEmailInfo.email;
 
   const resendEmail = () => {
-    // window.Email.send({
-    //   Host: "180.179.151.1",
-    //   Username: "secmarktx@m3c.io",
-    //   Password: "Am6#uIayAOE#c",
-    //   To: email,
-    //   From: "support@capmtech.com",
-    //   Subject: "Verification Email",
-    //   Body: getTemplate(email),
-    // })
-    //   .then(function (message) {
-    //     if (message === "OK") {
-    //       toast.success("The verification link has been sent to your email account successfully");
-    //     } else {
-    //       toast.error("The mail not sent successfully");
-    //     }
-    //     // toast.success("mail sent successfully")
-    //   })
-    //   .then(function (error) {
-    //     // toast.error("mail not sent successfully")
-    //   });
     let obj = {
       email: email,
-      invitation: "V"
-    }
-    apiServices.post("/api/getEmailbody", obj)
+      invitation: "V",
+    };
+    apiServices
+      .post("/api/getEmailbody", obj)
       .then(function (response) {
         // handle success
         if (
           response &&
           response.data &&
-          response.data.Status  &&
+          response.data.Status &&
           response.data.Status === true
         ) {
-          toast.success("The verification link has been sent to your email account successfully")
+          toast.success(
+            "The verification link has been sent to your email account successfully"
+          );
         } else {
           toast.error("The mail not sent successfully");
         }
@@ -66,15 +48,13 @@ function VerifyEmailErrorPage() {
       });
 
     setShowSupportText(true);
-  }
+  };
 
-  console.log("complianceOfficer", email);
   return (
     <div className="row">
       <div className="col-3 left-fixed">
         <div className="on-boarding">
           <SideBar />
-          {/* <SideBarInputControl /> */}
         </div>
       </div>
       <div className="col-12 padding-right">
@@ -90,10 +70,12 @@ function VerifyEmailErrorPage() {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="header_logo">
-                      {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                        <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
-                        <span className="camp">COMPLIANCE SUTRA</span>
-                      {/* </a> */}
+                      <img
+                        src={comtech}
+                        alt="COMPLIANCE SUTRA"
+                        title="COMPLIANCE SUTRA"
+                      />
+                      <span className="camp">COMPLIANCE SUTRA</span>
                     </div>
                   </div>
                 </div>
@@ -101,38 +83,65 @@ function VerifyEmailErrorPage() {
               <div className="verify-email">
                 <img src={privacyTip} alt="" />
                 <p className="verify-title">
-                Verify your email to complete your registration
+                  Verify your email to complete your registration
                 </p>
-                <p className="verify-link">Please click on the link that has just been sent to <span style={{fontWeight:"bolder"}} className="aa">{` ${email}`}</span> to verify your email.</p>
-                <p className="verify-link">Close this tab and continue your registration process. </p>
+                <p className="verify-link">
+                  Please click on the link that has just been sent to{" "}
+                  <span
+                    style={{ fontWeight: "bolder" }}
+                    className="aa"
+                  >{` ${email}`}</span>{" "}
+                  to verify your email.
+                </p>
+                <p className="verify-link">
+                  Close this tab and continue your registration process.{" "}
+                </p>
               </div>
               <div className="bottom-logo-strip-verify">
                 <div className="row aligncenter">
                   <div className="col-md-8 col-xs-12">
-                    <p style={{ cursor: 'pointer' }} onClick={() => resendEmail()} className="account-link-black"> Did not receive an email?  <span className="login-link contact-spacing ml-2">
+                    <p
+                      style={{ cursor: "pointer" }}
+                      onClick={() => resendEmail()}
+                      className="account-link-black"
+                    >
                       {" "}
-
+                      Did not receive an email?{" "}
+                      <span className="login-link contact-spacing ml-2">
+                        {" "}
                         RESEND
-                      </span></p>
-                  
+                      </span>
+                    </p>
+
                     {showSupportText && (
                       <p className="account-link">
                         {/* Did not receive an email? */}
-                      Need help? Reach out to us 'at:
-                        <span style={{ cursor: 'pointer' }} onClick={() => resendEmail()} className="login-link-black contact-spacing">
+                        Need help? Reach out to us 'at:
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => resendEmail()}
+                          className="login-link-black contact-spacing"
+                        >
                           {" "}
-                        reachus@secmark.in
-                        {/* // RESEND IT */}
+                          reachus@secmark.in
+                          {/* // RESEND IT */}
                         </span>
-                        <div className="d-block d-sm-none blank-mobile">&nbsp;</div>
-                      Contact:<span className="login-link-black"> 9869265949</span>
-                      </p>)}
+                        <div className="d-block d-sm-none blank-mobile">
+                          &nbsp;
+                        </div>
+                        Contact:
+                        <span className="login-link-black"> 9869265949</span>
+                      </p>
+                    )}
                   </div>
                   <div className="col-md-4 col-xs-12 d-none d-sm-block text-right">
-                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                      <span className="powerBy">Powered by</span>
-                      <img className="header_logo footer-logo-secmark" src={secmark} alt="SECMARK" title="SECMARK" />
-                    {/* </a> */}
+                    <span className="powerBy">Powered by</span>
+                    <img
+                      className="header_logo footer-logo-secmark"
+                      src={secmark}
+                      alt="SECMARK"
+                      title="SECMARK"
+                    />
                   </div>
                 </div>
               </div>

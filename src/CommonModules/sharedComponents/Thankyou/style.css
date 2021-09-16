@@ -1,0 +1,44 @@
+.backimg{
+    height: 678px;
+    padding: 139px 0 0 48px;
+    object-fit: contain;
+    background-size: 100%;
+}
+
+.checkicon{
+  width: 64px;
+  height: 64px;
+  margin: 98px 281px 37px 579px;
+  object-fit: contain;
+}
+
+.Signup {
+    width: 1012px;
+    height: 47px;
+    margin: 37px 177px 19px 172px;
+    font-family: Poppins;
+    font-size: 33px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.52;
+    letter-spacing: 0.01px;
+    text-align: center;
+    color: #fff;
+  }
+
+  .Taking-you-to-the-accounts-page {
+    width: 222px;
+    height: 19px;
+    margin: 19px 188px 321px 514px;
+    opacity: 0.6;
+    font-family: Poppins;
+    font-size: 13px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 3.54;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #fff;
+  }

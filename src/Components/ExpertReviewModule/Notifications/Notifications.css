@@ -1,0 +1,124 @@
+.NotificationMain {
+  width: 100vw;
+  height: 100vh;
+  padding-top: 5vh;
+
+  overflow-y: scroll;
+
+  margin-left: 59px;
+}
+.NotificationHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 2% 8%;
+  position: relative;
+  width: 80%;
+  margin-bottom: -2vh;
+}
+.NotificationHeader > div > h4 {
+  margin-left: -3rem;
+}
+.NotificationFilter {
+  display: flex;
+  margin-left: 22vw;
+  margin-right: -3rem;
+}
+
+#Day {
+  color: #696969b0;
+  margin-top: 3rem;
+  margin-bottom: 0.5rem;
+  margin-left: -1rem;
+}
+.ListMain {
+  width: 70vw;
+  margin-left: 5vw;
+  font-family: Poppins;
+  margin-top: -5vh;
+}
+.ListElement {
+  font-weight: 600;
+  display: flex;
+  margin-bottom: 1rem;
+}
+.ListPoint {
+  background: #f9f7ff;
+  display: flex;
+  width: 70vw;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  color: #575757;
+  border-radius: 4px;
+  font-weight: 300;
+  margin-bottom: -2.2rem;
+  margin-left: -2rem;
+  color: #575757;
+}
+.ListDesc {
+  display: flex;
+  width: 80%;
+  padding-left: -1rem;
+}
+
+.ListPoint > div > p {
+  list-style: none;
+  font-weight: 500;
+  font-size: 12px;
+  padding-top: 5px;
+}
+.ListPoint > div > p > b {
+  margin: 0 4px;
+  font-weight: 550;
+}
+#TimeArrived {
+  color: #202020;
+  font-weight: 600;
+}
+
+.Menu {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  max-width: 1vw;
+  margin-left: -3vw;
+  margin-top: -2vh;
+}
+
+.MenuList {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(201, 199, 199, 0.144);
+  box-shadow: 0px 2px 5px #5757579a;
+  position: absolute;
+  right: -1vw;
+  top: 9.5vh;
+  width: 14vw;
+  padding: 0.8rem 1rem 0.6rem 0.2rem;
+
+  border-radius: 5px;
+  background-color: white;
+}
+.MenuItem1 {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid #adacac4b;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+.MenuItem2 {
+  background-color: white;
+  border: none;
+  text-align: left;
+}
+
+.whiteBackground {
+  background-color: white;
+}
+.purpleBackground {
+  background-color: #f9f7ff;
+}
+/* h4{
+  margin-left: -50;
+
+} */

@@ -4,19 +4,39 @@ import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadig
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmail, checkPersonalDetailsForm } from "../../utils.js";
+import { checkPersonalDetailsForm } from "../../utils.js";
 import { actions as personalDetailsAction } from "../../redux/actions";
 import { withRouter } from "react-router-dom";
 import SideBarInputControl from "../SideBarInputControl";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
 import MobileStepper from "../mobileStepper";
+import render from "htmlparser2/node_modules/dom-serializer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 function PersonalDetails({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
-  //const guestUser = state && state.auth && state.auth.guestUser;
+  const [visible, setVisibility] = useState(false);
+  const [visibal,setVisibiliti] = useState(false);
+
+  const Icon = (<FontAwesomeIcon icon={  visible ? "eye-slash" : "eye" }
+  onClick={() => setVisibility(visiblity => !visiblity)}
+  />
+  )
+  const InputType = visible ? "text" : "password";
+
+
+  const Iconic = (<FontAwesomeIcon icon={  visibal ? "eye-slash" : "eye" }
+  onClick={() => setVisibiliti(visiblity => !visiblity)}
+  />
+  )
+  const ConfirmInputType = visibal ? "text" : "password";
+
+
+
   const quote_id = state && state.auth && state.auth.quote_id;
   const [isValidate, setIsValidate] = useState(false);
   const [values, setValues] = useState({
@@ -42,7 +62,7 @@ function PersonalDetails({ history }) {
     uppercaseandlowercase: false,
     alphabetsandigit: false,
   });
-  // console.log(values, errors)
+
   const [countryCode, setCountryCode] = useState("+91");
   const onChangeHandler = (name) => (event) => {
     if (name === "fullName" || name === "designation") {
@@ -60,10 +80,8 @@ function PersonalDetails({ history }) {
       return "";
     }
     if (name === "countryCode") {
-      // console.log("inner CounryCode")
       const re = /[\d\+]+/;
-      // const re =  /^[0-9!@#$&()-`.+,/\"]*$/;
-      // console.log("event.target.value",);
+
       if (event.target.value && !re.test(event.target.value)) {
         return "";
       }
@@ -71,13 +89,12 @@ function PersonalDetails({ history }) {
 
     if (name === "mobileNumber") {
       let inputKey = "mobileNumErr";
-      // console.log(event.target.value);
+
       if (event.target.value > 0 && event.target.value < 9) {
       } else if (event.target.value == 10) {
       }
     }
     const mobileNumberReg = /^[0-9]{0,10}$/;
-    // let passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
     let passwordRE =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-]{8,16}$/;
     if (name === "mobileNumber") {
@@ -121,7 +138,6 @@ function PersonalDetails({ history }) {
           /^[a-zA-Z]*$/.test(event.target.value) &&
           /(?=.*?[A-Z])(?=.*?[a-z])./.test(event.target.value)
         ) {
-          // else if (/(?=.*?[A-Z])(?=.*?[a-z])./.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: false,
@@ -136,19 +152,12 @@ function PersonalDetails({ history }) {
             [uppercaseandlowercase]: true,
           }));
         } else if (/(?=.*?[A-Za-z])(?=.*?[0-9])/.test(event.target.value)) {
-          // else if (/(?=.*?[A-Za-z])(?=.*?[0-9])./.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: true,
             [uppercaseandlowercase]: false,
           }));
-        }
-        // else if (/^[A-Z0-9]*$/.test(event.target.value)) {
-        //   setPasswordState(prevState => ({
-        //     ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: false
-        //   }));
-        // }
-        else {
+        } else {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: false,
@@ -198,7 +207,7 @@ function PersonalDetails({ history }) {
     if (email) {
       let countryCode;
       let strr = values.countryCode;
-      // countryCode = strr.replace(/\D/g, '');
+
       countryCode = strr;
       dispatch(
         personalDetailsAction.insUpdateDeletAPIRequest({
@@ -253,17 +262,15 @@ function PersonalDetails({ history }) {
   const validateCountryCode = (e) => {
     let strr = e.target.value;
     let str = strr.replace(/\D/g, "");
-    console.log("str => ", strr);
 
     if (str === "") {
       str = "91";
     }
-    // str = str.substring(1);
-    // console.log("str =",str);
+
     let payload = {
       cntryCode: str,
     };
-    console.log(payload);
+
     api
       .post("/api/CountryCodeCheck", payload)
       .then(function (response) {
@@ -274,23 +281,21 @@ function PersonalDetails({ history }) {
           setErrors({ ...errors, [inputKey]: "" });
         } else {
           setCountryCode(false);
-          // setErrors(errors);
+
           let inputKey = "countryCodeErr";
           setErrors({ ...errors, [inputKey]: "true" });
         }
       })
       .catch(function (error) {
         if (error) {
-          // setIsCompanyNameValid(false);
         }
       });
   };
-  // console.log("errors => ",errors);
-  return (
+    
+      return (
     <div className="row get-mobile-personal-detail">
       <div className="col-3 col-sm-4 col-md-4 col-xl-3 left-fixed">
         <div className="on-boarding">
-          {/* <SideBar /> */}
           <SideBarInputControl currentStep={1} />
         </div>
       </div>
@@ -307,14 +312,12 @@ function PersonalDetails({ history }) {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="header_logo">
-                      {/* <a href="#" style={{'cursor': 'auto'}}> */}
                       <img
                         src={comtech}
                         alt="COMPLIANCE SUTRA"
                         title="COMPLIANCE SUTRA"
                       />
                       <span className="camp">COMPLIANCE SUTRA</span>
-                      {/* </a> */}
                     </div>
                   </div>
                 </div>
@@ -374,8 +377,6 @@ function PersonalDetails({ history }) {
                               id="countryCode"
                               name="countryCode"
                               maxLength="3"
-                              // placeholder="+91"
-                              // defaultValue="+91"
                               value={values.countryCode}
                               onChange={onChangeHandler("countryCode")}
                               onBlur={(e) => validateCountryCode(e)}
@@ -407,14 +408,7 @@ function PersonalDetails({ history }) {
                               onKeyPress={(e) => handleKeyDown(e)}
                             />
                           </div>
-                          {/* {
-                        values.mobileNumber === "" && values.countryCode !== "" && 
-                         errors.countryCodeErr === "true" && (
-                          <p className="input-error-message">
-                             Country code is invalid
-                          </p>
-                        )
-                      } */}
+
                           {values.countryCode != "" &&
                             errors.countryCodeErr == "true" && (
                               <p className="input-error-message">
@@ -434,40 +428,7 @@ function PersonalDetails({ history }) {
                             )}
                         </div>
                       </div>
-                      {/* <div className="col-6">
-                      <div className="form-group">
-                        <label htmlFor="MobileNumber">Mobile Number</label>
-                        <input
-                          type="text"
-                          className={
-                            "form-control " +
-                            ((isValidate && values.mobileNumber === "") ||
-                              (isValidate &&
-                                values.mobileNumber !== "" &&
-                                values.mobileNumber.length < 10)
-                              ? "input-error"
-                              : "")
-                          }
-                          id="MobileNumber"
-                          placeholder="Enter your mobile number"
-                          value={values.mobileNumber}
-                          onChange={onChangeHandler("mobileNumber")}
-                          onKeyPress={(e) => handleKeyDown(e)}
-                        />
-                        {isValidate && values.mobileNumber === "" && (
-                          <p className="input-error-message">
-                            Mobile number is required
-                          </p>
-                        )}
-                        {isValidate &&
-                          values.mobileNumber !== "" &&
-                          values.mobileNumber.length < 8 && (
-                            <p className="input-error-message">
-                              Mobile number is invalid
-                            </p>
-                          )}
-                      </div>
-                    </div> */}
+
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="CompanyName">Company Name</label>
@@ -516,7 +477,6 @@ function PersonalDetails({ history }) {
                               (values.designation !== ""
                                 ? " activeForm-control"
                                 : " ")
-                              // +(values.designation !== "" ? " success-input-form-control" : "")
                             }
                             id="Designation"
                             placeholder="e.g. Compliance officer, Team Leader"
@@ -524,6 +484,7 @@ function PersonalDetails({ history }) {
                             onChange={onChangeHandler("designation")}
                             onKeyPress={(e) => handleKeyDown(e)}
                           />
+
                           {isValidate && values.designation === "" && (
                             <p className="input-error-message">
                               Designation is required
@@ -535,7 +496,7 @@ function PersonalDetails({ history }) {
                         <div className="form-group">
                           <label htmlFor="Company Email">Password</label>
                           <input
-                            type="password"
+                            type={InputType}
                             className={
                               "form-control " +
                               (values.password !== "" &&
@@ -561,7 +522,10 @@ function PersonalDetails({ history }) {
                             value={values.password}
                             onChange={onChangeHandler("password")}
                             onKeyPress={(e) => handleKeyDown(e)}
-                          />
+                          />       
+                          <span className="password-toggle-icon">{Icon}</span> 
+                          
+
                           {isValidate && values.password === "" && (
                             <p className="input-error-message">
                               Please enter password
@@ -574,19 +538,6 @@ function PersonalDetails({ history }) {
                                 Password is invalid
                               </p>
                             )}
-
-                          {/* <ul className="Instruction">
-                            <li>
-                              <div className={passwordState.minlength === false ? "error" : "green-dot"} ></div>At least 8-16 characters—the more characters, the better
-                    </li>
-                            <li>
-                              <div className={passwordState.uppercaseandlowercase === false ? "error" : "green-dot"}></div>A mixture of both uppercase and lowercase
-                      letters
-                    </li>
-                            <li>
-                              <div className={passwordState.alphabetsandigit === false ? "error" : "green-dot"}></div>A mixture of letters and numbers
-                    </li>
-                          </ul> */}
                         </div>
                       </div>
                       <div className="col-12 d-block d-sm-none">
@@ -630,7 +581,7 @@ function PersonalDetails({ history }) {
                             Confirm Password
                           </label>
                           <input
-                            type="password"
+                            type={ConfirmInputType}
                             className={
                               "form-control " +
                               (values.confirmPassword !== "" &&
@@ -660,9 +611,9 @@ function PersonalDetails({ history }) {
                             onChange={onChangeHandler("confirmPassword")}
                             onKeyPress={(e) => handleKeyDown(e)}
                           />
-                          {/* {values.confirmPassword !== "" && errors && errors.confirmPasswordErr !== "" && <p className="input-error-message">
-                            Confirm password is invalid
-                          </p>} */}
+
+                          <span className="password-toggle-iconic">{Iconic}</span> 
+
                           {isValidate && values.confirmPassword === "" && (
                             <p className="input-error-message">
                               Please enter confirm password
@@ -714,215 +665,13 @@ function PersonalDetails({ history }) {
                           </ul>
                         </div>
                       )}
-                      {/* <div className="col-6">
-                      <div className="form-group">
-                        <label htmlFor="FullName">Full Name</label>
-                        <input
-                          type="text"
-                          className={
-                            "form-control " +
-                            (isValidate && values.fullName === ""
-                              ? "input-error"
-                              : "")
-                          }
-                          id="FullName"
-                          placeholder="Enter your full name"
-                          value={values.fullName}
-                          onChange={onChangeHandler("fullName")}
-                          onKeyPress={(e) => handleKeyDown(e)}
-                        />
-                        {isValidate && values.fullName === "" && (
-                          <p className="input-error-message">
-                            Full name is required
-                          </p>
-                        )}
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="CompanyName">Company Name</label>
-                        <input
-                          type="text"
-                          className={
-                            "form-control " +
-                            (isValidate && values.companyName === ""
-                              ? "input-error"
-                              : "")
-                          }
-                          id="CompanyName"
-                          placeholder="ABC Brokerage"
-                          onBlur={(e) => validateCompanyName(e)}
-                          value={values.companyName}
-                          onChange={onChangeHandler("companyName")}
-                          onKeyPress={(e) => handleKeyDown(e)}
-                        />
-                        {isValidate && values.companyName === "" && (
-                          <p className="input-error-message">
-                            Company name is required
-                          </p>
-                        )}
-                        {values.companyName !== "" && !isCompanyNameValid && (
-                          <p className="input-error-message">
-                            Company name is already availabel
-                          </p>
-                        )}
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="Company Email">Password</label>
-                        <input
-                          type="password"
-                          className={
-                            "form-control " +
-                            ((isValidate && values.password === "") ||
-                              (isValidate &&
-                                values.password !== "" &&
-                                values.password.length < 8)
-                              ? "input-error"
-                              : "")
-                          }
-                          id="Password"
-                          placeholder="......"
-                          value={values.password}
-                          onChange={onChangeHandler("password")}
-                          onKeyPress={(e) => handleKeyDown(e)}
-                        />
-                        {isValidate && values.password === "" && (
-                          <p className="input-error-message">
-                            Please enter password
-                          </p>
-                        )}
-                        {isValidate &&
-                          values.password !== "" &&
-                          values.password.length < 8 && (
-                            <p className="input-error-message">
-                              Password should minimum 8 characters
-                            </p>
-                          )}
-                      </div>
-                    </div> */}
-                      {/* <div className="col-6">
-                      <div className="form-group">
-                        <label htmlFor="MobileNumber">Mobile Number</label>
-                        <input
-                          type="text"
-                          className={
-                            "form-control " +
-                            ((isValidate && values.mobileNumber === "") ||
-                            (isValidate &&
-                              values.mobileNumber !== "" &&
-                              values.mobileNumber.length < 10)
-                              ? "input-error"
-                              : "")
-                          }
-                          id="MobileNumber"
-                          placeholder="9876543210"
-                          value={values.mobileNumber}
-                          onChange={onChangeHandler("mobileNumber")}
-                          onKeyPress={(e) => handleKeyDown(e)}
-                        />
-                        {isValidate && values.mobileNumber === "" && (
-                          <p className="input-error-message">
-                            Mobile number is required
-                          </p>
-                        )}
-                        {isValidate &&
-                          values.mobileNumber !== "" &&
-                          values.mobileNumber.length < 8 && (
-                            <p className="input-error-message">
-                              Mobile number is invalid
-                            </p>
-                          )}
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="Company Email">Designation</label>
-                        <input
-                          type="text"
-                          className={
-                            "form-control " +
-                            (isValidate && values.designation === ""
-                              ? "input-error"
-                              : "")
-                          }
-                          id="Designation"
-                          placeholder="eg, co Team leader"
-                          value={values.designation}
-                          onChange={onChangeHandler("designation")}
-                          onKeyPress={(e) => handleKeyDown(e)}
-                        />
-                        {isValidate && values.designation === "" && (
-                          <p className="input-error-message">
-                            Designation is required
-                          </p>
-                        )}
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="ConfirmPassword">Repeat password</label>
-                        <input
-                          type="password"
-                          className={
-                            "form-control " +
-                            ((isValidate && values.confirmPassword === "") ||
-                            (isValidate &&
-                              values.confirmPassword !== "" &&
-                              values.confirmPassword.length < 8)
-                              ? "input-error"
-                              : "")
-                          }
-                          id="ConfirmPassword"
-                          placeholder="......"
-                          value={values.confirmPassword}
-                          onChange={onChangeHandler("confirmPassword")}
-                          onKeyPress={(e) => handleKeyDown(e)}
-                        />
-                        {isValidate && values.confirmPassword === "" && (
-                          <p className="input-error-message">
-                            Please enter repeat password
-                          </p>
-                        )}
-                        {isValidate &&
-                          values.confirmPassword !== "" &&
-                          values.confirmPassword.length < 8 && (
-                            <p className="input-error-message">
-                              Repeat password should be minimum 8 characters
-                            </p>
-                          )}
-                        {isValidate &&
-                          values.confirmPassword !== "" &&
-                          values.confirmPassword.length > 8 &&
-                          values.password !== "" &&
-                          values.confirmPassword !== values.password && (
-                            <p className="input-error-message">
-                              Password and repeat password should be same
-                            </p>
-                          )}
-                      </div>
-                    </div> */}
                     </div>
                   </div>
                 </div>
               </div>
               <div className="bottom-logo-strip personal-details">
                 <div className="row aligncenter">
-                  <div className="col-12">
-                    {/* <div className="custom-control custom-checkbox btn-top-checkbox" >
-                      <input type="checkbox"
-                      className="custom-control-input cutom-add-whatsappflag "
-                      style={{ cursor: "pointer", height: "1.5rem" }}
-                      name="whatsappFlag"
-                      value={whatappFlag}
-                      onChange={(event) => handleWhatsappChange(event)}
-                      />
-                      <label className="custom-control-label btn-top-label" htmlFor="customCheck">Yes, i want to receive WhatsApp updates</label>
-                    </div> */}
-                    {/* <div className="custom-control custom-checkbox btn-top-checkbox" >
-                      <input id="magicBtnPersonal" type="checkbox"
-                        className="custom-control-input"
-                        style={{ cursor: "pointer", height: "1.5rem" }}
-                        name="whatsappFlag"
-                        value={whatappFlag}
-                        onChange={(event) => handleWhatsappChange(event)}
-                      />
-                      <label className="custom-control-label btn-top-label" For="magicBtnPersonal">Yes, I want to receive WhatsApp updates</label>
-                    </div>                    */}
-                  </div>
+                  <div className="col-12"></div>
                   <div className="col-6">
                     <button
                       onClick={() => onSubmit()}
@@ -946,7 +695,6 @@ function PersonalDetails({ history }) {
                     </button>
                   </div>
                   <div className="col-6 text-right d-none d-sm-block">
-                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
                     <span className="powerBy">Powered by</span>
                     <img
                       className="header_logo footer-logo-secmark"
@@ -954,7 +702,6 @@ function PersonalDetails({ history }) {
                       alt="SECMARK"
                       title="SECMARK"
                     />
-                    {/* </a> */}
                   </div>
                 </div>
               </div>
@@ -964,6 +711,7 @@ function PersonalDetails({ history }) {
       </div>
     </div>
   );
+                    
 }
 
 export default withRouter(PersonalDetails);

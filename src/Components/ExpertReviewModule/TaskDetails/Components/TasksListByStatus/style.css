@@ -1,0 +1,137 @@
+.by-status__item {
+  font-size: 14px;
+  letter-spacing: 0px;
+  font-family: "Poppins";
+  color: #202020;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.by-status__item--overdue {
+  color: #f22727;
+}
+.by-status__item--completed {
+  color: #7fba7a;
+}
+.by-status__item-count {
+  font-weight: 600;
+  font-family: "Poppins";
+  font-style: normal;
+  line-height: 16px;
+  height: 16px;
+  width: 16px;
+  font-size: 8px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #fff;
+  background-color: #202020;
+  border-radius: 50%;
+}
+.by-status__item-count--red {
+  background-color: #f22727;
+}
+.by-status__item-count--green {
+  background-color: #7fba7a;
+}
+.by-status__item--accordion-arrow-red {
+  width: 18px;
+  height: 18px;
+  transition: transform 200ms ease-in;
+}
+.by-status__item--accordion-arrow,
+.task-overview__right-arrow {
+  width: 10px;
+  height: 7px;
+  transition: transform 200ms ease-in;
+}
+.accordion-arrow-down {
+  transform: rotate(180deg);
+}
+.task-overview {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+.task-overview--selected {
+  background-color: #f5f0ff;
+  border-right: 4px solid #7a73ff;
+}
+.task-overview__license {
+  flex: 0.1;
+  /* border: 1px solid black; */
+  text-transform: uppercase;
+  line-height: 10px;
+  border-radius: 2px;
+  background-color: #f1f3ff;
+  font-size: 10px;
+  font-weight: 400;
+  margin: 0;
+  color: #b3abc4;
+  letter-spacing: normal;
+  text-align: center;
+  padding: 4px 4px;
+}
+.task-overview__main {
+  flex: 1;
+}
+.task-overview__title {
+  width: 90%;
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+.task-overview-left {
+  flex: 1;
+}
+.task-overview__date {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #b3abc4;
+}
+.task-overview__right-arrow {
+  transform: rotate(90deg);
+}
+.view-all-tasks--title {
+  /* margin: 11px 4px 0 0; */
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  text-transform: uppercase;
+  color: #6c5dd3;
+  cursor: pointer;
+}
+.animatedTask-enter {
+  opacity: 0.7;
+}
+.animatedTask-enter-active {
+  opacity: 1;
+  transition: opacity 5000ms ease-in;
+}
+.animatedTask-exit {
+  opacity: 1;
+}
+.animatedTask-exit-active {
+  opacity: 0.7;
+  transition: opacity 5000ms ease-in;
+}

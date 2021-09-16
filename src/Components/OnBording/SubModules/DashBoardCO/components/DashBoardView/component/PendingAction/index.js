@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import SideBarInputControl from "../../../../components/LeftSideBar";
-import TaskListView from "./RightSideView";
-// import assignIconCircle   from "../../../../../../../assets/Icons/assignIconCircle.png"
 import assignIconCircle from "../../../../../../../../assets/Icons/assignIconCircle.png";
-import Cobg from "../../../../../../../../assets/Images/Onboarding/co-bg.png";
 import delayCloseIcon from "../../../../../../../../assets/Icons/delayCloseIcon.png";
 import keyboardArrowRightBlack from "../../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
 import { BACKEND_BASE_URL } from "../../../../../../../../apiServices/baseurl";
-import axios, { post } from "axios";
+import axios from "axios";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import { actions as notificationActions } from "../../../notification/Redux/actions.js";
 
@@ -39,7 +34,6 @@ function PendingActionTaskList({ history, click, setClick }) {
   };
 
   useEffect(() => {
-    console.log("1");
     const payload = {
       entityid: "P",
       userID: userID,
@@ -64,7 +58,6 @@ function PendingActionTaskList({ history, click, setClick }) {
                   licCode: task.liccode,
                   EntityCode: EntityName,
                 });
-                // console.log("Reassign => ",Object.assign(data,{licCode: task.liccode,EntityCode : EntityName}))
                 rowCount.push(newObjData);
               });
             });
@@ -78,11 +71,6 @@ function PendingActionTaskList({ history, click, setClick }) {
 
   return (
     <>
-      {/* <div className="d-flex mobile-height-dasboardView">
-                <div className="companies-sub-title w-100 d-none d-sm-block">
-                    Tasks
-                </div>
-            </div> */}
       <div className="task-grid-scroll customScrollSecond scroll-btm">
         <div className="mobile-dashboard-view">
           <div className="take-action">

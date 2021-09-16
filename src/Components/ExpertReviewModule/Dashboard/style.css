@@ -1,0 +1,341 @@
+.ER-dashboard-conatiner {
+  display: flex;
+}
+
+.ER-task-statics {
+  display: flex;
+  border-bottom: 2px solid #eee8fc;
+  position: relative;
+}
+
+.active-task {
+  width: 76px;
+  height: 2px;
+  margin-top: 47px;
+  position: absolute;
+  background-color: #7a73ff;
+}
+
+.ER-task-statics h3 {
+  padding-right: 40px;
+}
+.task-statics {
+  margin-top: 6px;
+}
+
+.static-card {
+  padding-left: 32px;
+}
+
+.static-card span {
+  padding-left: 20px;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.static-card p {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.17;
+  letter-spacing: normal;
+  text-align: left;
+  color: #808191;
+}
+
+.static-card img {
+  width: 24px;
+}
+
+.ER-search {
+  width: 270px;
+  height: 40px;
+  margin-left: 40px;
+  font-size: 1rem;
+}
+.ER-search::placeholder {
+  font-size: 0.8rem;
+}
+
+.sort-by-filter {
+  margin-top: 20px;
+  float: right;
+}
+.sort-by-filter .sort-by {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+  opacity: 0.6;
+}
+
+.sort-by-filter .sort-filter-active {
+  color: #fff;
+  border-radius: 16px;
+  background-color: #b3abc4;
+  padding: 4px 10px;
+  font-size: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.sort-by-filter .sort-filter-inactive {
+  color: #b3abc4;
+  border-radius: 16px;
+  background-color: #f7f4fe;
+  padding: 4px 10px;
+  font-size: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.ER-take-action {
+  margin-top: 10px;
+}
+
+.ER-task-container {
+  margin-top: 100px;
+}
+
+.ER-task-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.ER-search-input {
+  margin-left: auto;
+}
+.ER-task-detail .code {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #b3abc4;
+  border: none;
+  border-radius: 2px;
+}
+
+.ER-task-detail .company-name {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.28px;
+  text-align: left;
+  color: #575757;
+  margin: 0;
+}
+
+.ER-task-detail .date {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.28px;
+  text-align: right;
+  color: #000;
+}
+.overdue-date {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.28px;
+  text-align: right;
+  color: red;
+}
+
+.overdue-title {
+  color: #f22727;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+  display: flex;
+}
+
+.overdue-title .overdue-circle {
+  width: 16px;
+  height: 16px;
+  background-color: #f22727;
+  margin-left: 8px;
+  border-radius: 50%;
+}
+.overdue-title .overdue-circle-text {
+  font-family: Poppins;
+  font-size: 8px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 17px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #ffffff;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.overdue-title .arrowDown {
+  width: 8px;
+  height: 4.9px;
+  margin-left: 17px;
+  margin-top: 7px;
+}
+
+.overdue-company {
+  display: flex;
+  align-items: center;
+}
+
+.complete-company {
+  display: flex;
+  align-items: center;
+}
+
+.completed-title {
+  color: #7fba7a;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: 0px;
+  text-align: left;
+  display: flex;
+  cursor: pointer;
+}
+
+.completed-title .completed-circle {
+  width: 16px;
+  height: 16px;
+  background-color: #7fba7a;
+  margin-left: 8px;
+  border-radius: 50%;
+}
+.completed-title .completed-circle-text {
+  font-family: Poppins;
+  font-size: 8px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 17px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #ffffff;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.completed-title .arrowDown {
+  width: 8px;
+  height: 4.9px;
+  margin-left: 17px;
+  margin-top: 7px;
+}
+
+.ER-status-button {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #7fba7a;
+  border: none;
+}
+.ER-view-all-conatiner {
+  margin-top: 0px;
+}
+.ER-view-all-conatiner span {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  text-align: left;
+
+  color: #6c5dd3;
+}
+
+.row .code {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #b3abc4;
+  border: none;
+  border-radius: 2px;
+}
+
+.row .company-name {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.28px;
+  text-align: left;
+  color: #575757;
+  margin: 0;
+}
+
+.row .date {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.28px;
+  text-align: right;
+  color: #000;
+}
+
+.ER-detail-name p {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+.task__down-arrow {
+  transition: all 200ms ease;
+}

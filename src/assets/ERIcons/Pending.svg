@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="67" height="24" viewBox="0 0 67 24">
+    <g>
+        <g>
+            <path fill="#fcdede" d="M2.127 0h62.746A2.066 2.066 0 0 1 67 2v20a2.066 2.066 0 0 1-2.127 2H2.127A2.066 2.066 0 0 1 0 22V2a2.066 2.066 0 0 1 2.127-2z" transform="translate(-496 -128) translate(-272 -419) translate(768 547)"/>
+            <text fill="#ef5d5d" font-family="Poppins-Medium, Poppins" font-size="12px" font-weight="500" transform="translate(-496 -128) translate(-272 -419) translate(775 564)">
+                <tspan x="0" y="0">PENDING</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

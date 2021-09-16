@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import MobileLeftSidebar from "../../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
 import HistoryFilterForm from "../HistoryFilterForm/index";
@@ -8,7 +7,6 @@ import download from "../../../assets/Icons/download.png";
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../../assets/Icons/togglemobile.png";
 import threeDots from "../../../assets/Icons/threeDots.PNG";
-import Cobg from "../../../assets/Images/Onboarding/co-bg.png";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { isMobile } from "react-device-detect";
@@ -17,7 +15,6 @@ import moment from "moment";
 import {
   clearState,
   getCompanyList,
-  getHistoryList,
   getLicenseList,
   setSuccess,
 } from "../redux/actions";
@@ -62,7 +59,7 @@ const HistoryList = (props) => {
 
   useEffect(() => {
     setIsShowMobileFilter(false);
-    // setIsShowFilter(false);
+
     dispatch(setSuccess(false));
   }, [state.HistoryReducer.isSuccess]);
 
@@ -77,7 +74,6 @@ const HistoryList = (props) => {
     }
   };
 
-  console.log(state.HistoryReducer.historyList);
   return (
     <>
       {isMobile && (
@@ -112,7 +108,7 @@ const HistoryList = (props) => {
               <div className="filter-popup-mobile--wrapper">
                 <h2 style={{ marginBottom: "3rem" }}>Fiters</h2>
                 <div className="filter-wrapper-mobile">
-                  <HistoryFilterForm />
+                  <HistoryFilterForm setIsShowFilter={setIsShowFilter} />
                 </div>
               </div>
             </div>
@@ -170,7 +166,6 @@ const HistoryList = (props) => {
           {/* View more data ends here */}
           <div className="d-block mobile-head d-md-none">
             {showHB === false && (
-              // <div className=" d-block d-sm-none pad-ms">
               <div className="d-flex justify-content-between">
                 <div
                   className=""
@@ -297,12 +292,14 @@ const HistoryList = (props) => {
                 <h3 style={{ marginBottom: "0px" }}>Filters</h3>
               </div>
               <div className="filter-wrapper-desktop">
-                <HistoryFilterForm />
+                <HistoryFilterForm
+                  setIsShowFilter={setIsShowFilter}
+                  isShowFilter={isShowFilter}
+                />
               </div>
             </div>
           </div>
 
-          {/* <div className="history-wrapper"> */}
           <div className="history-container">
             <div className="row">
               <div className="history-header  p-0">
@@ -310,6 +307,7 @@ const HistoryList = (props) => {
                   Compliance History{" "}
                   <img
                     src={filter}
+                    alt="Filter"
                     className="history-filter"
                     onClick={() => {
                       const licenseRequestPayload = {

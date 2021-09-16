@@ -16,6 +16,16 @@ function CoSettingRightGrid({ handleClose, history }) {
 
   const [isValidate, setIsValidate] = useState(false);
   const [valuesBackup, setValuesBackup] = useState(null);
+  const [minutes, setMinutes] = useState(1);
+  const [seconds, setSeconds] = useState(0);
+  const [otpValid, setOtpInValid] = useState("");
+  const [otp, setOtp] = useState("");
+  const [showResendSection, setShowResendSection] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
+
+  const [email, setEmail] = useState(null);
+  const [number, setNumber] = useState(null);
+
   const [values, setValues] = useState({
     userName: "",
     designation: "",
@@ -27,6 +37,13 @@ function CoSettingRightGrid({ handleClose, history }) {
 
   const [valuesChanged, setValuesChanged] = useState(false);
   const [verifyModalHideShow, setVerifyModalHideShow] = useState(false);
+  const [otpModal, setOtpModal] = useState(false);
+  const [isOtpVerfied, setIsOtpVerfied] = useState(false);
+
+  const [isEnableSecureOTP, setIsEnabledSecureOTP] = useState(false);
+  const [showChangeMobileSection, setShowChangeMobileSection] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
   const [verifyPassword, setVerifyPassword] = useState({
     password: "",
     passwordError: "",
@@ -42,6 +59,27 @@ function CoSettingRightGrid({ handleClose, history }) {
     );
   }, []);
 
+  useEffect(() => {
+    let myInterval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      } else {
+      }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          setShowResendSection(true);
+          clearInterval(myInterval);
+        } else {
+          setMinutes(minutes - 1);
+          setSeconds(59);
+        }
+      }
+    }, 1000);
+    return () => {
+      clearInterval(myInterval);
+    };
+  });
+
   const verfiyEmail = async (email) => {
     if (validator.isEmail(email)) {
       if (email !== valuesBackup.emailId) {
@@ -56,6 +94,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           .then(function (response) {
             if (response && response.data && response.data.Status === "True") {
               setIsValidEmail(false);
+              setEmail(null);
               return false;
             } else {
               setIsValidEmail(true);
@@ -134,7 +173,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           state.taskReport &&
           state.taskReport.coDetailsInsUpdDelInfo &&
           state.taskReport.coDetailsInsUpdDelInfo.data;
-        console.log(updEmail);
+
         let logInfo = { ...loggedUser };
         logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID;
         dispatch(logInfoActions.updateEmailInfo(logInfo));
@@ -173,7 +212,16 @@ function CoSettingRightGrid({ handleClose, history }) {
         setIsValidate(false);
         handleFinalSubmit();
       } else {
-        setVerifyModalHideShow(true);
+        if (email) setVerifyModalHideShow(true);
+        else {
+          if (!otpValid) {
+            setOtpModal(true);
+            setOtpInValid(false);
+            setSeconds(59);
+            setIsOtpVerfied(false);
+            sendOTPRequest();
+          }
+        }
       }
     }
   };
@@ -195,6 +243,14 @@ function CoSettingRightGrid({ handleClose, history }) {
             setVerifyPassword({ password: "", passwordError: "" });
             handleFinalSubmit();
             setVerifyModalHideShow(false);
+            setEmail(null);
+
+            if (number) {
+              setEmailVerified(true);
+              setOtpModal(true);
+              sendOTPRequest();
+              setSeconds(59);
+            }
           } else if (
             response &&
             response.data &&
@@ -219,6 +275,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           }
         });
     } else {
+      number && setOtpModal(true);
       setVerifyPassword({ password: "", passwordError: "" });
       setVerifyModalHideShow(false);
     }
@@ -230,6 +287,28 @@ function CoSettingRightGrid({ handleClose, history }) {
     } else {
       handleClose();
     }
+  };
+
+  const resendOTP = () => {
+    setShowResendSection(false);
+    let payload = {
+      phn: "",
+      email: "email",
+    };
+    api
+      .post("/api/sendmsgwithverificationcode", payload)
+      .then(function (response) {
+        // handle success
+        if (response && response.data && response.data.statuscode === "200") {
+          toast.success(
+            "The OTP has been sent to your registered mobile number"
+          );
+        } else {
+          toast.error("something went wrong please try again !!!");
+        }
+      })
+      .catch(function (error) {});
+    setSeconds(59);
   };
 
   const handleFinalSubmit = () => {
@@ -258,13 +337,81 @@ function CoSettingRightGrid({ handleClose, history }) {
       if (!mobileNumberReg.test(Number(event.target.value))) {
         return "";
       }
+      setNumber(event.target.value);
     }
     if (name === "emailId") {
       verfiyEmail(event.target.value);
+      setEmail(event.target.value);
     }
     setValuesChanged(true);
     setValues({ ...values, [name]: event.target.value });
+
     // }
+  };
+
+  const verifyOTP = () => {
+    let payload = {};
+    payload = {
+      phn: values.mobileNo,
+      email: values.emailId,
+      otp: otp,
+    };
+    if (otp !== "") {
+      api
+        .post("/api/GetOTP", payload)
+        .then(function (response) {
+          // handle success
+          if (response && response.data && response.data.Status != "False") {
+            setOtpInValid(true);
+            setIsOtpVerfied(true);
+            setOtpModal(false);
+            handleFinalSubmit();
+            setNumber(null);
+          } else {
+            toast.error("Invalid OTP");
+            setOtpInValid(false);
+          }
+        })
+        .catch(function (error) {
+          if (error) {
+            setOtpInValid(false);
+            toast.error("Invalid OTP");
+          }
+        });
+    } else {
+      toast.error("Enter OTP");
+    }
+  };
+
+  const sendOTPRequest = (text) => {
+    setDisabled(true);
+    let payload = {};
+    payload = {
+      phn: values.mobileNo,
+      email: values.emailId,
+    };
+
+    api
+      .post("/api/sendmsgwithverificationcode", payload)
+      .then(function (response) {
+        // handle success
+        if (response && response.data && response.data.statuscode === "200") {
+          setIsEnabledSecureOTP(true);
+          setShowChangeMobileSection(false);
+          toast.success(
+            "The OTP has been sent to your registered mobile number"
+          );
+        } else {
+          toast.error("something went wrong please try again !!!");
+          setIsEnabledSecureOTP(true);
+          setShowChangeMobileSection(false);
+        }
+      })
+      .catch(function (error) {
+        if (error) {
+          setIsEnabledSecureOTP(false);
+        }
+      });
   };
 
   const renderVerifyDialog = () => {
@@ -332,9 +479,101 @@ function CoSettingRightGrid({ handleClose, history }) {
   return (
     <div className="co-manangment-grid">
       {verifyModalHideShow && renderVerifyDialog()}
+      {otpModal && !otpValid && (
+        <Modal
+          blockScroll={false}
+          classNames={{
+            overlayAnimationIn: "",
+            overlayAnimationOut: "",
+            modalAnimationIn: "",
+            modalAnimationOut: "",
+            modal: "customPersonalOTPModal",
+          }}
+          open={otpModal}
+          center={true}
+          showCloseIcon={false}
+          onClose={() => setOtpModal(false)}
+          modalId="customPersonalOTPModal"
+          styles={{ width: 373, height: 210, overflow: "hidden" }}
+          // onOverlayClick={() => setOtpModal(false)}
+        >
+          <div className="capmtech-review-model confirm-model">
+            <div className="confirm-title-model">
+              Enter OTP to confirm changes
+            </div>
+            <div className="confirm-title-desc">
+              Sent to +91{values.mobileNo}
+            </div>
+            <div class="form-group">
+              <input
+                type="number"
+                class="form-control  input-not-blank "
+                placeholder="Enter 6 digit OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+              />
+
+              {!showResendSection && (
+                <p style={{ display: "flex" }} className="Resend-OTP-in">
+                  {" "}
+                  Resend OTP in:
+                  <span className="second">
+                    {minutes === 0 && seconds === 0 ? null : (
+                      <p
+                        style={{ fontStyle: "bold" }}
+                        className="count-text-sec"
+                      >
+                        {" "}
+                        {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                      </p>
+                    )}
+                  </span>
+                </p>
+              )}
+              {showResendSection && (
+                <p>
+                  {" "}
+                  <span className="resend-text">
+                    <b>Didn't receive an OTP?</b>
+                  </span>
+                  <span onClick={() => resendOTP()} className="resend">
+                    RESEND
+                  </span>
+                </p>
+              )}
+              {verifyPassword.passwordError != "" && (
+                <p className="input-error-message">{"invalid password"}</p>
+              )}
+            </div>
+            <div className="d-flex">
+              {otp !== "" ? (
+                <button
+                  class="btn save-details common-button btn-width"
+                  onClick={() => verifyOTP()}
+                >
+                  submit otp
+                </button>
+              ) : (
+                <button
+                  class="btn save-details common-button btn-width"
+                  disabled
+                >
+                  submit otp
+                </button>
+              )}
+              <div
+                className="cancel-link-model"
+                onClick={() => setOtpModal(false)}
+              >
+                Cancel
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )}
       <div className="d-flex">
         <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
-          <div className="personal-mgt-title">Personal </div>
+          <div className="personal-mgt-title">Personal</div>
         </div>
         <div className="col-2 col-sm-12 col-md-12 col-xl-12 d-block d-sm-none">
           <img

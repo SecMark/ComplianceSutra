@@ -3,18 +3,23 @@ import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadig
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmail, checkPersonalDetailsForm } from "../utility.js";
+import { checkPersonalDetailsForm } from "../utility.js";
 import { actions as personalDetailsAction } from "../../redux/actions";
 import { withRouter } from "react-router-dom";
 import SideBarInputControl from "../WebStepper.js";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
+import Dropdown from "./Dropdown/Dropdown";
 import "./style.css";
 import MobileStepper from "../MobileStepper.js";
+import Constants from "../../../../CommonModules/sharedComponents/constants/constant";
 
-function PersonalDetails({ history }) {
+function PersonalDetails({ history, location }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const params = new URLSearchParams(location.search);
+  const userType = params.get("type");
 
   const [isValidate, setIsValidate] = useState(false);
   const [values, setValues] = useState({
@@ -26,6 +31,12 @@ function PersonalDetails({ history }) {
     password: "",
     confirmPassword: "",
   });
+  const options = [
+    { value: "NSE", label: "NSE" },
+    { value: "BSE", label: "BSE" },
+    { value: "CDS", label: "CDS" },
+  ];
+
   const [mobileNumberValid, setMobileNumberValid] = useState("true");
 
   const [errors, setErrors] = useState({
@@ -36,7 +47,7 @@ function PersonalDetails({ history }) {
     designationErr: "",
   });
   const [whatappFlag, setWhatappFlag] = useState(false);
-  const [isCompanyNameValid, setIsCompanyNameValid] = useState(true);
+
   const [passwordState, setPasswordState] = useState({
     minlength: false,
     uppercaseandlowercase: false,
@@ -53,12 +64,9 @@ function PersonalDetails({ history }) {
     api
       .post("/api/availabilityCheck", payload)
       .then((result) => {
-        console.log(result.data.Status);
         setMobileNumberValid(result.data.Status);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -95,7 +103,7 @@ function PersonalDetails({ history }) {
     const mobileNumberReg = /^[0-9]{0,10}$/;
     let passwordRE =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-]{8,16}$/;
-    // let passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
+
     if (name === "mobileNumber") {
       if (!mobileNumberReg.test(event.target.value)) {
         return "";
@@ -218,7 +226,7 @@ function PersonalDetails({ history }) {
     if (emailFromLink !== "" && typeFromLink !== "") {
       let countryCode;
       let strr = values.countryCode;
-      // countryCode = strr.replace(/\D/g, '');
+
       countryCode = strr;
       dispatch(
         personalDetailsAction.userDataSaveRequest({
@@ -278,7 +286,6 @@ function PersonalDetails({ history }) {
     <div className="row">
       <div className="col-3 col-sm-4 col-md-4 col-xl-3 left-fixed">
         <div className="on-boarding">
-          {/* <SideBar /> */}
           <SideBarInputControl currentStep={1} />
         </div>
       </div>
@@ -295,14 +302,12 @@ function PersonalDetails({ history }) {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="header_logo">
-                      {/* <a href="#" style={{'cursor': 'auto'}}> */}
                       <img
                         src={comtech}
                         alt="COMPLIANCE SUTRA"
                         title="COMPLIANCE SUTRA"
                       />
                       <span className="camp">COMPLIANCE SUTRA</span>
-                      {/* </a> */}
                     </div>
                   </div>
                 </div>
@@ -391,14 +396,7 @@ function PersonalDetails({ history }) {
                               onKeyPress={(e) => handleKeyDown(e)}
                             />
                           </div>
-                          {/* {
-                        values.mobileNumber === "" && values.countryCode !== "" && 
-                         errors.countryCodeErr === "true" && (
-                          <p className="input-error-message">
-                             Country code is invalid
-                          </p>
-                        )
-                      } */}
+
                           {values.countryCode !== "" &&
                             errors.countryCodeErr === "true" && (
                               <p className="input-error-message">
@@ -427,32 +425,54 @@ function PersonalDetails({ history }) {
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Designation</label>
-                          <input
-                            type="text"
-                            className={
-                              "form-control " +
-                              (isValidate && values.designation === ""
-                                ? "input-error"
-                                : "") +
-                              (values.designation === ""
-                                ? " "
-                                : " success-input-form-control")
-                              // +(values.designation !== "" ? " success-input-form-control" : "")
-                            }
-                            id="Designation"
-                            placeholder="Eg. Compliance Officer, Team Leader"
-                            value={values.designation}
-                            onChange={onChangeHandler("designation")}
-                            onKeyPress={(e) => handleKeyDown(e)}
-                          />
-                          {isValidate && values.designation === "" && (
-                            <p className="input-error-message">
-                              Designation is required
-                            </p>
+                          {(userType == Constants.ExpertUser && (
+                            <div>
+                              <input
+                                type="text"
+                                placeholder="Expert Reviewer"
+                                value="Expert Reviewer"
+                                disabled="true"
+                                className="success-input-form-control"
+                              />
+                            </div>
+                          )) || (
+                            <div>
+                              <input
+                                type="text"
+                                className={
+                                  "form-control " +
+                                  (isValidate && values.designation === ""
+                                    ? "input-error"
+                                    : "") +
+                                  (values.designation === ""
+                                    ? " "
+                                    : " success-input-form-control")
+                                }
+                                id="Designation"
+                                placeholder="Eg. Compliance Officer, Team Leader"
+                                value={values.designation}
+                                onChange={onChangeHandler("designation")}
+                                onKeyPress={(e) => handleKeyDown(e)}
+                              />
+                              {isValidate && values.designation === "" && (
+                                <p className="input-error-message">
+                                  Designation is required
+                                </p>
+                              )}
+                            </div>
                           )}
                         </div>
                       </div>
-                      <div className="col-md-6 col-xs-12">&nbsp;</div>
+
+                      <div className="col-md-6 col-xs-12">
+                        {(userType == Constants.ExpertUser && (
+                          <Dropdown
+                            options={options}
+                            className="form-control"
+                          />
+                        )) ||
+                          ""}
+                      </div>
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Password</label>
@@ -462,7 +482,7 @@ function PersonalDetails({ history }) {
                               "form-control " +
                               ((isValidate && values.password === "") ||
                               (values.password !== "" &&
-                                errors.passwordErr !== "")
+                                  errors.passwordErr !== "")
                                 ? "input-error"
                                 : "") +
                               (values.password !== ""
@@ -604,7 +624,6 @@ function PersonalDetails({ history }) {
                     </button>
                   </div>
                   <div className="col-6 text-right d-none d-sm-block">
-                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
                     <span className="powerBy">Powered by</span>
                     <img
                       className="header_logo footer-logo-secmark"
@@ -612,7 +631,6 @@ function PersonalDetails({ history }) {
                       alt="SECMARK"
                       title="SECMARK"
                     />
-                    {/* </a> */}
                   </div>
                 </div>
               </div>

@@ -2,18 +2,15 @@ import React, { useState, useEffect } from "react";
 import "../style.css";
 import viewAllArow from "../../../../../../../assets/Icons/viewAllArow.png";
 import viewAllArowTop from "../../../../../../../assets/Icons/viewAllArowTop.png";
-// import "../BoardView/style.css"
 import moment from "moment";
 import keyboardArrowRightBlack from "../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
-import axios, { post } from "axios";
-import { withRouter } from "react-router-dom";
+import axios from "axios";
 import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
 import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
 import downArrow from "../../../../../../../assets/Icons/downArrow.png";
 import upArrow from "../../../../../../../assets/Icons/topArrowAccordian.png";
-import { useSelector, useDispatch, connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { actions as notificationActions } from "../../notification/Redux/actions.js";
 import { setNotificationTaskId } from "../../notification/Redux/Action";
 
 export default function AssignedView(props) {
@@ -65,9 +62,8 @@ export default function AssignedView(props) {
         initials = names[0].substring(0, 1).toUpperCase();
       if (names.length > 1) {
         initials += names[names.length - 1].substring(0, 1).toUpperCase();
-      } else if (names.length == 1) {
+      } else if (names.length === 1) {
         initials = names[0].substring(0, 2).toUpperCase();
-        // initials += names[names.length - 1].substring(0, 1).toUpperCase()
       }
     }
     return initials;
@@ -108,9 +104,11 @@ export default function AssignedView(props) {
     var dateObj = new Date(date);
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (dateObj.toLocaleDateString() == today.toLocaleDateString()) {
+    if (dateObj.toLocaleDateString() === today.toLocaleDateString()) {
       return "Today";
-    } else if (dateObj.toLocaleDateString() == yesterday.toLocaleDateString()) {
+    } else if (
+      dateObj.toLocaleDateString() === yesterday.toLocaleDateString()
+    ) {
       return "Yesterday";
     } else {
       return flag === 1
@@ -173,8 +171,7 @@ export default function AssignedView(props) {
                           task && task.Status
                             ? task.Status === "Assign"
                               ? "#fcf3cd"
-                              : // task.Status === "Completed By User"  ? "#cdfcd8 " :
-                              task.Status === "Completed By User"
+                              : task.Status === "Completed By User"
                               ? moment(task.EndDate).isBefore(today)
                                 ? "#cdfcd8"
                                 : "#ffefea"
@@ -192,8 +189,7 @@ export default function AssignedView(props) {
                               ? moment(task.EndDate).isBefore(today)
                                 ? "#7fba7a"
                                 : "#ff5f31"
-                              : // task.Status === "Completed By User" ? "#7fba7a" :
-                              task.Status === "Approved"
+                              : task.Status === "Approved"
                               ? "#7fba7a"
                               : task.Status === "Assigned"
                               ? "#f8c102"
@@ -224,16 +220,6 @@ export default function AssignedView(props) {
               </div>
             </div>
           </div>
-          {/* <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
-            <div
-              className="circle-front-text"
-              style={{ width: "fit-content", cursor: "pointer" }}
-              value={task.TaskId}
-              onClick={(e) => getSelectTaskDetails(task)}
-            >
-              {task.EntityName}
-            </div>
-          </div> */}
           <div
             className="col-4 col-md-4 col-sm-4 col-xl-4 d-none d-sm-block"
             style={{ cursor: "pointer" }}
@@ -245,10 +231,7 @@ export default function AssignedView(props) {
                   task.ApproverName === "Assign" ? null : (
                     <div className="circle-name d-none d-sm-block">
                       <div className="circle-text">
-                        {
-                          // userDetails.UserType === 4 &&
-                          getInitials(task.ApproverName)
-                        }
+                        {getInitials(task.ApproverName)}
                       </div>
                     </div>
                   )
@@ -316,47 +299,28 @@ export default function AssignedView(props) {
                       alt="Right Arrow"
                     />
                   )}
-                  {/* {showUserToolTip === `Tooltip${task.TaskId}` && (
-                    <div className="toolTip-input">
-                      <div className="tooltiptext1 mobDisplaynone">
-                        <span className="font-normal-text1">
-                          {task.AssignedName}
-                        </span>
+
+                  {task.AssignedTo === 0 && (
+                    <div className="only-mobile-assign-add d-block d-sm-none">
+                      <div
+                        className="assign-user-icon"
+                        onMouseOver={() =>
+                          setShowUserToolTip(`Tooltip${task.TaskId}`)
+                        }
+                        onMouseOut={() => setShowUserToolTip("")}
+                      >
+                        <img
+                          src={assignIconCircle}
+                          className="d-block d-sm-none"
+                          alt="Assign Circle"
+                        />
                       </div>
                     </div>
-                  )} */}
-                  {
-                    // task.AssignedTo > 0 &&
-                    task.AssignedTo === 0 && (
-                      <div className="only-mobile-assign-add d-block d-sm-none">
-                        <div
-                          className="assign-user-icon"
-                          onMouseOver={() =>
-                            setShowUserToolTip(`Tooltip${task.TaskId}`)
-                          }
-                          onMouseOut={() => setShowUserToolTip("")}
-                        >
-                          <img
-                            src={assignIconCircle}
-                            className="d-block d-sm-none"
-                            alt="Assign Circle"
-                          />
-                        </div>
-                      </div>
-                    )
-                  }
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          {/* {Status === "overdue" && (
-            <div className="redWidth-bottom">
-              <div className="redLine">
-                {" "}
-                <img src={RedLine} alt="" />
-              </div>
-            </div>
-          )} */}
         </div>
       </Link>
     );
@@ -365,7 +329,6 @@ export default function AssignedView(props) {
   const renderSidebarTaskList = (task, Status, listType) => {
     return (
       <Link
-        // to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
           dispatch(setNotificationTaskId(task.TaskId));
@@ -373,7 +336,7 @@ export default function AssignedView(props) {
       >
         <div
           className={
-            props.getTaskById && task.TaskId == props.getTaskById.TaskId
+            props.getTaskById && task.TaskId === props.getTaskById.TaskId
               ? " row active-action-card-sidebar "
               : "row action-card-sidebar"
           }
@@ -434,131 +397,127 @@ export default function AssignedView(props) {
     }
     setExpandedFlags(tempExtend);
   };
-  // console.log("expandedFlags => ",expandedFlags);
 
   return (
     <div>
       <div className="task-list-grid">
         <div className="">
-          {
-            companyTaskData &&
-            props.sideBarTaskList === false &&
-            companyTaskData.length > 0
-              ? companyTaskData.map((item, index) => {
-                  return (
-                    <>
-                      {item.Status !== "Norec" && (
-                        <div className="take-action customHeight">
-                          <div className="task-list-grid">
-                            {item.Status && (
+          {companyTaskData &&
+          props.sideBarTaskList === false &&
+          companyTaskData.length > 0
+            ? companyTaskData.map((item, index) => {
+                return (
+                  <>
+                    {item.Status !== "Norec" && (
+                      <div className="take-action customHeight">
+                        <div className="task-list-grid">
+                          {item.Status && (
+                            <div
+                              className="upcoming-btn"
+                              onClick={() => {
+                                expandedFlags.includes(index)
+                                  ? handleExpandList("hide", index)
+                                  : handleExpandList("show", index);
+                              }}
+                            >
                               <div
-                                className="upcoming-btn"
-                                onClick={() => {
-                                  expandedFlags.includes(index)
-                                    ? handleExpandList("hide", index)
-                                    : handleExpandList("show", index);
-                                }}
+                                style={{ cursor: "pointer" }}
+                                className="upcoming-title"
                               >
-                                <div
-                                  style={{ cursor: "pointer" }}
-                                  className="upcoming-title"
-                                >
-                                  {item.Status}
-                                  <span className="black-circle">
-                                    <p className="black-circle-text">
-                                      {item.Details.length}
-                                    </p>
-                                  </span>
-                                  {expandedFlags.includes(index) ? (
-                                    <img
-                                      src={upArrow}
-                                      className="arrowDown"
-                                      alt="Arrow Up"
-                                      style={{ cursor: "pointer" }}
-                                    />
-                                  ) : (
-                                    <img
-                                      src={downArrow}
-                                      className="arrowDown"
-                                      style={{ cursor: "pointer" }}
-                                      alt="Arrow down"
-                                    />
-                                  )}
-                                </div>
+                                {item.Status}
+                                <span className="black-circle">
+                                  <p className="black-circle-text">
+                                    {item.Details.length}
+                                  </p>
+                                </span>
+                                {expandedFlags.includes(index) ? (
+                                  <img
+                                    src={upArrow}
+                                    className="arrowDown"
+                                    alt="Arrow Up"
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                ) : (
+                                  <img
+                                    src={downArrow}
+                                    className="arrowDown"
+                                    style={{ cursor: "pointer" }}
+                                    alt="Arrow down"
+                                  />
+                                )}
                               </div>
-                            )}
+                            </div>
+                          )}
 
-                            {
-                              <>
+                          {
+                            <>
+                              {!expandedFlags.includes(index) &&
+                                item.Details.slice(
+                                  0,
+                                  assignRowCount[item.Status.trim()]
+                                ).map((task) => {
+                                  return (
+                                    <>
+                                      {task &&
+                                        task.EntityName !== "Norec" &&
+                                        renderCompanyTaskList(
+                                          task,
+                                          item.Status.trim(),
+                                          1
+                                        )}
+                                    </>
+                                  );
+                                })}
+                              <div>
                                 {!expandedFlags.includes(index) &&
-                                  item.Details.slice(
-                                    0,
-                                    assignRowCount[item.Status.trim()]
-                                  ).map((task) => {
-                                    return (
-                                      <>
-                                        {task &&
-                                          task.EntityName !== "Norec" &&
-                                          renderCompanyTaskList(
-                                            task,
-                                            item.Status.trim(),
-                                            1
-                                          )}
-                                      </>
-                                    );
-                                  })}
-                                <div>
-                                  {!expandedFlags.includes(index) &&
-                                    item.Details.length > 3 && (
-                                      <>
-                                        {assignRowCount[item.Status.trim()] >
-                                          3 && (
-                                          <div
-                                            onClick={() =>
-                                              AssignShowLessMore(item.Status, 3)
-                                            }
-                                            className="viewAll showLess"
-                                          >
-                                            Show Less{" "}
-                                            <img
-                                              src={viewAllArowTop}
-                                              alt="Show Less"
-                                            />
-                                          </div>
-                                        )}
-                                        {assignRowCount[item.Status.trim()] ===
-                                          3 && (
-                                          <div
-                                            onClick={() =>
-                                              AssignShowLessMore(
-                                                item.Status,
-                                                item.Details.length
-                                              )
-                                            }
-                                            className="viewAll"
-                                          >
-                                            View All ({item.Details.length - 3}{" "}
-                                            MORE )
-                                            <img
-                                              src={viewAllArow}
-                                              alt="view All Arow"
-                                            />
-                                          </div>
-                                        )}
-                                      </>
-                                    )}
-                                </div>
-                              </>
-                            }
-                          </div>
+                                  item.Details.length > 3 && (
+                                    <>
+                                      {assignRowCount[item.Status.trim()] >
+                                        3 && (
+                                        <div
+                                          onClick={() =>
+                                            AssignShowLessMore(item.Status, 3)
+                                          }
+                                          className="viewAll showLess"
+                                        >
+                                          Show Less{" "}
+                                          <img
+                                            src={viewAllArowTop}
+                                            alt="Show Less"
+                                          />
+                                        </div>
+                                      )}
+                                      {assignRowCount[item.Status.trim()] ===
+                                        3 && (
+                                        <div
+                                          onClick={() =>
+                                            AssignShowLessMore(
+                                              item.Status,
+                                              item.Details.length
+                                            )
+                                          }
+                                          className="viewAll"
+                                        >
+                                          View All ({item.Details.length - 3}{" "}
+                                          MORE )
+                                          <img
+                                            src={viewAllArow}
+                                            alt="view All Arow"
+                                          />
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                              </div>
+                            </>
+                          }
                         </div>
-                      )}
-                    </>
-                  );
-                })
-              : ""
-            // <div>Data Not Available</div>
-          }
+                      </div>
+                    )}
+                  </>
+                );
+              })
+            : ""}
         </div>
       </div>
       {companyTaskData &&
@@ -577,24 +536,6 @@ export default function AssignedView(props) {
                           className="upcoming-title"
                         >
                           {item.Status}
-                          {/* <span className="black-circle">
-                              <p className="black-circle-text">
-                                {item.Details.length}
-                              </p>
-                            </span>
-                            {expandedFlags.includes(index) ? (
-                              <img
-                                src={upArrow}
-                                className="arrowDown"
-                                alt="Arrow Up"
-                              />
-                            ) : (
-                              <img
-                                src={downArrow}
-                                className="arrowDown"
-                                alt="Arrow down"
-                              />
-                            )} */}
                         </div>
                       </div>
                       {item.Status.trim() != "overdue" &&
@@ -611,7 +552,6 @@ export default function AssignedView(props) {
                                   {task &&
                                     task.EntityName !== "Norec" &&
                                     renderSidebarTaskList(
-                                      // {renderSidebarTaskList(
                                       task,
                                       item.Status.trim(),
                                       1

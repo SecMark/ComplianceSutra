@@ -1,0 +1,85 @@
+.logo {
+  padding-left: 10px !important;
+
+}
+.ER-left-bar {
+  background-color: #f6f9fb;
+  padding-top: 30px;
+  height: 100vh;
+  position: absolute;
+  text-align: center; 
+  overflow-y: hidden;
+}
+
+.ER-main {
+  padding: 50px 50px;
+  margin-left: 50px;
+}
+
+.ER-left-bar .ER-main{
+  overflow-y: scroll;
+  position: absolute;
+}
+/* .ER-task-container {
+  margin-top: 100px;
+  margin-left: 45px;
+} */
+
+.dashboard-icon {
+  margin-top: 70px;
+  cursor: pointer;
+  opacity: 0.20;
+}
+
+.dashboard-icon-active {
+  margin-top: 70px;
+  border-right: 2.8px solid #7a73ff;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.ER-icone{
+  margin-top: 27px;
+  cursor: pointer;
+  opacity: 0.20;
+}
+
+.ER-icone-active{
+  margin-top: 27px;
+  border-right: 2.8px solid #7a73ff;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.ER-icon {
+  margin-top: 27px;
+  cursor: pointer;
+  position: static;
+  opacity: 0.20;
+}
+
+.ER-icon-active {
+  margin-top: 27px;
+  border-right: 2.8px solid #7a73ff;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.profile-icon {
+  margin-top: 300px;
+  bottom: 30px;
+  right: 17px;
+  cursor: pointer;
+  opacity: 0.20;
+}
+
+.profile-icon-active {
+  margin-top: 300px;
+  border-right: 2.8px solid #7a73ff;
+  color: red !important;
+  bottom: 30px;
+  right: 17px;
+  cursor: pointer;
+  opacity: 1;
+}
+

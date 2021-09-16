@@ -1,6 +1,5 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React from "react";
 import filter from "../../../assets/Icons/Filters.png";
-import LeftSideBar from "../../../CommonModules/SideBar/LeftSideBar";
 import HistoryFilterForm from "../HistoryFilterForm/index.js";
 import { withRouter } from "react-router";
 import "./style.css";

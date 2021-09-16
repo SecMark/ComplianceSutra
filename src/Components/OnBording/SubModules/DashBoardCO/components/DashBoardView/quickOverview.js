@@ -2,30 +2,22 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import percentageless60 from "../../../../../../assets/Icons/percentageless60.png";
 import classNames from "classnames";
-import axios, { post } from "axios";
-import { withRouter, Link } from "react-router-dom";
-// import SideBarBg from "../../../../assets/Images/Onboarding/side-bar-bg.png";
-import sideBarlogo from "../../../../../../assets/Icons/sideBarlogo.png";
-import SideBaruser from "../../../../../../assets/Icons/sideBaruser.png";
-import taskIcon from "../../../../../../assets/Icons/taskIcon.png";
+import axios from "axios";
+import { Link } from "react-router-dom";
 import btnicon from "../../../../../../assets/Icons/btn-icon.png";
-import togglemobile from "../../../../../../assets/Icons/togglemobile.png";
 import Collapsible from "react-collapsible";
 import { BACKEND_BASE_URL } from "../../../../../../apiServices/baseurl";
 import siderBarbtnArrow from "../../../../../../assets/Icons/siderBarbtnArrow.png";
 import actionArrow from "../../../../../../assets/Icons/actionArrow.png";
 import complteTaskIcon from "../../../../../../assets/Icons/complteTaskIcon.png";
-import inprogressicon from "../../../../../../assets/Icons/inprogressicon.png";
 import scheduledIcon from "../../../../../../assets/Icons/scheduledIcon.png";
 import siderBarbtnArrowTop from "../../../../../../assets/Icons/siderBarbtnArrowTop.png";
-import { useSelector, useDispatch, connect } from "react-redux";
-import { combineActions } from "redux-actions";
+import { useSelector } from "react-redux";
 import { isMobile } from "react-device-detect";
 
 let percentage;
 function QuickOverView({ click, setClick, setListView, listView }) {
   const state = useSelector((state) => state);
-  const dispatch = useDispatch();
   const [collapse, setCollapse] = useState([]);
   const [thingOnTrack, setThingOnTrack] = useState({});
   const [companyViewData, setCompanyViewData] = useState([]);
@@ -39,7 +31,9 @@ function QuickOverView({ click, setClick, setListView, listView }) {
     if (
       userDetails &&
       userDetails.UserID !== undefined &&
-      (userDetails.UserType === 3 || userDetails.UserType === 5)
+      (userDetails.UserType === 3 ||
+        userDetails.UserType === 5 ||
+        userDetails.UserType === 6)
     ) {
       fetchQuickOverViewSectionData("type1");
       fetchTeamPerformanceData();
@@ -173,7 +167,6 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   };
   const _renderCompanyView = (data, index, length) => {
     percentage = (data.CompliedTask / data.TotalTask) * 100;
-    // console.log(percentage, "percentage")
     if (length <= 2) {
       let btnClass = classNames({
         "btn sidebar-btn-two-new-active  btnLattwo": index % 2 !== 0,
@@ -356,7 +349,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
         initials = names[0].substring(0, 1).toUpperCase();
       if (names.length > 1) {
         initials += names[names.length - 1].substring(0, 1).toUpperCase();
-      } else if (names.length == 1) {
+      } else if (names.length === 1) {
         initials = names[0].substring(0, 2).toUpperCase();
       }
     }
@@ -420,27 +413,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   return (
     <div className="row">
       {
-        //  listView === "0" && click ==="" &&
-        <div className="col-12 col-sm-3 col-md-3 col-xl-3 new-side-bar">
-          {/* <div className="mobile-head d-block d-sm-none">
-            <div className="d-flex">
-              <div
-                className="w-25"
-                style={{ cursor: "pointer" }}
-               
-              >
-                <img src={togglemobile} alt="toggle mobile" />
-              </div>
-              <div className="w-75">
-               
-                <img
-                  className="mobile-logo"
-                  src={sideBarlogo}
-                  alt="sideBarlogo"
-                />
-              </div>
-            </div>
-          </div> */}
+        <div className="col-12 col-md-3 col-xl-3 new-side-bar">
           <div className="scroll-inside-new">
             <div
               className={
@@ -457,13 +430,8 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                   Here is a quick
                   <br /> overview for you!
                 </div>
-
-                {/* <div className="bold-title-sidebar"><span><Link
-                                    to="/dashboard"
-                                    style={{ textDecoration: "none" }}
-                                    >Task</Link></span></div> */}
                 <>
-                  <div className="d-block d-sm-none">
+                  <div className="d-block d-md-none">
                     <span
                       className="bold-title-sidebar mr-4"
                       style={{ width: "32%", color: "#2c2738" }}
@@ -631,7 +599,8 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                 </div>
                 {userDetails &&
                   userDetails.UserType !== undefined &&
-                  userDetails.UserType === 3 && (
+                  (userDetails.UserType === 3 ||
+                    userDetails.UserType === 6) && (
                     <div className="sidebar-overview-grid-new shadow bg-white rounded">
                       <div className="take-action-small-title-new">
                         Overview

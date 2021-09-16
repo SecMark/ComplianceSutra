@@ -14,20 +14,16 @@ export default {
     errorDueToMoreThanOneYearDateFromToday:
       "Date should be less than 1 year from today's date.",
     errorDueToBeforeDate: "Date should not be prior to today's date.",
+    errorDueToPriorDate: "Date should not be prior to date of registration.",
+    errorDueToPreviousDate: "Date should be after today's date.",
+    errorDueToMoreThanOneYearDateFromToday:
+      "Date should be less than 1 year from today's date.",
   },
   filterFlag: "A",
   status: "status",
   license: "license",
   company: "company",
   team: "team",
-  list: "list",
-  calender: "calender",
-  board: "board",
-  day: "day",
-  month: "month",
-  week: "week",
-  increment: "increment",
-  decrement: "decrement",
   ReAssignFilterTypes: {
     migrateAllTasksInDateRange: "MIGRATE_ALL_TASKS_IN_DATE_RANGE",
     migrateAllTasksOfParticularDate: "MIGRATE_ALL_TASKS_OF_PARTICULAR_DATE",
@@ -49,4 +45,52 @@ export default {
     "Saturday",
     "Sunday",
   ],
+
+  ExpertUser: "8",
+  ExpertReviewerBaseUrl: "/expert-review",
+  SuperAdminBaseURL: "/super-admin",
+  MigrateTaskMessages: {
+    success: "Migration Request has been submitted successfully!",
+    MembershipDetails: {
+      recommendedText: "RECOMMENDED",
+      plans: [
+        {
+          id: 1,
+          name: "Monthly",
+          users: 5,
+          isRecommended: false,
+          isDefaultSelected: false,
+        },
+        {
+          id: 2,
+          name: "Annual",
+          users: 10,
+          isRecommended: true,
+          isDefaultSelected: true,
+        },
+      ],
+    },
+    MembershipDetails: {
+      recommendedText: "RECOMMENDED",
+      plans: [
+        {
+          id: 1,
+          name: "Monthly",
+          users: 5,
+          isRecommended: false,
+          isDefaultSelected: false,
+        },
+        {
+          id: 2,
+          name: "Annual",
+          users: 10,
+          isRecommended: true,
+          isDefaultSelected: true,
+        },
+      ],
+    },
+  },
+
+  expertReview: "exp",
+  complianceOfficer: "compl",
 };

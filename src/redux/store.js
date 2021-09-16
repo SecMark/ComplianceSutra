@@ -1,14 +1,13 @@
-import { createBrowserHistory } from "history"
-import { applyMiddleware, compose, createStore } from "redux"
-import { persistStore, persistReducer } from "redux-persist"
-import storage from "redux-persist/lib/storage" // defaults to localStorage for web
-import { routerMiddleware } from "connected-react-router"
-import createSagaMiddleware from "redux-saga"
-import createRootReducer from "./reducers"
-import sagas from "./sagas"
-import NotificationReducers from "../Components/OnBording/SubModules/DashBoardCO/components/notification/Redux/Reducers/NotificationRedu"
+import { createBrowserHistory } from "history";
+import { applyMiddleware, compose, createStore } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import { routerMiddleware } from "connected-react-router";
+import createSagaMiddleware from "redux-saga";
+import createRootReducer from "./reducers";
+import sagas from "./sagas";
 
-export const history = createBrowserHistory()
+export const history = createBrowserHistory();
 
 const persistConfig = {
   key: "root",
@@ -20,25 +19,26 @@ const persistConfig = {
     "users",
     "adminMenu",
     "HistoryReducer",
-    "UpdatesReducer"
+    "UpdatesReducer",
+    "userList",
+    "PaymentReducer",
   ],
-}
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+};
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default function configureStore(preloadedState) {
-  const sagaMiddleware = createSagaMiddleware()
-  const rootReducer = createRootReducer(history)
-  const persistedReducer = persistReducer(persistConfig, rootReducer)
+  const sagaMiddleware = createSagaMiddleware();
+  const rootReducer = createRootReducer(history);
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
   const store = createStore(
     persistedReducer, // root reducer with router state
     preloadedState,
-
     composeEnhancers(applyMiddleware(sagaMiddleware, routerMiddleware(history)))
-  )
-  sagaMiddleware.run(sagas)
-  const persistor = persistStore(store)
+  );
+  sagaMiddleware.run(sagas);
+  const persistor = persistStore(store);
   return {
     store,
     persistor,
-  }
+  };
 }
