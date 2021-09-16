@@ -8,7 +8,8 @@ import { actions as menuActions } from "../../OnBording/SubModules/DashBoardCO/M
 const loginReq = function* loginReq({ payload }) {
   try {
     const { data } = yield call(api.loginAccount, payload);
-    if (data && data.Message !== "FAIL") {
+    console.log(data);
+    if (data && data.Message === "SUCCESS") {
       yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
       console.log("login response", data);
       if (

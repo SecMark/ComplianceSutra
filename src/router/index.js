@@ -170,9 +170,9 @@ export default function AppRouter() {
           <Route exact path="/help" component={DashBoardCO} />
 
           {/* Expert Review */}
-          <Switch>
+      
             <Route path="/expert-review" component={ExperReview}></Route>
-          </Switch>
+        
 
           <Route exact path="/thankyou" component={Thankyou} />
         </div>
