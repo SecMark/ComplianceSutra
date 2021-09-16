@@ -1,0 +1,136 @@
+.add-user-container {
+  display: flex;
+}
+
+.add-users-button {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: right;
+  color: #6c5dd3;
+  background: none;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.533);
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-main {
+  width: 100%;
+  background-color: #fff;
+  margin: 10rem auto;
+  border-radius: 8px;
+  z-index: 1;
+  max-width: 400px;
+  max-height: 315px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header img {
+  cursor: pointer;
+}
+
+.modal-content {
+  padding: 15px 15px 10px;
+  width: 100%;
+}
+.modal-body-container {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.counter-buttons {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  justify-content: space-around;
+}
+
+.counter {
+  border-radius: 50%;
+  color: #ffffff;
+  border: none;
+  padding: 8px 8px;
+  background-color: #6c5dd3;
+  font-weight: bold;
+  width: 52px;
+  height: 52px;
+}
+.counter svg {
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.counter-count {
+  font-size: 72px;
+  margin: 0;
+}
+
+.select-user {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+
+.select-section {
+  display: flex;
+  margin: 0 0 0 0;
+}
+
+.procced-buy {
+  border: none;
+  width: 172px;
+  height: 43px;
+  border-radius: 4px;
+  background-color: #6c5dd3;
+  color: #ffffff;
+  margin-right: 15px;
+}
+
+.account-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-button {
+  border-radius: 20px;
+  color: #ff5f31;
+  background-color: #ffefea;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 10px;
+  font-size: 12px;
+  padding: 0;
+  margin: 0 10px 0 0;
+  border: 0;
+}

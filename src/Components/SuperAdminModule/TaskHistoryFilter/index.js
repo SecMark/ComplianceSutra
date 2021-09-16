@@ -4,10 +4,10 @@ import "./style.css";
 import TaskForm from "./TaskHistoryForm/TaskForm";
 function index() {
   return (
-    <div className="ER-dashboard-container">
+    <div className="Super-admin-dashboard-container">
       {/* <div> <LeftSideBar/></div> */}
-      <div className="ER-main">
-        <div className="ER-task-statics row">
+      <div className="Super-admin-main">
+        <div className="Super-admin-task-statics row">
           <h3>Tasks History</h3>
           <div className="active-task">
 
