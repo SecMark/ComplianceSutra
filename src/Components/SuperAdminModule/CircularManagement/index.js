@@ -289,7 +289,7 @@ const Circular = () =>{
                         </span>
 
                         </div>
-                        
+                       
                         <br></br>
                         <div className="button">
                             <button
@@ -308,7 +308,6 @@ const Circular = () =>{
                         </div>
                       </> 
                   )}
-
 
                 {stepper.stepperAcitveSlide === 2 && (
                       <>
