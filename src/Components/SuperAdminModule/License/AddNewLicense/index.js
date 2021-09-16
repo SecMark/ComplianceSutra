@@ -5,6 +5,7 @@ import Stepper from "../../../../CommonModules/sharedComponents/Stepper/index";
 import SABasicDetails from "./BasicDetails";
 import SASubLicense from "./SubLicense";
 import SASubTasks from "./Subtasks";
+import SALicenseSummary from "./LicenseSummary";
 
 const SALicense = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,7 +78,7 @@ const SALicense = () => {
       });
     }
   };
-  console.log(subTasks);
+  console.log(stepper.stepperAcitveSlide);
   return (
     <div>
       <button onClick={() => setIsOpen(!isOpen)}>ADD</button>
@@ -85,22 +86,31 @@ const SALicense = () => {
         <div className="AddLicenseMain">
           <h5>Add New License</h5>
           <Stepper steps={steps} stepper={stepper} setStepper={setStepper} />
-          {/* <SABasicDetails
-            setBasicDetails={setBasicDetails}
-            basicDetails={basicDetails}
-          /> */}
-          {/* <SASubLicense
-            licenseColor={licenseColor}
-            setLicenseColor={setLicenseColor}
-            color={color}
-            setColor={setColor}
-          /> */}
-          <SASubTasks
+          {(stepper.stepperAcitveSlide === 1 && (
+            <SABasicDetails
+              setBasicDetails={setBasicDetails}
+              basicDetails={basicDetails}
+            />
+          )) ||
+            (stepper.stepperAcitveSlide === 2 && (
+              <SASubLicense
+                licenseColor={licenseColor}
+                setLicenseColor={setLicenseColor}
+                color={color}
+                setColor={setColor}
+              />
+            ))}
+
+          {/* <SASubTasks
             options={ColorOptions}
             setSubTasks={setSubTasks}
             subTasks={subTasks}
-          />
-          <button className="NextButton" onClick={handleNextClick}>
+          /> */}
+          {/* <SALicenseSummary basicDetails={basicDetails} /> */}
+          <button
+            className="NextButton"
+            onClick={() => handleNextClick(stepper.stepperAcitveSlide)}
+          >
             NEXT
           </button>
         </div>

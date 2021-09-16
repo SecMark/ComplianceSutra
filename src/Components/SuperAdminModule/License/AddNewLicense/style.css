@@ -128,3 +128,32 @@
   font-weight: 500;
   margin-top: 1.2rem;
 }
+.DetailsEdit > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.DetailsEdit > div > button {
+  border: none;
+  background-color: #ffffff;
+  color: #6c5dd3;
+  font-weight: 500;
+}
+.DetailsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  justify-content: initial;
+}
+.DetailsContainer > div {
+  display: flex;
+  justify-content: space-between;
+}
+.DetailsContainer > div > p {
+  font-size: 13px;
+}
+.DetailsLabel {
+  margin-right: 3rem;
+  color: #575757;
+  opacity: 0.6;
+}
