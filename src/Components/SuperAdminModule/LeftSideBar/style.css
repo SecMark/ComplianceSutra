@@ -1,7 +1,7 @@
 .logo {
   padding-left: 10px !important;
 }
-.ER-left-bar {
+.Super-admin-left-bar {
   background-color: #f6f9fb;
   padding-top: 30px;
   height: 100vh;
@@ -9,7 +9,7 @@
   text-align: center;
 }
 
-.ER-main {
+.Super-admin-main {
   padding: 50px 50px;
   width: 100%;
 }
@@ -25,12 +25,12 @@
   cursor: pointer;
 }
 
-.ER-icon {
+.Super-admin-icon {
   margin-top: 20px;
   cursor: pointer;
 }
 
-.ER-icon-active {
+.Super-admin-icon-active {
   border-right: 2px solid #7a73ff;
   cursor: pointer;
 }

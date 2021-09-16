@@ -165,9 +165,7 @@ function RightSideGrid({
   useEffect(() => {
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
-    console.log(state.NotificationRedu);
     if (task_id) {
-      console.log(state.NotificationRedu?.taskID);
       getSelectTaskDetails();
     }
   }, [state.NotificationRedu?.taskID]);
@@ -1660,6 +1658,7 @@ function RightSideGrid({
         taskID: getTaskById.TaskId, //TaskID
         comment: rejectTaskInput,
         commentBy: user.UserID, //UserID
+        link: 0,
       })
     );
     setRejectTaskInputComment("");
@@ -1814,7 +1813,6 @@ function RightSideGrid({
     }
   };
   const getSelectTaskDetails = (e) => {
-    console.log("hello");
     setShowFiles(true);
     setShowComments(false);
     setCurrentDropDown("");
@@ -1826,13 +1824,11 @@ function RightSideGrid({
 
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
-    console.log(state.NotificationRedu);
 
     if (task_id !== null && e === undefined) {
       if (localStorage.expandedFlagss) {
         let getItem = localStorage.getItem("expandedFlagss");
         let getItemArr = getItem && getItem.split(",");
-        console.log("getItemArr => ", getItemArr);
         const nuevo =
           getItemArr &&
           getItemArr.length > 0 &&
@@ -1896,6 +1892,7 @@ function RightSideGrid({
         taskID: getTaskById.TaskId, //TaskID
         comment: inputComment,
         commentBy: user.UserID, //UserID
+        link: 0,
       })
     );
     setInputComment("");
@@ -1910,6 +1907,7 @@ function RightSideGrid({
     dispatch(
       taskReportActions.taskCommentsByTaskIdRequest({
         taskid: getTaskById.TaskId,
+        ftype: 0,
       })
     );
   };
@@ -1917,7 +1915,7 @@ function RightSideGrid({
   const getUpload = (file) => {
     let url = "";
     if (currentTaskData && currentTaskData.TaskId) {
-      url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData.TaskId}`;
+      url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData.TaskId}&Userid=${userDetails.UserID}&ftype=0`;
     } else {
       url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData}`;
     }
@@ -1931,6 +1929,7 @@ function RightSideGrid({
         "content-type": "multipart/form-data",
       },
     };
+    console.log(url, formData, config);
     return post(url, formData, config);
   };
 
@@ -3765,7 +3764,6 @@ function RightSideGrid({
                         )}
                       </div>
                     </div>
-                 
                   </>
                 );
               })}

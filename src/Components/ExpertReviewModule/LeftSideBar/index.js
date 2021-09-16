@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
-import checkActive from "../../../assets/ERIcons/check_circle_black.png";
-import notificationActive from "../../../assets/ERIcons/notifications_black.png";
-import historyActive from "../../../assets/ERIcons/history_black.png";
+import history_active from "../../../assets/ERIcons/history_active.png";
+import profileActive from "../../../assets/ERIcons/profileActive.png";
 import { useHistory, useLocation, withRouter } from "react-router-dom";
+import checkSmallBlack from "../../../assets/ERIcons/checkSmallBlack.png";
+import notificationBlack from "../../../assets/ERIcons/notificationBlack.png";
 
 import "./style.css";
 
@@ -19,30 +20,43 @@ const LeftSideBar = () => {
     <div className="side-bar">
       <div className="ER-left-bar">
         <div className="logo">
-          <img src={sideBarlogo} alt="sideBarlogo" />
-        </div>
-        <div
-          className={
-            pathname === "/expert-review/dashboard"
-              ? "dashboard-icon-active"
-              : "dashboard-icon"
-          }
-        >
           <img
-            title="Dashboard"
-            src={checkActive}
-            onClick={() => navigateTo("dashboard")}
+            src={sideBarlogo}
+            alt="sideBarlogo"
+            style={{ marginRight: "5px" }}
           />
         </div>
         <div
           className={
-            pathname === "/expert-review/notifications"
-              ? "ER-icon-active"
-              : "ER-icon"
+            pathname === "/expert-review/dashboard" ||
+            pathname === "/expert-review/"
+              ? "dashboard-icon-active"
+              : "dashboard-icon"
           }
         >
-          <img title="Notification" src={notificationActive} />
+          <div className="image">
+            <img
+              title="Dashboard"
+              src={checkSmallBlack}
+              onClick={() => navigateTo("dashboard")}
+            />
+          </div>
         </div>
+
+        <div
+          className={
+            pathname === "/expert-review/notifications"
+              ? "ER-icone-active"
+              : "ER-icone"
+          }
+        >
+          <img
+            title="Notification"
+            src={notificationBlack}
+            onClick={() => navigateTo("notifications")}
+          />
+        </div>
+
         <div
           className={
             pathname === "/expert-review/task-history"
@@ -52,7 +66,7 @@ const LeftSideBar = () => {
         >
           <img
             title="Task History"
-            src={historyActive}
+            src={history_active}
             onClick={() => navigateTo("task-history")}
           />
         </div>
@@ -66,7 +80,7 @@ const LeftSideBar = () => {
         >
           <img
             title="Profile"
-            src={historyActive}
+            src={profileActive}
             onClick={() => navigateTo("profile")}
           />
         </div>

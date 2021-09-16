@@ -23,6 +23,20 @@ const UserManagement = lazy(() =>
   import("../../../Components/SuperAdminModule/UserManagement")
 );
 
+const CircularManagement = lazy(() =>
+  import("../../../Components/SuperAdminModule/CircularManagement")
+);
+
+const ActiveLicense = lazy(() =>
+  import("../../../Components/SuperAdminModule/LicenseManagement/ActiveLicense")
+);
+
+const PriceManagement = lazy(() =>
+  import(
+    "../../../Components/SuperAdminModule/PaymentManagement/PriceManagement"
+  )
+);
+
 export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/`,
@@ -51,5 +65,17 @@ export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/user-management`,
     component: UserManagement,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/circular-management`,
+    component: CircularManagement,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/license-management`,
+    component: ActiveLicense,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/payment-management/`,
+    component: PriceManagement,
   },
 ];

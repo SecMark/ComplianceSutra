@@ -1,0 +1,115 @@
+.spacing {
+  padding: 20px;
+}
+.form-control-label {
+  opacity: 0.64;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+.form-control {
+  background-color: #f7f7f7;
+  border: 1px solid #f7f7f7;
+  font-size: 13px;
+}
+.form-control::placeholder {
+  color: #575757;
+  font-size: 12px;
+  opacity: 0.64;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+button.primary-button,
+button.stroke-button {
+  border: none;
+  background-color: transparent;
+  color: #6c5dd3;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
+}
+button.primary-button {
+  background-color: #6c5dd3;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+}
+button.primary-button--outlined {
+  background-color: #fff;
+  color: #6c5dd3;
+  border: 1px solid #6c5dd3;
+}
+.dropdown-menu-list {
+  margin-top: 4px;
+}
+.stepper-horizontal-line {
+  width: 62px;
+  height: 2px;
+  background-color: #6c5dd3;
+  opacity: 0.4;
+}
+.stepper-image {
+  margin: 0 3px;
+  height: 24px;
+  width: 24px;
+}
+.stepper-item {
+  /* border: 1px solid black; */
+}
+.stepper-text {
+  bottom: -30px;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  width: fit-content;
+  font-size: 13px;
+  width: auto;
+  text-align: center;
+}
+.stepper-text--left {
+  left: 50%;
+  transform: translateX(-65%);
+  width: 120px;
+}
+.stepper-text--center {
+  left: 50%;
+  transform: translateX(-65%);
+  width: 180px;
+}
+.stepper-text--right {
+  left: 50%;
+  transform: translateX(-45%);
+  width: 170px;
+}
+.review-details__text {
+  font-family: Poppins;
+  font-size: 13px;
+  /* font-weight: 300; */
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.26px;
+  text-align: left;
+  color: #575757;
+}
+.review-details__text--label {
+  opacity: 0.64;
+}
+.selected-role--form-control {
+  width: 57%;
+}

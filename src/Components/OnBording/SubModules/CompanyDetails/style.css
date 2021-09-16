@@ -181,10 +181,7 @@
   text-align: left;
   color: #2c2738;
 }
-.company-details-tbl .table td,
-.table th:first-child {
-  padding-left: 0px !important;
-}
+
 .company-details-tbl th {
   border-top: inherit;
 }
