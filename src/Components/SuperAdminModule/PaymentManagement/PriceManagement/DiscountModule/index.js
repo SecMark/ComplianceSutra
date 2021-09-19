@@ -1,14 +1,52 @@
 import React, { useState } from "react";
 import { AiOutlinePlus, AiOutlineDown } from "react-icons/ai";
+import Drawer from "../../../../../CommonModules/sharedComponents/Drawer";
+import Stepper from "../../../../../CommonModules/sharedComponents/Stepper";
+import AddDetails from "./AddDetails";
+import DiscountMethods from "./DiscountMethods";
 import "./style.css";
 
 const DiscountModule = (props) => {
   const [activeStatus, setActiveStatus] = useState("discounts");
-  const [openRightTab, setOpenRightTab] = useState(true);
+
+  const [stepper, setStepper] = useState({
+    stepperAcitveSlide: 1,
+    stepperCompletedSlides: [],
+  });
   const [sortBy, setSortBy] = useState("Status");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const steps = [
+    {
+      id: 1,
+      text: "Add Discount Details",
+    },
+    {
+      id: 2,
+      text: "Confirm Changes",
+    },
+  ];
 
   return (
     <>
+      <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
+        {" "}
+        <div className="add-discount">
+          <h5 className="title">Add New Discount</h5>
+
+          <Stepper
+            steps={steps}
+            stepper={stepper}
+            setStepper={setStepper}
+            step={steps}
+          />
+
+          <AddDetails />
+
+          {stepper.stepperAcitveSlide === 1 && <DiscountMethods />}
+        </div>
+      </Drawer>
+
       <div className="row">
         <h4>Manage Discounts & Coupons </h4>
         <div className="col-md-12">
@@ -48,7 +86,8 @@ const DiscountModule = (props) => {
           <div className="sort-by-filter">
             <span
               className="sort-by add-btn"
-              onClick={() => setOpenRightTab(!openRightTab)}
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsOpen(!isOpen)}
             >
               <AiOutlinePlus size={18} className="m-1 add-new-button" />
               ADD NEW Discount

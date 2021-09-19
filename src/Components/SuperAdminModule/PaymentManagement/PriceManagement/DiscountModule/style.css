@@ -1,3 +1,7 @@
+.add-discount .title {
+  padding-bottom: 5px;
+  border-bottom: 2px solid #eee8fc;
+}
 .discount-list-header {
   margin: 12px 0px 0px -30px;
 }
