@@ -175,7 +175,7 @@ export default function AppRouter() {
           <Switch>
             <Route path="/super-admin" component={SuperAdmin}></Route>
           </Switch>
-
+          {/* {trial branch} */}
           <Route exact path="/thankyou" component={Thankyou} />
         </div>
       </>
