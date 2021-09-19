@@ -1,11 +1,9 @@
 import React from "react";
 import "./style.css";
 import { useDispatch } from "react-redux";
-import { createHashHistory } from "history";
 
 const RightSideBar = ({ option, selectProfileOption }) => {
   const dispatch = useDispatch();
-  const history = createHashHistory();
 
   return (
     <div className="PriceManagement-profile-options">
@@ -18,31 +16,35 @@ const RightSideBar = ({ option, selectProfileOption }) => {
             onClick={() => selectProfileOption("edit")}
             className={option === "edit" && "active"}
           >
-            Edit Profile Details
+            Compliance Module
           </li>
           <li
             onClick={() => selectProfileOption("notification")}
             className={option === "notification" && "active"}
           >
-            Manage Notifications
+            Audit Module
           </li>
           <li
             onClick={() => selectProfileOption("task")}
             className={option === "task" && "active"}
           >
-            Task management
+            Process Module
           </li>
+          <li></li>
+        </ul>
+        <hr />
+        <ul className="options-list">
           <li
             onClick={() => selectProfileOption("security")}
             className={option === "security" && "active"}
           >
-            Manage Security
+            Discount & coupons
           </li>
           <li
             onClick={() => selectProfileOption("migration")}
             className={option === "migration" && "active"}
           >
-            Migration Requests
+            Referrals
           </li>
         </ul>
       </div>

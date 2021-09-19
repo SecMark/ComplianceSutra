@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import DiscountModule from "./DiscountModule";
 import RightSideBar from "./RightSideBar";
 import "./style.css";
 
@@ -16,7 +17,11 @@ const PriceManagement = (props) => {
           option={options}
         />
       </div>
-      <div className="PriceManagement-options-select"></div>
+      <div className="PriceManagement-options-select">
+        <div className="selected-option">
+          <DiscountModule />
+        </div>
+      </div>
     </div>
   );
 };
