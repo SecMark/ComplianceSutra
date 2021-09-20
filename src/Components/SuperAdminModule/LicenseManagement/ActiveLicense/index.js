@@ -5,11 +5,15 @@ import "./style.css";
 import LicenseList from "../LicenseList";
 import searchIcon from "../../../../assets/Icons/searchIcon.png";
 import Dropdown from "react-dropdown";
-
+import IndustryType from "../IndustryType";
+const tabs = {
+  activeLicenses: "Active Licenses",
+  industryType: "Industry Type",
+};
 const ActiveLicense = (props) => {
   const [openRightTab, setOpenRightTab] = useState(true);
   const [sortBy, setSortBy] = useState("Addtional Date");
-
+  const [currentTab, setCurrentTab] = useState(tabs.activeLicenses);
   const options = [
     { value: "4", label: "Team Member" },
     { value: "3", label: "Compliance Officer" },
@@ -54,7 +58,7 @@ const ActiveLicense = (props) => {
             </div>
           </div>
 
-          <div className="Super-admin-task-statics row mt-4">
+          {/* <div className="Super-admin-task-statics row mt-4">
             <h6 className="mt-2">
               <span className="ml-1">Active Licenses</span>
               <div className="license-management-title-progress"></div>
@@ -63,111 +67,136 @@ const ActiveLicense = (props) => {
               <span className="ml-4">Industry Type</span>
               <div className=""></div>
             </h6>
+          </div> */}
+          <div className="Super-admin-task-statics row mt-4 d-flex align-items-center">
+            <h6
+              className={`super-admin__tab-heading ${
+                currentTab === tabs.activeLicenses &&
+                "super-admin__tab-heading--active"
+              }`}
+              onClick={() => setCurrentTab(tabs.activeLicenses)}
+            >
+              {tabs.activeLicenses}
+            </h6>
+            <h6
+              className={`super-admin__tab-heading ml-3 ${
+                currentTab === tabs.industryType &&
+                "super-admin__tab-heading--active"
+              }`}
+              onClick={() => setCurrentTab(tabs.industryType)}
+            >
+              {tabs.industryType}
+            </h6>
           </div>
-          <div className="row">
-            {sortBy === "Roles" && (
-              <div className="col-md-4">
-                <div className="col mt-3">
-                  <div className="row">
-                    <span className="mt-2 ml-2 mt-2">Show:</span>
-                    <select
-                      className="form-select ml-2"
-                      style={{
-                        width: "200px",
-                        height: "40px",
-                        padding: "5px",
-                      }}
+          {currentTab === tabs.activeLicenses && (
+            <>
+              <div className="row">
+                {sortBy === "Roles" && (
+                  <div className="col-md-4">
+                    <div className="col mt-3">
+                      <div className="row">
+                        <span className="mt-2 ml-2 mt-2">Show:</span>
+                        <select
+                          className="form-select ml-2"
+                          style={{
+                            width: "200px",
+                            height: "40px",
+                            padding: "5px",
+                          }}
+                        >
+                          <option selected>All Results</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div
+                  className="col d-flex mt-4 mb-4 show-options"
+                  style={{ justifyContent: "space-between" }}
+                >
+                  <div className="d-flex">
+                    <span className="mt-1">show:</span>
+                    <Dropdown
+                      arrowClosed={<span className="arrow-closed" />}
+                      arrowOpen={<span className="arrow-open" />}
+                      placeholder="Select an option"
+                      options={filterOptions}
+                      className="ml-2"
+                    />
+                  </div>
+
+                  <div className="sort-by-filter">
+                    <span
+                      className="sort-by add-btn"
+                      onClick={() => setOpenRightTab(!openRightTab)}
                     >
-                      <option selected>All Results</option>
-                    </select>
+                      <AiOutlinePlus size={18} className="m-1 add-new-button" />
+                      ADD NEW SUBTASK
+                    </span>
+
+                    <span
+                      className="sort-by add-btn"
+                      onClick={() => setOpenRightTab(!openRightTab)}
+                    >
+                      <AiOutlinePlus size={18} className="m-1 add-new-button" />
+                      ADD NEW LICENSE
+                    </span>
+
+                    <span className="sort-by ml-4">Sort by</span>
+                    <span
+                      className={
+                        sortBy == "Addtional Date"
+                          ? "sort-filter-active"
+                          : "sort-filter-inactive"
+                      }
+                      onClick={() => setSortBy("Addtional Date")}
+                    >
+                      Addtional Date
+                    </span>
+
+                    <span
+                      className={
+                        sortBy == "Alphabatically"
+                          ? "sort-filter-active"
+                          : "sort-filter-inactive"
+                      }
+                      onClick={() => setSortBy("Alphabatically")}
+                    >
+                      Alphabatically
+                    </span>
+                    <span
+                      className={
+                        sortBy == "Updates"
+                          ? "sort-filter-active"
+                          : "sort-filter-inactive"
+                      }
+                      onClick={() => setSortBy("Updates")}
+                    >
+                      Updates
+                    </span>
+
+                    <span
+                      className={
+                        sortBy == "Status"
+                          ? "sort-filter-active"
+                          : "sort-filter-inactive"
+                      }
+                      onClick={() => setSortBy("Status")}
+                    >
+                      Status
+                    </span>
                   </div>
                 </div>
               </div>
-            )}
-
-            <div
-              className="col d-flex mt-4 mb-4 show-options"
-              style={{ justifyContent: "space-between" }}
-            >
-              <div className="d-flex">
-                <span className="mt-1">show:</span>
-                <Dropdown
-                  arrowClosed={<span className="arrow-closed" />}
-                  arrowOpen={<span className="arrow-open" />}
-                  placeholder="Select an option"
-                  options={filterOptions}
-                  className="ml-2"
-                />
-              </div>
-
-              <div className="sort-by-filter">
-                <span
-                  className="sort-by add-btn"
-                  onClick={() => setOpenRightTab(!openRightTab)}
-                >
-                  <AiOutlinePlus size={18} className="m-1 add-new-button" />
-                  ADD NEW SUBTASK
-                </span>
-
-                <span
-                  className="sort-by add-btn"
-                  onClick={() => setOpenRightTab(!openRightTab)}
-                >
-                  <AiOutlinePlus size={18} className="m-1 add-new-button" />
-                  ADD NEW LICENSE
-                </span>
-
-                <span className="sort-by ml-4">Sort by</span>
-                <span
-                  className={
-                    sortBy == "Addtional Date"
-                      ? "sort-filter-active"
-                      : "sort-filter-inactive"
-                  }
-                  onClick={() => setSortBy("Addtional Date")}
-                >
-                  Addtional Date
-                </span>
-
-                <span
-                  className={
-                    sortBy == "Alphabatically"
-                      ? "sort-filter-active"
-                      : "sort-filter-inactive"
-                  }
-                  onClick={() => setSortBy("Alphabatically")}
-                >
-                  Alphabatically
-                </span>
-                <span
-                  className={
-                    sortBy == "Updates"
-                      ? "sort-filter-active"
-                      : "sort-filter-inactive"
-                  }
-                  onClick={() => setSortBy("Updates")}
-                >
-                  Updates
-                </span>
-
-                <span
-                  className={
-                    sortBy == "Status"
-                      ? "sort-filter-active"
-                      : "sort-filter-inactive"
-                  }
-                  onClick={() => setSortBy("Status")}
-                >
-                  Status
-                </span>
-              </div>
-            </div>
-          </div>
-          {sortBy === "Addtional Date" ? (
-            <LicenseList />
-          ) : sortBy === "Roles" ? (
-            <UserRoleList />
-          ) : null}
+              {sortBy === "Addtional Date" ? (
+                <LicenseList />
+              ) : sortBy === "Roles" ? (
+                <UserRoleList />
+              ) : null}
+            </>
+          )}
+          {currentTab === tabs.industryType && <IndustryType />}
         </div>
       </div>
     </div>
