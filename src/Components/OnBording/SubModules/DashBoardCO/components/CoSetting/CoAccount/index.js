@@ -28,6 +28,8 @@ function CoAccount({ handleClose }) {
 
   const [isShowEditLicense, setIsShowEditLicense] = useState(false);
 
+  const [paymentDetail, setPaymentDetail] = useState({});
+
   useEffect(() => {
     initialDispatch();
     dispatch(clearLicense());
@@ -70,12 +72,17 @@ function CoAccount({ handleClose }) {
     initialDispatch();
   }, []);
 
+  useEffect(() => {
+    setPaymentDetail(state?.taskReport?.paymentDetail?.coAccount);
+   
+  }, [state && state?.taskReport?.paymentDetail?.coAccount]);
+
   const initialDispatch = () => {
     dispatch(
-      coActions.getCoAccountRequest({
+      coActions.getPaymentRequest({
         gUserID: loggedUser.UserID,
         settingType: 3,
-        actionFlag: 1,
+        actionFlag: 5,
         entityID: 0,
         licID: 0,
         uUserID: 0,

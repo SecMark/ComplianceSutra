@@ -1,0 +1,54 @@
+.logo {
+  padding-left: 10px !important;
+}
+.Super-admin-left-bar {
+  background-color: #f6f9fb;
+  padding-top: 30px;
+  height: 100vh;
+  position: relative;
+  text-align: center;
+}
+
+.Super-admin-main {
+  padding: 50px 50px;
+  width: 100%;
+}
+
+.dashboard-icon {
+  margin-top: 122px;
+  cursor: pointer;
+}
+
+.dashboard-icon-active {
+  margin-top: 122px;
+  border-right: 2px solid #7a73ff;
+  cursor: pointer;
+}
+
+.Super-admin-icon {
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.Super-admin-icon-active {
+  border-right: 2px solid #7a73ff;
+  cursor: pointer;
+}
+
+.profile-icon {
+  position: absolute;
+  bottom: 30px;
+  right: 17px;
+  cursor: pointer;
+}
+
+.profile-icon-active {
+  position: absolute;
+  bottom: 30px;
+  right: 17px;
+  cursor: pointer;
+}
+
+.side-bar .left-bar .taskIcon {
+  margin-bottom: 0;
+}

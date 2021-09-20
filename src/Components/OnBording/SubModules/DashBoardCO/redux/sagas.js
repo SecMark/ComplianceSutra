@@ -365,6 +365,20 @@ const getCoAccountSetting = function* getCoAccountSetting({ payload }) {
   }
 };
 
+const getPaymentDetail = function* getPaymentDetail({ payload }) {
+  try {
+    const { data, status } = yield call(api.coSettingCommonApi, payload);
+    let statusCode = data && data[0] && data[0].StatusCode;
+    if (status === 200 && statusCode != false) {
+      yield put(actions.getPaymentSuccess({ coAccount: data }));
+    } else {
+      yield put(actions.getPaymentFailed({ coAccount: {} }));
+    }
+  } catch (err) {
+    yield put(actions.getPaymentFailed({ coAccount: {} }));
+  }
+};
+
 const getCoAccountLicenses = function* getCoAccountLicenses({ payload }) {
   try {
     const { data, status } = yield call(api.coSettingCommonApi, payload);
@@ -443,4 +457,6 @@ export default function* sagas() {
   yield takeLatest(types.GET_CO_ACCOUNT_LICENSES_REQUEST, getCoAccountLicenses);
   yield takeLatest(types.CO_ACCOUNT_UPDATE_REQUEST, coAccountUpdate);
   yield takeLatest(types.CO_COMPANY_DELETE_REQUEST, CompanyDeleteRequest);
+
+  yield takeLatest(types.GET_PAYMENT_REQUEST, getPaymentDetail);
 }

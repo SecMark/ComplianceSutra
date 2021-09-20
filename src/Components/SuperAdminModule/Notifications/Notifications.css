@@ -1,0 +1,74 @@
+.NotificationMain {
+  width: 65vw;
+  height: 100vh;
+  padding-top: 5vh;
+}
+.NotificationHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 2% 3%;
+  position: relative;
+}
+.NotificationFilter {
+  display: flex;
+  margin-left: 18vw;
+}
+.ListMain {
+  padding: 2rem;
+}
+#Day {
+  color: #696969b0;
+}
+.ListPoint > ul > li {
+  background: #f9f7ff;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  color: #575757;
+  border-radius: 8px;
+  font-weight: 300;
+}
+.ListPoint > ul > li > div > span {
+  display: inline-block;
+  margin-left: 15px;
+}
+.ListPoint {
+  margin-bottom: -1.2rem;
+  margin-left: -2.5rem;
+}
+#TimeArrived {
+  color: #202020;
+  font-weight: 500;
+}
+
+.Menu {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  max-width: 1vw;
+  margin-left: -2vw;
+}
+
+.MenuList {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(201, 199, 199, 0.144);
+  box-shadow: 0px 2px 5px #5757579a;
+  position: absolute;
+  right: -3vw;
+  top: 8vh;
+  width: 10vw;
+  padding: 8px 2px;
+
+  border-radius: 5px;
+}
+.MenuItem1 {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid #adacac4b;
+}
+.MenuItem2 {
+  background-color: white;
+  border: none;
+}

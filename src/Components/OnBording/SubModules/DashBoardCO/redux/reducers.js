@@ -208,6 +208,19 @@ const actionHandler = {
     coAccountInfo: {},
   }),
 
+  [types.GET_PAYMENT_REQUEST]: (state) => ({
+    ...state,
+    paymentDetail: {},
+  }),
+  [types.GET_PAYMENT_REQUEST_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    paymentDetail: payload,
+  }),
+  [types.GET_PAYMENT_REQUEST_FAILED]: (state, { payload }) => ({
+    ...state,
+    paymentDetail: {},
+  }),
+
   [types.GET_CO_ACCOUNT_LICENSES_REQUEST]: (state) => ({
     ...state,
     coAccountLicenses: {},
@@ -267,4 +280,5 @@ export default handleActions(actionHandler, {
   coAccountLicenses: {},
   coAccountUpdStatus: {},
   companyDeleteStatus: {},
+  paymentDetail: {},
 });

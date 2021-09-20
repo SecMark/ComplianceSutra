@@ -84,6 +84,10 @@ const GET_CO_ACCOUNT_REQUEST = "GET_CO_ACCOUNT_REQUEST";
 const GET_CO_ACCOUNT_REQUEST_SUCCESS = "GET_CO_ACCOUNT_REQUEST_SUCCESS";
 const GET_CO_ACCOUNT_REQUEST_FAILED = "GET_CO_ACCOUNT_REQUEST_FAILED";
 
+const GET_PAYMENT_REQUEST = "GET_PAYMENT_REQUEST";
+const GET_PAYMENT_REQUEST_SUCCESS = "GET_PAYMENT_REQUEST_SUCCESS";
+const GET_PAYMENT_REQUEST_FAILED = "GET_PAYMENT_REQUEST_FAILED";
+
 const GET_CO_ACCOUNT_LICENSES_REQUEST = "GET_CO_ACCOUNT_LICENSES_REQUEST";
 const GET_CO_ACCOUNT_LICENSES_REQUEST_SUCCESS =
   "GET_CO_ACCOUNT_LICENSES_REQUEST_SUCCESS";
@@ -210,6 +214,10 @@ const getCoAccountRequest = createAction(GET_CO_ACCOUNT_REQUEST);
 const getCoAccountRequestSuccess = createAction(GET_CO_ACCOUNT_REQUEST_SUCCESS);
 const getCoAccountRequestFailed = createAction(GET_CO_ACCOUNT_REQUEST_FAILED);
 
+const getPaymentRequest = createAction(GET_PAYMENT_REQUEST);
+const getPaymentSuccess = createAction(GET_PAYMENT_REQUEST_SUCCESS);
+const getPaymentFailed = createAction(GET_PAYMENT_REQUEST_FAILED);
+
 const getCoAccountLicensesRequest = createAction(
   GET_CO_ACCOUNT_LICENSES_REQUEST
 );
@@ -302,6 +310,10 @@ export const actions = {
   getCoAccountLicensesRequestSuccess,
   getCoAccountLicensesRequestFailed,
 
+  getPaymentRequest,
+  getPaymentSuccess,
+  getPaymentFailed,
+
   coAccountUpdateRequest,
   coAccountUpdateRequestSuccess,
   coAccountUpdateRequestFailed,
@@ -373,6 +385,10 @@ export const types = {
   GET_CO_ACCOUNT_REQUEST,
   GET_CO_ACCOUNT_REQUEST_SUCCESS,
   GET_CO_ACCOUNT_REQUEST_FAILED,
+
+  GET_PAYMENT_REQUEST,
+  GET_PAYMENT_REQUEST_SUCCESS,
+  GET_PAYMENT_REQUEST_FAILED,
 
   GET_CO_ACCOUNT_LICENSES_REQUEST,
   GET_CO_ACCOUNT_LICENSES_REQUEST_SUCCESS,
