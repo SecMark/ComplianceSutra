@@ -189,8 +189,7 @@ const SABasicDetails = ({ setBasicDetails, basicDetails }) => {
           </div>
           <div className="DetailsElement">
             <label>Short Description</label>
-            <input
-              type="text"
+            <textarea
               placeholder="Write the description of the License here"
               onChange={(element) =>
                 setBasicDetails({
@@ -200,9 +199,13 @@ const SABasicDetails = ({ setBasicDetails, basicDetails }) => {
               }
               value={basicDetails.licenseDescription}
               style={{
-                height: "100px",
+                minHeight: "100px",
+                background: "#e4e4e451",
+                padding: "10px",
+                border: "none",
+                borderRadius: "5px",
               }}
-            ></input>
+            ></textarea>
           </div>
           <div className="LicenseDetails">
             <div className="DetailsElement">

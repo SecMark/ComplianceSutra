@@ -61,11 +61,29 @@ const SASubTasks = ({ options, setSubTasks, subTasks }) => {
       fontWeight: "600",
     }),
   };
-  console.log(subtasksArray);
+  console.log(subTasks);
   return (
     <div className="SASubtasks">
       <h6>Subtask Details</h6>
-
+      {/* {subTasks.map((value, index) => {
+        return (
+          <div>
+            <label>Subtask {index + 1}</label>
+            <Select
+              styles={customStyles}
+              options={options}
+              onChange={(e) =>
+                setSubTasks([
+                  {
+                    value: e.value,
+                  },
+                  ...subTasks,
+                ])
+              }
+            />
+          </div>
+        );
+      })} */}
       <div className="SubtaskContainer">
         <label>Select Subtask 1</label>
         <div>
@@ -139,9 +157,13 @@ const SASubTasks = ({ options, setSubTasks, subTasks }) => {
           >
             DELETE
           </button>
-        </div>
+        </div>{" "}
+        */
       </div>
-      <button style={{ margin: "2rem 1rem" }}>
+      <button
+        style={{ margin: "2rem 1rem" }}
+        onClick={(e) => setSubTasks([...subTasks, {}])}
+      >
         <IoIosAddCircle
           style={{
             marginRight: "7px",

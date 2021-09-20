@@ -10,6 +10,9 @@
 
   padding-bottom: 1rem;
 }
+.BasicDetails {
+  margin-top: 6rem;
+}
 .BasicDetails > form > h6 {
   font-size: 18px;
 }

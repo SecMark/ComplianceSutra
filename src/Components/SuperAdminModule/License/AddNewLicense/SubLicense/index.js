@@ -13,6 +13,7 @@ const SASubLicense = ({ licenseColor, setLicenseColor, color, setColor }) => {
         value: color,
       },
     ]);
+
     setColor(color);
     setColorPopup(false);
   };

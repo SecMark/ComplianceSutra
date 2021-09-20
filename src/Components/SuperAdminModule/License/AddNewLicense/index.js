@@ -15,7 +15,7 @@ const SALicense = () => {
     stepperAcitveSlide: 1,
     stepperCompletedSlides: [],
   });
-  const [subTasks, setSubTasks] = useState({});
+  const [subTasks, setSubTasks] = useState([{}, {}]);
   const [basicDetails, setBasicDetails] = useState({
     industryType: [],
   });
@@ -163,13 +163,6 @@ const SALicense = () => {
               Confirm and Submit
             </button>
           )}
-          {/* <button
-            className="cs-drawer__button cs-drawer__button--primary"
-            style={{ margin: "1rem" }}
-            onClick={() => handleNextClick(stepper.stepperAcitveSlide)}
-          >
-            NEXT
-          </button> */}
         </div>
       </Drawer>
     </div>
