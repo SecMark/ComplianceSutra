@@ -277,7 +277,8 @@ const TaskDetailRightSide = React.memo(({ closeTaskDetails }) => {
         </div>
         {!(
           taskDetails.Status === "Approved" ||
-          taskDetails.Status === "Request Rejected"
+          taskDetails.Status === "Request Rejected" ||
+          taskDetails.AprStatus === "Not Started"
         ) && (
           <div className="task-action__cta-container mt-3">
             <button

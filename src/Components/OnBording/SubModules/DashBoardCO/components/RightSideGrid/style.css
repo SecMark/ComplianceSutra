@@ -531,6 +531,19 @@
   top: -11px;
   left: 0px;
 }
+.er-approved-label {
+  /* width: 131px; */
+  width: fit-content;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 2px;
+  background-color: #fcf3cd;
+}
+.labels-container {
+  position: absolute;
+  top: -11px;
+  left: 0px;
+}
 .approved-text {
   font-family: Poppins;
   font-size: 12px;

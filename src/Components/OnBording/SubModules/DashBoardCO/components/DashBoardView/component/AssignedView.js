@@ -11,6 +11,7 @@ import upArrow from "../../../../../../../assets/Icons/topArrowAccordian.png";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setNotificationTaskId } from "../../notification/Redux/Action";
+import { actions as taskReportActions } from "../../../redux/actions";
 
 export default function AssignedView(props) {
   const [assignRowCount, setAssignRowCount] = useState([]);
@@ -105,148 +106,300 @@ export default function AssignedView(props) {
   };
   const renderTaskList = (task, Status, listType) => {
     return (
-      <Link
-        to="/dashboard"
-        style={{ textDecoration: "none" }}
-        onClick={() => {
-          if (userDetails && userDetails.UserType !== 6) {
-            dispatch(setNotificationTaskId(task.TaskId));
-          }
-        }}
-        style={{
-          pointerEvents: `${
-            userDetails && userDetails.UserType === 6 ? "none" : "auto"
-          }`,
-        }}
-      >
-        <div
-          className="row"
-          style={{ marginBottom: "15px", position: "relative" }}
-        >
-          <div className="col-10 col-md-7 col-sm-7 col-xl-7">
-            <div className="all-companies-sub-title">
-              <div
-                onClick={(e) => getSelectTaskDetails(task)}
-                style={{ cursor: "pointer", display: "flex" }}
-              >
-                <div class="graybox-left">
-                  <span class="all-companies-nse-label">
-                    {task.LicenseCode}
-                  </span>
-                </div>
-                <span className="pink-label-title-right">
-                  <div className="overdue-title">{task.TaskName}</div>
-                  <div
-                    className="black-week "
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => getSelectTaskDetails(task)}
-                  >
-                    <div className="d-block d-sm-none">
-                      {getDayDate(task.EndDate, 2)}
-                    </div>
-                    {task.Status !== "Assigned" && (
-                      <span
-                        className="pink-label-text"
-                        style={{
-                          backgroundColor:
-                            task && task.Status
-                              ? task.Status === "Assign"
-                                ? "#fcf3cd"
-                                : task.Status === "Completed By User"
-                                ? moment(task.EndDate).isBefore(today)
-                                  ? "#cdfcd8"
-                                  : "#ffefea"
-                                : task.Status === "Approved"
-                                ? "#cdfcd8"
-                                : task.Status === "Assigned"
-                                ? "#ffefea"
-                                : task.Status === "Request Rejected"
-                                ? "#ffefea"
-                                : "#d2fccd"
-                              : "#d2fccd",
-                          color:
-                            task && task.Status
-                              ? task.Status === "Completed By User"
-                                ? moment(task.EndDate).isBefore(today)
-                                  ? "#7fba7a"
-                                  : "#ff5f31"
-                                : task.Status === "Approved"
-                                ? "#7fba7a"
-                                : task.Status === "Assigned"
-                                ? "#f8c102"
-                                : task.Status === "Assign"
-                                ? "#f8c102"
-                                : task.Status === "Request Rejected"
-                                ? "#ff5f31"
-                                : ""
-                              : "#fcf3cd",
-                        }}
-                      >
-                        {task.Status && task.Status === "Completed By User"
-                          ? moment(task.EndDate).isBefore(today)
-                            ? "Not reviewed"
-                            : "Approval Pending"
-                          : task.Status === "Assign"
-                          ? "Assign Task"
-                          : task.Status === "Assigned"
-                          ? "Task Assigned"
-                          : task.Status === "Approved"
-                          ? "Task Approved"
-                          : task.Status === "Request Rejected"
-                          ? "Task Rejected"
-                          : ""}
-                      </span>
-                    )}
-                  </div>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
+      <>
+        {!props.isExpertReviewer && (
+          <Link
+            to="/dashboard"
+            onClick={() => {
+              if (userDetails && userDetails.UserType !== 6) {
+                dispatch(setNotificationTaskId(task.TaskId));
+              }
+            }}
+            style={{
+              textDecoration: "none",
+              pointerEvents: `${
+                userDetails && userDetails.UserType === 6 ? "none" : "auto"
+              }`,
+            }}
+          >
             <div
-              className="circle-front-text"
-              style={{ width: "fit-content", cursor: "pointer" }}
-              value={task.TaskId}
-              onClick={(e) => getSelectTaskDetails(task)}
+              className="row"
+              style={{ marginBottom: "15px", position: "relative" }}
             >
-              {task.EntityName}
-            </div>
-          </div>
-          <div className="col-2 col-md-3 col-sm-3 col-xl-3">
-            <div className="align-right">
-              <div className="d-flex">
-                <div
-                  className="black-week d-none d-sm-block"
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => getSelectTaskDetails(task)}
-                >
-                  {getDayDate(task.EndDate, 1)}
+              <div className="col-10 col-md-7 col-sm-7 col-xl-7">
+                <div className="all-companies-sub-title">
+                  <div
+                    onClick={(e) => getSelectTaskDetails(task)}
+                    style={{ cursor: "pointer", display: "flex" }}
+                  >
+                    <div class="graybox-left">
+                      <span class="all-companies-nse-label">
+                        {task.LicenseCode}
+                      </span>
+                    </div>
+                    <span className="pink-label-title-right">
+                      <div className="overdue-title">{task.TaskName}</div>
+                      <div
+                        className="black-week "
+                        style={{ cursor: "pointer" }}
+                        onClick={(e) => getSelectTaskDetails(task)}
+                      >
+                        <div className="d-block d-sm-none">
+                          {getDayDate(task.EndDate, 2)}
+                        </div>
+                        {task.Status !== "Assigned" && (
+                          <span
+                            className="pink-label-text"
+                            style={{
+                              backgroundColor:
+                                task && task.Status
+                                  ? task.Status === "Assign"
+                                    ? "#fcf3cd"
+                                    : task.Status === "Completed By User"
+                                    ? moment(task.EndDate).isBefore(today)
+                                      ? "#cdfcd8"
+                                      : "#ffefea"
+                                    : task.Status === "Approved"
+                                    ? "#cdfcd8"
+                                    : task.Status === "Assigned"
+                                    ? "#ffefea"
+                                    : task.Status === "Request Rejected"
+                                    ? "#ffefea"
+                                    : "#d2fccd"
+                                  : "#d2fccd",
+                              color:
+                                task && task.Status
+                                  ? task.Status === "Completed By User"
+                                    ? moment(task.EndDate).isBefore(today)
+                                      ? "#7fba7a"
+                                      : "#ff5f31"
+                                    : task.Status === "Approved"
+                                    ? "#7fba7a"
+                                    : task.Status === "Assigned"
+                                    ? "#f8c102"
+                                    : task.Status === "Assign"
+                                    ? "#f8c102"
+                                    : task.Status === "Request Rejected"
+                                    ? "#ff5f31"
+                                    : ""
+                                  : "#fcf3cd",
+                            }}
+                          >
+                            {task.Status && task.Status === "Completed By User"
+                              ? moment(task.EndDate).isBefore(today)
+                                ? "Not reviewed"
+                                : "Approval Pending"
+                              : task.Status === "Assign"
+                              ? "Assign Task"
+                              : task.Status === "Assigned"
+                              ? "Task Assigned"
+                              : task.Status === "Approved"
+                              ? "Task Approved"
+                              : task.Status === "Request Rejected"
+                              ? "Task Rejected"
+                              : ""}
+                          </span>
+                        )}
+                      </div>
+                    </span>
+                  </div>
                 </div>
+              </div>
+              <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
                 <div
-                  className="right-arrow-week text-right-grid"
-                  style={{ cursor: "pointer" }}
+                  className="circle-front-text"
+                  style={{ width: "fit-content", cursor: "pointer" }}
+                  value={task.TaskId}
                   onClick={(e) => getSelectTaskDetails(task)}
                 >
-                  {
-                    <img
-                      className="d-none d-sm-block"
-                      src={keyboardArrowRightBlack}
-                      alt="Right Arrow"
-                    />
-                  }
-                  {task.AssignedTo !== 0 && (
-                    <img
-                      className="d-block d-sm-none"
-                      src={keyboardArrowRightBlack}
-                      alt="Right Arrow"
-                    />
-                  )}
+                  {task.EntityName}
+                </div>
+              </div>
+              <div className="col-2 col-md-3 col-sm-3 col-xl-3">
+                <div className="align-right">
+                  <div className="d-flex">
+                    <div
+                      className="black-week d-none d-sm-block"
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => getSelectTaskDetails(task)}
+                    >
+                      {getDayDate(task.EndDate, 1)}
+                    </div>
+                    <div
+                      className="right-arrow-week text-right-grid"
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => getSelectTaskDetails(task)}
+                    >
+                      {
+                        <img
+                          className="d-none d-sm-block"
+                          src={keyboardArrowRightBlack}
+                          alt="Right Arrow"
+                        />
+                      }
+                      {task.AssignedTo !== 0 && (
+                        <img
+                          className="d-block d-sm-none"
+                          src={keyboardArrowRightBlack}
+                          alt="Right Arrow"
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        )}
+        {props.isExpertReviewer && (
+          <div
+            onClick={() => {
+              if (userDetails && userDetails.UserType !== 6) {
+                props.setIsTaskDetailsShow(true);
+                dispatch(
+                  taskReportActions.taskReportByIdRequest({
+                    taskID: task.TaskId,
+                  })
+                );
+              }
+            }}
+            style={{
+              textDecoration: "none",
+              pointerEvents: `${
+                userDetails && userDetails.UserType === 6 ? "none" : "auto"
+              }`,
+            }}
+          >
+            <div
+              className="row"
+              style={{ marginBottom: "15px", position: "relative" }}
+            >
+              <div className="col-10 col-md-7 col-sm-7 col-xl-7">
+                <div className="all-companies-sub-title">
+                  <div
+                    onClick={(e) => getSelectTaskDetails(task)}
+                    style={{ cursor: "pointer", display: "flex" }}
+                  >
+                    <div class="graybox-left">
+                      <span class="all-companies-nse-label">
+                        {task.LicenseCode}
+                      </span>
+                    </div>
+                    <span className="pink-label-title-right">
+                      <div className="overdue-title">{task.TaskName}</div>
+                      <div
+                        className="black-week "
+                        style={{ cursor: "pointer" }}
+                        onClick={(e) => getSelectTaskDetails(task)}
+                      >
+                        <div className="d-block d-sm-none">
+                          {getDayDate(task.EndDate, 2)}
+                        </div>
+                        {task.Status !== "Assigned" && (
+                          <span
+                            className="pink-label-text"
+                            style={{
+                              backgroundColor:
+                                task && task.Status
+                                  ? task.Status === "Assign"
+                                    ? "#fcf3cd"
+                                    : task.Status === "Completed By User"
+                                    ? moment(task.EndDate).isBefore(today)
+                                      ? "#cdfcd8"
+                                      : "#ffefea"
+                                    : task.Status === "Approved"
+                                    ? "#cdfcd8"
+                                    : task.Status === "Assigned"
+                                    ? "#ffefea"
+                                    : task.Status === "Request Rejected"
+                                    ? "#ffefea"
+                                    : "#d2fccd"
+                                  : "#d2fccd",
+                              color:
+                                task && task.Status
+                                  ? task.Status === "Completed By User"
+                                    ? moment(task.EndDate).isBefore(today)
+                                      ? "#7fba7a"
+                                      : "#ff5f31"
+                                    : task.Status === "Approved"
+                                    ? "#7fba7a"
+                                    : task.Status === "Assigned"
+                                    ? "#f8c102"
+                                    : task.Status === "Assign"
+                                    ? "#f8c102"
+                                    : task.Status === "Request Rejected"
+                                    ? "#ff5f31"
+                                    : ""
+                                  : "#fcf3cd",
+                            }}
+                          >
+                            {task.Status && task.Status === "Completed By User"
+                              ? moment(task.EndDate).isBefore(today)
+                                ? "Not reviewed"
+                                : "Approval Pending"
+                              : task.Status === "Assign"
+                              ? "Assign Task"
+                              : task.Status === "Assigned"
+                              ? "Task Assigned"
+                              : task.Status === "Approved"
+                              ? "Task Approved"
+                              : task.Status === "Request Rejected"
+                              ? "Task Rejected"
+                              : ""}
+                          </span>
+                        )}
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
+                <div
+                  className="circle-front-text"
+                  style={{ width: "fit-content", cursor: "pointer" }}
+                  value={task.TaskId}
+                  onClick={(e) => getSelectTaskDetails(task)}
+                >
+                  {task.EntityName}
+                </div>
+              </div>
+              <div className="col-2 col-md-3 col-sm-3 col-xl-3">
+                <div className="align-right">
+                  <div className="d-flex">
+                    <div
+                      className="black-week d-none d-sm-block"
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => getSelectTaskDetails(task)}
+                    >
+                      {getDayDate(task.EndDate, 1)}
+                    </div>
+                    <div
+                      className="right-arrow-week text-right-grid"
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => getSelectTaskDetails(task)}
+                    >
+                      {
+                        <img
+                          className="d-none d-sm-block"
+                          src={keyboardArrowRightBlack}
+                          alt="Right Arrow"
+                        />
+                      }
+                      {task.AssignedTo !== 0 && (
+                        <img
+                          className="d-block d-sm-none"
+                          src={keyboardArrowRightBlack}
+                          alt="Right Arrow"
+                        />
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </Link>
+        )}
+      </>
     );
   };
 
@@ -327,7 +480,7 @@ export default function AssignedView(props) {
                       <div className="task-list-grid">
                         {item.Status && (
                           <div
-                            className="upcoming-btn"
+                            className="upcoming-btn my-3"
                             onClick={() => {
                               expandedFlags.includes(index)
                                 ? handleExpandList("hide", index)
