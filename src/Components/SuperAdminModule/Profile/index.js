@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import ManageNotification from "./ManageNotification";
 import ManageSecruity from "./ManageSecurity";
-import MigrationRequest from "./MigrationRequest";
+
 import ProfileOptions from "./ProfileOptions";
+import EditProfile from "./EditProfile";
 
 import "./style.css";
-import TaskManagement from "./TaskManagement";
 
 const Profile = (props) => {
   const [options, setOptions] = useState("edit");
@@ -22,11 +22,11 @@ const Profile = (props) => {
         />
       </div>
       <div className="ER-options-select">
-        {options === "edit" && ""}
+        {options === "edit" && <EditProfile />}
         {options === "notification" && <ManageNotification />}
-        {options === "task" && <TaskManagement />}
+        {/* {options === "task" && <TaskManagement />} */}
         {options === "security" && <ManageSecruity />}
-        {options === "migration" && <MigrationRequest />}
+        {/* {options === "migration" && <MigrationRequest />} */}
       </div>
     </div>
   );

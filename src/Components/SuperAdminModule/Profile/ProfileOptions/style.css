@@ -34,3 +34,15 @@
   color: #575757 !important;
   border-right: 3px solid #7a73ff;
 }
+.LogoutButton {
+  margin: 33vh 1vw 1vw -1vw;
+}
+.LogoutButton > button {
+  width: 10vw;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  background-color: white;
+  padding: 2vh;
+  color: #ef5d5d;
+}
