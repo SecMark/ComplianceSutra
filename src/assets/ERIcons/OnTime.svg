@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="63" height="24" viewBox="0 0 63 24">
+    <g>
+        <g>
+            <path fill="#e4f1e4" d="M2 0h59a2 2 0 0 1 2 2v20a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z" transform="translate(-496 -128) translate(-272 -419) translate(768 547)"/>
+            <text fill="#7fba7a" font-family="Poppins-Medium, Poppins" font-size="12px" font-weight="500" transform="translate(-496 -128) translate(-272 -419) translate(775 564)">
+                <tspan x="0" y="0">ON TIME</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

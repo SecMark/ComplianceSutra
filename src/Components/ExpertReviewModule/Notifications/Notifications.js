@@ -1,25 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+
 import "./Notifications.css";
-import Select from "react-select";
+
 import NotificationList from "./NotificationList/NotificationList";
-import Popup from "./Notificationpopup/Popup";
 
 const ERNotifications = () => {
-  const [read, setRead] = useState(false);
-
-  const ReadAll = () => {
-    setRead(true);
-  };
-  const SelectedFilter = (e) => {
-    console.log(e.value);
-  };
-  const options = [
-    { value: "All", label: "All Notifications" },
-    { value: "Submitted", label: " New Submitted Tasks" },
-    { value: "Rejected", label: "Rejected tasks" },
-    { value: "Approved", label: "Approved tasks" },
-    { value: "Migration", label: "Migration Requests" },
-  ];
   const customStyles = {
     menu: (provided) => ({
       ...provided,
@@ -42,12 +27,20 @@ const ERNotifications = () => {
       color: "black",
       paddingRight: 4,
     }),
-
+    option: () => ({
+      color: "black",
+      padding: "10px",
+      borderBottom: "1px solid #e4e4e4",
+      "&:hover": {
+        backgroundColor: "#f7f4fe",
+      },
+    }),
     singleValueLabel: () => ({
       backgroundColor: "white",
       padding: 2,
       margin: 2,
       borderRadius: 8,
+      color: "black",
     }),
     singleValue: () => ({
       border: "none",
@@ -59,32 +52,17 @@ const ERNotifications = () => {
       backgroundColor: "#f7f4fe",
     }),
     control: () => ({
-      backgroundColor: "#e4e4e4",
+      backgroundColor: "#e4e4e45c",
       display: "flex",
       borderRadius: 7,
+      color: "black",
+      fontWeight: "500",
     }),
   };
   return (
     <div>
       <div className="NotificationMain">
-        <div className="NotificationHeader">
-          <div>
-            <h4>Notifications</h4>
-          </div>
-          <div className="NotificationFilter">
-            Filter by:
-            <Select
-              options={options}
-              styles={customStyles}
-              defaultValue={options[0]}
-              value={options.value}
-              onChange={SelectedFilter}
-            />
-          </div>
-          <Popup />
-        </div>
-        <NotificationList />
-        <NotificationList />
+        <NotificationList customStyles={customStyles} />
       </div>
     </div>
   );

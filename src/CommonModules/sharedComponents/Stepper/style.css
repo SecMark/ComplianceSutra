@@ -1,0 +1,23 @@
+.stepper-horizontal-line {
+  width: 62px;
+  height: 2px;
+  background-color: #6c5dd3;
+  opacity: 0.4;
+}
+.stepper-image {
+  margin: 0 3px;
+  height: 24px;
+  width: 24px;
+}
+.stepper-text {
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  text-align: center;
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+}

@@ -61,3 +61,22 @@
 .add-references__attached-link {
   font-size: 10px;
 }
+.reject-task__textarea {
+  resize: none;
+  background-color: rgba(0, 0, 0, 0.034);
+  color: #575757;
+  font-size: 14px;
+  font-family: Poppins;
+  color: #575757;
+}
+
+.reject-task__textarea:focus,
+.reject-task__textarea:active {
+  background-color: rgba(0, 0, 0, 0.034);
+  box-shadow: none;
+  border: 1px solid #6c5dd3;
+}
+.reject-task__textarea::placeholder {
+  color: #575757;
+  opacity: 0.4;
+}
