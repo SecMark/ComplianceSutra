@@ -266,30 +266,20 @@ const Dashboard = () => {
   const renderTaskList = (task, Status, listType) => {
     return (
       <div
-        // to="/dashboard"
-        style={{ textDecoration: "none" }}
         onClick={() => {
           if (userDetails && userDetails.UserType !== 6) {
-            // dispatch(setNotificationTaskId(task.TaskId));
             setIsTaskDetailsShow(true);
             dispatch(
               taskReportActions.taskReportByIdRequest({
                 taskID: task.TaskId,
               })
             );
-            localStorage.setItem(
-              "expandedFlagss",
-              expandedFlags,
-              "allRowCount-copy",
-              rowCount
-            );
-            localStorage.setItem("allRowCount", JSON.stringify(rowCount));
           }
         }}
         style={{
-          pointerEvents: `${
-            userDetails && userDetails.UserType === 6 ? "none" : "auto"
-          }`,
+          textDecoration: "none",
+          ...(userDetails &&
+            userDetails.UserType === 6 && { pointerEvents: "none" }),
         }}
       >
         <div
@@ -943,19 +933,34 @@ const Dashboard = () => {
 
           {sortBy === "Licenses" && (
             <div className="ER-task-container">
-              <LicenseTaskList user={userDetails} sideBarTaskList={false} />
+              <LicenseTaskList
+                user={userDetails}
+                isExpertReviewer={true}
+                setIsTaskDetailsShow={setIsTaskDetailsShow}
+                sideBarTaskList={false}
+              />
             </div>
           )}
 
           {sortBy === "Company Name" && (
             <div className="ER-task-container">
-              <CompanyTaskList user={userDetails} sideBarTaskList={false} />
+              <CompanyTaskList
+                user={userDetails}
+                isExpertReviewer={true}
+                setIsTaskDetailsShow={setIsTaskDetailsShow}
+                sideBarTaskList={false}
+              />
             </div>
           )}
 
           {sortBy === "Task" && (
             <div className="ER-task-container">
-              <AssignedView user={userDetails} sideBarTaskList={false} />
+              <AssignedView
+                user={userDetails}
+                isExpertReviewer={true}
+                setIsTaskDetailsShow={setIsTaskDetailsShow}
+                sideBarTaskList={false}
+              />
             </div>
           )}
           {sortBy === "Search" && (
