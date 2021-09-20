@@ -59,55 +59,47 @@ const Clients = () => {
           </ul>
         </div>
       </div>
-      <div className="ER-task-container mt-0">
-        <div className="ER-take-action">
-          <div className="task-list-grid">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>CLIENT'S NAME</th>
-                  <th>STATUS</th>
-                  <th>NO OF LICENSES</th>
-                  <th>HEAD OFFICE</th>
-                  <th>BILLING AMOUNT & DATE</th>
-                  <th>PROJECTED REVENUE</th>
+      <div className="mt-4">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>CLIENT'S NAME </th>
+              <th>STATUS</th>
+              <th>NO OF LICENSES</th>
+              <th>HEAD OFFICE</th>
+              <th>BILLING AMOUNT & DATE </th>
+              <th>PROJECTED REVENUE</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((user, index) => (
+              <>
+                <tr key={index}>
+                  <td>
+                    <span>BK SECURITIES </span>
+                  </td>
+                  <td>
+                    <span>Mark</span>
+                  </td>
+                  <td>
+                    <span>Otto</span>
+                  </td>
+                  <td>
+                    <span>@mdo </span>
+                  </td>
+                  <td>
+                    <spna>Otto</spna>
+                  </td>
+                  <td>
+                    <span>@mdo</span>
+                  </td>
                 </tr>
-              </thead>
-              {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((item, index) => {
-                return (
-                  <tbody key={index}>
-                    <tr>
-                      <th>BK Securities</th>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                      <td>@mdo</td>
-                      <td>Otto</td>
-                      <td>@mdo</td>
-                    </tr>
-                  </tbody>
-                  // <div className="ER-task-detail" key={index}>
-                  //   <button className="code">Good and Service Tax</button>
-                  //   <div>
-                  //     <div className="overdue-company">
-                  //       <p className="company-name">Good and Service tax</p>
-                  //     </div>
-                  //   </div>
-                  //   <div className="detail-name align-left-always">
-                  //     <p>
-                  //       <span className="circle-dp"></span>
-                  //       <span className="user-name">
-                  //         Kedia Financial Securities
-                  //       </span>
-                  //     </p>
-                  //   </div>
-                  //   <span className="overdue-date">21 May</span>
-                  //   <span>{">"}</span>
-                  // </div>
-                );
-              })}
-            </table>
-          </div>
-        </div>
+              </>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   );
