@@ -36,6 +36,7 @@ export const routes = [
     path: `${constant.ExpertReviewerBaseUrl}/notifications`,
     component: ERNotifications,
   },
+
   {
     path: `${constant.ExpertReviewerBaseUrl}/task-history`,
     component: ERTaskHistoryFilter,

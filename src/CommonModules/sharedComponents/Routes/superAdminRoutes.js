@@ -22,6 +22,9 @@ const SATaskDetails = lazy(() =>
 const UserManagement = lazy(() =>
   import("../../../Components/SuperAdminModule/UserManagement")
 );
+const SALicense = lazy(() =>
+  import("../../../Components/SuperAdminModule/License/AddNewLicense/index")
+);
 
 const CircularManagement = lazy(() =>
   import("../../../Components/SuperAdminModule/CircularManagement")
@@ -61,6 +64,10 @@ export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/task-details`,
     component: SATaskDetails,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/license`,
+    component: SALicense,
   },
   {
     path: `${constant.SuperAdminBaseURL}/user-management`,
