@@ -36,6 +36,7 @@
     "react-dropdown": "^1.9.2",
     "react-dropdown-select": "^4.7.4",
     "react-dropzone": "^11.3.2",
+    "react-flags-select": "^2.1.2",
     "react-icons": "^4.2.0",
     "react-js-stepper": "^1.2.6",
     "react-loader-spinner": "^4.0.0",

@@ -68,18 +68,18 @@ const ERNotifications = () => {
     <div>
       <div className="NotificationMain">
         <div className="NotificationHeader">
-          <div>
-            <h4>Notifications</h4>
-          </div>
+          <h4 className="mt-1">Notifications</h4>
           <div className="NotificationFilter">
-            Filter by:
-            <Select
-              options={options}
-              styles={customStyles}
-              defaultValue={options[0]}
-              value={options.value}
-              onChange={SelectedFilter}
-            />
+            <span className="mt-1">Filter by:</span>
+            <span className="mt-2">
+              <Select
+                options={options}
+                styles={customStyles}
+                defaultValue={options[0]}
+                value={options.value}
+                onChange={SelectedFilter}
+              />
+            </span>
           </div>
           <Popup />
         </div>

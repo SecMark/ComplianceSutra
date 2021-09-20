@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
 import DashboardIcon from "../../../assets/Icons/DashboardIcon.png";
+import DashboardActiveIcon from "../../../assets/Icons/dashBoardActiveIcon.png";
+import Notification from "../../../assets/ERIcons/notifications_black.png";
+import NotificationActive from "../../../assets/ERIcons/notificationBlack.png";
 import ListIcon2 from "../../../assets/Icons/ListIcon2.png";
 import ContactIcon from "../../../assets/Icons/ContactIcon.png";
 import UserIcon from "../../../assets/Icons/UserIcon.png";
 import BadgeIcon from "../../../assets/Icons/BadgeIcon.png";
 import PaymentIcon from "../../../assets/Icons/PaymentIcon.png";
 import SideBaruser from "../../../assets/Icons/sideBaruser.png";
-import notificationActive from "../../../assets/ERIcons/notifications_black.png";
 import { useHistory, useLocation, withRouter } from "react-router-dom";
 
 import "./style.css";
@@ -15,6 +17,8 @@ import "./style.css";
 const LeftSideBar = () => {
   const history = useHistory();
   const { pathname } = useLocation();
+
+  console.log(pathname?.substring(pathname?.lastIndexOf("/") + 1));
 
   const navigateTo = (screen) => {
     history.push(`/super-admin/${screen}`);
@@ -30,9 +34,13 @@ const LeftSideBar = () => {
           <div className="taskIcon">
             <img
               style={{ cursor: "pointer", width: "18px" }}
-              title="Dashboard"
-              src={DashboardIcon}
-              alt="sidebar Active"
+              src={
+                pathname.substring(pathname.lastIndexOf("/") + 1) ===
+                "dashboard"
+                  ? DashboardActiveIcon
+                  : DashboardIcon
+              }
+              alt="Dashboard"
               onClick={() => navigateTo("dashboard")}
             />
           </div>
@@ -41,7 +49,7 @@ const LeftSideBar = () => {
               style={{ cursor: "pointer", width: "18px" }}
               title="Tasks"
               src={ListIcon2}
-              alt="sidebar Active"
+              alt="taskIcon"
             />
           </div>
           <div className="taskIcon">
@@ -55,9 +63,13 @@ const LeftSideBar = () => {
           <div className={"taskIcon"}>
             <img
               style={{ cursor: "pointer", width: "18px" }}
-              title="Notification"
+              src={
+                pathname.substring(pathname.lastIndexOf("/") + 1) ===
+                "notifications"
+                  ? NotificationActive
+                  : Notification
+              }
               alt="Notification"
-              src={notificationActive}
               onClick={() => navigateTo("notifications")}
             />
           </div>
@@ -69,6 +81,7 @@ const LeftSideBar = () => {
                 title="Tasks"
                 src={UserIcon}
                 alt="sidebar Active"
+                onClick={() => navigateTo("user-management")}
               />
             </div>
             <div className="taskIcon">
@@ -83,8 +96,12 @@ const LeftSideBar = () => {
             <div className="taskIcon">
               <img
                 style={{ cursor: "pointer", width: "18px" }}
-                title="License"
-                src={PaymentIcon}
+                src={
+                  pathname.substring(pathname.lastIndexOf("/") + 1) ===
+                  "payment-management"
+                    ? PaymentIcon
+                    : PaymentIcon
+                }
                 alt="sidebar Active"
                 onClick={() => navigateTo("payment-management")}
               />
