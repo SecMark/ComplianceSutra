@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import "./style.css";
-import { useDispatch } from "react-redux";
+import ReactFlagsSelect from "react-flags-select";
 
-const RightSideBar = ({ option, selectProfileOption }) => {
-  const dispatch = useDispatch();
+const LeftSideBar = ({ option, selectProfileOption }) => {
+  const [selected, setSelected] = useState("IN");
 
   return (
-    <div className="PriceManagement-profile-options">
-      <div>
-        <h3 style={{ margin: "0" }}>Price Managment</h3>
+    <div className="container">
+      <h4 style={{ margin: "0" }}>Price Managment</h4>
+      <div className="mt-4">
+        <ReactFlagsSelect
+          selected={selected}
+          searchable={true}
+          animate={true}
+          searchPlaceholder="Search countries"
+          onSelect={(code) => setSelected(code)}
+        />
       </div>
       <div className="options-container">
         <ul className="options-list">
@@ -30,15 +37,12 @@ const RightSideBar = ({ option, selectProfileOption }) => {
           >
             Process Module
           </li>
-          <li></li>
-        </ul>
-        <hr />
-        <ul className="options-list">
+          <div className="divider" />
           <li
             onClick={() => selectProfileOption("security")}
             className={option === "security" && "active"}
           >
-            Discount & coupons
+            Discounts & Coupons
           </li>
           <li
             onClick={() => selectProfileOption("migration")}
@@ -52,4 +56,4 @@ const RightSideBar = ({ option, selectProfileOption }) => {
   );
 };
 
-export default RightSideBar;
+export default LeftSideBar;

@@ -1,10 +1,6 @@
-.PriceManagement-profile-main {
-  display: flex;
-  height: 100%;
-}
-
-.PriceManagement-options-select {
-  background-image: url("../../../../../src/assets/ERIcons/background.png");
+.bg-img {
+  background: url("/src/assets/Images/Onboarding/co-bg.png");
+  background-size: cover;
   width: 100%;
 }
 

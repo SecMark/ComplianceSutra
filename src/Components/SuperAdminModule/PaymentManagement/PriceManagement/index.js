@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import DiscountModule from "./DiscountModule";
-import RightSideBar from "./RightSideBar";
 import "./style.css";
+import LeftSideBar from "./LeftSideBar";
+import RightSideBar from "./RightSideBar";
 
 const PriceManagement = (props) => {
   const [options, setOptions] = useState("edit");
@@ -10,12 +11,17 @@ const PriceManagement = (props) => {
     setOptions(option);
   };
   return (
-    <div className="PriceManagement-profile-main">
-      <div className="">
-        <RightSideBar
-          selectProfileOption={selectProfileOption}
-          option={options}
-        />
+    <div className="row">
+      <div className="col-md-3">
+        <div className="side-bar-outer">
+          <LeftSideBar
+            selectProfileOption={selectProfileOption}
+            option={options}
+          />
+        </div>
+      </div>
+      <div className="col-md-9 bg-img">
+        <RightSideBar />
       </div>
       <div className="PriceManagement-options-select">
         <div className="selected-option">
