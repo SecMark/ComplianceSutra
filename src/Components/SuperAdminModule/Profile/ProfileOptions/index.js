@@ -3,12 +3,12 @@ import "./style.css";
 import { useDispatch } from "react-redux";
 
 import { FaPowerOff } from "react-icons/fa";
-import { createHashHistory } from "history";
 
+import { useHistory } from "react-router";
 import { actions as loginActions } from "../../../Authectication/redux/actions";
 
 const ProfileOptions = ({ option, selectProfileOption }) => {
-  const history = createHashHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const onClickLogout = () => {

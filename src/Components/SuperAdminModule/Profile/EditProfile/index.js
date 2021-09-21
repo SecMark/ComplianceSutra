@@ -234,24 +234,6 @@ const EditProfile = () => {
     }),
   };
 
-  const DropdownIndicator = (props) => {
-    return (
-      components.DropdownIndicator && (
-        <components.DropdownIndicator {...props}>
-          <IoAddCircle style={{ color: "#6c5dd3", marginRight: "3" }} />
-          <span
-            style={{
-              color: "#6c5dd3",
-              fontWeight: "500",
-            }}
-          >
-            ADD NEW
-          </span>
-          <h3 className="dropdownerror">{error}</h3>
-        </components.DropdownIndicator>
-      )
-    );
-  };
   return (
     <div className="DetailsContainer">
       <div className="DetailsHeader">
