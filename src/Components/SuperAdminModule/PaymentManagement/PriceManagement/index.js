@@ -1,22 +1,32 @@
 import React, { useState } from "react";
-import RightSideBar from "./RightSideBar";
+import DiscountModule from "./DiscountModule";
+import ComplainceModule from "./ComplainceModule";
 import "./style.css";
+import RightSideBar from "./RightSideBar";
 
 const PriceManagement = (props) => {
-  const [options, setOptions] = useState("edit");
+  const [options, setOptions] = useState("complianceModule");
 
   const selectProfileOption = (option) => {
     setOptions(option);
   };
   return (
-    <div className="PriceManagement-profile-main">
-      <div className="">
-        <RightSideBar
-          selectProfileOption={selectProfileOption}
-          option={options}
-        />
+    <div className="row">
+      <div className="col-md-3">
+        <div className="side-bar-outer">
+          <RightSideBar
+            selectProfileOption={selectProfileOption}
+            option={options}
+          />
+        </div>
       </div>
-      <div className="PriceManagement-options-select"></div>
+
+      <div className="col-md-9 PriceManagement-options-select">
+        <div className="selected-option">
+          {options === "complianceModule" && <ComplainceModule />}
+          {options === "discount" && <DiscountModule />}
+        </div>
+      </div>
     </div>
   );
 };

@@ -403,14 +403,11 @@ const ClientList = () => {
                           </tr>
                           {expanded3[index] && (
                             <tr>
-                              <td
-                                colSpan={8}
-                                style={{ padding: "15px 30px 30px 0" }}
-                              >
+                              <td style={{ padding: "15px 30px 30px 0" }}>
                                 <div className="row">
                                   <div className="col-md-2">-</div>
                                   <div className="col-md-2">{user.Clients}</div>
-                                  <div className="col-md-7"></div>
+                                  <div className="col-md-6"></div>
                                   <div className="col-md-1 edit-btn">Edit</div>
                                 </div>
                               </td>

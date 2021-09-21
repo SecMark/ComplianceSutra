@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
+
 import { Router, Route, Switch, Redirect } from "react-router-dom";
+=======
+import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
+import { browserHistory } from "react-router";
+
 import AppRouter from "./router";
 import { useDispatch, useSelector } from "react-redux";
 import { createHashHistory } from "history";
@@ -27,6 +32,7 @@ function MainApp() {
   const browserHistory = createHashHistory();
 
   return (
+
     <>
       <Router history={browserHistory}>
         <ToastContainer
@@ -40,6 +46,19 @@ function MainApp() {
         </Switch>
       </Router>
     </>
+
+    <Router>
+      <ToastContainer
+        autoClose={5000}
+        closeOnClick={false}
+        draggable={false}
+        hideProgressBar={true}
+      />
+      <Switch>
+        <Route component={AppRouter} />
+      </Switch>
+    </Router>
+
   );
 }
 

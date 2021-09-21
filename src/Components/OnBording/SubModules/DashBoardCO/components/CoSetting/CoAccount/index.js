@@ -13,6 +13,7 @@ import { BsPencil } from "react-icons/bs";
 import { RiRefreshFill } from "react-icons/ri";
 import EditLicenses from "../../../../../../../CommonModules/sharedComponents/Drawer/EditLicense";
 import { clearLicense } from "../../../../../../ExpertReviewModule/Redux/actions";
+import api from "../../../../../../../../src/apiServices";
 
 function CoAccount({ handleClose }) {
   const state = useSelector((state) => state);
@@ -27,6 +28,8 @@ function CoAccount({ handleClose }) {
   const [isPaidMember, setIsPaidMember] = useState(false);
 
   const [isShowEditLicense, setIsShowEditLicense] = useState(false);
+
+  const [paymentDetail, setPaymentDetail] = useState({});
 
   useEffect(() => {
     initialDispatch();
@@ -70,12 +73,16 @@ function CoAccount({ handleClose }) {
     initialDispatch();
   }, []);
 
+  useEffect(() => {
+    setPaymentDetail(state?.taskReport?.paymentDetail?.coAccount);
+  }, [state && state?.taskReport?.paymentDetail?.coAccount]);
+
   const initialDispatch = () => {
     dispatch(
-      coActions.getCoAccountRequest({
+      coActions.getPaymentRequest({
         gUserID: loggedUser.UserID,
         settingType: 3,
-        actionFlag: 1,
+        actionFlag: 5,
         entityID: 0,
         licID: 0,
         uUserID: 0,
@@ -221,6 +228,14 @@ function CoAccount({ handleClose }) {
     //setIsSliderCheck(!isSliderCheck);
     //setIsMainPayment(false);
     setIsShowPayment(!isShowPayment);
+  };
+
+  const deactivateER = () => {
+    api.post(`/api/CoSettings`, {
+      gUserID: loggedUser.UserID,
+      settingType: 3,
+      actionFlag: 6,
+    });
   };
   return (
     <>
@@ -430,7 +445,10 @@ function CoAccount({ handleClose }) {
                         </div>
                       </div>
                     </div>
-                    <button className="deactivate-service">
+                    <button
+                      className="deactivate-service"
+                      onClick={() => deactivateER()}
+                    >
                       Deactivate Service
                     </button>
                   </div>

@@ -1,0 +1,39 @@
+.search-input:focus {
+    box-shadow: none;
+  }
+  .card {
+    border-radius: 30px;
+    box-shadow: 0 3px 30px 0 rgb(67 0 255 / 8%);
+    background-color: #ffffff;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 4vh;
+    padding: 40px;
+    object-fit: contain;
+  }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .tabs-btn {
+    background: #ffffff;
+    border: #ffffff;
+    margin: 0px !important;
+    padding: 5px 0;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 10px !important;
+  }
+  .tabs-btn.active.color {
+    color: #000000;
+  }
+  .tabs-btn.inactive.color {
+    color: #b3abc4;
+  }
+  .tabs-bottom-line {
+    border: 0;
+  }
+  

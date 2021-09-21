@@ -9,7 +9,9 @@ import historySaga from "../Components/HistoryModule/redux/saga";
 import updatesSaga from "../Components/NewRegulationModule/redux/saga";
 import calenderViewSaga from "../Components/CalenderView/redux/saga";
 import userList from "../Components/SuperAdminModule/UserManagement/redux/sagas/user";
+import AddSubTaskSaga from "../Components/SuperAdminModule/SubTask/AddSubTask/redux/saga";
 import paymentSaga from "../Components/ExpertReviewModule/Redux/saga";
+
 
 function* watchAndLog() {
   yield takeEvery("*", function* logger(action) {
@@ -32,6 +34,7 @@ export default function* root() {
     fork(calenderViewSaga),
     fork(userTypeSagas),
     fork(userList),
+    fork(AddSubTaskSaga),
     fork(paymentSaga),
   ]);
 }
