@@ -81,6 +81,7 @@ export const routes = [
     path: `${constant.SuperAdminBaseURL}/license-management`,
     component: ActiveLicense,
   },
+
   {
     path: `${constant.SuperAdminBaseURL}/payment-management/`,
     component: PriceManagement,

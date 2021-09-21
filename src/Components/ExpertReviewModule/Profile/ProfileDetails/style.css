@@ -31,7 +31,7 @@
   font-weight: 500;
   font-size: 14px;
 }
-.lockemail{
+.lockemail {
   border-radius: 5px;
   width: 50%;
   text-align: initial;
@@ -40,12 +40,11 @@
   margin-right: 5px;
   background-color: #fafafa;
 }
-.lockemail > input{
+.lockemail > input {
   width: 90%;
   outline: none;
   text-align: initial;
   border: 0;
- 
 }
 .FormElement > input {
   border-radius: 5px;
@@ -68,7 +67,7 @@
   padding: 8px 20px;
   color: #fff;
 }
-.dropdownerror{
+.dropdownerror {
   font-size: 12px;
   color: red;
 }
