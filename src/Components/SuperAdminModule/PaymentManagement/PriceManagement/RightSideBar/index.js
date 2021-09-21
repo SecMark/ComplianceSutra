@@ -13,20 +13,20 @@ const RightSideBar = ({ option, selectProfileOption }) => {
       <div className="options-container">
         <ul className="options-list">
           <li
-            onClick={() => selectProfileOption("edit")}
-            className={option === "edit" && "active"}
+            onClick={() => selectProfileOption("complianceModule")}
+            className={option === "complianceModule" && "active"}
           >
             Compliance Module
           </li>
           <li
-            onClick={() => selectProfileOption("notification")}
-            className={option === "notification" && "active"}
+            onClick={() => selectProfileOption("auditModule")}
+            className={option === "auditModule" && "active"}
           >
             Audit Module
           </li>
           <li
-            onClick={() => selectProfileOption("task")}
-            className={option === "task" && "active"}
+            onClick={() => selectProfileOption("processModule")}
+            className={option === "processModule" && "active"}
           >
             Process Module
           </li>
@@ -35,14 +35,14 @@ const RightSideBar = ({ option, selectProfileOption }) => {
         <hr />
         <ul className="options-list">
           <li
-            onClick={() => selectProfileOption("security")}
-            className={option === "security" && "active"}
+            onClick={() => selectProfileOption("discount")}
+            className={option === "discount" && "active"}
           >
             Discount & coupons
           </li>
           <li
-            onClick={() => selectProfileOption("migration")}
-            className={option === "migration" && "active"}
+            onClick={() => selectProfileOption("referrals")}
+            className={option === "referrals" && "active"}
           >
             Referrals
           </li>
