@@ -28,7 +28,11 @@ const LeftSideBar = () => {
     <div className="side-bar">
       <div className="left-bar">
         <div className="logo">
-          <img src={sideBarlogo} alt="sideBarlogo" />
+          <img
+            src={sideBarlogo}
+            alt="sideBarlogo"
+            style={{ marginRight: "5px" }}
+          />
         </div>
         <div className="first-icon-list">
           <div className="taskIcon">
