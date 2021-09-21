@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AiOutlinePlus, AiOutlineDown } from "react-icons/ai";
+import ConfirmOtp from "../../../../../CommonModules/sharedComponents/ConfirmOtp";
 import Drawer from "../../../../../CommonModules/sharedComponents/Drawer";
 import Stepper from "../../../../../CommonModules/sharedComponents/Stepper";
 import AddDetails from "./AddDetails";
@@ -10,7 +11,7 @@ const DiscountModule = (props) => {
   const [activeStatus, setActiveStatus] = useState("discounts");
 
   const [stepper, setStepper] = useState({
-    stepperAcitveSlide: 1,
+    stepperAcitveSlide: 2,
     stepperCompletedSlides: [],
   });
   const [sortBy, setSortBy] = useState("Status");
@@ -41,9 +42,10 @@ const DiscountModule = (props) => {
             step={steps}
           />
 
-          <AddDetails />
+          {/* <AddDetails /> */}
 
           {stepper.stepperAcitveSlide === 1 && <DiscountMethods />}
+          {stepper.stepperAcitveSlide === 2 && <ConfirmOtp />}
         </div>
       </Drawer>
 
