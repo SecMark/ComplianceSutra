@@ -326,3 +326,58 @@
   padding: 2px 6px 2px;
   margin-right: 5px;
 }
+
+/* Team Performance */
+.team-performance__navigation-item {
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #202020;
+}
+.team-performance__navigation-item--arrow {
+  font-size: 1rem;
+}
+.team-performance__task-title {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+.team-performance__task-performance {
+  width: 300px;
+  flex: 1;
+}
+.team-performance__task-performance-item {
+  height: 18px;
+  width: 40px;
+  background-color: #dcdcdc;
+  border-radius: 2px;
+  margin: 0 0.2rem;
+}
+.team-performance__task-performance-item--completed {
+  background-color: #41d290;
+}
+.team-performance__task-performance-item--overdue {
+  background-color: #ef5d5d;
+}
+.team-performance__view-more {
+  width: fit-content;
+  height: 40px;
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0px 0px 3px rgba(107, 107, 107, 0.719);
+  position: absolute;
+  right: 1rem;
+  bottom: -35px;
+  z-index: 3;
+}
