@@ -2,10 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import check from "../../../../assets/Icons/check.png";
 import uncheck from "../../../../assets/Icons/uncheck.png";
- import {
-   getLicenseList,
-   selectCompanyToggle,
- } from "../../../../Components/HistoryModule/redux/actions.js";
 import constant from "../../../../CommonModules/sharedComponents/constants/constant";
 import "./style.css";
 
@@ -73,30 +69,16 @@ console.log("my state ",selec)
         <div className="dropdown-container" onBlur={() => setIsOpen(true)}>
           <div className={`dropdown ${isOpen && "dropdown--open"}`}>
             {options.map((option) => {
-              const id = option.EntityGroupID;
               return (
                 <div
                   className="dropdown-item d-flex"
-                  
                   onClick={() => {
-                    const selectedCompanies = options
-                      .filter((list) => list.selected === true)
-                      .map((list) => list.EntityGroupID)
-                      .join(",");
-                      setSelec(selectedCompanies);
-                      console.log("selected",selectedCompanies);
+                    setIsOpen(false)  
+                    setSelec(option)
                   }}
                 >
                   <span className="dropdown-item__title">
                     {option}
-                    {console.log(option)}
-                  </span>
-                  <span className="dropdown-item--selected">
-                    {option.selected ? (
-                      <img src={check} />
-                    ) : (
-                      <img src={uncheck} />
-                    )}
                   </span>
                 </div>
               );
