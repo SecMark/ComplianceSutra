@@ -34,6 +34,10 @@ const ActiveLicense = lazy(() =>
   import("../../../Components/SuperAdminModule/LicenseManagement/ActiveLicense")
 );
 
+const AddIndustry = lazy(()=>
+  import("../../../Components/SuperAdminModule/AddIndustry/index.js")
+)
+
 const PriceManagement = lazy(() =>
   import(
     "../../../Components/SuperAdminModule/PaymentManagement/PriceManagement"
@@ -84,5 +88,9 @@ export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/payment-management/`,
     component: PriceManagement,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/add-industry`,
+    component: AddIndustry,
   },
 ];
