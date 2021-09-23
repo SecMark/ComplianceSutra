@@ -50,10 +50,10 @@ function MultiSelectDropdown({
             }
           >
             {sagaState.AddIndustryReducer.industryApplicableIn.length !== 0
-              ? ``
+              ? `${sagaState.AddIndustryReducer.industryApplicableIn} selected`
               : `select ${inputTitle}`}
           </span>
-          <span className="select-title-active">{sagaState.AddIndustryReducer.industryApplicableIn}</span>
+          {/* <span className="select-title-active">{sagaState.AddIndustryReducer.industryApplicableIn}</span> */}
           <span
             style={{
               transform: isOpen ? "rotate(0deg)" : "rotate(180deg)",

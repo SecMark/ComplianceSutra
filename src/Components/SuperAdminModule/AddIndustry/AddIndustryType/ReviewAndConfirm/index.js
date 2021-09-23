@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 
 function ReviewAndConfirm({ handleEditBasicClick, handlePreviousClick }) {
   const state = useSelector((state) => state);
-
+  const [month, setMonth] = useState([
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ]);
+  const monthselec = state.AddIndustryReducer.activateIndustryOn[1];
+  const displaymonth = month[monthselec - 1];
   return (
     <div>
       <div>
@@ -37,7 +52,7 @@ function ReviewAndConfirm({ handleEditBasicClick, handlePreviousClick }) {
           <p className="ReviewConfirm__subheadings">Industry Activation Date</p>
         </div>
         <div className="col">
-          <p className="ReviewConfirm__subheadingsAns">14 Apr,2021</p>
+          <p className="ReviewConfirm__subheadingsAns">{`${state.AddIndustryReducer.activateIndustryOn[0]}  ${displaymonth},${state.AddIndustryReducer.activateIndustryOn[2]} `}</p>
         </div>
       </div>
       <div className="row">
@@ -45,7 +60,9 @@ function ReviewAndConfirm({ handleEditBasicClick, handlePreviousClick }) {
           <p className="ReviewConfirm__subheadings">Industry Active in</p>
         </div>
         <div className="col">
-          <p className="ReviewConfirm__subheadingsAns">{state.AddIndustryReducer.industryApplicableIn}</p>
+          <p className="ReviewConfirm__subheadingsAns">
+            {state.AddIndustryReducer.industryApplicableIn}
+          </p>
         </div>
       </div>
       <div className="row">
