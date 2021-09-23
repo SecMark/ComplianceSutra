@@ -35,7 +35,7 @@ function ADDBasicDetails({ basicDetails, handleChnageBasicDetails }) {
             <DropDown
               options={drp}
               lableTitle="Industry Applicable In"
-              inputTitle="England"
+              inputTitle="industry"
               dispatch={actionDispatch}
             />
           </div>
@@ -44,6 +44,7 @@ function ADDBasicDetails({ basicDetails, handleChnageBasicDetails }) {
               Activate Industry On
             </lable>
             <DatePicker
+              value={state.AddIndustryReducer.activateIndustryOn}
               name="industryactivateon"
               dispatch={actionDispatch}
               actionType="SET_ACTIVATE_INDUSTRY_ON"

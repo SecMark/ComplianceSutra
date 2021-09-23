@@ -9,7 +9,7 @@ function SubTask() {
     return (
         <div>
             <button onClick={()=>setIsOpen(!isopen)}>
-                Add Sub Task
+                Add Industry
             </button>
             <Drawer children={<ADDIndustryDetail/>} isOpen={isopen} setIsOpen={setIsOpen} />
         </div>

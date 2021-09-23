@@ -42,17 +42,17 @@ function MultiSelectDropdown({
             setIsOpen(!isOpen);
           }}
         >
-          {/* <span
+          <span
             className={
-              sagaState.HistoryReducer.numberOfSelectedCompanies !== 0
+              sagaState.AddIndustryReducer.industryApplicableIn.length !== 0
                 ? "select-title-active"
                 : "select-title"
             }
           >
-            {sagaState.HistoryReducer.numberOfSelectedCompanies !== 0
-              ? `${sagaState.HistoryReducer.numberOfSelectedCompanies} selected`
+            {sagaState.AddIndustryReducer.industryApplicableIn.length !== 0
+              ? ``
               : `select ${inputTitle}`}
-          </span> */}
+          </span>
           <span className="select-title-active">{sagaState.AddIndustryReducer.industryApplicableIn}</span>
           <span
             style={{
