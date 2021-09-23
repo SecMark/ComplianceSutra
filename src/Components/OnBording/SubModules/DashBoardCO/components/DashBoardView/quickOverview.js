@@ -6,7 +6,10 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import btnicon from "../../../../../../assets/Icons/btn-icon.png";
 import Collapsible from "react-collapsible";
-import { BACKEND_BASE_URL } from "../../../../../../apiServices/baseurl";
+import {
+  BACKEND_BASE_URL,
+  test_customization_url,
+} from "../../../../../../apiServices/baseurl";
 import siderBarbtnArrow from "../../../../../../assets/Icons/siderBarbtnArrow.png";
 import actionArrow from "../../../../../../assets/Icons/actionArrow.png";
 import complteTaskIcon from "../../../../../../assets/Icons/complteTaskIcon.png";
@@ -30,10 +33,10 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   useEffect(() => {
     if (
       userDetails &&
-      userDetails.UserID !== undefined &&
-      (userDetails.UserType === 3 ||
-        userDetails.UserType === 5 ||
-        userDetails.UserType === 6)
+      userDetails.userid !== undefined &&
+      (userDetails.usertype === 3 ||
+        userDetails.usertype === 5 ||
+        userDetails.usertype === 6)
     ) {
       fetchQuickOverViewSectionData("type1");
       fetchTeamPerformanceData();
@@ -42,7 +45,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   useEffect(() => {
     const interval = setInterval(() => {
       try {
-        if (userDetails && userDetails.UserID !== undefined) {
+        if (userDetails && userDetails.userid !== undefined) {
           fetchQuickOverViewSectionData("type2");
         }
       } catch (err) {}
@@ -65,11 +68,11 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   const fetchQuickOverViewSectionData = (type) => {
     const payload = {
       entityid: "0",
-      userID: userDetails.UserID,
-      usertype: userDetails.UserType,
+      userID: userDetails.userid,
+      usertype: userDetails.usertype,
     };
     api
-      .get("DashBoardAnalytics", {
+      .get(`${test_customization_url}DashBoardAnalytics`, {
         params: {
           uInput: payload,
         },
@@ -96,11 +99,11 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   const fetchTeamPerformanceData = () => {
     const payload = {
       entityid: "5",
-      userID: userDetails.UserID,
-      usertype: userDetails.UserType,
+      userID: userDetails.userid,
+      usertype: userDetails.usertype,
     };
     api
-      .get("DashBoardAnalytics", {
+      .get(`${test_customization_url}DashBoardAnalytics`, {
         params: {
           uInput: payload,
         },
@@ -442,7 +445,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
             >
               <div className="right-side">
                 <div className="user-title">
-                  Hi {userDetails && userDetails.UserName},
+                  Hi {userDetails && userDetails.username},
                 </div>
                 <div className="bold-title-sidebar">
                   Here is a quick
@@ -473,9 +476,9 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                   </div>
                 </>
                 {userDetails &&
-                  userDetails.UserID !== undefined &&
-                  (userDetails.UserType === 3 ||
-                    userDetails.UserType === 6) && (
+                  userDetails.userid !== undefined &&
+                  (userDetails.usertype === 3 ||
+                    userDetails.usertype === 6) && (
                     <div
                       className={
                         companyViewData &&
@@ -616,9 +619,9 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                   </div>
                 </div>
                 {userDetails &&
-                  userDetails.UserType !== undefined &&
-                  (userDetails.UserType === 3 ||
-                    userDetails.UserType === 6) && (
+                  userDetails.usertype !== undefined &&
+                  (userDetails.usertype === 3 ||
+                    userDetails.usertype === 6) && (
                     <div className="sidebar-overview-grid-new shadow bg-white rounded">
                       <div className="take-action-small-title-new">
                         Overview

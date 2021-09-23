@@ -4,6 +4,7 @@ import api from "../api";
 import apiServices from "../../../apiServices";
 
 import { toast } from "react-toastify";
+import { audit_auth_url } from "../../../apiServices/baseurl";
 let temp = [];
 const complianceOfficer = (state) => state && state.complianceOfficer;
 
@@ -463,54 +464,59 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
           emailAlreadyExistMessage: false,
         })
       );
-      //   const { data, status } = yield call(api.verifyEmail, payload);
-      //   if (status === 200 && data.message.Status === "false") {
-      if (true) {
-        let obj = {
-          email: payload.email,
-        };
-        apiServices
-          .post("authentication.api.request_email_verification", obj)
-          .then(function (response) {
-            if (
-              response &&
-              response.data &&
-              response.data.message &&
-              response.data.message.Status &&
-              response.data.message.Status === true
-            ) {
-              toast.success(
-                "The verification link has been sent to your email account successfully"
-              );
-              payload.history &&
-                payload.history.push("/email-verification-info-page");
-            } else {
-              toast.error("something went wrong please try again !!!");
-            }
-          })
-          .catch(function (error) {
-            if (error) {
-            }
-          });
+      const { data, status } = yield call(api.verifyEmail, {
+        email: payload.email,
+      });
+      if (status === 200 && data.code === 200 && data.message) {
+        if (data.message) {
+          let obj = {
+            email: payload.email,
+          };
+          apiServices
+            .post(`${audit_auth_url}request_email_verification`, obj)
+            .then(function (response) {
+              if (response && response.data && response.data.code === 200) {
+                toast.success(
+                  "The verification link has been sent to your email account successfully"
+                );
+                payload.history &&
+                  payload.history.push("/email-verification-info-page");
+              } else if (
+                response &&
+                response.data &&
+                response.data.code === 401
+              ) {
+                toast.error("Email already registered!");
+              } else {
+                toast.error("Something went wrong please try again !!!");
+              }
+            })
+            .catch(function (error) {
+              if (error) {
+              }
+            });
 
-        yield put(
-          actions.verifyEmailRequestSuccess({
-            verifyEmail: true,
-            email: payload.LoginID,
-          })
-        );
-        yield delay(2000);
-        //payload.history && payload.history.push("/email-verification-info-page");
-        //yield put(push(`/${authData && authData.store_locale}/my-account`));
+          yield put(
+            actions.verifyEmailRequestSuccess({
+              verifyEmail: true,
+              email: payload.email,
+            })
+          );
+          yield delay(2000);
+          //payload.history && payload.history.push("/email-verification-info-page");
+          //yield put(push(`/${authData && authData.store_locale}/my-account`));
+        } else {
+          toast.error("Email already exists please login");
+          yield put(
+            actions.verifyEmailRequestFailed({
+              verifyEmail: false,
+              emailAlreadyExistMessage: true,
+              email: payload.email,
+            })
+          );
+        }
       } else {
-        // toast.error("Email already exists please login");
-        yield put(
-          actions.verifyEmailRequestFailed({
-            verifyEmail: false,
-            emailAlreadyExistMessage: true,
-            email: payload.LoginID,
-          })
-        );
+        toast.error("Email aready registered!");
       }
     } catch (err) {
       // toast.error(
@@ -1081,26 +1087,22 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
   payload,
 }) {
   try {
-    const { data, status } = yield call(
-      api.checkEmailVerifiedThroughEmail,
-      payload
-    );
+    const { data, status } = yield call(api.checkEmailVerifiedThroughEmail, {
+      email: payload.email,
+      key: payload.key,
+      usertype: payload.usertype,
+      full_name: payload.full_name,
+      mobile: payload.mobile,
+      company_name: payload.company_name,
+      designation: payload.designation,
+      password: payload.password,
+    });
     if (status === 200) {
-      let statusCode, message;
-      statusCode = data && data.code;
-      message = data && data.message;
+      const statusCode = data && data.code;
+      const message = data && data.message;
 
-      if (statusCode === 200) {
-        toast.success(message);
-        yield put(
-          actions.insUpdateDeletAPIRequestSuccess({
-            loginSuccess: true,
-            statusCode: status,
-            message: message,
-          })
-        );
-      }
-      //   if (statusCode !== undefined && !statusCode) {
+      //   if (statusCode === 200) {
+      //     toast.success(message);
       //     yield put(
       //       actions.insUpdateDeletAPIRequestSuccess({
       //         loginSuccess: true,
@@ -1108,30 +1110,58 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
       //         message: message,
       //       })
       //     );
-      //     toast.error(message && message);
-      //   } else {
-      //     let companyName = payload.entityName;
-      //     yield put(
-      //       actions.insUpdateDeletAPIRequestSuccess({
-      //         formDataPersonalData: payload,
-      //         data: data.message,
-      //         userInfo: payload,
-      //         companyName: companyName,
-      //       })
-      //     );
-      //     if (payload.from === "personal-details-co") {
-      //       toast.success("Personal Information saved successfully");
-      //       yield delay(1000);
-      //       payload.history.push("/company-details");
-      //     }
       //   }
+      console.log(statusCode, message);
+      if (!statusCode) {
+        console.log("inside status if");
+        yield put(
+          actions.insUpdateDeletAPIRequestSuccess({
+            loginSuccess: true,
+            statusCode: status,
+            message: message,
+          })
+        );
+        toast.error(
+          message !== "" ? message : "Something went wrong. Please try again"
+        );
+      } else if (statusCode === 401 && message !== "") {
+        console.log("inside status else if");
+
+        toast.error(message);
+        yield put(
+          actions.insUpdateDeletAPIRequestFailed({ loginSuccess: false })
+        );
+      } else {
+        console.log("inside status else");
+
+        yield put(
+          actions.insUpdateDeletAPIRequestSuccess({
+            formDataPersonalData: payload,
+            data: {
+              ...data.data,
+              token: data.token,
+            },
+            userInfo: payload,
+            companyName: payload.company_name,
+          })
+        );
+        if (payload.from === "personal-details-co") {
+          toast.success("Personal Information saved successfully");
+          yield delay(1000);
+          //   payload.history.push("/dashboard");
+          payload.history.push("/otp-verification-co");
+        }
+      }
     } else {
+      console.log("status!==200");
       toast.error("something went wrong !!!");
       yield put(
         actions.insUpdateDeletAPIRequestFailed({ loginSuccess: false })
       );
     }
   } catch (err) {
+    console.log("inside status catch");
+
     // toast.error(
     //     (err && err.response && err.response.data && err.response.data.message) ||
     //         'Something went to wrong, Please try after sometime',

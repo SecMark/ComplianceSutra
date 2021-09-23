@@ -12,30 +12,37 @@ function YourAreDone({ history }) {
       redirectToLogin();
     }, 8000);
   }, []);
+  useEffect(() => {
+    console.log(state);
+  }, []);
 
   const redirectToLogin = () => {
     const email =
       state &&
       state.complianceOfficer &&
-      state.complianceOfficer.userData &&
-      state.complianceOfficer.userData &&
-      state.complianceOfficer.userData &&
-      state.complianceOfficer.userData.adminEmail;
+      state.complianceOfficer.userInfo &&
+      state.complianceOfficer.emailInfo.userInfo.email;
+    // state.complianceOfficer.userData &&
+    // state.complianceOfficer.userData &&
+    // state.complianceOfficer.userData.adminEmail;
 
-    const adminPWD =
+    const password =
       state &&
       state.complianceOfficer &&
-      state.complianceOfficer.userData &&
-      state.complianceOfficer.userData &&
-      state.complianceOfficer.userData &&
-      state.complianceOfficer.userData.adminPWD;
+      state.complianceOfficer.userInfo &&
+      state.complianceOfficer.emailInfo.userInfo.password;
+    // state.complianceOfficer.userData &&
+    // state.complianceOfficer.userData &&
+    // state.complianceOfficer.userData.adminPWD;
 
     dispatch(
       loginActions.signInRequest({
-        LoginId: email,
-        Pwd: adminPWD,
-        Loginty: "AdminEmail",
-        history: history,
+        // LoginId: email,
+        email,
+        password,
+        // Pwd: adminPWD,
+        // Loginty: "AdminEmail",
+        history,
       })
     );
   };

@@ -10,6 +10,7 @@ import upArrow from "../../../../../../../assets/Icons/topArrowAccordian.png";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setNotificationTaskId } from "../../notification/Redux/Action";
+import { test_customization_url } from "../../../../../../../apiServices/baseurl";
 
 export default function AssignedView(props) {
   const [assignRowCount, setAssignRowCount] = useState([]);
@@ -47,11 +48,13 @@ export default function AssignedView(props) {
   useEffect(() => {
     const payload = {
       entityid: "3",
-      userID: props.user.UserID,
-      usertype: props.user.UserType,
+      userID: props.user.userid,
+      usertype: props.user.usertype,
     };
     api
-      .get("getTaskReport", { params: { uInput: payload } })
+      .get(`${test_customization_url}getTaskReport`, {
+        params: { uInput: payload },
+      })
       .then((response) => {
         let rowCount = [];
         response.data.message.map((item) => {

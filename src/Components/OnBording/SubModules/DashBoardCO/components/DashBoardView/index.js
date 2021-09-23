@@ -29,30 +29,30 @@ function DashBoardView({ history }) {
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
 
-  const entityID =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
+  // const entityID =
+  //   state &&
+  //   state.complianceOfficer &&
+  //   state.complianceOfficer.personalInfo &&
+  //   state.complianceOfficer.personalInfo.data &&
+  //   state.complianceOfficer.personalInfo.data[0][0] &&
+  //   state.complianceOfficer.personalInfo.data[0][0] &&
+  //   state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
+  //   state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
+  //   state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
 
   const userData =
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
+    state.complianceOfficer.personalInfo.data;
+  // state.complianceOfficer.personalInfo.data[0][0] &&
+  // state.complianceOfficer.personalInfo.data[0][0] &&
+  // state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
+  // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
+  // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
 
   const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.userid;
 
   const userDetails = state && state.auth && state.auth.loginInfo;
   console.log(userDetails);
@@ -61,7 +61,7 @@ function DashBoardView({ history }) {
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.formDataPersonalData &&
-    state.complianceOfficer.personalInfo.formDataPersonalData.entityName;
+    state.complianceOfficer.personalInfo.formDataPersonalData.company_name;
 
   const taskIdFromNR =
     state && state.NotificationRedu && state.NotificationRedu.taskID;
@@ -70,27 +70,27 @@ function DashBoardView({ history }) {
       dispatch(notificationActions.setTaskID(null));
     }
   }, []);
-  // useEffect(() => {
-  //   if (userID === undefined) {
-  //     history.push("/login");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (userID === undefined) {
+      history.push("/login");
+    }
+  }, []);
   useEffect(() => {
     dispatch(
       taskReportActions.taskReportRequest({
         userID: userDetails.UserID,
-        usertype: userDetails.UserType,
+        usertype: userDetails.usertype,
       })
     );
   }, [state.adminMenu.currentMenu]);
 
   useEffect(() => {
-    if (userDetails.UserType === 3) {
+    if (userDetails.usertype === 3) {
       if (window.location.href.includes("dashboard-view")) {
         dispatch(adminMenuActions.setCurrentMenu("dashboard"));
       }
     }
-    if (userDetails.UserType === 4) {
+    if (userDetails.usertype === 4) {
       if (window.location.href.includes("dashboard")) {
         dispatch(adminMenuActions.setCurrentMenu("taskList"));
       }

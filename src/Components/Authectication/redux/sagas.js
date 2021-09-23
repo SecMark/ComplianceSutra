@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { actions as menuActions } from "../../OnBording/SubModules/DashBoardCO/MenuRedux/actions";
 
 const loginReq = function* loginReq({ payload }) {
+  console.log("login request");
   try {
     const { data } = yield call(api.loginAccount, {
       email: payload.email,
@@ -14,7 +15,8 @@ const loginReq = function* loginReq({ payload }) {
     // if (data && data.message && data.message.Message !== "FAIL") {
     if (data && data.code === 200) {
       const responseData = {
-        ...data,
+        ...data.data,
+        token: data.token,
       };
       console.log("login response: ", responseData);
       yield put(

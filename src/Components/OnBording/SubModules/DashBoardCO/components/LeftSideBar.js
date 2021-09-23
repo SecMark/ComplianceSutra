@@ -38,6 +38,7 @@ import SingleNotification from "../../../../../CustomNotification/SingleNotifica
 import api from "../../../../../apiServices";
 import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
 import { toast } from "react-toastify";
+import { test_customization_url } from "../../../../../apiServices/baseurl";
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
@@ -47,7 +48,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
 
   const [openProfile, setOpenProfile] = useState(false);
   const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.userid;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -67,7 +68,9 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       userID: userID,
     };
     api
-      .get("Notifications", { params: { uInput: payload } })
+      .get(`${test_customization_url}Notifications`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         var date1 = new Date(); //current time
         if (
@@ -132,7 +135,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   });
 
   const onLogoutClick = () => {
-    if (userDetails.UserType === 3) {
+    if (userDetails.usertype === 3) {
       dispatch(adminMenuActions.setCurrentMenu("dashboard"));
     } else {
       dispatch(adminMenuActions.setCurrentMenu("taskList"));
@@ -184,9 +187,9 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
           <img src={sideBarlogo} alt="sideBarlogo" />
         </div>
         <div className="first-icon-list">
-          {(userDetails.UserType === 3 ||
-            userDetails.UserType === 5 ||
-            userDetails.UserType === 6) && (
+          {(userDetails.usertype === 3 ||
+            userDetails.usertype === 5 ||
+            userDetails.usertype === 6) && (
             <div
               className={
                 !openProfile &&

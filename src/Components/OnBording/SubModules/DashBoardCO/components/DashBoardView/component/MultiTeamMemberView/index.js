@@ -12,46 +12,46 @@ function DashBoardView({ history }) {
 
   const [isTaskListOpen, setIsTaskListOpen] = useState(false);
 
-  const taskList =
-    state &&
-    state.taskReport &&
-    state.taskReport.taskReport &&
-    state.taskReport.taskReport.taskReport &&
-    state.taskReport.taskReport.taskReport;
+  // const taskList =
+  //   state &&
+  //   state.taskReport &&
+  //   state.taskReport.taskReport &&
+  //   state.taskReport.taskReport.taskReport &&
+  //   state.taskReport.taskReport.taskReport;
 
-  const entityID =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
+  // const entityID =
+  //   state &&
+  //   state.complianceOfficer &&
+  //   state.complianceOfficer.personalInfo &&
+  //   state.complianceOfficer.personalInfo.data &&
+  //   state.complianceOfficer.personalInfo.data[0][0] &&
+  //   state.complianceOfficer.personalInfo.data[0][0] &&
+  //   state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
+  //   state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
+  //   state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
 
-  const userData =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
+  // const userData =
+  //   state &&
+  //   state.complianceOfficer &&
+  //   state.complianceOfficer.personalInfo &&
+  //   state.complianceOfficer.personalInfo.data &&
+  //   state.complianceOfficer.personalInfo.data[0][0] &&
+  //   state.complianceOfficer.personalInfo.data[0][0] &&
+  //   state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
+  //   state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
+  //   state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
 
   const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.userid;
 
   const userDetails = state && state.auth && state.auth.loginInfo;
 
-  const companyName =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.formDataPersonalData &&
-    state.complianceOfficer.personalInfo.formDataPersonalData.entityName;
+  // const companyName =
+  //   state &&
+  //   state.complianceOfficer &&
+  //   state.complianceOfficer.personalInfo &&
+  //   state.complianceOfficer.personalInfo.formDataPersonalData &&
+  //   state.complianceOfficer.personalInfo.formDataPersonalData.entityName;
   useEffect(() => {
     if (userID === undefined) {
       history.push("/login");
@@ -65,8 +65,8 @@ function DashBoardView({ history }) {
   useEffect(() => {
     dispatch(
       taskReportActions.taskReportRequest({
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
+        userID: userDetails.userid,
+        usertype: userDetails.usertype,
       })
     );
   }, [state.adminMenu.currentMenu]);

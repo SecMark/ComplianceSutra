@@ -1,14 +1,11 @@
 import api from "../../../apiServices";
+import { audit_auth_url, audit_url } from "../../../apiServices/baseurl";
 
 const verifyEmail = (payload) =>
-  api.get("availabilityCheck", {
-    params: {
-      uInput: payload,
-    },
-  });
+  api.post(`${audit_auth_url}availability_check_email`, payload);
 
 const checkEmailVerifiedThroughEmail = (payload) =>
-  api.post("update_password", payload);
+  api.post(`${audit_url}user.api.user_detail`, payload);
 const companyType = (payload) =>
   api.get("BindCompanyType", {
     params: {

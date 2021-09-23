@@ -3,7 +3,7 @@ import "./style.css";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
-import { withRouter } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
 import emailVerify from "../../../../assets/Icons/emailVerify.png";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../SideBar";
@@ -14,10 +14,10 @@ function EmailVerify({ history }) {
   localStorage.setItem("coemail", email[1]);
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
+  const currentLocation = useLocation();
   useEffect(() => {
     setTimeout(() => {
-      history.push("/personal-details");
+      history.push("/personal-details" + currentLocation.search);
     }, 3000);
   }, []);
 

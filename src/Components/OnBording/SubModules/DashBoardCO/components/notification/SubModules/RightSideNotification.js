@@ -19,6 +19,7 @@ import NoResultFound from "../../../../../../../CommonModules/sharedComponents/N
 import { setNotificationTaskId } from "../Redux/Action";
 // import axios from "axios";
 import api from "../../../../../../../apiServices";
+import { test_customization_url } from "../../../../../../../apiServices/baseurl";
 function NotificationGrid(props) {
   // console.log("state => ",state);
 
@@ -84,7 +85,7 @@ function NotificationGrid(props) {
   useEffect(() => {
     dispatch(
       coActions.getCoNotificationsRequest({
-        userID: loggedUser.UserID,
+        userID: loggedUser.userid,
       })
     );
   }, []);
@@ -201,14 +202,16 @@ function NotificationGrid(props) {
   const fetchNotificationType = async () => {
     let arrayOfList = [];
     try {
-      const { data } = await api.get("Notifications", { params: { uInput: {} } });
-      data.message.NotificationType.map((types) => {
-        arrayOfList.push({ value: types.description, label: types.description });
+      const { data } = await api.get(`${test_customization_url}Notifications`, {
+        params: { uInput: {} },
       });
-    }catch(err) {
-      
-    }
-
+      data.message.NotificationType.map((types) => {
+        arrayOfList.push({
+          value: types.description,
+          label: types.description,
+        });
+      });
+    } catch (err) {}
 
     setOptions(arrayOfList);
   };

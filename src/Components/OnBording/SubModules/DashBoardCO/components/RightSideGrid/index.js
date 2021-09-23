@@ -31,7 +31,12 @@ import Dropzone from "react-dropzone";
 import { useOuterClick } from "./outerClick.js";
 import { useDropdownOuterClick } from "./dropdownOuterClick.js";
 import TaskDetailsView from "./TaskDetailView";
-import { BACKEND_BASE_URL } from "../../../../../../apiServices/baseurl";
+import {
+  audit_auth_url,
+  audit_url,
+  BACKEND_BASE_URL,
+  test_customization_url,
+} from "../../../../../../apiServices/baseurl";
 import { useSelector, useDispatch } from "react-redux";
 import { actions as taskReportActions } from "../../redux/actions";
 import MobileLeftSidebar from "../MobileLeftSidebar";
@@ -345,18 +350,17 @@ function RightSideGrid({
 
   useEffect(() => {
     const userDetails = state && state.auth && state.auth.loginInfo;
-    console.log("Tasks: ", userDetails);
     if (taskListDisplay === "1") {
       const payload = {
         entityid: "",
-        userID: user.UserID,
-        usertype: user.UserType,
+        userID: userDetails.userid,
+        usertype: userDetails.usertype,
       };
       api
-        .get("getTaskReport", {
+        .get(`${test_customization_url}getTaskReport`, {
           params: { uInput: payload },
           headers: {
-            Authorization: `token ${userDetails.api_key}:${userDetails.api_secret}`,
+            Authorization: `token ${userDetails.token}`,
           },
         })
         .then((response) => {
@@ -2063,7 +2067,7 @@ function RightSideGrid({
 
   const handleCheckEmailAvailability = (event) => {
     api
-      .get("availabilityCheck", {
+      .get(`${test_customization_url}availabilityCheck`, {
         params: {
           uInput: {
             loginID: selectedUser,

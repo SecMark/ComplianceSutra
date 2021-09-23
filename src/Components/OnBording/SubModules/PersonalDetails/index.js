@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import MobileStepper from "../mobileStepper";
 import render from "htmlparser2/node_modules/dom-serializer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { audit_auth_url } from "../../../../apiServices/baseurl";
 
 function PersonalDetails({ history }) {
   const dispatch = useDispatch();
@@ -186,49 +187,52 @@ function PersonalDetails({ history }) {
       onSubmit();
     }
   };
-  // const errorMessage =
-  //   state &&
-  //   state.complianceOfficer &&
-  //   state.complianceOfficer.personalInfo &&
-  //   state.complianceOfficer.personalInfo.message;
+  const errorMessage =
+    state &&
+    state.complianceOfficer &&
+    state.complianceOfficer.personalInfo &&
+    state.complianceOfficer.personalInfo.message;
   const key = new URLSearchParams(location.search).get("key");
-  const email = new URLSearchParams(location.search).get("email");
+  const email = new URLSearchParams(location.search)
+    .get("email")
+    .replace(" ", "+");
+  const usertype = new URLSearchParams(location.search).get("UserType");
   const onSubmit = () => {
-    // setIsValidate(true);
-    // if (checkPersonalDetailsForm(values)) {
-    //   return;
-    // }
-    // if (
-    //   errors.passwordErr !== "" ||
-    //   errors.confirmPasswordErr !== "" ||
-    //   errors.countryCodeErr === "true"
-    // ) {
-    //   return "";
-    // }
-    // setIsValidate(false);
-    if (email && key) {
-      // let countryCode;
-      // let strr = values.countryCode;
+    setIsValidate(true);
+    if (checkPersonalDetailsForm(values)) {
+      return;
+    }
+    if (
+      errors.passwordErr !== "" ||
+      errors.confirmPasswordErr !== "" ||
+      errors.countryCodeErr === "true"
+    ) {
+      return "";
+    }
+    setIsValidate(false);
+    if (email && key && usertype) {
+      let countryCode;
+      let strr = values.countryCode;
 
-      // countryCode = strr;
+      countryCode = strr;
       dispatch(
         personalDetailsAction.insUpdateDeletAPIRequest({
-          // entityName: values.companyName,
-          // adminName: values.fullName,
+          company_name: values.companyName,
+          full_name: values.fullName,
           email,
           key,
-          // adminMobile: values.mobileNumber,
+          usertype,
+          mobile: values.mobileNumber,
           password: values.password,
           // isClientTypeUser: 0,
-          // userType: 3,
           // actionFlag: 1,
-          // designation: values.designation,
+          designation: values.designation,
           // userID: "",
           history,
-          // from: "personal-details-co",
+          from: "personal-details-co",
           // whatsupFlag: whatappFlag ? 1 : 0,
-          // countrycode:
-          //   countryCode === "" || countryCode === "+" ? "+91" : countryCode,
+          countrycode:
+            countryCode === "" || countryCode === "+" ? "+91" : countryCode,
         })
       );
     } else {
@@ -239,27 +243,20 @@ function PersonalDetails({ history }) {
 
   const validateCompanyName = (e) => {
     let payload = {
-      loginID: e.target.value,
-      pwd: "",
-      rememberme: 0,
-      loginty: "AdminCompany",
-      countrycode: values.countryCode,
+      loginty: e.target.value,
+      // pwd: "",
+      // rememberme: 0,
+      // loginty: "AdminCompany",
+      // countrycode: values.countryCode,
     };
     api
-      .get("availabilityCheck", {
-        params: { uInput: payload },
-      })
+      .post(`${audit_auth_url}availability_check_company`, payload)
       .then(function (response) {
         // handle success
-        if (
-          response &&
-          response.data &&
-          response.data.message &&
-          response.data.message.Status === "True"
-        ) {
-          setIsCompanyNameValid(false);
-        } else {
+        if (response && response.data && response.data.message) {
           setIsCompanyNameValid(true);
+        } else {
+          setIsCompanyNameValid(false);
         }
       })
       .catch(function (error) {
@@ -345,7 +342,7 @@ function PersonalDetails({ history }) {
                   <p className="login_title">Tell us a bit about yourself</p>
                   <div className="form_section about-your-self">
                     <div className="row">
-                      {/* <div className="col-md-6 col-xs-12">
+                      <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="FullName">Full Name </label>
                           <input
@@ -506,7 +503,7 @@ function PersonalDetails({ history }) {
                             </p>
                           )}
                         </div>
-                      </div> */}
+                      </div>
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Password</label>

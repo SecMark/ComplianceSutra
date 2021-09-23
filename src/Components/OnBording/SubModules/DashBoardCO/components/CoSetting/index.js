@@ -35,7 +35,7 @@ function CoSetting({ history }) {
 
   const [showHB, setShowHBMenu] = useState(false);
   const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state.auth && state.auth.loginInfo && state.auth.loginInfo.userid;
   useEffect(() => {
     setNotificationSetting(settingJson);
   }, []);

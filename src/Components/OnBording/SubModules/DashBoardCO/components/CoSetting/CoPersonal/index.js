@@ -10,6 +10,7 @@ import validator from "validator";
 import api from "../../../../../../../apiServices";
 import { toast } from "react-toastify";
 import { actions as logInfoActions } from "../../../../../../Authectication/redux/actions";
+import { test_customization_url } from "../../../../../../../apiServices/baseurl";
 function CoSettingRightGrid({ handleClose, history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ function CoSettingRightGrid({ handleClose, history }) {
   useEffect(() => {
     dispatch(
       coActions.availabilityCheckequest({
-        loginID: loggedUser.EmailID,
+        loginID: loggedUser.email,
         loginty: "AdminEmail",
       })
     );
@@ -90,7 +91,9 @@ function CoSettingRightGrid({ handleClose, history }) {
           loginty: "AdminEmail",
         };
         return await api
-          .get("availabilityCheck", { params: { uInput: payload } })
+          .get(`${test_customization_url}availabilityCheck`, {
+            params: { uInput: payload },
+          })
           .then(function (response) {
             if (
               response &&

@@ -11,7 +11,7 @@ function Notification({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state.auth && state.auth.loginInfo && state.auth.loginInfo.userid;
   useEffect(() => {
     if (
       window.location.href.includes("notifications") &&

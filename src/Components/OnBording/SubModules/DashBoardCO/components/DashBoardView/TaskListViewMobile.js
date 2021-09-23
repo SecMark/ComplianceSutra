@@ -300,7 +300,7 @@ function RightSideGrid({
   };
 
   const deleteFile = (file) => {
-    if (userDetails.UserType === 4) {
+    if (userDetails.usertype === 4) {
       const payload = {
         taskID: 0,
         TaskFileId: file.TaskFileId,
@@ -335,7 +335,7 @@ function RightSideGrid({
         email: "",
         invitee: "",
         isApproved: 3,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
         userDetails: userDetails,
       })
     );
@@ -344,7 +344,7 @@ function RightSideGrid({
         actionFlag: 1, //Action Flag
         taskID: getTaskById.TaskId, //TaskID
         comment: rejectTaskInput,
-        commentBy: user.UserID, //UserID
+        commentBy: user.userid, //userid
       })
     );
     setRejectTaskInputComment("");
@@ -362,7 +362,7 @@ function RightSideGrid({
         invitee: "",
         isApproved: 4, //Compeleted by user
         userDetails: userDetails,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
     toast.success("Mark completed  successfully");
@@ -445,7 +445,7 @@ function RightSideGrid({
   const getApproveUsers = () => {
     dispatch(
       taskReportActions.userByRoleRequest({
-        coUserId: user.UserID,
+        coUserId: user.userid,
         ecoUserId: "",
         coUserType: 5,
       })
@@ -455,7 +455,7 @@ function RightSideGrid({
   const getUserDetail = (e) => {
     dispatch(
       taskReportActions.userByRoleRequest({
-        coUserId: user.UserID,
+        coUserId: user.userid,
         ecoUserId: "",
         coUserType: 4,
       })
@@ -472,7 +472,7 @@ function RightSideGrid({
         actionFlag: 1, //Action Flag
         taskID: getTaskById.TaskId, //TaskID
         comment: inputComment,
-        commentBy: user.UserID, //UserID
+        commentBy: user.userid, //userid
       })
     );
     setInputComment("");
@@ -578,7 +578,7 @@ function RightSideGrid({
         userType: 1,
         email: "",
         invitee: "",
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
         userDetails: userDetails,
       })
     );
@@ -602,7 +602,7 @@ function RightSideGrid({
         userType: 5,
         invitee: user.EmailID,
         isApproved: 0,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
   };
@@ -618,7 +618,7 @@ function RightSideGrid({
         invitee: user.EmailID,
         isApproved: 0,
         userDetails: userDetails,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
   };
@@ -700,7 +700,7 @@ function RightSideGrid({
         userType: 4,
         invitee: user.EmailID,
         isApproved: 0,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
     setSelectedUser("");
@@ -715,7 +715,7 @@ function RightSideGrid({
         userType: 5,
         invitee: user.EmailID,
         isApproved: 0,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
     setSelectedUser("");
@@ -731,7 +731,7 @@ function RightSideGrid({
         invitee: user.EmailID,
         isApproved: 0,
         userDetails: userDetails,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
     setSelectedUser("");
@@ -746,7 +746,7 @@ function RightSideGrid({
         userType: 5,
         invitee: user.EmailID,
         isApproved: 0,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
   };
@@ -765,15 +765,15 @@ function RightSideGrid({
         userType: 1,
         email: "",
         invitee: "",
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
     setTimeout(() => {
       dispatch(
         taskReportActions.taskReportRequest({
           entityid: "",
-          userID: userDetails.UserID,
-          usertype: userDetails.UserType,
+          userID: userDetails.userid,
+          usertype: userDetails.usertype,
         })
       );
     }, 1000);
@@ -981,11 +981,11 @@ function RightSideGrid({
           >
             {task.AssignedTo != 0 ? (
               <div className="d-flex new-task-list">
-                {userDetails.UserType === 4 ? (
+                {userDetails.usertype === 4 ? (
                   task.ApproverName === "Assign" ? null : (
                     <div className="circle-name d-none d-md-block">
                       <div className="circle-text">
-                        {userDetails.UserType === 4 &&
+                        {userDetails.usertype === 4 &&
                           getInitials(task.ApproverName)}
                       </div>
                     </div>
@@ -997,7 +997,7 @@ function RightSideGrid({
                     </div>
                   </div>
                 )}
-                {userDetails.UserType === 4 ? (
+                {userDetails.usertype === 4 ? (
                   <div className="circle-front-text d-none d-md-block">
                     {task.ApproverName === "Assign"
                       ? "No Approver"
@@ -1203,11 +1203,11 @@ function RightSideGrid({
         >
           {task.AssignedTo != 0 ? (
             <div className="" z style={{ display: "none" }}>
-              {userDetails.UserType === 4 ? (
+              {userDetails.usertype === 4 ? (
                 task.ApproverName === "Assign" ? null : (
                   <div className="circle-name d-none d-md-block">
                     <div className="circle-text">
-                      {userDetails.UserType === 4 &&
+                      {userDetails.usertype === 4 &&
                         getInitials(task.ApproverName)}
                     </div>
                   </div>
@@ -1219,7 +1219,7 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-              {userDetails.UserType === 4 ? (
+              {userDetails.usertype === 4 ? (
                 <div className="circle-front-text d-none d-md-block">
                   {task.ApproverName === "Assign"
                     ? "No Approver"

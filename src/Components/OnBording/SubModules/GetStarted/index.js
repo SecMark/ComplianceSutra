@@ -70,7 +70,7 @@ function GetStart({ history }) {
           // Pwd: "",
           // rememberme: "0",
           // Loginty: values.loginty,
-          // history,
+          history,
         })
       );
       setTimeout(() => {

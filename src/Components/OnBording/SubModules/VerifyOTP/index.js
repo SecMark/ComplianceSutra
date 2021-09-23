@@ -11,6 +11,7 @@ import api from "../../../../apiServices";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import MobileStepper from "../mobileStepper";
+import { audit_auth_url, audit_url } from "../../../../apiServices/baseurl";
 
 function VeryOTP({ history, currentStep }) {
   const dispatch = useDispatch();
@@ -42,45 +43,32 @@ function VeryOTP({ history, currentStep }) {
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EmailID;
+    state.complianceOfficer.personalInfo.data.user;
+  const auth_token =
+    state &&
+    state.complianceOfficer &&
+    state.complianceOfficer.personalInfo &&
+    state.complianceOfficer.personalInfo.data &&
+    state.complianceOfficer.personalInfo.data.token;
 
+  // console.log(state.complianceOfficer.personalInfo.data.email);
   const mobileNumber =
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].Mobile;
+    state.complianceOfficer.personalInfo.data.mobile_no;
 
-  const cntryCode =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].countrycode;
+  const cntryCode = "+91";
 
   const userID =
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
+    state.complianceOfficer.personalInfo.data.userid;
 
+  console.log(state.complianceOfficer);
   const validateCountryCode = (e) => {
     let strr = e.target.value;
     let str = strr.replace(/\D/g, "");
@@ -167,7 +155,9 @@ function VeryOTP({ history, currentStep }) {
     };
 
     api
-      .get("sendmsgwithverificationcode", { params: { uInput: payload } })
+      .get(`${audit_auth_url}sendmsgwithverificationcode`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         // handle success
         if (
@@ -285,7 +275,12 @@ function VeryOTP({ history, currentStep }) {
     };
 
     api
-      .get("sendmsgwithverificationcode", { params: { uInput: payload } })
+      .get(`${audit_auth_url}sendmsgwithverificationcode`, {
+        params: { uInput: payload },
+        headers: {
+          Authorization: `token ${auth_token}`,
+        },
+      })
       .then(function (response) {
         // handle success
         if (
