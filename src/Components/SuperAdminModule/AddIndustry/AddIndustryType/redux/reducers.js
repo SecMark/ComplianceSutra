@@ -41,6 +41,11 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         shortDescription:payload
       }
+    case SET_INDUSTRY_APPLICABLE_IN:
+      return{
+        ...state,
+        industryApplicableIn:payload
+      }
     default:
       return state;
   }

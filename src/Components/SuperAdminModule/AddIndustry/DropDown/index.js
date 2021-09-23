@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import check from "../../../../assets/Icons/check.png";
-import uncheck from "../../../../assets/Icons/uncheck.png";
 import constant from "../../../../CommonModules/sharedComponents/constants/constant";
+import {setIndustryApplicableIN} from "../AddIndustryType/redux/actions";
 import "./style.css";
 
 function MultiSelectDropdown({
@@ -10,39 +9,40 @@ function MultiSelectDropdown({
   options,
   inputTitle,
   dispatch,
-  cssstyle
+  cssstyle,
 }) {
   const [selectTitle, setSelectTitle] = useState({
     selected: false,
     title: inputTitle,
   });
-  const [selec,setSelec] = useState("")
+  const [selec, setSelec] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const sagaState = useSelector((state) => state);
-  console.log("this are the opions",options)
-//   useEffect(() => {
-//     const licenseRequestPayload = {
-//       userID: sagaState.auth.loginInfo?.UserID,
-//       entityid: constant.licenseEntityId,
-//       usertype: sagaState.auth.loginInfo?.UserType,
-//     };
-//     dispatch(getLicenseList(licenseRequestPayload));
-//   }, []);
-console.log("my state ",selec)
+
+  //   useEffect(() => {
+  //     const licenseRequestPayload = {
+  //       userID: sagaState.auth.loginInfo?.UserID,
+  //       entityid: constant.licenseEntityId,
+  //       usertype: sagaState.auth.loginInfo?.UserType,
+  //     };
+  //     dispatch(getLicenseList(licenseRequestPayload));
+  //   }, []);
   return (
     <>
       <div className="form-group">
         <label htmlFor="lable-title" className="St-lable mb-2">
           {lableTitle}
         </label>
-        <div 
-          className={`form-control ${cssstyle === "taskhistory" ? "taskhistory":"select-container"}`}
+        <div
+          className={`form-control ${
+            cssstyle === "taskhistory" ? "taskhistory" : "select-container"
+          }`}
           id="lable-title"
           onClick={(e) => {
             setIsOpen(!isOpen);
           }}
         >
-          <span
+          {/* <span
             className={
               sagaState.HistoryReducer.numberOfSelectedCompanies !== 0
                 ? "select-title-active"
@@ -52,7 +52,8 @@ console.log("my state ",selec)
             {sagaState.HistoryReducer.numberOfSelectedCompanies !== 0
               ? `${sagaState.HistoryReducer.numberOfSelectedCompanies} selected`
               : `select ${inputTitle}`}
-          </span>
+          </span> */}
+          <span className="select-title-active">{sagaState.AddIndustryReducer.industryApplicableIn}</span>
           <span
             style={{
               transform: isOpen ? "rotate(0deg)" : "rotate(180deg)",
@@ -73,13 +74,12 @@ console.log("my state ",selec)
                 <div
                   className="dropdown-item d-flex"
                   onClick={() => {
-                    setIsOpen(false)  
-                    setSelec(option)
+                    setIsOpen(false);
+                    setSelec(option);
+                    dispatch(setIndustryApplicableIN(option))
                   }}
                 >
-                  <span className="dropdown-item__title">
-                    {option}
-                  </span>
+                  <span className="dropdown-item__title">{option}</span>
                 </div>
               );
             })}

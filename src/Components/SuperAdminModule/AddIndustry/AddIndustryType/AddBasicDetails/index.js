@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import "./style.css";
-
-import  DatePicker  from "../../../../../CommonModules/sharedComponents/Datepicker"
+import DatePicker from "../../../../../CommonModules/sharedComponents/Datepicker";
 import DropDown from "../../DropDown";
-import { AiFillPlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 // import Datepicker from "../../../../../CommonModules/sharedComponents/Datepicker";
 
@@ -38,18 +36,19 @@ function ADDBasicDetails({ basicDetails, handleChnageBasicDetails }) {
               options={drp}
               lableTitle="Industry Applicable In"
               inputTitle="England"
-              //  dispatch={actionDispatch}
+              dispatch={actionDispatch}
             />
           </div>
           <div className="col">
             <lable className="BD-lable mb-3" htmlFor="activateon">
               Activate Industry On
             </lable>
-            <DatePicker 
-             name="industryactivateon"
-             dispatch={actionDispatch}
-             actionType="SET_ACTIVATE_INDUSTRY_ON"
-             pageName={"insutrytype"} />
+            <DatePicker
+              name="industryactivateon"
+              dispatch={actionDispatch}
+              actionType="SET_ACTIVATE_INDUSTRY_ON"
+              pageName={"insutrytype"}
+            />
           </div>
         </div>
         <div className="row mt-3">

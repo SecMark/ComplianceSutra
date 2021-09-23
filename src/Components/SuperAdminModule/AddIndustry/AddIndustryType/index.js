@@ -8,9 +8,8 @@ import ReviewAndConfirm from "./ReviewAndConfirm";
 import {
   setIndustryName,
   setAssociateLicense,
-  setShortDescription
+  setShortDescription,
 } from "../AddIndustryType/redux/actions";
-import isURL from "validator/lib/isURL";
 function AddSubTask() {
   const actionDispatch = useDispatch();
   const steps = [
@@ -34,12 +33,12 @@ function AddSubTask() {
   });
   const [basicDetails, setBasicDetails] = useState({
     industryName: "Credit Rating",
-    shortDescription:"write the industries type description here"
+    shortDescription: "write the industries type description here",
   });
 
   const [dopdownValues, setDropDownVqalue] = useState([]);
   const [dropdata, setdropData] = useState([]);
-  
+
   const onDropdownChange = (selectedOptions) => {
     let licarray = [];
     selectedOptions.forEach((element) => {
@@ -49,7 +48,7 @@ function AddSubTask() {
   };
   const handleValueSubmit = () => {
     actionDispatch(setIndustryName(basicDetails.industryName));
-    actionDispatch(setShortDescription(basicDetails.shortDescription))
+    actionDispatch(setShortDescription(basicDetails.shortDescription));
   };
   const handleChnageBasicDetails = (e) => {
     const value = e.target.value;
