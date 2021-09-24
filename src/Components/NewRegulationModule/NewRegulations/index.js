@@ -99,7 +99,7 @@ const NewRegulations = (props) => {
   }, [isSuccess]);
 
   const fetchAndSetUpdates = () => {
-    const payload = { UserID: state.auth.loginInfo?.UserID };
+    const payload = { UserID: state.auth.loginInfo?.userid };
     dispatch(getUpdates(payload));
   };
   const changeShowRegulationDetail = () => {
@@ -168,7 +168,7 @@ const NewRegulations = (props) => {
 
   const getAndSetIndustryList = () => {
     const industryListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
+      userID: state.auth.loginInfo?.userid,
       industry: constant.flag,
     };
     //get issuer list.
@@ -177,7 +177,7 @@ const NewRegulations = (props) => {
 
   const getAndSetIssuerList = () => {
     const issuerListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
+      userID: state.auth.loginInfo?.userid,
       regbodies: constant.flag,
     };
 
@@ -187,7 +187,7 @@ const NewRegulations = (props) => {
 
   const getAndSetTopicList = () => {
     const topicListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
+      userID: state.auth.loginInfo?.userid,
       topic: constant.flag,
     };
     //get topic list.

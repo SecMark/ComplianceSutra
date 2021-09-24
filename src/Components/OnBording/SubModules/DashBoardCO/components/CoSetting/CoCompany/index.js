@@ -620,7 +620,7 @@ function CoManagment({ handleClose }) {
         tempCoCompany && tempCoCompany[index] && tempCoCompany[index].isExist
           ? tempCoCompany[index].EntityId
           : 0,
-      userId: loggedUser.UserID,
+      userId: loggedUser.userid,
       entityName: tempCoCompany[index].EntityName,
       coUserId: tempCoCompany[index].coUserID,
       status: 0,

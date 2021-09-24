@@ -292,7 +292,7 @@ function RightSideGrid({
         actionFlag: 0,
       };
       api
-        .get("getTaskFile", { params: { uInput: payload } })
+        .get(`${test_customization_url}getTaskFile`, { params: { uInput: payload } })
         .then((response) => {
           let fileData = response.data.message;
           setFileList(fileData);
@@ -1615,7 +1615,7 @@ function RightSideGrid({
         actionFlag: 0,
       };
       api
-        .get("getTaskFile", { params: { uInput: payload } })
+        .get(`${test_customization_url}getTaskFile`, { params: { uInput: payload } })
         .then((response) => {
           let fileData = response.data.message;
           setFileList(fileData);
@@ -1634,7 +1634,7 @@ function RightSideGrid({
         actionFlag: 3,
       };
       api
-        .get("getTaskFile", { params: { uInput: payload } })
+        .get(`${test_customization_url}getTaskFile`, { params: { uInput: payload } })
         .then((response) => {
           if (
             response &&
@@ -1796,7 +1796,7 @@ function RightSideGrid({
     }
     if (taskID !== null) {
       api
-        .get("Circular", {
+        .get(`${test_customization_url}Circular`, {
           params: {
             uInput: {
               taskID: taskID,
@@ -1934,9 +1934,9 @@ function RightSideGrid({
   const getUpload = (file) => {
     let url = "";
     if (currentTaskData && currentTaskData.TaskId) {
-      url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData.TaskId}&Userid=${userDetails.userid}&ftype=0`;
+      url = `${BACKEND_BASE_URL + test_customization_url}UploadFile?uInput={"Taskid":${currentTaskData.TaskId},"Userid":${userDetails.userid},"ftype":0}`;
     } else {
-      url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData}`;
+      url = `${BACKEND_BASE_URL + test_customization_url}UploadFile?uInput={"Taskid:${currentTaskData}"}`;
     }
     var formData = [];
     formData = new FormData();
@@ -2095,7 +2095,7 @@ function RightSideGrid({
 
   const handleCheckAssignToEmailAvailability = (event) => {
     api
-      .get("availabilityCheck", {
+      .get(`${test_customization_url}availabilityCheck`, {
         params: {
           uInput: {
             loginID: selectedUser,
@@ -2736,7 +2736,7 @@ function RightSideGrid({
       usertype: userDetails.usertype,
     };
     api
-      .get("DashBoardAnalytics", { params: { uInput: payload } })
+      .get(`${test_customization_url}DashBoardAnalytics`, { params: { uInput: payload } })
       .then((response) => {
         if (
           response &&

@@ -8,6 +8,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { actions as notificationActions } from "../../../notification/Redux/actions.js";
+import { test_customization_url } from "../../../../../../../../apiServices/baseurl";
 
 function PendingActionTaskList({ history, click, setClick }) {
   const state = useSelector((state) => state);
@@ -16,7 +17,7 @@ function PendingActionTaskList({ history, click, setClick }) {
   const [pendingArr, setPendingArr] = useState([]);
 
   const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.userid;
 
   const userDetails = state && state.auth && state.auth.loginInfo;
 
@@ -44,7 +45,9 @@ function PendingActionTaskList({ history, click, setClick }) {
     };
     if (userID !== undefined)
       api
-        .get("getTaskReport", { params: { uInput: payload } })
+        .get(`${test_customization_url}getTaskReport`, {
+          params: { uInput: payload },
+        })
         .then((response) => {
           let riskData = response.data.message;
           let rowCount = [];

@@ -36,7 +36,7 @@ function RiskAndDelayTaskList({ history }) {
     state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
 
   const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.userid;
 
   const userDetails = state && state.auth && state.auth.loginInfo;
 
@@ -54,8 +54,8 @@ function RiskAndDelayTaskList({ history }) {
   useEffect(() => {
     dispatch(
       taskReportActions.taskReportRequest({
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
+        userID: userDetails.userid,
+        usertype: userDetails.usertype,
       })
     );
   }, [state.adminMenu.currentMenu]);

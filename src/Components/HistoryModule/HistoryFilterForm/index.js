@@ -94,8 +94,8 @@ const HistoryFilterForm = (props) => {
     ) {
       historyListPayload = {
         entityid: constant.historyEntityId,
-        userID: state.auth.loginInfo?.UserID,
-        usertype: state.auth.loginInfo?.UserType,
+        userID: state.auth.loginInfo?.userid,
+        usertype: state.auth.loginInfo?.usertype,
         startDate:
           state.HistoryReducer.from &&
           moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
@@ -116,8 +116,8 @@ const HistoryFilterForm = (props) => {
     ) {
       historyListPayload = {
         entityid: constant.historyEntityId,
-        userID: state.auth.loginInfo?.UserID,
-        usertype: state.auth.loginInfo?.UserType,
+        userID: state.auth.loginInfo?.userid,
+        usertype: state.auth.loginInfo?.usertype,
 
         entityList: state.HistoryReducer.companyList
           .filter((company) => company.selected === true)
