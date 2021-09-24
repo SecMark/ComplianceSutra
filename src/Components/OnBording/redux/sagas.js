@@ -1149,7 +1149,8 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
           toast.success("Personal Information saved successfully");
           yield delay(1000);
           //   payload.history.push("/dashboard");
-          payload.history.push("/otp-verification-co");
+          //   payload.history.push("/otp-verification-co");
+          payload.history.push("/company-details");
         }
       }
     } else {

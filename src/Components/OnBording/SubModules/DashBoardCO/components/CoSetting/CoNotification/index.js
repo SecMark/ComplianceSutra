@@ -5,6 +5,7 @@ import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import api from "../../../../../../../apiServices";
 import { types } from "../../../redux/actions";
 import { data } from "jquery";
+import { test_customization_url } from "../../../../../../../apiServices/baseurl";
 
 function CoNotification({ settingData, handleClose }) {
   const [isEmailChecked, setEmailChecked] = useState(false);
@@ -53,7 +54,7 @@ function CoNotification({ settingData, handleClose }) {
 
   const changeSettingFlagAPICall = (type) => {
     const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
+      gUserID: auth && auth.loginInfo && auth.loginInfo.userid,
       settingType: 4,
       actionFlag: 2,
       entityID: 0,
@@ -67,7 +68,9 @@ function CoNotification({ settingData, handleClose }) {
       mobile: "",
     };
     api
-      .get("CoSettings", { params: { uInput: payload } })
+      .get(`${test_customization_url}CoSettings`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         if (
           response &&
@@ -107,7 +110,7 @@ function CoNotification({ settingData, handleClose }) {
 
   useEffect(() => {
     const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
+      gUserID: auth && auth.loginInfo && auth.loginInfo.userid,
       settingType: 4,
       actionFlag: 0,
       entityID: 0,
@@ -118,7 +121,9 @@ function CoNotification({ settingData, handleClose }) {
       pwd: "",
     };
     api
-      .get("CoSettings", { params: { uInput: payload } })
+      .get(`${test_customization_url}CoSettings`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         if (
           response &&

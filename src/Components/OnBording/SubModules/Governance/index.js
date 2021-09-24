@@ -18,6 +18,7 @@ import MobileStepper from "../mobileStepper";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import AssignDrawerMobile from "../AssignDrawerMobile";
+import { test_customization_url } from "../../../../apiServices/baseurl";
 
 function Governance({ history }) {
   const state = useSelector((state) => state);
@@ -48,12 +49,12 @@ function Governance({ history }) {
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
+    state.complianceOfficer.personalInfo.data.userid;
+  // state.complianceOfficer.personalInfo.data[0][0] &&
+  // state.complianceOfficer.personalInfo.data[0][0] &&
+  // state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
+  // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
+  // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
 
   const companyInfo =
     state && state.complianceOfficer && state.complianceOfficer.goveranceData;
@@ -119,7 +120,7 @@ function Governance({ history }) {
 
     if (isEmail(email) && alreadyAssignToAnother === null) {
       await api
-        .get(`availabilityCheck`, {
+        .get(`${test_customization_url}availabilityCheck`, {
           params: {
             uInput: {
               loginID: email.trim(),

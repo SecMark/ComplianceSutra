@@ -24,6 +24,12 @@ export default {
   license: "license",
   company: "company",
   team: "team",
+  list: "list",
+  calender: "calender",
+  board: "board",
+  day: "day",
+  month: "month",
+  week: "week",
   ReAssignFilterTypes: {
     migrateAllTasksInDateRange: "MIGRATE_ALL_TASKS_IN_DATE_RANGE",
     migrateAllTasksOfParticularDate: "MIGRATE_ALL_TASKS_OF_PARTICULAR_DATE",

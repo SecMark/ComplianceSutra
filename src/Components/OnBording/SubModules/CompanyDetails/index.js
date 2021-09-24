@@ -23,6 +23,7 @@ import SideBarInputControl from "../SideBarInputControl";
 import api from "../../../../apiServices";
 import MobileStepper from "../mobileStepper";
 import Searchable from "react-searchable-dropdown";
+import { test_customization_url } from "../../../../apiServices/baseurl";
 
 function CompanyDetails({ history }) {
   const state = useSelector((state) => state);
@@ -102,23 +103,23 @@ function CompanyDetails({ history }) {
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
+    state.complianceOfficer.personalInfo.data.userid;
+    // state.complianceOfficer.personalInfo.data[0][0] &&
+    // state.complianceOfficer.personalInfo.data[0][0] &&
+    // state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
+    // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
+    // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
 
   const EntityID =
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
+    state.complianceOfficer.personalInfo.data.entityid;
+    // state.complianceOfficer.personalInfo.data[0][0] &&
+    // state.complianceOfficer.personalInfo.data[0][0] &&
+    // state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
+    // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
+    // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
 
   const companyName =
     state &&
@@ -136,7 +137,7 @@ function CompanyDetails({ history }) {
     state.complianceOfficer.cerificateInfo.table[0].entityID;
 
   const entityID =
-    state && state.complianceOfficer && state.complianceOfficer.entityInfo;
+    state && state.complianceOfficer && state.complianceOfficer.personalInfo.data.entityid;
   useEffect(() => {
     dispatch(companyActions.storeEnityIDwithCompaName([]));
     dispatch(
@@ -156,7 +157,7 @@ function CompanyDetails({ history }) {
       entityName: entityName,
     };
     api
-      .get("UpdateEntityName", { params: { uInput: payload } })
+      .get(`${test_customization_url}UpdateEntityName`, { params: { uInput: payload } })
       .then(function (response) {
         // handle success
         if (
@@ -260,7 +261,7 @@ function CompanyDetails({ history }) {
 
       if (companyName !== payload.loginID) {
         api
-          .get("availabilityCheck", { params: { uInput: payload } })
+          .get(`${test_customization_url}availabilityCheck`, { params: { uInput: payload } })
           .then(function (response) {
             // handle success
             if (

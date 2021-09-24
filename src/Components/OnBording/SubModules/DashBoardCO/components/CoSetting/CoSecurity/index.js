@@ -5,6 +5,7 @@ import api from "../../../../../../../apiServices";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import { test_customization_url } from "../../../../../../../apiServices/baseurl";
 
 function CoSetting({ handleClose }) {
   const [values, setValues] = useState({
@@ -55,7 +56,7 @@ function CoSetting({ handleClose }) {
 
   const getSettingData = () => {
     const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
+      gUserID: auth && auth.loginInfo && auth.loginInfo.userid,
       settingType: 5,
       actionFlag: 0,
       entityID: 0,
@@ -69,7 +70,9 @@ function CoSetting({ handleClose }) {
       mobile: "",
     };
     api
-      .get("CoSettings", { params: { uInput: payload } })
+      .get(`${test_customization_url}CoSettings`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         if (
           response &&
@@ -208,11 +211,13 @@ function CoSetting({ handleClose }) {
     const payload = {
       settingType: 5,
       actionFlag: 2,
-      emailID: auth && auth.loginInfo && auth.loginInfo.EmailID,
+      emailID: auth && auth.loginInfo && auth.loginInfo.email,
       pwd: values.confirmPassword,
     };
     api
-      .get("CoSettings", { params: { uInput: payload } })
+      .get(`${test_customization_url}CoSettings`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         if (
           response &&
@@ -252,7 +257,7 @@ function CoSetting({ handleClose }) {
   };
   const changeSettingFlagAPICall = (type) => {
     const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
+      gUserID: auth && auth.loginInfo && auth.loginInfo.userid,
       settingType: 5,
       actionFlag: 1,
       entityID: 0,
@@ -266,7 +271,9 @@ function CoSetting({ handleClose }) {
       mobile: "",
     };
     api
-      .get("CoSettings", { params: { uInput: payload } })
+      .get(`${test_customization_url}CoSettings`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         if (
           response &&
@@ -293,9 +300,11 @@ function CoSetting({ handleClose }) {
   };
 
   const handleVerifyModalAction = (flag) => {
-    let payload = { LoginId: loggedUser.EmailID, Pwd: values.currentPassword };
+    let payload = { LoginId: loggedUser.email, Pwd: values.currentPassword };
     api
-      .get("Loginsuccess", { params: { uInput: payload } })
+      .get(`${test_customization_url}Loginsuccess`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         if (
           response &&

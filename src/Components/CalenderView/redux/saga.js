@@ -14,9 +14,10 @@ function* fetchCalenderDayData(action) {
     yield put(setLoading(true));
     const { data, status } = yield call(api.getTaskReport, action.payload);
     if (status === 200) {
+      console.log(data);
       yield put(setSuccess(true));
       yield put(setLoading(false));
-      yield put(setDayData(data));
+      yield put(setDayData(data.message));
     } else {
       yield put(setSuccess(false));
       yield put(setLoading(false));
@@ -33,7 +34,7 @@ function* fetchCalenderWeekData(action) {
     if (status === 200) {
       yield put(setSuccess(true));
       yield put(setLoading(false));
-      yield put(setWeekData(data));
+      yield put(setWeekData(data.message));
     } else {
       yield put(setSuccess(false));
       yield put(setLoading(false));
@@ -50,7 +51,7 @@ function* fetchCalenderMonthData(action) {
     if (status === 200) {
       yield put(setSuccess(true));
       yield put(setLoading(false));
-      yield put(setMonthData(data));
+      yield put(setMonthData(data.message));
     } else {
       yield put(setSuccess(false));
       yield put(setLoading(false));

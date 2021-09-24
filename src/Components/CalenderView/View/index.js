@@ -25,7 +25,6 @@ const View = ({ getSelectTaskDetails }) => {
   const [activeDays, setActiveDays] = useState(constant.week);
   const [dayDate, setDayDate] = useState(new Date());
   const [monthDate, setMonthDate] = useState(new Date());
-
   const [weekStartDate, setWeekStartDate] = useState(new Date());
   const [sevenDays, setSevenDays] = useState([]);
   const [months, setMonths] = useState([]);
@@ -55,7 +54,7 @@ const View = ({ getSelectTaskDetails }) => {
   useEffect(() => {
     fetchDayData();
     fetchWeekData();
-  }, [state.auth.loginInfo?.UserID]);
+  }, [state.auth.loginInfo?.userid]);
 
   useEffect(() => {
     getDays();
@@ -167,7 +166,7 @@ const View = ({ getSelectTaskDetails }) => {
   //Dispatch Day API
   const fetchDayData = () => {
     const dayPayload = {
-      userID: state.auth.loginInfo?.UserID,
+      userID: state.auth.loginInfo?.userid,
       EntityID: "M",
       StartDate: moment(dayDate).format("YYYY-MM-DD"),
       EndDate: moment(dayDate).format("YYYY-MM-DD"),
@@ -178,7 +177,7 @@ const View = ({ getSelectTaskDetails }) => {
   //Dispatch Week API
   const fetchWeekData = () => {
     const dayPayload = {
-      userID: state.auth.loginInfo?.UserID,
+      userID: state.auth.loginInfo?.userid,
       EntityID: "M",
       StartDate: moment(weekStartDate).format("YYYY-MM-DD"),
       EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
@@ -192,7 +191,7 @@ const View = ({ getSelectTaskDetails }) => {
     var startDate = new Date(date.getFullYear(), date.getMonth(), 1);
 
     const dayPayload = {
-      userID: state.auth.loginInfo?.UserID,
+      userID: state.auth.loginInfo?.userid,
       EntityID: "M",
       StartDate: moment(startDate).format("YYYY-MM-DD"),
       EndDate: moment(moment(endDate).format()).format("YYYY-MM-DD"),

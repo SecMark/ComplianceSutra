@@ -68,7 +68,7 @@ function CoManagment({ handleClose }) {
     setCompanyDetails([]);
     dispatch(
       coActions.getEntityLicenseTaskRequest({
-        coUserId: loggedUser.UserID,
+        coUserId: loggedUser.userid,
       })
     );
 
@@ -85,7 +85,7 @@ function CoManagment({ handleClose }) {
     setTimeout(() => {
       dispatch(
         coActions.userByRoleRequest({
-          coUserId: loggedUser.UserID,
+          coUserId: loggedUser.userid,
           coUserType: 3,
           ecoUserId: "",
         })
