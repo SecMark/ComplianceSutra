@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import QuickOverview from "../QuickOverview";
 import TaskList from "../TaskList";
+import RiskDelay from "./TakeAction/RiskDelay";
 import ClientList from "../ClientList";
 import TeamPerformance from "./team-performance";
 import "./style.css";
@@ -10,8 +11,8 @@ import TakeAction from "./TakeAction";
 const Dashboard = () => {
   // const [navTab, setNav] = useState("Tasks");
   // const [navTab, setNav] = useState("TeamPerformance");
-  // const [navTab, setNav] = useState("Risk&Delays");
-  const [navTab, setNav] = useState("PendingActions");
+  const [navTab, setNav] = useState("Risk&Delays");
+  // const [navTab, setNav] = useState("PendingActions");
 
   return (
     <div className="row">
@@ -75,7 +76,7 @@ const Dashboard = () => {
           {navTab === "Tasks" && <TaskList />}
           {navTab === "Clients" && <ClientList />}
           {navTab === "TeamPerformance" && <TeamPerformance />}
-          {navTab === "Risk&Delays" && <TakeAction />}
+          {navTab === "Risk&Delays" && <RiskDelay />}
           {navTab === "PendingActions" && <TakeAction />}
         </div>
       </div>

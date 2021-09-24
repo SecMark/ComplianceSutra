@@ -381,3 +381,32 @@
   bottom: -35px;
   z-index: 3;
 }
+.RiskDelay {
+  width: 65vw;
+  height: 90vh;
+  padding: 1rem 3rem;
+  border-radius: 36px;
+  box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
+  background-color: #fff;
+  font-size: 14px;
+}
+.RDHeader {
+  display: flex;
+  justify-content: space-between;
+  width: 97%;
+  margin-top: 1rem;
+}
+.RDSubHeader {
+  display: flex;
+  width: 11vw;
+  justify-content: space-between;
+  color: #ef5d5d;
+  background-color: #ffefea;
+  padding: 0.3rem 0.8rem;
+  padding-bottom: -1rem;
+  border-radius: 22px;
+  margin: 1.5rem 0;
+}
+.RDSubHeader > span {
+  font-weight: 500;
+}
