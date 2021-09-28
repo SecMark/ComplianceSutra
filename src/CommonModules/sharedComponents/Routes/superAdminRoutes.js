@@ -22,6 +22,13 @@ const SATaskDetails = lazy(() =>
 const UserManagement = lazy(() =>
   import("../../../Components/SuperAdminModule/UserManagement")
 );
+const SALicense = lazy(() =>
+  import("../../../Components/SuperAdminModule/License/AddNewLicense/index")
+);
+
+const CircularManagement = lazy(() =>
+  import("../../../Components/SuperAdminModule/CircularManagement")
+);
 
 const ActiveLicense = lazy(() =>
   import("../../../Components/SuperAdminModule/LicenseManagement/ActiveLicense")
@@ -32,6 +39,7 @@ const PriceManagement = lazy(() =>
     "../../../Components/SuperAdminModule/PaymentManagement/PriceManagement"
   )
 );
+
 export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/`,
@@ -58,8 +66,16 @@ export const routes = [
     component: SATaskDetails,
   },
   {
+    path: `${constant.SuperAdminBaseURL}/license`,
+    component: SALicense,
+  },
+  {
     path: `${constant.SuperAdminBaseURL}/user-management`,
     component: UserManagement,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/circular-management`,
+    component: CircularManagement,
   },
   {
     path: `${constant.SuperAdminBaseURL}/license-management`,

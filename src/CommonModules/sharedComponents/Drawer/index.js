@@ -17,10 +17,10 @@ const Drawer = ({ children, isOpen, setIsOpen, width }) => {
           </button>
           {children}
           {/* Horizontal Line */}
-          {/* <div className="cs-drawer__horizontal-line"></div> */}
+           {/* <div className="cs-drawer__horizontal-line"></div>  */}
 
           {/* All types of Button */}
-          {/* <button className="cs-drawer__button cs-drawer__button--stroke">
+         {/* <button className="cs-drawer__button cs-drawer__button--stroke">
             stroke
           </button>
           <button className="cs-drawer__button cs-drawer__button--primary mx-3">
@@ -28,7 +28,7 @@ const Drawer = ({ children, isOpen, setIsOpen, width }) => {
           </button>
           <button className="cs-drawer__button cs-drawer__button--outlined">
             outlined
-          </button> */}
+          </button>  */}
         </div>
       </div>
     </div>
