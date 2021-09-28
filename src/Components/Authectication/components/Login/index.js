@@ -41,7 +41,7 @@ function Login({ history }) {
   const [isValidate, setIsValidate] = useState(false);
 
   const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.userid;
 
   const userDetails = state && state.auth && state.auth.loginInfo;
   const onChangeHandler = (name) => (event) => {
@@ -59,15 +59,15 @@ function Login({ history }) {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  // useEffect(() => {
-  //   if (userID) {
-  //     if (userDetails.UserType === 4) {
-  //       history.push("/dashboard")
-  //     }else{
-  //       history.push("/dashboard-view")
-  //     }
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (userID) {
+      if (userDetails.usertype === 4) {
+        history.push("/dashboard");
+      } else {
+        history.push("/dashboard-view");
+      }
+    }
+  }, []);
 
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {

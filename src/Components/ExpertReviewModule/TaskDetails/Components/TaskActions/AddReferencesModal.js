@@ -29,7 +29,7 @@ const AddReferencesModal = ({ isOpen, setIsOpen, taskId, fetchReference }) => {
         actionFlag: 1,
         taskID: taskId,
         comment,
-        commentBy: userDetails.UserID,
+        commentBy: userDetails.userid,
         link: 1,
       })
     );
@@ -46,7 +46,7 @@ const AddReferencesModal = ({ isOpen, setIsOpen, taskId, fetchReference }) => {
         taskid: taskId,
         fileData: formData,
         ftype: 1,
-        userId: userDetails.UserID,
+        userId: userDetails.userid,
       })
     );
   };

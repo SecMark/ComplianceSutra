@@ -78,7 +78,7 @@ function DashBoardView({ history }) {
   useEffect(() => {
     dispatch(
       taskReportActions.taskReportRequest({
-        userID: userDetails.UserID,
+        userID: userDetails.userid,
         usertype: userDetails.usertype,
       })
     );

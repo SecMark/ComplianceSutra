@@ -93,7 +93,7 @@ const NewRegulationFilter = (props) => {
 
   const getResultByFilter = () => {
     const filterRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
+      userID: state.auth.loginInfo?.userid,
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
       regbodies: state.UpdatesReducer.issuer,

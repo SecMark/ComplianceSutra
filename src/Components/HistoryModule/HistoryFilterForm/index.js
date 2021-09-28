@@ -22,7 +22,7 @@ const HistoryFilterForm = (props) => {
   const state = useSelector((state) => state);
   const history = useHistory();
   const actionDispatch = useDispatch();
-
+  console.table(state.auth.loginInfo);
   useEffect(() => {
     if (state.HistoryReducer.companyList.length !== 0) {
       const priorDates = state.HistoryReducer.companyList.map((item) =>

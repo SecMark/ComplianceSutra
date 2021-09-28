@@ -27,7 +27,7 @@ const HistoryFilterForm = (props) => {
   const state = useSelector((state) => state);
   const history = useHistory();
   const actionDispatch = useDispatch();
-
+  console.log(state.auth.loginInfo);
   useEffect(() => {
     const companyRequestPayload = {
       userID: state.auth.loginInfo?.userid,

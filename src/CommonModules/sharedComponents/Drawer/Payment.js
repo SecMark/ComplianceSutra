@@ -100,7 +100,7 @@ const Payment = ({ paymentDrawer }) => {
               </div>
               <div>
                 <p>Total Charges ({choosedPlan?.liccnt} Licenses)</p>
-                <p>₹{choosedPlan.Amount}</p>
+                <p>₹{choosedPlan?.Amount}</p>
               </div>
               <div>
                 <p>Discount ({choosedPlan?.Discamt}%)</p>
@@ -108,11 +108,11 @@ const Payment = ({ paymentDrawer }) => {
               </div>
               <div>
                 <p>Taxes (GST 15%)</p>
-                <p>₹{choosedPlan.TaxAmt}</p>
+                <p>₹{choosedPlan?.TaxAmt}</p>
               </div>
               <div className="total-amount">
                 <p>Total Amount</p>
-                <p>₹{choosedPlan.TotalAmt}</p>
+                <p>₹{choosedPlan?.TotalAmt}</p>
               </div>
             </div>
 

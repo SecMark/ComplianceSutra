@@ -532,7 +532,7 @@ function CoManagment({ handleClose }) {
     } else if (flag === 2) {
       dispatch(
         coActions.deleteCompanyRequest({
-          gUserID: loggedUser.UserID,
+          gUserID: loggedUser.userid,
           settingType: 2,
           actionFlag: 3,
           EntityID: selectedCompany.EntityId,

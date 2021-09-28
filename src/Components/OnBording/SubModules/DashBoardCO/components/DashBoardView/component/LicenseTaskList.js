@@ -134,13 +134,13 @@ export default function LicenseTaskList(props) {
         to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
-          if (userDetails && userDetails.UserType !== 6) {
+          if (userDetails && userDetails.usertype !== 6) {
             dispatch(setNotificationTaskId(task.TaskId));
           }
         }}
         style={{
           pointerEvents: `${
-            userDetails && userDetails.UserType === 6 ? "none" : "auto"
+            userDetails && userDetails.usertype === 6 ? "none" : "auto"
           }`,
         }}
       >
@@ -243,11 +243,11 @@ export default function LicenseTaskList(props) {
           >
             {task.AssignedTo != 0 ? (
               <div className="d-flex">
-                {props.user.UserType === 4 ? (
+                {props.user.usertype === 4 ? (
                   task.ApproverName === "Assign" ? null : (
                     <div className="circle-name d-none d-sm-block">
                       <div className="circle-text">
-                        {props.user.UserType === 4 &&
+                        {props.user.usertype === 4 &&
                           getInitials(task.ApproverName)}
                       </div>
                     </div>
@@ -259,7 +259,7 @@ export default function LicenseTaskList(props) {
                     </div>
                   </div>
                 )}
-                {props.user.UserType === 4 ? (
+                {props.user.usertype === 4 ? (
                   <div className="circle-front-text d-none d-sm-block">
                     {task.ApproverName === "Assign"
                       ? "No Approver"

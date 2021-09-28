@@ -112,8 +112,8 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(
       taskReportActions.taskReportRequest({
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
+        userID: userDetails.userid,
+        usertype: userDetails.usertype,
       })
     );
   }, []);
@@ -249,7 +249,7 @@ const Dashboard = () => {
           // to="/dashboard"
           style={{ textDecoration: "none" }}
           onClick={() => {
-            if (userDetails && userDetails.UserType !== 6) {
+            if (userDetails && userDetails.usertype !== 6) {
               // dispatch(setNotificationTaskId(task.TaskId));
               setIsTaskDetailsShow(true);
               dispatch(
@@ -268,7 +268,7 @@ const Dashboard = () => {
           }}
           style={{
             pointerEvents: `${
-              userDetails && userDetails.UserType === 6 ? "none" : "auto"
+              userDetails && userDetails.usertype === 6 ? "none" : "auto"
             }`,
           }}
         >
@@ -384,11 +384,11 @@ const Dashboard = () => {
             >
               {task.AssignedTo != 0 ? (
                 <div className="d-flex new-task-list">
-                  {userDetails.UserType === 4 ? (
+                  {userDetails.usertype === 4 ? (
                     task.ApproverName === "Assign" ? null : (
                       <div className="circle-name d-none d-sm-block">
                         <div className="circle-text">
-                          {userDetails.UserType === 4 &&
+                          {userDetails.usertype === 4 &&
                             getInitials(task.ApproverName)}
                         </div>
                       </div>
@@ -401,7 +401,7 @@ const Dashboard = () => {
                     </div>
                   )}
 
-                  {userDetails.UserType === 4 ? (
+                  {userDetails.usertype === 4 ? (
                     <div className="circle-front-text d-none d-sm-block">
                       {task.ApproverName === "Assign"
                         ? "No Approver"

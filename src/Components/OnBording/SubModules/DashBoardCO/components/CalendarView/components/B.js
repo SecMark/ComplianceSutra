@@ -47,8 +47,8 @@ function CalendarView() {
     dispatch(
       taskReportActions.taskReportRequest({
         // userID: 20243,
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
+        userID: userDetails.userid,
+        usertype: userDetails.usertype,
       })
     );
   }, []);

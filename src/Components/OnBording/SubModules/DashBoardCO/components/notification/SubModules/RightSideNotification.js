@@ -337,7 +337,7 @@ function NotificationGrid(props) {
                                     onClick={() => {
                                       if (
                                         loggedUser &&
-                                        loggedUser.UserType !== 6
+                                        loggedUser.usertype !== 6
                                       ) {
                                         dispatch(
                                           setNotificationTaskId(element.TaskId)
@@ -346,7 +346,7 @@ function NotificationGrid(props) {
                                     }}
                                     style={{
                                       pointerEvents: `${
-                                        loggedUser && loggedUser.UserType === 6
+                                        loggedUser && loggedUser.usertype === 6
                                           ? "none"
                                           : "auto"
                                       }`,

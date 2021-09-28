@@ -30,6 +30,8 @@ export default {
   day: "day",
   month: "month",
   week: "week",
+  increment: "increment",
+  decrement: "decrement",
   ReAssignFilterTypes: {
     migrateAllTasksInDateRange: "MIGRATE_ALL_TASKS_IN_DATE_RANGE",
     migrateAllTasksOfParticularDate: "MIGRATE_ALL_TASKS_OF_PARTICULAR_DATE",

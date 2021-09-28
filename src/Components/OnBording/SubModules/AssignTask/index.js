@@ -140,11 +140,12 @@ function AssignTask({ history }) {
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
+    state.complianceOfficer.personalInfo.data.userid;
+  // state.complianceOfficer.personalInfo.data[0][0] &&
+  // state.complianceOfficer.personalInfo.data[0][0] &&
+  // state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
+  // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
+  // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
 
   const assignTaskData =
     state &&
@@ -937,11 +938,11 @@ function AssignTask({ history }) {
       state.complianceOfficer &&
       state.complianceOfficer.personalInfo &&
       state.complianceOfficer.personalInfo.data &&
-      state.complianceOfficer.personalInfo.data[0][0] &&
-      state.complianceOfficer.personalInfo.data[0][0] &&
-      state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-      state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-      state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
+      state.complianceOfficer.personalInfo.data.userid;
+    // state.complianceOfficer.personalInfo.data[0][0] &&
+    // state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
+    // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
+    // state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
 
     const email = e.target.value;
     const link = `http://139.162.5.110:9091/#/sign-up-request?email=${email}&companyName=${companyName}`;

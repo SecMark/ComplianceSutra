@@ -39,8 +39,8 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
     dispatch(
       taskReportActions.taskReportRequest({
         entityid: getCurrentEntityId(currentBoardViewBy),
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
+        userID: userDetails.userid,
+        usertype: userDetails.usertype,
       })
     );
   }, [currentBoardViewBy]);
@@ -141,9 +141,9 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
             <Board
               components={components}
               laneStyle={
-                userDetails.UserType === 3 ||
-                userDetails.UserType === 5 ||
-                userDetails.UserType === 6
+                userDetails.usertype === 3 ||
+                userDetails.usertype === 5 ||
+                userDetails.usertype === 6
                   ? {
                       maxHeight: "98vh",
                       maxWidth: "100%",

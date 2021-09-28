@@ -158,7 +158,7 @@ function CustomCard(props) {
         <div
           style={{
             maxWidth: "100%",
-            pointerEvents: `${userDetails.UserType === 6 ? "none" : "auto"}`,
+            pointerEvents: `${userDetails.usertype === 6 ? "none" : "auto"}`,
           }}
           className="board-tab-design"
         >

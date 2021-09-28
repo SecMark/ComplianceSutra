@@ -463,33 +463,33 @@ function ReAssignTasksModal({
 
   useEffect(() => {
     // Fetching data of members.
-    if (auth && auth.loginInfo && auth.loginInfo.UserID && userId) {
+    if (auth && auth.loginInfo && auth.loginInfo.userid && userId) {
       let payload = {
-        coUserId: auth.loginInfo.UserID,
+        coUserId: auth.loginInfo.userid,
         coUserType: "0",
       };
       if (userType === 3) {
         payload = {
-          coUserId: auth.loginInfo.UserID,
+          coUserId: auth.loginInfo.userid,
           coUserType: "3",
         };
       }
       if (userType === 4) {
         payload = {
-          coUserId: auth.loginInfo.UserID,
+          coUserId: auth.loginInfo.userid,
           coUserType: "4",
         };
       }
       if (userType === 5) {
         payload = {
-          coUserId: auth.loginInfo.UserID,
+          coUserId: auth.loginInfo.userid,
           coUserType: "5",
         };
       }
       getTeamMembers(payload)
         .then((response) => {
           // This is all task
-          const responseData = response.data[0].GEN_Users;
+          const responseData = response.data.message[0].GEN_Users;
           if (userType) {
             setData(responseData.filter((item) => item.UserID !== userId));
             return;
@@ -605,10 +605,10 @@ function ReAssignTasksModal({
                 className="btn re-assign-to-me"
                 onClick={() => {
                   setAssignTo({
-                    EmailID: auth.loginInfo.EmailID,
-                    UserName: auth.loginInfo.UserName,
-                    UserType: auth.loginInfo.UserType,
-                    UserID: auth.loginInfo.UserID,
+                    EmailID: auth.loginInfo.email,
+                    UserName: auth.loginInfo.username,
+                    UserType: auth.loginInfo.usertype,
+                    UserID: auth.loginInfo.userid,
                   });
                 }}
               >

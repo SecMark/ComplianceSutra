@@ -14,7 +14,7 @@ function MultiSelectCompanyDropdown({
   options,
   inputTitle,
   dispatch,
-  cssstyle
+  cssstyle,
 }) {
   const [selectTitle, setSelectTitle] = useState({
     selected: false,
@@ -25,9 +25,9 @@ function MultiSelectCompanyDropdown({
 
   useEffect(() => {
     const licenseRequestPayload = {
-      userID: sagaState.auth.loginInfo?.UserID,
+      userID: sagaState.auth.loginInfo?.userid,
       entityid: constant.licenseEntityId,
-      usertype: sagaState.auth.loginInfo?.UserType,
+      usertype: sagaState.auth.loginInfo?.usertype,
     };
     dispatch(getLicenseList(licenseRequestPayload));
   }, []);
@@ -38,8 +38,10 @@ function MultiSelectCompanyDropdown({
         <label htmlFor="lable-title" className="mb-2">
           {lableTitle}
         </label>
-        <div 
-          className={`form-control ${cssstyle === "taskhistory" ? "taskhistory":"select-container"}`}
+        <div
+          className={`form-control ${
+            cssstyle === "taskhistory" ? "taskhistory" : "select-container"
+          }`}
           id="lable-title"
           onClick={(e) => {
             setIsOpen(!isOpen);
@@ -86,9 +88,9 @@ function MultiSelectCompanyDropdown({
                       .join(",");
 
                     const licenseRequestPayload = {
-                      userID: sagaState.auth.loginInfo?.UserID,
+                      userID: sagaState.auth.loginInfo?.userid,
                       entityid: constant.licenseEntityId,
-                      usertype: sagaState.auth.loginInfo?.UserType,
+                      usertype: sagaState.auth.loginInfo?.usertype,
                       entityList: selectedCompanies,
                     };
 

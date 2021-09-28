@@ -26,6 +26,7 @@ import Dropdown from "react-dropdown";
 import { toast } from "react-toastify";
 import "react-responsive-modal/styles.css";
 import { isEmail } from "../../../../AssignTask/utils";
+import { test_customization_url } from "../../../../../../../apiServices/baseurl";
 
 var _ = require("lodash");
 
@@ -162,7 +163,7 @@ function CoManagment({ handleClose }) {
 
   const getSettingData = () => {
     const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
+      gUserID: auth && auth.loginInfo && auth.loginInfo.userid,
       settingType: 6,
       actionFlag: 0,
       entityID: 0,
@@ -176,7 +177,9 @@ function CoManagment({ handleClose }) {
       // mobile: "",
     };
     api
-      .get("CoSettings", { params: { uInput: payload } })
+      .get(`${test_customization_url}CoSettings`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         if (
           response &&
@@ -195,29 +198,41 @@ function CoManagment({ handleClose }) {
   };
   const onChangeRoleClick = (type, item, index) => {
     if (item.id) {
-      api.post(`/api/getUserTask?userID=${item.id}`).then((response) => {
-        if (response && response.data && response.data.Status === true) {
-          if (type === "desktop") {
-            changeRole(index);
+      api
+        .post(
+          `${test_customization_url}getUserTask?uInput={"userID":${item.id}}`
+        )
+        .then((response) => {
+          if (
+            response &&
+            response.data &&
+            response.data.message &&
+            response.data.message.Status === true
+          ) {
+            if (type === "desktop") {
+              changeRole(index);
+              setOpenPopupIndex("");
+            } else if (type === "mobile") {
+              changeRoleMobile(item, index);
+              setOpenPopupIndex("");
+            }
+          } else if (
+            response &&
+            response.data &&
+            response.data.message &&
+            response.data.message.Status === false
+          ) {
+            toast.error(
+              "Please re-assign all your tasks first then change the role."
+            );
             setOpenPopupIndex("");
-          } else if (type === "mobile") {
-            changeRoleMobile(item, index);
+          } else {
+            toast.error(
+              "Something went wrong. Please try again after some time"
+            );
             setOpenPopupIndex("");
           }
-        } else if (
-          response &&
-          response.data &&
-          response.data.Status === false
-        ) {
-          toast.error(
-            "Please re-assign all your tasks first then change the role."
-          );
-          setOpenPopupIndex("");
-        } else {
-          toast.error("Something went wrong. Please try again after some time");
-          setOpenPopupIndex("");
-        }
-      });
+        });
     }
   };
   const mobileFilterRef = useOuterClick((e) => {
@@ -288,7 +303,7 @@ function CoManagment({ handleClose }) {
   const onDeletePress = (index) => {
     setOpenPopupIndex("");
     const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
+      gUserID: auth && auth.loginInfo && auth.loginInfo.userid,
       settingType: 6,
       actionFlag: 3,
       entityID: 0,
@@ -302,7 +317,7 @@ function CoManagment({ handleClose }) {
       // mobile: "",
     };
     api
-      .get("CoSettings", {
+      .get(`${test_customization_url}CoSettings`, {
         params: {
           uInput: payload,
         },
@@ -524,7 +539,7 @@ function CoManagment({ handleClose }) {
       userType = dropDown.value;
     }
     const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
+      gUserID: auth && auth.loginInfo && auth.loginInfo.userid,
       settingType: 6,
       actionFlag: 2,
       entityID: 0,
@@ -539,7 +554,9 @@ function CoManagment({ handleClose }) {
     };
     if (userType) {
       api
-        .get("CoSettings", { params: { uInput: payload } })
+        .get(`${test_customization_url}CoSettings`, {
+          params: { uInput: payload },
+        })
         .then(function (response) {
           if (
             response &&
@@ -621,7 +638,9 @@ function CoManagment({ handleClose }) {
           loginty: "AdminEmail",
         };
         await api
-          .get("availabilityCheck", { params: { uInput: payload } })
+          .get(`${test_customization_url}availabilityCheck`, {
+            params: { uInput: payload },
+          })
           .then(function (response) {
             if (
               response &&
@@ -714,7 +733,7 @@ function CoManagment({ handleClose }) {
     let _userRole = inputTeamMember.role;
     setIsValidate(false);
     const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
+      gUserID: auth && auth.loginInfo && auth.loginInfo.userid,
       settingType: 6,
       actionFlag: 1,
       entityID: 0,
@@ -732,7 +751,9 @@ function CoManagment({ handleClose }) {
     };
     if (_userRole) {
       api
-        .get("CoSettings", { params: { uInput: payload } })
+        .get(`${test_customization_url}CoSettings`, {
+          params: { uInput: payload },
+        })
         .then(function (response) {
           if (response && response.data && response.data.message) {
             if (response.data.message.Status === false) {
@@ -796,7 +817,7 @@ function CoManagment({ handleClose }) {
               <span onClick={() => onClickSearchIcon()} className="search-icon">
                 <img src={teamSearch} alt="team Search Icon" />
               </span>
-              {userDetails && userDetails.UserType !== 6 && (
+              {userDetails && userDetails.usertype !== 6 && (
                 <div
                   style={{ cursor: "pointer" }}
                   onClick={() => setAddNew(true)}
@@ -891,7 +912,7 @@ function CoManagment({ handleClose }) {
                     <br /> */}
             <div className="d-flex position-relative">
               <div className="col-4 col-sm-2 col-md-2 col-xl-2 pl-0">
-                {userDetails && userDetails.UserType !== 6 ? (
+                {userDetails && userDetails.usertype !== 6 ? (
                   <div
                     style={{ cursor: "pointer" }}
                     onClick={() => onAddNewMemberMobile(true)}
@@ -1060,7 +1081,7 @@ function CoManagment({ handleClose }) {
                             className="three-dot-tooltip"
                             style={{
                               height: `${
-                                userDetails && userDetails.UserType === 6
+                                userDetails && userDetails.usertype === 6
                                   ? "44px"
                                   : "177px"
                               }`,
@@ -1075,7 +1096,7 @@ function CoManagment({ handleClose }) {
                             >
                               More details
                             </div>
-                            {userDetails && userDetails.UserType !== 6 && (
+                            {userDetails && userDetails.usertype !== 6 && (
                               <>
                                 <div
                                   style={{ cursor: "pointer" }}
@@ -1497,7 +1518,7 @@ function CoManagment({ handleClose }) {
                     teamMemberData &&
                     teamMemberData.length > 0 &&
                     userDetails &&
-                    userDetails.UserType !== 6 && (
+                    userDetails.usertype !== 6 && (
                       <td className="pl-0">
                         <div
                           style={{ cursor: "pointer" }}

@@ -98,8 +98,8 @@ function Dashboard({ history }) {
     dispatch(
       taskReportActions.taskReportRequest({
         entityid: "",
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
+        userID: userDetails.userid,
+        usertype: userDetails.usertype,
       })
     );
   }, [state.adminMenu.currentMenu]);

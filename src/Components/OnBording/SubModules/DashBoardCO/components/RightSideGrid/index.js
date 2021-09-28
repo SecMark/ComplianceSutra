@@ -292,7 +292,9 @@ function RightSideGrid({
         actionFlag: 0,
       };
       api
-        .get(`${test_customization_url}getTaskFile`, { params: { uInput: payload } })
+        .get(`${test_customization_url}getTaskFile`, {
+          params: { uInput: payload },
+        })
         .then((response) => {
           let fileData = response.data.message;
           setFileList(fileData);
@@ -1615,7 +1617,9 @@ function RightSideGrid({
         actionFlag: 0,
       };
       api
-        .get(`${test_customization_url}getTaskFile`, { params: { uInput: payload } })
+        .get(`${test_customization_url}getTaskFile`, {
+          params: { uInput: payload },
+        })
         .then((response) => {
           let fileData = response.data.message;
           setFileList(fileData);
@@ -1634,7 +1638,9 @@ function RightSideGrid({
         actionFlag: 3,
       };
       api
-        .get(`${test_customization_url}getTaskFile`, { params: { uInput: payload } })
+        .get(`${test_customization_url}getTaskFile`, {
+          params: { uInput: payload },
+        })
         .then((response) => {
           if (
             response &&
@@ -1934,9 +1940,15 @@ function RightSideGrid({
   const getUpload = (file) => {
     let url = "";
     if (currentTaskData && currentTaskData.TaskId) {
-      url = `${BACKEND_BASE_URL + test_customization_url}UploadFile?uInput={"Taskid":${currentTaskData.TaskId},"Userid":${userDetails.userid},"ftype":0}`;
+      url = `${
+        BACKEND_BASE_URL + test_customization_url
+      }UploadFile?uInput={"Taskid":${currentTaskData.TaskId},"Userid":${
+        userDetails.userid
+      },"ftype":0}`;
     } else {
-      url = `${BACKEND_BASE_URL + test_customization_url}UploadFile?uInput={"Taskid:${currentTaskData}"}`;
+      url = `${
+        BACKEND_BASE_URL + test_customization_url
+      }UploadFile?uInput={"Taskid:${currentTaskData}"}`;
     }
     var formData = [];
     formData = new FormData();
@@ -2005,12 +2017,17 @@ function RightSideGrid({
       allUserBackup &&
         allUserBackup.length > 0 &&
         allUserBackup.filter((item, index) => {
-          if (
-            item.email.toLowerCase().includes(searchText.toLowerCase()) ||
-            (item.UserName &&
-              item.UserName.toLowerCase().includes(searchText.toLowerCase()))
-          ) {
-            temp.push(item);
+          try {
+            console.table(item);
+            if (
+              item.EmailID.toLowerCase().includes(searchText.toLowerCase()) ||
+              (item.UserName &&
+                item.UserName.toLowerCase().includes(searchText.toLowerCase()))
+            ) {
+              temp.push(item);
+            }
+          } catch (err) {
+            toast.error("Something went wrong.");
           }
         });
       setAllUser(temp);
@@ -2736,7 +2753,9 @@ function RightSideGrid({
       usertype: userDetails.usertype,
     };
     api
-      .get(`${test_customization_url}DashBoardAnalytics`, { params: { uInput: payload } })
+      .get(`${test_customization_url}DashBoardAnalytics`, {
+        params: { uInput: payload },
+      })
       .then((response) => {
         if (
           response &&

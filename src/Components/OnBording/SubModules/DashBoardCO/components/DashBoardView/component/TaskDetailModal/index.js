@@ -195,7 +195,7 @@ function RightSideGrid({
   };
 
   const deleteFile = (file) => {
-    if (userDetails.UserType === 4) {
+    if (userDetails.usertype === 4) {
       const payload = {
         taskID: 0,
         TaskFileId: file.TaskFileId,
@@ -230,7 +230,7 @@ function RightSideGrid({
         email: "",
         invitee: "",
         isApproved: 3,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
         userDetails: userDetails,
       })
     );
@@ -239,7 +239,7 @@ function RightSideGrid({
         actionFlag: 1, //Action Flag
         taskID: getTaskById.TaskId, //TaskID
         comment: rejectTaskInput,
-        commentBy: user.UserID, //UserID
+        commentBy: user.userid, //UserID
       })
     );
     setRejectTaskInputComment("");
@@ -257,7 +257,7 @@ function RightSideGrid({
         invitee: "",
         isApproved: 4, //Compeleted by user
         userDetails: userDetails,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
     toast.success("Mark completed  successfully");
@@ -312,7 +312,7 @@ function RightSideGrid({
   const getUserDetail = (e) => {
     dispatch(
       taskReportActions.userByRoleRequest({
-        coUserId: user.UserID,
+        coUserId: user.userid,
         ecoUserId: "",
         coUserType: 4,
       })
@@ -329,7 +329,7 @@ function RightSideGrid({
         actionFlag: 1, //Action Flag
         taskID: getTaskById.TaskId, //TaskID
         comment: inputComment,
-        commentBy: user.UserID, //UserID
+        commentBy: user.userid, //UserID
       })
     );
     setInputComment("");
@@ -452,9 +452,9 @@ function RightSideGrid({
         taskID: id,
         email: approvEmail,
         userType: 5,
-        invitee: user.EmailID,
+        invitee: user.email,
         isApproved: 0,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
   };
@@ -549,9 +549,9 @@ function RightSideGrid({
         taskID: id,
         email: selectedUser,
         userType: 4,
-        invitee: user.EmailID,
+        invitee: user.email,
         isApproved: 0,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
     setSelectedUser("");
@@ -577,12 +577,12 @@ function RightSideGrid({
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
-        email: user.EmailID,
+        email: user.email,
         userType: 4,
-        invitee: user.EmailID,
+        invitee: user.email,
         isApproved: 0,
         userDetails: userDetails,
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
     setSelectedUser("");
@@ -616,15 +616,15 @@ function RightSideGrid({
         userType: 1,
         email: "",
         invitee: "",
-        loginID: userDetails.UserID,
+        loginID: userDetails.userid,
       })
     );
     setTimeout(() => {
       dispatch(
         taskReportActions.taskReportRequest({
           entityid: "",
-          userID: userDetails.UserID,
-          usertype: userDetails.UserType,
+          userID: userDetails.userid,
+          usertype: userDetails.usertype,
         })
       );
     }, 1000);
@@ -823,7 +823,7 @@ function RightSideGrid({
               </div>
             </div>
             <div className="task-detail-data">
-              {userDetails.UserType !== 4 && (
+              {userDetails.usertype !== 4 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Assigned to</div>
@@ -977,7 +977,7 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-              {userDetails.UserType !== 3 && (
+              {userDetails.usertype !== 3 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Assigned by</div>
@@ -997,7 +997,7 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-              {userDetails.UserType !== 5 && (
+              {userDetails.usertype !== 5 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Approver</div>
@@ -1018,7 +1018,7 @@ function RightSideGrid({
                     ) : (
                       <div className="holding-list-bold-title">
                         <div className="col-9 pl-0">
-                          {user && user.UserType === 4 ? (
+                          {user && user.usertype === 4 ? (
                             <div className="holding-list-bold-title">
                               Not Assigned
                             </div>
@@ -1167,7 +1167,7 @@ function RightSideGrid({
                   </div>
                 </div>
               </div>
-              {userDetails.UserType !== 4 && (
+              {userDetails.usertype !== 4 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Deadline</div>
@@ -1181,7 +1181,7 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-              {userDetails.UserType !== 4 && (
+              {userDetails.usertype !== 4 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">Status</div>
@@ -1207,7 +1207,7 @@ function RightSideGrid({
                   </div>
                 </div>
               )}
-              {completedDate && isTaskApproved && userDetails.UserType !== 4 && (
+              {completedDate && isTaskApproved && userDetails.usertype !== 4 && (
                 <div className="row">
                   <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                     <div className="holding-list-normal-title">
@@ -1296,8 +1296,8 @@ function RightSideGrid({
           </div>
           {showFiles && (
             <div className="file-grid-data">
-              {(user && user.UserType && user.UserType === 4) ||
-              (user && user.UserType && user.UserType === 3) ? (
+              {(user && user.usertype && user.usertype === 4) ||
+              (user && user.usertype && user.usertype === 3) ? (
                 <>
                   {getTaskById &&
                   getTaskById.Status &&
@@ -1305,8 +1305,8 @@ function RightSideGrid({
                   getTaskById &&
                   getTaskById.Status &&
                   getTaskById.TaskStatus === 0 ? (
-                    (user && user.UserType && user.UserType === 4) ||
-                    (user && user.UserType && user.UserType === 3) ? (
+                    (user && user.usertype && user.usertype === 4) ||
+                    (user && user.usertype && user.usertype === 3) ? (
                       <>
                         {" "}
                         <div className="row">
@@ -1460,16 +1460,16 @@ function RightSideGrid({
               (getTaskById &&
                 getTaskById.Status &&
                 getTaskById.TaskStatus === 1) ? (
-                (user && user.UserType && user.UserType === 3) ||
-                user.UserType === 4 ||
-                (user.UserType === 5 && " ")
+                (user && user.usertype && user.usertype === 3) ||
+                user.usertype === 4 ||
+                (user.usertype === 5 && " ")
               ) : getTaskById &&
                 getTaskById.Status &&
                 getTaskById.Status === "Assigned" &&
                 getTaskById &&
                 getTaskById.Status &&
                 getTaskById.TaskStatus === 0 ? (
-                user && user.UserType && user.UserType === 4 ? (
+                user && user.usertype && user.usertype === 4 ? (
                   <button
                     style={{ marginTop: 10, width: 150 }}
                     onClick={() => teamMemberMarkComplete()}
@@ -1495,8 +1495,8 @@ function RightSideGrid({
                 getTaskById.Status &&
                 getTaskById.TaskStatus === 3 ? (
                 user &&
-                user.UserType &&
-                user.UserType === 4 && (
+                user.usertype &&
+                user.usertype === 4 && (
                   <button
                     style={{ marginTop: 10, width: 150 }}
                     onClick={() => teamMemberMarkComplete()}
@@ -1512,8 +1512,8 @@ function RightSideGrid({
                 (getTaskById &&
                   getTaskById.Status &&
                   getTaskById.TaskStatus === 4) ? (
-                (user && user.UserType && user.UserType === 3) ||
-                (user && user.UserType && user.UserType === 5) ? (
+                (user && user.usertype && user.usertype === 3) ||
+                (user && user.usertype && user.usertype === 5) ? (
                   <div class="btn-toolbar text-center well">
                     <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
                       <button

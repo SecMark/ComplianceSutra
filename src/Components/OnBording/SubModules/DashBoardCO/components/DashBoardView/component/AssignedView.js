@@ -111,13 +111,13 @@ export default function AssignedView(props) {
         to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
-          if (userDetails && userDetails.UserType !== 6) {
+          if (userDetails && userDetails.usertype !== 6) {
             dispatch(setNotificationTaskId(task.TaskId));
           }
         }}
         style={{
           pointerEvents: `${
-            userDetails && userDetails.UserType === 6 ? "none" : "auto"
+            userDetails && userDetails.usertype === 6 ? "none" : "auto"
           }`,
         }}
       >

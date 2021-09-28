@@ -145,7 +145,7 @@ function RiskAndDelayTaskList({ history, click, setClick }) {
                         to="/dashboard"
                         style={{ textDecoration: "none" }}
                         onClick={() => {
-                          if (userDetails && userDetails.UserType !== 6) {
+                          if (userDetails && userDetails.usertype !== 6) {
                             dispatch(
                               notificationActions.setTaskID(task.TaskId)
                             );
@@ -153,7 +153,7 @@ function RiskAndDelayTaskList({ history, click, setClick }) {
                         }}
                         style={{
                           pointerEvents: `${
-                            userDetails && userDetails.UserType === 6
+                            userDetails && userDetails.usertype === 6
                               ? "none"
                               : "auto"
                           }`,

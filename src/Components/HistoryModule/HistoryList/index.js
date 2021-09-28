@@ -311,15 +311,15 @@ const HistoryList = (props) => {
                     className="history-filter"
                     onClick={() => {
                       const licenseRequestPayload = {
-                        userID: state.auth.loginInfo?.UserID,
+                        userID: state.auth.loginInfo?.userid,
                         entityid: constant.licenseEntityId,
-                        usertype: state.auth.loginInfo?.UserType,
+                        usertype: state.auth.loginInfo?.usertype,
                       };
                       dispatch(getLicenseList(licenseRequestPayload));
                       const companyRequestPayload = {
-                        userID: state.auth.loginInfo?.UserID,
+                        userID: state.auth.loginInfo?.userid,
                         entityid: constant.companyEntityId,
-                        usertype: state.auth.loginInfo?.UserType,
+                        usertype: state.auth.loginInfo?.usertype,
                       };
 
                       dispatch(getCompanyList(companyRequestPayload));

@@ -21,7 +21,7 @@ const NewRegulationSearchBadge = (props) => {
 
   const clearFilterPayload = () => {
     dispatch(setIsFilter(false));
-    const payload = { UserID: state.auth.loginInfo?.UserID };
+    const payload = { UserID: state.auth.loginInfo?.userid };
     dispatch(getUpdates(payload));
   };
 
@@ -35,7 +35,7 @@ const NewRegulationSearchBadge = (props) => {
     dispatch(updateFilter(removeBadgePayload));
 
     const filterRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
+      userID: state.auth.loginInfo?.userid,
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
       regbodies: state.UpdatesReducer.issuer,
@@ -67,7 +67,7 @@ const NewRegulationSearchBadge = (props) => {
       fromDate === "" &&
       toDate === ""
     ) {
-      const payload = { UserID: state.auth.loginInfo?.UserID };
+      const payload = { UserID: state.auth.loginInfo?.userid };
       dispatch(getUpdates(payload));
     }
   }, [state.UpdatesReducer?.badges]);

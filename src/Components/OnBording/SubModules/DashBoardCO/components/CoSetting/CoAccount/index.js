@@ -70,7 +70,7 @@ function CoAccount({ handleClose }) {
   const initialDispatch = () => {
     dispatch(
       coActions.getCoAccountRequest({
-        gUserID: loggedUser.UserID,
+        gUserID: loggedUser.userid,
         settingType: 3,
         actionFlag: 0,
         entityID: 0,
@@ -145,7 +145,7 @@ function CoAccount({ handleClose }) {
           : "";
       dispatch(
         coActions.coAccountUpdateRequest({
-          gUserID: loggedUser.UserID,
+          gUserID: loggedUser.userid,
           settingType: 3,
           actionFlag: 2,
           entityID: 0,

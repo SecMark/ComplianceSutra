@@ -10,10 +10,14 @@ const getInitials = (name) => {
   }
 };
 const checkResponse = (response) => {
-  if (response.data === null) {
-    return true;
-  }
-  if (response.data[0].StatuCode === "norec") {
+  try {
+    if (response.data.message === null) {
+      return true;
+    }
+    if (response.data.message[0].StatuCode === "norec") {
+      return false;
+    }
+  } catch (err) {
     return false;
   }
 };

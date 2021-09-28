@@ -1,32 +1,32 @@
-import React, { useState, useEffect, useRef } from "react"
-import "./style.css"
-import assignIcon from "../../../../../../../assets/Icons/assignIcon.png"
-import RightImageBg from "../../../../../../../assets/Images/Onboarding/RectangleOnboadign.png"
-import closeIcon from "../../../../../../../assets/Icons/closeIcon.png"
-import closeIconGray from "../../../../../../../assets/Icons/closeIconGray.png"
-import searchIcon from "../../../../../../../assets/Icons/searchIcon.png"
-import { useDispatch, useSelector } from "react-redux"
-import { actions as coActions } from "../../../redux/actions"
-import { isMobile } from "react-device-detect"
+import React, { useState, useEffect, useRef } from "react";
+import "./style.css";
+import assignIcon from "../../../../../../../assets/Icons/assignIcon.png";
+import RightImageBg from "../../../../../../../assets/Images/Onboarding/RectangleOnboadign.png";
+import closeIcon from "../../../../../../../assets/Icons/closeIcon.png";
+import closeIconGray from "../../../../../../../assets/Icons/closeIconGray.png";
+import searchIcon from "../../../../../../../assets/Icons/searchIcon.png";
+import { useDispatch, useSelector } from "react-redux";
+import { actions as coActions } from "../../../redux/actions";
+import { isMobile } from "react-device-detect";
 // import Spinner from '../../../Spinner'
 
-import assignIcon1 from "../../../../../../../assets/Icons/assignIcon.png"
-import assignIcon3 from "../../../../../../../assets/Icons/assignIcon2.png"
-import assignIcon5 from "../../../../../../../assets/Icons/assignIcon3.png"
-import assignIcon2 from "../../../../../../../assets/Icons/assignIcon4.png"
-import assignIcon4 from "../../../../../../../assets/Icons/assignIcon5.png"
+import assignIcon1 from "../../../../../../../assets/Icons/assignIcon.png";
+import assignIcon3 from "../../../../../../../assets/Icons/assignIcon2.png";
+import assignIcon5 from "../../../../../../../assets/Icons/assignIcon3.png";
+import assignIcon2 from "../../../../../../../assets/Icons/assignIcon4.png";
+import assignIcon4 from "../../../../../../../assets/Icons/assignIcon5.png";
 
 function ChooseLicenses({ fields, close }) {
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
-  const [licenseList, setLicenseList] = useState({})
-  const [selectedLiecenseIdArray, setSelectedLicenseIdArray] = useState([])
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const [licenseList, setLicenseList] = useState({});
+  const [selectedLiecenseIdArray, setSelectedLicenseIdArray] = useState([]);
   const loggedUser =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo
+    state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
   useEffect(() => {
     dispatch(
       coActions.getCoAccountLicensesRequest({
-        gUserID: loggedUser.UserID,
+        gUserID: loggedUser.userid,
         settingType: 3,
         actionFlag: 1,
         entityID: 0,
@@ -36,54 +36,58 @@ function ChooseLicenses({ fields, close }) {
         notificationList: "",
         pwd: "",
       })
-    )
-  }, [])
+    );
+  }, []);
 
   useEffect(() => {
     const coLicensesData =
       state &&
       state.taskReport &&
       state.taskReport.coAccountLicenses &&
-      state.taskReport.coAccountLicenses.coLicenses
+      state.taskReport.coAccountLicenses.coLicenses;
     if (coLicensesData != undefined) {
-      let LicenseList = []
-      let tempSelectedLicenses = []
-            coLicensesData && coLicensesData.length > 0 && coLicensesData.map((item) => {
-        let tempArray = []
-                item.GEN_License && item.GEN_License.length > 0 && item.GEN_License.map((element) => {
-          let LicenseObj = {
-            Category: element.Category,
-            LicenseCode: element.LicenseCode,
-            LicenseId:
-              element.GEN_EntityApplicableLicenses[0].ApplicableLicenseId,
-            Flag: element.GEN_EntityApplicableLicenses[0].Flag,
-          }
-          if (element.GEN_EntityApplicableLicenses[0].Flag > 0) {
-            tempSelectedLicenses.push(
-              element.GEN_EntityApplicableLicenses[0].ApplicableLicenseId
-            )
-          }
-          tempArray.push(LicenseObj)
-        })
-        let finalObj = {
-          EntityName: item.EntityName,
-          LicenseList: tempArray,
-        }
-        LicenseList.push(finalObj)
-      })
+      let LicenseList = [];
+      let tempSelectedLicenses = [];
+      coLicensesData &&
+        coLicensesData.length > 0 &&
+        coLicensesData.map((item) => {
+          let tempArray = [];
+          item.GEN_License &&
+            item.GEN_License.length > 0 &&
+            item.GEN_License.map((element) => {
+              let LicenseObj = {
+                Category: element.Category,
+                LicenseCode: element.LicenseCode,
+                LicenseId:
+                  element.GEN_EntityApplicableLicenses[0].ApplicableLicenseId,
+                Flag: element.GEN_EntityApplicableLicenses[0].Flag,
+              };
+              if (element.GEN_EntityApplicableLicenses[0].Flag > 0) {
+                tempSelectedLicenses.push(
+                  element.GEN_EntityApplicableLicenses[0].ApplicableLicenseId
+                );
+              }
+              tempArray.push(LicenseObj);
+            });
+          let finalObj = {
+            EntityName: item.EntityName,
+            LicenseList: tempArray,
+          };
+          LicenseList.push(finalObj);
+        });
 
-      setLicenseList(LicenseList)
-      setSelectedLicenseIdArray(tempSelectedLicenses)
+      setLicenseList(LicenseList);
+      setSelectedLicenseIdArray(tempSelectedLicenses);
     }
-  }, [state.taskReport.coAccountLicenses])
+  }, [state.taskReport.coAccountLicenses]);
 
   const onClickLiencesCheckbox = (e, item, parentCheck) => {
-    var array = [...selectedLiecenseIdArray]
+    var array = [...selectedLiecenseIdArray];
     if (e.target.classList.contains("sub-checkbox")) {
       if (e.target.checked) {
-        let itemindex = array.indexOf(item.LicenseId)
+        let itemindex = array.indexOf(item.LicenseId);
         if (itemindex === -1) {
-          array.push(parseInt(item.LicenseId))
+          array.push(parseInt(item.LicenseId));
         }
         parentCheck.forEach((x) => {
           if (array.indexOf(x.LicenseId) === -1) {
@@ -91,88 +95,88 @@ function ChooseLicenses({ fields, close }) {
               .closest(".drower")
               .querySelector(
                 ".down-arrow .custom-control-input"
-              ).checked = false
-            return
+              ).checked = false;
+            return;
           }
           e.target
             .closest(".drower")
-            .querySelector(".down-arrow .custom-control-input").checked = true
-        })
-        setSelectedLicenseIdArray(array)
+            .querySelector(".down-arrow .custom-control-input").checked = true;
+        });
+        setSelectedLicenseIdArray(array);
       } else {
         const newArray = array.filter(
           (checkedItem) => checkedItem !== parseInt(item.LicenseId)
-        )
+        );
         e.target
           .closest(".drower")
-          .querySelector(".down-arrow .custom-control-input").checked = false
-        setSelectedLicenseIdArray(newArray)
+          .querySelector(".down-arrow .custom-control-input").checked = false;
+        setSelectedLicenseIdArray(newArray);
       }
     } else {
       if (e.target.checked) {
         item.LicenseList.forEach((x) => {
-          let itemindex = array.indexOf(x.LicenseId)
+          let itemindex = array.indexOf(x.LicenseId);
           if (itemindex === -1) {
-            array.push(parseInt(x.LicenseId))
+            array.push(parseInt(x.LicenseId));
           }
-        })
-        setSelectedLicenseIdArray(array)
+        });
+        setSelectedLicenseIdArray(array);
       } else {
-        let tempObj = item.LicenseList
+        let tempObj = item.LicenseList;
         tempObj.forEach((x) => {
-          let itemindex = array.indexOf(x.LicenseId)
+          let itemindex = array.indexOf(x.LicenseId);
           if (itemindex != -1) {
-            array.splice(itemindex, 1)
+            array.splice(itemindex, 1);
           }
-        })
-        setSelectedLicenseIdArray(array)
+        });
+        setSelectedLicenseIdArray(array);
       }
     }
-  }
+  };
 
   const onClickArrow = (index) => {
-    const color = document.getElementById(`grid${index}`)
-    const arrow = document.getElementById(`arrow${index}`)
-    const SortBar = document.getElementById(`content${index}`)
+    const color = document.getElementById(`grid${index}`);
+    const arrow = document.getElementById(`arrow${index}`);
+    const SortBar = document.getElementById(`content${index}`);
     if (arrow && SortBar) {
       if (
         arrow.classList.contains("downArrow") &&
         SortBar.classList.contains("accordian-bar-with-min")
       ) {
-        arrow.classList.remove("downArrow")
-        arrow.classList.add("upArrow")
-        color.classList.add("accordian-grid-active")
-        SortBar.classList.add("filter-price-height")
-        SortBar.classList.add("accordian-bar-with-fullheight")
+        arrow.classList.remove("downArrow");
+        arrow.classList.add("upArrow");
+        color.classList.add("accordian-grid-active");
+        SortBar.classList.add("filter-price-height");
+        SortBar.classList.add("accordian-bar-with-fullheight");
       } else if (
         arrow.classList.contains("upArrow") &&
         SortBar.classList.contains("filter-price-height")
       ) {
-        SortBar.classList.remove("filter-price-height")
-        SortBar.classList.remove("accordian-bar-with-fullheight")
-        arrow.classList.remove("upArrow")
-        color.classList.remove("accordian-grid-active")
-        arrow.classList.add("downArrow")
+        SortBar.classList.remove("filter-price-height");
+        SortBar.classList.remove("accordian-bar-with-fullheight");
+        arrow.classList.remove("upArrow");
+        color.classList.remove("accordian-grid-active");
+        arrow.classList.add("downArrow");
       }
     }
-  }
+  };
 
   const setCerificateDetails = () => {
-    callClose(1)
-  }
+    callClose(1);
+  };
   const setCerificateDetailsMobile = () => {
-    var fieldObj = { ...fields }
-    fieldObj.selectedLicenseArray = selectedLiecenseIdArray
-    close(fieldObj, 1)
-  }
+    var fieldObj = { ...fields };
+    fieldObj.selectedLicenseArray = selectedLiecenseIdArray;
+    close(fieldObj, 1);
+  };
   const callClose = (type) => {
-    var fieldObj = { ...fields }
+    var fieldObj = { ...fields };
     if (type === 1) {
-      fieldObj.selectedLicenseArray = selectedLiecenseIdArray
+      fieldObj.selectedLicenseArray = selectedLiecenseIdArray;
     }
 
-    close(fieldObj, type)
-  }
+    close(fieldObj, type);
+  };
 
   const renderData = (item, parentCheck) => {
     return (
@@ -206,39 +210,39 @@ function ChooseLicenses({ fields, close }) {
           <div className="tasks-count">{item.Flag} Tasks</div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const chooseImage = (index) => {
-    if(index==0 || index%5==0){
+    if (index == 0 || index % 5 == 0) {
       return assignIcon1;
     }
-    if(index==1 || index%5==1){
+    if (index == 1 || index % 5 == 1) {
       return assignIcon2;
     }
-    if(index==2 || index%5==2){
+    if (index == 2 || index % 5 == 2) {
       return assignIcon3;
     }
-    if(index==3 || index%5==3){
+    if (index == 3 || index % 5 == 3) {
       return assignIcon4;
     }
-    if(index==4 || index%5==4){
+    if (index == 4 || index % 5 == 4) {
       return assignIcon5;
     }
-  }
+  };
 
   const renderCheckBox = (item, index) => {
-    let temp = item.EntityName
-    let isChecked = null
+    let temp = item.EntityName;
+    let isChecked = null;
     item.LicenseList.some((x) => {
       if (selectedLiecenseIdArray.indexOf(x.LicenseId) === -1) {
-        isChecked = false
-        return true
+        isChecked = false;
+        return true;
       } else {
-        isChecked = true
-        return false
+        isChecked = true;
+        return false;
       }
-    })
+    });
     return (
       <input
         type="checkbox"
@@ -249,8 +253,8 @@ function ChooseLicenses({ fields, close }) {
         name={temp}
         checked={isChecked}
       />
-    )
-  }
+    );
+  };
   return (
     <div className="get-main">
       <div className="container-fluid pl-0 pr-0">
@@ -426,6 +430,6 @@ function ChooseLicenses({ fields, close }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
-export default ChooseLicenses
+export default ChooseLicenses;

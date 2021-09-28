@@ -23,10 +23,11 @@ function* fetchUpdates(action) {
     yield put(setLoading(true));
     //  yield put(setSuccess(false));
     const { data, status } = yield call(api.getUpdates, action.payload);
+    console.log(data.message);
     if (status === 200 && data) {
       yield put(setLoading(false));
       // yield put(setSuccess(true));
-      yield put(setUpdates(data));
+      yield put(setUpdates(data.message));
     } else {
       yield put(setLoading(false));
       yield put(setSuccess(false));
@@ -45,7 +46,7 @@ function* fetchIndustryList(action) {
     if (status === 200) {
       yield put(setLoading(false));
       //  yield put(setSuccess(true));
-      yield put(setIndustryList(data));
+      yield put(setIndustryList(data.message));
     } else {
       yield put(setLoading(false));
       yield put(setSuccess(false));
@@ -64,7 +65,7 @@ function* fetchIssuerList(action) {
     if (status === 200) {
       yield put(setLoading(false));
       // yield put(setSuccess(true));
-      yield put(setIssuerList(data));
+      yield put(setIssuerList(data.message));
     } else {
       yield put(setLoading(false));
       //  yield put(setSuccess(false));
@@ -83,7 +84,7 @@ function* fetchTopicList(action) {
     if (status === 200) {
       yield put(setLoading(false));
       // yield put(setSuccess(true));
-      yield put(setTopicList(data));
+      yield put(setTopicList(data.message));
     } else {
       yield put(setLoading(false));
       //yield put(setSuccess(false));
@@ -101,7 +102,7 @@ function* fetchFilterIndustryList(action) {
     if (status === 200) {
       yield put(setLoading(false));
       // yield put(setSuccess(true));
-      yield put(setUpdates(data));
+      yield put(setUpdates(data.message));
     } else {
       yield put(setLoading(false));
       //   yield put(setSuccess(false));
@@ -120,7 +121,7 @@ function* setSearchTextAndFetchIndustryList(action) {
     if (status === 200) {
       yield put(setLoading(false));
       yield put(setSuccess(true));
-      yield put(setUpdates(data));
+      yield put(setUpdates(data.message));
     } else {
       yield put(setLoading(false));
       yield put(setSuccess(false));

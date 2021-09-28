@@ -25,7 +25,7 @@ const loginReq = function* loginReq({ payload }) {
       // console.log("login response", responseData);
       if (
         responseData.IscreateBySecmark === 0 &&
-        responseData.UserType === 3
+        responseData.usertype === 3
         // ((responseData && responseData.UserType === 3) ||
         //   responseData.UserType === 5 ||
         //   responseData.UserType === 6)
@@ -33,7 +33,10 @@ const loginReq = function* loginReq({ payload }) {
         yield put(menuActions.setCurrentMenu("dashboard"));
         yield put(menuActions.setActiveTabInSetting("personal"));
         payload.history.push("/dashboard-view");
-      } else if (responseData.IscreateBySecmark === 1) {
+      } else if (
+        responseData.IscreateBySecmark === 1 &&
+        responseData.usertype === 5
+      ) {
         payload.history.push("/expert-review/");
       } else {
         yield put(menuActions.setCurrentMenu("taskList"));

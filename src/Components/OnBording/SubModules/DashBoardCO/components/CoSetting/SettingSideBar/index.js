@@ -74,8 +74,8 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
       <div className="get-main-settingCo">
         <p className="setting-title">Settings</p>
         <div className="menu-items">
-          {(userDetails && userDetails.UserType == 4) ||
-          userDetails.UserType == 5 ? (
+          {(userDetails && userDetails.usertype == 4) ||
+          userDetails.usertype == 5 ? (
             <ul>
               <li
                 onClick={() => tabChange(0)}

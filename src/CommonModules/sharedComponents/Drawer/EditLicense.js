@@ -22,7 +22,7 @@ function EditLicenses({ fields, close }) {
   useEffect(() => {
     dispatch(
       coActions.getCoAccountLicensesRequest({
-        gUserID: loggedUser.UserID,
+        gUserID: loggedUser.userid,
         settingType: 3,
         actionFlag: 1,
         entityID: 0,
@@ -173,7 +173,7 @@ function EditLicenses({ fields, close }) {
 
     const paymentArray = selectedLicense.map((licenses) => {
       return {
-        gid: state?.auth?.loginInfo.UserID,
+        gid: state?.auth?.loginInfo.uerid,
         eid: licenses.EntityId,
         cat: constant.expertReview,
         prodid: licenses.LicenseCode,

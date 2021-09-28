@@ -76,9 +76,9 @@ function MultiSelectCompanyDropdown({
                       .join(",");
 
                     const licenseRequestPayload = {
-                      userID: sagaState.auth.loginInfo?.UserID,
+                      userID: sagaState.auth.loginInfo?.userid,
                       entityid: constant.licenseEntityId,
-                      usertype: sagaState.auth.loginInfo?.UserType,
+                      usertype: sagaState.auth.loginInfo?.usertype,
                       entityList: selectedCompanies,
                     };
 

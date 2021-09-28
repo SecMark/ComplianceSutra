@@ -230,8 +230,8 @@ const postAssignTask = function* postAssignTask({ payload }) {
       yield put(
         actions.taskReportRequest({
           entityid: "",
-          userID: payload.userDetails.UserID,
-          usertype: payload.userDetails.UserType,
+          userID: payload.userDetails.userid,
+          usertype: payload.userDetails.usertype,
         })
       );
       toast.success(data && data.message && data.message.Message);

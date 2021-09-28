@@ -98,7 +98,7 @@ function MobileLeftSidebar({ history, close }) {
           />
         </div>
         <div className="first-icon-list-mobile">
-          {userDetails.UserType != 4 && (
+          {userDetails.usertype != 4 && (
             <div
               onClick={() => onMenuClick("dashboard")}
               style={{ cursor: "pointer" }}
@@ -192,7 +192,7 @@ function MobileLeftSidebar({ history, close }) {
             />{" "}
             Compliance History
           </div>
-          {userDetails.UserType != 4 && (
+          {userDetails.usertype != 4 && (
             <div
               onClick={() => onMenuClick("new-regulations")}
               style={{ cursor: "pointer" }}
