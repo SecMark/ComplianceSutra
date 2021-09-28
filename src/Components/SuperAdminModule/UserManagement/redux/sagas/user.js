@@ -3,10 +3,13 @@ import {
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
   GET_USER_FAILURE,
+  EDIT_USER_STATUS_REQUEST,
+  EDIT_USER_STATUS_SUCCESS,
+  EDIT_USER_STATUS_FAILURE,
 } from "../types/user";
-import { getUsersAPI } from "../services/user";
+import { getUsersAPI, editUserStatusAPI } from "../services/user";
 
-function* getUserListFromAPI(action) {
+function* getUsers(action) {
   try {
     const user = yield call(getUsersAPI, action.payload);
     yield put({
@@ -22,6 +25,25 @@ function* getUserListFromAPI(action) {
   }
 }
 
+function* editUserStatus(action) {
+  try {
+    const user = yield call(editUserStatusAPI, action.payload);
+    console.log("res", user.data);
+    yield put({
+      type: EDIT_USER_STATUS_SUCCESS,
+      payload: action.payload,
+    });
+  } catch (err) {
+    const { response } = err;
+    console.log("err", err);
+    yield put({
+      type: EDIT_USER_STATUS_FAILURE,
+      payload: response.data,
+    });
+  }
+}
+
 export default function* sagas() {
-  yield takeLatest(GET_USER_REQUEST, getUserListFromAPI);
+  yield takeLatest(GET_USER_REQUEST, getUsers);
+  yield takeLatest(EDIT_USER_STATUS_REQUEST, editUserStatus);
 }

@@ -12,18 +12,17 @@ const loginReq = function* loginReq({ payload }) {
       yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
       console.log("login response", data);
       if (
-        (data && data.UserType === 3) ||
-        data.UserType === 5 ||
-        data.UserType === 6
+        data.IscreateBySecmark === 0 &&
+        ((data && data.UserType === 3) ||
+          data.UserType === 5 ||
+          data.UserType === 6)
       ) {
         yield put(menuActions.setCurrentMenu("dashboard"));
         yield put(menuActions.setActiveTabInSetting("personal"));
         payload.history.push("/dashboard-view");
-      }
-      // else if (data && data.UserType === 6) {
-      //   toast.error("You don't have permission!!!");
-      // }
-      else {
+      } else if (data.IscreateBySecmark === 1) {
+        payload.history.push("/expert-review/");
+      } else {
         yield put(menuActions.setCurrentMenu("taskList"));
         payload.history.push("/dashboard");
       }

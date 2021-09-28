@@ -1,0 +1,65 @@
+.container {
+  padding: 40px 0px 0px 40px;
+}
+
+#flags-select {
+  border: 0 !important;
+}
+#rfs-btn {
+  padding: 3px !important;
+}
+
+.options-container {
+  width: 275px;
+}
+
+.options-list {
+  list-style: none;
+  margin-top: 50px;
+  padding: 0;
+}
+
+.options-list li {
+  margin-top: 15px;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: left;
+  color: #6c5dd3;
+  padding: 15px 0px 15px 8px;
+}
+
+.options-list li:hover {
+  background: #eee8fc;
+  color: #575757 !important;
+  cursor: pointer;
+}
+
+.active {
+  background: #eee8fc;
+  color: #575757 !important;
+  border-right: 3px solid #7a73ff;
+}
+.LogoutButton {
+  margin: 8vh 1vw 1vw -1vw;
+}
+.LogoutButton > button {
+  width: 10vw;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  background-color: white;
+  padding: 2vh;
+  color: #ef5d5d;
+}
+
+.divider {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid #eee8fc;
+}

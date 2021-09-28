@@ -1,0 +1,593 @@
+
+svg:not(:root) {
+  overflow: hidden; 
+  margin-right: 202px;
+}
+
+.title{
+    width: 233px;
+    height: 33px;
+    margin: 16px 35px 16px 12px;
+    font-family: Poppins;
+    font-size: 24px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.46;
+    letter-spacing: 0.01px;
+    text-align: left;
+    color: #2c2738;
+}
+
+.cs-drawer__horizontal-line {
+    width: 100%;
+    height: 2px;
+    background-color: #eee8fc;
+  }
+
+  .stepper{
+      margin-top: 30px;
+      margin-left: 15px;
+  }
+
+  .stepper-tex {
+    bottom: -50px;
+    left: 100%;
+    transform: translateX(-50%);
+    margin: 0px;
+    padding: 0;
+    font-size: 13px;
+    text-align: center;
+    display: inline-block;
+    width: 114px;
+    height: 40px;
+    margin-left: -71px;
+}
+
+.stepper-text-review {
+    bottom: -50px;
+    left: 100%;
+    transform: translateX(-50%);
+    margin: 0px;
+    padding: 0;
+    font-size: 13px;
+    text-align: center;
+    display: inline-block;
+    width: 169px;
+    height: 40px;
+    margin-left: -71px;
+}
+
+  button.primary-button {
+    background-color: #6c5dd3;
+    color: #fff;
+    width: 111px;
+  height: 40px;
+  margin: 48px 23px 0 2px;
+  object-fit: contain;
+}
+
+/* first slide css */
+.BasicDetails{
+    width: 116px;
+    height: 25px;
+    margin: 0 267px 16px 0;
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #2c2738;
+}
+.DI{
+    width: 104px;
+    height: 17px;
+    margin: 0 167px 9px 0;
+    opacity: 0.64;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.24px;
+    text-align: left;
+    color: #575757;
+}
+.UI{
+    width: 108px;
+    height: 17px;
+    margin: -67px 138px 13px 302px;
+    opacity: 0.64;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.24px;
+    text-align: left;
+    color: #575757;
+}
+.Rectangle-2 {
+    width: 0px;
+    height: 40px;
+    margin: -5px 0 0;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+   
+  }
+.Rectangle-3 {
+    width: 270px;
+    height: 40px;
+    margin: -38px 300px 0;
+    padding: 8px 10px 8px 15px;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+  }
+
+.Rectangle-4{
+    width: 562px;
+    height: 40px;
+    margin: 9px 0 0;
+    padding: 13px 371px 11px 13px;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;           
+}
+
+.Rectangle-5 {
+    width: 270px;
+    height: 40px;
+    margin: 9px 0 0;
+    padding: 13px 99px 11px 13px;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+  }
+
+.Rectangle-6 {
+    width: 270px;
+    height: 40px;
+    margin: -39px 300px 20px;
+    padding: 13px 152px 11px 13px;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+  }
+.Rectangle-7 {
+    width: 562px;
+    height: 40px;
+    margin: 9px 0 0;
+    padding: 13px 344px 11px 13px;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+  }
+
+.Rectangle-8 {
+    width: 562px;
+    height: 111px;
+    margin: 9px 0 0;
+    padding: 13px 171px 0 0;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+  }
+  /* .rect{
+  
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+  } */
+
+.Link{
+    width: 117px;
+    height: 17px;
+    margin: 20px 255px 9px 0;
+    opacity: 0.64;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.24px;
+    text-align: left;
+    color: #575757;
+}
+.Paste-the-URL-of-the-circular-here {
+    width: 178px;
+    height: 16px;
+    font-family: Poppins;
+    font-size: 11px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.55;
+    letter-spacing: 0px;
+    text-align: left;
+    color: black;
+  }
+
+.CN{
+     
+    width: 105px;
+    height: 17px;
+    margin: 36px 165px 9px 0;
+    opacity: 0.64;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.24px;
+    text-align: left;
+    color: #575757;       
+}
+
+.Topic-for-the-circular {
+  width: 129px;
+  height: 17px;
+  margin: -72px 175px 11px 301px;
+  opacity: 0.64;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+
+  .Type-the-full-Circular-Number {
+    width: 158px;
+    height: 16px;
+    font-family: Poppins;
+    font-size: 11px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.55;
+    letter-spacing: 0px;
+    text-align: left;
+    color: black;
+  }
+  .Type-the-topic-here {
+    width: 105px;
+    height: 16px;
+    font-family: Poppins;
+    font-size: 11px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.55;
+    letter-spacing: 0px;
+    text-align: left;
+    color: black;
+  }
+
+  .CircularDetails{
+    width: 139px;
+    height: 25px;
+    margin: 36px 35px 16px -1px;
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #2c2738;
+  }
+
+  .TitleCircular{
+    width: 116px;
+    height: 17px;
+    margin: 0 446px 9px 0;
+    opacity: 0.64;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.24px;
+    text-align: left;
+    color: #575757;
+  }
+
+  .Enter-the-full-titlename-of-the-circular {
+    width: 205px;
+    height: 16px;
+    font-family: Poppins;
+    font-size: 11px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.55;
+    letter-spacing: 0px;
+    text-align: left;
+    color: black
+  }
+
+  .GistOverview {
+    width: 89px;
+    height: 17px;
+    margin: 26px 473px 9px 0;
+    opacity: 0.64;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.24px;
+    text-align: left;
+    color: #575757;
+  }
+
+  .Write-a-short-synopsis-of-the-circular-or-its-key-points {
+    width: 284px;
+    height: 16px;
+    margin: 0 94px 51px 13px;
+    font-family: Poppins;
+    font-size: 11px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.55;
+    letter-spacing: 0px;
+    text-align: left;
+    color: black;
+  }
+
+  .form-control {
+    width: 571px;
+    height: 40px;
+    margin: 9px 0 0;
+    padding: 13px 371px 11px 13px;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+    border: 1px solid #f7f7f7;
+    font-size: 13px;
+}
+
+.form-control-1{
+    width: 270px;
+    height: 40px;
+    margin: 9px 0 0;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+    border: 1px solid #f7f7f7;
+    font-size: 13px;
+}
+
+.form-control-2{
+  width: 270px;
+    height: 40px;
+    margin: 4px 300px 0px;
+    opacity: 0.3;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+    border: 1px solid #f7f7f7;
+    font-size: 13px;
+}
+
+.form-control-3{
+  width: 562px;
+  height: 111px;
+  margin: 9px 0 0;
+  padding: 13px 171px 0 0;
+  opacity: 0.3;
+  border-radius: 4px;
+  background-color: #e4e4e4;
+}
+.form-control-8{
+  width: 562px;
+  height: 70px;
+  margin: 9px 0 0;
+  padding: 13px 171px 0 0;
+  opacity: 0.3;
+  border-radius: 4px;
+  background-color: #e4e4e4;
+}
+.Associated-Circular-Documents {
+  width: 195px;
+  height: 17px;
+  margin: 24px 74px 12px 0px;
+  opacity: 0.64;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+.Abstract-3D-Kit {
+  width: 86px;
+  height: 19px;
+  margin: 1px 0 0 4px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+}
+.Abstract-3D-Kite{
+  width: 105px;
+  height: 19px;
+  margin: 1px 0 0 4px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+}
+.LD {
+  width: 208px;
+  height: 25px;
+  margin: 38px 60px 16px 0px;
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.License-impacted-by-Circular {
+  width: 180px;
+  height: 17px;
+  margin: 0 90px 9px 0;
+  opacity: 0.64;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+
+.col-md-4{
+    background-color: #f7f7f7;
+    border: 1px solid #f7f7f7;
+    font-size: 13px;
+}
+    
+
+button, input, optgroup, select, textarea {
+  width: 250px;
+  height: 34px;
+  margin-left: -6px;
+  padding: .375rem .75rem;
+  background-color: #f7f7f7;
+  border: 2px solid #f7f7f7;
+  background-color: #fff;
+  font-size: 13px;
+  margin-top: 9px;
+}
+
+.firstdrop{
+  width: 250px;
+  height: 36px;
+  margin-left: 300px;
+  padding: .375rem .75rem;
+  background-color: #f7f7f7;
+  border: 2px solid #f7f7f7;
+  background-color: #fff;
+  font-size: 13px;
+}
+
+
+.Delete {
+  width: 40px;
+  height: 17px;
+  margin: -24px 18px 35px 271px;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+}
+
+.SubLicense-impacted-by-the-Circular {
+  width: 227px;
+  height: 17px;
+  margin: 0 43px 9px 0;
+  opacity: 0.64;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+}
+
+.Abstract-3D-Kit{
+  width: 89px;
+  height: 19px;
+  margin: 1px 55px 0 4px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.54;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+}
+
+.Date{
+  margin-right: 307px;
+}
+
+.react-datepicker-wrapper {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  margin-left: 0px;
+}
+
+.react-datepicker__close-icon {
+  cursor: pointer;
+  background-color: white;
+  border: 0;
+  outline: 0;
+  padding: 0 6px  0;
+  position: absolute;
+  top: 0;
+  right: -41px;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  margin-left: -31px;
+  left: 253px;
+  color: white;
+  margin-top: 4px;
+}
+
+/* .plusIcon{
+  margin-left: ;
+} */
+
+
+
+
+
