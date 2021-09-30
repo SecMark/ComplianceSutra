@@ -22,6 +22,9 @@ const SATaskDetails = lazy(() =>
 const UserManagement = lazy(() =>
   import("../../../Components/SuperAdminModule/UserManagement")
 );
+const ActiveLicenses = lazy(() =>
+  import("../../../Components/SuperAdminModule/ActiveLicenses")
+);
 
 export const routes = [
   {
@@ -51,5 +54,9 @@ export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/user-management`,
     component: UserManagement,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/active-licenses`,
+    component: ActiveLicenses,
   },
 ];
