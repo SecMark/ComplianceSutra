@@ -1,13 +1,34 @@
 import React, { useState } from "react";
+import "./style.css";
 import { AiOutlinePlus } from "react-icons/ai";
 import UserList from "./components/UserList";
-import UserRoleList from "./components/UserRoleList";
+import RoleList from "./components/RoleList";
+import ClientList from "./components/ClientList";
+import LicenceList from "./components/LicenceList";
+import StatusList from "./components/StatusList";
 import AddEditUser from "./components/AddEditUser";
-import "./style.css";
+import Drawer from "../../../CommonModules/sharedComponents/Drawer";
+import Dropdown from "react-dropdown";
 
 const Dashboard = () => {
   const [sortBy, setSortBy] = useState("Alphabatically");
   const [openRightTab, setOpenRightTab] = useState(true);
+
+  const options = [
+    { value: "4", label: "Team Member" },
+    { value: "3", label: "Compliance Officer" },
+    { value: "5", label: "Approver" },
+  ];
+
+  const filterOptions = [
+    { value: "0", label: "None" },
+    { value: "4", label: "Team Members" },
+    { value: "5", label: "Approvers" },
+    { value: "3", label: "CO" },
+    { value: "az", label: "A > Z" },
+    { value: "za", label: "Z > A" },
+  ];
+
   return (
     <>
       <div
@@ -25,26 +46,33 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div className="col-md-12">
-          <div className="ER-main">
-            <div className="ER-task-statics row">
+          <div className="Super-admin-main">
+            <div className="Super-admin-task-statics row">
               <h5 className="mt-2">
                 <span className="ml-1">User Management</span>
                 <div className="nav-title-progress"></div>
               </h5>
-              <div className="ER-search-input mb-2">
+              <div className="Super-admin-search-input mb-2">
                 <input
-                  className="form-control ER-search"
+                  className="form-control Super-admin-search"
                   placeholder="Search by users"
                 />
               </div>
             </div>
             <div className="row">
-              {sortBy === "Roles" && (
+              {sortBy !== "Alphabatically" && (
                 <div className="col-md-4">
                   <div className="col mt-3">
-                    <div className="row">
-                      <span className="mt-2 ml-2">Show:</span>
-                      <select
+                    <div className="row show-options">
+                      <span className="mt-1 mx-2">Show:</span>
+                      <Dropdown
+                        arrowClosed={<span className="arrow-closed" />}
+                        arrowOpen={<span className="arrow-open" />}
+                        placeholder="Select an option"
+                        options={filterOptions}
+                        className="ml-2"
+                      />
+                      {/* <select
                         className="form-select ml-2"
                         style={{
                           width: "200px",
@@ -53,7 +81,7 @@ const Dashboard = () => {
                         }}
                       >
                         <option selected>All Results</option>
-                      </select>
+                      </select> */}
                     </div>
                   </div>
                 </div>
@@ -122,11 +150,20 @@ const Dashboard = () => {
                 </ul>
               </div>
             </div>
-            {sortBy === "Alphabatically" ? (
-              <UserList />
-            ) : sortBy === "Roles" ? (
-              <UserRoleList />
-            ) : null}
+            <div className="mt-2">
+              {" "}
+              {sortBy === "Alphabatically" ? (
+                <UserList />
+              ) : sortBy === "Roles" ? (
+                <RoleList />
+              ) : sortBy === "Clients" ? (
+                <ClientList />
+              ) : sortBy === "License" ? (
+                <LicenceList />
+              ) : sortBy === "Status" ? (
+                <StatusList />
+              ) : null}
+            </div>
           </div>
         </div>
       </div>

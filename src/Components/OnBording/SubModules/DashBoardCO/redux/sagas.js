@@ -70,9 +70,16 @@ const taskCommentBytaskID = function* taskCommentBytaskID({ payload }) {
     const { data, status } = yield call(api.getTaskComments, payload);
     // console.log("payload ==> ",payload)
     if (status === 200) {
-      yield put(
-        actions.taskCommentsByTaskIdSuccess({ getTaskCommentByRole: data })
-      );
+      if (payload.link === 1) {
+        yield put(
+          actions.taskCommentsByTaskIdSuccess({ getTaskLinksByRole: data })
+        );
+      }
+      if (payload.link === 0) {
+        yield put(
+          actions.taskCommentsByTaskIdSuccess({ getTaskCommentByRole: data })
+        );
+      }
       toast.success(data && data.Message);
     } else {
       toast.success(data && data.Message);
@@ -92,11 +99,22 @@ const postCommentBytaskID = function* postCommentBytaskID({ payload }) {
       yield put(
         actions.postTaskCommentByTaskIDSuccess({ postTaskCommentById: data })
       );
-      yield put(
-        actions.taskCommentsByTaskIdRequest({
-          taskid: payload.taskID,
-        })
-      );
+      if (payload.link === 0) {
+        yield put(
+          actions.taskCommentsByTaskIdRequest({
+            taskid: payload.taskID,
+            link: 0,
+          })
+        );
+      }
+      if (payload.link === 1) {
+        yield put(
+          actions.taskCommentsByTaskIdRequest({
+            taskid: payload.taskID,
+            link: 1,
+          })
+        );
+      }
       toast.success(data && data.Message);
     } else {
       toast.success(data && data.Message);
@@ -115,36 +133,78 @@ const postCommentBytaskID = function* postCommentBytaskID({ payload }) {
     );
   }
 };
-
+const getTaskFilesById = function* getTaskFilesById({ payload }) {
+  try {
+    const { data, status } = yield call(api.getTaskFiles, payload);
+    if (status === 200) {
+      if (payload.ftype === 0) {
+        yield put(actions.getTaskFilesByIdSucess({ taskFiles: data }));
+      }
+      if (payload.ftype === 1) {
+        yield put(actions.getTaskFilesByIdSucess({ taskFilesReference: data }));
+      }
+    } else {
+      yield put(actions.getTaskFilesByIdFailed());
+    }
+  } catch (error) {
+    yield put(actions.getTaskFilesByIdFailed());
+  }
+};
 const postUploadFileById = function* postUploadFileById({ payload }) {
+  console.log(payload);
   // debugger
   try {
     const { data, status } = yield call(api.postUploadFile, payload);
-    // console.log(status);
-    if (status === 200) {
-      // console.log("getUsersByRole  => ", status);
+    console.log(status);
+    if (status === 201) {
       yield put(actions.postUploadFileByIDSuccess({ postUploadFile: data }));
-      toast.success(data && data.Message);
+      toast.success("Attachement successfully added!");
     } else {
       toast.success(data && data.Message);
       yield put(actions.postUploadFileByIDFailed({ postUploadFile: {} }));
     }
   } catch (err) {
-    // toast.error(
-    //     (err && err.response && err.response.data && err.response.data.message) ||
-    //         'Something went to wrong, Please try after sometime',
-    // );
     yield put(actions.postUploadFileByIDFailed({ postUploadFile: {} }));
   }
 };
 
 const postAssignTask = function* postAssignTask({ payload }) {
+  const actualPayload = {
+    taskID: payload.taskID,
+    isApproved: payload.isApproved,
+    userType: payload.userType,
+    email: payload.email,
+    invitee: payload.invitee,
+    loginID: payload.loginID,
+    userDetails: payload.userDetails,
+  };
   // debugger
   try {
-    const { data, status } = yield call(api.postAssignTask, payload);
+    const { data, status } = yield call(api.postAssignTask, actualPayload);
     // console.log(status);
     if (status === 200) {
-      // console.log("postAssignTask  => ", status);
+      if (
+        payload.isApproved === 1 &&
+        payload.userDetails.IscreateBySecmark === 1
+      ) {
+        toast.dark(
+          `${payload.LicenseCode} task for ${payload.EntityName} is approved successfully!`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
+      }
+      if (
+        payload.isApproved === 3 &&
+        payload.userDetails.IscreateBySecmark === 1
+      ) {
+        toast.dark(
+          `${payload.LicenseCode} task for ${payload.EntityName} is rejected successfully!`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
+      }
       yield put(actions.taskAssignByTaskIDSuccess({ postAssignTask: data }));
       yield put(
         actions.taskReportByIdRequest({
@@ -361,6 +421,7 @@ export default function* sagas() {
   yield takeLatest(types.GET_USER_BY_ROLE, userRequestByRole);
   yield takeLatest(types.GET_TASK_COMMENTS_BY_TASK_ID, taskCommentBytaskID);
   yield takeLatest(types.POST_TASK_COMMENT_BY_TASK_ID, postCommentBytaskID);
+  yield takeLatest(types.GET_TASK_FILES_BY_TASK_ID, getTaskFilesById);
   yield takeLatest(types.POST_UPLOAD_FILE_BY_TASK_ID, postUploadFileById);
   yield takeLatest(types.POST_ASSIGN_TASK_BY_TASKID, postAssignTask);
   yield takeLatest(types.GET_AVAILABILITY_CHECK, userAvailabilityCheck);

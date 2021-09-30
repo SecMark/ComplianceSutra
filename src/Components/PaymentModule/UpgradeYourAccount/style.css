@@ -1,0 +1,149 @@
+span.arrow-left {
+  font-size: 30px;
+  padding-right: 1.2rem;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.upgrade-your-account {
+  width: 100%;
+}
+
+/* .plan-container {
+  display: flex;
+  padding: 1rem 0.8rem;
+  align-items: center;
+  cursor: pointer;
+  transition: width 200ms ease;
+} */
+.plan-recommended-tag {
+  background-color: #6c5dd3;
+  color: white;
+  padding: 0.3rem 0.3rem 0.2rem 0.3rem;
+  font-size: 0.7rem;
+  vertical-align: center;
+  border-radius: 0.1rem;
+}
+.plan-item {
+  margin: 0rem 0.2rem;
+}
+.plan-name {
+  flex: 1;
+}
+.plan-users {
+  margin: 0 0.7rem;
+}
+.plan-users > span {
+  margin-right: 0.3rem;
+}
+/* .plan-state > svg > path {
+  stroke: blue;
+} */
+/* .selected {
+  color: #6c5dd3;
+}
+.unselected {
+  color: gray;
+}
+.plan-container-selected {
+  width: 57%;
+  border: 2px solid #6c5dd3;
+  border-radius: 0.5rem;
+}
+.plan-container-unselected {
+  border: 2px solid #afafaf;
+  border-radius: 0.5rem;
+  width: 42%;
+} */
+.selected > .icon-container > svg {
+  color: #6c5dd3;
+}
+.unselected > .icon-container > svg {
+  color: gray;
+}
+.selected > svg > path {
+  stroke: #6c5dd3;
+}
+.unselected > svg > path {
+  stroke: gray;
+}
+.highlighted {
+  font-size: 20px;
+  font-weight: 500;
+}
+.green {
+  color: green;
+}
+.plans-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Toggle plan-slider */
+.co-account .plan-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e4e4e4;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.co-account .plan-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.co-account input + .plan-slider {
+  background-color: #6c5dd3;
+}
+
+.co-account input:focus + .plan-slider {
+  box-shadow: 0 0 1px #6c5dd3;
+}
+
+.co-account input:checked + .plan-slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded plan-sliders */
+.co-account .plan-slider.round {
+  border-radius: 34px;
+}
+
+.co-account .plan-slider.round:before {
+  border-radius: 50%;
+}
+@media screen and (max-width: 767px) {
+  .co-account .scroll-sction {
+    height: 100%;
+  }
+  .upgrade-your-account {
+    width: 100%;
+  }
+  .co-account .personal-mgt-title {
+    font-size: 18px;
+    width: 100%;
+  }
+  .highlighted {
+    font-size: 16px;
+  }
+  .edit-button {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 5px;
+  }
+}

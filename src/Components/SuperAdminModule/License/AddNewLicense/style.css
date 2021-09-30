@@ -1,0 +1,162 @@
+.AddLicenseMain {
+  height: 90vh;
+  overflow-y: scroll;
+  padding-right: 1rem;
+}
+.AddLicenseMain > h5 {
+  margin-top: 1rem;
+  border-bottom: 2px solid #eee8fc;
+  font-size: 24px;
+
+  padding-bottom: 1rem;
+}
+.BasicDetails > form > h6 {
+  font-size: 18px;
+}
+.DetailsElement {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+.DetailsElement > label {
+  color: #575757;
+  opacity: 0.5;
+  font-weight: 500;
+  font-size: 12px;
+  margin-bottom: 0.4rem;
+}
+.DetailsElement > input {
+  border: none;
+  height: 40px;
+  background-color: #e4e4e4;
+  color: black;
+  font-weight: 600;
+  opacity: 0.6;
+  padding: 0.5rem;
+
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: start;
+}
+.LicenseDetails {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+}
+.LicenseType {
+  display: flex;
+
+  flex-wrap: wrap;
+}
+.LicenseType > div > button {
+  background-color: #f1f3ff;
+  display: flex;
+  min-width: 5rem;
+  font-weight: 500;
+  justify-content: space-between;
+  border: none;
+  color: #6c5dd3;
+  margin: 5px;
+  padding: 0.2rem;
+  min-height: 2rem;
+  border-radius: 4px;
+}
+.NextButton {
+  margin: 2rem 1rem 1rem 1rem;
+  color: white;
+  background-color: #6c5dd3;
+  border: none;
+  width: 6rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+.SubLicenseElement {
+  margin-bottom: 2rem;
+}
+.SubLicenseElement > h5 {
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+.SubLicenseElement > button {
+  background-color: white;
+  color: #6c5dd3;
+  border: none;
+  font-weight: 550;
+}
+.LicenseColorContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 40vw;
+}
+.LicenseColor > div > button {
+  width: 24px;
+  height: 24px;
+  border-radius: 40px;
+  border: none;
+  margin: 0.4rem;
+}
+#CustomColor {
+  border: 1px solid #6c5dd3;
+  background-color: white;
+  color: #6c5dd3;
+  border-radius: 18px;
+  font-weight: 550;
+  margin: 0.5rem;
+
+  padding: 0.3rem 0.6rem;
+}
+.SubtaskContainer > div {
+  display: flex;
+}
+.SubtaskContainer > label {
+  color: #575757;
+  font-weight: 500;
+  opacity: 0.6;
+  margin: 0.8rem 0;
+}
+.SubtaskContainer > div > button {
+  background-color: white;
+  color: #6c5dd3;
+  border: none;
+  font-weight: 500;
+  margin-left: 1rem;
+}
+.SASubtasks > button {
+  background-color: white;
+  color: #6c5dd3;
+  border: none;
+  font-weight: 500;
+  margin-top: 1.2rem;
+}
+.DetailsEdit > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.DetailsEdit > div > button {
+  border: none;
+  background-color: #ffffff;
+  color: #6c5dd3;
+  font-weight: 500;
+}
+.DetailsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  justify-content: initial;
+}
+.DetailsContainer > div {
+  display: flex;
+  justify-content: space-between;
+}
+.DetailsContainer > div > p {
+  font-size: 13px;
+  display: flex;
+  min-width: 16vw;
+  flex-wrap: wrap;
+}
+.DetailsLabel {
+  margin-right: 3rem;
+  color: #575757;
+  opacity: 0.6;
+}

@@ -88,3 +88,16 @@ export default Stepper;
 //       });
 //     }
 //   };
+
+// --- Function for back click
+// const handleBackClick = (step) => {
+//   if (step) {
+//     setStepper({
+//       ...stepper,
+//       stepperAcitveSlide: step - 1,
+//       stepperCompletedSlides: stepper.stepperCompletedSlides.filter(
+//         (item) => item !== step
+//       ),
+//     });
+//   }
+// };

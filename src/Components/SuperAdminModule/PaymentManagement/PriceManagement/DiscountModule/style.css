@@ -1,0 +1,54 @@
+.add-discount .title {
+  padding-bottom: 5px;
+  border-bottom: 2px solid #eee8fc;
+}
+.discount-list-header {
+  margin: 12px 0px 0px -30px;
+}
+
+.discount-list-header p {
+  opacity: 0.2;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #2c2738;
+}
+
+.discount-list-item {
+  margin: 4px 0px 0px -30px;
+}
+
+.discount-list-item p {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.28px;
+  text-align: left;
+  color: #575757;
+}
+
+.discount-list-item .-button--status {
+  border: none;
+  padding: 5px;
+  color: #7fba7a;
+  font-size: 10px;
+  font-weight: 500;
+  background: #e4f1e4;
+}
+
+.discount-list-item .-button--discount {
+  border: none;
+  padding: 5px;
+  color: #b3abc4;
+  font-size: 10px;
+  font-weight: 500;
+  background: #f7f4fe;
+}
