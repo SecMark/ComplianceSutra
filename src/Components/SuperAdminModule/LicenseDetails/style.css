@@ -165,6 +165,7 @@ span.sort-by-filter--active {
 .task-details__button--outlined {
   color: #6c5dd3;
   border: 1px solid #6c5dd3;
+  margin-top: 50px;
 }
 /* =========================== */
 /* ==== Task Data ==== */
