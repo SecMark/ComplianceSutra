@@ -4810,18 +4810,20 @@ function RightSideGrid({
                                                   {getInitials(
                                                     user.UserName
                                                       ? user.UserName
-                                                      : user.email
-                                                      ? user.email
+                                                      : user.EmailID
+                                                      ? user.EmailID
                                                       : null
                                                   )}
                                                 </span>
                                                 <span className="name-of-emailer">
                                                   {user.UserName
                                                     ? user.UserName
+                                                    : user.EmailID
+                                                    ? user.EmailID
                                                     : ""}
                                                 </span>
                                                 <span className="last-email-box">
-                                                  {user.email}
+                                                  {user.EmailID}
                                                 </span>
                                               </div>
                                             ))
@@ -5031,18 +5033,20 @@ function RightSideGrid({
                                                   {getInitials(
                                                     user.UserName
                                                       ? user.UserName
-                                                      : user.email
-                                                      ? user.email
+                                                      : user.EmailID
+                                                      ? user.EmailID
                                                       : null
                                                   )}
                                                 </span>
                                                 <span className="name-of-emailer">
                                                   {user.UserName
                                                     ? user.UserName
-                                                    : ""}
+                                                    : user.EmailID
+                                                    ? user.EmailID
+                                                    : "null"}
                                                 </span>
                                                 <span className="last-email-box">
-                                                  {user.email}
+                                                  {user.EmailID}
                                                 </span>
                                               </div>
                                             ))

@@ -241,7 +241,7 @@ function CoSettingRightGrid({ handleClose, history }) {
         pwd: verifyPassword.password,
       };
       api
-        .get("Loginsuccess", { params: { uInput: payload } })
+        .get(`${test_customization_url}Loginsuccess`, { params: { uInput: payload } })
         .then(function (response) {
           if (
             response &&
@@ -306,7 +306,9 @@ function CoSettingRightGrid({ handleClose, history }) {
       email: "email",
     };
     api
-      .get("sendmsgwithverificationcode", { params: { uInput: payload } })
+      .get(`${test_customization_url}sendmsgwithverificationcode`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         // handle success
         if (
@@ -373,7 +375,7 @@ function CoSettingRightGrid({ handleClose, history }) {
     };
     if (otp !== "") {
       api
-        .get("GetOTP", { params: { uInput: payload } })
+        .get(`${test_customization_url}GetOTP`, { params: { uInput: payload } })
         .then(function (response) {
           // handle success
           if (
@@ -412,7 +414,9 @@ function CoSettingRightGrid({ handleClose, history }) {
     };
 
     api
-      .get("sendmsgwithverificationcode", { params: { uInput: payload } })
+      .get(`${test_customization_url}sendmsgwithverificationcode`, {
+        params: { uInput: payload },
+      })
       .then(function (response) {
         // handle success
         if (
