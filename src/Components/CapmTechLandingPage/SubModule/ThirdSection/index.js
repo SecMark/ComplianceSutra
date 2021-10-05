@@ -113,18 +113,6 @@ function ThirdSection() {
         <div className="container">
           <div className="row d-flex flex-wrap justify-content-center">
             <div className="col col-xl-4 mb-5">
-              {/* <div className="card" style={{ width: "18rem" }}>
-                    <div className="card-body">
-                      <h5 className="card-title">Card title</h5>
-                      <h6 className="card-subtitle mb-2 text-muted">
-                        Card subtitle
-                      </h6>
-                      <p className="card-text">
-                        Some quick example text to build on the card title and
-                        make up the bulk of the card's content.
-                      </p>
-                    </div>
-                  </div> */}
               <div className="third-section-cards">
                 <img src={Mangment} alt="exteam" />
                 <h1 className="third-section-cards-heading">Brokrage Firms</h1>
@@ -169,7 +157,7 @@ function ThirdSection() {
               </div>
             </div>
             <div className="col-12 col-sm-8 mb-5">
-              <div className="third-section-cards">
+              <div className="third-section-cards-last">
                 <img
                   src={sms}
                   alt="sms"
@@ -196,9 +184,11 @@ function ThirdSection() {
           <h1 className="third-section-main-heading2">
             Access tasks, completion and
           </h1>
-          <h1 className="third-section-main-heading2">performance from anywhere</h1>
+          <h1 className="third-section-main-heading2">
+            performance from anywhere
+          </h1>
           <h1 className="third-section-multiplatform-image">
-              <img  src={multiplatform} alt="multiplatform"/>
+            <img src={multiplatform} alt="multiplatform" />
           </h1>
         </div>
       </div>

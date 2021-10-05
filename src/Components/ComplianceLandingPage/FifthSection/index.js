@@ -6,6 +6,9 @@ function FifthSection() {
   return (
     <div className="fifth-section mt-5 mb-5">
       <div className="container">
+        <h1 className="fifth-section-heading1">
+          And our customers are loving it!
+        </h1>
         <CustomersTestimonial />
         <div className="fifth-section-heading">
           <h2 className="fifth-section-heading1">Ready To get started?</h2>

@@ -41,7 +41,10 @@ function FourthSection() {
         </div>
         <div className="row">
           <div className="col">
-           <h1 style={{textAlign:"center"}}> <img src={service} alt="service" /> </h1>
+            <h1 style={{ textAlign: "center" }}>
+              {" "}
+              <img src={service} alt="service" />{" "}
+            </h1>
             <h1 className="fourth-section-team-info-heading">24/7 Service</h1>
             <p className="fourth-section-team-info-heading-para">
               Go about your day without the anxiety of missing business. Whether
@@ -50,8 +53,13 @@ function FourthSection() {
             </p>
           </div>
           <div className="col">
-          <h1 style={{textAlign:"center"}}> <img src={exteam} alt="service" /></h1>
-            <h1 className="fourth-section-team-info-heading">Experienced Team</h1>
+            <h1 style={{ textAlign: "center" }}>
+              {" "}
+              <img src={exteam} alt="service" />
+            </h1>
+            <h1 className="fourth-section-team-info-heading">
+              Experienced Team
+            </h1>
             <p className="fourth-section-team-info-heading-para">
               Here at CAPMTech our priority is customer satisfaction. Our team
               consists of members who have hands on experience with the
@@ -59,8 +67,13 @@ function FourthSection() {
             </p>
           </div>
           <div className="col">
-          <h1 style={{textAlign:"center"}}> <img src={Techsys} alt="service" /></h1>
-            <h1 className="fourth-section-team-info-heading">Technology & System</h1>
+            <h1 style={{ textAlign: "center" }}>
+              {" "}
+              <img src={Techsys} alt="service" />
+            </h1>
+            <h1 className="fourth-section-team-info-heading">
+              Technology & System
+            </h1>
             <p className="fourth-section-team-info-heading-para">
               The world is changing fast. We understand that and to deliver
               premium service we house state of art modern technology that will

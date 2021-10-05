@@ -13,14 +13,9 @@ function CapmTechLandingPage() {
     <div className="capm-tech-landing-page">
       <NavBar />
       <FirstSection />
-
       <SecondSection />
       <FourthSection />
-
       <ThirdSection />
-
-      
-
       <FifthSection />
       <Footer />
     </div>

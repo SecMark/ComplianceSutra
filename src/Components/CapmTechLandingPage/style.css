@@ -1,296 +1,298 @@
-.capm-tech-landing-page{
-    background: #F6F8FB;
+.capm-tech-landing-page {
+  background: #f6f8fb;
 }
 
 /* first-section CSS */
-.capm-tech-landing-page .first-section{
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
+.capm-tech-landing-page .first-section {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
 }
-.capm-tech-landing-page .first-section .finServicesOuter{
-    text-align: center;
-    padding: 30px 0px;
+.capm-tech-landing-page .first-section .finServicesOuter {
+  text-align: center;
+  padding: 30px 0px;
 }
-.capm-tech-landing-page .first-section .finServicesOuter .finServices{
-    text-transform: uppercase;
-    font-size: 20px;
-    background: #F6ECDB;
-    padding: 5px;
-    border-radius: 5px;
-    color: #F5A623;
+.capm-tech-landing-page .first-section .finServicesOuter .finServices {
+  text-transform: uppercase;
+  font-size: 20px;
+  background: #f6ecdb;
+  padding: 5px;
+  border-radius: 5px;
+  color: #f5a623;
 }
 .capm-tech-landing-page .first-section .bannerImg {
-    margin-top: -30px;
-    width: 100%;
-    position: relative;
-    z-index: 1;
+  margin-top: -30px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 .capm-tech-landing-page .first-section .bannerImg1 {
-    position: absolute;
-    z-index: 1;
-    width: 43vw;
-    left: 105px;
-    top: 310px;
+  position: absolute;
+  z-index: 1;
+  width: 43vw;
+  left: 105px;
+  top: 310px;
 }
 .capm-tech-landing-page .first-section .bannerImg2 {
-    position: absolute;
-    z-index: 1;
-    width: 43vw;
-    left: 355px;
-    top: 265px;
+  position: absolute;
+  z-index: 1;
+  width: 43vw;
+  left: 355px;
+  top: 265px;
 }
 .capm-tech-landing-page .first-section .bannerImg3 {
-    position: absolute;
-    z-index: 1;
-    width: 43vw;
-    left: 610px;
-    top: 325px;
+  position: absolute;
+  z-index: 1;
+  width: 43vw;
+  left: 610px;
+  top: 325px;
 }
-.capm-tech-landing-page .first-section .title{
-    font-family: Poppins;
-    font-size: 48px;
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.17;
-    letter-spacing: normal;
-    text-align: center;
-    color: #1b1d21;
-}
-
-
-.capm-tech-landing-page .first-section .viewDemo{
-    margin-top: 30px;
-    position: relative;
-    z-index: 5;
-    font-family: Poppins;
-    font-size: 13px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0.02px;
-    text-align: left;
-    color: #ffffff;
+.capm-tech-landing-page .first-section .title {
+  font-family: Poppins;
+  font-size: 48px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.17;
+  letter-spacing: normal;
+  text-align: center;
+  color: #1b1d21;
 }
 
-.capm-tech-landing-page .first-section .bottomBanner1{
-    position: absolute;
-    top: 315px;
-    z-index: 0;
+.capm-tech-landing-page .first-section .viewDemo {
+  margin-top: 30px;
+  position: relative;
+  z-index: 5;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #ffffff;
 }
-.capm-tech-landing-page .first-section .bottomBanner1 .bottomBanner1Img{
-    width: 125vw;
+
+.capm-tech-landing-page .first-section .bottomBanner1 {
+  position: absolute;
+  top: 315px;
+  z-index: 0;
+}
+.capm-tech-landing-page .first-section .bottomBanner1 .bottomBanner1Img {
+  width: 125vw;
 }
 
 .capm-tech-landing-page .first-section .RectangleBottom1 {
-    position: absolute;
-    z-index: 0;
-    bottom: -680px;
-    left: -110px;
+  position: absolute;
+  z-index: 0;
+  bottom: -680px;
+  left: -110px;
 }
 
-.capm-tech-landing-page .first-section .RectangleBottom1 .RectangleBottom1Img{
-    width: 1000px;
+.capm-tech-landing-page .first-section .RectangleBottom1 .RectangleBottom1Img {
+  width: 1000px;
 }
 
 .capm-tech-landing-page .first-section .RectangleRight2 {
-    position: absolute;
-    z-index: 0;
-    bottom: -690px;
-    right: -360px;
+  position: absolute;
+  z-index: 0;
+  bottom: -690px;
+  right: -360px;
 }
 .capm-tech-landing-page .first-section .RectangleRight2 .RectangleRight2Img {
-    width: 1000px;
+  width: 1000px;
 }
 /* first-section CSS */
 
 /* second-section CSS start*/
 .capm-tech-landing-page .second-section .Section2Img {
-    width: 100%;
-    padding: 50px 20px;
+  width: 100%;
+  padding: 50px 20px;
 }
 /* second-section CSS end */
 
+@media (min-width: 1400px) {
+  /* first-section CSS start */
+  .capm-tech-landing-page .first-section .bottomBanner1 {
+    top: 345px;
+  }
+  .capm-tech-landing-page .first-section .RectangleBottom1 {
+    bottom: -620px;
+    left: -50px;
+  }
+  .capm-tech-landing-page .first-section .RectangleRight2 {
+    bottom: -650px;
+    right: -420px;
+  }
+  /* first-section CSS end */
 
-
-@media (min-width: 1400px){
-    /* first-section CSS start */
-    .capm-tech-landing-page .first-section .bottomBanner1 {
-        top: 345px;
-    }
-    .capm-tech-landing-page .first-section .RectangleBottom1 {
-        bottom: -620px;
-        left: -50px;
-    }
-    .capm-tech-landing-page .first-section .RectangleRight2 {
-        bottom: -650px;
-        right: -420px;
-    }
-    /* first-section CSS end */
-
-    /* second-section CSS start*/
-    .capm-tech-landing-page .first-section .bannerImg1 {
-        width: 43vw;
-        left: 115px;
-        top: 310px;
-    }
-    .capm-tech-landing-page .first-section .bannerImg2 {
-        left: 395px;
-        top: 265px;
-        width: 42vw;
-    }
-    .capm-tech-landing-page .first-section .bannerImg3 {
-        left: 685px;
-        top: 330px;
-        width: 42vw;
-    }
-    /* second-section CSS end*/
+  /* second-section CSS start*/
+  .capm-tech-landing-page .first-section .bannerImg1 {
+    width: 43vw;
+    left: 115px;
+    top: 310px;
+  }
+  .capm-tech-landing-page .first-section .bannerImg2 {
+    left: 395px;
+    top: 265px;
+    width: 42vw;
+  }
+  .capm-tech-landing-page .first-section .bannerImg3 {
+    left: 685px;
+    top: 330px;
+    width: 42vw;
+  }
+  /* second-section CSS end*/
 }
 
-@media (min-width: 1550px){
-    /* first-section CSS start */
-    .capm-tech-landing-page .first-section .bottomBanner1 {
-        top: 395px;
-    }
-    .capm-tech-landing-page .first-section .RectangleBottom1 {
-        bottom: -620px;
-        left: -40px;
-    }
-    .capm-tech-landing-page .first-section .RectangleBottom1 .RectangleBottom1Img {
-        width: 1100px;
-    }
-    .capm-tech-landing-page .first-section .RectangleRight2 {
-        bottom: -580px;
-        right: -430px;
-    }
-    /* first-section CSS end */
+@media (min-width: 1550px) {
+  /* first-section CSS start */
+  .capm-tech-landing-page .first-section .bottomBanner1 {
+    top: 395px;
+  }
+  .capm-tech-landing-page .first-section .RectangleBottom1 {
+    bottom: -620px;
+    left: -40px;
+  }
+  .capm-tech-landing-page
+    .first-section
+    .RectangleBottom1
+    .RectangleBottom1Img {
+    width: 1100px;
+  }
+  .capm-tech-landing-page .first-section .RectangleRight2 {
+    bottom: -580px;
+    right: -430px;
+  }
+  /* first-section CSS end */
 
-    /* second-section CSS start*/
-    .capm-tech-landing-page .first-section .bannerImg1 {
-        left: 130px;
-        top: 315px;
-    }
-    .capm-tech-landing-page .first-section .bannerImg2 {
-        left: 445px;
-        top: 265px;
-    }
-    .capm-tech-landing-page .first-section .bannerImg3 {
-        left: 770px;
-        top: 345px;
-    }
-    /* second-section CSS end*/
+  /* second-section CSS start*/
+  .capm-tech-landing-page .first-section .bannerImg1 {
+    left: 130px;
+    top: 315px;
+  }
+  .capm-tech-landing-page .first-section .bannerImg2 {
+    left: 445px;
+    top: 265px;
+  }
+  .capm-tech-landing-page .first-section .bannerImg3 {
+    left: 770px;
+    top: 345px;
+  }
+  /* second-section CSS end*/
 }
 
-@media (min-width: 1650px){
-    /* first-section CSS start */
-    .capm-tech-landing-page .first-section .bottomBanner1 {
-        top: 425px;
-    }
-    .capm-tech-landing-page .first-section .RectangleBottom1 {
-        bottom: -780px;
-        left: -160px;
-    }
-    .capm-tech-landing-page .first-section .RectangleBottom1 .RectangleBottom1Img {
-        width: 1300px;
-    }
-    .capm-tech-landing-page .first-section .RectangleRight2 {
-        bottom: -550px;
-    }
-    /* first-section CSS end */
+@media (min-width: 1650px) {
+  /* first-section CSS start */
+  .capm-tech-landing-page .first-section .bottomBanner1 {
+    top: 425px;
+  }
+  .capm-tech-landing-page .first-section .RectangleBottom1 {
+    bottom: -780px;
+    left: -160px;
+  }
+  .capm-tech-landing-page
+    .first-section
+    .RectangleBottom1
+    .RectangleBottom1Img {
+    width: 1300px;
+  }
+  .capm-tech-landing-page .first-section .RectangleRight2 {
+    bottom: -550px;
+  }
+  /* first-section CSS end */
 
-    /* second-section CSS start*/
-    .capm-tech-landing-page .first-section .bannerImg1 {
-        left: 140px;
-        top: 325px;
-    }
-    .capm-tech-landing-page .first-section .bannerImg2 {
-        left: 475px;
-    }
-    .capm-tech-landing-page .first-section .bannerImg3 {
-        left: 825px;
-        top: 350px;
-    }
-    /* second-section CSS end*/
+  /* second-section CSS start*/
+  .capm-tech-landing-page .first-section .bannerImg1 {
+    left: 140px;
+    top: 325px;
+  }
+  .capm-tech-landing-page .first-section .bannerImg2 {
+    left: 475px;
+  }
+  .capm-tech-landing-page .first-section .bannerImg3 {
+    left: 825px;
+    top: 350px;
+  }
+  /* second-section CSS end*/
 }
 
-@media (max-width: 767px){
-    /* first-section CSS start */
-    .capm-tech-landing-page .first-section {
-        height: 110vh;
-    }
-    .capm-tech-landing-page {
-        background: #fff;
-    }
-    .capm-tech-landing-page .first-section .finServicesOuter {
-        text-align: left;
-    }
-    .capm-tech-landing-page .first-section .finServicesOuter .finServices {
-        font-size: 14px;
-    }
-    .capm-tech-landing-page .first-section .title {
-        text-align: left;
-        font-weight: 500;
-        font-size: 33px;
-        position: relative;
-        z-index: 1;
-    }
-    .capm-tech-landing-page .first-section .BannerImg{
-        width: 90vw;
-        position: relative;
-        z-index: 1;
-    }
-    .capm-tech-landing-page .first-section .viewDemoOuter {
-        text-align: left;
-    }
-    .capm-tech-landing-page .first-section .bottomBanner1 {
-        top: 330px;
-        left: -80px;
-    }
-    .capm-tech-landing-page .first-section .bottomBanner1 .bottomBanner1Img {
-        width: 200vw;
-    }
-    .capm-tech-landing-page .first-section .RectangleRight2 .RectangleRight2Img {
-        width: 150px;
-    }
-    .capm-tech-landing-page .first-section .RectangleRight2 {
-        top: 70px;
-        left: -50px;
-        bottom: auto;
-        right: auto;
-        z-index: 0;
-        transform: translate(0vw, 0px) rotate(20deg);
-    }
-    .capm-tech-landing-page .first-section .RectangleBottom1 {
-        top: 220px;
-        right: -220px;
-        left: auto;
-    }
-    .capm-tech-landing-page .first-section .RectangleBottom1 .RectangleBottom1Img {
-        width: 700px;
-    }
-    .capm-tech-landing-page .first-section .bannerImg1 {
-        width: 100vw;
-        left: -80px;
-        top: auto;
-        bottom: -160px;
-    }
-    .capm-tech-landing-page .first-section .bannerImg2 {
-        width: 150vw;
-        top: auto;
-        bottom: -260px;
-        left: -45px;
-    }
-    .capm-tech-landing-page .first-section .bannerImg3 {
-        width: 120vw;
-        left: 90px;
-        top: auto;
-        bottom: -235px;
-    }
-    /* first-section CSS end */
+@media (max-width: 767px) {
+  /* first-section CSS start */
+  .capm-tech-landing-page .first-section {
+    height: 110vh;
+  }
+  .capm-tech-landing-page {
+    background: #fff;
+  }
+  .capm-tech-landing-page .first-section .finServicesOuter {
+    text-align: left;
+  }
+  .capm-tech-landing-page .first-section .finServicesOuter .finServices {
+    font-size: 14px;
+  }
+  .capm-tech-landing-page .first-section .title {
+    text-align: left;
+    font-weight: 500;
+    font-size: 33px;
+    position: relative;
+    z-index: 1;
+  }
+  .capm-tech-landing-page .first-section .BannerImg {
+    width: 90vw;
+    position: relative;
+    z-index: 1;
+  }
+  .capm-tech-landing-page .first-section .viewDemoOuter {
+    text-align: left;
+  }
+  .capm-tech-landing-page .first-section .bottomBanner1 {
+    top: 330px;
+    left: -80px;
+  }
+  .capm-tech-landing-page .first-section .bottomBanner1 .bottomBanner1Img {
+    width: 200vw;
+  }
+  .capm-tech-landing-page .first-section .RectangleRight2 .RectangleRight2Img {
+    width: 150px;
+  }
+  .capm-tech-landing-page .first-section .RectangleRight2 {
+    top: 70px;
+    left: -50px;
+    bottom: auto;
+    right: auto;
+    z-index: 0;
+    transform: translate(0vw, 0px) rotate(20deg);
+  }
+  .capm-tech-landing-page .first-section .RectangleBottom1 {
+    top: 220px;
+    right: -220px;
+    left: auto;
+  }
+  .capm-tech-landing-page
+    .first-section
+    .RectangleBottom1
+    .RectangleBottom1Img {
+    width: 700px;
+  }
+  .capm-tech-landing-page .first-section .bannerImg1 {
+    width: 100vw;
+    left: -80px;
+    top: auto;
+    bottom: -160px;
+  }
+  .capm-tech-landing-page .first-section .bannerImg2 {
+    width: 150vw;
+    top: auto;
+    bottom: -260px;
+    left: -45px;
+  }
+  .capm-tech-landing-page .first-section .bannerImg3 {
+    width: 120vw;
+    left: 90px;
+    top: auto;
+    bottom: -235px;
+  }
+  /* first-section CSS end */
 }
-
-
-
-

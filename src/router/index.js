@@ -45,6 +45,7 @@ import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/compon
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
+import ComplianceLandingPage from "../Components/ComplianceLandingPage/index";
 
 export default function AppRouter() {
   return (
@@ -55,8 +56,13 @@ export default function AppRouter() {
           <Route exact path="/assign-task" component={AssignTask} />
           <Route
             exact
-            path="/capm-tect-landing"
+            path="/capm-tech-landing"
             component={CapmTechLandingPage}
+          />
+          <Route
+            exact
+            path="/compliance-landing"
+            component={ComplianceLandingPage}
           />
           <Route exact path="/on-boarding" component={OnBoarding} />
           <Route exact path="/board-view" component={BoardView} />

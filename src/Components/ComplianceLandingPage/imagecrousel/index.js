@@ -1,9 +1,9 @@
 import React, { createRef, useState } from "react";
-import hdfc from "../../../../assets/Images/CAPMLanding/hdfcbank.png";
-import zerodha from "../../../../assets/Images/CAPMLanding/zerodha.png";
-import client1 from "../../../../assets/Images/CAPMLanding/client1.png";
-import client2 from "../../../../assets/Images/CAPMLanding/client2.png";
-import client3 from "../../../../assets/Images/CAPMLanding/client3.png";
+import hdfc from "../../../assets/Images/CAPMLanding/hdfcbank.png";
+import zerodha from "../../../assets/Images/CAPMLanding/zerodha.png";
+import client1 from "../../../assets/Images/CAPMLanding/client1.png"
+import client2 from "../../../assets/Images/CAPMLanding/client2.png";
+import client3 from "../../../assets/Images/CAPMLanding/client3.png";
 import "./style.css";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 function CustomersTestimonial() {
@@ -36,12 +36,12 @@ function CustomersTestimonial() {
                   />
                   <div className="media-body customer-testimonial-media-body">
                     <h5 className="mt-0">Prakash Gupta</h5>
-                    <p>Co, Team Leader</p>
+                   <p>Co, Team Leader</p>
                   </div>
                 </div>
               </div>
               <div className="col customer-testimonial-media-image">
-                <img src={hdfc} alt="hdfc" />
+                  <img src={hdfc} alt="hdfc"/>
               </div>
             </div>
           </div>
@@ -49,8 +49,7 @@ function CustomersTestimonial() {
         <div className="col">
           <div className="Customer-testimonial-card">
             <p className="customer-testimonial-para">
-              Thank you for making it painless, pleasant and most of all hassle
-              free! CAPMTech has completely surpassed our expectations.
+            Thank you for making it painless, pleasant and most of all hassle free! CAPMTech has completely surpassed our expectations.
             </p>
             <div className="row">
               <div className="col">
@@ -62,12 +61,12 @@ function CustomersTestimonial() {
                   />
                   <div className="media-body customer-testimonial-media-body">
                     <h5 className="mt-0">Radhika Jain</h5>
-                    <p>CTO</p>
+                   <p>CTO</p>
                   </div>
                 </div>
               </div>
               <div className="col customer-testimonial-media-image">
-                <img src={zerodha} alt="hdfc" />
+                  <img src={zerodha} alt="hdfc"/>
               </div>
             </div>
           </div>
@@ -75,9 +74,7 @@ function CustomersTestimonial() {
         <div className="col">
           <div className="Customer-testimonial-card">
             <p className="customer-testimonial-para">
-              I have gotten at least 50 times the value from CAPMTech. I like
-              CAPMTech more and more each day because it makes my life a lot
-              easier.
+            I have gotten at least 50 times the value from CAPMTech. I like CAPMTech more and more each day because it makes my life a lot easier.
             </p>
             <div className="row">
               <div className="col">
@@ -89,12 +86,12 @@ function CustomersTestimonial() {
                   />
                   <div className="media-body customer-testimonial-media-body">
                     <h5 className="mt-0">Ramesh Sisodiya</h5>
-                    <p>CEO</p>
+                   <p>CEO</p>
                   </div>
                 </div>
               </div>
               <div className="col customer-testimonial-media-image">
-                <img src={hdfc} alt="hdfc" />
+                  <img src={hdfc} alt="hdfc"/>
               </div>
             </div>
           </div>
