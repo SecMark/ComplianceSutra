@@ -1,0 +1,116 @@
+.Customer-testimonial-card {
+  width: 552px;
+  height: 282px;
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 10px;
+}
+.customer-slider {
+  overflow-x: scroll !important;
+  /* overflow: hidden; */
+  transform: scroll(calc(var(--i, 0) / var(--n) * -100%));
+  scroll-behavior: smooth;
+  flex-wrap: nowrap;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  
+}
+
+.customer-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .customer-slider {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+
+  .Customer-testimonial-previous-btn{
+        border-radius: 50%;
+        height: 46px;
+        width: 46px;
+        border: 0;
+        background-color: #6c5dd3;
+        
+  }
+  .Customer-testimonial-previous-btn-active{
+    border-radius: 50%;
+    height: 46px;
+    width: 46px;
+    border: 0;
+    background-color: grey;
+    
+}
+  .Customer-testimonial-next-btn{
+        border-radius: 50%;
+        height: 46px;
+        width: 46px;
+        border: 0;
+        background-color: #6c5dd3;
+  }
+
+  .customer-testimonial-para{
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.67;
+    letter-spacing: normal;
+    text-align: left;
+    color: #333;
+    padding: 30px 15px 30px 15px;
+  }
+
+  .customer-testimonial-media-body > h5{
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.67;
+    letter-spacing: normal;
+    text-align: left;
+    color: #333;
+  }
+
+  .customer-testimonial-media-body > p{
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.67;
+    letter-spacing: normal;
+    text-align: left;
+    color: #777;
+  }
+
+  .customer-testimonial-media-image > img{
+      height: 75px;
+      width: 75px;
+      margin-left: 155px;
+
+  }
+  .customer-testimonial-client-images{
+      width: 54px;
+      height: 54px;
+  }
+
+
+  @media (max-width: 767.98px) {
+    .Customer-testimonial-card {
+        width: 329px;
+        height: 345px;
+        background-color: white;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        padding: 10px;
+      }
+      .customer-testimonial-media-image > img {
+        height: 75px;
+        width: 75px;
+        margin-left: 238px;
+        margin-top: -100px;
+    }
+  }

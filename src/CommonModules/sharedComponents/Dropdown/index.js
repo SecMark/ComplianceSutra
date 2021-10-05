@@ -68,7 +68,7 @@ function MultiSelectDropdown({
           ></span>
         </div>
         <div className="dropdown-container" onBlur={() => setIsOpen(false)}>
-          <div className={`dropdown ${isOpen && "dropdown--open"}`}>
+          <div className={`dropdown-common ${isOpen && "dropdown--open"}`}>
             {options.map((option) => {
               const id = option.id;
               return (

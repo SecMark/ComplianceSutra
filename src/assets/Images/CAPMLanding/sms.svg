@@ -1,0 +1,15 @@
+<svg id="sms-24px" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #1b1d21;
+      }
+    </style>
+  </defs>
+  <path id="Path_80" data-name="Path 80" class="cls-1" d="M0,0H48V48H0Z"/>
+  <path id="Path_81" data-name="Path 81" class="cls-2" d="M38,2H6A4,4,0,0,0,2.02,6L2,42l8-8H38a4.012,4.012,0,0,0,4-4V6A4.012,4.012,0,0,0,38,2ZM16,20H12V16h4Zm8,0H20V16h4Zm8,0H28V16h4Z" transform="translate(2 2)"/>
+</svg>

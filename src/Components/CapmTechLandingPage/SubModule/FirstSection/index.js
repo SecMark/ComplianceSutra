@@ -11,10 +11,10 @@ import RectangleRight from '../../../../assets/Images/CAPMLanding/RectangleRight
 function FirstSection() {
     return (
         <div className="first-section">
-            <div className="container">
-                <div className="finServicesOuter">
+            <div className="container mt-5">
+                {/* <div className="finServicesOuter">
                     <span className="finServices">Built for financial services</span>
-                </div>
+                </div> */}
                 <p className="title">On-time, worry-free and transparent <br />
                 compliance & auditing system</p>
                 <div className="center">

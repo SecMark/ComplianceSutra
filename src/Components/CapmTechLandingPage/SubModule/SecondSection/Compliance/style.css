@@ -1,0 +1,76 @@
+.compliance-mediaobjects {
+  margin-top: -150px;
+}
+
+/* .Compliance-banner{
+    margin-right: -180px;
+} */
+
+.compliance-more-detail-button {
+  width: 162px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 8px;
+  background-color: #6c5dd3;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: 0.02px;
+  text-align: center;
+  color: #fff;
+  border: 0;
+}
+
+.compliance-View-detail-button {
+  width: 144px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: solid 1px #6c5dd3;
+  background-color: #fff;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: 0.02px;
+  text-align: center;
+  color: #6c5dd3;
+}
+
+.compliance-icon-title {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.67;
+  letter-spacing: 0.03px;
+  text-align: left;
+  color: #333;
+}
+.compliance-icon-title-para {
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.71;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #1b1d21;
+}
+@media (max-width: 767.98px) {
+  .Compliance-banner {
+    width: 339px;
+    height: 336px;
+  }
+  .compliance-list-icons {
+    margin-left: -70px;
+  }
+}

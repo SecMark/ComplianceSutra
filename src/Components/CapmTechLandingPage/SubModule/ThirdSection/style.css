@@ -1,0 +1,167 @@
+.third-section{
+    background: #f6f8fb;
+}
+.third-section-clients-background {
+  background: #f6f8fb;
+}
+
+.third-section-main-heading1 {
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.8;
+  letter-spacing: normal;
+  text-align: center;
+  color: #6c5dd3;
+}
+.third-section-main-heading2 {
+  font-family: Poppins;
+  font-size: 36px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: center;
+  color: #1b1d21;
+}
+
+.third-section-services {
+  opacity: 0.73;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 2.56px;
+  text-align: center;
+  color: #1b1d21;
+}
+
+.third-section-breakline-border-top {
+  border-top: 1px solid #e4e4e4;
+}
+.third-section-breakline-border-bottom {
+  border-bottom: solid 1px #e4e4e4;
+}
+
+.third-section-finincial-services {
+  margin-top: 250px;
+  background-image: url("../../../../assets//Images//CAPMLanding//purplebackground.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.third-section-add-on-service {
+  font-family: Poppins;
+  font-size: 36px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: 0.72px;
+  text-align: center;
+  color: #fff;
+  padding: 70px;
+  margin-bottom: -65px;
+}
+
+.third-section-financial-image {
+  margin-top: -260px;
+}
+
+.third-section-tools {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #0d0065;
+}
+
+.third-section-tools-para {
+  opacity: 0.84;
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
+.third-section-cards {
+  width: 358px;
+  height: 350px;
+  background-color: #ffffff;
+}
+.third-section-cards-heading {
+  font-family: Poppins;
+  font-size: 24px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.42;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1d293f;
+  margin-top: -35px;
+    margin-left: 35px;
+}
+.third-section-cards-para {
+  opacity: 0.5;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.71;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #1b1d21;
+    margin-left: 35px;
+}
+
+.third-section-rightarrow{
+    color: #1b1d21 !important;
+    height: 30px;
+    width: 30px;
+    margin-left: 320px;
+}
+
+
+.third-section-multiplatform-image{
+    text-align: center;
+}
+@media (max-width: 767.98px) {
+  .third-section-backcolor {
+    width: 360px;
+    height: 446.3px;
+    object-fit: cover;
+  }
+  .third-section-financial-image {
+      width: 360px;
+      height: 279px;
+      margin-top: 456px;
+  }
+}
+
+
+@media (max-width: 575.98px) { 
+    .third-section-multiplatform-image > img {
+        width: 342px;
+        height: 342px;
+        object-fit: cover;
+    }
+}
