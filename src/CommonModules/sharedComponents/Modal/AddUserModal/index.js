@@ -5,12 +5,10 @@ import cross from "../../../../assets/Icons/closeIcon1.png";
 
 import "./style.css";
 
-function AddUserModal({ setAddUser }) {
-
+function AddUserModal({ setAddUser, setAddUserCount }) {
   const [count, setCount] = useState(5);
 
   useEffect(() => {
-    console.log("lelel", count);
     if (count < 0) setCount(0);
   }, [count]);
 
@@ -36,6 +34,7 @@ function AddUserModal({ setAddUser }) {
                 className="counter"
                 onClick={() => {
                   setCount((count) => count - 5);
+                  setAddUserCount((count) => count - 5);
                 }}
               >
                 <HiMinusSm />
@@ -45,6 +44,7 @@ function AddUserModal({ setAddUser }) {
                 className="counter"
                 onClick={() => {
                   setCount((count) => count + 5);
+                  setAddUserCount((count) => count + 5);
                 }}
               >
                 <HiPlus />

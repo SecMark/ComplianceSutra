@@ -20,6 +20,7 @@ const persistConfig = {
     "adminMenu",
     "HistoryReducer",
     "UpdatesReducer",
+    "userList",
     "PaymentReducer",
   ],
 };
@@ -32,7 +33,6 @@ export default function configureStore(preloadedState) {
   const store = createStore(
     persistedReducer, // root reducer with router state
     preloadedState,
-
     composeEnhancers(applyMiddleware(sagaMiddleware, routerMiddleware(history)))
   );
   sagaMiddleware.run(sagas);
