@@ -44,6 +44,12 @@ import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
+import SuperAdmin from "../Components/SuperAdminModule";
+
+// import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
+
+// import HistoryList from "../Components/HistoryModule/HistoryList";
+// import NewRegulations from "../Components/NewRegulationModule/NewRegulations";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import ComplianceLandingPage from "../Components/ComplianceLandingPage/index";
 
@@ -117,23 +123,17 @@ export default function AppRouter() {
             component={PersonalDetailsTM}
           />
           <Route exact path="/login" component={Login} />
-
           <Route exact path="/forgot-password" component={ForgotPassword} />
           <Route exact path="/change-password" component={ChangePassword} />
-
           <Route exact path="/governance" component={Governance} />
-
           <Route exact path="/settings" component={CoSetting} />
-
           <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
           <Route
             exact
             path="/redirect-dashboard"
             component={RedirectToDashboard}
           />
-
           <Route exact path="/notifications" component={Notification} />
-
           <Route exact path="/calendar-view" component={CalendarView} />
           <Route
             exact
@@ -170,16 +170,18 @@ export default function AppRouter() {
             path="/pending-action-task-list"
             component={PendingAction}
           />
-
           <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route exact path="/new-regulations" component={DashBoardCO} />
           <Route exact path="/help" component={DashBoardCO} />
-
           {/* Expert Review */}
           <Switch>
             <Route path="/expert-review" component={ExperReview}></Route>
           </Switch>
-
+          {/* Admin Review */}
+          <Switch>
+            <Route path="/super-admin" component={SuperAdmin}></Route>
+          </Switch>
+          {/* {trial branch} */}
           <Route exact path="/thankyou" component={Thankyou} />
         </div>
       </>

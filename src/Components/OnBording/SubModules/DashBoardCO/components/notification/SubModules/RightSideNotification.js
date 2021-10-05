@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import CheckIcon from "../../../.././../../../assets/Icons/notification-check.png";
-import ArrowIcon from "../../../.././../../../assets/Icons/notification-icon.png";
-import RedIcon from "../../../.././../../../assets/Icons/notification-icon-red.png";
-import threeDots from "../../../.././../../../assets/Icons/threeDots.PNG";
 import mobileDropDown from "../../../.././../../../assets/Icons/mobileDropDown.png";
 import sideBarlogo from "../../../../../../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../../../../../../assets/Icons/togglemobile.png";
@@ -14,15 +11,13 @@ import { actions as coActions } from "../../../redux/actions";
 import { isMobile } from "react-device-detect";
 import { useOuterClick } from "./outerClick.js";
 import { Link } from "react-router-dom";
-import { actions as notificationActions } from "../Redux/actions";
+
 import NoResultFound from "../../../../../../../CommonModules/sharedComponents/NoResultFound";
 import { setNotificationTaskId } from "../Redux/Action";
 // import axios from "axios";
 import api from "../../../../../../../apiServices";
 import { test_customization_url } from "../../../../../../../apiServices/baseurl";
 function NotificationGrid(props) {
-  // console.log("state => ",state);
-
   const [showMarkDrop, setShowMarkDrop] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -90,35 +85,6 @@ function NotificationGrid(props) {
     );
   }, []);
 
-  const onCategoryChange = async (event) => {
-    const { value } = event;
-    await getNotificationData();
-
-    if (value !== "All Notifications") {
-      const filteredNotification = notificationList[0].notificationOfDay.filter(
-        (types) => types.notificationTpe === value
-      );
-      if (filteredNotification.length !== 0) {
-        let dateObj = [
-          {
-            date: notifications[0].date,
-            notificationOfDay: filteredNotification,
-          },
-        ];
-        setNotification(dateObj);
-      } else {
-        setNotification([
-          {
-            date: notifications[0].date,
-            notificationOfDay: [],
-          },
-        ]);
-      }
-    } else {
-      getNotificationData();
-    }
-  };
-
   const isToday = (date) => {
     var today = new Date();
     var dateObj = new Date(date);
@@ -183,7 +149,6 @@ function NotificationGrid(props) {
   const [options, setOptions] = useState([]);
 
   const innnerDropdown = useOuterClick((e) => {
-    // console.log("inside inner dropdown");
     setShowFilter(false);
   });
   const openHBMenu = () => {
@@ -264,7 +229,6 @@ function NotificationGrid(props) {
                       arrowClosed={
                         <span className="arrow-closed d-none d-md-block" />
                       }
-                      onChange={onCategoryChange}
                       arrowOpen={<span className="arrow-open" />}
                       options={options}
                       placeholder="Select an option"
@@ -292,11 +256,7 @@ function NotificationGrid(props) {
                         <div className="drop-div top-pt">
                           {options.map((ele) => {
                             return (
-                              <p
-                                className="dots-option"
-                                value={ele.value}
-                                onClick={() => onCategoryChange(ele)}
-                              >
+                              <p className="dots-option" value={ele.value}>
                                 {ele.label}
                               </p>
                             );

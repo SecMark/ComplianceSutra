@@ -1,0 +1,130 @@
+span.sort-by.add-btn {
+  font-size: 14px;
+  color: #7a73ff;
+  font-weight: 500;
+  margin-right: 15px;
+  opacity: 1;
+}
+.edit-btn {
+  font-size: 14px;
+  color: #7a73ff;
+  font-weight: 500;
+}
+
+.table td,
+.table th {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #fff;
+}
+.table thead th {
+  vertical-align: inherit !important;
+  border-bottom: none !important;
+}
+.table tbody + tbody {
+  border-top: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 23px;
+  outline: none;
+}
+.switch input {
+  position: absolute;
+  top: -99999px;
+  left: -99999px;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #6c5dd3;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #6c5dd3;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+.task-list-grid :hover {
+  background: inherit !important;
+}
+
+.active-licenese .license th {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #2c2738;
+}
+.license-list-button {
+  border: none;
+  margin: -1px 11px 15px 7px;
+  border-radius: 2px;
+  background-color: #f7f4fe;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #b3abc4;
+}
+
+.sub-license-list th {
+  opacity: 0.4;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #2c2738;
+}
+.Edit-license {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: right;
+  color: #6c5dd3;
+  cursor: pointer;
+}

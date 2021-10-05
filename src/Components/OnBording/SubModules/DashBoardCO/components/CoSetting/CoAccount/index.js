@@ -12,6 +12,8 @@ import Payment from "../../../../../../../CommonModules/sharedComponents/Drawer/
 import { BsPencil } from "react-icons/bs";
 import { RiRefreshFill } from "react-icons/ri";
 import EditLicenses from "../../../../../../../CommonModules/sharedComponents/Drawer/EditLicense";
+import { clearLicense } from "../../../../../../ExpertReviewModule/Redux/actions";
+import api from "../../../../../../../../src/apiServices";
 
 function CoAccount({ handleClose }) {
   const state = useSelector((state) => state);
@@ -27,8 +29,11 @@ function CoAccount({ handleClose }) {
 
   const [isShowEditLicense, setIsShowEditLicense] = useState(false);
 
+  const [paymentDetail, setPaymentDetail] = useState({});
+
   useEffect(() => {
     initialDispatch();
+    dispatch(clearLicense());
   }, []);
 
   useEffect(() => {
@@ -42,7 +47,7 @@ function CoAccount({ handleClose }) {
       const count = accountInfo[0].Flag;
       setFlagcount(count);
       if (count > 0) {
-        setIsSliderCheck(true);
+        setIsSliderCheck(false);
       } else {
         setIsSliderCheck(false);
       }
@@ -56,7 +61,8 @@ function CoAccount({ handleClose }) {
 
   const [isShowFilter, setIsShowFilter] = useState(false);
   const [isShowPayment, setIsShowPayment] = useState(false);
-  const [erServiceStatus, seterServiceStatus] = useState("InActive");
+  const [erServiceStatus, seterServiceStatus] = useState("Active");
+  const [isMainPayment, setIsMainPayment] = useState(false);
 
   const loggedUser =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
@@ -67,12 +73,16 @@ function CoAccount({ handleClose }) {
     initialDispatch();
   }, []);
 
+  useEffect(() => {
+    setPaymentDetail(state?.taskReport?.paymentDetail?.coAccount);
+  }, [state && state?.taskReport?.paymentDetail?.coAccount]);
+
   const initialDispatch = () => {
     dispatch(
-      coActions.getCoAccountRequest({
+      coActions.getPaymentRequest({
         gUserID: loggedUser.UserID,
         settingType: 3,
-        actionFlag: 0,
+        actionFlag: 5,
         entityID: 0,
         licID: 0,
         uUserID: 0,
@@ -128,6 +138,8 @@ function CoAccount({ handleClose }) {
         drawerChild.style.right = "-100%";
       }
       setIsShowFilter(false);
+      setIsSliderCheck(false);
+      setIsMainPayment(false);
     } else {
       const drawerParent = document.getElementById("drawerParentMobile");
       const drawerChild = document.getElementById("drawerChildMobile");
@@ -182,6 +194,10 @@ function CoAccount({ handleClose }) {
 
   const onSliderChange = () => {
     setIsSliderCheck(!isSliderCheck);
+    if (!isSliderCheck) {
+      setIsShowFilter(true);
+      setIsMainPayment(true);
+    }
   };
 
   const openLicenseDrawer = () => {
@@ -209,27 +225,39 @@ function CoAccount({ handleClose }) {
 
   const paymentDrawer = () => {
     setIsShowFilter(false);
+    //setIsSliderCheck(!isSliderCheck);
+    //setIsMainPayment(false);
     setIsShowPayment(!isShowPayment);
+  };
+
+  const deactivateER = () => {
+    api.post(`/api/CoSettings`, {
+      gUserID: loggedUser.UserID,
+      settingType: 3,
+      actionFlag: 6,
+    });
   };
   return (
     <>
-      <div
-        className={`license-popup ${isShowFilter && "popup-open"}`}
-        style={{
-          boxShadow: isShowFilter
-            ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
-            : "none",
-        }}
-      >
-        <div className="">
-          <ChooseLicenses
-            fields={fields}
-            close={(data, action) => close(data, action)}
-            paymentDrawer={paymentDrawer}
-          />
+      {isShowFilter && (
+        <div
+          className={`license-popup ${isShowFilter && "popup-open"}`}
+          style={{
+            boxShadow: isShowFilter
+              ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
+              : "none",
+          }}
+        >
+          <div className="">
+            <ChooseLicenses
+              fields={fields}
+              close={(data, action) => close(data, action)}
+              paymentDrawer={paymentDrawer}
+              isMainPayment={isMainPayment}
+            />
+          </div>
         </div>
-      </div>
-
+      )}
       {/* Payment Drawer */}
       <div
         className={`license-popup ${isShowPayment && "popup-open"}`}
@@ -240,27 +268,32 @@ function CoAccount({ handleClose }) {
         }}
       >
         <div className="">
-          <Payment paymentDrawer={paymentDrawer} />
-        </div>
-      </div>
-
-      {/* Edit License */}
-      <div
-        className={`license-popup ${isShowEditLicense && "popup-open"}`}
-        style={{
-          boxShadow: isShowEditLicense
-            ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
-            : "none",
-        }}
-      >
-        <div className="">
-          <EditLicenses
-            fields={fields}
-            close={(data, action) => editclose(data, action)}
+          <Payment
+            paymentDrawer={paymentDrawer}
+            setIsSliderCheck={setIsSliderCheck}
+            isMainPayment={isMainPayment}
           />
         </div>
       </div>
 
+      {/* Edit License */}
+      {isShowEditLicense && (
+        <div
+          className={`license-popup ${isShowEditLicense && "popup-open"}`}
+          style={{
+            boxShadow: isShowEditLicense
+              ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
+              : "none",
+          }}
+        >
+          <div className="">
+            <EditLicenses
+              fields={fields}
+              close={(data, action) => editclose(data, action)}
+            />
+          </div>
+        </div>
+      )}
       <div className="co-account ">
         {!isMobile && (
           <div id="drawerParent" className="">
@@ -412,7 +445,10 @@ function CoAccount({ handleClose }) {
                         </div>
                       </div>
                     </div>
-                    <button className="deactivate-service">
+                    <button
+                      className="deactivate-service"
+                      onClick={() => deactivateER()}
+                    >
                       Deactivate Service
                     </button>
                   </div>
@@ -441,6 +477,7 @@ function CoAccount({ handleClose }) {
               setIsPaidMember={setIsPaidMember}
               isShowEditLicense={isShowEditLicense}
               setIsShowEditLicense={setIsShowEditLicense}
+              setIsMainPayment={setIsMainPayment}
             />
           </>
         )}

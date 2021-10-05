@@ -11,15 +11,19 @@ import assignIcon5 from "../../../assets/Icons/assignIcon3.png";
 import assignIcon2 from "../../../assets/Icons/assignIcon4.png";
 import assignIcon4 from "../../../assets/Icons/assignIcon5.png";
 import constant from "../constants/constant";
-import { getPayment } from "../../../Components/ExpertReviewModule/Redux/actions";
+import {
+  expertReviewSelectedLicense,
+  getPayment,
+} from "../../../Components/ExpertReviewModule/Redux/actions";
 
-function ChooseLicenses({ fields, close, paymentDrawer }) {
+function ChooseLicenses({ fields, close, paymentDrawer, isMainPayment }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const [licenseList, setLicenseList] = useState({});
   const [selectedLiecenseIdArray, setSelectedLicenseIdArray] = useState([]);
   const loggedUser =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
+    
   useEffect(() => {
     dispatch(
       coActions.getCoAccountLicensesRequest({
@@ -186,7 +190,9 @@ function ChooseLicenses({ fields, close, paymentDrawer }) {
       pmtArray: JSON.stringify(paymentArray),
     };
 
-    dispatch(getPayment(getPaymentDetailPayload));
+    isMainPayment
+      ? dispatch(expertReviewSelectedLicense(paymentArray))
+      : dispatch(getPayment(getPaymentDetailPayload));
     paymentDrawer();
   };
   const setCerificateDetailsMobile = () => {

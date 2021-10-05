@@ -54,6 +54,7 @@ export default {
 
   ExpertUser: "8",
   ExpertReviewerBaseUrl: "/expert-review",
+  SuperAdminBaseURL: "/super-admin",
   MigrateTaskMessages: {
     success: "Migration Request has been submitted successfully!",
     MembershipDetails: {
@@ -97,4 +98,5 @@ export default {
   },
 
   expertReview: "exp",
+  complianceOfficer: "compl",
 };

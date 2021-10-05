@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import closeIcon from "../../../assets/Icons/closeIcon.png";
 import RightImageBg from "../../../assets/Images/Onboarding/RectangleOnboadign.png";
-import { makePayment } from "../../../Components/ExpertReviewModule/Redux/actions";
+import {
+  makePayment,
+  setPlan,
+} from "../../../Components/ExpertReviewModule/Redux/actions";
 import "./style.css";
 
-const Payment = ({ paymentDrawer }) => {
+const Payment = ({ paymentDrawer, isMainPayment }) => {
   const state = useSelector((state) => state);
 
   const [choosedPlan, setChoosedPlans] = useState({});
@@ -18,7 +21,7 @@ const Payment = ({ paymentDrawer }) => {
     const paymentDetail = state?.PaymentReducer?.paymentDetail;
     const filterPlan = paymentDetail.filter((plan) => plan.Plans === "Monthly");
     setChoosedPlans(filterPlan[0]);
-  }, []);
+  }, [state?.PaymentReducer?.paymentDetail]);
 
   const choosePlan = (planType) => {
     const paymentDetail = state?.PaymentReducer?.paymentDetail;
@@ -33,8 +36,11 @@ const Payment = ({ paymentDrawer }) => {
       plan: choosedPlan.Plans === "Monthly" ? 0 : 1,
     };
 
-    dispatch(makePayment(paymentPayload));
-    history.push("/thankyou");
+    isMainPayment
+      ? dispatch(setPlan(choosedPlan))
+      : dispatch(makePayment(paymentPayload));
+
+    isMainPayment ? paymentDrawer() : history.push("/thankyou");
   };
 
   // useEffect(() => {
@@ -100,7 +106,7 @@ const Payment = ({ paymentDrawer }) => {
               </div>
               <div>
                 <p>Total Charges ({choosedPlan?.liccnt} Licenses)</p>
-                <p>₹{choosedPlan.Amount}</p>
+                <p>₹{choosedPlan?.Amount}</p>
               </div>
               <div>
                 <p>Discount ({choosedPlan?.Discamt}%)</p>
@@ -108,16 +114,16 @@ const Payment = ({ paymentDrawer }) => {
               </div>
               <div>
                 <p>Taxes (GST 15%)</p>
-                <p>₹{choosedPlan.TaxAmt}</p>
+                <p>₹{choosedPlan?.TaxAmt}</p>
               </div>
               <div className="total-amount">
                 <p>Total Amount</p>
-                <p>₹{choosedPlan.TotalAmt}</p>
+                <p>₹{choosedPlan?.TotalAmt}</p>
               </div>
             </div>
 
             <button className="make-payment" onClick={createPayment}>
-              make payment
+              {isMainPayment ? "next" : "make payment"}
             </button>
           </div>
         </div>

@@ -20,6 +20,8 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { setNotificationTaskId } from "../../OnBording/SubModules/DashBoardCO/components/notification/Redux/Action";
 import TaskDetailView from "../TaskDetails";
+import axios from "axios";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 
 const Dashboard = () => {
   const [sortBy, setSortBy] = useState("Task Status");
@@ -33,7 +35,19 @@ const Dashboard = () => {
   const [showHtoDoIt, setShowHtoDoIt] = useState(false);
   const [today, setToday] = useState(new Date());
   const [currentTaskData, setCurrentTaskData] = useState([]);
+  const [thingOnTrack, setThingOnTrack] = useState({});
+  const [expandedFlags, setExpandedFlags] = useState([1]);
 
+  const handleExpandFlag = (flag, type) => {
+    if (flag && !expandedFlags.includes(type)) {
+      setExpandedFlags([...expandedFlags, type]);
+    } else if (!flag && expandedFlags.includes(type)) {
+      const _expandedFlags = expandedFlags.filter(
+        (element) => element !== type
+      );
+      setExpandedFlags(_expandedFlags);
+    }
+  };
   const handleTaskDetailsClose = () => {
     if (isTaskDetailsShow) {
       setIsTaskDetailsShow(false);
@@ -44,7 +58,6 @@ const Dashboard = () => {
     slicedList: [],
   });
 
-  const [expandedFlags, setExpandedFlags] = useState([]);
   const [rowCount, setRowCount] = useState([]);
 
   const [overdueList, setOverdueList] = useState({
@@ -108,15 +121,6 @@ const Dashboard = () => {
   }, [state?.taskReport.taskReport?.taskReport]);
 
   const userDetails = state && state.auth && state.auth.loginInfo;
-
-  useEffect(() => {
-    dispatch(
-      taskReportActions.taskReportRequest({
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
-      })
-    );
-  }, []);
 
   const viewAll = (type, symbol) => {
     const taskList = state?.taskReport.taskReport?.taskReport;
@@ -185,7 +189,6 @@ const Dashboard = () => {
   const getSelectTaskDetails = (e) => {
     setShowFiles(true);
     setShowComments(false);
-    setExpandedFlags([]);
     setCurrentTaskData(e);
     let taskID = null;
     let task_id = null;
@@ -242,263 +245,287 @@ const Dashboard = () => {
     return str;
   };
 
-  const renderTaskList = useCallback(
-    (task, Status, listType) => {
-      return (
+  const fetchQuickOverViewSectionData = () => {
+    const payload = {
+      entityid: "0",
+      userID: userDetails.UserID,
+      usertype: userDetails.UserType,
+    };
+    axios
+      .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
+      .then((response) => {
+        console.log(response);
+        if (response && response.data && response.data.length > 0) {
+          let temp = response.data[0];
+          setThingOnTrack(temp);
+        }
+      })
+      .catch((error) => {});
+  };
+
+  const renderTaskList = (task, Status, listType) => {
+    return (
+      <div
+        // to="/dashboard"
+        style={{ textDecoration: "none" }}
+        onClick={() => {
+          if (userDetails && userDetails.UserType !== 6) {
+            // dispatch(setNotificationTaskId(task.TaskId));
+            setIsTaskDetailsShow(true);
+            dispatch(
+              taskReportActions.taskReportByIdRequest({
+                taskID: task.TaskId,
+              })
+            );
+            localStorage.setItem(
+              "expandedFlagss",
+              expandedFlags,
+              "allRowCount-copy",
+              rowCount
+            );
+            localStorage.setItem("allRowCount", JSON.stringify(rowCount));
+          }
+        }}
+        style={{
+          pointerEvents: `${
+            userDetails && userDetails.UserType === 6 ? "none" : "auto"
+          }`,
+        }}
+      >
         <div
-          // to="/dashboard"
-          style={{ textDecoration: "none" }}
-          onClick={() => {
-            if (userDetails && userDetails.UserType !== 6) {
-              // dispatch(setNotificationTaskId(task.TaskId));
-              setIsTaskDetailsShow(true);
-              dispatch(
-                taskReportActions.taskReportByIdRequest({
-                  taskID: task.TaskId,
-                })
-              );
-              localStorage.setItem(
-                "expandedFlagss",
-                expandedFlags,
-                "allRowCount-copy",
-                rowCount
-              );
-              localStorage.setItem("allRowCount", JSON.stringify(rowCount));
-            }
-          }}
-          style={{
-            pointerEvents: `${
-              userDetails && userDetails.UserType === 6 ? "none" : "auto"
-            }`,
-          }}
+          className="row"
+          style={{ marginBottom: "15px", position: "relative" }}
         >
-          <div
-            className="row"
-            style={{ marginBottom: "15px", position: "relative" }}
-          >
-            {listType === 1 && Status === "overdue" && (
-              <div className="redWidth">
-                <div className="redLine">
-                  {" "}
-                  <img src={RedLine} alt="" />
-                </div>
+          {listType === 1 && Status === "overdue" && (
+            <div className="redWidth">
+              <div className="redLine">
+                {" "}
+                <img src={RedLine} alt="" />
               </div>
-            )}
-            <div className="col-10 col-md-5 col-sm-5 col-xl-5">
-              <div className="all-companies-sub-title new-task-list">
-                <div
-                  onClick={(e) => getSelectTaskDetails(task)}
-                  style={{ cursor: "pointer", display: "flex" }}
-                >
-                  <div class="graybox-left">
-                    <span class="all-companies-nse-label">
-                      {task.LicenseCode}
-                    </span>
-                  </div>
-                  <span className="pink-label-title-right">
-                    <div className="overdue-title">{task.TaskName}</div>
-                    <div
-                      className={
-                        Status === "overdue"
-                          ? "red-week d-block d-sm-none"
-                          : "black-week d-block d-sm-none"
-                      }
-                      style={{ cursor: "pointer" }}
-                      onClick={(e) => getSelectTaskDetails(task)}
-                    >
-                      <div className="d-block d-sm-none">
-                        {getDayDate(task.EndDate, 2)}
-                      </div>
-                    </div>
-                    {task.Status !== "Assigned" && (
-                      <p
-                        className="pink-label-text d-none d-sm-block"
-                        style={{
-                          backgroundColor:
-                            task && task.Status
-                              ? task.Status === "Assign"
-                                ? "#fcf3cd"
-                                : task.Status === "Completed By User"
-                                ? moment(task.ActualTaskEndDate).isBefore(today)
-                                  ? "#cdfcd8"
-                                  : "#ffefea"
-                                : task.Status === "Approved"
-                                ? "#cdfcd8"
-                                : task.Status === "Assigned"
-                                ? "#ffefea"
-                                : task.Status === "Request Rejected"
-                                ? "#ffefea"
-                                : "#d2fccd"
-                              : "#d2fccd",
-                          color:
-                            task && task.Status
-                              ? task.Status === "Completed By User"
-                                ? moment(task.ActualTaskEndDate).isBefore(today)
-                                  ? "#7fba7a"
-                                  : "#ff5f31"
-                                : task.Status === "Approved"
-                                ? "#7fba7a"
-                                : task.Status === "Assigned"
-                                ? "#f8c102"
-                                : task.Status === "Assign"
-                                ? "#f8c102"
-                                : task.Status === "Request Rejected"
-                                ? "#ff5f31"
-                                : ""
-                              : "#fcf3cd",
-                        }}
-                      >
-                        {task.Status && task.Status === "Completed By User"
-                          ? moment(task.ActualTaskEndDate).isBefore(today)
-                            ? "NOT REVIEWED"
-                            : "Approval Pending"
-                          : task.Status === "Assign"
-                          ? "Assign Task"
-                          : task.Status === "Assigned"
-                          ? "Task Assigned"
-                          : task.Status === "Approved"
-                          ? "Task Approved"
-                          : task.Status === "Request Rejected"
-                          ? "Task Rejected"
-                          : ""}
-                      </p>
-                    )}
+            </div>
+          )}
+          <div className="col-10 col-md-5 col-sm-5 col-xl-5">
+            <div className="all-companies-sub-title new-task-list">
+              <div
+                onClick={(e) => getSelectTaskDetails(task)}
+                style={{ cursor: "pointer", display: "flex" }}
+              >
+                <div class="graybox-left">
+                  <span class="all-companies-nse-label">
+                    {task.LicenseCode}
                   </span>
                 </div>
-              </div>
-            </div>
-            <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
-              <div
-                className="circle-front-text"
-                style={{ width: "fit-content", cursor: "pointer" }}
-                value={task.TaskId}
-                onClick={(e) => getSelectTaskDetails(task)}
-              >
-                {task.EntityName}
-              </div>
-            </div>
-            <div
-              className="col-2 col-md-3 col-sm-3 col-xl-3 d-none d-sm-block"
-              style={{ cursor: "pointer" }}
-              onClick={(e) => getSelectTaskDetails(task)}
-            >
-              {task.AssignedTo != 0 ? (
-                <div className="d-flex new-task-list">
-                  {userDetails.UserType === 4 ? (
-                    task.ApproverName === "Assign" ? null : (
-                      <div className="circle-name d-none d-sm-block">
-                        <div className="circle-text">
-                          {userDetails.UserType === 4 &&
-                            getInitials(task.ApproverName)}
-                        </div>
-                      </div>
-                    )
-                  ) : (
-                    <div className="circle-name d-none d-sm-block">
-                      <div className="circle-text">
-                        {getInitials(task.AssignedName)}
-                      </div>
-                    </div>
-                  )}
-
-                  {userDetails.UserType === 4 ? (
-                    <div className="circle-front-text d-none d-sm-block">
-                      {task.ApproverName === "Assign"
-                        ? "No Approver"
-                        : task.ApproverName}
-                    </div>
-                  ) : (
-                    <div className="circle-front-text d-none d-sm-block mail">
-                      {_getAssignedName(task.AssignedName)}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div>
-                  <div className="circle-front-text NoStatus">
-                    {" "}
-                    <img src={assignIconCircle} alt="" /> ASSIGN
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="col-2">
-              <div className="align-right task-list-new">
-                <div className="d-flex">
+                <span className="pink-label-title-right">
+                  <div className="overdue-title">{task.TaskName}</div>
                   <div
                     className={
                       Status === "overdue"
-                        ? "red-week d-none d-sm-block"
-                        : "black-week d-none d-sm-block"
+                        ? "red-week d-block d-sm-none"
+                        : "black-week d-block d-sm-none"
                     }
                     style={{ cursor: "pointer" }}
                     onClick={(e) => getSelectTaskDetails(task)}
                   >
-                    {getDayDate(task.EndDate, 1)}
+                    <div className="d-block d-sm-none">
+                      {getDayDate(task.EndDate, 2)}
+                    </div>
                   </div>
-                  <div
-                    className="right-arrow-week text-right-grid"
-                    onClick={(e) => getSelectTaskDetails(task)}
-                  >
-                    {
-                      <img
-                        className="d-none d-sm-block"
-                        src={keyboardArrowRightBlack}
-                        alt="Right Arrow"
-                      />
-                    }
-                    {task.AssignedTo !== 0 && (
-                      <img
-                        className="d-block d-sm-none"
-                        src={keyboardArrowRightBlack}
-                        alt="Right Arrow"
-                      />
-                    )}
-                    {showUserToolTip === `Tooltip${task.TaskId}` && (
-                      <div className="toolTip-input">
-                        <div className="tooltiptext1 mobDisplaynone">
-                          <span className="font-normal-text1">
-                            {task.AssignedName}
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                    {task.AssignedTo === 0 && (
-                      <div className="only-mobile-assign-add d-block d-sm-none">
-                        <div
-                          className="assign-user-icon"
-                          onMouseOver={() =>
-                            setShowUserToolTip(`Tooltip${task.TaskId}`)
-                          }
-                          onMouseOut={() => setShowUserToolTip("")}
-                        >
-                          <img
-                            src={assignIconCircle}
-                            className="d-block d-sm-none"
-                            alt="Assign Circle"
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                  {task.Status !== "Assigned" && (
+                    <p
+                      className="pink-label-text d-none d-sm-block"
+                      style={{
+                        backgroundColor:
+                          task && task.Status
+                            ? task.Status === "Assign"
+                              ? "#fcf3cd"
+                              : task.Status === "Completed By User"
+                              ? moment(task.ActualTaskEndDate).isBefore(today)
+                                ? "#cdfcd8"
+                                : "#ffefea"
+                              : task.Status === "Approved"
+                              ? "#cdfcd8"
+                              : task.Status === "Assigned"
+                              ? "#ffefea"
+                              : task.Status === "Request Rejected"
+                              ? "#ffefea"
+                              : "#d2fccd"
+                            : "#d2fccd",
+                        color:
+                          task && task.Status
+                            ? task.Status === "Completed By User"
+                              ? moment(task.ActualTaskEndDate).isBefore(today)
+                                ? "#7fba7a"
+                                : "#ff5f31"
+                              : task.Status === "Approved"
+                              ? "#7fba7a"
+                              : task.Status === "Assigned"
+                              ? "#f8c102"
+                              : task.Status === "Assign"
+                              ? "#f8c102"
+                              : task.Status === "Request Rejected"
+                              ? "#ff5f31"
+                              : ""
+                            : "#fcf3cd",
+                      }}
+                    >
+                      {task.Status && task.Status === "Completed By User"
+                        ? moment(task.ActualTaskEndDate).isBefore(today)
+                          ? "NOT REVIEWED"
+                          : "Approval Pending"
+                        : task.Status === "Assign"
+                        ? "Assign Task"
+                        : task.Status === "Assigned"
+                        ? "Task Assigned"
+                        : task.Status === "Approved"
+                        ? "Task Approved"
+                        : task.Status === "Request Rejected"
+                        ? "Task Rejected"
+                        : ""}
+                    </p>
+                  )}
+                </span>
               </div>
             </div>
-            {Status === "overdue" && searchValue === "" && (
-              <div className="redWidth-bottom">
-                <div className="redLine">
+          </div>
+          <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
+            <div
+              className="circle-front-text"
+              style={{ width: "fit-content", cursor: "pointer" }}
+              value={task.TaskId}
+              onClick={(e) => getSelectTaskDetails(task)}
+            >
+              {task.EntityName}
+            </div>
+          </div>
+          <div
+            className="col-2 col-md-3 col-sm-3 col-xl-3 d-none d-sm-block"
+            style={{ cursor: "pointer" }}
+            onClick={(e) => getSelectTaskDetails(task)}
+          >
+            {task.AssignedTo != 0 ? (
+              <div className="d-flex new-task-list">
+                {userDetails.UserType === 4 ? (
+                  task.ApproverName === "Assign" ? null : (
+                    <div className="circle-name d-none d-sm-block">
+                      <div className="circle-text">
+                        {userDetails.UserType === 4 &&
+                          getInitials(task.ApproverName)}
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  <div className="circle-name d-none d-sm-block">
+                    <div className="circle-text">
+                      {getInitials(task.AssignedName)}
+                    </div>
+                  </div>
+                )}
+
+                {userDetails.UserType === 4 ? (
+                  <div className="circle-front-text d-none d-sm-block">
+                    {task.ApproverName === "Assign"
+                      ? "No Approver"
+                      : task.ApproverName}
+                  </div>
+                ) : (
+                  <div className="circle-front-text d-none d-sm-block mail">
+                    {_getAssignedName(task.AssignedName)}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div>
+                <div className="circle-front-text NoStatus">
                   {" "}
-                  <img src={RedLine} alt="" />
+                  <img src={assignIconCircle} alt="" /> ASSIGN
                 </div>
               </div>
             )}
           </div>
+          <div className="col-2">
+            <div className="align-right task-list-new">
+              <div className="d-flex">
+                <div
+                  className={
+                    Status === "overdue"
+                      ? "red-week d-none d-sm-block"
+                      : "black-week d-none d-sm-block"
+                  }
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => getSelectTaskDetails(task)}
+                >
+                  {getDayDate(task.EndDate, 1)}
+                </div>
+                <div
+                  className="right-arrow-week text-right-grid"
+                  onClick={(e) => getSelectTaskDetails(task)}
+                >
+                  {
+                    <img
+                      className="d-none d-sm-block"
+                      src={keyboardArrowRightBlack}
+                      alt="Right Arrow"
+                    />
+                  }
+                  {task.AssignedTo !== 0 && (
+                    <img
+                      className="d-block d-sm-none"
+                      src={keyboardArrowRightBlack}
+                      alt="Right Arrow"
+                    />
+                  )}
+                  {showUserToolTip === `Tooltip${task.TaskId}` && (
+                    <div className="toolTip-input">
+                      <div className="tooltiptext1 mobDisplaynone">
+                        <span className="font-normal-text1">
+                          {task.AssignedName}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  {task.AssignedTo === 0 && (
+                    <div className="only-mobile-assign-add d-block d-sm-none">
+                      <div
+                        className="assign-user-icon"
+                        onMouseOver={() =>
+                          setShowUserToolTip(`Tooltip${task.TaskId}`)
+                        }
+                        onMouseOut={() => setShowUserToolTip("")}
+                      >
+                        <img
+                          src={assignIconCircle}
+                          className="d-block d-sm-none"
+                          alt="Assign Circle"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          {Status === "overdue" && searchValue === "" && (
+            <div className="redWidth-bottom">
+              <div className="redLine">
+                {" "}
+                <img src={RedLine} alt="" />
+              </div>
+            </div>
+          )}
         </div>
-      );
-    },
-    [searchValue]
-  );
+      </div>
+    );
+  };
 
+  useEffect(() => {
+    dispatch(
+      taskReportActions.taskReportRequest({
+        userID: userDetails.UserID,
+        usertype: userDetails.UserType,
+      })
+    );
+    fetchQuickOverViewSectionData();
+  }, []);
   return (
     <>
       {isTaskDetailsShow && (
@@ -513,17 +540,31 @@ const Dashboard = () => {
               <div className="static-card">
                 <img src={complteTaskIcon} alt="complte-Task-icon" />
                 <span>Completed</span>
-                <span>00</span>
+                <span>
+                  {thingOnTrack && thingOnTrack.CompletedTask !== "Norec"
+                    ? thingOnTrack.CompletedTask
+                    : "00"}
+                </span>
               </div>
               <div className="static-card">
                 <img src={scheduledIcon} alt="complte-Task-icon" />
                 <span>Scheduled</span>
-                <span>00</span>
+                <span>
+                  {" "}
+                  {thingOnTrack && thingOnTrack.SchedulededTask !== "Norec"
+                    ? thingOnTrack.SchedulededTask
+                    : "00"}
+                </span>
               </div>
               <div className="static-card">
                 <img src={complteTaskIcon} alt="complte-Task-icon" />
                 <span>Rejected</span>
-                <span>02</span>
+                <span>
+                  {" "}
+                  {thingOnTrack && thingOnTrack.RiskTask !== "Norec"
+                    ? thingOnTrack.RiskTask
+                    : "00"}
+                </span>
               </div>
             </div>
             <div className="ER-search-input">
@@ -589,7 +630,19 @@ const Dashboard = () => {
               <div className="ER-take-action">
                 <div className="task-list-grid">
                   <div className="upcoming-btn">
-                    <div className="overdue-title">
+                    <div
+                      className="overdue-title"
+                      onClick={() => {
+                        if (expandedFlags && !expandedFlags.includes(1)) {
+                          handleExpandFlag(true, 1);
+                        } else {
+                          handleExpandFlag(false, 1);
+                        }
+                      }}
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    >
                       {"Overdue"}
                       <span className="overdue-circle">
                         <p className="overdue-circle-text">
@@ -598,48 +651,60 @@ const Dashboard = () => {
                       </span>
                       <img
                         src={downArrow}
-                        className="arrowDown"
+                        className="arrowDown task__down-arrow"
                         alt="Arrow down"
+                        style={{
+                          ...(expandedFlags.includes(1) && {
+                            transform: "rotate(180deg)",
+                          }),
+                        }}
                       />
                     </div>
                   </div>
-                  <img src={deadline} />
-                  {overdueList &&
-                    overdueList?.slicedList?.map((filterdList) => (
-                      <TaskListItem
-                        filterdList={filterdList}
-                        category="overdue"
-                        setShowTaskDetails={setIsTaskDetailsShow}
-                      />
-                    ))}
+                  {expandedFlags.includes(1) && (
+                    <>
+                      <img src={deadline} />
+                      {overdueList &&
+                        overdueList?.slicedList?.map((filterdList) => (
+                          <TaskListItem
+                            filterdList={filterdList}
+                            category="overdue"
+                            setShowTaskDetails={setIsTaskDetailsShow}
+                          />
+                        ))}
 
-                  {overdueList?.list?.length > 3 && (
-                    <div className="ER-view-all-conatiner">
-                      {viewAllBy === "overdue-less" ? (
-                        <>
-                          <div
-                            style={{ cursor: "pointer" }}
-                            onClick={() => showLess("overdue")}
-                          >
-                            <span>Show less</span>
-                            <img src={viewall} />{" "}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {" "}
-                          <div
-                            style={{ cursor: "pointer" }}
-                            onClick={() => viewAll("overdue", "overdue-less")}
-                          >
-                            <span>
-                              View All ({upcomingList?.list?.length - 3} More)
-                            </span>
-                            <img src={viewall} />
-                          </div>
-                        </>
+                      {overdueList?.list?.length > 3 && (
+                        <div className="ER-view-all-conatiner">
+                          {viewAllBy === "overdue-less" ? (
+                            <>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() => showLess("overdue")}
+                              >
+                                <span>Show less</span>
+                                <img src={viewall} />{" "}
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              {" "}
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() =>
+                                  viewAll("overdue", "overdue-less")
+                                }
+                              >
+                                <span>
+                                  View All ({upcomingList?.list?.length - 3}{" "}
+                                  More)
+                                </span>
+                                <img src={viewall} />
+                              </div>
+                            </>
+                          )}
+                        </div>
                       )}
-                    </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -647,7 +712,16 @@ const Dashboard = () => {
               <div className="ER-take-action">
                 <div className="task-list-grid">
                   <div className="upcoming-btn">
-                    <div className="upcoming-title">
+                    <div
+                      className="upcoming-title"
+                      onClick={() => {
+                        if (expandedFlags && !expandedFlags.includes(2)) {
+                          handleExpandFlag(true, 2);
+                        } else {
+                          handleExpandFlag(false, 2);
+                        }
+                      }}
+                    >
                       {"Review Now"}
                       <span className="black-circle">
                         <p className="black-circle-text">
@@ -656,45 +730,56 @@ const Dashboard = () => {
                       </span>
                       <img
                         src={downArrow}
-                        className="arrowDown"
+                        className="arrowDown task__down-arrow"
                         alt="Arrow down"
+                        style={{
+                          ...(expandedFlags.includes(2) && {
+                            transform: "rotate(180deg)",
+                          }),
+                        }}
                       />
                     </div>
                   </div>
-                  {reviewList?.slicedList?.length > 0 &&
-                    reviewList?.slicedList?.map((filterdList) => (
-                      <TaskListItem
-                        filterdList={filterdList}
-                        setShowTaskDetails={setIsTaskDetailsShow}
-                      />
-                    ))}
-                  {reviewList?.list?.length > 3 && (
-                    <div className="ER-view-all-conatiner">
-                      {viewAllBy === "Review-less" ? (
-                        <>
-                          <div
-                            style={{ cursor: "pointer" }}
-                            onClick={() => showLess("Review Now")}
-                          >
-                            <span>Show less</span>
-                            <img src={viewall} />{" "}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {" "}
-                          <div
-                            style={{ cursor: "pointer" }}
-                            onClick={() => viewAll("Review Now", "Review-less")}
-                          >
-                            <span>
-                              View All ({reviewList?.list?.length - 3} More)
-                            </span>
-                            <img src={viewall} />
-                          </div>
-                        </>
+                  {expandedFlags.includes(2) && (
+                    <>
+                      {reviewList?.slicedList?.length > 0 &&
+                        reviewList?.slicedList?.map((filterdList) => (
+                          <TaskListItem
+                            filterdList={filterdList}
+                            setShowTaskDetails={setIsTaskDetailsShow}
+                          />
+                        ))}
+                      {reviewList?.list?.length > 3 && (
+                        <div className="ER-view-all-conatiner">
+                          {viewAllBy === "Review-less" ? (
+                            <>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() => showLess("Review Now")}
+                              >
+                                <span>Show less</span>
+                                <img src={viewall} />{" "}
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              {" "}
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() =>
+                                  viewAll("Review Now", "Review-less")
+                                }
+                              >
+                                <span>
+                                  View All ({reviewList?.list?.length - 3} More)
+                                </span>
+                                <img src={viewall} />
+                              </div>
+                            </>
+                          )}
+                        </div>
                       )}
-                    </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -702,7 +787,19 @@ const Dashboard = () => {
               <div className="ER-take-action">
                 <div className="task-list-grid">
                   <div className="upcoming-btn">
-                    <div className="upcoming-title">
+                    <div
+                      className="upcoming-title"
+                      onClick={() => {
+                        if (expandedFlags && !expandedFlags.includes(3)) {
+                          handleExpandFlag(true, 3);
+                        } else {
+                          handleExpandFlag(false, 3);
+                        }
+                      }}
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    >
                       {"Upcoming"}
                       <span className="black-circle">
                         <p className="black-circle-text">
@@ -712,25 +809,110 @@ const Dashboard = () => {
                       </span>
                       <img
                         src={downArrow}
-                        className="arrowDown"
+                        className="arrowDown task__down-arrow"
                         alt="Arrow down"
+                        style={{
+                          ...(expandedFlags.includes(3) && {
+                            transform: "rotate(180deg)",
+                          }),
+                        }}
                       />
                     </div>
                   </div>
-                  {upcomingList?.slicedList?.length > 0 &&
-                    upcomingList?.slicedList?.map((filterdList) => (
-                      <TaskListItem
-                        filterdList={filterdList}
-                        setShowTaskDetails={setIsTaskDetailsShow}
+                  {expandedFlags.includes(3) && (
+                    <>
+                      {upcomingList?.slicedList?.length > 0 &&
+                        upcomingList?.slicedList?.map((filterdList) => (
+                          <TaskListItem
+                            filterdList={filterdList}
+                            setShowTaskDetails={setIsTaskDetailsShow}
+                          />
+                        ))}
+                      {upcomingList?.list?.length > 3 && (
+                        <div className="ER-view-all-conatiner">
+                          {viewAllBy === "Upcoming-less" ? (
+                            <>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() => showLess("Upcoming")}
+                              >
+                                <span>Show less</span>
+                                <img src={viewall} />{" "}
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              {" "}
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() =>
+                                  viewAll("Upcoming", "Upcoming-less")
+                                }
+                              >
+                                <span>
+                                  View All ({upcomingList?.list?.length - 3}{" "}
+                                  More)
+                                </span>
+                                <img src={viewall} />
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div className="ER-take-action">
+                <div className="task-list-grid">
+                  <div className="upcoming-btn">
+                    <div
+                      className="completed-title"
+                      onClick={() => {
+                        if (expandedFlags && !expandedFlags.includes(4)) {
+                          handleExpandFlag(true, 4);
+                        } else {
+                          handleExpandFlag(false, 4);
+                        }
+                      }}
+                    >
+                      {"Completed"}
+                      <span className="completed-circle">
+                        <p className="completed-circle-text">
+                          {completedList?.list?.length}
+                        </p>
+                      </span>
+                      <img
+                        src={downArrow}
+                        className="arrowDown task__down-arrow"
+                        alt="Arrow down"
+                        style={{
+                          ...(expandedFlags.includes(4) && {
+                            transform: "rotate(180deg)",
+                          }),
+                        }}
                       />
-                    ))}
-                  {upcomingList?.list?.length > 3 && (
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {expandedFlags.includes(4) && (
+                <>
+                  {completedList?.slicedList?.map((filterdList) => (
+                    <TaskListItem
+                      filterdList={filterdList}
+                      category="completed"
+                      setShowTaskDetails={setIsTaskDetailsShow}
+                    />
+                  ))}
+                  {completedList?.list?.length > 3 && (
                     <div className="ER-view-all-conatiner">
-                      {viewAllBy === "Upcoming-less" ? (
+                      {viewAllBy === "Completed-less" ? (
                         <>
                           <div
                             style={{ cursor: "pointer" }}
-                            onClick={() => showLess("Upcoming")}
+                            onClick={() => showLess("Completed")}
                           >
                             <span>Show less</span>
                             <img src={viewall} />{" "}
@@ -741,7 +923,9 @@ const Dashboard = () => {
                           {" "}
                           <div
                             style={{ cursor: "pointer" }}
-                            onClick={() => viewAll("Upcoming", "Upcoming-less")}
+                            onClick={() =>
+                              viewAll("Completed", "Completed-less")
+                            }
                           >
                             <span>
                               View All ({upcomingList?.list?.length - 3} More)
@@ -752,62 +936,7 @@ const Dashboard = () => {
                       )}
                     </div>
                   )}
-                </div>
-              </div>
-
-              <div className="ER-take-action">
-                <div className="task-list-grid">
-                  <div className="upcoming-btn">
-                    <div className="completed-title">
-                      {"Completed"}
-                      <span className="completed-circle">
-                        <p className="completed-circle-text">
-                          {completedList?.list?.length}
-                        </p>
-                      </span>
-                      <img
-                        src={downArrow}
-                        className="arrowDown"
-                        alt="Arrow down"
-                      />
-                    </div>
-                  </div>
-                  {completedList?.slicedList?.map((filterdList) => (
-                    <TaskListItem
-                      filterdList={filterdList}
-                      category="completed"
-                      setShowTaskDetails={setIsTaskDetailsShow}
-                    />
-                  ))}
-                </div>
-              </div>
-              {completedList?.list?.length > 3 && (
-                <div className="ER-view-all-conatiner">
-                  {viewAllBy === "Completed-less" ? (
-                    <>
-                      <div
-                        style={{ cursor: "pointer" }}
-                        onClick={() => showLess("Completed")}
-                      >
-                        <span>Show less</span>
-                        <img src={viewall} />{" "}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      {" "}
-                      <div
-                        style={{ cursor: "pointer" }}
-                        onClick={() => viewAll("Completed", "Completed-less")}
-                      >
-                        <span>
-                          View All ({upcomingList?.list?.length - 3} More)
-                        </span>
-                        <img src={viewall} />
-                      </div>
-                    </>
-                  )}
-                </div>
+                </>
               )}
             </div>
           )}
