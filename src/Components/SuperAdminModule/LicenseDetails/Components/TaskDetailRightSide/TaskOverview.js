@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import ToggleButton from "../../../../../CommonModules/sharedComponents/ToggleButton";
 import Drawer from "../../../../../CommonModules/sharedComponents/Drawer"
@@ -10,7 +10,70 @@ import Datepicker from "../../../../../CommonModules/sharedComponents/Datepicker
 import { AiFillPlusCircle } from "react-icons/ai";
 import {AiFillFile} from "react-icons/ai"
 
+
 const TaskOverview = () => {
+const [selectedFile, setSelectedFile] = useState();
+const [isSelected, setIsSelected] = useState(false);
+const changeHandler = (event) => {
+  setSelectedFile(event.target.files[0]);
+  setIsSelected(true);
+  const { files } = event.target;
+      if (files && files.length) {
+        const filename = files[0].name;
+  
+        var parts = filename.split(".");
+        const fileType = parts[parts.length - 1];
+        console.log("fileType", parts,fileType); 
+      }
+};
+const handleSubmission = () => {
+  inputFile.current.click();
+};
+ const inputFile = useRef(null);
+//  const handleFileSelect = (e) =>{
+//   inputFile.current.click();
+//   }
+//   const handleFileUpload = e => {
+//     const { files } = e.target;
+//     if (files && files.length) {
+//       const filename = files[0].name;
+
+//       var parts = filename.split(".");
+//       const fileType = parts[parts.length - 1];
+//       console.log("fileType", parts,fileType); 
+     
+//     }
+//   };
+const changeHandler1 = (event) => {
+  setSelectedFile(event.target.files[0]);
+  setIsSelected(true);
+  const { files } = event.target;
+      if (files && files.length) {
+        const filename = files[0].name;
+  
+        var parts = filename.split(".");
+        const fileType = parts[parts.length - 1];
+        console.log("fileType", parts,fileType); 
+      }
+};
+const handleSubmission1 = () => {
+  inputFile1.current.click();
+};
+ const inputFile1 = useRef(null);
+  // const inputFile1 = useRef(null);
+  // const handleFileSelect1 = (e) =>{
+  //   inputFile.current.click();
+  //   }
+  //   const handleFileUpload1 = e => {
+  //     const { files } = e.target;
+  //     if (files && files.length) {
+  //       const filename = files[0].name;
+  
+  //       var parts = filename.split(".");
+  //       const fileType = parts[parts.length - 1];
+  //       console.log("fileType", parts,fileType); 
+  //     }
+  //   };
 
   const actionDispatch = useDispatch();
   
@@ -266,9 +329,31 @@ const TaskOverview = () => {
               {stepper.stepperAcitveSlide === 2 && (
                 <>
                     <div className="referance-document">  Reference Documents</div>
-                    <div class="Rectangle-22">
-                      <div className="pdf-file"><AiFillFile/></div>
-                      <div className="pdf-text"> GST Statement pt2.pdf</div>
+                    <div class="">
+                      <div className="pdf-file">
+                      <input
+                            style={{ display: "none" }}
+                            // accept=".zip,.rar"
+                            ref={inputFile1}
+                            onChange={changeHandler1}
+                            type="file"
+                          />
+                            {isSelected ? (
+                                    <div>
+                                      <div className="FileNaming1">Filename: {selectedFile.name}</div>
+                                      {/* <p>Filetype: {selectedFile.type}</p>
+                                      <p>Size in bytes: {selectedFile.size}</p>
+                                      <p>
+                                        lastModifiedDate:{' '}
+                                        {selectedFile.lastModifiedDate.toLocaleDateString()}
+                                      </p> */}
+                                    </div>
+                                  ) : (
+                                   <div className="empty"></div>
+                                  )}
+                        
+                      <AiFillFile onClick={handleSubmission1}/></div>
+                      {/* <div className="pdf-text"> GST Statement pt2.pdf</div> */}
                       <div className="change">Change</div>
                       <div className="deleting-1">Delete</div>
                     </div>
@@ -392,8 +477,32 @@ const TaskOverview = () => {
 
                           <div className="documentsLink">  Reference Documents & links</div>
                           <div className="docu">  Documents</div>
-                          <div className="divfile"><AiFillFile/>
-                            <div className="pdftext">  GST Statement pt2.pdf</div>
+                          <div className="divfile">
+                          <input
+                            style={{ display: "none" }}
+                            // accept=".zip,.rar"
+                            ref={inputFile}
+                            onChange={changeHandler}
+                            type="file"
+                          />
+
+                            {isSelected ? (
+                                    <div>
+                                      <div className="FileNaming">Filename: {selectedFile.name}</div>
+                                      {/* <p>Filetype: {selectedFile.type}</p>
+                                      <p>Size in bytes: {selectedFile.size}</p>
+                                      <p>
+                                        lastModifiedDate:{' '}
+                                        {selectedFile.lastModifiedDate.toLocaleDateString()}
+                                      </p> */}
+                                    </div>
+                                  ) : (
+                                   <div className="empty"></div>
+                                  )}
+
+                          <AiFillFile onClick={handleSubmission} />
+                           {/* <input  type="file"/>  */}
+                            {/* <div className="pdftext">  GST Statement pt2.pdf</div> */}
                           </div>
 
                           <div className="goBackButton-2">
