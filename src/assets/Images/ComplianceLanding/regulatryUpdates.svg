@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="603" height="914" viewBox="0 0 603 914">
+  <defs>
+    <style>
+      .cls-1, .cls-4 {
+        fill: #e3e6ec;
+      }
+
+      .cls-1 {
+        opacity: 0.908;
+      }
+
+      .cls-1, .cls-4, .cls-9 {
+        mix-blend-mode: multiply;
+        isolation: isolate;
+      }
+
+      .cls-13, .cls-2, .cls-20, .cls-8 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #11142d;
+        font-size: 24px;
+        font-family: Poppins-Bold, Poppins;
+        font-weight: 700;
+      }
+
+      .cls-5, .cls-6 {
+        fill: none;
+      }
+
+      .cls-6 {
+        stroke: #11142d;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-7, .cls-9 {
+        fill: #ef5d5d;
+      }
+
+      .cls-11, .cls-8 {
+        font-size: 14px;
+      }
+
+      .cls-11, .cls-13, .cls-8 {
+        font-family: Poppins-SemiBold, Poppins;
+        font-weight: 600;
+      }
+
+      .cls-10 {
+        fill: #d8f7ff;
+      }
+
+      .cls-11, .cls-16 {
+        fill: #1b1d21;
+      }
+
+      .cls-12 {
+        fill: #00a9d5;
+      }
+
+      .cls-13 {
+        font-size: 8px;
+        letter-spacing: 0.016em;
+      }
+
+      .cls-14 {
+        fill: #f1d8ff;
+      }
+
+      .cls-15 {
+        fill: #8600d1;
+      }
+
+      .cls-17 {
+        fill: #f1ffd8;
+      }
+
+      .cls-18 {
+        fill: #b7d900;
+      }
+
+      .cls-19 {
+        fill: #7e6ff7;
+      }
+
+      .cls-19, .cls-21 {
+        opacity: 0.8;
+      }
+
+      .cls-20 {
+        font-size: 12px;
+        font-family: Poppins-Light, Poppins;
+        font-weight: 300;
+        letter-spacing: 0.16em;
+      }
+
+      .cls-21 {
+        fill: #85ef8c;
+      }
+    </style>
+  </defs>
+  <g id="Group_293" data-name="Group 293" transform="translate(-597 -29)">
+    <g id="Group_439" data-name="Group 439" transform="translate(-49)">
+      <g id="bg_big_shadow" data-name="bg big shadow" transform="translate(778 157)">
+        <rect id="Shadow" class="cls-1" width="303" height="614" rx="24" transform="translate(18 22)"/>
+        <rect id="bg" class="cls-2" width="338" height="614" rx="24"/>
+      </g>
+      <g id="Group_438" data-name="Group 438">
+        <text id="Earning_by_items" data-name="Earning by items" class="cls-3" transform="translate(810 191)"><tspan x="0" y="25">My</tspan><tspan x="0" y="55">Tasks</tspan></text>
+        <g id="Frame_90" data-name="Frame 90" transform="translate(810 270)">
+          <g id="arrow">
+            <g id="circle_button_bg_with_shadow" data-name="circle button bg/with shadow">
+              <circle id="shadow-2" data-name="shadow" class="cls-4" cx="9.5" cy="9.5" r="9.5" transform="translate(2.5 9)"/>
+              <circle id="Oval" class="cls-2" cx="12" cy="12" r="12"/>
+            </g>
+            <g id="ui_icon_arrow_small_left_2" data-name="ui icon/arrow/small left 2" transform="translate(6 6)">
+              <rect id="bound" class="cls-5" width="12" height="12"/>
+              <g id="small-right">
+                <path id="Path" class="cls-6" d="M0,0,4,4,0,8" transform="translate(5 10) rotate(180)"/>
+                <path id="Path_2" data-name="Path 2" class="cls-6" d="M0,.5H10.329" transform="translate(1 5.5)"/>
+              </g>
+            </g>
+          </g>
+          <g id="arrow-2" data-name="arrow" transform="translate(32)">
+            <g id="circle_button_bg_with_shadow-2" data-name="circle button bg/with shadow">
+              <circle id="shadow-3" data-name="shadow" class="cls-4" cx="9.5" cy="9.5" r="9.5" transform="translate(2.5 9)"/>
+              <circle id="Oval-2" data-name="Oval" class="cls-2" cx="12" cy="12" r="12"/>
+            </g>
+            <g id="ui_icon_arrow_small_right_2" data-name="ui icon/arrow/small right 2" transform="translate(6 6)">
+              <rect id="bound-2" data-name="bound" class="cls-5" width="12" height="12"/>
+              <g id="small-right-2" data-name="small-right">
+                <path id="Path-2" data-name="Path" class="cls-6" d="M0,0,4,4,0,8" transform="matrix(1, 0, 0, 1, 8, 2)"/>
+                <path id="Path_2-2" data-name="Path 2" class="cls-6" d="M0,.5H10.329" transform="matrix(-1, 0, 0, -1, 12, 6.5)"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Group_437" data-name="Group 437">
+          <g id="Group_276" data-name="Group 276" transform="translate(0 -70)">
+            <rect id="Rectangle_104" data-name="Rectangle 104" class="cls-7" width="261" height="56" rx="8" transform="translate(810 392)"/>
+            <g id="warning-24px" transform="translate(826 408)">
+              <path id="Path_74" data-name="Path 74" class="cls-5" d="M0,0H24V24H0Z"/>
+              <path id="Path_75" data-name="Path 75" class="cls-2" d="M1,21H23L12,2Zm12-3H11V16h2Zm0-4H11V10h2Z"/>
+            </g>
+            <text id="Regulations_Updated" data-name="Regulations Updated" class="cls-8" transform="translate(866 425)"><tspan x="0" y="0">Regulations Updated</tspan></text>
+            <g id="Group_275" data-name="Group 275" transform="translate(6)">
+              <circle id="Ellipse_36" data-name="Ellipse 36" class="cls-9" cx="18" cy="18" r="18" transform="translate(1019 402)"/>
+              <text id="_3" data-name="3" class="cls-8" transform="translate(1033 425)"><tspan x="0" y="0">3</tspan></text>
+            </g>
+          </g>
+          <g id="Group_435" data-name="Group 435">
+            <rect id="Rectangle_105" data-name="Rectangle 105" class="cls-10" width="261" height="56" rx="8" transform="translate(810 414)"/>
+            <text id="NSE" class="cls-11" transform="translate(834 447)"><tspan x="0" y="0">NSE</tspan></text>
+            <g id="account_circle-24px" transform="translate(1023 430)">
+              <path id="Path_60" data-name="Path 60" class="cls-5" d="M0,0H24V24H0Z"/>
+              <path id="Path_61" data-name="Path 61" class="cls-12" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,3A3,3,0,1,1,9,8,3,3,0,0,1,12,5Zm0,14.2a7.2,7.2,0,0,1-6-3.22c.03-1.99,4-3.08,6-3.08s5.97,1.09,6,3.08A7.2,7.2,0,0,1,12,19.2Z"/>
+            </g>
+            <g id="Group_277" data-name="Group 277" transform="translate(99 98)">
+              <rect id="Rectangle_75" data-name="Rectangle 75" class="cls-7" width="58" height="16" rx="8" transform="translate(769 336)"/>
+              <text id="DELAYED" class="cls-13" transform="translate(781 347)"><tspan x="0" y="0">DELAYED</tspan></text>
+            </g>
+          </g>
+          <g id="Group_436" data-name="Group 436">
+            <rect id="Rectangle_106" data-name="Rectangle 106" class="cls-14" width="261" height="56" rx="8" transform="translate(810 558)"/>
+            <text id="CDSL" class="cls-11" transform="translate(834 591)"><tspan x="0" y="0">CDSL</tspan></text>
+            <g id="account_circle-24px-2" data-name="account_circle-24px" transform="translate(1023 574)">
+              <path id="Path_60-2" data-name="Path 60" class="cls-5" d="M0,0H24V24H0Z"/>
+              <g id="Group_433" data-name="Group 433">
+                <path id="Path_61-2" data-name="Path 61" class="cls-15" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,3A3,3,0,1,1,9,8,3,3,0,0,1,12,5Zm0,14.2a7.2,7.2,0,0,1-6-3.22c.03-1.99,4-3.08,6-3.08s5.97,1.09,6,3.08A7.2,7.2,0,0,1,12,19.2Z"/>
+              </g>
+            </g>
+            <g id="Group_278" data-name="Group 278" transform="translate(109 242)">
+              <rect id="Rectangle_75-2" data-name="Rectangle 75" class="cls-16" width="115" height="16" rx="8" transform="translate(769 336)"/>
+              <text id="REGULATION_CHANGED" data-name="REGULATION CHANGED" class="cls-13" transform="translate(781 347)"><tspan x="0" y="0">REGULATION CHANGED</tspan></text>
+            </g>
+          </g>
+          <g id="Group_434" data-name="Group 434">
+            <rect id="Rectangle_107" data-name="Rectangle 107" class="cls-17" width="261" height="56" rx="8" transform="translate(810 486)"/>
+            <text id="BSE" class="cls-11" transform="translate(834 519)"><tspan x="0" y="0">BSE</tspan></text>
+            <g id="account_circle-24px-3" data-name="account_circle-24px" transform="translate(1023 502)">
+              <path id="Path_60-3" data-name="Path 60" class="cls-5" d="M0,0H24V24H0Z"/>
+              <path id="Path_61-3" data-name="Path 61" class="cls-18" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,3A3,3,0,1,1,9,8,3,3,0,0,1,12,5Zm0,14.2a7.2,7.2,0,0,1-6-3.22c.03-1.99,4-3.08,6-3.08s5.97,1.09,6,3.08A7.2,7.2,0,0,1,12,19.2Z"/>
+            </g>
+            <g id="Group_279" data-name="Group 279" transform="translate(100 170)">
+              <rect id="Rectangle_75-3" data-name="Rectangle 75" class="cls-16" width="114" height="16" rx="8" transform="translate(769 336)"/>
+              <text id="REGULATION_CHANGED-2" data-name="REGULATION CHANGED" class="cls-13" transform="translate(781 347)"><tspan x="0" y="0">REGULATION CHANGED</tspan></text>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="Group_286" data-name="Group 286" transform="translate(325 -182)">
+      <rect id="Rectangle_92" data-name="Rectangle 92" class="cls-19" width="226" height="160" rx="8" transform="translate(649 418)"/>
+      <text id="Signup" class="cls-20" transform="translate(762 540)"><tspan x="-57.036" y="0">SEBI CIRCULARS</tspan></text>
+      <path id="Path_12420" data-name="Path 12420" class="cls-2" d="M6.409,23.837v8.818a3.307,3.307,0,0,0,6.613,0V23.837a3.307,3.307,0,1,0-6.613,0Zm13.227,0v8.818a3.307,3.307,0,0,0,6.613,0V23.837a3.307,3.307,0,0,0-6.613,0ZM5.307,46.984H40.578a3.307,3.307,0,1,0,0-6.613H5.307a3.307,3.307,0,1,0,0,6.613ZM32.862,23.837v8.818a3.307,3.307,0,0,0,6.613,0V23.837a3.307,3.307,0,1,0-6.613,0ZM20.892,1.77,3.477,10.941a2.746,2.746,0,0,0,1.279,5.18h36.4a2.746,2.746,0,0,0,1.257-5.18L24.993,1.77A4.357,4.357,0,0,0,20.892,1.77Z" transform="translate(739.058 463.88)"/>
+    </g>
+    <g id="Group_285" data-name="Group 285" transform="translate(-365 -35)">
+      <rect id="Rectangle_93" data-name="Rectangle 93" class="cls-21" width="199" height="162" rx="8" transform="translate(978 574)"/>
+      <text id="Signup-2" data-name="Signup" class="cls-20" transform="translate(1078 696)"><tspan x="-45.03" y="0">REGULATORY</tspan><tspan x="-33.63" y="16">CHANGES</tspan></text>
+      <g id="gavel-24px" transform="translate(1054 612)">
+        <g id="Group_282" data-name="Group 282">
+          <rect id="Rectangle_108" data-name="Rectangle 108" class="cls-5" width="48" height="48"/>
+        </g>
+        <g id="Group_284" data-name="Group 284" transform="translate(1.998 1.997)">
+          <g id="Group_283" data-name="Group 283">
+            <rect id="Rectangle_109" data-name="Rectangle 109" class="cls-2" width="8" height="40" transform="translate(8.501 14.141) rotate(-44.968)"/>
+            <rect id="Rectangle_110" data-name="Rectangle 110" class="cls-2" width="8" height="16" transform="matrix(0.707, -0.707, 0.707, 0.707, 16.974, 5.658)"/>
+            <rect id="Rectangle_111" data-name="Rectangle 111" class="cls-2" width="8" height="16" transform="translate(0 22.633) rotate(-45)"/>
+            <rect id="Rectangle_112" data-name="Rectangle 112" class="cls-2" width="24" height="4" transform="translate(0.002 40.003)"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

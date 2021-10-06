@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="242" height="242" viewBox="0 0 242 242">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #96ff8e;
+        opacity: 0.5;
+      }
+
+      .cls-3 {
+        fill: rgba(113,241,215,0.5);
+        stroke: #f6f8fb;
+        stroke-width: 4px;
+      }
+
+      .cls-4 {
+        stroke: none;
+      }
+
+      .cls-5 {
+        filter: url(#Rectangle);
+      }
+    </style>
+    <filter id="Rectangle" x="0" y="0" width="242" height="242" filterUnits="userSpaceOnUse">
+      <feOffset dy="32" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="27" result="blur"/>
+      <feFlood flood-color="#258aff" flood-opacity="0.224"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_8" data-name="Group 8" transform="translate(81 49)">
+    <g class="cls-5" transform="matrix(1, 0, 0, 1, -81, -49)">
+      <rect id="Rectangle-2" data-name="Rectangle" class="cls-1" width="80" height="80" rx="10" transform="translate(81 49)"/>
+    </g>
+    <circle id="Ellipse_36" data-name="Ellipse 36" class="cls-2" cx="22" cy="22" r="22" transform="translate(10 26.917)"/>
+    <g id="Rectangle_68" data-name="Rectangle 68" class="cls-3" transform="translate(32.261 7.656)">
+      <rect class="cls-4" width="42" height="42" rx="6"/>
+      <rect class="cls-1" x="-2" y="-2" width="46" height="46" rx="8"/>
+    </g>
+  </g>
+</svg>

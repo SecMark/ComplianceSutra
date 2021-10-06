@@ -56,7 +56,7 @@ function MultiSelectLicenseDropdown({ lableTitle, options, dispatch,cssstyle }) 
         </div>
         {options.length !== 0 && (
           <div className="dropdown-container" onBlur={() => setIsOpen(false)}>
-            <div className={`dropdown ${isOpen && "dropdown--open"}`}>
+            <div className={`dropdown-multi ${isOpen && "dropdown--open"}`}>
               {options.map((option) => {
                 const id = option.LicenseID;
                 return (

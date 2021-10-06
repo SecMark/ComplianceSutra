@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240.74" height="240.74">
+    <defs>
+        <filter id="Rectangle" x="0" y="0" width="240.74" height="240.74" filterUnits="userSpaceOnUse">
+            <feOffset dy="32"/>
+            <feGaussianBlur stdDeviation="27" result="blur"/>
+            <feFlood flood-color="#258aff" flood-opacity=".224"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <style>
+            .cls-1{fill:none}
+        </style>
+    </defs>
+    <g id="ICON" transform="translate(81 49)">
+        <g transform="translate(-81 -49)" style="filter:url(#Rectangle)">
+            <rect id="Rectangle-2" data-name="Rectangle" class="cls-1" width="78.739" height="78.739" rx="10" transform="translate(81 49)"/>
+        </g>
+        <path id="Polygon_13" data-name="Polygon 13" d="M33.486 0a5 5 0 0 1 4.33 2.5l9.238 16a5 5 0 0 1 0 5l-9.238 16a5 5 0 0 1-4.33 2.5H15.011a5 5 0 0 1-4.33-2.5l-9.238-16a5 5 0 0 1 0-5l9.238-16a5 5 0 0 1 4.33-2.5z" transform="rotate(-45 66.27 7.445)" style="fill:#1fd2fd;opacity:.5"/>
+        <g id="Rectangle_67" data-name="Rectangle 67" transform="translate(8.331 9.861)" style="fill:rgba(241,241,113,.5);stroke:#f6f8fb;stroke-width:4px">
+            <rect width="45" height="45" rx="6" style="stroke:none"/>
+            <rect class="cls-1" x="-2" y="-2" width="49" height="49" rx="8"/>
+        </g>
+    </g>
+</svg>

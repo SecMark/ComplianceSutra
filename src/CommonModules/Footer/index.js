@@ -74,13 +74,16 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-
-        <div className="copyright-grid">
-          <div class="text-center p-3">
-            © 2020 Copyright:
-            <a class="footer-link" href="">
-              MDBootstrap.com
-            </a>
+        <div className="row">
+          <div className="col">
+            <div className="copyright-grid">
+              <div class="text-center p-3">
+                © 2020 Copyright:
+                <a class="footer-link" href="">
+                  MDBootstrap.com
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -51,6 +51,7 @@ import SuperAdmin from "../Components/SuperAdminModule";
 // import HistoryList from "../Components/HistoryModule/HistoryList";
 // import NewRegulations from "../Components/NewRegulationModule/NewRegulations";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
+import ComplianceSutraLanding from "../Components/ComplianceLandingPage/index";
 
 export default function AppRouter() {
   return (
@@ -61,8 +62,13 @@ export default function AppRouter() {
           <Route exact path="/assign-task" component={AssignTask} />
           <Route
             exact
-            path="/capm-tect-landing"
+            path="/capm-tech-landing"
             component={CapmTechLandingPage}
+          />
+          <Route
+            exact
+            path="/compliance-landing"
+            component={ComplianceSutraLanding}
           />
           <Route exact path="/on-boarding" component={OnBoarding} />
           <Route exact path="/board-view" component={BoardView} />
