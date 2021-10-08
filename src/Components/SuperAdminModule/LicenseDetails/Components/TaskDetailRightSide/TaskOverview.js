@@ -10,7 +10,6 @@ import Datepicker from "../../../../../CommonModules/sharedComponents/Datepicker
 import { AiFillPlusCircle } from "react-icons/ai";
 import {AiFillFile} from "react-icons/ai"
 
-
 const TaskOverview = () => {
 const [selectedFile, setSelectedFile] = useState();
 const [isSelected, setIsSelected] = useState(false);
@@ -30,20 +29,7 @@ const handleSubmission = () => {
   inputFile.current.click();
 };
  const inputFile = useRef(null);
-//  const handleFileSelect = (e) =>{
-//   inputFile.current.click();
-//   }
-//   const handleFileUpload = e => {
-//     const { files } = e.target;
-//     if (files && files.length) {
-//       const filename = files[0].name;
-
-//       var parts = filename.split(".");
-//       const fileType = parts[parts.length - 1];
-//       console.log("fileType", parts,fileType); 
-     
-//     }
-//   };
+ 
 const changeHandler1 = (event) => {
   setSelectedFile(event.target.files[0]);
   setIsSelected(true);
@@ -60,25 +46,11 @@ const handleSubmission1 = () => {
   inputFile1.current.click();
 };
  const inputFile1 = useRef(null);
-  // const inputFile1 = useRef(null);
-  // const handleFileSelect1 = (e) =>{
-  //   inputFile.current.click();
-  //   }
-  //   const handleFileUpload1 = e => {
-  //     const { files } = e.target;
-  //     if (files && files.length) {
-  //       const filename = files[0].name;
-  
-  //       var parts = filename.split(".");
-  //       const fileType = parts[parts.length - 1];
-  //       console.log("fileType", parts,fileType); 
-  //     }
-  //   };
 
   const actionDispatch = useDispatch();
   
   const [openRightTab, setOpenRightTab] = useState(true);
-
+  const [isOpen, setIsOpen]= useState();
   const steps = [
       {
         id: 1,
@@ -120,6 +92,8 @@ const handleSubmission1 = () => {
     const [thirddropdown, setThirddropdown] = useState("I am the first!");
     const [fourthdropdown, setFourthdropdown] = useState("I am the first!");
     const [fipthdropdown, setFipthdropdown] = useState("I am the first!");
+
+ 
 
   return (
     <div>
@@ -457,7 +431,9 @@ const handleSubmission1 = () => {
                 {stepper.stepperAcitveSlide === 4 && (
                     <>    
                           <div className="basic_dte">  Basic Details</div>
-                          <div className="edt">EDIT</div>
+                          <div className="edt"
+                          onClick={() => handleStepClick(stepper.stepperAcitveSlide - 3)}
+                          >EDIT</div>
                           <div className="nameofsubtask"> Name of the sub task</div>
                           <div className="fillsheet"> Fill Subsheet for Form 283B</div>
                           <div className="associatlicense"> Associated License</div>
@@ -476,6 +452,12 @@ const handleSubmission1 = () => {
                           <div className="octnine">  16 Oct, 2021</div>
 
                           <div className="documentsLink">  Reference Documents & links</div>
+                         
+                          <div className="edt"
+                           onClick={() => handleStepClick(stepper.stepperAcitveSlide - 2)}
+                          >EDIT</div>
+                                  
+                          {/* <div className="edt" onClick={navigateTo}>EDIT</div> */}
                           <div className="docu">  Documents</div>
                           <div className="divfile">
                           <input

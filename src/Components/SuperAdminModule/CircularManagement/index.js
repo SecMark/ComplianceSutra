@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import "./style.css";
 import StepperProgressIcon from "../../../../src/assets/Icons/stepper-progress-cricle.png";
 import StepperCheckIcon from "../../../../src/assets/Icons/check-icon-disable.png";
@@ -28,6 +28,41 @@ import quiz4 from "../../../../src/assets/Images/quiz4.png"
 
 const Circular = () =>{
     
+      const [selectedFile, setSelectedFile] = useState();
+      const [isSelected, setIsSelected] = useState(false);
+      const changeHandler2 = (event) => {
+        setSelectedFile(event.target.files[0]);
+        setIsSelected(true);
+        const { files } = event.target;
+            if (files && files.length) {
+              const filename = files[0].name;
+        
+              var parts = filename.split(".");
+              const fileType = parts[parts.length - 1];
+              console.log("fileType", parts,fileType); 
+            }
+      };
+      const handleSubmission2 = () => {
+        inputFile.current.click();
+      };
+      const inputFile = useRef(null);
+
+      const changeHandler4 = (event) => {
+          setSelectedFile(event.target.files[0]);
+          setIsSelected(true);
+          const { files } = event.target;
+              if (files && files.length) {
+                const filename = files[0].name;
+          
+                var parts = filename.split(".");
+                const fileType = parts[parts.length - 1];
+                console.log("fileType", parts,fileType); 
+      }
+};
+    const handleSubmission4 = () => {
+      inputFile4.current.click();
+    };
+    const inputFile4 = useRef(null);
   
     const [sortBy, setSortBy] = useState("Alphabatically");
     const [openRightTab, setOpenRightTab] = useState(true);
@@ -145,6 +180,8 @@ const Circular = () =>{
                 stepperAcitveSlide: step,
               });
             }
+
+        
           };
 
     return (
@@ -332,7 +369,28 @@ const Circular = () =>{
 
                         <div className="Associated-Circular-Documents"> Associated Circular Documents</div>
                         <div className="plusicon-3">
-                          <AiFillPlusCircle/>
+                        <input
+                            style={{ display: "none" }}
+                            // accept=".zip,.rar"
+                            ref={inputFile}
+                            onChange={changeHandler2}
+                            type="file"
+                          />
+                          {isSelected ? (
+                                    <div>
+                                      <div className="FileNaming3">Filename: {selectedFile.name}</div>
+                                      {/* <p>Filetype: {selectedFile.type}</p>
+                                      <p>Size in bytes: {selectedFile.size}</p>
+                                      <p>
+                                        lastModifiedDate:{' '}
+                                        {selectedFile.lastModifiedDate.toLocaleDateString()}
+                                      </p> */}
+                                    </div>
+                                  ) : (
+                                   <div className="empty"></div>
+                                  )}
+
+                          <AiFillPlusCircle onClick={handleSubmission2} />
                         </div>
                         <div className="add-3">
                     
@@ -544,7 +602,9 @@ const Circular = () =>{
                     <>
                  
                         <div className="BSD"> Basic Details</div>
-                        <div className="edit-1">  EDIT</div>
+                        <div className="edit-1"
+                         onClick={() => handleStepClick(stepper.stepperAcitveSlide - 2)}
+                        >  EDIT</div>
                         <div className="DateofIssuance"> Date of Issuance
                           <div className="aug"> Aug 24, 2021 -  </div>
                         </div>
@@ -570,8 +630,29 @@ const Circular = () =>{
 
 
                           <div className="pdf">
-                          {/* <input type="file"/> */}
-                          <AiFillFile />
+                          <input
+                            style={{ display: "none" }}
+                            // accept=".zip,.rar"
+                            ref={inputFile4}
+                            onChange={changeHandler4}
+                            type="file"
+                          />
+
+                            {isSelected ? (
+                                    <div>
+                                      <div className="FileNaming5">Filename: {selectedFile.name}</div>
+                                      {/* <p>Filetype: {selectedFile.type}</p>
+                                      <p>Size in bytes: {selectedFile.size}</p>
+                                      <p>
+                                        lastModifiedDate:{' '}
+                                        {selectedFile.lastModifiedDate.toLocaleDateString()}
+                                      </p> */}
+                                    </div>
+                                  ) : (
+                                   <div className="empty"></div>
+                                  )}
+                       
+                          <AiFillFile  onClick={handleSubmission4}/>
                           </div>
 
 
@@ -580,7 +661,9 @@ const Circular = () =>{
 
       
                         <div className="LRD">License Related Details</div>
-                        <div className="edit-2">  EDIT</div>
+                        <div className="edit-2"
+                         onClick={() => handleStepClick(stepper.stepperAcitveSlide - 2)}
+                        >  EDIT</div>
                         <div className="AL">Associated License
                         </div>
                         <div className="NSE-1">   National Stock Exchange  </div>
@@ -592,7 +675,9 @@ const Circular = () =>{
                         <div className="na-2"> NA  </div>
 
                         <div className="QD">Quiz Detils</div>
-                        <div className="edit-3">  EDIT</div>
+                        <div className="edit-3"
+                         onClick={() => handleStepClick(stepper.stepperAcitveSlide - 1)}
+                        >  EDIT</div>
                         <div className="Q">Question 1
                         </div>
                         <div className="Q-1">How do you know that Complaince has been filled correctly?</div>

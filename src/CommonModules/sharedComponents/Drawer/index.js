@@ -1,7 +1,7 @@
 import React from "react";
 import { MdClear } from "react-icons/md";
 import "./style.css";
-const Drawer = ({ children, isOpen, setIsOpen, width }) => {
+const Drawer = ({ children, isOpen, setIsOpen, width ,isClose, setIsClose}) => {
   return (
     <div className={`cs-drawer ${isOpen && "cs-drawer--open"}`}>
       <div
@@ -28,10 +28,15 @@ const Drawer = ({ children, isOpen, setIsOpen, width }) => {
           </button>
           <button className="cs-drawer__button cs-drawer__button--outlined">
             outlined
-          </button>  */}
+          </button>  */}    
+          {/* <div className=""
+            onClick={() => setIsClose(true)}
+          ></div> */}
         </div>
+
       </div>
     </div>
+   
   );
 };
 
