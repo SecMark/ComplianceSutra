@@ -135,12 +135,12 @@ button.re-assign {
   .re-container {
     width: 100vw;
   }
-  .container {
+  /* .container {
     height: 95vh;
     width: 100vw;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-  }
+  } */
   .customReAssignModalContainerMobile {
     position: relative;
     height: 100vh !important;

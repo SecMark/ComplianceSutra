@@ -46,6 +46,7 @@ import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardC
 import ExperReview from "../Components/ExpertReviewModule";
 import SuperAdmin from "../Components/SuperAdminModule";
 
+import ComplianceDemo from "../Components/ComplianceModule/index";
 // import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
 // import HistoryList from "../Components/HistoryModule/HistoryList";
@@ -72,6 +73,7 @@ export default function AppRouter() {
             path="/compliance-demo-end"
             component={ComplianceDemo7}
           />
+          <Route exact path="/compliance-demo" component={ComplianceDemo} />
           <Route exact path="/you-are-done" component={YouAreDone} />
           <Route exact path="/co-dashboard" component={CoDashboard} />
           <Route exact path="/personal-details" component={PersonalDetails} />
