@@ -1,0 +1,66 @@
+.MainUser {
+  color: black;
+  width: 95vw;
+  margin: 1vw 5vw;
+  padding: 2vw;
+  height: 90vh;
+}
+.UserContainer {
+  box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
+  padding: 2vw;
+  height: 80vh;
+  border-radius: 20px;
+}
+.UserContainer > h4 {
+  margin-bottom: 2rem;
+}
+.UserTaskType {
+  color: #b3abc4;
+}
+.UserTaskType > div {
+  display: inline-block;
+  margin: 0.6rem 1rem;
+  font-size: 18px;
+}
+.UserTaskType > div:hover {
+  color: #7a73ff;
+  cursor: pointer;
+}
+#Line1 {
+  border: 2px solid #b3abc4;
+  background-color: #b3abc4;
+  margin-top: 10px;
+  width: 100%;
+}
+.UserHeader {
+  margin-top: 2rem;
+  background: #7a73ff29;
+  border-radius: 12px;
+
+  width: 88vw;
+}
+.UserHeader > div {
+  font-weight: 500;
+  margin: 1rem 1.2vw;
+  color: #7a73ff;
+  display: inline-block;
+  align-items: center;
+}
+.UserElement {
+  display: flex;
+  border-bottom: 1px solid #b3abc47c;
+}
+.UserElement > div {
+  margin: 1.3vw;
+  margin-bottom: 1.8vw;
+  display: flex;
+  align-items: center;
+}
+.UserActions {
+  width: 90px;
+  display: flex;
+  justify-content: end;
+}
+.UserActions > img {
+  margin: 0 0.5rem;
+}
