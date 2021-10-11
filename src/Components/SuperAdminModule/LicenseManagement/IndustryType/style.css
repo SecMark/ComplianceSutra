@@ -1,0 +1,146 @@
+.industry-type__license-list {
+  display: grid;
+  /* grid-template-columns: repeat(auto, minmax(180px, 1fr)); */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 185px));
+  justify-content: start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.industry-type__license-card {
+  padding: 1rem;
+  background-color: #dedcff;
+  border-radius: 8px;
+  padding-bottom: 2rem;
+  position: relative;
+}
+.license-card__title {
+  font-size: 16px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.32px;
+  text-align: left;
+  color: #1b1d21;
+  margin-bottom: 0;
+}
+.license-card__flag {
+  font-size: 11px;
+}
+.license-card__flag-title {
+  font-size: 9px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 9px;
+  letter-spacing: 0.18px;
+  text-align: left;
+  color: #575757;
+  text-transform: capitalize;
+}
+.license-card__active-license-title {
+  font-size: 10px;
+  line-height: 10px;
+  color: #2c2738;
+  opacity: 0.5;
+  font-weight: 500;
+}
+.license-card__active-licenses-item {
+  background-color: #f7f4fe;
+  padding: 0.1rem 0.25rem;
+  font-size: 10px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+  font-weight: normal;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.license-card__active-licenses-item--add-more {
+  color: #6c5dd3;
+  font-size: 16px;
+  cursor: pointer;
+}
+.license-card__actions {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: #f0efff;
+  width: 100%;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.license-card__button {
+  font-size: 10px;
+  line-height: 10px;
+}
+.license-card__action-item--left {
+  flex: 1;
+  border-right: 1px solid #d9d7eb;
+}
+.license-list__status-item {
+  width: 100%;
+}
+.license-list__status-title {
+  font-size: 16px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000;
+  text-transform: capitalize;
+}
+.license-list__status-count--circle {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: #000;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+}
+.license-list__status-count--circle > span {
+  font-weight: 600;
+}
+.license-list__status-expand-more {
+  font-size: 1.5rem;
+  padding: 0;
+  margin: 0;
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+.license-list__status-expand-more--inverted {
+  transform: rotate(180deg);
+}
+.license-list__status-list__heading {
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #2c2738;
+  opacity: 0.4;
+  text-transform: uppercase;
+}
+.license-list__status-list-item--title {
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  text-align: left;
+  color: #575757;
+  text-transform: capitalize;
+  flex: 0.3;
+}
+.license-list__status-list-item--title-info {
+  font-size: 14px;
+  margin-left: 2px;
+}
