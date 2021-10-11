@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-
 import { Router, Route, Switch, Redirect } from "react-router-dom";
-=======
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import { browserHistory } from "react-router";
 
@@ -10,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createHashHistory } from "history";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import api from "../src/apiServices";
 import { actions as notificationActions } from "./Components/OnBording/SubModules/DashBoardCO/redux/actions";
 import CoSetting from "./Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
@@ -17,6 +16,9 @@ import MultipleNotification from "../src/CustomNotification/MultipleNotification
 import SingleNotification from "../src/CustomNotification/SingleNotification";
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import "./App.css";
+
 function App() {
   return <MainApp />;
 }

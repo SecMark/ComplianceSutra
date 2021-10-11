@@ -1,0 +1,52 @@
+/* === Button === */
+.cs__button {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  color: #2c2738;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 12px;
+}
+.cs__button--stroke {
+  color: #6c5dd3;
+}
+.cs__button--primary {
+  background-color: #6c5dd3;
+  color: #fff;
+}
+.cs__button--outlined {
+  color: #6c5dd3;
+  border: 1px solid #6c5dd3;
+}
+
+/* Sort By Filters */
+.cs__sort-by {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+}
+.cs__sort-by--item {
+  color: #2c2738af;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  text-align: center;
+  line-height: 10px;
+  text-transform: capitalize;
+}
+span.cs__sort-by-filter {
+  padding: 0.25rem 0.4rem;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #f7f4fe;
+  margin: 0;
+  margin-left: 0.3rem;
+}
+span.cs__sort-by-filter--active {
+  color: #fff;
+  background-color: #b3abc4;
+}
