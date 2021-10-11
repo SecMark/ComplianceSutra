@@ -4,6 +4,7 @@ import "../../../LicenseDetails/Components/TaskDetailRightSide/style.css";
 import "./style.css";
 import ClientOverview from "./ClientOverview";
 import ClientBilling from "./ClientBilling";
+import ClientCompanies from "./ClientCompanies";
 const ClientDetailsRightSide = ({ taskData }) => {
   const [taskDisplay, setTaskDisplay] = useState(1);
   const [headerHeight, setHeaderHight] = useState(0);
@@ -57,7 +58,7 @@ const ClientDetailsRightSide = ({ taskData }) => {
         <div className="row my-4 task-data-fields">
           {taskDisplay === 1 && <ClientOverview clientData={taskData} />}
           {taskDisplay === 2 && <ClientBilling clientData={taskData} />}
-          {/* {taskDisplay === 3 && <TaskUpdates />} */}
+          {taskDisplay === 3 && <ClientCompanies clientData={taskData} />}
         </div>
       </div>
     </div>
