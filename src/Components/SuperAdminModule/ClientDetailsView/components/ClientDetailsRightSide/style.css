@@ -23,3 +23,38 @@ h6 {
   text-transform: uppercase;
   padding-bottom: 0.5rem;
 }
+.client-details__table td {
+  padding-bottom: 1rem;
+}
+.client-details__task_name {
+  text-transform: capitalize;
+}
+.client-details__co-name {
+  opacity: 0.9;
+  text-transform: capitalize;
+}
+span.client-details__bussiness-type {
+  border-radius: 2px;
+  margin-left: 0;
+  margin-right: 0.2rem;
+}
+span.client-details__users-circle {
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  width: 18px;
+  font-size: 8px;
+  line-height: 8px;
+}
+span.client-details__users-circle--overlaped {
+  margin-left: -0.4rem;
+  box-shadow: 0px 1px 1px rgb(219, 217, 217);
+}
+.client-details__show-more {
+  font-size: 0.7rem;
+  cursor: pointer;
+}

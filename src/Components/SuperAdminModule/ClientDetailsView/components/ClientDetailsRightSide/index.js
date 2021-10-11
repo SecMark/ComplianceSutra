@@ -5,8 +5,9 @@ import "./style.css";
 import ClientOverview from "./ClientOverview";
 import ClientBilling from "./ClientBilling";
 import ClientCompanies from "./ClientCompanies";
+import ClientUsers from "./ClientUsers";
 const ClientDetailsRightSide = ({ taskData }) => {
-  const [taskDisplay, setTaskDisplay] = useState(1);
+  const [taskDisplay, setTaskDisplay] = useState(3);
   const [headerHeight, setHeaderHight] = useState(0);
   useEffect(() => {
     const headerRef = document
@@ -55,10 +56,15 @@ const ClientDetailsRightSide = ({ taskData }) => {
           height: `calc(90vh - ${headerHeight}px)`,
         }}
       >
-        <div className="row my-4 task-data-fields">
+        <div
+          className={`row ${
+            taskDisplay === 3 || taskDisplay === 4 ? "my-1" : "my-4"
+          } task-data-fields`}
+        >
           {taskDisplay === 1 && <ClientOverview clientData={taskData} />}
           {taskDisplay === 2 && <ClientBilling clientData={taskData} />}
           {taskDisplay === 3 && <ClientCompanies clientData={taskData} />}
+          {taskDisplay === 4 && <ClientUsers clientData={taskData} />}
         </div>
       </div>
     </div>

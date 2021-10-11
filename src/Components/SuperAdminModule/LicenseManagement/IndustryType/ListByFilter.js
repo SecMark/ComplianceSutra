@@ -1,5 +1,6 @@
 import React from "react";
 import { MdExpandMore } from "react-icons/md";
+import "./style.css";
 const ListByFilter = ({
   expandedFlags,
   handleExpanedFalgs,

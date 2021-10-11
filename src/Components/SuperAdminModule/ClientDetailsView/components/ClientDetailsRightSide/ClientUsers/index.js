@@ -1,46 +1,11 @@
 import React, { useState } from "react";
-import { MdAddBox, MdExpandMore } from "react-icons/md";
-import CompaniesSortByAlphabatically from "./CompaniesSortByAlphabatically";
-import CompaniesSortByLicenses from "./CompaniesSortByLicenses";
-import CompaniesSortByTypes from "./CompaniesSortByTypes";
-export const companyTypes = [
-  {
-    id: "brokers",
-    name: "Brokers",
-  },
-  {
-    id: "dp",
-    name: "Depository Participants",
-  },
-  {
-    id: "gen",
-    name: "Genral",
-  },
-];
-export const licenseTypes = [
-  {
-    id: "gst",
-    name: "Goods and Service Tax",
-  },
-  {
-    id: "nse",
-    name: "National Stock Exchange",
-  },
-  {
-    id: "bse",
-    name: "Bombay Stock Exchange",
-  },
-  {
-    id: "pf",
-    name: "Portfolio Management",
-  },
-  {
-    id: "servicetax",
-    name: "Service Taxes",
-  },
-];
-const ClientCompanies = () => {
-  const [sortBy, setSortBy] = useState("alphabatically");
+import { MdAddBox } from "react-icons/md";
+import UsersSortByCompanyName from "./UsersSortByCompanyName";
+import UsersSortByName from "./UsersSortByName";
+import UsersSortByRole from "./UsersSortByRole";
+
+const ClientUsers = () => {
+  const [sortBy, setSortBy] = useState("name");
   const [expandedFlags, setExpandedFlags] = useState(["brokers"]);
   const [expandedViewAllFlags, setExpandedViewAllFlags] = useState([]);
   const [countDetails, setCountDetails] = useState({
@@ -70,11 +35,11 @@ const ClientCompanies = () => {
       <div className="d-flex align-items-center justify-content-end w-100">
         <button className="cs__button cs__button--stroke d-flex align-items-center">
           <MdAddBox />
-          &nbsp;add new subsidary
+          &nbsp;add new user
         </button>
         <div className="cs__sort-by">
           <span className="cs__sort-by--item mr-2">sort by</span>
-          {["alphabatically", "company type", "licenses"].map((filter) => (
+          {["name", "company name", "role"].map((filter) => (
             <span
               className={`cs__sort-by--item cs__sort-by-filter ${
                 sortBy === filter && "cs__sort-by-filter--active"
@@ -87,23 +52,24 @@ const ClientCompanies = () => {
         </div>
       </div>
       <div className="col-12 col-md-12 mt-4">
-        {sortBy === "alphabatically" && <CompaniesSortByAlphabatically />}
-        {sortBy === "company type" && (
-          <CompaniesSortByTypes
+        <table></table>
+        {sortBy === "name" && <UsersSortByName />}
+        {sortBy === "company name" && (
+          <UsersSortByCompanyName
             expandFlagHandler={handleExpandFlag}
             countDetails={countDetails}
             expandedFlags={expandedFlags}
-            companyTypes={companyTypes}
+            // companyTypes={companyTypes}
             expandViewAllFlagHandler={handleViewAllExpandFlag}
             expandViewAllFlags={expandedViewAllFlags}
           />
         )}
-        {sortBy === "licenses" && (
-          <CompaniesSortByLicenses
+        {sortBy === "role" && (
+          <UsersSortByRole
             expandFlagHandler={handleExpandFlag}
             countDetails={countDetails}
             expandedFlags={expandedFlags}
-            companyTypes={companyTypes}
+            // companyTypes={companyTypes}
             expandViewAllFlagHandler={handleViewAllExpandFlag}
             expandViewAllFlags={expandedViewAllFlags}
           />
@@ -113,4 +79,4 @@ const ClientCompanies = () => {
   );
 };
 
-export default ClientCompanies;
+export default ClientUsers;
