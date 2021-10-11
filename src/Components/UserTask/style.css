@@ -3,13 +3,14 @@
   width: 95vw;
   margin: 1vw 5vw;
   padding: 2vw;
-  height: 90vh;
+  height: 95vh;
 }
 .UserContainer {
   box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
   padding: 2vw;
-  height: 80vh;
+  height: 90vh;
   border-radius: 20px;
+  overflow-y: scroll;
 }
 .UserContainer > h4 {
   margin-bottom: 2rem;
@@ -26,41 +27,79 @@
   color: #7a73ff;
   cursor: pointer;
 }
+.UserTypeSelected {
+  color: #7a73ff;
+  padding-bottom: 1vh;
+  height: 40px;
+  border-bottom: 5px solid #7a73ff;
+  z-index: 1;
+}
 #Line1 {
-  border: 2px solid #b3abc4;
+  width: 85%;
+
+  height: 4px;
   background-color: #b3abc4;
-  margin-top: 10px;
-  width: 100%;
 }
 .UserHeader {
   margin-top: 2rem;
   background: #7a73ff29;
   border-radius: 12px;
+  justify-content: center;
+  font-size: 16px;
 
   width: 88vw;
 }
 .UserHeader > div {
   font-weight: 500;
-  margin: 1rem 1.2vw;
+  margin: 1rem 1.5vw;
   color: #7a73ff;
-  display: inline-block;
+  display: inline-flex;
   align-items: center;
+
+  min-width: 60px;
 }
 .UserElement {
   display: flex;
   border-bottom: 1px solid #b3abc47c;
 }
 .UserElement > div {
-  margin: 1.3vw;
+  margin: 0.8vw 1.1vw;
   margin-bottom: 1.8vw;
   display: flex;
   align-items: center;
 }
 .UserActions {
-  width: 90px;
+  width: 70px;
   display: flex;
-  justify-content: end;
+  padding: 0.8rem;
+  padding-bottom: 0;
 }
 .UserActions > img {
   margin: 0 0.5rem;
+}
+.UserTask {
+  width: 140px;
+}
+.UserTaskElements {
+  width: 60px;
+}
+.UserTypeTask {
+  width: 110px;
+  height: 20px;
+  justify-content: center;
+}
+.UserProject {
+  width: 150px;
+  padding: 0.8rem;
+}
+.UserTaskComplete {
+  width: 70px;
+  text-align: start;
+}
+.CompleteTask {
+  width: 80px;
+  display: flex;
+  padding-left: 30px;
+  text-align: center;
+  padding-right: 8px;
 }
