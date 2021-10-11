@@ -42,6 +42,9 @@ const PriceManagement = lazy(() =>
 const LicenseDetails = lazy(() =>
   import("../../../Components/SuperAdminModule/LicenseDetails")
 );
+const ClientDetails = lazy(() =>
+  import("../../../Components/SuperAdminModule/ClientDetailsView")
+);
 export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/`,
@@ -90,5 +93,9 @@ export const routes = [
   {
     path: `${constant.SuperAdminBaseURL}/license-details`,
     component: LicenseDetails,
+  },
+  {
+    path: `${constant.SuperAdminBaseURL}/client-details`,
+    component: ClientDetails,
   },
 ];

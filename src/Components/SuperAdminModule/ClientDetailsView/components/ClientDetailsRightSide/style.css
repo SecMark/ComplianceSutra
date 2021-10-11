@@ -1,0 +1,25 @@
+div.task-data-fields > .w-100.d-flex {
+  margin: 0;
+}
+.task-data__field-key,
+.task-data__field-value {
+  width: auto !important;
+}
+.task-data__field-value--success {
+  color: #47bf6b;
+}
+h6 {
+  width: auto;
+}
+.client-details__table th {
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #2c2738;
+  text-transform: uppercase;
+  padding-bottom: 0.5rem;
+}
