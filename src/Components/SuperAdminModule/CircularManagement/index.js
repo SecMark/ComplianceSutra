@@ -10,6 +10,9 @@ import  DatePicker  from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import plusIcon from "../../../../src/assets/Icons/plusIcon.png"
 import { AiFillPlusCircle } from "react-icons/ai";
+module/CircularManagement
+
+
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import {AiOutlineCalendar} from "react-icons/ai"
 import {AiFillFile} from "react-icons/ai"
@@ -25,6 +28,7 @@ import quiz1 from "../../../../src/assets/Images/quiz1.png"
 import quiz2 from "../../../../src/assets/Images/quiz2.png"
 import quiz3 from "../../../../src/assets/Images/quiz3.png"
 import quiz4 from "../../../../src/assets/Images/quiz4.png"
+ SuperAdminModule
 
 const Circular = () =>{
     
@@ -376,6 +380,22 @@ const Circular = () =>{
                             <div className="add">
                                 Add New License
                             </div>
+module/CircularManagement
+
+                            <div className="plusicon-1">
+                                <AiFillPlusCircle /></div>
+                            <div class="add-1">
+                                  Add Sub license
+                            </div>  
+                            <div className="plusicon-2">
+                                <AiFillPlusCircle /></div>
+                            <div className="add-2">
+                                  Add Subtask
+                            </div>  
+
+                   
+                       
+
 
                             <div className="plusicon-1">
                                 <AiFillPlusCircle /></div>
@@ -406,7 +426,7 @@ const Circular = () =>{
                             <div className="add-5">
                                   Add New FQA
                             </div>  
-
+ SuperAdminModule
                         <br></br>
                         <div className="button">
                             <button
@@ -425,6 +445,14 @@ const Circular = () =>{
                         </div>
                       </> 
                   )}
+
+ module/CircularManagement
+                {stepper.stepperAcitveSlide === 2 && (
+                      <>
+                            <div><h1>content</h1></div>
+                            <div><h1>content</h1></div>
+                            <div><h1>content</h1></div>
+                            
 
 
                   {/* SeconStepper */}
@@ -489,6 +517,7 @@ const Circular = () =>{
                                           className="form-control-quize-2"
                                           placeholder="Type the topic here"
                             />
+SuperAdminModule
 
                             
                             <input

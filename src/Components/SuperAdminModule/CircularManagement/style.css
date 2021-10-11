@@ -605,20 +605,33 @@ input, select, textarea{
 } */
 .plusicon{
   color:slateblue;
+module/CircularManagement
+  margin-left: -11px;
+  
+
   margin-left: 2px;
   height: 20px;  
   cursor: pointer;
+ SuperAdminModule
 }
 .plusicon-1{
   color:slateblue;
   margin-left: 150px;
   margin-top: -19px;
+module/CircularManagement
+=======
   cursor: pointer;
+ SuperAdminModule
 }
 .plusicon-2{
   color:slateblue;
   margin-left: 313px;
   margin-top: -20px;
+ module/CircularManagement
+}
+.plusicon-3{
+  color: #6c5dd3;
+
   cursor: pointer;
 }
 .plusicon-3{
@@ -637,6 +650,7 @@ input, select, textarea{
   color: red;
   font-size: 20px;
   margin-top: -6px;
+ SuperAdminModule
   margin-left: -12px;
 }
 .add{
@@ -658,7 +672,11 @@ input, select, textarea{
 .add-1{
   width: 105px;
   height: 19px;
+module/CircularManagement
+  margin-left: 181px;
+
   margin-left: 166px;
+ SuperAdminModule
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -674,7 +692,11 @@ input, select, textarea{
 .add-2{
   width: 86px;
   height: 19px;
+module/CircularManagement
+  margin-left: 345px;
+=======
   margin-left: 329px;
+SuperAdminModule
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -700,6 +722,8 @@ input, select, textarea{
   letter-spacing: 0.02px;
   cursor: pointer;
 }
+
+ module/CircularManagement
 
   .cal {
     margin-left: 231px;
@@ -743,6 +767,7 @@ input, select, textarea{
   text-align: left;
   color: #2c2738;
 }
+ SuperAdminModule
 
 .Question-01 {
   width: 70px;
