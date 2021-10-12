@@ -65,14 +65,14 @@ function ForgotPassword({ history }) {
       return;
     }
     let payload = {
-      loginID: values.email,
-      pwd: "",
-      rememberme: 0,
+      loginid: values.email,
+      // pwd: "",
+      // rememberme: 0,
       loginty: "AdminEmail",
     };
     let body;
     api
-      .post("/api/availabilityCheck", payload)
+      .post("/availabilityCheck", payload)
       .then(function (response) {
         // handle success
         if (response && response.data && response.data.Status === "True") {

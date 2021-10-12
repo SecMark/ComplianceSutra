@@ -7,13 +7,16 @@ import { withRouter } from "react-router-dom";
 import emailVerify from "../../../../assets/Icons/emailVerify.png";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../SideBar";
+import { useLocation } from "react-router-dom";
 
 function EmailVerify({ history }) {
   const location = window.location.href.split("?");
-  let email = location[1].split("=");
-  localStorage.setItem("coemail", email[1]);
-  const dispatch = useDispatch();
-  const state = useSelector((state) => state);
+  const search = useLocation().search;
+  const email = new URLSearchParams(search).get("email");
+  const key = new URLSearchParams(search).get("key");
+
+  localStorage.setItem("coemail", email);
+  localStorage.setItem("accessToken", key);
 
   useEffect(() => {
     setTimeout(() => {

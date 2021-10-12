@@ -10,18 +10,18 @@ import { actions as signInSignUpActions } from "../../redux/actions";
 import validator from "validator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
 function Login({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const [visible, setVisibility] = useState(false);
 
-  const Icon = (<FontAwesomeIcon icon={  visible ? "eye-slash" : "eye" }
-  onClick={() => setVisibility(visiblity => !visiblity)}
-  />
-  )
+  const Icon = (
+    <FontAwesomeIcon
+      icon={visible ? "eye-slash" : "eye"}
+      onClick={() => setVisibility((visiblity) => !visiblity)}
+    />
+  );
   const InputType = visible ? "text" : "password";
-  
 
   const [values, setValues] = useState({
     LoginId: "",
@@ -59,7 +59,6 @@ function Login({ history }) {
     setValues({ ...values, [name]: event.target.value });
   };
 
-
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
       onSubmit();
@@ -72,11 +71,11 @@ function Login({ history }) {
     }
     dispatch(
       signInSignUpActions.signInRequest({
-        LoginId: values.LoginId,
-        Pwd: values.Pwd,
-        rememberme: values.rememberme ? 1 : 0,
-        Loginty: "AdminEmail",
-        history: history,
+        usr: values.LoginId,
+        pwd: values.Pwd,
+        // rememberme: values.rememberme ? 1 : 0,
+        // Loginty: "AdminEmail",
+        // history: history,
       })
     );
 
@@ -179,37 +178,10 @@ function Login({ history }) {
                         onKeyPress={handleKeyPress}
                       />
 
-                          <span className="password-toggle-ico">{Icon}</span> 
-
-                      {/* {errors && errors.passwordErr !== "" && <p className="input-error-message">
-                                                Password is invalid
-                                     </p>} */}
-                      {/* {values && values.Pwd === "" && <p className="input-error-message">
-                                                Password is required
-                                     </p>} */}
-                      {/* <ul className="Instruction">
-                                                <li>
-                                                    <div className={passwordState.minlength === false ? "error" : "green-dot"} ></div>At least 8 characters—the more characters, the better
-                    </li>
-                                                <li>
-                                                    <div className={passwordState.uppercaseandlowercase === false ? "error" : "green-dot"}></div>A mixture of both uppercase and lowercase
-                      letters
-                    </li>
-                                                <li>
-                                                    <div className={passwordState.alphabetsandigit === false ? "error" : "green-dot"}></div>A mixture of letters and numbers
-                    </li>
-                                            </ul> */}
+                      <span className="password-toggle-ico">{Icon}</span>
                     </div>
                   </div>
-                  {/* <div className="custom-control custom-checkbox">
-                                        <input type="checkbox"
-                                            className="custom-control-input"
-                                            id="customCheck"
-                                            value={values.rememberme}
-                                            onChange={onChangeHandler('rememberme')}
-                                            name="example1" />
-                                        <label className="custom-control-label" htmlFor="customCheck">Keep me signed in</label>
-                                    </div> */}
+
                   <div className="d-flex login-forgot">
                     <button
                       style={{ cursor: "pointer" }}

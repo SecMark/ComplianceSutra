@@ -1085,35 +1085,32 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
       api.checkEmailVerifiedThroughEmail,
       payload
     );
-    if (status === 200) {
-      let statusCode, message;
-      statusCode = data && data[0] && data[0].StatusCode;
-      message = data && data[0] && data[0].Message;
-      if (statusCode !== undefined && !statusCode) {
-        yield put(
-          actions.insUpdateDeletAPIRequestSuccess({
-            loginSuccess: true,
-            statusCode: status,
-            message: message,
-          })
-        );
-        toast.error(message && message);
-      } else {
-        let companyName = payload.entityName;
-        yield put(
-          actions.insUpdateDeletAPIRequestSuccess({
-            formDataPersonalData: payload,
-            data: data,
-            userInfo: payload,
-            companyName: companyName,
-          })
-        );
-        if (payload.from === "personal-details-co") {
-          toast.success("Personal Information saved successfully");
-          yield delay(1000);
-          payload.history.push("/company-details");
-        }
-      }
+    const { message } = data;
+    if (message.status !== false) {
+      //   if (statusCode !== undefined && !statusCode) {
+      //     yield put(
+      //       actions.insUpdateDeletAPIRequestSuccess({
+      //         loginSuccess: true,
+      //         statusCode: status,
+      //         message: message,
+      //       })
+      //     );
+      //     toast.error(message && message);
+      //   } else {
+      //     let companyName = payload.entityName;
+      //     yield put(
+      //       actions.insUpdateDeletAPIRequestSuccess({
+      //         formDataPersonalData: payload,
+      //         data: data,
+      //         userInfo: payload,
+      //         companyName: companyName,
+      //       })
+      //     );
+      toast.success("Personal Information saved successfully");
+      yield delay(1000);
+      payload.history.push("/company-details");
+
+      //   }
     } else {
       toast.error("something went wrong !!!");
       yield put(
@@ -1132,9 +1129,11 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
 const companyTypeRequest = function* companyTypeRequest({ payload }) {
   try {
     const { data, status } = yield call(api.companyType, payload);
-    if (status === 200) {
+
+    if (data) {
+      console.log(data);
       yield put(
-        actions.companyTypeRequestSuccess({ companyLicenseData: data })
+        actions.companyTypeRequestSuccess({ companyLicenseData: data.message })
       );
       //yield put(push(`/${authData && authData.store_locale}/my-account`));
       toast.success(data && data.Message);
