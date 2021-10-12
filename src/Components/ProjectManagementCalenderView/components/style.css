@@ -1,0 +1,38 @@
+.pm-task {
+  max-width: 160px;
+  border-radius: 8px;
+  padding: 0.5rem;
+  height: 85px;
+}
+.pm-task__title {
+  color: #2c2738;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 22px;
+  max-width: 194px;
+  overflow: hidden;
+}
+.pm-task__deadlines > p {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 21px;
+  margin-bottom: 0;
+}
+.pm-task__deadlines--key {
+  text-transform: capitalize;
+  opacity: 0.6;
+}
+.pm-task__progress {
+  padding: 3px 4px;
+  border-radius: 4px;
+}
+.pm-task__progress-value {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  color: #ffffff;
+  text-transform: capitalize;
+}
