@@ -5,13 +5,12 @@ import profileActive from "../../../assets/ERIcons/profileActive.png";
 import { useHistory, useLocation, withRouter } from "react-router-dom";
 import checkSmallBlack from "../../../assets/ERIcons/checkSmallBlack.png";
 import notificationBlack from "../../../assets/ERIcons/notificationBlack.png";
-
+import trashDele from "../../../assets/ERIcons/trashDele.png";
 import "./style.css";
 
 const LeftSideBar = () => {
   const history = useHistory();
   const { pathname } = useLocation();
-
   const navigateTo = (screen) => {
     history.push(`/expert-review/${screen}`);
   };
@@ -70,6 +69,22 @@ const LeftSideBar = () => {
             onClick={() => navigateTo("task-history")}
           />
         </div>
+          {/* changes */}
+
+        <div
+          className={
+            pathname === "/expert-review/trash"
+              ? "ER-icon-active"
+              : "ER-icon"
+          }
+        >
+          <img
+            title="Trash"
+            src={trashDele}
+            onClick={() => navigateTo("trash")}
+          />
+        </div>
+
 
         <div
           className={
