@@ -1,0 +1,30 @@
+.task-count {
+  background-color: #000000;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #f2ecff;
+  font-size: 8px;
+  line-height: 1px;
+  font-weight: 600;
+}
+p.company__revenu-price {
+  color: #000;
+}
+p.company__small-title,
+span.company__small-title {
+  color: #0000007e;
+  font-size: 11px;
+}
+.company__container {
+  cursor: pointer;
+}
+.company__container--active {
+  background-color: #f2ecff;
+  border-right: 4px solid #7a73ff;
+  border-top: 4px solid #f2ecff;
+  border-bottom: 4px solid #f2ecff;
+}

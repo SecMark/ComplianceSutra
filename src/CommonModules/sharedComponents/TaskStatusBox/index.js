@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.css";
-const TaskStatusBox = ({ status, children }) => {
+const TaskStatusBox = ({ status, children, fontSize }) => {
   return (
     <div
       className="task-status__container"
@@ -26,6 +26,7 @@ const TaskStatusBox = ({ status, children }) => {
               : status === "approved"
               ? "#7fba7a"
               : "#6c5dd3",
+          ...(fontSize && { fontSize: `${fontSize}px` }),
         }}
       >
         {children}
