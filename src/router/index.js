@@ -45,7 +45,7 @@ import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/compon
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
 import SuperAdmin from "../Components/SuperAdminModule";
-
+import PmCalenderView from "../Components/ProjectManagementCalenderView/index";
 import ComplianceDemo from "../Components/ComplianceModule/index";
 // import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
 
@@ -179,6 +179,7 @@ export default function AppRouter() {
           </Switch>
           {/* {trial branch} */}
           <Route exact path="/thankyou" component={Thankyou} />
+          <Route exact path="/pm-calender-view" component={PmCalenderView} />
         </div>
       </>
     </div>
