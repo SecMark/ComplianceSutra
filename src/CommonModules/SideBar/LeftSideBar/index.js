@@ -67,6 +67,10 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
     } else if (currentActiveMenu === "help") {
       history.push("/help");
     }
+    else if (currentActiveMenu === "trash") {
+      history.push("/trash");
+    }
+    
   };
 
   const onEditProfileClick = () => {
@@ -201,7 +205,27 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Bell"
             />
           </div>
+          
+           <div
+            className={
+              !openProfile &&
+              state &&
+              state.adminMenu.currentMenu === "newRegulations"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+
+
+          </div>
+
+
         </div>
+
+
+
+
+
         <div className="devider-line"></div>
         <div className="second-icon-list">
           <div

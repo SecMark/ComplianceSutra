@@ -1,5 +1,6 @@
 .ER-container {
   display: flex;
+  background:#fadadd;
 }
 .ER-routes {
   width: 100%;
