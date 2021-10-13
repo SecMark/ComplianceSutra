@@ -3,10 +3,7 @@ import "./style.css";
 // import SideBarBg from "../../../../assets/Images/Onboarding/side-bar-bg.png";
 import dashBoardActiveIcon from "../../../../../assets/Icons/dashBoardActiveIcon.png";
 import sideBarlogo from "../../../../../assets/Icons/sideBarlogo.png";
-import circleClock from "../../../../../assets/Icons/circleClock.png";
-import questionIcon from "../../../../../assets/Icons/questionIcon.png";
-import questionIconActive from "../../../../../assets/Icons/HelpBlackActive.png";
-import listIcon from "../../../../../assets/Icons/listIcon.png";
+
 import SideBaruser from "../../../../../assets/Icons/sideBaruser.png";
 import HelpBlackActive from "../../../../../assets/Icons/HelpBlackActive.png";
 import HelpGreyActive from "../../../../../assets/Icons/HelpGreyActive.png";
@@ -22,6 +19,7 @@ import sidebarSettingIcon from "../../../../../assets/Icons/sidebarSettingIcon.p
 
 import editpen from "../../../../../assets/Icons/editpen.png";
 import LogoutIcon from "../../../../../assets/Icons/LogoutIcon.png";
+import VectorIcon from "../../../../../assets/Icons/Vector.png";
 
 import { useOuterClick } from "../components/RightSideGrid/outerClick";
 import { useSelector, useDispatch } from "react-redux";
@@ -162,6 +160,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/new-regulations");
     } else if (currentActiveMenu === "help") {
       history.push("/help");
+    } else if (currentActiveMenu === "project-task") {
+      history.push("/project-task");
     }
   };
 
@@ -281,6 +281,30 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             className={
               !openProfile &&
               state &&
+              state.adminMenu.currentMenu === "project-task"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="Project Task"
+              onClick={() => onMenuClick("project-task")}
+              src={
+                !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "project-task"
+                  ? VectorIcon
+                  : VectorIcon
+              }
+              alt="sidebar Bell"
+            />
+          </div>
+
+          <div
+            className={
+              !openProfile &&
+              state &&
               state.adminMenu.currentMenu === "new-regulations"
                 ? "taskIcon-active"
                 : "taskIcon"
@@ -380,13 +404,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               </div>
             )}
           </div>
-          {/* <div className="taskIcon">
-            <img src={taskIcon} alt="taskIcon" />
-          </div> */}
         </div>
-        {/* <div className="user">
-          <img src={SideBaruser} alt="SideBaruser" />
-        </div> */}
       </div>
     </div>
   );

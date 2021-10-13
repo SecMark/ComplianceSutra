@@ -1,0 +1,22 @@
+.project-management-container {
+  object-fit: contain;
+  border-radius: 36px;
+  box-shadow: 0 3px 36px 0 rgb(67 0 255 / 8%);
+  background-color: #ffffff;
+  position: relative;
+  height: 98vh;
+  margin: 20px 20px 20px 7%;
+}
+
+.project-management-container .custimDesignTask {
+  position: "relative";
+}
+
+.project-management-container .first-view {
+  cursor: "pointer";
+}
+
+.project-management-container .remaining-view {
+  margin-left: 60px;
+  cursor: "pointer";
+}

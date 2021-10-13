@@ -167,12 +167,12 @@ export default function AppRouter() {
 
           <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route exact path="/new-regulations" component={DashBoardCO} />
+          <Route exact path="/project-task" component={DashBoardCO} />
           <Route exact path="/help" component={DashBoardCO} />
 
           {/* Expert Review */}
-      
-            <Route path="/expert-review" component={ExperReview}></Route>
-        
+
+          <Route path="/expert-review" component={ExperReview}></Route>
 
           <Route exact path="/thankyou" component={Thankyou} />
         </div>
