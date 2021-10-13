@@ -26,15 +26,10 @@ function VerifyEmailErrorPage() {
       invitation: "V",
     };
     apiServices
-      .post("/api/getEmailbody", obj)
+      .post("compliance.api.getEmailBody", obj)
       .then(function (response) {
         // handle success
-        if (
-          response &&
-          response.data &&
-          response.data.Status &&
-          response.data.Status === true
-        ) {
+        if (response && response.data.message.status === true) {
           toast.success(
             "The verification link has been sent to your email account successfully"
           );

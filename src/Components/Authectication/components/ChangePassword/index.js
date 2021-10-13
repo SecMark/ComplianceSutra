@@ -144,14 +144,9 @@ function ChangePassword({ history }) {
     };
     if (email !== "") {
       apiServices
-        .post("/api/getEmailbody", obj)
+        .post("compliance.api.getEmailBody", obj)
         .then(function (response) {
-          if (
-            response &&
-            response.data &&
-            response.data.data[0] &&
-            response.data.data[0].Status === "True"
-          ) {
+          if (response && response.data.message.status === true) {
           } else {
             toast.success("The link you followed expired");
           }
