@@ -10,8 +10,8 @@ function Task() {
                 <div className="fillColor"></div>
                 <div className="textHeading">Hello Design</div>
                 <div className="vect"></div>
-                <div className="forImg"><img src={Vector}/></div>
-                <div className="forImg1"><img src={Delete}/></div>
+                <div className="vectorImage"><img src={Vector}/></div>
+                <div className="deleteImage"><img src={Delete}/></div>
                 <div className="rectDelete2">
                 </div>
             </div>
@@ -20,8 +20,8 @@ function Task() {
             <div className="fillColor"></div>
                 <div className="textHeading">Project Discuss Meeting</div>
                 <div className="vect"></div>
-                <div className="forImg"><img src={Vector}/></div>
-                <div className="forImg1"><img src={Delete}/></div>
+                <div className="vectorImage"><img src={Vector}/></div>
+                <div className="deleteImage"><img src={Delete}/></div>
                 <div className="DeleteRect">
                 </div>
             </div>
@@ -30,8 +30,8 @@ function Task() {
             <div className="fillColor"></div>
                 <div className="textHeading">Demo To Nikhil</div>
                 <div className="vect"></div>
-                <div className="forImg"><img src={Vector}/></div>
-                <div className="forImg1"><img src={Delete}/></div>
+                <div className="vectorImage"><img src={Vector}/></div>
+                <div className="deleteImage"><img src={Delete}/></div>
                 <div className="rectDelete2">
                 </div>
             </div>
@@ -39,8 +39,8 @@ function Task() {
             <div className="fillColor"></div>
                 <div className="textHeading">New Employee Verification</div>
                 <div className="vect"></div>
-                <div className="forImg"><img src={Vector}/></div>
-                <div className="forImg1"><img src={Delete}/></div>
+                <div className="vectorImage"><img src={Vector}/></div>
+                <div className="deleteImage"><img src={Delete}/></div>
                 <div className="DeleteRect">
                 </div>
             </div>
@@ -49,8 +49,8 @@ function Task() {
             <div className="fillColor"></div>
                 <div className="textHeading">Demo To Nikhil</div>
                 <div className="vect"></div>
-                <div className="forImg"><img src={Vector}/></div>
-                <div className="forImg1"><img src={Delete}/></div>
+                <div className="vectorImage"><img src={Vector}/></div>
+                <div className="deleteImage"><img src={Delete}/></div>
                 <div className="rectDelete2">
                 </div>
             </div>
@@ -58,5 +58,4 @@ function Task() {
         </div>
     )
 }
-
 export default Task

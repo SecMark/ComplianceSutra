@@ -16,7 +16,7 @@ const ERTaskHistoryFilter = lazy(() =>
 );
 
 const ERTrash = lazy(() =>
-  import("../../../Components/ExpertReviewModule/Trash")
+  import("../../../Components/ProjectManagementModule/Trash")
 );
 
 const ERTaskDetails = lazy(() =>

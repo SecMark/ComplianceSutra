@@ -3,7 +3,6 @@ import LeftSideBar from "./LeftSideBar";
 import { Suspense } from "react";
 import { Route } from "react-router";
 import Loading from "../../CommonModules/sharedComponents/Loader";
-
 import "./style.css";
 import { routes } from "../../CommonModules/sharedComponents/Routes/expertreviewerRoutes";
 

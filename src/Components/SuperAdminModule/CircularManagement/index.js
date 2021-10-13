@@ -9,8 +9,6 @@ import  DatePicker  from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import plusIcon from "../../../../src/assets/Icons/plusIcon.png"
 
-
-
 const Circular = () =>{
     
   
