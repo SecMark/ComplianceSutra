@@ -31,7 +31,13 @@ const Datepicker = ({
           style={{ width: "100%", color: "#000", border: "1px solid #ced4da" }}
           format="DD MMMM Y"
           name={name}
-          className={pageName === "newRegulation" ? "date-picker" : "taskhistoryfilter"}
+          className={
+            pageName === "newRegulation"
+              ? "date-picker"
+              : pageName === "taskhistoryfilter"
+              ? "taskhistoryfilter"
+              : "insutrytype"
+          }
           onChange={onChangeHandler}
         />
       ) : (
@@ -39,7 +45,13 @@ const Datepicker = ({
           style={{ width: "100%", color: "#000", border: "1px solid #ced4da" }}
           format="DD MMMM Y"
           name={name}
-          className={pageName === "newRegulation" ? "date-picker" : ""}
+          className={
+            pageName === "newRegulation"
+              ? "date-picker"
+              : pageName === "taskhistoryfilter"
+              ? "taskhistoryfilter"
+              : "insutrytype"
+          }
           onChange={onChangeHandler}
         />
       )}

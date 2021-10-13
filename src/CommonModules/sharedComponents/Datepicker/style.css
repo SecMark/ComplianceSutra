@@ -20,3 +20,11 @@
   height: 40px;
   width: 304px !important;
 }
+
+.insutrytype {
+  background: #fafafa !important;
+  border-radius:.25rem  !important ;
+  padding: .375rem .75rem !important;
+  height: 40px;
+  width: 100%;
+}
