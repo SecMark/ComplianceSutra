@@ -45,6 +45,7 @@ import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/compon
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
+import AddProject from "../Components/ExpertReviewModule/AddandEditProject";
 
 export default function AppRouter() {
   return (
@@ -175,6 +176,7 @@ export default function AppRouter() {
         
 
           <Route exact path="/thankyou" component={Thankyou} />
+          <Route exact path="/add-project" component={AddProject}/>
         </div>
       </>
     </div>

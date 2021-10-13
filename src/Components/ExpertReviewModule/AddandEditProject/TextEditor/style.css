@@ -1,0 +1,19 @@
+.add-project-text-editor {
+  margin: auto;
+  width: 98%;
+  margin-top: 8px;
+  justify-content: center;
+  background: rgba(122, 115, 255, 0.16);
+  border-radius: 8px;
+}
+
+.add-project-tex-editor-wrapper {
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.add-project-editor-box{
+   height: 100px;
+}
