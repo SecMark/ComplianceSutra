@@ -3,14 +3,14 @@
     width: 300px;
   }
   
-  .options-list {
+  .PriceManagement-profile-options .options-list {
     list-style: none;
     margin-top: 50px;
     padding: 0;
   }
   
-  .options-list li {
-    margin-top: 30px;
+  .PriceManagement-profile-options .options-list li {
+    margin-top: 10px;
     font-family: Poppins;
     font-size: 16px;
     font-weight: 500;
@@ -23,13 +23,13 @@
     padding: 10px 0px 10px 8px;
   }
   
-  .options-list li:hover {
+  .PriceManagement-profile-options .options-list li:hover {
     background: #cccafe;
     color: #575757 !important;
     cursor: pointer;
   }
   
-  .active {
+  .PriceManagement-profile-options .active {
     background: #cccafe;
     color: #575757 !important;
     border-right: 3px solid #7a73ff;

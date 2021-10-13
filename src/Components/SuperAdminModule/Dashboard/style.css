@@ -295,7 +295,7 @@
 }
 
 .nav-title-progress {
-  width: 70px;
+  width: 75px !important;
   position: absolute;
   height: 2px;
   border-radius: 1px;

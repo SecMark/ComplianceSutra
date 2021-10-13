@@ -90,7 +90,7 @@ const ActiveLicense = (props) => {
               style={{ justifyContent: "space-between" }}
             >
               <div className="d-flex">
-                <span className="mt-1">show:</span>
+                <span className="mt-1 mx-2">show:</span>
                 <Dropdown
                   arrowClosed={<span className="arrow-closed" />}
                   arrowOpen={<span className="arrow-open" />}

@@ -73,36 +73,35 @@ body {
   padding: 0px;
 }
 .Toastify__toast--error {
-      background: #ffb2b2 !important; 
-    color: #000 !important;
-     width: auto; 
-     height:auto; 
-    padding: 12px 16px 14px;
-    border-radius: 4px;
-    /* background-color: #f0efff; */
-    /* margin: 3px 32px 0 8px; */
-    font-family: Poppins;
-    font-size: 13px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0px;
-    /* text-align: right; */
-    /* color: #5d6370; */
+  background: #ffb2b2 !important;
+  color: #000 !important;
+  width: auto;
+  height: auto;
+  padding: 12px 16px 14px;
+  border-radius: 4px;
+  /* background-color: #f0efff; */
+  /* margin: 3px 32px 0 8px; */
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  /* text-align: right; */
+  /* color: #5d6370; */
 }
 /* .Toastify__toast .Toastify__toast--success {
   background-color: red !important;
 } */
 .Toastify__toast--success {
-   background: #ebe8ff !important;
+  background: #ebe8ff !important;
   color: #000 !important;
   /* padding: 0 0 16px; */
   border-radius: 4px;
   box-shadow: 0 3px 12px 0 rgba(159, 159, 159, 0.16);
-
 }
-.auto-toster-viewmore{
+.auto-toster-viewmore {
   margin: 8px 1px 0 0px;
   font-family: Poppins;
   font-size: 13px;
@@ -140,7 +139,7 @@ body {
 span.font-normal {
   font-weight: normal;
 }
-.auto-toster-text{
+.auto-toster-text {
   width: 200px;
   height: auto;
   margin: 0 38px 0px 8px;

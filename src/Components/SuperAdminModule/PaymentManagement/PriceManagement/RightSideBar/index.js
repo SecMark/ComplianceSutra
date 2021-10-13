@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
 import { useDispatch } from "react-redux";
-import { createHashHistory } from "history";
 
 const RightSideBar = ({ option, selectProfileOption }) => {
   const dispatch = useDispatch();
-  const history = createHashHistory();
 
   return (
     <div className="PriceManagement-profile-options">
@@ -15,34 +13,38 @@ const RightSideBar = ({ option, selectProfileOption }) => {
       <div className="options-container">
         <ul className="options-list">
           <li
-            onClick={() => selectProfileOption("edit")}
-            className={option === "edit" && "active"}
+            onClick={() => selectProfileOption("complianceModule")}
+            className={option === "complianceModule" && "active"}
           >
-            Edit Profile Details
+            Compliance Module
           </li>
           <li
-            onClick={() => selectProfileOption("notification")}
-            className={option === "notification" && "active"}
+            onClick={() => selectProfileOption("auditModule")}
+            className={option === "auditModule" && "active"}
           >
-            Manage Notifications
+            Audit Module
           </li>
           <li
-            onClick={() => selectProfileOption("task")}
-            className={option === "task" && "active"}
+            onClick={() => selectProfileOption("processModule")}
+            className={option === "processModule" && "active"}
           >
-            Task management
+            Process Module
+          </li>
+          <li></li>
+        </ul>
+        <hr />
+        <ul className="options-list">
+          <li
+            onClick={() => selectProfileOption("discount")}
+            className={option === "discount" && "active"}
+          >
+            Discount & coupons
           </li>
           <li
-            onClick={() => selectProfileOption("security")}
-            className={option === "security" && "active"}
+            onClick={() => selectProfileOption("referrals")}
+            className={option === "referrals" && "active"}
           >
-            Manage Security
-          </li>
-          <li
-            onClick={() => selectProfileOption("migration")}
-            className={option === "migration" && "active"}
-          >
-            Migration Requests
+            Referrals
           </li>
         </ul>
       </div>
