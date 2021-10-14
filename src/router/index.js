@@ -47,7 +47,7 @@ import ExperReview from "../Components/ExpertReviewModule";
 // import UserRoutes from "../Components/UserTask/UserRoutes/index";
 import UserTask from "../Components/UserTask/index";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
-
+import ProjectManagementCalenderView from "../Components/ProjectManagementCalenderView";
 export default function AppRouter() {
   return (
     <div>
@@ -178,6 +178,11 @@ export default function AppRouter() {
           <Route exact path="/thankyou" component={Thankyou} />
           {/* User */}
           <Route path="/user-task" component={UserTask}></Route>
+          <Route
+            exact
+            path="/pm-calender-view"
+            component={ProjectManagementCalenderView}
+          />
         </div>
       </>
     </div>
