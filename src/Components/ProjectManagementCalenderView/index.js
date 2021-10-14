@@ -12,9 +12,11 @@ import DateFilters from "./components/DateFilters";
 import Task from "./components/Task";
 import "./style.css";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { IoCalendarOutline } from "react-icons/io5";
 import DayView from "./components/DayView";
 import WeekView from "./components/WeekView";
 import MonthView from "./components/MonthView";
+import { DatePicker } from "antd";
 const ProjectManagementCalender = () => {
   const [taskDisplay, setTaskDisplay] = useState("calender");
   const [activeDays, setActiveDays] = useState(constant.month);
@@ -24,30 +26,7 @@ const ProjectManagementCalender = () => {
   const [weekStartDate, setWeekStartDate] = useState(new Date());
   const [sevenDays, setSevenDays] = useState([]);
   const [months, setMonths] = useState([]);
-
-  //   const state = useSelector((state) => state); // state
-  //   const dispatch = useDispatch(); // dispatch
-  //   const userDetails = state && state.auth && state.auth.loginInfo;
-  //   const { daysData, weekData, monthData } = state.CalenderReducer;
-  const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
-  const viewBy = [
-    {
-      id: 1,
-      value: constant.day,
-      name: "By Day",
-    },
-    {
-      id: 2,
-      value: constant.week,
-      name: "By Week",
-    },
-    {
-      id: 3,
-      value: constant.month,
-      name: "By Month",
-    },
-  ];
-
+  const [showCalenderInDayView, setShowCalenderInDayView] = useState(false);
   useEffect(() => {
     const headerRef = document
       .querySelector(".pm-calender-view__header")
@@ -90,6 +69,7 @@ const ProjectManagementCalender = () => {
       getMonths(incrementType);
     }
   };
+
   //Get Full Month
   const getMonths = (increment) => {
     const date = monthDate;
@@ -143,6 +123,9 @@ const ProjectManagementCalender = () => {
     setMonths(listOfDate);
   };
 
+  const dayDateChangeHandler = (date) => {
+    console.log(date);
+  };
   useEffect(() => {
     getDays();
     getMonths();
@@ -150,82 +133,147 @@ const ProjectManagementCalender = () => {
 
   return (
     <div className="pm-calender-view">
-      <div className="pm-calender-view__container px-4">
-        <div className="pm-calender-view__header pt-4 w-100 d-flex align-items-center justify-content-between flex-column">
-          <div className="w-100 d-flex align-items-center justify-content-between">
-            <div className="d-flex align-items-center">
-              <MdKeyboardArrowLeft className="pm-calender-view__header-navigation" />
-              <p className="ml-2 mr-3 mb-0 pm-calender-view__header-title">
-                Calender
-              </p>
-              <div className="pm-data__container pm-date__container d-flex align-items-center justify-content-between">
-                <AiOutlineLeft
-                  className="pm-data__active pm-calender-view__header-navigation--arrow"
-                  style={{ marginRight: "12px" }}
-                  onClick={() => setDays(activeDays, constant.decrement)}
-                />
-                {activeDays === constant.day && (
-                  <span className="pm__date-filter-text">
-                    {moment(dayDate).format("MMMM D,  ddd")}
-                  </span>
-                )}
+      <div className="pm-calender-view__container px-md-4">
+        <div className="pm-calender-view__header pt-4 px-3 px-md-0">
+          <div className="pm-calender-view__header--border d-flex align-items-center justify-content-between flex-column">
+            <div className="w-100 d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center">
+                <MdKeyboardArrowLeft className="d-none d-lg-block pm-calender-view__header-navigation" />
+                <p className="ml-md-2 mx-0 mr-md-3 mb-0 pm-calender-view__header-title">
+                  Calender
+                </p>
+                <div className="pm-data__container pm-date__container d-none d-md-flex align-items-center justify-content-between">
+                  <AiOutlineLeft
+                    className="mr-2 pm-data__active pm-calender-view__header-navigation--arrow"
+                    onClick={() => setDays(activeDays, constant.decrement)}
+                  />
+                  {activeDays === constant.day && (
+                    <>
+                      <span className="pm__date-filter-text">
+                        {moment(dayDate).format("MMMM D,  ddd")}
+                      </span>
+                    </>
+                  )}
 
-                {activeDays === constant.week && (
-                  <span className="pm__date-filter-text">
-                    {`${moment(weekStartDate).format("ddd D")}-${moment(
-                      addDaysInDate(weekStartDate, 7)
-                    ).format("ddd D,YYYY")}`}
-                  </span>
-                )}
+                  {activeDays === constant.week && (
+                    <span className="pm__date-filter-text">
+                      {`${moment(weekStartDate).format("ddd D")}-${moment(
+                        addDaysInDate(weekStartDate, 7)
+                      ).format("ddd D,YYYY")}`}
+                    </span>
+                  )}
 
-                {activeDays === constant.month && (
-                  <span
-                    className="pm__date-filter-text"
-                    // onClick={() => setIsShowSmallCalender(!isShowSmallCalender)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {`${moment(monthDate).format("MMMM")}`}
-                  </span>
-                )}
+                  {activeDays === constant.month && (
+                    <span
+                      className="pm__date-filter-text"
+                      // onClick={() => setIsShowSmallCalender(!isShowSmallCalender)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {`${moment(monthDate).format("MMMM")}`}
+                    </span>
+                  )}
 
-                <AiOutlineRight
-                  className="pm-data__active pm-calender-view__header-navigation--arrow"
-                  style={{ marginLeft: "12px" }}
-                  onClick={() => setDays(activeDays, constant.increment)}
-                />
+                  <AiOutlineRight
+                    className="ml-2 pm-data__active pm-calender-view__header-navigation--arrow"
+                    onClick={() => setDays(activeDays, constant.increment)}
+                  />
+                </div>
               </div>
+              <DateFilters
+                filters={[constant.day, constant.week, constant.month]}
+                currentFilter={activeDays}
+                setDateFilter={setActiveDays}
+                containerClass="d-none d-md-flex"
+              />
             </div>
-            <DateFilters
-              filters={[constant.day, constant.week, constant.month]}
-              currentFilter={activeDays}
-              setDateFilter={setActiveDays}
-            />
+            <div className="d-flex w-100 mt-3 align-items-start">
+              {["project", "task", "calender"].map((display) => (
+                <p
+                  onClick={() => setTaskDisplay(display)}
+                  className={`mb-0 pm-calender-view__display-text mr-4 px-1 text-center ${
+                    taskDisplay === display &&
+                    "pm-data__text pm-calender-view__container--active"
+                  }`}
+                >
+                  {display}
+                </p>
+              ))}
+            </div>
           </div>
-          <div className="d-flex w-100 mt-3 align-items-start">
-            {["project", "task", "calender"].map((display) => (
-              <p
-                onClick={() => setTaskDisplay(display)}
-                className={`mb-0 pm-calender-view__display-text mr-4 px-1 text-center ${
-                  taskDisplay === display &&
-                  "pm-data__text pm-calender-view__container--active"
-                }`}
-              >
-                {display}
-              </p>
-            ))}
-          </div>
+          <DateFilters
+            filters={[constant.day, constant.week, constant.month]}
+            currentFilter={activeDays}
+            setDateFilter={setActiveDays}
+            containerClass="mt-2 d-md-none"
+          />
         </div>
-        <div
-          className="pm-calender-view__main mt-3"
-          style={{
-            height: `calc(90vh - ${headerHeight + 16}px)`,
-          }}
-        >
-          {activeDays === constant.day && <DayView />}
-          {activeDays === constant.week && <WeekView sevenDays={sevenDays} />}
-          {activeDays === constant.month && (
-            <MonthView months={months} monthDate={monthDate} />
-          )}
+        <div className="pm-calender-view__main--container px-3 py-3 py-md-none px-md-0">
+          <div
+            className={`pm-data__container pm-date__container mb-3 mx-auto d-flex d-md-none align-items-center ${
+              activeDays !== constant.day
+                ? "justify-content-between"
+                : "justify-content-center"
+            }`}
+          >
+            {activeDays !== constant.day && (
+              <AiOutlineLeft
+                className="mr-2 pm-data__active pm-calender-view__header-navigation--arrow"
+                onClick={() => setDays(activeDays, constant.decrement)}
+              />
+            )}
+
+            {activeDays === constant.day && (
+              <span
+                className="pm__date-filter-text d-flex align-items-center"
+                onClick={() => setShowCalenderInDayView(!showCalenderInDayView)}
+              >
+                <IoCalendarOutline className="pm-calender-view__header-calender--icon" />
+                &nbsp;{moment(dayDate).format("MMMM D,  ddd")}
+              </span>
+            )}
+
+            {activeDays === constant.week && (
+              <span className="pm__date-filter-text">
+                {`${moment(weekStartDate).format("ddd D")}-${moment(
+                  addDaysInDate(weekStartDate, 7)
+                ).format("ddd D,YYYY")}`}
+              </span>
+            )}
+
+            {activeDays === constant.month && (
+              <span
+                className="pm__date-filter-text"
+                style={{ cursor: "pointer" }}
+              >
+                {`${moment(monthDate).format("MMMM YYYY")}`}
+              </span>
+            )}
+            {activeDays !== constant.day && (
+              <AiOutlineRight
+                className="ml-2 pm-data__active pm-calender-view__header-navigation--arrow"
+                onClick={() => setDays(activeDays, constant.increment)}
+              />
+            )}
+          </div>
+          <div
+            className="pm-calender-view__main"
+            style={{
+              height: `calc(90vh - ${headerHeight + 16}px)`,
+            }}
+          >
+            {activeDays === constant.day && (
+              <DayView
+                months={months}
+                monthDate={monthDate}
+                isShowCalender={showCalenderInDayView}
+                dayDate={dayDate}
+              />
+            )}
+            {activeDays === constant.week && <WeekView sevenDays={sevenDays} />}
+            {activeDays === constant.month && (
+              <MonthView months={months} monthDate={monthDate} />
+            )}
+          </div>
         </div>
       </div>
     </div>

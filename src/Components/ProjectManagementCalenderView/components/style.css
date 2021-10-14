@@ -1,8 +1,9 @@
 .pm-task {
-  max-width: 160px;
+  max-width: 230px;
   border-radius: 8px;
   padding: 0.5rem;
   height: 85px;
+  width: 100%;
 }
 .pm-task__title {
   color: #2c2738;
@@ -12,8 +13,9 @@
   line-height: 22px;
   max-width: 194px;
   overflow: hidden;
+  text-align: left;
 }
-.pm-task__deadlines > p {
+.pm-task__deadlines > div > p {
   font-style: normal;
   font-weight: normal;
   font-size: 10px;
@@ -35,4 +37,25 @@
   line-height: 12px;
   color: #ffffff;
   text-transform: capitalize;
+}
+@media screen and (max-width: 767.99px) {
+  .pm-calender-view__mobile-task-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 1rem;
+  }
+  .pm-task {
+    width: 100%;
+    min-width: 210px;
+    max-width: 360px;
+  }
+  .vertical-line {
+    width: 1px;
+    height: 20px;
+    background-color: #00000043;
+  }
+  /* .pm-task__progress {
+    width: 30%;
+    height: 90%;
+  } */
 }

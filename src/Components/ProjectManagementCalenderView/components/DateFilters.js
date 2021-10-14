@@ -6,9 +6,7 @@ const DateFilters = ({
   filters,
 }) => {
   return (
-    <div
-      className={`d-flex pm__date-filter pm-data__container ${containerClass}`}
-    >
+    <div className={`${containerClass} pm__date-filter pm-data__container`}>
       {filters.map((filter) => {
         return (
           <div
@@ -18,7 +16,13 @@ const DateFilters = ({
             } pm__date-filter-item pm__date-filter-text`}
             onClick={() => setDateFilter(filter)}
           >
-            {filter}
+            {filter === "day"
+              ? "Daily"
+              : filter === "week"
+              ? "Weekly"
+              : filter === "month"
+              ? "monthly"
+              : null}
           </div>
         );
       })}

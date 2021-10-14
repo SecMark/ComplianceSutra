@@ -8,15 +8,26 @@ const MonthView = ({ months, goToDateWeek, monthDate, monthData }) => {
     <>
       <div className="pm-calender-view__month">
         {constant.Weeks.map((day, index) => (
-          <p
-            className={`${
-              index === 0
-                ? "pm-calender-view__header-left"
-                : index === 6 && "pm-calender-view__header-right"
-            }  pm-calender-view__month-header pm-calender-view__display-text pm-data__text text-center mb-0`}
-          >
-            {day}
-          </p>
+          <>
+            <p
+              className={`${
+                index === 0
+                  ? "pm-calender-view__month-header-left"
+                  : index === 6 && "pm-calender-view__month-header-right"
+              } d-none d-md-block  pm-calender-view__month-header pm-calender-view__display-text pm-data__text text-center mb-0`}
+            >
+              {day}
+            </p>
+            <p
+              className={`${
+                index === 0
+                  ? "pm-calender-view__month-header-left"
+                  : index === 6 && "pm-calender-view__month-header-right"
+              } d-block d-md-none pm-calender-view__month-header pm-calender-view__display-text pm-data__text text-center mb-0`}
+            >
+              {day[0]}
+            </p>
+          </>
         ))}
         {months.map((day, index) => {
           const todayDate = moment(new Date()).format("YYYY-MM-DD");
@@ -25,31 +36,60 @@ const MonthView = ({ months, goToDateWeek, monthDate, monthData }) => {
           const currentDay = moment(day).format("D");
           const compareDate = moment(day).format("YYYY-MM-DD");
           return (
-            <div
-              className="pm-calender-view__date-box"
-              style={{
-                ...(month !== currentMonth && { opacity: "0.3" }),
-              }}
-            >
+            <>
               <div
-                className={`pm-calender-view__date  mb-2 ${
-                  todayDate !== compareDate
-                    ? "pm-data__container"
-                    : "pm-data__active"
-                }`}
+                className="d-md-none pm-calender-view__date-box"
+                style={{
+                  ...(month !== currentMonth && { opacity: "0.3" }),
+                }}
               >
-                <span className={todayDate !== compareDate && "pm-data__text"}>
-                  {currentDay}
-                </span>
+                <div
+                  className={`pm-calender-view__date mb-md-2 mb-0 ${
+                    todayDate !== compareDate
+                      ? "pm-data__container"
+                      : "pm-data__active"
+                  }`}
+                >
+                  <span
+                    className={todayDate !== compareDate && "pm-data__text"}
+                  >
+                    {currentDay}
+                  </span>
+                </div>
               </div>
-              <Task
-                containerClass="mb-2"
-                background={index % 2 === 0 && "light"}
-              />
-              {index % 3 === 0 && <Task containerClass="mb-2" />}
-            </div>
+              <div
+                className="d-none d-md-flex pm-calender-view__date-box"
+                style={{
+                  ...(month !== currentMonth && { opacity: "0.3" }),
+                }}
+              >
+                <div
+                  className={`pm-calender-view__date mb-md-2 mb-0 ${
+                    todayDate !== compareDate
+                      ? "pm-data__container"
+                      : "pm-data__active"
+                  }`}
+                >
+                  <span
+                    className={todayDate !== compareDate && "pm-data__text"}
+                  >
+                    {currentDay}
+                  </span>
+                </div>
+                <Task
+                  containerClass="mb-2"
+                  background={index % 2 === 0 && "light"}
+                />
+                {index % 3 === 0 && <Task containerClass="mb-2" />}
+              </div>
+            </>
           );
         })}
+      </div>
+      <div className="d-md-none pm-calender-view__mobile-task-list mt-1">
+        <Task background="light" />
+        <Task />
+        <Task background="light" />
       </div>
     </>
   );
