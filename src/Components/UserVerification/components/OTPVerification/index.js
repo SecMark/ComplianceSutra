@@ -219,13 +219,12 @@ function VeryOTP({ history, currentStep }) {
 
   const resendOTP = (value, emails) => {
     setShowResendSection(false);
-    setMinutes(1);
+
     let payload = {
-      phn: value,
-      email: emails,
+      mobile_number: value || "7837679339",
     };
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
         if (
@@ -234,6 +233,7 @@ function VeryOTP({ history, currentStep }) {
           response.data.otp != "" &&
           response.data.statuscode === "200"
         ) {
+          setMinutes(1);
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
@@ -323,25 +323,19 @@ function VeryOTP({ history, currentStep }) {
       });
   };
 
-  const sendOTPRequest = (emails) => {
+  const sendOTPRequest = () => {
     setDisabled(true);
 
     let payload = {};
     payload = {
-      phn: mobileNumber,
-      email: emails,
+      mobile_number: mobileNumber || "+919104675084",
     };
 
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (
-          response &&
-          response.data &&
-          response.data.otp != "" &&
-          response.data.statuscode === "200"
-        ) {
+        if (response && response.message && response.message.status === true) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
           toast.success(
@@ -458,7 +452,7 @@ function VeryOTP({ history, currentStep }) {
               <div className="wrapper_login">
                 <p className="login_title">
                   <img className="right-back-arrow" src={leftArrow} alt="" />{" "}
-                  Let's secure your account
+                  Let's secure your accounthhhhhhhhhhhhhhhhhh
                   <br />
                   with verified mobile
                 </p>
@@ -487,7 +481,7 @@ function VeryOTP({ history, currentStep }) {
                       </p>
                       <button
                         style={{ cursor: "pointer" }}
-                        onClick={() => sendOTPRequest(email)}
+                        onClick={() => sendOTPRequest()}
                         className="btn save-details common-button"
                       >
                         SECURE NOW
