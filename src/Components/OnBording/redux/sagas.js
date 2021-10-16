@@ -617,7 +617,6 @@ const getLicenseList = function* getLicenseList({ payload }) {
   try {
     const { data, status } = yield call(api.getLicenseList, payload);
     if (data) {
-      console.log(data.message.industry_license_list);
       yield put(
         actions.setLicenseList({
           licenseList: data.message.industry_license_list,

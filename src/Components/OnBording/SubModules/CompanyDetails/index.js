@@ -110,7 +110,6 @@ function CompanyDetails({ history }) {
   const entityID =
     state && state.complianceOfficer && state.complianceOfficer?.entityInfo;
   useEffect(() => {
-    dispatch(companyActions.storeEnityIDwithCompaName([]));
     dispatch(
       companyActions.companyTypeRequest({
         country: "INDIA",
