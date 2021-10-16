@@ -79,7 +79,7 @@ function ChooseLicenses({
       //  setSelectedLicenseIdArray([]);
       dispatch(
         companyActions.companyTypeRequest({
-          country: "INDIA",
+          country: "India",
           category:
             fields &&
             fields[currentSelectedIndex] &&

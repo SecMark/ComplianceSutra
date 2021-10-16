@@ -20,6 +20,7 @@ import SideBarInputControl from "../SideBarInputControl";
 import api from "../../../../apiServices";
 import MobileStepper from "../mobileStepper";
 import Searchable from "react-searchable-dropdown";
+import { data } from "jquery";
 
 function CompanyDetails({ history }) {
   const state = useSelector((state) => state);
@@ -395,6 +396,11 @@ function CompanyDetails({ history }) {
 
   const onAddLiceseClick = (index) => {
     if (!isMobile) {
+      const data = {
+        Industry_type : "Advisory and Portfolio Management",
+        country:"india"
+      }
+      dispatch(companyActions.getLicenseList(data))
       setCurrentSelectedIndex(index);
       setOpen(true);
       const drawerParent = document.getElementById("drawerParent");
