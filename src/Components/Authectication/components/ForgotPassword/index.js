@@ -60,18 +60,20 @@ function ForgotPassword({ history }) {
       return;
     }
     let payload = {
-      loginid: values.email,
-      // pwd: "",
-      // rememberme: 0,
-      loginty: "AdminEmail",
+      email: values.email,
     };
-    let body;
     api
-      .post("/availabilityCheck", payload)
+      .post("/compliance.api.sendResetPasswordEmail", payload)
       .then(function (response) {
-        // handle success
-        if (response && response.data && response.data.Status === "True") {
-          sendResetPasswordEmail(values.email);
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
+          toast.success(
+            "The reset password link has been sent to your email account successfully"
+          );
+          //sendResetPasswordEmail(values.email);
         } else {
           toast.error("Email is not available please register account");
         }

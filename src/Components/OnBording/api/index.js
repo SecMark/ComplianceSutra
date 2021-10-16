@@ -1,10 +1,13 @@
 import api from "../../../apiServices";
 
-const verifyEmail = (payload) => api.post("/api/availabilityCheck", payload);
+const verifyEmail = (payload) =>
+  api.post("compliance.api.getEmailBody", payload);
 
 const checkEmailVerifiedThroughEmail = (payload) =>
   api.post("compliance.api.signUp", payload);
-const companyType = (payload) => api.post("compliance.api.getCompanyType");
+const companyType = () => api.post("compliance.api.getIndustryCompanyDetails");
+const getLicenseList = (payload) =>
+  api.post("compliance.api.getIndustryLicenseDetails", payload);
 const sendOTP = (payload) =>
   api.post("api/sendmsgwithverificationcode", payload);
 const verifyOTP = (payload) => api.post("api/GetOTP");
@@ -26,4 +29,5 @@ export default {
   getGovernanceCompanyData,
   insertCerificateDetailsService,
   getAssignedTaskData,
+  getLicenseList,
 };

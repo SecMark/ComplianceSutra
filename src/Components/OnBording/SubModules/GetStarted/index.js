@@ -66,11 +66,7 @@ function GetStart({ history }) {
     if (checkBoxState === true) {
       dispatch(
         emailActions.verifyEmailRequest({
-          LoginID: values.loginID,
-          Pwd: "",
-          rememberme: "0",
-          Loginty: values.loginty,
-          history,
+          email: values.loginID,
         })
       );
       setTimeout(() => {

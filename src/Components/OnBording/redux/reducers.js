@@ -165,6 +165,11 @@ const actionHandler = {
     ...state,
     emailAlreadExist: payload,
   }),
+
+  [types.SET_LICENSE_LIST]: (state, { payload }) => ({
+    ...state,
+    licenseList: payload,
+  }),
 };
 
 export default handleActions(actionHandler, {
@@ -189,4 +194,5 @@ export default handleActions(actionHandler, {
   userInfo: {},
   userData: {},
   goveranceData: {},
+  licenseList: {},
 });

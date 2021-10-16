@@ -8,8 +8,11 @@ import { actions as menuActions } from "../../OnBording/SubModules/DashBoardCO/M
 const loginReq = function* loginReq({ payload }) {
   try {
     const { data } = yield call(api.loginAccount, payload);
+    const { message } = data;
 
-    if (data && data.Message === "SUCCESS") {
+    if (message.status) {
+      const { token } = message;
+      localStorage.getItem("basicToken", token);
       yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
 
       if (
@@ -32,10 +35,6 @@ const loginReq = function* loginReq({ payload }) {
       yield put(actions.signInRequestFailed({ loginSuccess: false }));
     }
   } catch (err) {
-    // toast.error(
-    //     (err && err.response && err.response.data && err.response.data.message) ||
-    //         'Something went to wrong, Please try after sometime',
-    // );
     yield put(actions.signInRequestFailed({ loginSuccess: false }));
   }
 };

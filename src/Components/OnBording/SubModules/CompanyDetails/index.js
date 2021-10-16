@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import countryList from "react-select-country-list";
 import "./style.css";
 import { withRouter } from "react-router-dom";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
@@ -65,6 +66,12 @@ function CompanyDetails({ history }) {
   const [entityId, setEntityId] = useState([]);
   const [isEditIndex, setIsEditIndex] = useState(undefined);
   const [companyData, setCompanyData] = useState("");
+  const [value, setValue] = useState("");
+  const options = useMemo(() => countryList().getData(), []);
+
+  const changeHandler = (value) => {
+    setValue(value);
+  };
 
   const certificateInfo =
     state && state.complianceOfficer && state.complianceOfficer.certificateInfo;
@@ -138,6 +145,8 @@ function CompanyDetails({ history }) {
         eid: "",
       })
     );
+
+    dispatch(companyActions.getLicenseList());
     let list = [...fields];
     list[0].companyName = companyName;
   }, []);
@@ -188,26 +197,27 @@ function CompanyDetails({ history }) {
   }, [_entityID, currentSelectedIndex]);
 
   useEffect(() => {
-    console.log(companyType);
-    setCategory(Categories);
-    setCompanyTypeInfo(companyType);
     var array = [];
+    companyType && console.log(companyType.Industry_list);
+    companyType && console.log(companyType.company_list);
     companyType &&
-      companyType.map((item) => {
+      companyType.company_list.map((item) => {
         array.push({ value: item, label: item });
       });
+    console.log(array);
     setCompanyTypeoInfo(array);
 
     var array2 = [];
     var mobArray2 = [];
 
-    Categories &&
-      Categories.map((item) => {
-        array2.push({ value: item.Category, label: item.Category });
+    companyType &&
+      companyType.Industry_list.map((item) => {
+        array2.push({ value: item, label: item });
         if (item.Category !== "" || item.Category) {
           mobArray2.push({ value: item.Category, label: item.Category });
         }
       });
+    console.log(array2);
     setMobCategoryo(mobArray2);
     setCategoryo(array2);
   }, [Categories, companyType]);
@@ -533,7 +543,7 @@ function CompanyDetails({ history }) {
           <input
             type="text"
             className="form-control border-0 back-color"
-            placeholder="Enter Name"
+            placeholder="Name"
             // defaultValue={index === 0 ? companyName : item.companyName}
             value={item.companyName}
             autoComplete="off"
@@ -563,6 +573,23 @@ function CompanyDetails({ history }) {
               handleCompanyTypeChange(value, index, "companyType");
             }}
             listMaxHeight={200} //by default 140
+          />
+        </td>
+        <td>
+          <Searchable
+            options={options}
+            value={value}
+            onSelect={(value) => {
+              handleCompanyTypeChange(value, index, "companyType");
+            }}
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            className="form-control border-0 back-color"
+            placeholder="Pincode"
+            name="pinCode"
           />
         </td>
         <td className="dropList slectCatgory ddd">
@@ -1034,6 +1061,8 @@ function CompanyDetails({ history }) {
                   <tr>
                     <th scope="col">Company Name</th>
                     <th scope="col">Company Type</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">Pin Code</th>
                     <th scope="col">Business category</th>
                     <th scope="col">Licenses</th>
                     <th scope="col">&nbsp;</th>

@@ -211,7 +211,7 @@ function PersonalDetails({ history }) {
       countryCode = strr;
       dispatch(
         personalDetailsAction.insUpdateDeletAPIRequest({
-          email: email,
+          email: email.replace(/ /g, "+"),
           token: localStorage.getItem("accessToken"),
           full_name: values.fullName,
           company_name: values.companyName,
@@ -219,6 +219,7 @@ function PersonalDetails({ history }) {
           designation: values.designation,
           password: values.password,
           confirm_password: values.password,
+          history: history,
         })
       );
     } else {

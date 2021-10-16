@@ -22,7 +22,7 @@
   padding-bottom: 15px;
   position: relative;
 }
-.bottom-logo-strip-parent-grid .companyDetailsGrid{
+.bottom-logo-strip-parent-grid .companyDetailsGrid {
   height: 100vh;
   max-height: calc(100vh - 264px);
   overflow: auto;
@@ -43,8 +43,8 @@
   font-family: Poppins;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 8px !important; 
-    background-color: rgb(228 228 228 / 30%) !important;
+  border-radius: 8px !important;
+  background-color: rgb(228 228 228 / 30%) !important;
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
@@ -52,9 +52,10 @@
   text-align: left;
   color: #1b1d21;
   padding-left: 10px;
+  width: 80px;
 }
 .get-main-company-detail .table td {
-  border-top: inherit; 
+  border-top: inherit;
 }
 .ddd .searchable__list__item:first-child {
   padding: 0px !important;
@@ -231,7 +232,7 @@
 }
 
 .company-details-tbl .add-license-disabled {
-  width: 166px;
+  width: 141px;
   height: 44px;
   font-family: Poppins;
   font-size: 13px;
@@ -768,7 +769,6 @@
 }
 
 .searchable__list {
-
   padding: 3px 0 0px;
   max-height: 225px !important;
   border-radius: 4px;
@@ -778,20 +778,20 @@
 }
 .searchable__list__item {
   padding: 13px 0px !important;
-    border-bottom: 1px solid rgb(222 222 222 / 30%) !important;
-    margin: 0px 15px !important;
-    font-family: 'Poppins' !important;
-    font-family: Poppins;
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    font-stretch: normal !important;
-    font-style: normal !important;
-    line-height: normal !important;
-    letter-spacing: 0.02px !important;
-    text-align: left !important;
-    color: #1b1d21 !important;
+  border-bottom: 1px solid rgb(222 222 222 / 30%) !important;
+  margin: 0px 15px !important;
+  font-family: "Poppins" !important;
+  font-family: Poppins;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  font-stretch: normal !important;
+  font-style: normal !important;
+  line-height: normal !important;
+  letter-spacing: 0.02px !important;
+  text-align: left !important;
+  color: #1b1d21 !important;
 }
-.searchable__controls__input::placeholder{
+.searchable__controls__input::placeholder {
   font-family: Poppins;
   font-size: 13px;
   font-weight: 600 !important;
@@ -802,8 +802,7 @@
   text-align: left;
   color: #1b1d21;
 }
-.searchable__list__item:last-child
-{
+.searchable__list__item:last-child {
   border-bottom: inherit !important;
 }
 .searchable__list__item:hover {
@@ -870,8 +869,10 @@ textarea {
   height: 9.6px;
 }
 
-.searchable__controls__arrow__inner svg path[d]{
-  d: path("M 0 100 Q 0 50 50 50 L 250 50 Q 300 50 300 100 L 200 200 Q 150 250 100 200 L 50 150 Z");
+.searchable__controls__arrow__inner svg path[d] {
+  d: path(
+    "M 0 100 Q 0 50 50 50 L 250 50 Q 300 50 300 100 L 200 200 Q 150 250 100 200 L 50 150 Z"
+  );
 }
 
 .slectCatgory input.form-control.border-0 {

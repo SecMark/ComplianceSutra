@@ -71,11 +71,8 @@ function Login({ history }) {
     }
     dispatch(
       signInSignUpActions.signInRequest({
-        usr: values.LoginId,
-        pwd: values.Pwd,
-        // rememberme: values.rememberme ? 1 : 0,
-        // Loginty: "AdminEmail",
-        // history: history,
+        email: values.LoginId,
+        password: values.Pwd,
       })
     );
 
