@@ -615,10 +615,14 @@ const companyTypeRequest = function* companyTypeRequest({ payload }) {
 
 const getLicenseList = function* getLicenseList({ payload }) {
   try {
-    const { data, status } = yield call(api.getLicenseList);
-
+    const { data, status } = yield call(api.getLicenseList, payload);
     if (data) {
-      yield put(actions.setLicenseList({ licenseList: data.message }));
+      console.log(data.message.industry_license_list);
+      yield put(
+        actions.setLicenseList({
+          licenseList: data.message.industry_license_list,
+        })
+      );
       toast.success(data && data.Message);
     } else {
     }

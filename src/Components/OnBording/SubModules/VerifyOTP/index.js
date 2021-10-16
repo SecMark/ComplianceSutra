@@ -114,7 +114,7 @@ function VeryOTP({ history, currentStep }) {
     setDisabled(false);
     const { name, value } = e.target;
     const mobileNumberReg = /^[0-9]{0,10}$/;
-    const otpRE = /^[0-9]{0,5}$/;
+    const otpRE = /^[0-9]{0,6}$/;
     if (e.target.name === "otp") {
       if (!mobileNumberReg.test(e.target.value)) {
         return "";
@@ -157,15 +157,14 @@ function VeryOTP({ history, currentStep }) {
   const resendOTP = () => {
     setShowResendSection(false);
     let payload = {
-      phn: mobileNumber,
-      email: email,
+      mobile_number: mobileNumber || "7837679339",
     };
 
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.statuscode === "200") {
+        if (response && response.data && response.data.message === true) {
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
@@ -263,17 +262,15 @@ function VeryOTP({ history, currentStep }) {
 
   const sendOTPRequest = (text) => {
     setDisabled(true);
-    let payload = {};
-    payload = {
-      phn: mobileNumber,
-      email: email,
+    let payload = {
+      mobile_number: mobileNumber || "7837679339",
     };
 
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.statuscode === "200") {
+        if (response && response.data && response.data.message === true) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
           toast.success(
@@ -316,21 +313,14 @@ function VeryOTP({ history, currentStep }) {
   const verifyOTP = () => {
     let payload = {};
     payload = {
-      phn: mobileNumber,
-      email: email,
-      otp: otp,
+      input_otp: otp,
     };
     if (otp !== "") {
       api
-        .post("/api/GetOTP", payload)
+        .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
-          if (
-            response &&
-            response.data &&
-            response.data.otp != "" &&
-            response.data.Status === "False"
-          ) {
+          if (!response.message.Status) {
             setOtpInValid(true);
           } else {
             setOtpInValid(false);
@@ -528,8 +518,8 @@ function VeryOTP({ history, currentStep }) {
                         name="otp"
                         onChange={handelChange}
                         id="OTP"
-                        maxLength={5}
-                        placeholder="Enter 5 digit OTP"
+                        maxLength={6}
+                        placeholder="Enter 6 digit OTP"
                         required
                       />
                       {otp !== "" && otpValid === true && (

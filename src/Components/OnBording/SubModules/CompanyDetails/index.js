@@ -30,18 +30,12 @@ function CompanyDetails({ history }) {
   const [showEdit, setshowEdit] = useState(true);
   const [fields, setFields] = useState([
     {
-      companyName: "",
-      entityID: "",
-      EntityTypeID: "",
-      companyType: "",
-      category: "",
+      company_name: "",
+      company_country: "",
+      company_pincode: "",
+      company_type: "",
+      business_category: "",
       countShow: false,
-      liecenseCount: null,
-      currentIndex: null,
-      liecenseData: [],
-      licenseIDgrp: "",
-      selectedLiecenseIdArray: [],
-      parentLicense: [],
     },
   ]);
   const [errors, setErrors] = useState([
@@ -74,69 +68,47 @@ function CompanyDetails({ history }) {
     setValue(value);
   };
 
-  const certificateInfo =
-    state && state.complianceOfficer && state.complianceOfficer.certificateInfo;
-
   const companyType =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.companyInfo.companyLicenseData;
-
-  const Licenses =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.companyInfo.companyLicenseData &&
-    state.complianceOfficer.companyInfo.companyLicenseData[1] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[1][0] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[1][0].Licenses;
+    state?.complianceOfficer &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData;
 
   const Categories =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.companyInfo.companyLicenseData &&
-    state.complianceOfficer.companyInfo.companyLicenseData[2] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[2][0] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[2][0].Categories;
+    state?.complianceOfficer &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData[2] &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData[2][0] &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData[2][0].Categories;
 
   const userID =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
-
-  const EntityID =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
+    state?.complianceOfficer &&
+    state.complianceOfficer?.personalInfo &&
+    state.complianceOfficer?.personalInfo.data &&
+    state.complianceOfficer?.personalInfo.data[0][0] &&
+    state.complianceOfficer?.personalInfo.data[0][0] &&
+    state.complianceOfficer?.personalInfo.data[0][0].UserDetails &&
+    state.complianceOfficer?.personalInfo.data[0][0].UserDetails[0] &&
+    state.complianceOfficer?.personalInfo.data[0][0].UserDetails[0].UserID;
 
   const companyName =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.companyName;
+    state?.complianceOfficer &&
+    state.complianceOfficer?.personalInfo &&
+    state.complianceOfficer?.personalInfo.companyName;
 
   const _entityID =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.cerificateInfo &&
-    state.complianceOfficer.cerificateInfo.table &&
-    state.complianceOfficer.cerificateInfo.table &&
-    state.complianceOfficer.cerificateInfo.table[0] &&
-    state.complianceOfficer.cerificateInfo.table[0].entityID;
+    state?.complianceOfficer &&
+    state.complianceOfficer?.cerificateInfo &&
+    state.complianceOfficer?.cerificateInfo.table &&
+    state.complianceOfficer?.cerificateInfo.table &&
+    state.complianceOfficer?.cerificateInfo.table[0] &&
+    state.complianceOfficer?.cerificateInfo.table[0].entityID;
 
   const entityID =
-    state && state.complianceOfficer && state.complianceOfficer.entityInfo;
+    state && state.complianceOfficer && state.complianceOfficer?.entityInfo;
   useEffect(() => {
     dispatch(companyActions.storeEnityIDwithCompaName([]));
     dispatch(
@@ -146,8 +118,6 @@ function CompanyDetails({ history }) {
         eid: "",
       })
     );
-
-    dispatch(companyActions.getLicenseList());
     let list = [...fields];
     list[0].companyName = companyName;
   }, []);
@@ -199,13 +169,10 @@ function CompanyDetails({ history }) {
 
   useEffect(() => {
     var array = [];
-    companyType && console.log(companyType.Industry_list);
-    companyType && console.log(companyType.company_list);
     companyType &&
       companyType.company_list.map((item) => {
         array.push({ value: item, label: item });
       });
-    console.log(array);
     setCompanyTypeoInfo(array);
 
     var array2 = [];
@@ -218,7 +185,6 @@ function CompanyDetails({ history }) {
           mobArray2.push({ value: item.Category, label: item.Category });
         }
       });
-    console.log(array2);
     setMobCategoryo(mobArray2);
     setCategoryo(array2);
   }, [Categories, companyType]);
@@ -359,12 +325,9 @@ function CompanyDetails({ history }) {
         errorsObj &&
           errorsObj.map((error, key) => {
             if (
-              item.companyName === "" ||
-              item.companyType === "" ||
-              item.category === "" ||
-              item.selectedLiecenseIdArray.length === 0 ||
-              error.categoryErr !== "" ||
-              error.companyNameError !== ""
+              item.company_name === "" ||
+              item.company_type === "" ||
+              item.business_category === ""
             ) {
               isNext = false;
               return isNext;
@@ -402,6 +365,12 @@ function CompanyDetails({ history }) {
       }
       dispatch(companyActions.getLicenseList(data))
       setCurrentSelectedIndex(index);
+      dispatch(
+        companyActions.getLicenseList({
+          industry_type: "General",
+          country: "India",
+        })
+      );
       setOpen(true);
       const drawerParent = document.getElementById("drawerParent");
       const drawerChild = document.getElementById("drawerChild");
@@ -449,18 +418,14 @@ function CompanyDetails({ history }) {
     var temp = fields;
 
     if (type == "companyType") {
-      temp[index].EntityTypeID = value.EntityTypeID;
-      temp[index].companyType = value.EntityTypeDesc;
+      temp[index].company_type = value;
+    }
+    if (type == "country") {
+      temp[index].company_country = value;
     }
 
     if (type == "categoryType") {
-      temp[index].category = value;
-      temp[index].countShow = false;
-      temp[index].selectedLiecenseIdArray = [];
-      temp[index].liecenseCount = 0;
-      temp[index].liecenseData = [];
-      temp[index].parentLicense = [];
-      temp[index].liecenseCount = 0;
+      temp[index].business_category = value;
     }
     setFields(temp);
     handelChange("", index, "", "");
@@ -553,7 +518,7 @@ function CompanyDetails({ history }) {
             // defaultValue={index === 0 ? companyName : item.companyName}
             value={item.companyName}
             autoComplete="off"
-            name="companyName"
+            name="company_name"
             onFocus={() => {
               showHideDropDown("companyName", index);
             }}
@@ -586,7 +551,7 @@ function CompanyDetails({ history }) {
             options={options}
             value={value}
             onSelect={(value) => {
-              handleCompanyTypeChange(value, index, "companyType");
+              handleCompanyTypeChange(value, index, "country");
             }}
           />
         </td>
@@ -595,7 +560,10 @@ function CompanyDetails({ history }) {
             type="text"
             className="form-control border-0 back-color"
             placeholder="Pincode"
-            name="pinCode"
+            name="company_pincode"
+            onChange={(e) => {
+              handelChange(e, index, "", "");
+            }}
           />
         </td>
         <td className="dropList slectCatgory ddd">
@@ -621,9 +589,9 @@ function CompanyDetails({ history }) {
                   : "btn add-license-disabled"
               }
               disabled={
-                fields[index].companyName === "" ||
-                fields[index].companyType === "" ||
-                fields[index].category === "" ||
+                fields[index].company_name === "" ||
+                fields[index].company_type === "" ||
+                fields[index].business_category === "" ||
                 (errors &&
                   errors[index] &&
                   errors[index].companyNameError !== "")
@@ -681,7 +649,7 @@ function CompanyDetails({ history }) {
       if (
         e.target.value !== "" &&
         !re.test(e.target.value) &&
-        name === "companyName"
+        name === "company_name"
       ) {
         return "";
       }
