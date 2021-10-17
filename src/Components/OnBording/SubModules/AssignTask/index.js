@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./style.css";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import comtech from "../../../../assets/Images/CapmTech.png";
-
+import { MdExpandMore } from "react-icons/md";
 import { Modal } from "react-responsive-modal";
 import modelSquare from "../../../../assets/Icons/modelSquare.png";
 import modelBox from "../../../../assets/Icons/modelBox.png";
@@ -25,6 +25,7 @@ import assignIcon3 from "../../../../assets/Icons/assignIcon2.png";
 import assignIcon5 from "../../../../assets/Icons/assignIcon3.png";
 import assignIcon2 from "../../../../assets/Icons/assignIcon4.png";
 import assignIcon4 from "../../../../assets/Icons/assignIcon5.png";
+import secmark from "../../../../assets/Images/secmark.png";
 
 function AssignTask({ history }) {
   const state = useSelector((state) => state);
@@ -510,10 +511,17 @@ function AssignTask({ history }) {
             {taskListData &&
               taskListData[0]?.licenseAndTaskList.map((licenseItem, JIndex) => {
                 return (
-                  <div className="row">
+                  <div className="row assign-task__row">
                     <div className="col-4">
-                      <span onClick={() => showAllTask(JIndex)}>
-                        {licenseItem.show ? <BsChevronUp /> : <BsChevronDown />}
+                      <span
+                        className="mr-2"
+                        onClick={() => showAllTask(JIndex)}
+                      >
+                        <MdExpandMore
+                          className={`assign-task__expand-more-icon ${
+                            licenseItem.show && "rotate-180"
+                          }`}
+                        />
                       </span>
                       <img
                         src={chooseImage(JIndex)}
@@ -524,29 +532,36 @@ function AssignTask({ history }) {
                             : {}
                         }
                       />
-                      <span>{licenseItem.licenseName}</span>
+                      <span className="assign-task__license-name">
+                        {licenseItem.licenseName}
+                      </span>
                     </div>
-                    <div className="col-4">{licenseItem.taskList.length}</div>
+                    <div className="col-4 assign-task__light-text">
+                      {licenseItem.taskList.length}&nbsp;Tasks
+                    </div>
                     <div className="col-4">
-                      <input placeholder="Add email to assign task" />
+                      <input
+                        className="form-control"
+                        placeholder="Add email to assign task"
+                      />
                     </div>
                     {licenseItem.show && (
                       <>
                         {" "}
-                        <div className="col-5">
+                        <div className="col-5 mt-3">
                           <div className="accordian-data-title spacing-alignment">
                             Task Name
                           </div>
                         </div>
-                        <div className="col-3">
+                        <div className="col-3 mt-3">
                           <div className="accordian-data-title">Frequency</div>
                         </div>
-                        <div className="col-4">
+                        <div className="col-4 mt-3">
                           <div className="accordian-data-title">
                             Assign Task
                           </div>
                         </div>
-                        <div className="col-12 spacing-alignment-border">
+                        <div className="col-12 spacing-alignment-border mb-3">
                           <div className="header-border"></div>
                         </div>
                       </>
@@ -557,21 +572,25 @@ function AssignTask({ history }) {
                         return (
                           <>
                             <div className="col-5">
-                              <div className="accordian-data-title spacing-alignment">
+                              <div className="accordian-data-title spacing-alignment assign-task__task-name">
                                 {subTask.subject}
                               </div>
                             </div>
                             <div className="col-3">
-                              <div className="accordian-data-title">
+                              <div className="accordian-data-title assign-task__task-name">
                                 {subTask.frequency}
                               </div>
                             </div>
                             <div className="col-4">
                               <div className="accordian-data-title">
                                 {subTask.assigned ? (
-                                  <input placeholder="Add email to assign task" />
+                                  <input
+                                    className="assign-task__email-input form-control"
+                                    placeholder="Add email to assign task"
+                                  />
                                 ) : (
                                   <button
+                                    className="assign-status assign-task__button"
                                     onClick={() => assignTask(JIndex, Sindex)}
                                   >
                                     Assign Task
@@ -585,6 +604,81 @@ function AssignTask({ history }) {
                   </div>
                 );
               })}
+          </div>
+          <div className="bottom-logo-strip">
+            <div className="row aligncenter px-5">
+              <div className="col-12">
+                <div className="pinkBox-inline">
+                  <button
+                    // onClick={() => routeToAssignTask()}
+                    className={
+                      Object.values(emailError).find(
+                        (item) => item === "yes"
+                      ) !== true
+                        ? "btn save-details common-button2  mb-2"
+                        : "btn save-details common-button2"
+                    }
+                    disabled={
+                      Object.values(emailError).find(
+                        (item) => item === "yes"
+                      ) || emailError.length === 0
+                    }
+                  >
+                    Done
+                  </button>
+                  <div className="review-box">
+                    <div className="row">
+                      <div className="col-9 pr-0">
+                        <div className="pink-title">Enable expert review</div>
+                        <div
+                          style={{ cursor: "pointer" }}
+                          onClick={() => setVisibleExpertReviewModal(true)}
+                          className="view-detail-link"
+                        >
+                          View Details
+                        </div>
+                      </div>
+                      <div className="col-3 pr-0">
+                        <div className="switch-btn">
+                          <label className="switch">
+                            <input
+                              name="secmarkexpert"
+                              // value={enablesecmarkExpert}
+                              // onChange={(e) => handleFields(e)}
+                              type="checkbox"
+                            />
+                            <span className="slider round"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-12 col-md-6 col-sm-6 col-xl-6">
+                {/* <p className="account-link-assign">You are not the right person to assign the task?{activeInvite === false ?
+                    (<span style={{ cursor: 'pointer' }} onClick={() => { setActiveInvite(true) }} className="invite-link"> INVITE</span>)
+                    : (<input
+                      name="inviteemail"
+                      value={inviteVal}
+                      className="form-control"
+                      placeholder="Add email to invite"
+                      onChange={(e) => handleFields(e)}
+                    />
+                    )}{inviteVal !== "" && !isEmail(inviteVal) && (<p className="input-error-message">Please Enter Valid Email Address</p>)}</p> */}
+              </div>
+              <div className="col-6 col-md-6 col-sm-6 col-xl-6 d-none d-sm-block text-right">
+                {/* <a href="#" style={{'cursor': 'auto'}}> */}
+                <span className="powerBy">Powered by</span>
+                <img
+                  className="header_logo footer-logo-secmark"
+                  src={secmark}
+                  alt="SECMARK"
+                  title="SECMARK"
+                />
+                {/* </a> */}
+              </div>
+            </div>
           </div>
         </div>
       </div>
