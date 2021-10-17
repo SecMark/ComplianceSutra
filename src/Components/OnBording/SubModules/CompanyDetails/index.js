@@ -389,7 +389,7 @@ function CompanyDetails({ history }) {
   };
 
   const addLicense = (index, licenseList) => {
-    var temp = fields;
+    var temp = [...fields];
     temp[index].licenses = licenseList;
     setFields(temp);
   };
@@ -905,7 +905,11 @@ function CompanyDetails({ history }) {
               <div id="drawerChild" className="sideBarFixed">
                 {open && (
                   <>
-                    <License addLicense={addLicense} index={currentIndex} />
+                    <License
+                      addLicense={addLicense}
+                      index={currentIndex}
+                      closeDrawer={close}
+                    />
                   </>
                 )}
               </div>

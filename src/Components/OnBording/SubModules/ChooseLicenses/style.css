@@ -665,6 +665,15 @@ div#contentGeneral:last-child {
   height: auto;
   width: 44px;
 }
+.license__close-button,
+.license__expand-more-button {
+  font-size: 1.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in;
+}
+.license__expand-more-button.rotate-180 {
+  transform: rotate(180deg);
+}
 @media (min-width: 1200px) {
   .sideBarFixed .container,
   .sideBarFixed .container-lg,
@@ -674,7 +683,12 @@ div#contentGeneral:last-child {
     max-width: 96%;
   }
 }
-
+.license-main {
+  overflow: auto;
+}
+.license-main__bg--dark {
+  background-color: rgb(228 228 228 / 30%) !important;
+}
 @media screen and (max-width: 767px) {
   .mobile-right-0 {
     padding-right: 0px !important;
