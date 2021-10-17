@@ -38,9 +38,6 @@ function CompanyDetails({ history }) {
       countShow: false,
     },
   ]);
-  useEffect(() => {
-    console.log(fields);
-  }, [fields]);
   const [errors, setErrors] = useState([
     {
       companyNameError: "",
