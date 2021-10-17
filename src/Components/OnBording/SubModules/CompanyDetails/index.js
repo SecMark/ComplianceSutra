@@ -21,6 +21,8 @@ import api from "../../../../apiServices";
 import MobileStepper from "../mobileStepper";
 import Searchable from "react-searchable-dropdown";
 import License from "../ChooseLicenses/License";
+import axiosInstance from "../../../../apiServices";
+import { toast } from "react-toastify";
 
 function CompanyDetails({ history }) {
   const state = useSelector((state) => state);
@@ -363,7 +365,7 @@ function CompanyDetails({ history }) {
       setCurrentSelectedIndex(index);
       dispatch(
         companyActions.getLicenseList({
-          industry_type: "General",
+          industry_type: fields[index].business_category,
           country: "India",
         })
       );
@@ -633,9 +635,19 @@ function CompanyDetails({ history }) {
     );
   };
 
-  const redirectToAssignTaskScreen = () => {
-    if (checkButtonDisabled()) {
-      history.push("/governance");
+  const redirectToAssignTaskScreen = async () => {
+    try {
+      const { data } = await axiosInstance.post(
+        "compliance.api.setCompanyDetails",
+        {
+          details: fields,
+        }
+      );
+      if (data.message.status) {
+        history.push("/governance");
+      }
+    } catch (error) {
+      toast.error("Please Add License");
     }
   };
 
@@ -970,36 +982,6 @@ function CompanyDetails({ history }) {
             <div className="bottom-logo-strip-parent-grid d-block d-sm-none">
               {fields &&
                 fields.map((item, index) => addNewCompanymobile(item, index))}
-
-              <div className="d-block d-sm-none">
-                <div className="container">
-                  <div className="add-company-mobile">
-                    <caption
-                      onClick={() => {
-                        const values = [...fields];
-                        values.push({
-                          companyName: "",
-                          companyType: "",
-                          category: "",
-                          countShow: false,
-                          selectedLiecenseIdArray: [],
-                        });
-                        setFields(values);
-                        const errorInfo = [...errors];
-                        errorInfo.push({
-                          companyNameError: "",
-                          companyTypeError: "",
-                          categoryErr: "",
-                        });
-                        setErrors(errorInfo);
-                      }}
-                      className="add-company-link"
-                    >
-                      Add another company
-                    </caption>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div className="bottom-logo-strip-parent-grid table-responsive">
@@ -1009,13 +991,12 @@ function CompanyDetails({ history }) {
                   onClick={() => {
                     const values = [...fields];
                     values.push({
-                      companyName: "",
-                      companyType: "",
-                      entityID: "",
-                      EntityTypeID: "",
-                      category: "",
+                      company_name: "",
+                      company_country: "",
+                      company_pincode: "",
+                      company_type: "",
+                      business_category: "",
                       countShow: false,
-                      selectedLiecenseIdArray: [],
                     });
                     setFields(values);
                     const errorInfo = [...errors];

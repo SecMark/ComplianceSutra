@@ -16,6 +16,7 @@ const License = ({ index, addLicense, closeDrawer }) => {
   const [searchEnable, setSearchEnable] = useState(false);
   const [selectedListOfLicenses, setSelectedListOfLicenses] = useState([]);
   const [headerHight, setHeaderHight] = useState(0);
+
   useEffect(() => {
     const licenseInfo = state?.complianceOfficer?.licenseList?.licenseList;
     const newLicenseList = licenseInfo?.map((values) => {

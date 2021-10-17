@@ -12,7 +12,9 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
     let obj = {
       email: payload.email,
     };
+    toast.success("Please Wait!!");
     const { data } = yield call(api.verifyEmail, obj);
+
     if (data.message.status !== false) {
       toast.success(
         "The verification link has been sent to your email account successfully"
