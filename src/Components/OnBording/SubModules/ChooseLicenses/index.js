@@ -54,12 +54,8 @@ function ChooseLicenses({
   const licenseInfo =
     state &&
     state.complianceOfficer &&
-    state.complianceOfficer.companyInfo &&
-    state.complianceOfficer.companyInfo.companyLicenseData &&
-    state.complianceOfficer.companyInfo.companyLicenseData[3] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[3][0] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[3][0]
-      .LicensebyCategory;
+    state.complianceOfficer?.companyInfo &&
+    state.complianceOfficer?.companyInfo?.licenseList?.licenseList;
 
   const categoryName =
     fields &&
@@ -104,13 +100,14 @@ function ChooseLicenses({
 
   useEffect(() => {
     if (licenseInfo && licenseInfo.length > 0) var arr = [];
+
     arr = groupBy(licenseInfo, "Category");
     let temp;
     setList(temp);
     if (arr) {
       temp = Object.entries(arr);
     }
-    setLicenseList(temp);
+    setLicenseList(state.complianceOfficer?.licenseList?.licenseList);
   }, [licenseInfo]);
 
   const onClickLiencesCheckbox = (e, item) => {
@@ -578,7 +575,7 @@ function ChooseLicenses({
                 licenseList.map((item, index) => (
                   <div
                     key={index}
-                    id={`grid${item[0]}`}
+                    id={`grid${item}`}
                     className="accordian-grid drower"
                   >
                     <div className="row">
@@ -589,7 +586,7 @@ function ChooseLicenses({
                               {renderCheckBox(item, index)}
                               <label
                                 className="custom-control-label"
-                                htmlFor={item[0]}
+                                htmlFor={item.industry}
                               >
                                 &nbsp;
                               </label>
@@ -607,10 +604,11 @@ function ChooseLicenses({
                             />
                           </div>
                           <div className="gst-type-licence">
-                            {item[0]}
+                            {item.industry}
                             <div className="count-task-num d-block d-sm-none">
                               {" "}
-                              {item[1] && item[1].length} Licenses{" "}
+                              {item.license &&
+                                item.license.length} Licenses{" "}
                             </div>
                           </div>
                         </div>
@@ -618,25 +616,70 @@ function ChooseLicenses({
                       <div className="col-4 col-sm-3 col-md-3 pl-0 d-none d-sm-block">
                         <div className="count-task-num">
                           {" "}
-                          {item[1] && item[1].length} Licenses{" "}
+                          {item.license && item.license.length} Licenses{" "}
                         </div>
                       </div>
                       <div
-                        onClick={() => onClickArrow(item[0])}
+                        onClick={() => onClickArrow(index)}
                         className="col-2 col-sm-2 col-md-2"
                       >
                         <div className="liecense down-arrow float-right mobile-right">
-                          <div id={`arrow${item[0]}`} className="downArrow" />
+                          <div id={`arrow${index}`} className="downArrow" />
                         </div>
                       </div>
                     </div>
                     <div
-                      id={`content${item[0]}`}
+                      id={`content${item}`}
                       className="accordian-bar-with-min accordian-grid accordian-grid-active border-0"
                     >
                       <div>
-                        {item[1].map((subTask) => (
-                          <div>{renderData(subTask, item[0])}</div>
+                        {item.license.map((subTask, indexx) => (
+                          <div className="row">
+                            <div className="col-10 col-sm-7 col-md-7 col-xl-7">
+                              <div className="two-icon choose-licence-btn">
+                                <div className="down-arrow">
+                                  <div className="custom-control custom-checkbox">
+                                    {renderCheckBox(subTask, indexx)}
+                                    <label
+                                      className="custom-control-label"
+                                      htmlFor={subTask.name}
+                                    >
+                                      &nbsp;
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <div>
+                                  {subTask.name}
+                                  <div className="count-task-num d-block d-sm-none">
+                                    {" "}
+                                    {subTask.sublicense &&
+                                      subTask.sublicense.length}{" "}
+                                    Licenses{" "}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-4 col-sm-3 col-md-3 pl-0 d-none d-sm-block">
+                              <div className="count-task-num">
+                                {" "}
+                                {subTask.sublicense &&
+                                  subTask.sublicense.length}{" "}
+                                Licenses{" "}
+                              </div>
+                            </div>
+                            <div
+                              onClick={() => onClickArrow(index)}
+                              className="col-2 col-sm-2 col-md-2"
+                            >
+                              <div className="liecense down-arrow float-right mobile-right">
+                                <div
+                                  id={`arrow${index}`}
+                                  className="downArrow"
+                                />
+                              </div>
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>

@@ -16,8 +16,8 @@ const insertCerificateDetailsService = (payload) =>
 const insertTempTask = (payload) => api.post("api/insertTempTask", payload);
 const getAssignedTaskData = (payload) =>
   api.post("api/GetEntityLicenseTask", payload);
-const getGovernanceCompanyData = (payload) =>
-  api.post("api/GetEntityCategory", payload);
+const getGovernanceCompanyData = () =>
+  api.get("compliance.api.getGovernanceCompanyList");
 
 export default {
   verifyEmail,

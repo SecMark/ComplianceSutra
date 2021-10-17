@@ -20,6 +20,7 @@ import SideBarInputControl from "../SideBarInputControl";
 import api from "../../../../apiServices";
 import MobileStepper from "../mobileStepper";
 import Searchable from "react-searchable-dropdown";
+import License from "../ChooseLicenses/License";
 
 function CompanyDetails({ history }) {
   const state = useSelector((state) => state);
@@ -61,6 +62,7 @@ function CompanyDetails({ history }) {
   const [isEditIndex, setIsEditIndex] = useState(undefined);
   const [companyData, setCompanyData] = useState("");
   const [value, setValue] = useState("");
+  const [currentIndex, setCurrentIndex] = useState();
   const options = useMemo(() => countryList().getData(), []);
 
   const changeHandler = (value) => {
@@ -357,6 +359,7 @@ function CompanyDetails({ history }) {
 
   const onAddLiceseClick = (index) => {
     if (!isMobile) {
+      setCurrentIndex(index);
       setCurrentSelectedIndex(index);
       dispatch(
         companyActions.getLicenseList({
@@ -383,6 +386,12 @@ function CompanyDetails({ history }) {
       }
       showHideDropDown("companyName", index);
     }
+  };
+
+  const addLicense = (index, licenseList) => {
+    var temp = fields;
+    temp[index].licenses = licenseList;
+    setFields(temp);
   };
   const close = () => {
     if (!isMobile) {
@@ -895,19 +904,9 @@ function CompanyDetails({ history }) {
             <div id="drawerParent" className="">
               <div id="drawerChild" className="sideBarFixed">
                 {open && (
-                  <LicenseDrawer
-                    currentSelectedIndex={currentSelectedIndex}
-                    setCurrentSelectedIndex={setCurrentSelectedIndex}
-                    fields={fields}
-                    setFields={setFields}
-                    setLiecenseData={setLiecenseData}
-                    liecenseData={liecenseData}
-                    category={category}
-                    companyInfo={companyInfo}
-                    setCategory={setCategory}
-                    close={close}
-                    setCompanyInfo={setCompanyInfo}
-                  />
+                  <>
+                    <License addLicense={addLicense} index={currentIndex} />
+                  </>
                 )}
               </div>
             </div>
@@ -916,19 +915,22 @@ function CompanyDetails({ history }) {
             <div id="drawerParentMobile" className="">
               <div id="drawerChildMobile" className="sideBarFixedAccount">
                 {open && (
-                  <LicenseDrawer
-                    currentSelectedIndex={currentSelectedIndex}
-                    setCurrentSelectedIndex={setCurrentSelectedIndex}
-                    fields={fields}
-                    setFields={setFields}
-                    setLiecenseData={setLiecenseData}
-                    liecenseData={liecenseData}
-                    category={category}
-                    companyInfo={companyInfo}
-                    setCategory={setCategory}
-                    close={close}
-                    setCompanyInfo={setCompanyInfo}
-                  />
+                  <>
+                    <LicenseDrawer
+                      currentSelectedIndex={currentSelectedIndex}
+                      setCurrentSelectedIndex={setCurrentSelectedIndex}
+                      fields={fields}
+                      setFields={setFields}
+                      setLiecenseData={setLiecenseData}
+                      liecenseData={liecenseData}
+                      category={category}
+                      companyInfo={companyInfo}
+                      setCategory={setCategory}
+                      close={close}
+                      setCompanyInfo={setCompanyInfo}
+                    />
+                    <License />
+                  </>
                 )}
               </div>
             </div>

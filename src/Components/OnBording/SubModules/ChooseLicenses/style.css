@@ -663,7 +663,7 @@ div#contentGeneral:last-child {
 .assign-icon img {
   background-size: auto;
   height: auto;
-  width:44px;
+  width: 44px;
 }
 @media (min-width: 1200px) {
   .sideBarFixed .container,
@@ -676,7 +676,7 @@ div#contentGeneral:last-child {
 }
 
 @media screen and (max-width: 767px) {
-  .mobile-right-0{
+  .mobile-right-0 {
     padding-right: 0px !important;
     margin-right: 0px !important;
   }
@@ -685,10 +685,10 @@ div#contentGeneral:last-child {
     margin-top: 0px;
     margin-right: 7px;
   }
-  
-.drower .count-task-num {
-  text-align: left;
-}
+
+  .drower .count-task-num {
+    text-align: left;
+  }
   .accordian-grid-active .tasks-count {
     padding: 0px 0px 0px 90px;
     line-height: 20px;
@@ -861,4 +861,15 @@ div#contentGeneral:last-child {
   .accordian-date-drower .pl-0 {
     padding-right: 0;
   }
+}
+
+.text-license {
+  font-family: Poppins;
+  font-size: 15px;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
 }
