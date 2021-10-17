@@ -1,22 +1,86 @@
-.project-management-container {
-  object-fit: contain;
-  border-radius: 36px;
-  box-shadow: 0 3px 36px 0 rgb(67 0 255 / 8%);
-  background-color: #ffffff;
-  position: relative;
-  height: 98vh;
-  margin: 20px 20px 20px 7%;
+.project-management__project-data-container {
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  box-sizing: border-box;
+  box-shadow: 0px 3px 20px rgba(44, 39, 56, 0.06);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+}
+p.project-data-container__item {
+  margin-bottom: 0;
+  flex: 0.1;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  line-height: 14px;
+  font-style: normal;
+  font-weight: normal;
+}
+p.project-data-container__item.wide-flex-2 {
+  flex: 0.2;
+}
+p.project-data-container__item.wide {
+  flex: 0.2;
+}
+p.project-data-container__item.wide-2 {
+  flex: 0.15;
+}
+p.project-data-container__project-name {
+  flex: 0.3;
+  text-align: left;
+  color: #7a73ff;
+}
+.project-data-container__buttons {
+  flex: 0.3;
+  width: 100%;
+}
+.project-management__project-header {
+  box-shadow: none;
+  background: rgba(122, 115, 255, 0.16);
+  padding: 0.75rem 0.5rem;
+  border: none;
+}
+.project-management__project-header p.project-data-container__item {
+  color: #7a73ff;
+  padding: 0;
+  font-weight: 500;
 }
 
-.project-management-container .custimDesignTask {
-  position: "relative";
+/* Dropdown 1 Conntainer */
+.background--grey {
+  background: #f5f5f5;
 }
-
-.project-management-container .first-view {
-  cursor: "pointer";
+.background--white {
+  background-color: #fff;
 }
-
-.project-management-container .remaining-view {
-  margin-left: 60px;
-  cursor: "pointer";
+p.text-black {
+  color: #2c2738;
+}
+.project-data-container__1 {
+  background-color: #d3e9ff;
+}
+.project-data-container__2 {
+  background-color: rgba(122, 115, 255, 0.16);
+  padding: 0.5rem;
+  border-left: 3px solid #7a73ff;
+  border-radius: 6px;
+}
+.project-data-container__3 {
+  padding: 0.5rem;
+  border-bottom: 1px solid #b3abc4;
+}
+.icon {
+  transition: all 0.3s ease;
+}
+.icon__rotate--180 {
+  transform: rotate(180deg);
+}
+.project-data-container__2 .project-data-container__buttons {
+  flex: 0.05;
+}
+.background__item-3 {
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  box-sizing: border-box;
+  border-radius: 12px;
 }

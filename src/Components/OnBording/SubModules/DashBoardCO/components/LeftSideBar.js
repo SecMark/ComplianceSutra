@@ -160,8 +160,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/new-regulations");
     } else if (currentActiveMenu === "help") {
       history.push("/help");
-    } else if (currentActiveMenu === "project-task") {
-      history.push("/project-task");
+    } else if (currentActiveMenu === "project-management") {
+      history.push("/project-management");
     }
   };
 
@@ -281,7 +281,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             className={
               !openProfile &&
               state &&
-              state.adminMenu.currentMenu === "project-task"
+              state.adminMenu.currentMenu === "project-management"
                 ? "taskIcon-active"
                 : "taskIcon"
             }
@@ -289,11 +289,11 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             <img
               style={{ cursor: "pointer" }}
               title="Project Task"
-              onClick={() => onMenuClick("project-task")}
+              onClick={() => onMenuClick("project-management")}
               src={
                 !openProfile &&
                 state &&
-                state.adminMenu.currentMenu === "project-task"
+                state.adminMenu.currentMenu === "project-management"
                   ? VectorIcon
                   : VectorIcon
               }

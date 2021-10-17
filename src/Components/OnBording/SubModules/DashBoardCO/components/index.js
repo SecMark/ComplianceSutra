@@ -16,7 +16,7 @@ import HelpSection from "../../../../HelpSection/Help";
 import SingleNotification from "../../../../../CustomNotification/SingleNotification";
 import api from "../../../../../../src/apiServices";
 import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
-import ProjectDesktop from "../../../../ProjectManagement/ProjectDesktop";
+import ProjectManagement from "../../../../ProjectManagement";
 // import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
 
 function Dashboard({ history }) {
@@ -244,7 +244,7 @@ function Dashboard({ history }) {
         )}
         {state && state.adminMenu.currentMenu === "help" && <HelpSection />}
         {state && state.adminMenu.currentMenu === "project-task" && (
-          <ProjectDesktop />
+          <ProjectManagement />
         )}
       </div>
     </div>
