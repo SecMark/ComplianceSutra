@@ -93,6 +93,7 @@
 
 .get-main-assign-task {
   padding-bottom: 60px;
+  height: 100vh;
   position: relative;
 }
 
@@ -192,7 +193,8 @@
 .bg-transperent {
   background-color: transparent !important;
 }
-.assign-task-accordian .accordian-grid {
+.assign-task-accordian .accordian-grid,
+.assign-task__row {
   border-bottom: 1px solid #f6f6f6;
   padding: 15px 0px 10px;
   position: relative;
@@ -204,7 +206,8 @@
   right: 14px;
 }
 
-.assign-task-accordian .accordian-grid .form-control {
+.assign-task-accordian .accordian-grid .form-control,
+.assign-task__email-input {
   position: relative;
   height: 40px;
   border: 1px solid #e4e4e4;
@@ -220,6 +223,10 @@
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
+}
+.assign-task__button {
+  background-color: transparent;
+  border: none;
 }
 .assign-task-accordian .accordian-grid .down-arrow {
   width: 44px;
@@ -240,10 +247,31 @@
   text-align: left;
   color: #2c2738;
 }
+.assign-task__license-name {
+  line-height: 40px;
+  padding-left: 13px;
+  font-family: Poppins;
+  font-size: 19px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2c2738;
+}
+.assign-task__expand-more-icon {
+  font-size: 2rem;
+  font-weight: 500;
+  transition: all 0.25s ease-in;
+}
+.rotate-180 {
+  transform: rotate(180deg);
+}
 .transperent-bg {
   background-color: transparent !important;
 }
-.assign-task-accordian .accordian-grid .count-task-num {
+.assign-task-accordian .accordian-grid .count-task-num,
+.assign-task__light-text {
   line-height: 40px;
   font-family: Poppins;
   font-size: 12px;
@@ -321,7 +349,8 @@
   text-transform: uppercase;
 }
 
-.accordian-bar-with-min .accordian-data-backend {
+.accordian-bar-with-min .accordian-data-backend,
+.assign-task__task-name {
   font-family: Poppins;
   font-size: 13px;
   font-weight: normal;
@@ -334,7 +363,9 @@
   line-height: 20px;
   margin-bottom: 15px;
 }
-
+.assign-task__task-name {
+  text-transform: none;
+}
 .accoridian-open-pb {
   margin-bottom: 10px;
 }
@@ -969,10 +1000,10 @@ img.mobileUser-icon {
   }
   .spacing-alignment {
     padding-left: 0px;
-}
-.spacing-alignment-border {
-  padding-left: 16px;
-}
+  }
+  .spacing-alignment-border {
+    padding-left: 16px;
+  }
 
   .accordian-data-history > div {
     /* border-bottom: 1px solid #e4e4e4; */
@@ -1080,6 +1111,7 @@ img.mobileUser-icon {
   }
   .get-main-assign-task {
     padding-bottom: 100px;
+    height: 100vh;
     position: relative;
   }
   .only-mobile-flex {
@@ -1136,16 +1168,16 @@ img.mobileUser-icon {
 /* for safari */
 
 /* @media screen and (-webkit-min-device-pixel-ratio: 0) { */
-  .assigntask1 .downArrow {
-    position: absolute;
-    /* top: 0; */
-    cursor: pointer;
-    box-sizing: border-box;
-    height: 10px;
-    width: 10px;
-    border-style: solid;
-    border-color: #000;
-    border-width: 0px 2px 2px 0px;
-    transform: rotate(45deg);
-  }
+.assigntask1 .downArrow {
+  position: absolute;
+  /* top: 0; */
+  cursor: pointer;
+  box-sizing: border-box;
+  height: 10px;
+  width: 10px;
+  border-style: solid;
+  border-color: #000;
+  border-width: 0px 2px 2px 0px;
+  transform: rotate(45deg);
+}
 /* } */
