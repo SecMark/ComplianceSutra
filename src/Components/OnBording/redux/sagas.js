@@ -729,10 +729,10 @@ const insertTaskListReq = function* insertTaskListReq({ payload }) {
 
 const assignTaskDataReq = function* assignTaskDataReq({ payload }) {
   try {
-    const { data, status } = yield call(api.getAssignedTaskData, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
-      yield put(actions.getAssignTaskDataReuestSuccess(data));
+    const { data } = yield call(api.getAssignedTaskData, payload);
+    if (data.message.status) {
+      console.log(data);
+      yield put(actions.getAssignTaskDataReuestSuccess(data.message));
       //yield put(push(`/${authData && authData.store_locale}/my-account`));
       toast.success(data && data.Message);
     } else {

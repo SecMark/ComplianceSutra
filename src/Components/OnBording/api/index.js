@@ -14,8 +14,7 @@ const verifyOTP = (payload) => api.post("api/GetOTP");
 const insertCerificateDetailsService = (payload) =>
   api.post("api/InsertCertifateDetailsArray", payload);
 const insertTempTask = (payload) => api.post("api/insertTempTask", payload);
-const getAssignedTaskData = (payload) =>
-  api.post("api/GetEntityLicenseTask", payload);
+const getAssignedTaskData = (payload) => api.post("compliance.api.GetTaskList");
 const getGovernanceCompanyData = () =>
   api.get("compliance.api.getGovernanceCompanyList");
 
