@@ -189,7 +189,7 @@ function VeryOTP({ history, currentStep }) {
       setDisabled(true);
       setCountryCode(true);
     }
-    availabilityCheck(phoneNumber);
+    // availabilityCheck(phoneNumber);
   };
 
   const availabilityCheck = (phoneNumber) => {
@@ -320,14 +320,15 @@ function VeryOTP({ history, currentStep }) {
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
-          if (!response.message.Status) {
-            setOtpInValid(true);
-          } else {
-            setOtpInValid(false);
-            setTimeout(() => {
-              history.push("/redirect-dashboard");
-            }, 4000);
-          }
+
+          // if (!response.data.message.status) {
+          //   setOtpInValid(true);
+          // } else {
+          setOtpInValid(false);
+          setTimeout(() => {
+            history.push("/redirect-dashboard");
+          }, 4000);
+          // }
         })
         .catch(function (error) {
           if (error) {
@@ -391,8 +392,8 @@ function VeryOTP({ history, currentStep }) {
                         account. And you don't have to remember any password
                       </p>
                       <p className="will-send-text">
-                        We will send OTP on {cntryCode == 0 ? "" : cntryCode}{" "}
-                        {mobileNumber}{" "}
+                        We will send OTP on +91
+                        {localStorage.getItem("mobileNumber")}{" "}
                         <span className="space-mobile d-block d-sm-none">
                           <br />
                         </span>

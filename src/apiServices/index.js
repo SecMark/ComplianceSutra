@@ -10,7 +10,7 @@ axiosInstance.interceptors.request.use(
     const auth = localStorage.getItem("basicToken");
     if (auth) {
       config.headers = {
-        Authorization: `Basic ${auth}`,
+        Authorization: `Basic ZmVhY2NiOGJkNWZkMDJhOjc4NTAzYWI3N2UwNzI5Ng==`,
       };
     }
     return config;

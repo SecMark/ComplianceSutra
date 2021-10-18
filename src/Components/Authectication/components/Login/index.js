@@ -9,6 +9,7 @@ import SideBar from "../../../../Components/OnBording/SubModules/SideBar";
 import { actions as signInSignUpActions } from "../../redux/actions";
 import validator from "validator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ToastContainer } from "react-toastify";
 
 function Login({ history }) {
   const state = useSelector((state) => state);
@@ -94,6 +95,7 @@ function Login({ history }) {
   };
   return (
     <div className="row get-login-mobile">
+      <ToastContainer />
       <div className="col-3 left-fixed">
         <div className="on-boarding">
           <SideBar />

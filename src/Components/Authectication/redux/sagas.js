@@ -14,6 +14,7 @@ const loginReq = function* loginReq({ payload }) {
       const { token } = message;
       localStorage.getItem("basicToken", token);
       yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
+      toast.success("Thankyou for login.");
 
       if (
         data.IscreateBySecmark === 0 &&

@@ -209,6 +209,7 @@ function PersonalDetails({ history }) {
       let strr = values.countryCode;
 
       countryCode = strr;
+      localStorage.setItem("mobileNumber", values.mobileNumber);
       dispatch(
         personalDetailsAction.insUpdateDeletAPIRequest({
           email: email.replace(/ /g, "+"),

@@ -21,6 +21,10 @@ import api from "../../../../apiServices";
 import MobileStepper from "../mobileStepper";
 import Searchable from "react-searchable-dropdown";
 import { data } from "jquery";
+import License from "../ChooseLicenses/License";
+import axiosInstance from "../../../../apiServices";
+import { toast } from "react-toastify";
+
 
 function CompanyDetails({ history }) {
   const state = useSelector((state) => state);
@@ -62,6 +66,7 @@ function CompanyDetails({ history }) {
   const [isEditIndex, setIsEditIndex] = useState(undefined);
   const [companyData, setCompanyData] = useState("");
   const [value, setValue] = useState("");
+  const [currentIndex, setCurrentIndex] = useState();
   const options = useMemo(() => countryList().getData(), []);
 
   const changeHandler = (value) => {
@@ -358,15 +363,11 @@ function CompanyDetails({ history }) {
 
   const onAddLiceseClick = (index) => {
     if (!isMobile) {
-      const data = {
-        Industry_type : "Advisory and Portfolio Management",
-        country:"india"
-      }
-      dispatch(companyActions.getLicenseList(data))
+      setCurrentIndex(index);
       setCurrentSelectedIndex(index);
       dispatch(
         companyActions.getLicenseList({
-          industry_type: "General",
+          industry_type: fields[index].business_category,
           country: "India",
         })
       );
@@ -389,6 +390,12 @@ function CompanyDetails({ history }) {
       }
       showHideDropDown("companyName", index);
     }
+  };
+
+  const addLicense = (index, licenseList) => {
+    var temp = [...fields];
+    temp[index].licenses = licenseList;
+    setFields(temp);
   };
   const close = () => {
     if (!isMobile) {
@@ -630,9 +637,19 @@ function CompanyDetails({ history }) {
     );
   };
 
-  const redirectToAssignTaskScreen = () => {
-    if (checkButtonDisabled()) {
-      history.push("/governance");
+  const redirectToAssignTaskScreen = async () => {
+    try {
+      const { data } = await axiosInstance.post(
+        "compliance.api.setCompanyDetails",
+        {
+          details: fields,
+        }
+      );
+      if (data.message.status) {
+        history.push("/governance");
+      }
+    } catch (error) {
+      toast.error("Please Add License");
     }
   };
 
@@ -901,19 +918,13 @@ function CompanyDetails({ history }) {
             <div id="drawerParent" className="">
               <div id="drawerChild" className="sideBarFixed">
                 {open && (
-                  <LicenseDrawer
-                    currentSelectedIndex={currentSelectedIndex}
-                    setCurrentSelectedIndex={setCurrentSelectedIndex}
-                    fields={fields}
-                    setFields={setFields}
-                    setLiecenseData={setLiecenseData}
-                    liecenseData={liecenseData}
-                    category={category}
-                    companyInfo={companyInfo}
-                    setCategory={setCategory}
-                    close={close}
-                    setCompanyInfo={setCompanyInfo}
-                  />
+                  <>
+                    <License
+                      addLicense={addLicense}
+                      index={currentIndex}
+                      closeDrawer={close}
+                    />
+                  </>
                 )}
               </div>
             </div>
@@ -922,19 +933,22 @@ function CompanyDetails({ history }) {
             <div id="drawerParentMobile" className="">
               <div id="drawerChildMobile" className="sideBarFixedAccount">
                 {open && (
-                  <LicenseDrawer
-                    currentSelectedIndex={currentSelectedIndex}
-                    setCurrentSelectedIndex={setCurrentSelectedIndex}
-                    fields={fields}
-                    setFields={setFields}
-                    setLiecenseData={setLiecenseData}
-                    liecenseData={liecenseData}
-                    category={category}
-                    companyInfo={companyInfo}
-                    setCategory={setCategory}
-                    close={close}
-                    setCompanyInfo={setCompanyInfo}
-                  />
+                  <>
+                    <LicenseDrawer
+                      currentSelectedIndex={currentSelectedIndex}
+                      setCurrentSelectedIndex={setCurrentSelectedIndex}
+                      fields={fields}
+                      setFields={setFields}
+                      setLiecenseData={setLiecenseData}
+                      liecenseData={liecenseData}
+                      category={category}
+                      companyInfo={companyInfo}
+                      setCategory={setCategory}
+                      close={close}
+                      setCompanyInfo={setCompanyInfo}
+                    />
+                    <License />
+                  </>
                 )}
               </div>
             </div>
@@ -970,36 +984,6 @@ function CompanyDetails({ history }) {
             <div className="bottom-logo-strip-parent-grid d-block d-sm-none">
               {fields &&
                 fields.map((item, index) => addNewCompanymobile(item, index))}
-
-              <div className="d-block d-sm-none">
-                <div className="container">
-                  <div className="add-company-mobile">
-                    <caption
-                      onClick={() => {
-                        const values = [...fields];
-                        values.push({
-                          companyName: "",
-                          companyType: "",
-                          category: "",
-                          countShow: false,
-                          selectedLiecenseIdArray: [],
-                        });
-                        setFields(values);
-                        const errorInfo = [...errors];
-                        errorInfo.push({
-                          companyNameError: "",
-                          companyTypeError: "",
-                          categoryErr: "",
-                        });
-                        setErrors(errorInfo);
-                      }}
-                      className="add-company-link"
-                    >
-                      Add another company
-                    </caption>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div className="bottom-logo-strip-parent-grid table-responsive">
@@ -1009,13 +993,12 @@ function CompanyDetails({ history }) {
                   onClick={() => {
                     const values = [...fields];
                     values.push({
-                      companyName: "",
-                      companyType: "",
-                      entityID: "",
-                      EntityTypeID: "",
-                      category: "",
+                      company_name: "",
+                      company_country: "",
+                      company_pincode: "",
+                      company_type: "",
+                      business_category: "",
                       countShow: false,
-                      selectedLiecenseIdArray: [],
                     });
                     setFields(values);
                     const errorInfo = [...errors];
