@@ -1,0 +1,93 @@
+.project-management-container {
+  object-fit: contain;
+  border-radius: 36px;
+  box-shadow: 0 3px 36px 0 rgb(67 0 255 / 8%);
+  background-color: #ffffff;
+  position: relative;
+  height: 98vh;
+  margin: 20px 20px 20px 7%;
+
+  padding: 44px 48px 5px;
+}
+
+.project-management-container .custimDesignTask {
+  position: "relative";
+}
+
+.project-management-container .first-view {
+  cursor: "pointer";
+}
+
+.project-management-container .remaining-view {
+  margin-left: 60px;
+  cursor: "pointer";
+}
+
+.project-mangement-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.project-mangement-title {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 45px;
+  color: #2c2738;
+}
+
+.project-task-button {
+  font-family: Poppins;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  color: #2c2738;
+}
+.project-task-button button {
+  border: none;
+  background: #7a73ff;
+  border-radius: 8px;
+  color: #ffffff;
+  padding: 2px 15px;
+  margin-left: 5px;
+}
+
+.project-view {
+  border-bottom: 2px solid #eee8fc;
+  position: relative;
+  margin-top: 20px;
+}
+.project-view .active {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 36px;
+  color: #7a73ff;
+  cursor: pointer;
+}
+
+.project-view .inactive {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 36px;
+  color: #b3abc4;
+  cursor: pointer;
+}
+
+.project-view .second-view {
+  margin-left: 50px;
+}
+
+.project-view .view-progress {
+  width: 60px;
+  position: absolute;
+  height: 2px;
+  border-radius: 1px;
+  background-color: #7a73ff;
+}

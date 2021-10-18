@@ -1,0 +1,16 @@
+.project-list-view-table thead {
+  background: rgba(122, 115, 255, 0.16);
+  border-radius: 12px;
+  border: none !important;
+}
+
+.project-list-view-table thead th {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 30px;
+  color: #7a73ff;
+  border: none !important;
+  text-align: center;
+}

@@ -26,6 +26,7 @@ import assignIcon5 from "../../../../assets/Icons/assignIcon3.png";
 import assignIcon2 from "../../../../assets/Icons/assignIcon4.png";
 import assignIcon4 from "../../../../assets/Icons/assignIcon5.png";
 import secmark from "../../../../assets/Images/secmark.png";
+import axiosInstance from "../../../../apiServices";
 
 function AssignTask({ history }) {
   const state = useSelector((state) => state);
@@ -34,60 +35,61 @@ function AssignTask({ history }) {
   const [assignField, setAssignField] = useState(undefined);
   const [assignExist, setAssignExist] = useState("");
 
-  const [assignedEmail, setAssignTaskEmail] = useState([]);
+  const [assignTaskEmail, setAssignTaskEmail] = useState([]);
 
   const innerRef = useOuterClick((e) => {
     if (currentDropDown !== "" && !e.target.id.includes("email-input"))
       setCurrentDropDown("");
   });
 
-  const handleCheckEmailAvailability = async (value, emailObject) => {
-    let data = false;
-    let obj = {};
+  // const handleCheckEmailAvailability = async (value, emailObject) => {
+  //   let data = false;
+  //   let obj = {};
 
-    if (isEmail(value) === true) {
-      if (issessionEmail(value) === false) {
-        await axios
-          .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-            loginID: value,
-            pwd: "",
-            rememberme: 0,
-            loginty: "AdminEmail",
-          })
-          .then((response) => {
-            if (response && response.data && response.data.Status === "True") {
-              data = true;
-            } else {
-              data = false;
-            }
-          })
-          .catch((err) => {});
+  //   if (isEmail(value) === true) {
+  //     if (issessionEmail(value) === false) {
+  //       await axios
+  //         .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
+  //           loginID: value,
+  //           pwd: "",
+  //           rememberme: 0,
+  //           loginty: "AdminEmail",
+  //         })
+  //         .then((response) => {
+  //           if (response && response.data && response.data.Status === "True") {
+  //             data = true;
+  //           } else {
+  //             data = false;
+  //           }
+  //         })
+  //         .catch((err) => {});
 
-        if (data === true) {
-          obj = value;
-          setemailError({ ...emailError, [emailObject]: "yes" });
-        } else {
-          setemailError({ ...emailError, [emailObject]: "no" });
-          let emailArr = [...emailList];
-          let obj = {};
-          var emailExists = emailList.filter((item) => item.email === value);
-          if (emailExists.length === 0) {
-            if (isEmail(value)) {
-              obj = { email: value };
-              emailArr.push(obj);
-            }
-            setEmailList(emailArr);
-          }
-        }
+  //       if (data === true) {
+  //         obj = value;
+  //         setemailError({ ...emailError, [emailObject]: "yes" });
+  //       } else {
+  //         setemailError({ ...emailError, [emailObject]: "no" });
+  //         let emailArr = [...emailList];
+  //         let obj = {};
+  //         var emailExists = emailList.filter((item) => item.email === value);
+  //         if (emailExists.length === 0) {
+  //           if (isEmail(value)) {
+  //             obj = { email: value };
+  //             emailArr.push(obj);
+  //           }
+  //           setEmailList(emailArr);
+  //         }
+  //       }
 
-        setAssignTaskEmail([...assignedEmail, obj]);
-      }
-    }
-  };
+  //       setAssignTaskEmail([...assignedEmail, obj]);
+  //     }
+  //   }
+  // };
 
   const [fields, setFields] = useState([]);
 
   const [taskToAssign, setTaskToAssign] = useState({});
+  const [selectedTask, setSelectedTask] = useState([]);
 
   const [emailList, setEmailList] = useState([]);
   const [currentDropDown, setCurrentDropDown] = useState("");
@@ -309,7 +311,7 @@ function AssignTask({ history }) {
   ) => {
     let emailObject = companyEntityName + EntityGroupID + index;
 
-    handleCheckEmailAvailability(e.target.value, emailObject);
+    //handleCheckEmailAvailability(e.target.value, emailObject);
   };
 
   const closeAssign = (e, flag) => {
@@ -418,6 +420,54 @@ function AssignTask({ history }) {
     let temp = [...taskListData];
     temp[0].licenseAndTaskList[index].taskList[jIndex].assigned =
       !temp[0].licenseAndTaskList[index].taskList[jIndex].assigned;
+    setTaskListData(temp);
+  };
+
+  const assignTaskToAll = (index, e) => {
+    const { value } = e.target;
+    let assignedEmail = [];
+    let temp = [...taskListData];
+    setAssignTaskEmail([]);
+    temp[0].licenseAndTaskList[index].taskList.map((item, jIndex) => {
+      temp[0].licenseAndTaskList[index].taskList[jIndex].email = value;
+      assignedEmail.push({
+        name: temp[0].licenseAndTaskList[index].taskList[jIndex].name,
+        completed_by: temp[0].licenseAndTaskList[index].taskList[jIndex].email,
+      });
+    });
+
+    setAssignTaskEmail(assignedEmail);
+    setTaskListData(temp);
+  };
+
+  const sendTaskDetail = async () => {
+    try {
+      const { data } = await axiosInstance.post("compliance.api.AssignTasks", {
+        task_details: assignTaskEmail,
+      });
+      console.log(data);
+      if (data.message.status) {
+        toast.success("Invite has been sent successfully");
+        history.push("/otpverification-co");
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
+  const assignEmailTask = (index, jIndex, e) => {
+    const { value } = e.target;
+    let temp = [...taskListData];
+    let emails = [];
+    temp[0].licenseAndTaskList[index].taskList[jIndex].email = value;
+    emails.push({
+      name: temp[0].licenseAndTaskList[index].taskList[jIndex].name,
+      completed_by: temp[0].licenseAndTaskList[index].taskList[jIndex].email,
+    });
+    setAssignTaskEmail(emails);
+
     setTaskListData(temp);
   };
 
@@ -543,6 +593,7 @@ function AssignTask({ history }) {
                       <input
                         className="form-control"
                         placeholder="Add email to assign task"
+                        onChange={(e) => assignTaskToAll(JIndex, e)}
                       />
                     </div>
                     {licenseItem.show && (
@@ -587,6 +638,9 @@ function AssignTask({ history }) {
                                   <input
                                     className="assign-task__email-input form-control"
                                     placeholder="Add email to assign task"
+                                    onChange={(e) =>
+                                      assignEmailTask(JIndex, Sindex, e)
+                                    }
                                   />
                                 ) : (
                                   <button
@@ -618,11 +672,7 @@ function AssignTask({ history }) {
                         ? "btn save-details common-button2  mb-2"
                         : "btn save-details common-button2"
                     }
-                    disabled={
-                      Object.values(emailError).find(
-                        (item) => item === "yes"
-                      ) || emailError.length === 0
-                    }
+                    onClick={() => sendTaskDetail()}
                   >
                     Done
                   </button>

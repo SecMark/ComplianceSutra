@@ -168,7 +168,7 @@ function Governance({ history }) {
 
     if (data.message.success) {
       localStorage.setItem("expertReview", enableSecmarkReview);
-      //history.push("/assign-task");
+      history.push("/assign-task");
     }
   };
 
