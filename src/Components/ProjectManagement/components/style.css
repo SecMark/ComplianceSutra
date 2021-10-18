@@ -4,9 +4,9 @@
 .project-management__header--border {
   border-bottom: 3px solid #b3abc450;
 }
-.project-management__main-container {
+/* .project-management__main-container {
   padding: 1rem 2rem 0;
-}
+} */
 .project-management__main {
   overflow: auto;
 }
@@ -68,7 +68,10 @@
   color: #7a73ff !important;
   background-color: #fff !important;
 }
-
+.project-management__small-icon-button--grey {
+  background-color: #e9e8ff;
+  color: #7a73ff;
+}
 .project-management__button {
   background-color: transparent;
   border: none;
@@ -100,9 +103,11 @@
     padding-bottom: 15vh;
   }
   .project-management__main-container {
-    width: calc(100% - 2rem);
+    width: calc(100% - 3rem);
     margin: auto;
     margin-top: -12vh;
+  }
+  .project-management__main-container--background-white {
     background-color: #fff;
     border-radius: 8px;
     border: 1px solid #e2e2e2;

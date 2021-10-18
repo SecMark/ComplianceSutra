@@ -9,8 +9,12 @@ export const ProjectManagementHeader = ({ children }) => {
     </div>
   );
 };
-export const ProjectManagementMainContainer = ({ children }) => {
-  return <div className="project-management__main-container">{children}</div>;
+export const ProjectManagementMainContainer = ({ children, className }) => {
+  return (
+    <div className={`project-management__main-container ${className}`}>
+      {children}
+    </div>
+  );
 };
 export const ProjectManagementMain = ({ children }) => {
   const [headerHeight, setHeaderHight] = useState(0);

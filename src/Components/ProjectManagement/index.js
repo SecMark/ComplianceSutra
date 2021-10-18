@@ -15,7 +15,12 @@ import {
   EditIconButton,
   SmallIconButton,
 } from "./components/Buttons";
-import Projects, { ProjectHeader } from "./ProjectDesktop";
+import Project, {
+  ProjectHeader,
+  ProjectMilestone,
+  ProjectSubTask,
+  ProjectTask,
+} from "./ProjectDesktop";
 const ProjectManagement = () => {
   return (
     <div className="project-management p-0 p-md-4">
@@ -34,9 +39,12 @@ const ProjectManagement = () => {
           <ProjectHeader />
           <ProjectManagementMain>
             {/* Components of main */}
-            <Projects />
-            <Projects />
-            <Projects />
+            <Project />
+            <Project />
+            <Project />
+            <ProjectMilestone />
+            <ProjectSubTask />
+            <ProjectTask />
           </ProjectManagementMain>
         </ProjectManagementMainContainer>
       </div>

@@ -18,6 +18,8 @@ export const SmallIconButton = ({
           ? "danger"
           : type === "outlined"
           ? "outlined"
+          : type === "grey"
+          ? "grey"
           : ""
       }`}
     >
