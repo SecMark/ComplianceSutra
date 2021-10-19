@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { setNotificationTaskId } from "../../notification/Redux/Action";
 import { actions as taskReportActions } from "../../../redux/actions";
+import { getDataByLicenses } from "../../../../../../../CommonModules/helpers/tasks.helper";
 export default function LicenseTaskList(props) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -30,15 +31,18 @@ export default function LicenseTaskList(props) {
       usertype: props.user.UserType,
     };
     axios
-      .post(`${BACKEND_BASE_URL}/api/getTaskReport`, payload)
+      .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`, {
+        headers: {
+          Authorization: `Basic ZmVhY2NiOGJkNWZkMDJhOjc4NTAzYWI3N2UwNzI5Ng==`,
+        },
+      })
       .then((response) => {
-        let rowCount = [];
-        response.data.map((item) => {
-          rowCount[item.Status.trim()] = 3;
-        });
-        setAssignRowCount(rowCount);
-        let fileData = response.data;
-        setCompanyTaskData(fileData);
+        const { status, status_response, task_details } = response.data.message;
+        if (status && status_response) {
+          const taskByLicenses = getDataByLicenses(task_details);
+          console.log("taskdatdfdjk: ", taskByLicenses);
+          setCompanyTaskData(taskByLicenses);
+        }
       })
       .catch((error) => {
         console.log("error => ", error);
@@ -155,7 +159,7 @@ export default function LicenseTaskList(props) {
                     style={{ cursor: "pointer", display: "flex" }}
                   >
                     <span className="pink-label-title-right">
-                      <div className="overdue-title">{task.TaskName}</div>
+                      <div className="overdue-title">{task.subject}</div>
                       <div
                         className={
                           Status === "overdue"
@@ -166,58 +170,58 @@ export default function LicenseTaskList(props) {
                         onClick={(e) => getSelectTaskDetails(task)}
                       >
                         <div className="d-block d-sm-none">
-                          {getDayDate(task.EndDate, 2)}
+                          {getDayDate(task.due_date, 2)}
                         </div>
                       </div>
-                      {task.Status !== "Assigned" && (
+                      {task.status !== "Assigned" && (
                         <p
                           className="pink-label-text"
                           style={{
                             backgroundColor:
-                              task && task.Status
-                                ? task.Status === "Assign"
+                              task && task.status
+                                ? task.status === "Open"
                                   ? "#fcf3cd"
-                                  : task.Status === "Completed By User"
-                                  ? moment(task.EndDate).isBefore(today)
+                                  : task.status === "Completed By User"
+                                  ? moment(task.due_date).isBefore(today)
                                     ? "#cdfcd8"
                                     : "#ffefea"
-                                  : task.Status === "Approved"
+                                  : task.status === "Approved"
                                   ? "#cdfcd8"
-                                  : task.Status === "Assigned"
+                                  : task.status === "Assigned"
                                   ? "#ffefea"
-                                  : task.Status === "Request Rejected"
+                                  : task.status === "Request Rejected"
                                   ? "#ffefea"
                                   : "#d2fccd"
                                 : "#d2fccd",
                             color:
-                              task && task.Status
-                                ? task.Status === "Completed By User"
-                                  ? moment(task.EndDate).isBefore(today)
+                              task && task.status
+                                ? task.status === "Completed By User"
+                                  ? moment(task.due_date).isBefore(today)
                                     ? "#7fba7a"
                                     : "#ff5f31"
-                                  : task.Status === "Approved"
+                                  : task.status === "Approved"
                                   ? "#7fba7a"
-                                  : task.Status === "Assigned"
+                                  : task.status === "Assigned"
                                   ? "#f8c102"
-                                  : task.Status === "Assign"
+                                  : task.status === "Open"
                                   ? "#f8c102"
-                                  : task.Status === "Request Rejected"
+                                  : task.status === "Request Rejected"
                                   ? "#ff5f31"
                                   : ""
                                 : "#fcf3cd",
                           }}
                         >
-                          {task.Status && task.Status === "Completed By User"
-                            ? moment(task.EndDate).isBefore(today)
+                          {task.status && task.status === "Completed By User"
+                            ? moment(task.due_date).isBefore(today)
                               ? "NOT REVIEWED"
                               : "Approval Pending"
-                            : task.Status === "Assign"
+                            : task.status === "Open"
                             ? "Assign Task"
-                            : task.Status === "Assigned"
+                            : task.status === "Assigned"
                             ? "Task Assigned"
-                            : task.Status === "Approved"
+                            : task.status === "Approved"
                             ? "Task Approved"
-                            : task.Status === "Request Rejected"
+                            : task.status === "Request Rejected"
                             ? "Task Rejected"
                             : ""}
                         </p>
@@ -233,7 +237,7 @@ export default function LicenseTaskList(props) {
                   value={task.TaskId}
                   onClick={(e) => getSelectTaskDetails(task)}
                 >
-                  {task.EntityName}
+                  {task.customer_name}
                 </div>
               </div>
               <div
@@ -241,33 +245,33 @@ export default function LicenseTaskList(props) {
                 style={{ cursor: "pointer" }}
                 onClick={(e) => getSelectTaskDetails(task)}
               >
-                {task.AssignedTo != 0 ? (
+                {task.assign_to !== null ? (
                   <div className="d-flex">
                     {props.user.UserType === 4 ? (
-                      task.ApproverName === "Assign" ? null : (
+                      task.approver_name === "Assign" ? null : (
                         <div className="circle-name d-none d-sm-block">
                           <div className="circle-text">
                             {props.user.UserType === 4 &&
-                              getInitials(task.ApproverName)}
+                              getInitials(task.approver_name)}
                           </div>
                         </div>
                       )
                     ) : (
                       <div className="circle-name d-none d-sm-block">
                         <div className="circle-text">
-                          {getInitials(task.AssignedName)}
+                          {getInitials(task.assign_to_name)}
                         </div>
                       </div>
                     )}
                     {props.user.UserType === 4 ? (
                       <div className="circle-front-text d-none d-sm-block">
-                        {task.ApproverName === "Assign"
+                        {task.approver_name === null
                           ? "No Approver"
-                          : task.ApproverName}
+                          : task.approver_name}
                       </div>
                     ) : (
                       <div className="circle-front-text d-none d-sm-block">
-                        {_getAssignedName(task.AssignedName)}
+                        {_getAssignedName(task.assign_to_name)}
                       </div>
                     )}
                   </div>
@@ -295,7 +299,7 @@ export default function LicenseTaskList(props) {
                       style={{ cursor: "pointer" }}
                       onClick={(e) => getSelectTaskDetails(task)}
                     >
-                      {getDayDate(task.EndDate, 1)}
+                      {getDayDate(task.due_date, 1)}
                     </div>
                     <div
                       className="right-arrow-week-company text-right-grid"
@@ -309,7 +313,7 @@ export default function LicenseTaskList(props) {
                           alt="Right Arrow"
                         />
                       }
-                      {task.AssignedTo !== 0 && (
+                      {task.assign_to !== 0 && (
                         <img
                           className="d-block d-sm-none"
                           src={keyboardArrowRightBlack}
@@ -320,12 +324,12 @@ export default function LicenseTaskList(props) {
                         <div className="toolTip-input">
                           <div className="tooltiptext1 mobDisplaynone">
                             <span className="font-normal-text1">
-                              {_getAssignedName(task.AssignedName)}
+                              {_getAssignedName(task.assign_to_name)}
                             </span>
                           </div>
                         </div>
                       )}
-                      {task.AssignedTo === 0 && (
+                      {task.assign_to === 0 && (
                         <div className="only-mobile-assign-add d-block d-sm-none">
                           <div
                             className="assign-user-icon"
@@ -382,7 +386,7 @@ export default function LicenseTaskList(props) {
                       <div className="overdue-title">{task.TaskName}</div>
                       <div
                         className={
-                          Status === "overdue"
+                          Status === "Overdue"
                             ? "red-week d-block d-sm-none"
                             : "black-week d-block d-sm-none"
                         }
@@ -390,58 +394,58 @@ export default function LicenseTaskList(props) {
                         onClick={(e) => getSelectTaskDetails(task)}
                       >
                         <div className="d-block d-sm-none">
-                          {getDayDate(task.EndDate, 2)}
+                          {getDayDate(task.due_date, 2)}
                         </div>
                       </div>
-                      {task.Status !== "Assigned" && (
+                      {task.status !== "Assigned" && (
                         <p
                           className="pink-label-text"
                           style={{
                             backgroundColor:
-                              task && task.Status
-                                ? task.Status === "Assign"
+                              task && task.status
+                                ? task.status === "Open"
                                   ? "#fcf3cd"
-                                  : task.Status === "Completed By User"
-                                  ? moment(task.EndDate).isBefore(today)
+                                  : task.status === "Completed By User"
+                                  ? moment(task.due_date).isBefore(today)
                                     ? "#cdfcd8"
                                     : "#ffefea"
-                                  : task.Status === "Approved"
+                                  : task.status === "Approved"
                                   ? "#cdfcd8"
-                                  : task.Status === "Assigned"
+                                  : task.status === "Assigned"
                                   ? "#ffefea"
-                                  : task.Status === "Request Rejected"
+                                  : task.status === "Request Rejected"
                                   ? "#ffefea"
                                   : "#d2fccd"
                                 : "#d2fccd",
                             color:
-                              task && task.Status
-                                ? task.Status === "Completed By User"
-                                  ? moment(task.EndDate).isBefore(today)
+                              task && task.status
+                                ? task.status === "Completed By User"
+                                  ? moment(task.due_date).isBefore(today)
                                     ? "#7fba7a"
                                     : "#ff5f31"
-                                  : task.Status === "Approved"
+                                  : task.status === "Approved"
                                   ? "#7fba7a"
-                                  : task.Status === "Assigned"
+                                  : task.status === "Assigned"
                                   ? "#f8c102"
-                                  : task.Status === "Assign"
+                                  : task.status === "Open"
                                   ? "#f8c102"
-                                  : task.Status === "Request Rejected"
+                                  : task.status === "Request Rejected"
                                   ? "#ff5f31"
                                   : ""
                                 : "#fcf3cd",
                           }}
                         >
-                          {task.Status && task.Status === "Completed By User"
-                            ? moment(task.EndDate).isBefore(today)
+                          {task.status && task.status === "Completed By User"
+                            ? moment(task.due_date).isBefore(today)
                               ? "NOT REVIEWED"
                               : "Approval Pending"
-                            : task.Status === "Assign"
+                            : task.status === "Open"
                             ? "Assign Task"
-                            : task.Status === "Assigned"
+                            : task.status === "Assigned"
                             ? "Task Assigned"
-                            : task.Status === "Approved"
+                            : task.status === "Approved"
                             ? "Task Approved"
-                            : task.Status === "Request Rejected"
+                            : task.status === "Request Rejected"
                             ? "Task Rejected"
                             : ""}
                         </p>
@@ -457,7 +461,7 @@ export default function LicenseTaskList(props) {
                   value={task.TaskId}
                   onClick={(e) => getSelectTaskDetails(task)}
                 >
-                  {task.EntityName}
+                  {task.customer_name}
                 </div>
               </div>
               <div
@@ -465,33 +469,33 @@ export default function LicenseTaskList(props) {
                 style={{ cursor: "pointer" }}
                 onClick={(e) => getSelectTaskDetails(task)}
               >
-                {task.AssignedTo != 0 ? (
+                {task.assign_to !== null ? (
                   <div className="d-flex">
                     {props.user.UserType === 4 ? (
-                      task.ApproverName === "Assign" ? null : (
+                      task.approver_name === null ? null : (
                         <div className="circle-name d-none d-sm-block">
                           <div className="circle-text">
                             {props.user.UserType === 4 &&
-                              getInitials(task.ApproverName)}
+                              getInitials(task.approver_name)}
                           </div>
                         </div>
                       )
                     ) : (
                       <div className="circle-name d-none d-sm-block">
                         <div className="circle-text">
-                          {getInitials(task.AssignedName)}
+                          {getInitials(task.assign_to_name)}
                         </div>
                       </div>
                     )}
                     {props.user.UserType === 4 ? (
                       <div className="circle-front-text d-none d-sm-block">
-                        {task.ApproverName === "Assign"
+                        {task.approver_name === "Assign"
                           ? "No Approver"
-                          : task.ApproverName}
+                          : task.approver_name}
                       </div>
                     ) : (
                       <div className="circle-front-text d-none d-sm-block">
-                        {_getAssignedName(task.AssignedName)}
+                        {_getAssignedName(task.assign_to_name)}
                       </div>
                     )}
                   </div>
@@ -519,7 +523,7 @@ export default function LicenseTaskList(props) {
                       style={{ cursor: "pointer" }}
                       onClick={(e) => getSelectTaskDetails(task)}
                     >
-                      {getDayDate(task.EndDate, 1)}
+                      {getDayDate(task.due_date, 1)}
                     </div>
                     <div
                       className="right-arrow-week-company text-right-grid"
@@ -533,7 +537,7 @@ export default function LicenseTaskList(props) {
                           alt="Right Arrow"
                         />
                       }
-                      {task.AssignedTo !== 0 && (
+                      {task.assign_to !== 0 && (
                         <img
                           className="d-block d-sm-none"
                           src={keyboardArrowRightBlack}
@@ -544,12 +548,12 @@ export default function LicenseTaskList(props) {
                         <div className="toolTip-input">
                           <div className="tooltiptext1 mobDisplaynone">
                             <span className="font-normal-text1">
-                              {_getAssignedName(task.AssignedName)}
+                              {_getAssignedName(task.assign_to_name)}
                             </span>
                           </div>
                         </div>
                       )}
-                      {task.AssignedTo === 0 && (
+                      {task.assign_to === 0 && (
                         <div className="only-mobile-assign-add d-block d-sm-none">
                           <div
                             className="assign-user-icon"
@@ -606,7 +610,7 @@ export default function LicenseTaskList(props) {
                   className="red-week  date-font pl-1"
                   style={{ cursor: "pointer" }}
                 >
-                  {getDayDate(task.EndDate, 2)}
+                  {getDayDate(task.due_date, 2)}
                 </div>
               </div>
             </div>
@@ -642,12 +646,12 @@ export default function LicenseTaskList(props) {
             ? companyTaskData.map((item, index) => {
                 return (
                   <>
-                    {item.Status && item.Status !== "Norec" && (
+                    {item.status && item.status !== "Norec" && (
                       <div className="take-action customHeight">
                         <div className="task-list-grid">
-                          {item.Status && (
+                          {item.status && (
                             <div
-                              className="upcoming-btn"
+                              className="upcoming-btn my-3"
                               onClick={() => {
                                 expandedFlags.includes(index)
                                   ? handleExpandList("hide", index)
@@ -658,10 +662,10 @@ export default function LicenseTaskList(props) {
                                 style={{ cursor: "pointer" }}
                                 className="upcoming-title"
                               >
-                                {item.Status}
+                                {item.status}
                                 <span className="black-circle">
                                   <p className="black-circle-text">
-                                    {item.Details.length}
+                                    {item.tasks.length}
                                   </p>
                                 </span>
                                 {expandedFlags.includes(index) ? (
@@ -686,30 +690,29 @@ export default function LicenseTaskList(props) {
                           {
                             <>
                               {!expandedFlags.includes(index) &&
-                                item.Details.slice(
-                                  0,
-                                  assignRowCount[item.Status.trim()]
-                                ).map((task) => {
-                                  return (
-                                    <>
-                                      {task.LicenseCode !== "Norec" &&
-                                        renderTaskList(
-                                          task,
-                                          item.Status.trim(),
-                                          1
-                                        )}
-                                    </>
-                                  );
-                                })}
+                                item.tasks
+                                  .slice(0, assignRowCount[item.status.trim()])
+                                  .map((task) => {
+                                    return (
+                                      <>
+                                        {task.license !== "Norec" &&
+                                          renderTaskList(
+                                            task,
+                                            item.status.trim(),
+                                            1
+                                          )}
+                                      </>
+                                    );
+                                  })}
                               <div>
                                 {!expandedFlags.includes(index) &&
-                                  item.Details.length > 3 && (
+                                  item.tasks.length > 3 && (
                                     <>
-                                      {assignRowCount[item.Status.trim()] >
+                                      {assignRowCount[item.status.trim()] >
                                         3 && (
                                         <div
                                           onClick={() =>
-                                            AssignShowLessMore(item.Status, 3)
+                                            AssignShowLessMore(item.status, 3)
                                           }
                                           className="viewAll showLess"
                                         >
@@ -720,18 +723,18 @@ export default function LicenseTaskList(props) {
                                           />
                                         </div>
                                       )}
-                                      {assignRowCount[item.Status.trim()] ===
+                                      {assignRowCount[item.status.trim()] ===
                                         3 && (
                                         <div
                                           onClick={() =>
                                             AssignShowLessMore(
-                                              item.Status,
-                                              item.Details.length
+                                              item.status,
+                                              item.tasks.length
                                             )
                                           }
                                           className="viewAll"
                                         >
-                                          View All ({item.Details.length - 3}{" "}
+                                          View All ({item.tasks.length - 3}{" "}
                                           MORE)
                                           <img
                                             src={viewAllArow}
@@ -766,35 +769,34 @@ export default function LicenseTaskList(props) {
                           style={{ cursor: "pointer", padding: "0px 7px 0px" }}
                           className="upcoming-title"
                         >
-                          {item.Status}
+                          {item.status}
                         </div>
                       </div>
-                      {item.Status.trim() != "overdue" &&
-                        (item.Status.trim() === "Pending"
+                      {item.status.trim() != "overdue" &&
+                        (item.status.trim() === "Pending"
                           ? true
                           : !expandedFlags.includes(index)) && (
                           <>
-                            {item.Details.slice(
-                              0,
-                              assignRowCount[item.Status.trim()]
-                            ).map((task) => {
-                              return (
-                                <>
-                                  {renderSidebarTaskList(
-                                    task,
-                                    item.Status.trim(),
-                                    1
-                                  )}
-                                </>
-                              );
-                            })}
+                            {item.tasks
+                              .slice(0, assignRowCount[item.status.trim()])
+                              .map((task) => {
+                                return (
+                                  <>
+                                    {renderSidebarTaskList(
+                                      task,
+                                      item.status.trim(),
+                                      1
+                                    )}
+                                  </>
+                                );
+                              })}
                             <div>
-                              {item.Details.length > 3 && (
+                              {item.tasks.length > 3 && (
                                 <>
-                                  {assignRowCount[item.Status.trim()] > 3 && (
+                                  {assignRowCount[item.status.trim()] > 3 && (
                                     <div
                                       onClick={() =>
-                                        AssignShowLessMore(item.Status, 3)
+                                        AssignShowLessMore(item.status, 3)
                                       }
                                       className="viewAll showLess"
                                     >
@@ -805,17 +807,17 @@ export default function LicenseTaskList(props) {
                                       />
                                     </div>
                                   )}
-                                  {assignRowCount[item.Status.trim()] === 3 && (
+                                  {assignRowCount[item.status.trim()] === 3 && (
                                     <div
                                       onClick={() =>
                                         AssignShowLessMore(
-                                          item.Status,
-                                          item.Details.length
+                                          item.status,
+                                          item.tasks.length
                                         )
                                       }
                                       className="viewAll"
                                     >
-                                      View All ({item.Details.length - 3} )
+                                      View All ({item.tasks.length - 3} )
                                       <img
                                         src={viewAllArow}
                                         alt="view All Arow"
