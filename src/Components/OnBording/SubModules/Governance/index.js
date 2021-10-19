@@ -18,6 +18,7 @@ import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import AssignDrawerMobile from "../AssignDrawerMobile";
 import axiosInstance from "../../../../apiServices";
+import { toast } from "react-toastify";
 
 function Governance({ history }) {
   const state = useSelector((state) => state);
@@ -178,6 +179,7 @@ function Governance({ history }) {
     const { value, name } = e.target;
     const email = e.target.value;
     setApprovalEmail(e.target.value);
+    handleOnBlurEmailApproval(e);
   };
   const handleStatusReportEmail = (e) => {
     setemailApproveReport(false);
@@ -185,6 +187,7 @@ function Governance({ history }) {
     const { value, name } = e.target;
     const email = e.target.value;
     setStatusEmail(e.target.value);
+    handleOnBlurEmailStatusReport(e);
   };
 
   const handleOnBlurEmailApproval = (e) => {
@@ -232,8 +235,36 @@ function Governance({ history }) {
     setStatusReportEmail(list);
   };
 
-  const skipPage = () => {
-    history.push("/assign-task");
+  const skipPage = async () => {
+    try {
+      // localStorage.setItem("expertReview", false);
+      // const temp = companyData.map((companyList) => {
+      //   return {
+      //     company_name: companyList.company_name,
+      //     industry: companyList.company_name,
+      //     name: companyList.name,
+      //     compliance_officer: localStorage
+      //       .getItem("coemail")
+      //       .replace(/ /g, "+"),
+      //   };
+      // });
+      history.push("/assign-task");
+      // const { data } = await axiosInstance.post(
+      //   "compliance.api.setGovernanceOfficerCompany",
+      //   {
+      //     details: temp,
+      //     expert_review: enableSecmarkReview,
+      //     status_report: [],
+      //   }
+      // );
+
+      // if (data.message.success) {
+      //   localStorage.setItem("expertReview", enableSecmarkReview);
+      //   history.push("/assign-task");
+      // }
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   const handleMobileAssignClick = (item, index) => {
@@ -375,6 +406,7 @@ function Governance({ history }) {
   };
 
   useEffect(() => {
+    localStorage.setItem("expertReview", false);
     dispatch(governanceActions.governanceAPIRequest());
   }, []);
 
@@ -534,7 +566,7 @@ function Governance({ history }) {
                             placeholder="Add emails to invite"
                             value={emailApproval || ""}
                             onFocus={() => setdisabled(false)}
-                            onBlur={(e) => handleOnBlurEmailApproval(e)}
+                            //onBlur={(e) => handleOnBlurEmailApproval(e)}
                             name="approvaltaskemail"
                             onChange={(e) => handleApprovalTaskEmail(e)}
                             onKeyPress={(e) => handleKeyDown1(e)}
@@ -632,7 +664,7 @@ function Governance({ history }) {
                             value={statusEmail}
                             name="statusEmail"
                             onFocus={() => setdisabled(false)}
-                            onBlur={(e) => handleOnBlurEmailStatusReport(e)}
+                            //  onBlur={(e) => handleOnBlurEmailStatusReport(e)}
                             onChange={(e) => handleStatusReportEmail(e)}
                             onKeyPress={(e) => handleKeyDown2(e)}
                           />
@@ -674,13 +706,11 @@ function Governance({ history }) {
                         onClick={() => onDoneButtonClick()}
                         className="btn save-details common-button  mb-2"
                         disabled={
-                          assignTaskEmail.find(
-                            (item) => item.compliance_officer
-                          ) === undefined &&
-                          approvalTaskEmail.length !== 0 &&
-                          statusReportEmail.length !== 0
-                            ? true
-                            : false
+                          companyData.filter(
+                            (item) =>
+                              item.compliance_officer ||
+                              item.compliance_officer === ""
+                          ).length !== 0
                         }
                       >
                         Done

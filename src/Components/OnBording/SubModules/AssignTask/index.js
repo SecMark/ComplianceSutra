@@ -7,8 +7,6 @@ import { Modal } from "react-responsive-modal";
 import modelSquare from "../../../../assets/Icons/modelSquare.png";
 import modelBox from "../../../../assets/Icons/modelBox.png";
 import reviewClose from "../../../../assets/Icons/reviewClose.png";
-import Collapsible from "react-collapsible";
-import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
 import SideBarInputControl from "../SideBarInputControl";
 import { useDispatch, useSelector } from "react-redux";
 import { actions as companyActions } from "../../redux/actions";
@@ -17,9 +15,6 @@ import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import MobileStepper from "../mobileStepper";
 import AssignDrawerMobile from "../AssignDrawerMobile";
-import axios from "axios";
-import { isMobile } from "react-device-detect";
-import { BsChevronUp, BsChevronDown } from "react-icons/bs";
 import assignIcon1 from "../../../../assets/Icons/assignIcon.png";
 import assignIcon3 from "../../../../assets/Icons/assignIcon2.png";
 import assignIcon5 from "../../../../assets/Icons/assignIcon3.png";
@@ -37,64 +32,13 @@ function AssignTask({ history }) {
 
   const [assignTaskEmail, setAssignTaskEmail] = useState([]);
 
-  const innerRef = useOuterClick((e) => {
-    if (currentDropDown !== "" && !e.target.id.includes("email-input"))
-      setCurrentDropDown("");
-  });
-
-  // const handleCheckEmailAvailability = async (value, emailObject) => {
-  //   let data = false;
-  //   let obj = {};
-
-  //   if (isEmail(value) === true) {
-  //     if (issessionEmail(value) === false) {
-  //       await axios
-  //         .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-  //           loginID: value,
-  //           pwd: "",
-  //           rememberme: 0,
-  //           loginty: "AdminEmail",
-  //         })
-  //         .then((response) => {
-  //           if (response && response.data && response.data.Status === "True") {
-  //             data = true;
-  //           } else {
-  //             data = false;
-  //           }
-  //         })
-  //         .catch((err) => {});
-
-  //       if (data === true) {
-  //         obj = value;
-  //         setemailError({ ...emailError, [emailObject]: "yes" });
-  //       } else {
-  //         setemailError({ ...emailError, [emailObject]: "no" });
-  //         let emailArr = [...emailList];
-  //         let obj = {};
-  //         var emailExists = emailList.filter((item) => item.email === value);
-  //         if (emailExists.length === 0) {
-  //           if (isEmail(value)) {
-  //             obj = { email: value };
-  //             emailArr.push(obj);
-  //           }
-  //           setEmailList(emailArr);
-  //         }
-  //       }
-
-  //       setAssignTaskEmail([...assignedEmail, obj]);
-  //     }
-  //   }
-  // };
-
   const [fields, setFields] = useState([]);
 
   const [taskToAssign, setTaskToAssign] = useState({});
-  const [selectedTask, setSelectedTask] = useState([]);
 
   const [emailList, setEmailList] = useState([]);
   const [currentDropDown, setCurrentDropDown] = useState("");
   const [showToolTip, setShowToolTip] = useState(true);
-  const [activeToolTipIndex, setActiveToolTipIndex] = useState(0);
   const [visibleExpertReviewModal, setVisibleExpertReviewModal] =
     useState(false);
   const [emailError, setemailError] = useState([]);
@@ -366,6 +310,9 @@ function AssignTask({ history }) {
       return assignIcon5;
     }
   };
+
+  const expertReview =
+    localStorage.getItem("expertReview") === true ? true : false;
 
   useEffect(() => {
     dispatch(
@@ -663,60 +610,58 @@ function AssignTask({ history }) {
             <div className="row aligncenter px-5">
               <div className="col-12">
                 <div className="pinkBox-inline">
-                  <button
-                    // onClick={() => routeToAssignTask()}
-                    className={
-                      Object.values(emailError).find(
-                        (item) => item === "yes"
-                      ) !== true
-                        ? "btn save-details common-button2  mb-2"
-                        : "btn save-details common-button2"
-                    }
-                    onClick={() => sendTaskDetail()}
-                  >
-                    Done
-                  </button>
-                  <div className="review-box">
-                    <div className="row">
-                      <div className="col-9 pr-0">
-                        <div className="pink-title">Enable expert review</div>
-                        <div
-                          style={{ cursor: "pointer" }}
-                          onClick={() => setVisibleExpertReviewModal(true)}
-                          className="view-detail-link"
-                        >
-                          View Details
+                  {taskListData &&
+                    taskListData[0]?.licenseAndTaskList.length !== 0 && (
+                      <button
+                        // onClick={() => routeToAssignTask()}
+                        className={
+                          Object.values(emailError).find(
+                            (item) => item === "yes"
+                          ) !== true
+                            ? "btn save-details common-button2  mb-2"
+                            : "btn save-details common-button2"
+                        }
+                        onClick={() => sendTaskDetail()}
+                      >
+                        Done
+                      </button>
+                    )}
+                  {taskListData &&
+                    taskListData[0]?.licenseAndTaskList.length !== 0 && (
+                      <div className="review-box">
+                        <div className="row">
+                          <div className="col-9 pr-0">
+                            <div className="pink-title">
+                              Enable expert review
+                            </div>
+                            <div
+                              style={{ cursor: "pointer" }}
+                              onClick={() => setVisibleExpertReviewModal(true)}
+                              className="view-detail-link"
+                            >
+                              View Details
+                            </div>
+                          </div>
+                          <div className="col-3 pr-0">
+                            <div className="switch-btn">
+                              <label className="switch">
+                                <input
+                                  name="secmarkexpert"
+                                  // value={enablesecmarkExpert}
+                                  // onChange={(e) => handleFields(e)}
+                                  checked={expertReview}
+                                  type="checkbox"
+                                />
+                                <span className="slider round"></span>
+                              </label>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="col-3 pr-0">
-                        <div className="switch-btn">
-                          <label className="switch">
-                            <input
-                              name="secmarkexpert"
-                              // value={enablesecmarkExpert}
-                              // onChange={(e) => handleFields(e)}
-                              type="checkbox"
-                            />
-                            <span className="slider round"></span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    )}
                 </div>
               </div>
-              <div className="col-12 col-md-6 col-sm-6 col-xl-6">
-                {/* <p className="account-link-assign">You are not the right person to assign the task?{activeInvite === false ?
-                    (<span style={{ cursor: 'pointer' }} onClick={() => { setActiveInvite(true) }} className="invite-link"> INVITE</span>)
-                    : (<input
-                      name="inviteemail"
-                      value={inviteVal}
-                      className="form-control"
-                      placeholder="Add email to invite"
-                      onChange={(e) => handleFields(e)}
-                    />
-                    )}{inviteVal !== "" && !isEmail(inviteVal) && (<p className="input-error-message">Please Enter Valid Email Address</p>)}</p> */}
-              </div>
+              <div className="col-12 col-md-6 col-sm-6 col-xl-6"></div>
               <div className="col-6 col-md-6 col-sm-6 col-xl-6 d-none d-sm-block text-right">
                 {/* <a href="#" style={{'cursor': 'auto'}}> */}
                 <span className="powerBy">Powered by</span>

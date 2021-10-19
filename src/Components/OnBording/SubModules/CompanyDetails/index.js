@@ -25,7 +25,6 @@ import License from "../ChooseLicenses/License";
 import axiosInstance from "../../../../apiServices";
 import { toast } from "react-toastify";
 
-
 function CompanyDetails({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -34,7 +33,7 @@ function CompanyDetails({ history }) {
   const [showEdit, setshowEdit] = useState(true);
   const [fields, setFields] = useState([
     {
-      company_name: "",
+      company_name: localStorage.getItem("companyName"),
       company_country: "",
       company_pincode: "",
       company_type: "",
@@ -115,6 +114,7 @@ function CompanyDetails({ history }) {
   const entityID =
     state && state.complianceOfficer && state.complianceOfficer?.entityInfo;
   useEffect(() => {
+    console.log("compant name", localStorage.getItem("companyName"));
     dispatch(
       companyActions.companyTypeRequest({
         country: "INDIA",
@@ -229,7 +229,11 @@ function CompanyDetails({ history }) {
           .post("compliance.api.avabilityCheck", payload)
           .then(function (response) {
             // handle success
-            if (response && response.data && response.data.message.status === true) {
+            if (
+              response &&
+              response.data &&
+              response.data.message.status === true
+            ) {
               let list = [...errors];
               list[index].companyNameError = "Company name already exists";
               setErrors(list);
@@ -417,8 +421,6 @@ function CompanyDetails({ history }) {
     }
   };
 
-  
-
   const handleCompanyTypeChange = (value, index, type) => {
     var temp = fields;
 
@@ -527,7 +529,7 @@ function CompanyDetails({ history }) {
             onFocus={() => {
               showHideDropDown("companyName", index);
             }}
-            onBlur={(e) => validateCompanyName(e, index)}
+            // onBlur={(e) => validateCompanyName(e, index)}
             onChange={(e) => {
               handelChange(e, index, "", "");
             }}
@@ -672,6 +674,7 @@ function CompanyDetails({ history }) {
       values[i][name] = value;
     }
     setFields(values);
+    validateCompanyName(e, i);
   };
 
   const addEditMobileModel = (item, index) => {
@@ -687,7 +690,7 @@ function CompanyDetails({ history }) {
                 value={item.companyName}
                 autoComplete="off"
                 name="companyName"
-                onBlur={(e) => validateCompanyName(e, index)}
+                // onBlur={(e) => validateCompanyName(e, index)}
                 onChange={(e) => {
                   handelChange(e, index, "", "");
                 }}
@@ -933,20 +936,11 @@ function CompanyDetails({ history }) {
               <div id="drawerChildMobile" className="sideBarFixedAccount">
                 {open && (
                   <>
-                    <LicenseDrawer
-                      currentSelectedIndex={currentSelectedIndex}
-                      setCurrentSelectedIndex={setCurrentSelectedIndex}
-                      fields={fields}
-                      setFields={setFields}
-                      setLiecenseData={setLiecenseData}
-                      liecenseData={liecenseData}
-                      category={category}
-                      companyInfo={companyInfo}
-                      setCategory={setCategory}
-                      close={close}
-                      setCompanyInfo={setCompanyInfo}
+                    <License
+                      addLicense={addLicense}
+                      index={currentIndex}
+                      closeDrawer={close}
                     />
-                    <License />
                   </>
                 )}
               </div>

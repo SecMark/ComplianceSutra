@@ -270,7 +270,7 @@ const License = ({ index, addLicense, closeDrawer }) => {
                               <div className="col-4 d-flex align-item-center">
                                 {" "}
                                 <span>
-                                  {licenseItem.sublicense.length} License{" "}
+                                  {licenseItem.sublicense.length} Task{" "}
                                 </span>
                               </div>
                               <div
