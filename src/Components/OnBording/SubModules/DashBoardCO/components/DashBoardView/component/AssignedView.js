@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setNotificationTaskId } from "../../notification/Redux/Action";
 import { actions as taskReportActions } from "../../../redux/actions";
+import { getDataByTeam } from "../../../../../../../CommonModules/helpers/tasks.helper";
 
 export default function AssignedView(props) {
   const [assignRowCount, setAssignRowCount] = useState([]);
@@ -47,21 +48,18 @@ export default function AssignedView(props) {
   }, []);
 
   useEffect(() => {
-    const payload = {
-      entityid: "3",
-      userID: props.user.UserID,
-      usertype: props.user.UserType,
-    };
     axios
-      .post(`${BACKEND_BASE_URL}/api/getTaskReport`, payload)
+      .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`, {
+        headers: {
+          Authorization: `Basic ZmVhY2NiOGJkNWZkMDJhOjc4NTAzYWI3N2UwNzI5Ng==`,
+        },
+      })
       .then((response) => {
-        let rowCount = [];
-        response.data.map((item) => {
-          rowCount[item.Status.trim()] = 3;
-        });
-        setAssignRowCount(rowCount);
-        let fileData = response.data;
-        setLicensetaskData(fileData);
+        const { status, status_response, task_details } = response.data.message;
+        if (status && status_response) {
+          const taskByStatus = getDataByTeam(task_details);
+          setLicensetaskData(taskByStatus);
+        }
       })
       .catch((error) => {
         console.log("error => ", error);
@@ -134,68 +132,68 @@ export default function AssignedView(props) {
                   >
                     <div class="graybox-left">
                       <span class="all-companies-nse-label">
-                        {task.LicenseCode}
+                        {task.license}
                       </span>
                     </div>
                     <span className="pink-label-title-right">
-                      <div className="overdue-title">{task.TaskName}</div>
+                      <div className="overdue-title">{task.subject}</div>
                       <div
                         className="black-week "
                         style={{ cursor: "pointer" }}
                         onClick={(e) => getSelectTaskDetails(task)}
                       >
                         <div className="d-block d-sm-none">
-                          {getDayDate(task.EndDate, 2)}
+                          {getDayDate(task.due_date, 2)}
                         </div>
-                        {task.Status !== "Assigned" && (
+                        {task.status !== "Assigned" && (
                           <span
                             className="pink-label-text"
                             style={{
                               backgroundColor:
-                                task && task.Status
-                                  ? task.Status === "Assign"
+                                task && task.status
+                                  ? task.status === "Open"
                                     ? "#fcf3cd"
-                                    : task.Status === "Completed By User"
-                                    ? moment(task.EndDate).isBefore(today)
+                                    : task.status === "Completed By User"
+                                    ? moment(task.due_date).isBefore(today)
                                       ? "#cdfcd8"
                                       : "#ffefea"
-                                    : task.Status === "Approved"
+                                    : task.status === "Approved"
                                     ? "#cdfcd8"
-                                    : task.Status === "Assigned"
+                                    : task.status === "Assigned"
                                     ? "#ffefea"
-                                    : task.Status === "Request Rejected"
+                                    : task.status === "Request Rejected"
                                     ? "#ffefea"
                                     : "#d2fccd"
                                   : "#d2fccd",
                               color:
-                                task && task.Status
-                                  ? task.Status === "Completed By User"
-                                    ? moment(task.EndDate).isBefore(today)
+                                task && task.status
+                                  ? task.status === "Completed By User"
+                                    ? moment(task.due_date).isBefore(today)
                                       ? "#7fba7a"
                                       : "#ff5f31"
-                                    : task.Status === "Approved"
+                                    : task.status === "Approved"
                                     ? "#7fba7a"
-                                    : task.Status === "Assigned"
+                                    : task.status === "Assigned"
                                     ? "#f8c102"
-                                    : task.Status === "Assign"
+                                    : task.status === "Open"
                                     ? "#f8c102"
-                                    : task.Status === "Request Rejected"
+                                    : task.status === "Request Rejected"
                                     ? "#ff5f31"
                                     : ""
                                   : "#fcf3cd",
                             }}
                           >
-                            {task.Status && task.Status === "Completed By User"
-                              ? moment(task.EndDate).isBefore(today)
+                            {task.status && task.status === "Completed By User"
+                              ? moment(task.due_date).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
-                              : task.Status === "Assign"
+                              : task.status === "Open"
                               ? "Assign Task"
-                              : task.Status === "Assigned"
+                              : task.status === "Assigned"
                               ? "Task Assigned"
-                              : task.Status === "Approved"
+                              : task.status === "Approved"
                               ? "Task Approved"
-                              : task.Status === "Request Rejected"
+                              : task.status === "Request Rejected"
                               ? "Task Rejected"
                               : ""}
                           </span>
@@ -212,7 +210,7 @@ export default function AssignedView(props) {
                   value={task.TaskId}
                   onClick={(e) => getSelectTaskDetails(task)}
                 >
-                  {task.EntityName}
+                  {task.customer_name}
                 </div>
               </div>
               <div className="col-2 col-md-3 col-sm-3 col-xl-3">
@@ -223,7 +221,7 @@ export default function AssignedView(props) {
                       style={{ cursor: "pointer" }}
                       onClick={(e) => getSelectTaskDetails(task)}
                     >
-                      {getDayDate(task.EndDate, 1)}
+                      {getDayDate(task.due_date, 1)}
                     </div>
                     <div
                       className="right-arrow-week text-right-grid"
@@ -237,7 +235,7 @@ export default function AssignedView(props) {
                           alt="Right Arrow"
                         />
                       }
-                      {task.AssignedTo !== 0 && (
+                      {task.assign_to !== null && (
                         <img
                           className="d-block d-sm-none"
                           src={keyboardArrowRightBlack}
@@ -282,68 +280,68 @@ export default function AssignedView(props) {
                   >
                     <div class="graybox-left">
                       <span class="all-companies-nse-label">
-                        {task.LicenseCode}
+                        {task.license}
                       </span>
                     </div>
                     <span className="pink-label-title-right">
-                      <div className="overdue-title">{task.TaskName}</div>
+                      <div className="overdue-title">{task.subject}</div>
                       <div
                         className="black-week "
                         style={{ cursor: "pointer" }}
                         onClick={(e) => getSelectTaskDetails(task)}
                       >
                         <div className="d-block d-sm-none">
-                          {getDayDate(task.EndDate, 2)}
+                          {getDayDate(task.due_date, 2)}
                         </div>
-                        {task.Status !== "Assigned" && (
+                        {task.status !== "Assigned" && (
                           <span
                             className="pink-label-text"
                             style={{
                               backgroundColor:
-                                task && task.Status
-                                  ? task.Status === "Assign"
+                                task && task.status
+                                  ? task.status === "Assign"
                                     ? "#fcf3cd"
-                                    : task.Status === "Completed By User"
-                                    ? moment(task.EndDate).isBefore(today)
+                                    : task.status === "Completed By User"
+                                    ? moment(task.due_date).isBefore(today)
                                       ? "#cdfcd8"
                                       : "#ffefea"
-                                    : task.Status === "Approved"
+                                    : task.status === "Approved"
                                     ? "#cdfcd8"
-                                    : task.Status === "Assigned"
+                                    : task.status === "Assigned"
                                     ? "#ffefea"
-                                    : task.Status === "Request Rejected"
+                                    : task.status === "Request Rejected"
                                     ? "#ffefea"
                                     : "#d2fccd"
                                   : "#d2fccd",
                               color:
-                                task && task.Status
-                                  ? task.Status === "Completed By User"
-                                    ? moment(task.EndDate).isBefore(today)
+                                task && task.status
+                                  ? task.status === "Completed By User"
+                                    ? moment(task.due_date).isBefore(today)
                                       ? "#7fba7a"
                                       : "#ff5f31"
-                                    : task.Status === "Approved"
+                                    : task.status === "Approved"
                                     ? "#7fba7a"
-                                    : task.Status === "Assigned"
+                                    : task.status === "Assigned"
                                     ? "#f8c102"
-                                    : task.Status === "Assign"
+                                    : task.status === "Assign"
                                     ? "#f8c102"
-                                    : task.Status === "Request Rejected"
+                                    : task.status === "Request Rejected"
                                     ? "#ff5f31"
                                     : ""
                                   : "#fcf3cd",
                             }}
                           >
-                            {task.Status && task.Status === "Completed By User"
-                              ? moment(task.EndDate).isBefore(today)
+                            {task.status && task.status === "Completed By User"
+                              ? moment(task.due_date).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
-                              : task.Status === "Assign"
+                              : task.status === "Assign"
                               ? "Assign Task"
-                              : task.Status === "Assigned"
+                              : task.status === "Assigned"
                               ? "Task Assigned"
-                              : task.Status === "Approved"
+                              : task.status === "Approved"
                               ? "Task Approved"
-                              : task.Status === "Request Rejected"
+                              : task.status === "Request Rejected"
                               ? "Task Rejected"
                               : ""}
                           </span>
@@ -360,7 +358,7 @@ export default function AssignedView(props) {
                   value={task.TaskId}
                   onClick={(e) => getSelectTaskDetails(task)}
                 >
-                  {task.EntityName}
+                  {task.customer_name}
                 </div>
               </div>
               <div className="col-2 col-md-3 col-sm-3 col-xl-3">
@@ -371,7 +369,7 @@ export default function AssignedView(props) {
                       style={{ cursor: "pointer" }}
                       onClick={(e) => getSelectTaskDetails(task)}
                     >
-                      {getDayDate(task.EndDate, 1)}
+                      {getDayDate(task.due_date, 1)}
                     </div>
                     <div
                       className="right-arrow-week text-right-grid"
@@ -385,7 +383,7 @@ export default function AssignedView(props) {
                           alt="Right Arrow"
                         />
                       }
-                      {task.AssignedTo !== 0 && (
+                      {task.assign_to !== 0 && (
                         <img
                           className="d-block d-sm-none"
                           src={keyboardArrowRightBlack}
@@ -424,22 +422,20 @@ export default function AssignedView(props) {
           <div className="col-10 pl-0">
             <div className="all-companies-sub-title">
               <div className="graybox-left">
-                <span className="all-companies-nse-label">
-                  {task.LicenseCode}
-                </span>{" "}
+                <span className="all-companies-nse-label">{task.license}</span>{" "}
               </div>
               <div
                 className="pink-label-title-right"
                 onClick={(e) => getSelectTaskDetails(task)}
               >
                 <div className="overdue-title-sidebar-title pl-1">
-                  {task.TaskName}
+                  {task.subject}
                 </div>
                 <div
                   className="red-week  date-font pl-1"
                   style={{ cursor: "pointer" }}
                 >
-                  {getDayDate(task.EndDate, 2)}
+                  {getDayDate(task.due_date, 2)}
                 </div>
               </div>
             </div>
@@ -478,7 +474,7 @@ export default function AssignedView(props) {
                   <>
                     <div className="take-action customHeight">
                       <div className="task-list-grid">
-                        {item.Status && (
+                        {item.status && (
                           <div
                             className="upcoming-btn my-3"
                             onClick={() => {
@@ -491,10 +487,10 @@ export default function AssignedView(props) {
                               style={{ cursor: "pointer" }}
                               className="upcoming-title"
                             >
-                              {item.Status}
+                              {item.status}
                               <span className="black-circle">
                                 <p className="black-circle-text">
-                                  {item.Details.length}
+                                  {item.tasks.length}
                                 </p>
                               </span>
                               {expandedFlags.includes(index) ? (
@@ -519,28 +515,27 @@ export default function AssignedView(props) {
                         {
                           <>
                             {!expandedFlags.includes(index) &&
-                              item.Details.slice(
-                                0,
-                                assignRowCount[item.Status.trim()]
-                              ).map((task) => {
-                                return (
-                                  <>
-                                    {renderTaskList(
-                                      task,
-                                      item.Status.trim(),
-                                      1
-                                    )}
-                                  </>
-                                );
-                              })}
+                              item.tasks
+                                .slice(0, assignRowCount[item.status.trim()])
+                                .map((task) => {
+                                  return (
+                                    <>
+                                      {renderTaskList(
+                                        task,
+                                        item.status.trim(),
+                                        1
+                                      )}
+                                    </>
+                                  );
+                                })}
                             <div>
                               {!expandedFlags.includes(index) &&
-                                item.Details.length > 3 && (
+                                item.tasks.length > 3 && (
                                   <>
-                                    {assignRowCount[item.Status.trim()] > 3 && (
+                                    {assignRowCount[item.status.trim()] > 3 && (
                                       <div
                                         onClick={() =>
-                                          AssignShowLessMore(item.Status, 3)
+                                          AssignShowLessMore(item.status, 3)
                                         }
                                         className="viewAll showLess"
                                       >
@@ -551,19 +546,18 @@ export default function AssignedView(props) {
                                         />
                                       </div>
                                     )}
-                                    {assignRowCount[item.Status.trim()] ===
+                                    {assignRowCount[item.status.trim()] ===
                                       3 && (
                                       <div
                                         onClick={() =>
                                           AssignShowLessMore(
-                                            item.Status,
-                                            item.Details.length
+                                            item.status,
+                                            item.tasks.length
                                           )
                                         }
                                         className="viewAll"
                                       >
-                                        View All ({item.Details.length - 3} MORE
-                                        )
+                                        View All ({item.tasks.length - 3} MORE )
                                         <img
                                           src={viewAllArow}
                                           alt="view All Arow"
@@ -588,7 +582,7 @@ export default function AssignedView(props) {
           licensetaskData.map((item, index) => {
             return (
               <>
-                {item.Status !== "Assign" && (
+                {item.status !== "Assign" && (
                   <div className="all-companies-task-grid-2 inside-padding-sidebar">
                     <div className="">
                       <div className="task-list-grid">
@@ -596,49 +590,47 @@ export default function AssignedView(props) {
                           className="upcoming-btn mb-3"
                           style={{ cursor: "pointer", padding: "0px 7px 0px" }}
                         >
-                          {item.Status}{" "}
+                          {item.status}{" "}
                         </div>
-                        {item.Status.trim() === "overdue" &&
-                          item.Details.slice(
-                            0,
-                            assignRowCount[item.Status.trim()]
-                          ).map((task) => {
-                            return (
-                              <>
-                                {renderSidebarTaskList(
-                                  task,
-                                  item.Status.trim(),
-                                  1
-                                )}
-                              </>
-                            );
-                          })}
-                        {item.Status.trim() != "overdue" &&
-                          (item.Status.trim() === "Pending"
+                        {item.status.trim() === "overdue" &&
+                          item.tasks
+                            .slice(0, assignRowCount[item.status.trim()])
+                            .map((task) => {
+                              return (
+                                <>
+                                  {renderSidebarTaskList(
+                                    task,
+                                    item.status.trim(),
+                                    1
+                                  )}
+                                </>
+                              );
+                            })}
+                        {item.status.trim() != "overdue" &&
+                          (item.status.trim() === "Pending"
                             ? true
                             : !expandedFlags.includes(index)) && (
                             <>
-                              {item.Details.slice(
-                                0,
-                                assignRowCount[item.Status.trim()]
-                              ).map((task) => {
-                                return (
-                                  <>
-                                    {renderSidebarTaskList(
-                                      task,
-                                      item.Status.trim(),
-                                      1
-                                    )}
-                                  </>
-                                );
-                              })}
+                              {item.tasks
+                                .slice(0, assignRowCount[item.status.trim()])
+                                .map((task) => {
+                                  return (
+                                    <>
+                                      {renderSidebarTaskList(
+                                        task,
+                                        item.status.trim(),
+                                        1
+                                      )}
+                                    </>
+                                  );
+                                })}
                               <div>
-                                {item.Details.length > 3 && (
+                                {item.tasks.length > 3 && (
                                   <>
-                                    {assignRowCount[item.Status.trim()] > 3 && (
+                                    {assignRowCount[item.status.trim()] > 3 && (
                                       <div
                                         onClick={() =>
-                                          AssignShowLessMore(item.Status, 3)
+                                          AssignShowLessMore(item.status, 3)
                                         }
                                         className="viewAll showLess"
                                       >
@@ -649,18 +641,18 @@ export default function AssignedView(props) {
                                         />
                                       </div>
                                     )}
-                                    {assignRowCount[item.Status.trim()] ===
+                                    {assignRowCount[item.status.trim()] ===
                                       3 && (
                                       <div
                                         onClick={() =>
                                           AssignShowLessMore(
-                                            item.Status,
-                                            item.Details.length
+                                            item.status,
+                                            item.tasks.length
                                           )
                                         }
                                         className="viewAll"
                                       >
-                                        View All ({item.Details.length - 3} )
+                                        View All ({item.tasks.length - 3} )
                                         <img
                                           src={viewAllArow}
                                           alt="view All Arow"
