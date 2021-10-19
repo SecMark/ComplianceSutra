@@ -659,7 +659,7 @@ function AssignTask({ history }) {
                 );
               })}
           </div>
-          <div className="bottom-logo-strip">
+          <div className="bottom-logo mt-5">
             <div className="row aligncenter px-5">
               <div className="col-12">
                 <div className="pinkBox-inline">

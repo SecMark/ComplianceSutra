@@ -12,7 +12,8 @@ const loginReq = function* loginReq({ payload }) {
 
     if (message.status) {
       const { token } = message;
-      localStorage.getItem("basicToken", token);
+      localStorage.setItem("basicToken", token);
+      console.log(token);
       yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
       toast.success("Thankyou for login.");
 
