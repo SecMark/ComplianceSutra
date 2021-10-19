@@ -49,7 +49,7 @@ function CoSetting({ history }) {
   }, []);
   useEffect(() => {
     if (userID === undefined) {
-      history.push("/login");
+      // history.push("/login");
     }
   }, []);
   const handleTabChange = (key) => {

@@ -231,10 +231,11 @@ const postAssignTask = function* postAssignTask({ payload }) {
 const userAvailabilityCheck = function* userAvailabilityCheck({ payload }) {
   try {
     const { data, status } = yield call(api.getAvailabilityCheck, payload);
+    console.log(data.message.user_details)
     let statusCode = data && data[0] && data[0].StatusCode;
     if (status === 200 && statusCode != false) {
       yield put(
-        actions.availabilityCheckRequestSuccess({ availabilityInfo: data })
+        actions.availabilityCheckRequestSuccess({ availabilityInfo: data.message.user_details })
       );
     } else {
       yield put(

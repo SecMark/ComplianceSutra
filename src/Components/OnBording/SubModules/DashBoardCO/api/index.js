@@ -29,10 +29,10 @@ const postUploadFile = ({ taskid, fileData, userId, ftype }) =>
 const postAssignTask = (payload) => api.post("/api/ChangeTaskStatus", payload);
 
 const getAvailabilityCheck = (payload) =>
-  api.post("/api/availabilityCheck", payload);
+  api.post("compliance.api.getUserDetails", payload);
 
 const postCodetailsInsUpdDel = (payload) =>
-  api.post("/api/ins_upd_del_User", payload);
+  api.post("compliance.api.setUserDetails", payload);
 
 const GetEntityLicenseTask = (payload) =>
   api.post("api/GetEntityLicenseTask", payload);
