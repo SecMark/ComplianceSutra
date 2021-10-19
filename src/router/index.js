@@ -117,7 +117,7 @@ export default function AppRouter() {
 
           <Route exact path="/governance" component={Governance} />
 
-          <Route exact path="/settings" component={CoSetting} />
+          
 
           <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
           <Route
@@ -175,6 +175,7 @@ export default function AppRouter() {
         
 
           <Route exact path="/thankyou" component={Thankyou} />
+          <Route exact path="/settings" component={CoSetting} />
         </div>
       </>
     </div>
