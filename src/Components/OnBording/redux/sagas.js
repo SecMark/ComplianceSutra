@@ -19,6 +19,8 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
       toast.success(
         "The verification link has been sent to your email account successfully"
       );
+    } else {
+      toast.error(data.message.status_response);
     }
   } catch (err) {}
 };
@@ -571,7 +573,8 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
       toast.success("Personal Information saved successfully");
       payload.history.push("/company-details");
     } else {
-      toast.error("something went wrong !!!");
+      toast.error(message.status_response);
+
       yield put(
         actions.insUpdateDeletAPIRequestFailed({ loginSuccess: false })
       );
@@ -753,12 +756,14 @@ const assignTaskDataReq = function* assignTaskDataReq({ payload }) {
 
 const governanceDataReq = function* governanceDataReq({ payload }) {
   try {
-    const { data, status } = yield call(api.getGovernanceCompanyData, payload);
-    if (status === 200) {
-      yield put(actions.governanceAPIRequestSuccess(data));
-      toast.success(data && data.Message);
+    const { data } = yield call(api.getGovernanceCompanyData, payload);
+
+    if (data.message) {
+      console.log(data);
+      yield put(actions.governanceAPIRequestSuccess(data.message));
+      toast.success(data && data.message.status_response);
     } else {
-      toast.success(data && data.Message);
+      toast.success(data && data.message.status_response);
       yield put(actions.governanceAPIRequestFailed());
     }
   } catch (err) {

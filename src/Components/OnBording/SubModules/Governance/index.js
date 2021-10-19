@@ -57,8 +57,8 @@ function Governance({ history }) {
 
   const companyInfo =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.goveranceData.message;
+    state?.complianceOfficer &&
+    state?.complianceOfficer?.goveranceData;
 
   const handleKeyDown1 = (e) => {
     if (e.key === "Enter") {
@@ -172,13 +172,6 @@ function Governance({ history }) {
     }
   };
 
-  useEffect(() => {
-    let tempArr = [];
-
-    setCompanyData(companyInfo);
-    setAssignTaskEmail(tempArr);
-  }, [companyInfo]);
-
   const handleApprovalTaskEmail = (e) => {
     setemailApproveRole(false);
     setApprovalEmailErr("");
@@ -192,18 +185,6 @@ function Governance({ history }) {
     const { value, name } = e.target;
     const email = e.target.value;
     setStatusEmail(e.target.value);
-  };
-
-  const emailExist = (email) => {
-    return approvalTaskEmail.some(function (e) {
-      return e.email === email;
-    });
-  };
-
-  const emailExistStatus = (email) => {
-    return statusReportEmail.some(function (e) {
-      return e.email === email;
-    });
   };
 
   const handleOnBlurEmailApproval = (e) => {
@@ -253,41 +234,6 @@ function Governance({ history }) {
 
   const skipPage = () => {
     history.push("/assign-task");
-  };
-
-  // const checkEmailAvailorNot = (e, index) => {
-  //   if (e.target.value !== "") {
-  //     if (isEmail(e.target.value)) {
-  //       checkEmailAlreadyExistsOrNot(e.target.value, index, "co");
-  //     }
-  //   }
-
-  //   constCompanyAssignEmail(index);
-  // };
-  const constCompanyAssignEmail = (index) => {
-    if (
-      assignTaskEmail &&
-      assignTaskEmail[index] &&
-      assignTaskEmail[index].email !== "" &&
-      isEmail(assignTaskEmail[index].email) === true
-    ) {
-      setdisabled(true);
-    } else if (
-      assignTaskEmail &&
-      assignTaskEmail[index] &&
-      assignTaskEmail[index].email === ""
-    ) {
-      setdisabled(true);
-    }
-  };
-  const companyExists = (entityName) => {
-    const found = assignButtonIndex.some(
-      (item) => item.EntityName === entityName
-    );
-    if (found) {
-      return true;
-    }
-    return false;
   };
 
   const handleMobileAssignClick = (item, index) => {
@@ -427,6 +373,17 @@ function Governance({ history }) {
       </div>
     );
   };
+
+  useEffect(() => {
+    dispatch(governanceActions.governanceAPIRequest());
+  }, []);
+
+  useEffect(() => {
+    let tempArr = [];
+    console.log(state?.complianceOfficer);
+    setCompanyData(companyInfo);
+    setAssignTaskEmail(tempArr);
+  }, [companyInfo]);
 
   return (
     <div className="row">
