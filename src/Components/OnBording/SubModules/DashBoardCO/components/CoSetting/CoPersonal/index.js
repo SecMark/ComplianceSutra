@@ -22,7 +22,7 @@ function CoSettingRightGrid({ handleClose, history }) {
   const [otp, setOtp] = useState("");
   const [showResendSection, setShowResendSection] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
-
+  const [isCompanyNameValid, setIsCompanyNameValid] = useState(true);
   const [email, setEmail] = useState(null);
   const [number, setNumber] = useState(null);
 
@@ -292,6 +292,9 @@ function CoSettingRightGrid({ handleClose, history }) {
       handleClose();
     }
   };
+
+
+  
 
   const resendOTP = () => {
     setShowResendSection(false);

@@ -51,12 +51,14 @@ function PersonalDetails({ history }) {
   const [errors, setErrors] = useState({
     passwordErr: "",
     confirmPasswordErr: "",
+    companyErr:"",
     mobileNumErr: "",
     countryCodeErr: "",
     designationErr: "",
   });
   const [whatappFlag, setWhatappFlag] = useState(false);
   const [isCompanyNameValid, setIsCompanyNameValid] = useState(true);
+  const [isMobileValid, setIsMobileValid] = useState(true);
   const [passwordState, setPasswordState] = useState({
     minlength: false,
     uppercaseandlowercase: false,
@@ -64,6 +66,8 @@ function PersonalDetails({ history }) {
   });
 
   const [countryCode, setCountryCode] = useState("+91");
+
+
   const onChangeHandler = (name) => (event) => {
     if (name === "fullName" || name === "designation") {
       const re = /^[a-z|A-Z_ ]*$/;
@@ -76,7 +80,8 @@ function PersonalDetails({ history }) {
       event.target.value !== "" &&
       !re.test(event.target.value) &&
       name === "companyName"
-    ) {
+    ){
+
       return "";
     }
     if (name === "countryCode") {
@@ -88,6 +93,8 @@ function PersonalDetails({ history }) {
     }
 
     if (name === "mobileNumber") {
+        
+      
       let inputKey = "mobileNumErr";
 
       if (event.target.value > 0 && event.target.value < 9) {
@@ -174,6 +181,7 @@ function PersonalDetails({ history }) {
         setErrors({ ...errors, [inputKey]: "" });
       }
     }
+    // MobileadnCompanyCheck("mobileNumber");
     setValues({ ...values, [name]: event.target.value });
   };
 
@@ -231,17 +239,14 @@ function PersonalDetails({ history }) {
 
   const validateCompanyName = (e) => {
     let payload = {
-      loginID: e.target.value,
-      pwd: "",
-      rememberme: 0,
-      loginty: "AdminCompany",
-      countrycode: values.countryCode,
+      company_name:values.companyName
     };
     api
-      .post("/api/availabilityCheck", payload)
+      .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.Status === "True") {
+        console.log("got this response",response)
+        if (response && response.data && response.data.message.status === true) {
           setIsCompanyNameValid(false);
         } else {
           setIsCompanyNameValid(true);
@@ -253,6 +258,30 @@ function PersonalDetails({ history }) {
         }
       });
   };
+
+  
+  const MobileValidate =(e) => {
+    let payload = {
+      mobile_no:values.mobileNumber
+    };
+    api
+      .post("compliance.api.avabilityCheck", payload)
+      .then(function (response) {
+        // handle success
+        console.log("got this response",response.data.message.status)
+        if (response && response.data && response.data.message.status === true) {
+        
+          setIsMobileValid(false);
+        } else {
+          setIsMobileValid(true);
+        }
+      })
+      .catch(function (error) {
+        if (error) {
+          setIsCompanyNameValid(false);
+        }
+      });
+}
 
   const validateCountryCode = (e) => {
     let strr = e.target.value;
@@ -399,6 +428,7 @@ function PersonalDetails({ history }) {
                               id="MobileNumber"
                               placeholder="Enter your mobile number"
                               value={values.mobileNumber}
+                              onBlur={(e) => MobileValidate(e)}
                               onChange={onChangeHandler("mobileNumber")}
                               onKeyPress={(e) => handleKeyDown(e)}
                             />
@@ -413,6 +443,12 @@ function PersonalDetails({ history }) {
                           {isValidate && values.mobileNumber === "" && (
                             <p className="input-error-message">
                               Mobile number is required
+                            </p>
+                          )}
+                          
+                          {!isMobileValid && (
+                            <p className="input-error-message">
+                              mobile no already exists
                             </p>
                           )}
                           {values.mobileNumber !== "" &&

@@ -200,10 +200,7 @@ function CompanyDetails({ history }) {
   };
   const validateCompanyName = (e, index) => {
     let payload = {
-      loginID: e.target.value.trim(),
-      pwd: "",
-      rememberme: 0,
-      loginty: "AdminCompany",
+      company_name: e.target.value.trim(),
     };
     if (e.target.value != "") {
       const companyNameErr = () => {
@@ -227,12 +224,12 @@ function CompanyDetails({ history }) {
         }
       };
 
-      if (companyName !== payload.loginID) {
+      if (companyName !== payload.company_name) {
         api
-          .post("/api/availabilityCheck", payload)
+          .post("compliance.api.avabilityCheck", payload)
           .then(function (response) {
             // handle success
-            if (response && response.data && response.data.Status === "True") {
+            if (response && response.data && response.data.message.status === true) {
               let list = [...errors];
               list[index].companyNameError = "Company name already exists";
               setErrors(list);
@@ -419,6 +416,8 @@ function CompanyDetails({ history }) {
       setIsEditIndex(undefined);
     }
   };
+
+  
 
   const handleCompanyTypeChange = (value, index, type) => {
     var temp = fields;
