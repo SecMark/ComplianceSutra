@@ -2325,39 +2325,6 @@ function RightSideGrid({
     }
   };
 
-  //OLD Search function need to delete
-  // const handleSearch = (searchText) => {
-  //   setSearchValue(searchText);
-  //   let tempArr = [];
-  //   if (searchText !== "") {
-  //     taskList &&
-  //       taskList.forEach((obj1) => {
-  //         obj1.Details.forEach((obj2) => {
-  //           if (obj2.TaskName !== "Norec") {
-  //             if (
-  //               obj2.TaskName.toLowerCase().includes(
-  //                 searchText.toLowerCase()
-  //               ) ||
-  //               obj2.EntityName.toLowerCase().includes(
-  //                 searchText.toLowerCase()
-  //               ) ||
-  //               obj2.LicenseCode.toLowerCase().includes(
-  //                 searchText.toLowerCase()
-  //               ) ||
-  //               obj2.AssignedName.toLowerCase().includes(
-  //                 searchText.toLowerCase()
-  //               )
-  //             ) {
-  //               let task = { Status: obj1.Status, data: obj2 };
-  //               tempArr.push(task);
-  //             }
-  //           }
-  //         });
-  //       });
-  //     setSearchData(tempArr);
-  //   }
-  // };
-
   const renderTaskList = (task, Status, listType) => {
     return (
       <div
