@@ -70,18 +70,9 @@ function DashBoardView({ history }) {
       dispatch(notificationActions.setTaskID(null));
     }
   }, []);
+
   useEffect(() => {
-    if (userID === undefined) {
-      history.push("/login");
-    }
-  }, []);
-  useEffect(() => {
-    dispatch(
-      taskReportActions.taskReportRequest({
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
-      })
-    );
+    dispatch(taskReportActions.taskReportRequest());
   }, [state.adminMenu.currentMenu]);
 
   useEffect(() => {

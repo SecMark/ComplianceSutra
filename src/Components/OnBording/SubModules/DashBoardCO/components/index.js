@@ -72,12 +72,6 @@ function Dashboard({ history }) {
   }, []);
 
   useEffect(() => {
-    if (userID === undefined) {
-      history.push("/login");
-    }
-  }, []);
-
-  useEffect(() => {
     if (state.adminMenu.currentMenu !== "taskList") setIsTaskListOpen(false);
   }, []);
 

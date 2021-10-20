@@ -166,11 +166,7 @@ function RightSideGrid({
         usertype: user.UserType,
       };
       axios
-        .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`, {
-          headers: {
-            Authorization: `Basic ZmVhY2NiOGJkNWZkMDJhOjc4NTAzYWI3N2UwNzI5Ng==`,
-          },
-        })
+        .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`)
         .then((response) => {
           const { status, status_response, task_details } =
             response.data.message;
@@ -213,7 +209,7 @@ function RightSideGrid({
   }, [getTaskById]);
 
   const innerSearch = useOuterClick((e) => {
-    if (searchBoxShow && searchData.length===0) {
+    if (searchBoxShow && searchData.length === 0) {
       setsearchBoxShow(false);
       setSearchValue("");
     }

@@ -158,18 +158,22 @@ function Governance({ history }) {
   };
 
   const onDoneButtonClick = async () => {
-    const { data } = await axiosInstance.post(
-      "compliance.api.setGovernanceOfficerCompany",
-      {
-        details: companyData,
-        expert_review: enableSecmarkReview,
-        status_report: [emailApproval, statusEmail],
-      }
-    );
+    try {
+      const { data } = await axiosInstance.post(
+        "compliance.api.setGovernanceOfficerCompany",
+        {
+          details: companyData,
+          expert_review: enableSecmarkReview,
+          status_report: [emailApproval, statusEmail],
+        }
+      );
 
-    if (data.message.success) {
-      localStorage.setItem("expertReview", enableSecmarkReview);
-      history.push("/assign-task");
+      if (data.message.success) {
+        localStorage.setItem("expertReview", enableSecmarkReview);
+        history.push("/assign-task");
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -701,28 +705,12 @@ function Governance({ history }) {
               <div className="bottom-logo-strip">
                 <div className="row aligncenter">
                   <div className="col-md-6 col-xs-12">
-                    {disabled === true ? (
-                      <button
-                        onClick={() => onDoneButtonClick()}
-                        className="btn save-details common-button  mb-2"
-                        disabled={
-                          companyData.filter(
-                            (item) =>
-                              item.compliance_officer ||
-                              item.compliance_officer === ""
-                          ).length !== 0
-                        }
-                      >
-                        Done
-                      </button>
-                    ) : (
-                      <button
-                        className="btn save-details common-button  mb-2"
-                        disabled={true}
-                      >
-                        Done
-                      </button>
-                    )}
+                    <button
+                      onClick={() => onDoneButtonClick()}
+                      className="btn save-details common-button  mb-2"
+                    >
+                      Done
+                    </button>
                   </div>
                   <div className="col-md-6 col-xs-12 d-none d-sm-block text-right">
                     <a href="#" style={{ cursor: "auto" }}>

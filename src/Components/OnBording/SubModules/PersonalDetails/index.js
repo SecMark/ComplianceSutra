@@ -68,6 +68,9 @@ function PersonalDetails({ history }) {
   const [countryCode, setCountryCode] = useState("+91");
 
   const onChangeHandler = (name) => (event) => {
+    if (name === "companyName") {
+      validateCompanyName(event);
+    }
     if (name === "fullName" || name === "designation") {
       const re = /^[a-z|A-Z_ ]*$/;
       if (event.target.value && !re.test(event.target.value)) {
@@ -91,6 +94,7 @@ function PersonalDetails({ history }) {
     }
 
     if (name === "mobileNumber") {
+      MobileValidate(event);
       let inputKey = "mobileNumErr";
 
       if (event.target.value > 0 && event.target.value < 9) {
@@ -236,7 +240,7 @@ function PersonalDetails({ history }) {
 
   const validateCompanyName = (e) => {
     let payload = {
-      company_name: values.companyName,
+      company_name: e.target.value,
     };
     api
       .post("compliance.api.avabilityCheck", payload)
@@ -262,7 +266,7 @@ function PersonalDetails({ history }) {
 
   const MobileValidate = (e) => {
     let payload = {
-      mobile_no: values.mobileNumber,
+      mobile_no: e.target.value,
     };
     api
       .post("compliance.api.avabilityCheck", payload)
@@ -430,12 +434,9 @@ function PersonalDetails({ history }) {
                               }
                               id="MobileNumber"
                               placeholder="Enter your mobile number"
+                              name="mobileNumber"
                               value={values.mobileNumber}
-                              onBlur={(e) => MobileValidate(e)}
-                              onChange={(e) => {
-                                MobileValidate(e);
-                                onChangeHandler("mobileNumber");
-                              }}
+                              onChange={onChangeHandler("mobileNumber")}
                               onKeyPress={(e) => handleKeyDown(e)}
                             />
                           </div>
@@ -484,7 +485,6 @@ function PersonalDetails({ history }) {
                             }
                             id="CompanyName"
                             placeholder="Enter your company name"
-                            onBlur={(e) => validateCompanyName(e)}
                             value={values.companyName}
                             onChange={onChangeHandler("companyName")}
                             onKeyPress={(e) => handleKeyDown(e)}

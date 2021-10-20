@@ -48,6 +48,9 @@ const License = ({ index, addLicense, closeDrawer }) => {
     const temp = [...listOfLicense];
     const tempSelectedList = [];
     for (let count = 0; count < temp.length; count++) {
+      if (temp[count].selected) {
+        tempSelectedList.push(temp[count].industry);
+      }
       for (
         let licenseCount = 0;
         licenseCount < temp[count].license.length;
@@ -75,17 +78,6 @@ const License = ({ index, addLicense, closeDrawer }) => {
   useEffect(() => {
     getListOfSelectedLicenses();
   }, [listOfLicense]);
-
-  const renderCheckBox = (item, index) => {
-    return (
-      <input
-        type="checkbox"
-        value=""
-        className="custom-control-input"
-        checked={true}
-      />
-    );
-  };
 
   const chooseImage = (index) => {
     if (index == 0 || index % 5 == 0) {

@@ -339,7 +339,7 @@ function AssignTask({ history }) {
             show: false,
             taskList: Lvalues.taskList.map((Stask) => {
               return {
-                name: Stask.name,
+                task_name: Stask.task_name,
                 subject: Stask.subject,
                 license: Stask.license,
                 completed_by: Stask.completed_by,
@@ -374,11 +374,10 @@ function AssignTask({ history }) {
     const { value } = e.target;
     let assignedEmail = [];
     let temp = [...taskListData];
-    setAssignTaskEmail([]);
     temp[0].licenseAndTaskList[index].taskList.map((item, jIndex) => {
       temp[0].licenseAndTaskList[index].taskList[jIndex].email = value;
       assignedEmail.push({
-        name: temp[0].licenseAndTaskList[index].taskList[jIndex].name,
+        name: temp[0].licenseAndTaskList[index].taskList[jIndex].task_name,
         completed_by: temp[0].licenseAndTaskList[index].taskList[jIndex].email,
       });
     });
@@ -397,22 +396,24 @@ function AssignTask({ history }) {
         toast.success("Invite has been sent successfully");
         history.push("/otpverification-co");
       } else {
-        toast.error("Something went wrong");
+        toast.error(data.message.status_response);
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error.message);
     }
   };
 
   const assignEmailTask = (index, jIndex, e) => {
     const { value } = e.target;
     let temp = [...taskListData];
+    console.log(temp);
     let emails = [];
     temp[0].licenseAndTaskList[index].taskList[jIndex].email = value;
     emails.push({
-      name: temp[0].licenseAndTaskList[index].taskList[jIndex].name,
+      name: temp[0].licenseAndTaskList[index].taskList[jIndex].task_name,
       completed_by: temp[0].licenseAndTaskList[index].taskList[jIndex].email,
     });
+
     setAssignTaskEmail(emails);
 
     setTaskListData(temp);

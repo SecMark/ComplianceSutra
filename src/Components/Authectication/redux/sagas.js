@@ -13,19 +13,13 @@ const loginReq = function* loginReq({ payload }) {
     if (message.status) {
       const { token } = message;
       localStorage.setItem("basicToken", token);
-      console.log(token);
-      yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
-      toast.success("Thankyou for login.");
 
-      if (
-        data.IscreateBySecmark === 0 &&
-        ((data && data.UserType === 3) ||
-          data.UserType === 5 ||
-          data.UserType === 6)
-      ) {
-        yield put(menuActions.setCurrentMenu("dashboard"));
-        yield put(menuActions.setActiveTabInSetting("personal"));
-        payload.history.push("/dashboard-view");
+      yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
+      // toast.success("Thankyou for login.");
+      if (data) {
+        //yield put(menuActions.setCurrentMenu("dashboard"));
+        // yield put(menuActions.setActiveTabInSetting("personal"));
+        payload.history.push("/dashboard");
       } else if (data.IscreateBySecmark === 1) {
         payload.history.push("/expert-review/");
       } else {

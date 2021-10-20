@@ -20,7 +20,6 @@ import SideBarInputControl from "../SideBarInputControl";
 import api from "../../../../apiServices";
 import MobileStepper from "../mobileStepper";
 import Searchable from "react-searchable-dropdown";
-import { data } from "jquery";
 import License from "../ChooseLicenses/License";
 import axiosInstance from "../../../../apiServices";
 import { toast } from "react-toastify";
@@ -39,6 +38,7 @@ function CompanyDetails({ history }) {
       company_type: "",
       business_category: "",
       countShow: false,
+      licenses: [],
     },
   ]);
   const [errors, setErrors] = useState([
@@ -114,7 +114,6 @@ function CompanyDetails({ history }) {
   const entityID =
     state && state.complianceOfficer && state.complianceOfficer?.entityInfo;
   useEffect(() => {
-    console.log("compant name", localStorage.getItem("companyName"));
     dispatch(
       companyActions.companyTypeRequest({
         country: "INDIA",
@@ -200,7 +199,10 @@ function CompanyDetails({ history }) {
   };
   const validateCompanyName = (e, index) => {
     let payload = {
-      company_name: e.target.value.trim(),
+      loginID: e.target.value.trim(),
+      pwd: "",
+      rememberme: 0,
+      loginty: "AdminCompany",
     };
     if (e.target.value != "") {
       const companyNameErr = () => {
@@ -224,16 +226,15 @@ function CompanyDetails({ history }) {
         }
       };
 
-      if (companyName !== payload.company_name) {
+      if (companyName !== payload.loginID) {
         api
-          .post("compliance.api.avabilityCheck", payload)
+          .post("compliance.api.avabilityCheck", {
+            company_name: e.target.value,
+          })
           .then(function (response) {
             // handle success
-            if (
-              response &&
-              response.data &&
-              response.data.message.status === true
-            ) {
+            console.log(response);
+            if (response.data.message.status) {
               let list = [...errors];
               list[index].companyNameError = "Company name already exists";
               setErrors(list);
@@ -514,6 +515,7 @@ function CompanyDetails({ history }) {
   const showHideDropDown = (type, indexDrop, data) => {};
 
   const addNewCompany = (item, index) => {
+    item.license = [];
     return (
       <tr className="focusRemove" key={index}>
         {/* <td className="" style={{ height: "85px" }}> */}
@@ -523,13 +525,13 @@ function CompanyDetails({ history }) {
             className="form-control border-0 back-color"
             placeholder="Name"
             // defaultValue={index === 0 ? companyName : item.companyName}
-            value={item.companyName}
+            value={item.company_name}
             autoComplete="off"
             name="company_name"
             onFocus={() => {
               showHideDropDown("companyName", index);
             }}
-            // onBlur={(e) => validateCompanyName(e, index)}
+            onBlur={(e) => validateCompanyName(e, index)}
             onChange={(e) => {
               handelChange(e, index, "", "");
             }}
@@ -640,6 +642,7 @@ function CompanyDetails({ history }) {
 
   const redirectToAssignTaskScreen = async () => {
     try {
+      console.log(fields);
       const { data } = await axiosInstance.post(
         "compliance.api.setCompanyDetails",
         {
@@ -674,7 +677,6 @@ function CompanyDetails({ history }) {
       values[i][name] = value;
     }
     setFields(values);
-    validateCompanyName(e, i);
   };
 
   const addEditMobileModel = (item, index) => {
@@ -690,7 +692,7 @@ function CompanyDetails({ history }) {
                 value={item.companyName}
                 autoComplete="off"
                 name="companyName"
-                // onBlur={(e) => validateCompanyName(e, index)}
+                onBlur={(e) => validateCompanyName(e, index)}
                 onChange={(e) => {
                   handelChange(e, index, "", "");
                 }}
@@ -936,11 +938,7 @@ function CompanyDetails({ history }) {
               <div id="drawerChildMobile" className="sideBarFixedAccount">
                 {open && (
                   <>
-                    <License
-                      addLicense={addLicense}
-                      index={currentIndex}
-                      closeDrawer={close}
-                    />
+                    <License />
                   </>
                 )}
               </div>

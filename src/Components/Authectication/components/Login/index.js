@@ -74,6 +74,7 @@ function Login({ history }) {
       signInSignUpActions.signInRequest({
         email: values.LoginId,
         password: values.Pwd,
+        history: history,
       })
     );
 

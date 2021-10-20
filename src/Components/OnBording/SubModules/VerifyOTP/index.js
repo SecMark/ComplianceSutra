@@ -133,6 +133,7 @@ function VeryOTP({ history, currentStep }) {
       if (!mobileNumberReg.test(value)) {
         return "";
       } else {
+        localStorage.setItem("mobileNumber", e.target.value);
         setPhoneNumber(e.target.value);
       }
       if (value.length < 10) {
@@ -157,23 +158,23 @@ function VeryOTP({ history, currentStep }) {
   const resendOTP = () => {
     setShowResendSection(false);
     let payload = {
-      mobile_number: mobileNumber || "7837679339",
+      mobile_number: localStorage.getItem("mobileNumber"),
     };
 
     api
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.message === true) {
+        if (response.data.message.status) {
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
+          setSeconds(59);
         } else {
           toast.error("something went wrong please try again !!!");
         }
       })
       .catch(function (error) {});
-    setSeconds(59);
   };
 
   const updateMobileNumberAndSendOTP = () => {
@@ -189,7 +190,7 @@ function VeryOTP({ history, currentStep }) {
       setDisabled(true);
       setCountryCode(true);
     }
-    // availabilityCheck(phoneNumber);
+    sendOTPRequest("test");
   };
 
   const availabilityCheck = (phoneNumber) => {
@@ -263,7 +264,7 @@ function VeryOTP({ history, currentStep }) {
   const sendOTPRequest = (text) => {
     setDisabled(true);
     let payload = {
-      mobile_number: mobileNumber || "7837679339",
+      mobile_number: localStorage.getItem("mobileNumber"),
     };
 
     api
@@ -278,7 +279,7 @@ function VeryOTP({ history, currentStep }) {
           );
         } else {
           toast.error("something went wrong please try again !!!");
-          setIsEnabledSecureOTP(true);
+          setIsEnabledSecureOTP(false);
           setShowChangeMobileSection(false);
         }
       })
@@ -319,16 +320,10 @@ function VeryOTP({ history, currentStep }) {
       api
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
-          // handle success
-
-          // if (!response.data.message.status) {
-          //   setOtpInValid(true);
-          // } else {
           setOtpInValid(false);
           setTimeout(() => {
-            history.push("/redirect-dashboard");
+            history.push("/dashboard");
           }, 4000);
-          // }
         })
         .catch(function (error) {
           if (error) {

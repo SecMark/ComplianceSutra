@@ -139,7 +139,6 @@
 }
 .company-details {
   margin-top: 40px;
-  height: calc(100% - 0px);
 }
 .company-details img {
   margin-bottom: 40px;
@@ -1038,7 +1037,6 @@ textarea {
   }
   .company-details {
     margin-top: 79px;
-    height: calc(100% - 0px);
   }
   .company-details .company-title {
     font-size: 23px;

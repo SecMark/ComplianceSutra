@@ -1,6 +1,7 @@
 import api from "../../../../../apiServices";
 
-const getTaskReport = (payload) => api.post("/api/getTaskReport", payload);
+const getTaskReport = (payload) =>
+  api.post("compliance.api.GetTaskList", payload);
 
 const getTaskReportByID = (payload) => api.post("/api/GetTask", payload);
 
