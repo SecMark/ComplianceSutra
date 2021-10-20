@@ -76,7 +76,9 @@ const License = ({ index, addLicense, closeDrawer }) => {
   };
 
   useEffect(() => {
-    getListOfSelectedLicenses();
+    if (listOfLicense.length) {
+      getListOfSelectedLicenses();
+    }
   }, [listOfLicense]);
 
   const chooseImage = (index) => {
