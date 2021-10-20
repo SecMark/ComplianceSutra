@@ -48,14 +48,14 @@ const License = ({ index, addLicense, closeDrawer }) => {
     const temp = [...listOfLicense];
     const tempSelectedList = [];
     for (let count = 0; count < temp.length; count++) {
-      if (temp[count].selected) {
-        tempSelectedList.push(temp[count].industry);
-      }
       for (
         let licenseCount = 0;
         licenseCount < temp[count].license.length;
         licenseCount++
       ) {
+        if (temp[count].license[licenseCount].selected) {
+          tempSelectedList.push(temp[count].license[licenseCount].name);
+        }
         for (
           let subLicenseCount = 0;
           subLicenseCount < temp[count].license[licenseCount].sublicense.length;
@@ -76,7 +76,7 @@ const License = ({ index, addLicense, closeDrawer }) => {
   };
 
   useEffect(() => {
-    if (listOfLicense.length) {
+    if (listOfLicense) {
       getListOfSelectedLicenses();
     }
   }, [listOfLicense]);
@@ -137,23 +137,23 @@ const License = ({ index, addLicense, closeDrawer }) => {
     temp[index].license[Jindex].selected =
       !temp[index].license[Jindex].selected;
 
-    for (
-      let counter = 0;
-      counter < temp[index].license[Jindex].sublicense.length;
-      counter++
-    ) {
-      if (
-        !temp[index].license[Jindex].sublicense[counter].selected &&
-        temp[index].license[Jindex].selected
-      ) {
-        temp[index].license[Jindex].sublicense[counter].selected = true;
-      } else if (
-        temp[index].license[Jindex].sublicense[counter].selected &&
-        !temp[index].license[Jindex].selected
-      ) {
-        temp[index].license[Jindex].sublicense[counter].selected = false;
-      }
-    }
+    // for (
+    //   let counter = 0;
+    //   counter < temp[index].license[Jindex].sublicense.length;
+    //   counter++
+    // ) {
+    //   if (
+    //     !temp[index].license[Jindex].sublicense[counter].selected &&
+    //     temp[index].license[Jindex].selected
+    //   ) {
+    //     temp[index].license[Jindex].sublicense[counter].selected = true;
+    //   } else if (
+    //     temp[index].license[Jindex].sublicense[counter].selected &&
+    //     !temp[index].license[Jindex].selected
+    //   ) {
+    //     temp[index].license[Jindex].sublicense[counter].selected = false;
+    //   }
+    // }
 
     setListOfLicense(temp);
   };

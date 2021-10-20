@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import comtech from "../../../../assets/Images/CapmTech.png";
@@ -94,7 +94,14 @@ function PersonalDetails({ history }) {
     }
 
     if (name === "mobileNumber") {
-      MobileValidate(event);
+      // mobileNumber
+      setValues({
+        ...values,
+        mobileNumber: event.target.value,
+      });
+      if (event.target.value.length >= 10) {
+        MobileValidate(event);
+      }
       let inputKey = "mobileNumErr";
 
       if (event.target.value > 0 && event.target.value < 9) {

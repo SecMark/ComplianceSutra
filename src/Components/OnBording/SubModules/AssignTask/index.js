@@ -387,9 +387,23 @@ function AssignTask({ history }) {
   };
 
   const sendTaskDetail = async () => {
+    console.log(assignTaskEmail);
+    console.log("TASK", taskListData);
+    let emailsArray = [];
+    for (let i in taskListData[0].licenseAndTaskList) {
+      for (let j in taskListData[0].licenseAndTaskList[i].taskList) {
+        if (taskListData[0].licenseAndTaskList[i].taskList[j].email) {
+          emailsArray.push({
+            name: taskListData[0].licenseAndTaskList[i].taskList[j].task_name,
+            completed_by:
+              taskListData[0].licenseAndTaskList[i].taskList[j].email,
+          });
+        }
+      }
+    }
     try {
       const { data } = await axiosInstance.post("compliance.api.AssignTasks", {
-        task_details: assignTaskEmail,
+        task_details: emailsArray,
       });
       console.log(data);
       if (data.message.status) {
@@ -414,7 +428,7 @@ function AssignTask({ history }) {
       completed_by: temp[0].licenseAndTaskList[index].taskList[jIndex].email,
     });
 
-    setAssignTaskEmail(emails);
+    setAssignTaskEmail([...assignTaskEmail, emails]);
 
     setTaskListData(temp);
   };
