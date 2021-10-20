@@ -378,7 +378,7 @@ function AssignTask({ history }) {
       temp[0].licenseAndTaskList[index].taskList[jIndex].email = value;
       assignedEmail.push({
         name: temp[0].licenseAndTaskList[index].taskList[jIndex].task_name,
-        completed_by: temp[0].licenseAndTaskList[index].taskList[jIndex].email,
+        assign_to: temp[0].licenseAndTaskList[index].taskList[jIndex].email,
       });
     });
 
@@ -395,8 +395,7 @@ function AssignTask({ history }) {
         if (taskListData[0].licenseAndTaskList[i].taskList[j].email) {
           emailsArray.push({
             name: taskListData[0].licenseAndTaskList[i].taskList[j].task_name,
-            completed_by:
-              taskListData[0].licenseAndTaskList[i].taskList[j].email,
+            assign_to: taskListData[0].licenseAndTaskList[i].taskList[j].email,
           });
         }
       }

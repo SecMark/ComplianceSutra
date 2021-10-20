@@ -212,19 +212,17 @@ function CoSettingRightGrid({ handleClose, history }) {
         setIsValidate(false);
         handleFinalSubmit();
       } else {
-
         //<--------------------------------- commenting this till i get login api ------------------------------->
-        // if (email) 
+        // if (email)
         // setVerifyModalHideShow(true);
         // else {
-          if (!otpValid) {
-            setOtpModal(true);
-            setOtpInValid(false);
-            setSeconds(59);
-            setIsOtpVerfied(false);
-            sendOTPRequest();
-          }
-        
+        if (!otpValid) {
+          setOtpModal(true);
+          setOtpInValid(false);
+          setSeconds(59);
+          setIsOtpVerfied(false);
+          sendOTPRequest();
+        }
       }
     }
   };
@@ -277,8 +275,7 @@ function CoSettingRightGrid({ handleClose, history }) {
             });
           }
         });
-    } 
-    else {
+    } else {
       number && setOtpModal(true);
       setVerifyPassword({ password: "", passwordError: "" });
       setVerifyModalHideShow(false);
@@ -292,9 +289,6 @@ function CoSettingRightGrid({ handleClose, history }) {
       handleClose();
     }
   };
-
-
-  
 
   const resendOTP = () => {
     setShowResendSection(false);
@@ -319,8 +313,8 @@ function CoSettingRightGrid({ handleClose, history }) {
 
   const handleFinalSubmit = () => {
     let payload = {
-      adminName: values.full_name,
-      adminMobile: values.mobile_no,
+      full_name: values.full_name,
+      mobile_no: values.mobile_no,
       adminEmail: values.email,
       userType: values.email !== valuesBackup.email ? 9 : 1,
       actionFlag: 2,
@@ -328,6 +322,7 @@ function CoSettingRightGrid({ handleClose, history }) {
       userID: userInfoBackup.UserID,
       countrycode: values.countrycode,
     };
+    console.log(payload);
     dispatch(coActions.coDetailsInsUpdDelRequest(payload));
     setValuesChanged(false);
   };
@@ -398,7 +393,7 @@ function CoSettingRightGrid({ handleClose, history }) {
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        console.log("got this response",response)
+        console.log("got this response", response);
         if (response && response.status === 200) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
