@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { setNotificationTaskId } from "../../notification/Redux/Action";
 import { actions as taskReportActions } from "../../../redux/actions";
 import { getDataByCompany } from "../../../../../../../CommonModules/helpers/tasks.helper";
+import axiosInstance from "../../../../../../../apiServices";
 
 export default function AssignedView(props) {
   const state = useSelector((state) => state);
@@ -31,12 +32,8 @@ export default function AssignedView(props) {
       userID: props.user.UserID,
       usertype: props.user.UserType,
     };
-    axios
-      .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`, {
-        headers: {
-          Authorization: `Basic ZmVhY2NiOGJkNWZkMDJhOjc4NTAzYWI3N2UwNzI5Ng==`,
-        },
-      })
+    axiosInstance
+      .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`)
       .then((response) => {
         const { status, status_response, task_details } = response.data.message;
         if (status && status_response) {

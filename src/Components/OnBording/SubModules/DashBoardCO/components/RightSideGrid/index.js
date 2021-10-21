@@ -49,6 +49,7 @@ import View from "../../../../../CalenderView/View";
 import TextareaAutosize from "react-textarea-autosize";
 import ReAssignTasksModal from "../../../../../ReAssignTasks";
 import { getDataByStatus } from "../../../../../../CommonModules/helpers/tasks.helper";
+import axiosInstance from "../../../../../../apiServices";
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
@@ -354,12 +355,8 @@ function RightSideGrid({
         userID: user.UserID,
         usertype: user.UserType,
       };
-      axios
-        .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`, {
-          headers: {
-            Authorization: `Basic ZmVhY2NiOGJkNWZkMDJhOjc4NTAzYWI3N2UwNzI5Ng==`,
-          },
-        })
+      axiosInstance
+        .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`)
         .then((response) => {
           const { status, status_response, task_details } =
             response.data.message;

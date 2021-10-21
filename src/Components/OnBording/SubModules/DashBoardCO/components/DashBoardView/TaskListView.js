@@ -27,7 +27,6 @@ import { BACKEND_BASE_URL } from "../../../../../../apiServices/baseurl";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { actions as taskReportActions } from "../../redux/actions";
 import MobileLeftSidebar from "../MobileLeftSidebar";
-import axios, { post } from "axios";
 import { withRouter } from "react-router-dom";
 
 import BoardView from "../BoardView/index";
@@ -39,6 +38,8 @@ import PendingAction from "./component/PendingAction";
 import View from "../../../../../CalenderView/View";
 import { setNotificationTaskId } from "../notification/Redux/Action";
 import { getDataByStatus } from "../../../../../../CommonModules/helpers/tasks.helper";
+import axiosInstance from "../../../../../../apiServices";
+
 function RightSideGrid({
   isTaskListOpen,
   taskList,
@@ -148,7 +149,7 @@ function RightSideGrid({
         taskID: taskId,
         actionFlag: 0,
       };
-      axios
+      axiosInstance
         .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
         .then((response) => {
           let fileData = response.data;
@@ -165,7 +166,8 @@ function RightSideGrid({
         userID: user.UserID,
         usertype: user.UserType,
       };
-      axios
+
+      axiosInstance
         .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`)
         .then((response) => {
           const { status, status_response, task_details } =
@@ -268,7 +270,7 @@ function RightSideGrid({
         taskID: taskId,
         actionFlag: 0,
       };
-      axios
+      axiosInstance
         .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
         .then((response) => {
           let fileData = response.data;
@@ -287,7 +289,7 @@ function RightSideGrid({
         TaskFileId: file.TaskFileId,
         actionFlag: 3,
       };
-      axios
+      axiosInstance
         .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
         .then((response) => {
           if (
@@ -482,7 +484,7 @@ function RightSideGrid({
         "content-type": "multipart/form-data",
       },
     };
-    return post(url, formData, config);
+    //return podt(url, formData, config);
   };
 
   const handleSelectUploadFile = (file) => {
@@ -598,10 +600,9 @@ function RightSideGrid({
   };
 
   const handleCheckEmailAvailability = (event) => {
-    axios
+    axiosInstance
       .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
+        email: "AdminEmail",
       })
       .then((response) => {
         if (response && response.data && response.data.Status === "True") {
@@ -617,7 +618,7 @@ function RightSideGrid({
   };
 
   const handleCheckAssignToEmailAvailability = (event) => {
-    axios
+    axiosInstance
       .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
         loginID: selectedUser,
         loginty: "AdminEmail",
