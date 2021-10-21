@@ -30,7 +30,8 @@ const postUploadFile = ({ taskid, fileData, userId, ftype }) =>
 
 const postAssignTask = (payload) =>
   api.post("compliance.api.AssignTasks", payload);
-
+const changeTaskStatus = (payload) =>
+  api.post("compliance.api.setTaskStatus", payload);
 const getAvailabilityCheck = (payload) =>
   api.post("compliance.api.getUserDetails", payload);
 
@@ -71,4 +72,5 @@ export default {
   migrateTasks,
   getTeamMembers,
   getTaskReferencesByName,
+  changeTaskStatus,
 };

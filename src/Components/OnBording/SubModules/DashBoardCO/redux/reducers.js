@@ -124,6 +124,19 @@ const actionHandler = {
     postAssignTask: payload,
   }),
 
+  [types.CHANGE_TASK_STATUS]: (state) => ({
+    ...state,
+    changeTaskStatus: null,
+  }),
+  [types.CHANGE_TASK_STATUS_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    changeTaskStatus: payload,
+  }),
+  [types.CHANGE_TASK_STATUS_FAILED]: (state, { payload }) => ({
+    ...state,
+    changeTaskStatus: payload,
+  }),
+
   [types.GET_AVAILABILITY_CHECK]: (state) => ({
     ...state,
     userAvailability: {},

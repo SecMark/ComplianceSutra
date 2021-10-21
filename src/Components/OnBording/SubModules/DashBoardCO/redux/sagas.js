@@ -249,6 +249,27 @@ const postAssignTask = function* postAssignTask({ payload }) {
   }
 };
 
+const changeTaskStatus = function* changeTaskStatus({ payload }) {
+  try {
+    const { data, status } = yield call(api.changeTaskStatus, payload);
+    if (status === 200 && data.message.status === true) {
+      toast.success(`Task ${payload.status} successfully!`);
+      yield put(actions.changeTaskStatusSuccess({ changeTaskStatus: true }));
+      yield put(
+        actions.taskReportByIdRequest({
+          task_name: payload.task_name,
+        })
+      );
+      yield put(actions.taskReportRequest());
+    } else {
+      yield put(actions.changeTaskStatusFailed({ changeTaskStatus: false }));
+    }
+  } catch (err) {
+    toast.error("Something went wrong. Please try again");
+    yield put(actions.changeTaskStatusFailed({ changeTaskStatus: false }));
+  }
+};
+
 const userAvailabilityCheck = function* userAvailabilityCheck({ payload }) {
   try {
     const { data, status } = yield call(api.getAvailabilityCheck, payload);
@@ -466,6 +487,7 @@ export default function* sagas() {
   yield takeLatest(types.GET_TASK_FILES_BY_TASK_ID, getTaskFilesById);
   yield takeLatest(types.POST_UPLOAD_FILE_BY_TASK_ID, postUploadFileById);
   yield takeLatest(types.POST_ASSIGN_TASK_BY_TASKID, postAssignTask);
+  yield takeLatest(types.CHANGE_TASK_STATUS, changeTaskStatus);
   yield takeLatest(types.GET_AVAILABILITY_CHECK, userAvailabilityCheck);
   yield takeLatest(
     types.CO_PERSONAL_DETAILS_INS_UPD_DEL_REQUEST,
