@@ -6,7 +6,7 @@ import Task from "./TrashList/Task";
 
 const Trash =()=> {
        const [options, setOptions] = useState("list");
-    const selectProfileOption = (option) => {
+       const selectProjectListOption = (option) => {
         setOptions(option);
       };
     return (
@@ -16,19 +16,19 @@ const Trash =()=> {
                     <div className="mainHeading"><h4>Trash</h4></div>
                         <div className="options-list">       
                                     <div id="res1"
-                                        onClick={() => selectProfileOption("list")}
+                                        onClick={() => selectProjectListOption("list")}
                                         className={options === "list" && "activation-1"}
                                     >
                                         <div className="getoption-1">Projects</div>
                                    </div>
                                     <div id="res2"
-                                        onClick={() => selectProfileOption("milestone")}
+                                        onClick={() => selectProjectListOption("milestone")}
                                         className={options === "milestone" && "activation-2"}
                                     >
                                     <div className="getoption-2">Milestone</div>
                                     </div>
                                     <div id="res3"
-                                        onClick={() => selectProfileOption("tasks")}
+                                        onClick={() => selectProjectListOption("tasks")}
                                         className={options === "tasks" && "activation-3"}
                                         >
                                         <div className="getoption-3">Tasks</div>

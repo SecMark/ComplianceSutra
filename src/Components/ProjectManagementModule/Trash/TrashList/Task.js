@@ -2,7 +2,7 @@ import React from 'react'
 import Vector from "../../../../../src/assets/Images/Vector.png"
 import Delete from "../../../../../src/assets/Images/Delete.png"
 
-function Task() {
+const Task =()=>{
     return (
         <div>
             {/* <h1>Task</h1> */}

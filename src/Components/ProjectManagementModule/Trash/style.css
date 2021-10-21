@@ -15,7 +15,7 @@
     height: 65px;
     width: 83px;
     margin-left: 39px;
-    margin-top: 44px;
+    margin-top: 44px; 
     border-radius: nullpx;
     color:#2C2738;
     }
@@ -112,6 +112,7 @@
         margin-top: -33px;
         border-radius: 8px;
         background-color: #CACACA;
+        display: flex;
       }
       .underText{
         height: 0px;
@@ -493,8 +494,6 @@
     * {
       box-sizing: border-box;
     }
-    
-       
     
     
     

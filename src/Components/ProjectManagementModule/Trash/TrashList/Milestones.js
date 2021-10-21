@@ -2,7 +2,7 @@ import React from 'react'
 import Delete from "../../../../../src/assets/Images/Delete.png"
 import Vector from "../../../../../src/assets/Images/Vector.png"
 
-function Milestones() {
+const  Milestones =()=> {
     return (
         <div>
             <div className="takeRectangle">
