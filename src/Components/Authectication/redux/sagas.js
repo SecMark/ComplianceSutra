@@ -9,16 +9,11 @@ const loginReq = function* loginReq({ payload }) {
   try {
     const { data } = yield call(api.loginAccount, payload);
     const { message } = data;
-
     if (message.status) {
-      const { token } = message;
+      const { token, user_type } = message;
       localStorage.setItem("basicToken", token);
-
-      yield put(actions.signInRequestSuccess({ loginSuccess: true, data }));
-      // toast.success("Thankyou for login.");
+      yield put(actions.signInRequestSuccess({ loginSuccess: false, data }));
       if (data) {
-        //yield put(menuActions.setCurrentMenu("dashboard"));
-        // yield put(menuActions.setActiveTabInSetting("personal"));
         payload.history.push("/dashboard");
       } else if (data.IscreateBySecmark === 1) {
         payload.history.push("/expert-review/");

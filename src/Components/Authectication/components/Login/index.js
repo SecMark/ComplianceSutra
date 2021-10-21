@@ -77,6 +77,7 @@ function Login({ history }) {
         history: history,
       })
     );
+    dispatch(signInSignUpActions.signInRequestSuccess({ loginSuccess: true }));
 
     setTimeout(() => {
       let status = state.auth.loginSuccess;
