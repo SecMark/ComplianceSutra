@@ -16,7 +16,6 @@ import HelpSection from "../../../../HelpSection/Help";
 import SingleNotification from "../../../../../CustomNotification/SingleNotification";
 import api from "../../../../../../src/apiServices";
 import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
-// import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
@@ -76,13 +75,7 @@ function Dashboard({ history }) {
   }, []);
 
   useEffect(() => {
-    dispatch(
-      taskReportActions.taskReportRequest({
-        entityid: "",
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
-      })
-    );
+    dispatch(taskReportActions.taskReportRequest());
   }, [state.adminMenu.currentMenu]);
 
   useEffect(() => {

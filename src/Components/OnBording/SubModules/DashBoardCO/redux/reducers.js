@@ -33,6 +33,19 @@ const actionHandler = {
     taskReportById: payload,
   }),
 
+  [types.GET_TASK_REFERENSES_BY_TASK_NAME]: (state) => ({
+    ...state,
+    taskReferences: [],
+  }),
+  [types.GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    taskReferences: payload,
+  }),
+  [types.GET_TASK_REFERENSES_BY_TASK_NAME_FAILED]: (state) => ({
+    ...state,
+    taskReferences: [],
+  }),
+
   [types.GET_USER_BY_ROLE]: (state) => ({
     ...state,
     getUserByRole: {},

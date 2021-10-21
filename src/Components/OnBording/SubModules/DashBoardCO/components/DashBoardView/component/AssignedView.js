@@ -4,18 +4,15 @@ import "../style.css";
 import viewAllArow from "../../../../../../../assets/Icons/viewAllArow.png";
 import viewAllArowTop from "../../../../../../../assets/Icons/viewAllArowTop.png";
 import keyboardArrowRightBlack from "../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
-import axios from "axios";
-import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
 import downArrow from "../../../../../../../assets/Icons/downArrow.png";
 import upArrow from "../../../../../../../assets/Icons/topArrowAccordian.png";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setNotificationTaskId } from "../../notification/Redux/Action";
-import { actions as taskReportActions } from "../../../redux/actions";
 import { getDataByTeam } from "../../../../../../../CommonModules/helpers/tasks.helper";
-import axiosInstance from "../../../../../../../apiServices";
+import { actions as taskReportActions } from "../../../redux/actions";
 
 export default function AssignedView(props) {
+  const { setCurrentOpenedTask, setIsTaskListOpen } = props;
   const [assignRowCount, setAssignRowCount] = useState([]);
   const [licensetaskData, setLicensetaskData] = useState([]);
   const [today, setToday] = useState(new Date());
@@ -23,6 +20,20 @@ export default function AssignedView(props) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const userDetails = state && state.auth && state.auth.loginInfo;
+  const taskList =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
+  useEffect(() => {
+    if (taskList && taskList.length !== 0) {
+      const taskByCompany = getDataByTeam(taskList);
+      setLicensetaskData(taskByCompany);
+    } else {
+      dispatch(taskReportActions.taskReportRequest());
+    }
+  }, [taskList]);
 
   useEffect(() => {
     var today = new Date();
@@ -48,23 +59,6 @@ export default function AssignedView(props) {
     setToday(today);
   }, []);
 
-  useEffect(() => {
-    axiosInstance
-      .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`)
-      .then((response) => {
-        const { status, status_response, task_details } = response.data.message;
-        if (status && status_response) {
-          const taskByStatus = getDataByTeam(task_details);
-          setLicensetaskData(taskByStatus);
-        }
-      })
-      .catch((error) => {
-        console.log("error => ", error);
-      });
-  }, []);
-
-  const getSelectTaskDetails = (e) => {};
-
   const handleExpandList = (flag, index) => {
     let tempExtend = [...expandedFlags];
     if (flag === "show") {
@@ -74,7 +68,6 @@ export default function AssignedView(props) {
     }
     setExpandedFlags(tempExtend);
   };
-  console.log("expandedFlags => ", expandedFlags);
 
   const AssignShowLessMore = (status, count) => {
     let tempRowCnt = { ...assignRowCount };
@@ -106,9 +99,8 @@ export default function AssignedView(props) {
           <Link
             to="/dashboard"
             onClick={() => {
-              if (userDetails && userDetails.UserType !== 6) {
-                dispatch(setNotificationTaskId(task.TaskId));
-              }
+              setCurrentOpenedTask(task);
+              setIsTaskListOpen(true);
             }}
             style={{
               textDecoration: "none",
@@ -116,6 +108,7 @@ export default function AssignedView(props) {
                 userDetails && userDetails.UserType === 6 ? "none" : "auto"
               }`,
             }}
+            key={task.task_name}
           >
             <div
               className="row"
@@ -124,7 +117,10 @@ export default function AssignedView(props) {
               <div className="col-10 col-md-7 col-sm-7 col-xl-7">
                 <div className="all-companies-sub-title">
                   <div
-                    onClick={(e) => getSelectTaskDetails(task)}
+                    onClick={() => {
+                      setCurrentOpenedTask(task);
+                      setIsTaskListOpen(true);
+                    }}
                     style={{ cursor: "pointer", display: "flex" }}
                   >
                     <div class="graybox-left">
@@ -137,7 +133,10 @@ export default function AssignedView(props) {
                       <div
                         className="black-week "
                         style={{ cursor: "pointer" }}
-                        onClick={(e) => getSelectTaskDetails(task)}
+                        onClick={() => {
+                          setCurrentOpenedTask(task);
+                          setIsTaskListOpen(true);
+                        }}
                       >
                         <div className="d-block d-sm-none">
                           {getDayDate(task.due_date, 2)}
@@ -148,7 +147,7 @@ export default function AssignedView(props) {
                             style={{
                               backgroundColor:
                                 task && task.status
-                                  ? task.status === "Open"
+                                  ? task.status === "Not Assigned"
                                     ? "#fcf3cd"
                                     : task.status === "Completed By User"
                                     ? moment(task.due_date).isBefore(today)
@@ -172,7 +171,7 @@ export default function AssignedView(props) {
                                     ? "#7fba7a"
                                     : task.status === "Assigned"
                                     ? "#f8c102"
-                                    : task.status === "Open"
+                                    : task.status === "Not Assigned"
                                     ? "#f8c102"
                                     : task.status === "Request Rejected"
                                     ? "#ff5f31"
@@ -184,7 +183,7 @@ export default function AssignedView(props) {
                               ? moment(task.due_date).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
-                              : task.status === "Open"
+                              : task.status === "Not Assigned"
                               ? "Assign Task"
                               : task.status === "Assigned"
                               ? "Task Assigned"
@@ -204,8 +203,11 @@ export default function AssignedView(props) {
                 <div
                   className="circle-front-text"
                   style={{ width: "fit-content", cursor: "pointer" }}
-                  value={task.TaskId}
-                  onClick={(e) => getSelectTaskDetails(task)}
+                  value={task.task_name}
+                  onClick={() => {
+                    setCurrentOpenedTask(task);
+                    setIsTaskListOpen(true);
+                  }}
                 >
                   {task.customer_name}
                 </div>
@@ -216,14 +218,20 @@ export default function AssignedView(props) {
                     <div
                       className="black-week d-none d-sm-block"
                       style={{ cursor: "pointer" }}
-                      onClick={(e) => getSelectTaskDetails(task)}
+                      onClick={() => {
+                        setCurrentOpenedTask(task);
+                        setIsTaskListOpen(true);
+                      }}
                     >
                       {getDayDate(task.due_date, 1)}
                     </div>
                     <div
                       className="right-arrow-week text-right-grid"
                       style={{ cursor: "pointer" }}
-                      onClick={(e) => getSelectTaskDetails(task)}
+                      onClick={() => {
+                        setCurrentOpenedTask(task);
+                        setIsTaskListOpen(true);
+                      }}
                     >
                       {
                         <img
@@ -249,14 +257,8 @@ export default function AssignedView(props) {
         {props.isExpertReviewer && (
           <div
             onClick={() => {
-              if (userDetails && userDetails.UserType !== 6) {
-                props.setIsTaskDetailsShow(true);
-                dispatch(
-                  taskReportActions.taskReportByIdRequest({
-                    taskID: task.TaskId,
-                  })
-                );
-              }
+              setCurrentOpenedTask(task);
+              setIsTaskListOpen(true);
             }}
             style={{
               textDecoration: "none",
@@ -272,7 +274,10 @@ export default function AssignedView(props) {
               <div className="col-10 col-md-7 col-sm-7 col-xl-7">
                 <div className="all-companies-sub-title">
                   <div
-                    onClick={(e) => getSelectTaskDetails(task)}
+                    onClick={() => {
+                      setCurrentOpenedTask(task);
+                      setIsTaskListOpen(true);
+                    }}
                     style={{ cursor: "pointer", display: "flex" }}
                   >
                     <div class="graybox-left">
@@ -285,7 +290,10 @@ export default function AssignedView(props) {
                       <div
                         className="black-week "
                         style={{ cursor: "pointer" }}
-                        onClick={(e) => getSelectTaskDetails(task)}
+                        onClick={() => {
+                          setCurrentOpenedTask(task);
+                          setIsTaskListOpen(true);
+                        }}
                       >
                         <div className="d-block d-sm-none">
                           {getDayDate(task.due_date, 2)}
@@ -352,8 +360,11 @@ export default function AssignedView(props) {
                 <div
                   className="circle-front-text"
                   style={{ width: "fit-content", cursor: "pointer" }}
-                  value={task.TaskId}
-                  onClick={(e) => getSelectTaskDetails(task)}
+                  value={task.task_name}
+                  onClick={() => {
+                    setCurrentOpenedTask(task);
+                    setIsTaskListOpen(true);
+                  }}
                 >
                   {task.customer_name}
                 </div>
@@ -364,14 +375,20 @@ export default function AssignedView(props) {
                     <div
                       className="black-week d-none d-sm-block"
                       style={{ cursor: "pointer" }}
-                      onClick={(e) => getSelectTaskDetails(task)}
+                      onClick={() => {
+                        setCurrentOpenedTask(task);
+                        setIsTaskListOpen(true);
+                      }}
                     >
                       {getDayDate(task.due_date, 1)}
                     </div>
                     <div
                       className="right-arrow-week text-right-grid"
                       style={{ cursor: "pointer" }}
-                      onClick={(e) => getSelectTaskDetails(task)}
+                      onClick={() => {
+                        setCurrentOpenedTask(task);
+                        setIsTaskListOpen(true);
+                      }}
                     >
                       {
                         <img
@@ -404,16 +421,19 @@ export default function AssignedView(props) {
         to="/dashboard"
         style={{ textDecoration: "none" }}
         onClick={() => {
-          dispatch(setNotificationTaskId(task.TaskId));
+          // dispatch(setNotificationTaskId(task.task_name));
+          setCurrentOpenedTask(task);
         }}
+        key={task.task_name}
       >
         <div
           className={
-            props.getTaskById && task.TaskId === props.getTaskById.TaskId
+            props.currentOpenedTask &&
+            task.task_name === props.currentOpenedTask.task_name
               ? " row active-action-card-sidebar "
               : "row action-card-sidebar"
           }
-          onClick={(e) => getSelectTaskDetails(task)}
+          onClick={(e) => setCurrentOpenedTask(task)}
           style={{ cursor: "pointer" }}
         >
           <div className="col-10 pl-0">
@@ -423,7 +443,7 @@ export default function AssignedView(props) {
               </div>
               <div
                 className="pink-label-title-right"
-                onClick={(e) => getSelectTaskDetails(task)}
+                onClick={(e) => setCurrentOpenedTask(task)}
               >
                 <div className="overdue-title-sidebar-title pl-1">
                   {task.subject}
@@ -443,7 +463,7 @@ export default function AssignedView(props) {
                 <div
                   className="right-arrow-week text-right-grid"
                   style={{ cursor: "pointer" }}
-                  onClick={(e) => getSelectTaskDetails(task)}
+                  onClick={(e) => setCurrentOpenedTask(task)}
                 >
                   <img
                     className=""

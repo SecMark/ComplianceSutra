@@ -55,7 +55,6 @@ function RightSideGrid({
   setIsTaskListOpen,
   isTaskApproved,
   setIsTaskApproved,
-  taskList,
   companyName,
   user,
   history,
@@ -80,7 +79,7 @@ function RightSideGrid({
     },
   ];
   const searchInput = useRef(null);
-
+  const [currentOpenedTask, setCurrentOpenedTask] = useState({});
   const [openBoardDrD, setOpenBoardDrp] = useState(false);
   const [currentBoardViewBy, setCurrentBoardViewBy] = useState("status");
   const state = useSelector((state) => state);
@@ -131,9 +130,8 @@ function RightSideGrid({
   const [completedTask, setCompletedTask] = useState("0");
   const [scheduledTask, setScheduledTask] = useState("0");
   const [noRecords, setNoRecords] = useState(false);
-  useEffect(() => {
-    console.log(expandedFlags);
-  }, [expandedFlags]);
+  // const taskList = [];
+
   const taskModalOpenStatus =
     state &&
     state.adminMenu &&
@@ -153,7 +151,39 @@ function RightSideGrid({
     state.taskReport &&
     state.taskReport.taskReportById &&
     state.taskReport.taskReportById.taskReportById;
+  const taskList =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
 
+  const taskReferences = state && state.taskReport && state.taskReferences;
+  // useEffect(() => {
+  //   console.log("list-updated");
+  //   console.log("currentOpenedTask: ", currentOpenedTask);
+  //   if (taskList && taskList.length > 0 && currentOpenedTask) {
+  //     const tempCurrentTask = taskList.find(
+  //       (task) => task.task_name === currentOpenedTask.task_name
+  //     );
+  //     console.log(tempCurrentTask);
+  //     if (tempCurrentTask && Object.keys(tempCurrentTask).length !== 0) {
+  //       setCurrentOpenedTask(tempCurrentTask);
+  //     }
+  //   }
+  // }, [taskList]);
+  useEffect(() => {
+    console.log(taskReferences);
+    if (taskReferences) {
+      setReferenceSectionData(taskReferences);
+    }
+  }, [taskReferences]);
+  useEffect(() => {
+    if (getTaskById && Object.keys(getTaskById).length !== 0) {
+      console.log("Rendered Get Task By Id: ", getTaskById);
+      setCurrentOpenedTask(getTaskById);
+    }
+  }, [getTaskById]);
   useEffect(() => {
     if (user && user.UserID !== undefined && userDetails.UserType === 4) {
       fetchMothTaskOnTrack();
@@ -170,9 +200,7 @@ function RightSideGrid({
   useEffect(() => {
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
-    console.log(state.NotificationRedu);
     if (task_id) {
-      console.log(state.NotificationRedu?.taskID);
       getSelectTaskDetails();
     }
   }, [state.NotificationRedu?.taskID]);
@@ -211,28 +239,21 @@ function RightSideGrid({
     }
   }, [currentFilterViewByRedux]);
 
+  // Fetch Tasks List and Sort Data by Status
   useEffect(() => {
-    if (taskList !== undefined && taskList.length > 0) {
-      let tempArr = [];
-      let tempRowCount = {};
-      taskList.map((item) => {
-        if (item.tasks.length >= 1 && item.tasks[0].TaskId !== 0) {
-          tempArr.push({ ...item });
-          tempRowCount[item.status.trim()] = 3;
+    if (taskList && taskList.length > 0) {
+      console.log("task List updated at ", new Date().getMinutes());
+      const tempRowCount = {};
+      const taskByStatus = getDataByStatus(taskList);
+      [...taskByStatus].forEach((item) => {
+        if (item.tasks.length > 0) {
+          tempRowCount[item.status.trim()] = item.tasks.length;
         }
       });
-      let sortedArray = tempArr.sort((a, b) => a.ORD - b.ORD);
-      let task_id =
-        state && state.NotificationRedu && state.NotificationRedu.taskID;
-      if (task_id !== null && localStorage.allRowCount) {
-        let getItemAllrow = localStorage.getItem("allRowCount");
-        var personObject = JSON.parse(getItemAllrow);
-        setRowCount(personObject);
-      } else {
-        setRowCount(tempRowCount);
-      }
-      setTaskData(sortedArray);
-      setTaskDataBackup(sortedArray);
+      setRowCount(tempRowCount);
+      setListTaskData(taskByStatus);
+    } else {
+      dispatch(taskReportActions.taskReportRequest());
     }
   }, [taskList]);
 
@@ -284,9 +305,9 @@ function RightSideGrid({
   });
 
   useEffect(() => {
-    const getTaskId = getTaskById;
+    const getTaskId = currentOpenedTask;
     if (getTaskId) {
-      const taskId = getTaskById.TaskId;
+      const taskId = currentOpenedTask.TaskId;
 
       const payload = {
         taskID: taskId,
@@ -300,7 +321,7 @@ function RightSideGrid({
         })
         .catch((error) => {});
     }
-  }, [getTaskById, uploadFile]);
+  }, [currentOpenedTask, uploadFile]);
 
   useEffect(() => {
     var today = new Date();
@@ -324,10 +345,10 @@ function RightSideGrid({
     var yyyy = today.getFullYear();
     today = dd + " " + mm + " " + yyyy;
     setToday(today);
-  }, [getTaskById]);
+  }, [currentOpenedTask]);
 
   const innerSearch = useOuterClick((e) => {
-    if (searchBoxShow) {
+    if (searchBoxShow && searchData.length === 0) {
       setsearchBoxShow(false);
       setSearchValue("");
     }
@@ -347,37 +368,6 @@ function RightSideGrid({
     }
     return str;
   };
-
-  useEffect(() => {
-    if (taskListDisplay === "1") {
-      const payload = {
-        entityid: "",
-        userID: user.UserID,
-        usertype: user.UserType,
-      };
-      axiosInstance
-        .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`)
-        .then((response) => {
-          const { status, status_response, task_details } =
-            response.data.message;
-          if (status && status_response) {
-            const tempRowCount = {};
-            const taskByStatus = getDataByStatus(task_details);
-            [...taskByStatus].forEach((item) => {
-              if (item.tasks.length > 0) {
-                tempRowCount[item.status.trim()] = item.tasks.length;
-              }
-            });
-            console.log(tempRowCount);
-            setRowCount(tempRowCount);
-            setListTaskData(taskByStatus);
-          }
-        })
-        .catch((error) => {
-          console.log("error => ", error);
-        });
-    }
-  }, [taskListDisplay]);
 
   const innerSearchMobile = useOuterClick((e) => {
     if (searchBoxShowMobile && searchData.length !== 0) {
@@ -463,7 +453,7 @@ function RightSideGrid({
             <div className="task-details-header">
               <div className="closing-icon">
                 <div className="task-details-title">
-                  {getTaskById && getTaskById.EntityName}
+                  {currentOpenedTask && currentOpenedTask.customer_name}
                 </div>
                 <div
                   className="task-close-icon"
@@ -486,34 +476,35 @@ function RightSideGrid({
                 </div>
               </div>
               <div className="task-details-sub-title">
-                {getTaskById && getTaskById.TaskName}{" "}
+                {currentOpenedTask && currentOpenedTask.subject}{" "}
                 <span className="nse-label d-none d-md-block">
-                  {getTaskById && getTaskById.LicenseCode}
+                  {currentOpenedTask && currentOpenedTask.license}
                 </span>
               </div>
 
               <div className="d-flex d-block d-md-none">
                 <span className="nse-label ml-0">
-                  {getTaskById && getTaskById.LicenseCode}
+                  {currentOpenedTask && currentOpenedTask.license}
                 </span>
                 <div
                   className="pink-label-mobile ml-0"
                   style={{
                     backgroundColor:
-                      getTaskById && getTaskById.Status
-                        ? getTaskById.Status === "Assign"
+                      currentOpenedTask && currentOpenedTask.status
+                        ? currentOpenedTask.status === "Assign"
                           ? "#fcf3cd"
-                          : getTaskById.Status === "Completed By User"
+                          : currentOpenedTask.status === "Completed By User"
                           ? moment(
-                              getTaskById && getTaskById.ActualTaskEndDate
+                              currentOpenedTask &&
+                                currentOpenedTask.deadline_date
                             ).isBefore(today)
                             ? "#cdfcd8"
                             : "#ffefea"
-                          : getTaskById.Status === "Approved"
+                          : currentOpenedTask.status === "Approved"
                           ? "#cdfcd8"
-                          : getTaskById.Status === "Assigned"
+                          : currentOpenedTask.status === "Assigned"
                           ? "#ffefea"
-                          : getTaskById.Status === "Request Rejected"
+                          : currentOpenedTask.status === "Request Rejected"
                           ? "#ffefea"
                           : "#d2fccd"
                         : "#d2fccd",
@@ -523,40 +514,42 @@ function RightSideGrid({
                     className="approved-text"
                     style={{
                       color:
-                        getTaskById && getTaskById.Status
-                          ? getTaskById.Status === "Completed By User"
+                        currentOpenedTask && currentOpenedTask.status
+                          ? currentOpenedTask.status === "Completed By User"
                             ? moment(
-                                getTaskById && getTaskById.ActualTaskEndDate
+                                currentOpenedTask &&
+                                  currentOpenedTask.deadline_date
                               ).isBefore(today)
                               ? "#7fba7a"
                               : "#ff5f31"
-                            : getTaskById.Status === "Approved"
+                            : currentOpenedTask.status === "Approved"
                             ? "#7fba7a"
-                            : getTaskById.Status === "Assigned"
+                            : currentOpenedTask.status === "Assigned"
                             ? "#f8c102"
-                            : getTaskById.Status === "Assign"
+                            : currentOpenedTask.status === "Assign"
                             ? "#f8c102"
-                            : getTaskById.Status === "Request Rejected"
+                            : currentOpenedTask.status === "Request Rejected"
                             ? "#ff5f31"
                             : ""
                           : "#fcf3cd",
                     }}
                   >
-                    {getTaskById && getTaskById.Status && (
+                    {currentOpenedTask && currentOpenedTask.status && (
                       <div style={{ textTransform: "uppercase" }}>
-                        {getTaskById.Status === "Completed By User"
+                        {currentOpenedTask.status === "Completed By User"
                           ? moment(
-                              getTaskById && getTaskById.ActualTaskEndDate
+                              currentOpenedTask &&
+                                currentOpenedTask.deadline_date
                             ).isBefore(today)
                             ? "Not reviewed"
                             : "Approval Pending"
-                          : getTaskById.Status === "Assign"
+                          : currentOpenedTask.status === "Assign"
                           ? "Assign Task"
-                          : getTaskById.Status === "Assigned"
+                          : currentOpenedTask.status === "Assigned"
                           ? "Task Assigned"
-                          : getTaskById.Status === "Approved"
+                          : currentOpenedTask.status === "Approved"
                           ? "Task Approved"
-                          : getTaskById.Status === "Request Rejected"
+                          : currentOpenedTask.status === "Request Rejected"
                           ? "Task Rejected"
                           : null}
                       </div>
@@ -566,25 +559,26 @@ function RightSideGrid({
               </div>
 
               <div className="border-header d-none d-md-block">
-                {getTaskById && getTaskById.Status !== "Assigned" && (
+                {currentOpenedTask && currentOpenedTask.status !== "Assigned" && (
                   <div
                     className="approved-label"
                     style={{
                       backgroundColor:
-                        getTaskById && getTaskById.Status
-                          ? getTaskById.Status === "Assign"
+                        currentOpenedTask && currentOpenedTask.status
+                          ? currentOpenedTask.status === "Not Assigned"
                             ? "#fcf3cd"
-                            : getTaskById.Status === "Completed By User"
+                            : currentOpenedTask.status === "Completed By User"
                             ? moment(
-                                getTaskById && getTaskById.ActualTaskEndDate
+                                currentOpenedTask &&
+                                  currentOpenedTask.deadline_date
                               ).isBefore(today)
                               ? "#cdfcd8"
                               : "#ffefea"
-                            : getTaskById.Status === "Approved"
+                            : currentOpenedTask.status === "Approved"
                             ? "#cdfcd8"
-                            : getTaskById.Status === "Assigned"
+                            : currentOpenedTask.status === "Assigned"
                             ? "#ffefea"
-                            : getTaskById.Status === "Request Rejected"
+                            : currentOpenedTask.status === "Request Rejected"
                             ? "#ffefea"
                             : "#d2fccd"
                           : "#d2fccd",
@@ -594,40 +588,42 @@ function RightSideGrid({
                       className="approved-text"
                       style={{
                         color:
-                          getTaskById && getTaskById.Status
-                            ? getTaskById.Status === "Completed By User"
+                          currentOpenedTask && currentOpenedTask.status
+                            ? currentOpenedTask.status === "Completed By User"
                               ? moment(
-                                  getTaskById && getTaskById.ActualTaskEndDate
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
                                 ).isBefore(today)
                                 ? "#7fba7a"
                                 : "#ff5f31"
-                              : getTaskById.Status === "Approved"
+                              : currentOpenedTask.status === "Approved"
                               ? "#7fba7a"
-                              : getTaskById.Status === "Assigned"
+                              : currentOpenedTask.status === "Assigned"
                               ? "#f8c102"
-                              : getTaskById.Status === "Assign"
+                              : currentOpenedTask.status === "Not Assigned"
                               ? "#f8c102"
-                              : getTaskById.Status === "Request Rejected"
+                              : currentOpenedTask.status === "Request Rejected"
                               ? "#ff5f31"
                               : ""
                             : "#fcf3cd",
                       }}
                     >
-                      {getTaskById && getTaskById.Status && (
+                      {currentOpenedTask && currentOpenedTask.status && (
                         <div style={{ textTransform: "uppercase" }}>
-                          {getTaskById.Status === "Completed By User"
+                          {currentOpenedTask.status === "Completed By User"
                             ? moment(
-                                getTaskById && getTaskById.ActualTaskEndDate
+                                currentOpenedTask &&
+                                  currentOpenedTask.deadline_date
                               ).isBefore(today)
                               ? "Not reviewed"
                               : "Approval Pending"
-                            : getTaskById.Status === "Assign"
+                            : currentOpenedTask.status === "Not Assigned"
                             ? "Assign Task"
-                            : getTaskById.Status === "Assigned"
+                            : currentOpenedTask.status === "Assigned"
                             ? "Task Assigned"
-                            : getTaskById.Status === "Approved"
+                            : currentOpenedTask.status === "Approved"
                             ? "Task Approved"
-                            : getTaskById.Status === "Request Rejected"
+                            : currentOpenedTask.status === "Request Rejected"
                             ? "Task Rejected"
                             : null}
                         </div>
@@ -636,7 +632,7 @@ function RightSideGrid({
                   </div>
                 )}
               </div>
-              {getTaskById && getTaskById.RegulatoryUpdates === 1 && (
+              {currentOpenedTask && currentOpenedTask.RegulatoryUpdates === 1 && (
                 <div className="row">
                   <div className="col-12">
                     <div className="regulation-changes">
@@ -664,21 +660,25 @@ function RightSideGrid({
                   <div className="row">
                     <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                       <div className="holding-list-normal-title">
-                        Assigned to
+                        Assigned To
                       </div>
                     </div>
                     <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                      {getTaskById && getTaskById.AssignedTo !== 0 ? (
+                      {currentOpenedTask &&
+                      currentOpenedTask.assign_to !== null ? (
                         <div className="holding-list-bold-title">
-                          {getTaskById &&
-                          getTaskById.AssignedToUserName === "" ? null : (
+                          {currentOpenedTask &&
+                          currentOpenedTask.assign_to_name === null ? (
+                            "Not Assigned"
+                          ) : (
                             <span className="cicrcle-name">
                               {getInitials(
-                                getTaskById && getTaskById.AssignedToUserName
+                                currentOpenedTask &&
+                                  currentOpenedTask.assign_to_name
                               )}
                             </span>
                           )}
-                          {getTaskById && getTaskById.AssignedToUserName}
+                          {currentOpenedTask.assign_to_name || "Not Assigned"}
                         </div>
                       ) : (
                         <div className="holding-list-bold-title AssinTo">
@@ -829,15 +829,17 @@ function RightSideGrid({
                     </div>
                     <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                       <div className="holding-list-bold-title">
-                        {getTaskById &&
-                        getTaskById.AssignedFromUserName === "" ? null : (
+                        {currentOpenedTask &&
+                        currentOpenedTask.AssignedFromUserName === "" ? null : (
                           <span className="cicrcle-name">
                             {getInitials(
-                              getTaskById && getTaskById.AssignedFromUserName
+                              currentOpenedTask &&
+                                currentOpenedTask.AssignedFromUserName
                             )}
                           </span>
                         )}
-                        {getTaskById && getTaskById.AssignedFromUserName}
+                        {currentOpenedTask &&
+                          currentOpenedTask.AssignedFromUserName}
                       </div>
                     </div>
                   </div>
@@ -848,17 +850,19 @@ function RightSideGrid({
                       <div className="holding-list-normal-title">Approver</div>
                     </div>
                     <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                      {getTaskById && getTaskById.ApproverName !== "Assign" ? (
+                      {currentOpenedTask &&
+                      currentOpenedTask.approver_name !== "Assign" ? (
                         <div className="holding-list-bold-title">
-                          {getTaskById &&
-                          getTaskById.ApproverName === "" ? null : (
+                          {currentOpenedTask &&
+                          currentOpenedTask.approver_name === "" ? null : (
                             <span className="cicrcle-name">
                               {getInitials(
-                                getTaskById && getTaskById.ApproverName
+                                currentOpenedTask &&
+                                  currentOpenedTask.approver_name
                               )}
                             </span>
                           )}
-                          {getTaskById && getTaskById.ApproverName}
+                          {currentOpenedTask && currentOpenedTask.approver_name}
                         </div>
                       ) : (
                         <div className="holding-list-bold-title">
@@ -1009,9 +1013,9 @@ function RightSideGrid({
                   </div>
                   <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                     <div className="holding-list-bold-title">
-                      {moment(getTaskById && getTaskById.EndDate).format(
-                        "DD MMM"
-                      )}
+                      {moment(
+                        currentOpenedTask && currentOpenedTask.EndDate
+                      ).format("DD MMM")}
                     </div>
                   </div>
                 </div>
@@ -1023,35 +1027,36 @@ function RightSideGrid({
                     <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                       <div className="holding-list-bold-title">
                         {moment(
-                          getTaskById && getTaskById.ActualTaskEndDate
+                          currentOpenedTask && currentOpenedTask.deadline_date
                         ).format("DD MMM")}
                       </div>
                     </div>
                   </div>
                 )}
                 {userDetails.UserType !== 4 &&
-                  getTaskById &&
-                  getTaskById.Status !== "Assigned" && (
+                  currentOpenedTask &&
+                  currentOpenedTask.status !== "Assigned" && (
                     <div className="row">
                       <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                         <div className="holding-list-normal-title">Status</div>
                       </div>
                       <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                         <div className="holding-list-bold-title">
-                          {getTaskById && getTaskById.Status
-                            ? getTaskById.Status === "Completed By User"
+                          {currentOpenedTask && currentOpenedTask.status
+                            ? currentOpenedTask.status === "Completed By User"
                               ? moment(
-                                  getTaskById && getTaskById.ActualTaskEndDate
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
                                 ).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
-                              : getTaskById.Status === "Assign"
+                              : currentOpenedTask.status === "Assign"
                               ? "Assign Task"
-                              : getTaskById.Status === "Assigned"
+                              : currentOpenedTask.status === "Assigned"
                               ? "Task Assigned"
-                              : getTaskById.Status === "Approved"
+                              : currentOpenedTask.status === "Approved"
                               ? "Task Approved"
-                              : getTaskById.Status === "Request Rejected"
+                              : currentOpenedTask.status === "Request Rejected"
                               ? "Task Rejected"
                               : null
                             : ""}
@@ -1074,8 +1079,8 @@ function RightSideGrid({
                   </div>
                 )}
                 {userDetails.UserType !== 4 &&
-                  getTaskById &&
-                  getTaskById.ExStatus === 1 && (
+                  currentOpenedTask &&
+                  currentOpenedTask.ExStatus === 1 && (
                     <div className="row">
                       <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                         <div className="holding-list-normal-title">
@@ -1272,12 +1277,12 @@ function RightSideGrid({
                   (userDetails.UserType === 3 ||
                     userDetails.UserType === 5)) ? (
                   <>
-                    {getTaskById &&
-                    getTaskById.Status &&
-                    getTaskById.Status === "Assigned" &&
-                    getTaskById &&
-                    getTaskById.Status &&
-                    getTaskById.TaskStatus === 0
+                    {currentOpenedTask &&
+                    currentOpenedTask.status &&
+                    currentOpenedTask.status === "Assigned" &&
+                    currentOpenedTask &&
+                    currentOpenedTask.status &&
+                    currentOpenedTask.TaskStatus === 0
                       ? (user && user.UserType && user.UserType === 4) ||
                         ((user && user.UserType && user.UserType === 3) ||
                         user.UserType === 5 ? (
@@ -1358,11 +1363,12 @@ function RightSideGrid({
                                     </div>
                                   </div>
                                   <div className="pr-3">
-                                    {getTaskById &&
-                                      getTaskById.TaskId !== undefined && (
+                                    {currentOpenedTask &&
+                                      currentOpenedTask.TaskId !==
+                                        undefined && (
                                         <a
                                           target="_blank"
-                                          href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
+                                          href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${currentOpenedTask.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
                                           style={{ textDecoration: "none" }}
                                           className="file-download-title pointer d-flex"
                                         >
@@ -1412,11 +1418,11 @@ function RightSideGrid({
                                 </div>
                               </div>
                               <div className="col-4 col-sm-8 col-md-8 col-xl-8">
-                                {getTaskById &&
-                                  getTaskById.TaskId !== undefined && (
+                                {currentOpenedTask &&
+                                  currentOpenedTask.TaskId !== undefined && (
                                     <a
                                       target="_blank"
-                                      href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
+                                      href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${currentOpenedTask.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
                                       style={{ textDecoration: "none" }}
                                       className="file-download-title pointer d-flex"
                                     >
@@ -1436,21 +1442,21 @@ function RightSideGrid({
                   <div className="no-files">No Files To View here</div>
                 )}
 
-                {(getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.Status === "Approved") ||
-                (getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.TaskStatus === 1) ? (
+                {(currentOpenedTask &&
+                  currentOpenedTask.status &&
+                  currentOpenedTask.status === "Approved") ||
+                (currentOpenedTask &&
+                  currentOpenedTask.status &&
+                  currentOpenedTask.TaskStatus === 1) ? (
                   (user && user.UserType && user.UserType === 3) ||
                   user.UserType === 4 ||
                   user.UserType === 5
-                ) : getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.Status === "Assigned" &&
-                  getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.TaskStatus === 0 ? (
+                ) : currentOpenedTask &&
+                  currentOpenedTask.status &&
+                  currentOpenedTask.status === "Assigned" &&
+                  currentOpenedTask &&
+                  currentOpenedTask.status &&
+                  currentOpenedTask.TaskStatus === 0 ? (
                   user && user.UserType && user.UserType === 4 ? (
                     <button
                       style={{ marginTop: 10, width: 150 }}
@@ -1463,19 +1469,19 @@ function RightSideGrid({
                   ) : (
                     ""
                   )
-                ) : getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.Status === "Assign" &&
-                  getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.TaskStatus === 0 ? (
+                ) : currentOpenedTask &&
+                  currentOpenedTask.status &&
+                  currentOpenedTask.status === "Assign" &&
+                  currentOpenedTask &&
+                  currentOpenedTask.status &&
+                  currentOpenedTask.TaskStatus === 0 ? (
                   ""
-                ) : getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.Status === "Request Rejected" &&
-                  getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.TaskStatus === 3 ? (
+                ) : currentOpenedTask &&
+                  currentOpenedTask.status &&
+                  currentOpenedTask.status === "Request Rejected" &&
+                  currentOpenedTask &&
+                  currentOpenedTask.status &&
+                  currentOpenedTask.TaskStatus === 3 ? (
                   user &&
                   user.UserType &&
                   user.UserType === 4 && (
@@ -1488,18 +1494,18 @@ function RightSideGrid({
                       Mark Complete
                     </button>
                   )
-                ) : (getTaskById &&
-                    getTaskById.Status &&
-                    getTaskById.Status === "Completed By User") ||
-                  (getTaskById &&
-                    getTaskById.Status &&
-                    getTaskById.TaskStatus === 4) ? (
+                ) : (currentOpenedTask &&
+                    currentOpenedTask.status &&
+                    currentOpenedTask.status === "Completed By User") ||
+                  (currentOpenedTask &&
+                    currentOpenedTask.status &&
+                    currentOpenedTask.TaskStatus === 4) ? (
                   (user && user.UserType && user.UserType === 3) ||
                   (user && user.UserType && user.UserType === 5) ? (
                     <div class="btn-toolbar text-center well">
                       <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
                         <button
-                          onClick={(e) => handleAppTask(getTaskById)}
+                          onClick={(e) => handleAppTask(currentOpenedTask)}
                           className="btn save-details-bnt approve-task"
                         >
                           approve task
@@ -1526,40 +1532,39 @@ function RightSideGrid({
             {showComments && (
               <div className="file-grid-data blank-space-height">
                 {getCommentsbyId && getCommentsbyId.length > 0 ? (
-                  getCommentsbyId.map((comment, index) => (
-                    <div>
-                      <div className="comment-box">
-                        <div className="name-box">
-                          {getInitials(
-                            comment &&
-                              comment.B &&
-                              comment.B[0] &&
-                              comment.B[0].UserName &&
-                              comment.B[0].UserName !== ""
-                              ? comment.B[0].UserName
-                              : "No Username"
-                          )}
-                        </div>
-                        <div className="rigt-box-comment">
-                          <div className="d-flex">
-                            <div className="right-box-text">
-                              {comment &&
-                              comment.B &&
-                              comment.B[0] &&
-                              comment.B[0].UserName &&
-                              comment.B[0].UserName !== ""
-                                ? comment.B[0].UserName
-                                : "No Username"}
+                  getCommentsbyId.map((comment, index) => {
+                    console.log("comment: ", comment);
+                    return (
+                      <div>
+                        <div className="comment-box">
+                          <div className="name-box">
+                            {getInitials(
+                              comment && comment.user_name
+                                ? comment.user_name
+                                : "No Username"
+                            )}
+                          </div>
+                          <div className="rigt-box-comment">
+                            <div className="d-flex">
+                              <div className="right-box-text">
+                                {comment && comment.user_name
+                                  ? comment.user_name
+                                  : "No Username"}
+                              </div>
+                              {comment.commented_on && (
+                                <div className="days-ago">
+                                  {moment(comment.CommentOn).format("DD MMM")}
+                                </div>
+                              )}
                             </div>
-                            <div className="days-ago">
-                              {moment(comment.CommentOn).format("DD MMM")}
+                            <div className="comment-desc">
+                              {comment.content}
                             </div>
                           </div>
-                          <div className="comment-desc">{comment.Comment}</div>
                         </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <div className="no-comments">No Comments</div>
                 )}
@@ -1604,8 +1609,8 @@ function RightSideGrid({
     );
   };
   const getAllFile = () => {
-    if (getTaskById != undefined) {
-      const taskId = getTaskById.TaskId;
+    if (currentOpenedTask != undefined) {
+      const taskId = currentOpenedTask.TaskId;
       const payload = {
         taskID: taskId,
         actionFlag: 0,
@@ -1649,7 +1654,7 @@ function RightSideGrid({
   };
 
   const submitModal = () => {
-    let id = getTaskById.TaskId;
+    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -1664,7 +1669,7 @@ function RightSideGrid({
     dispatch(
       taskReportActions.postTaskCommentByTaskID({
         actionFlag: 1, //Action Flag
-        taskID: getTaskById.TaskId, //TaskID
+        taskID: currentOpenedTask.TaskId, //TaskID
         comment: rejectTaskInput,
         commentBy: user.UserID, //UserID
       })
@@ -1675,7 +1680,7 @@ function RightSideGrid({
   };
 
   const teamMemberMarkComplete = () => {
-    let taskId = getTaskById.TaskId;
+    let taskId = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: taskId,
@@ -1771,125 +1776,76 @@ function RightSideGrid({
     }
   };
 
-  const _fetchReferenceSectionData = (type) => {
-    let taskID = null;
-    let task_id_bv = state && state.adminMenu && state.adminMenu.taskID;
-    let task_id_cal =
-      state && state.adminMenu && state.adminMenu.taskIDByCalendarView;
-    let task_id =
-      state && state.NotificationRedu && state.NotificationRedu.taskID;
-
-    if (task_id !== null) {
-      taskID = task_id;
-    } else if (task_id_bv !== null) {
-      taskID = task_id_bv;
-    } else if (task_id_cal !== null) {
-      taskID = task_id_cal;
-    } else {
-      taskID = getTaskById && getTaskById.TaskId;
-    }
-    if (taskID !== null) {
-      axios
-        .post(`${BACKEND_BASE_URL}/api/Circular`, {
-          taskID: taskID,
-          taskFileID: 0,
-          actionFlag: 0,
-        })
-        .then((response) => {
-          if (
-            response &&
-            response.data &&
-            response.data[0] &&
-            response.data[0].status !== "False"
-          ) {
-            if (type === "1") {
-              setRecentRegulationData(response.data);
-            } else if (type === "2") {
-              setReferenceSectionData(response.data);
-            } else {
-              setReferenceSectionData([]);
-              setRecentRegulationData([]);
-            }
-          } else {
-            setReferenceSectionData([]);
-            setRecentRegulationData([]);
-          }
-        })
-        .catch((err) => {
-          console.log("error =>  ", err);
-        });
-    }
-  };
-  const getSelectTaskDetails = (e) => {
-    console.log("hello");
-    setShowFiles(true);
-    setShowComments(false);
-    setCurrentDropDown("");
-
-    let taskID = null;
-    let task_id_bv = state && state.adminMenu && state.adminMenu.taskID;
-    let task_id_cal =
-      state && state.adminMenu && state.adminMenu.taskIDByCalendarView;
-
-    let task_id =
-      state && state.NotificationRedu && state.NotificationRedu.taskID;
-    console.log(state.NotificationRedu);
-
-    if (task_id !== null && e === undefined) {
-      if (localStorage.expandedFlagss) {
-        let getItem = localStorage.getItem("expandedFlagss");
-        let getItemArr = getItem && getItem.split(",");
-        console.log("getItemArr => ", getItemArr);
-        const nuevo =
-          getItemArr &&
-          getItemArr.length > 0 &&
-          getItemArr.map((i) => Number(i));
-        if (nuevo !== null) {
-          setExpandedFlags([...nuevo]);
-        }
-      }
-
-      taskID = task_id;
-      setIsTaskListOpen(true);
-      setCurrentTaskData(task_id);
-    } else if (task_id_bv !== null && e === undefined) {
-      setIsTaskModalOpen(true);
-      taskID = task_id_bv;
-      setCurrentTaskData(task_id_bv);
-    } else if (task_id_cal !== null && e === undefined) {
-      setIsTaskModalOpen(true);
-      taskID = task_id_cal;
-      setCurrentTaskData(taskID);
-    } else {
-      taskID = e.TaskId;
-      setCurrentTaskData(e);
-      setIsTaskListOpen(true);
-    }
+  const _fetchReferenceSectionData = () => {
     dispatch(
-      taskReportActions.taskReportByIdRequest({
-        taskID: taskID,
+      taskReportActions.taskReferensesByNameRequest({
+        task_name: currentOpenedTask.task_name,
       })
     );
+  };
+  const getSelectTaskDetails = (e) => {
+    // setShowFiles(true);
+    // setShowComments(false);
+    // setCurrentDropDown("");
+    // let taskID = null;
+    // let task_id_bv = state && state.adminMenu && state.adminMenu.taskID;
+    // let task_id_cal =
+    //   state && state.adminMenu && state.adminMenu.taskIDByCalendarView;
+    // let task_id =
+    //   state && state.NotificationRedu && state.NotificationRedu.taskID;
+    // if (task_id !== null && e === undefined) {
+    //   if (localStorage.expandedFlagss) {
+    //     let getItem = localStorage.getItem("expandedFlagss");
+    //     let getItemArr = getItem && getItem.split(",");
+    //     const nuevo =
+    //       getItemArr &&
+    //       getItemArr.length > 0 &&
+    //       getItemArr.map((i) => Number(i));
+    //     if (nuevo !== null) {
+    //       setExpandedFlags([...nuevo]);
+    //     }
+    //   }
+    //   taskID = task_id;
+    //   setIsTaskListOpen(true);
+    //   setCurrentTaskData(task_id);
+    // } else if (task_id_bv !== null && e === undefined) {
+    //   setIsTaskModalOpen(true);
+    //   taskID = task_id_bv;
+    //   setCurrentTaskData(task_id_bv);
+    // } else if (task_id_cal !== null && e === undefined) {
+    //   setIsTaskModalOpen(true);
+    //   taskID = task_id_cal;
+    //   setCurrentTaskData(taskID);
+    // } else {
+    //   taskID = e.TaskId;
+    //   setCurrentTaskData(e);
+    //   setIsTaskListOpen(true);
+    // }
+    // dispatch(
+    //   taskReportActions.taskReportByIdRequest({
+    //     taskID: taskID,
+    //   })
+    // );
   };
 
   const getApproveUsers = () => {
-    dispatch(
-      taskReportActions.userByRoleRequest({
-        coUserId: user.UserID,
-        ecoUserId: "",
-        coUserType: 5,
-      })
-    );
+    // dispatch(
+    //   taskReportActions.userByRoleRequest({
+    //     coUserId: user.UserID,
+    //     ecoUserId: "",
+    //     coUserType: 5,
+    //   })
+    // );
   };
 
   const getUserDetail = (e) => {
-    dispatch(
-      taskReportActions.userByRoleRequest({
-        coUserId: user.UserID,
-        ecoUserId: "",
-        coUserType: 4,
-      })
-    );
+    // dispatch(
+    //   taskReportActions.userByRoleRequest({
+    //     coUserId: user.UserID,
+    //     ecoUserId: "",
+    //     coUserType: 4,
+    //   })
+    // );
   };
 
   const handleChange = (e) => {
@@ -1899,10 +1855,8 @@ function RightSideGrid({
   const submitComment = () => {
     dispatch(
       taskReportActions.postTaskCommentByTaskID({
-        actionFlag: 1, //Action Flag
-        taskID: getTaskById.TaskId, //TaskID
-        comment: inputComment,
-        commentBy: user.UserID, //UserID
+        task_name: currentOpenedTask.task_name,
+        content: inputComment,
       })
     );
     setInputComment("");
@@ -1916,10 +1870,20 @@ function RightSideGrid({
 
     dispatch(
       taskReportActions.taskCommentsByTaskIdRequest({
-        taskid: getTaskById.TaskId,
+        task_name: currentOpenedTask.task_name,
       })
     );
   };
+
+  useEffect(() => {
+    if (currentOpenedTask && Object.keys(currentOpenedTask).length !== 0) {
+      dispatch(
+        taskReportActions.taskCommentsByTaskIdRequest({
+          task_name: currentOpenedTask.task_name,
+        })
+      );
+    }
+  }, [currentOpenedTask]);
 
   const getUpload = (file) => {
     let url = "";
@@ -2006,8 +1970,8 @@ function RightSideGrid({
     }
   };
 
-  const handleAppTask = (getTaskById) => {
-    let taskId = getTaskById.TaskId;
+  const handleAppTask = (currentOpenedTask) => {
+    let taskId = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: taskId,
@@ -2025,7 +1989,7 @@ function RightSideGrid({
 
   const handleChooseApprove = (data) => {
     let approvEmail = data.EmailID;
-    let id = getTaskById.TaskId;
+    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -2040,7 +2004,7 @@ function RightSideGrid({
 
   const onAssignTaskClick = (data) => {
     let assignEmail = data.EmailID;
-    let id = getTaskById.TaskId;
+    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         taskID: id,
@@ -2056,12 +2020,17 @@ function RightSideGrid({
 
   const handleCheckEmailAvailability = (event) => {
     axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
+      .post(`${BACKEND_BASE_URL}compliance.api.avabilityCheck`, {
+        // loginID: selectedUser,
+        // loginty: "AdminEmail",
+        email: selectedUser,
       })
       .then((response) => {
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -2075,12 +2044,17 @@ function RightSideGrid({
 
   const handleCheckAssignToEmailAvailability = (event) => {
     axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
+      .post(`${BACKEND_BASE_URL}compliance.api.avabilityCheck`, {
+        // loginID: selectedUser,
+        // loginty: "AdminEmail",
+        email: selectedUser,
       })
       .then((response) => {
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -2145,46 +2119,58 @@ function RightSideGrid({
     }
   };
   const handleAssignToTask = (e) => {
-    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: selectedUser,
-        userType: 4,
-        invitee: user.EmailID,
-        isApproved: 0,
-        loginID: userDetails.UserID,
+        // taskID: id,
+        // email: selectedUser,
+        // userType: 4,
+        // invitee: user.EmailID,
+        // isApproved: 0,
+        // loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            assign_to: selectedUser,
+            assigned_by: user.message.EmailID,
+          },
+        ],
       })
     );
     setSelectedUser("");
   };
 
   const handleApproveTask = (e) => {
-    let id = getTaskById.TaskId;
+    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: selectedUser,
-        userType: 5,
-        invitee: user.EmailID,
-        isApproved: 0,
-        loginID: userDetails.UserID,
+        // taskID: id,
+        // email: selectedUser,
+        // userType: 5,
+        // invitee: user.EmailID,
+        // isApproved: 0,
+        // loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            approver: selectedUser,
+            assigned_by: user.message.EmailID,
+          },
+        ],
       })
     );
     setSelectedUser("");
   };
-
+  console.log("user: ", user);
   const AssignTaskToMe = (e) => {
-    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: user.EmailID,
-        userType: 4,
-        invitee: user.EmailID,
-        isApproved: 0,
-        userDetails: userDetails,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            assign_to: user.message.EmailID,
+            assigned_by: user.message.EmailID,
+          },
+        ],
       })
     );
     setSelectedUser("");
@@ -2201,15 +2187,16 @@ function RightSideGrid({
   };
 
   const approvTaskToMe = (e) => {
-    let id = getTaskById.TaskId;
+    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: user.EmailID,
-        userType: 5,
-        invitee: user.EmailID,
-        isApproved: 0,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            approver: user.message.EmailID,
+            assigned_by: user.message.EmailID,
+          },
+        ],
       })
     );
   };
@@ -2293,7 +2280,6 @@ function RightSideGrid({
     let tempArr = [];
     if (searchText !== "") {
       let searchQuery = searchText.toLowerCase();
-      console.log("searchText:", searchQuery, taskList);
       listTaskData &&
         listTaskData.forEach((tasksByStatus) => {
           tasksByStatus.tasks.forEach((task) => {
@@ -2317,7 +2303,6 @@ function RightSideGrid({
             }
           });
         });
-      console.log("TempArray: ", tempArr);
       setSearchData(tempArr);
     }
   };
@@ -2333,7 +2318,10 @@ function RightSideGrid({
             userDetails && userDetails.UserType === 6 ? "none" : "auto"
           }`,
         }}
-        onClick={(e) => getSelectTaskDetails(task)}
+        onClick={(e) => {
+          setCurrentOpenedTask(task);
+          setIsTaskListOpen(true);
+        }}
       >
         {listType === 1 && Status === "Overdue" && (
           <div className="redWidth">
@@ -2386,12 +2374,12 @@ function RightSideGrid({
                               ? task.status === "Assign"
                                 ? "#fcf3cd"
                                 : task.status === "Completed By User"
-                                ? moment(task.ActualTaskEndDate).isBefore(today)
+                                ? moment(task.deadline_date).isBefore(today)
                                   ? "#cdfcd8"
                                   : "#ffefea"
                                 : task.status === "Approved"
                                 ? "#cdfcd8"
-                                : task.status === "Open"
+                                : task.status === "Not Assigned"
                                 ? "#ffefea"
                                 : task.status === "Request Rejected"
                                 ? "#ffefea"
@@ -2400,14 +2388,14 @@ function RightSideGrid({
                           color:
                             task && task.status
                               ? task.status === "Completed By User"
-                                ? moment(task.ActualTaskEndDate).isBefore(today)
+                                ? moment(task.deadline_date).isBefore(today)
                                   ? "#7fba7a"
                                   : "#ff5f31"
                                 : task.status === "Approved"
                                 ? "#7fba7a"
                                 : task.status === "Assigned"
                                 ? "#f8c102"
-                                : task.status === "Open"
+                                : task.status === "Not Assigned"
                                 ? "#f8c102"
                                 : task.status === "Request Rejected"
                                 ? "#ff5f31"
@@ -2416,10 +2404,10 @@ function RightSideGrid({
                         }}
                       >
                         {task.status && task.status === "Completed By User"
-                          ? moment(task.ActualTaskEndDate).isBefore(today)
+                          ? moment(task.deadline_date).isBefore(today)
                             ? "Not reviewed"
                             : "Approval Pending"
-                          : task.status === "Open"
+                          : task.status === "Not Assigned"
                           ? "Assign Task"
                           : task.status === "Assigned"
                           ? "Task Assigned"
@@ -2439,10 +2427,10 @@ function RightSideGrid({
                     style={{
                       backgroundColor:
                         task && task.status
-                          ? task.status === "Open"
+                          ? task.status === "Not Assigned"
                             ? "#fcf3cd"
                             : task.status === "Completed By User"
-                            ? moment(task.ActualTaskEndDate).isBefore(today)
+                            ? moment(task.deadline_date).isBefore(today)
                               ? "#cdfcd8"
                               : "#ffefea"
                             : task.status === "Approved"
@@ -2456,14 +2444,14 @@ function RightSideGrid({
                       color:
                         task && task.status
                           ? task.status === "Completed By User"
-                            ? moment(task.ActualTaskEndDate).isBefore(today)
+                            ? moment(task.deadline_date).isBefore(today)
                               ? "#7fba7a"
                               : "#ff5f31"
                             : task.status === "Approved"
                             ? "#7fba7a"
                             : task.status === "Assigned"
                             ? "#f8c102"
-                            : task.status === "Open"
+                            : task.status === "Not Assigned"
                             ? "#f8c102"
                             : task.status === "Request Rejected"
                             ? "#ff5f31"
@@ -2472,10 +2460,10 @@ function RightSideGrid({
                     }}
                   >
                     {task.status && task.status === "Completed By User"
-                      ? moment(task.ActualTaskEndDate).isBefore(today)
+                      ? moment(task.deadline_date).isBefore(today)
                         ? "Not reviewed"
                         : "Approval Pending"
-                      : task.status === "Open"
+                      : task.status === "Not Assigned"
                       ? "Assign Task"
                       : task.status === "Assigned"
                       ? "Task Assigned"
@@ -2497,7 +2485,7 @@ function RightSideGrid({
             value={task.TaskId}
             onClick={(e) => getSelectTaskDetails(task)}
           >
-            {task.EntityName}
+            {task.customer_name}
           </div>
         </div>
         <div
@@ -2505,7 +2493,7 @@ function RightSideGrid({
           style={{ cursor: "pointer" }}
           onClick={(e) => getSelectTaskDetails(task)}
         >
-          {task.AssignedTo !== 0 ? (
+          {task.assign_to !== null ? (
             <div className="d-flex">
               {userDetails.UserType === 4 ? (
                 task.approver_name === null ? null : (
@@ -2573,7 +2561,7 @@ function RightSideGrid({
                     alt="Right Arrow"
                   />
                 }
-                {task.AssignedTo !== 0 && (
+                {task.assign_to !== 0 && (
                   <img
                     className="d-block d-md-none"
                     src={keyboardArrowRightBlack}
@@ -2589,7 +2577,7 @@ function RightSideGrid({
                     </div>
                   </div>
                 )}
-                {task.AssignedTo === 0 && (
+                {task.assign_to === 0 && (
                   <div className="only-mobile-assign-add d-block d-md-none">
                     <div
                       className="assign-user-icon"
@@ -2626,11 +2614,11 @@ function RightSideGrid({
     return (
       <div
         className={
-          getTaskById && task.TaskId === getTaskById.TaskId
+          currentOpenedTask && task.task_name === currentOpenedTask.task_name
             ? " row active-action-card-sidebar "
             : "row action-card-sidebar"
         }
-        onClick={(e) => getSelectTaskDetails(task)}
+        onClick={(e) => setCurrentOpenedTask(task)}
         style={{ cursor: "pointer" }}
       >
         <div className="col-10">
@@ -2640,10 +2628,10 @@ function RightSideGrid({
             </div>
             <div
               className="pink-label-title-right"
-              onClick={(e) => getSelectTaskDetails(task)}
+              onClick={(e) => setCurrentOpenedTask(task)}
             >
               <div className="overdue-title-sidebar-title pl-1">
-                {task.TaskName}
+                {task.subject}
               </div>
               <div
                 className="red-week  date-font pl-1"
@@ -2660,7 +2648,7 @@ function RightSideGrid({
               <div
                 className="right-arrow-week text-right-grid"
                 style={{ cursor: "pointer" }}
-                onClick={(e) => getSelectTaskDetails(task)}
+                onClick={(e) => setCurrentOpenedTask(task)}
               >
                 <img
                   className=""
@@ -3780,13 +3768,31 @@ function RightSideGrid({
               })}
 
             {searchValue === "" && taskListDisplay === "2" && (
-              <CompanyTaskList user={user} sideBarTaskList={false} />
+              <CompanyTaskList
+                setIsTaskListOpen={setIsTaskListOpen}
+                user={user}
+                sideBarTaskList={false}
+                currentOpenedTask={currentOpenedTask}
+                setCurrentOpenedTask={setCurrentOpenedTask}
+              />
             )}
             {searchValue === "" && taskListDisplay === "3" && (
-              <LicenseTaskList user={user} sideBarTaskList={false} />
+              <LicenseTaskList
+                setIsTaskListOpen={setIsTaskListOpen}
+                user={user}
+                sideBarTaskList={false}
+                currentOpenedTask={currentOpenedTask}
+                setCurrentOpenedTask={setCurrentOpenedTask}
+              />
             )}
             {searchValue === "" && taskListDisplay === "4" && (
-              <AssigneList user={user} sideBarTaskList={false} />
+              <AssigneList
+                setIsTaskListOpen={setIsTaskListOpen}
+                user={user}
+                sideBarTaskList={false}
+                currentOpenedTask={currentOpenedTask}
+                setCurrentOpenedTask={setCurrentOpenedTask}
+              />
             )}
 
             {displayTask === "2" && searchValue === "" && (
@@ -4165,13 +4171,13 @@ function RightSideGrid({
                   )}
                   {searchValue === "" &&
                     taskListDisplay === "1" &&
-                    taskData &&
-                    taskData.length > 0 &&
-                    taskData.map((item, index) => {
+                    listTaskData &&
+                    listTaskData.length > 0 &&
+                    listTaskData.map((item, index) => {
                       return (
                         <>
                           <div className="task-list-grid">
-                            {item.status.trim() === "overdue" && (
+                            {item.status.trim() === "Overdue" && (
                               <div
                                 onClick={() => {
                                   expandedFlags.includes(index)
@@ -4219,7 +4225,7 @@ function RightSideGrid({
                                 )}
                               </div>
                             )}
-                            {item.status.trim() === "Pending" && (
+                            {item.status.trim() === "Take Action" && (
                               <div
                                 className="upcoming-btn sidebar-upcoming"
                                 onClick={() => {
@@ -4379,7 +4385,8 @@ function RightSideGrid({
                       <CompanyTaskList
                         user={user}
                         sideBarTaskList={true}
-                        getTaskById={getTaskById}
+                        currentOpenedTask={currentOpenedTask}
+                        setCurrentOpenedTask={setCurrentOpenedTask}
                       />
                     </>
                   )}
@@ -4387,14 +4394,16 @@ function RightSideGrid({
                     <LicenseTaskList
                       user={user}
                       sideBarTaskList={true}
-                      getTaskById={getTaskById}
+                      currentOpenedTask={currentOpenedTask}
+                      setCurrentOpenedTask={setCurrentOpenedTask}
                     />
                   )}
                   {searchValue === "" && taskListDisplay === "4" && (
                     <AssigneList
                       user={user}
                       sideBarTaskList={true}
-                      getTaskById={getTaskById}
+                      currentOpenedTask={currentOpenedTask}
+                      setCurrentOpenedTask={setCurrentOpenedTask}
                     />
                   )}
                 </div>
@@ -4404,20 +4413,20 @@ function RightSideGrid({
         </div>
       )}
 
-      {isTaskListOpen && (
+      {isTaskListOpen && Object.keys(currentOpenedTask).length !== 0 && (
         <div className="row ">
           <ReAssignTasksModal
             openModal={isShowReAssignModalForTeamMember}
             setShowModal={setIsShowReAssignModalForTeamMember}
-            userId={getTaskById && getTaskById.AssignedTo}
-            taskId={getTaskById && getTaskById.TaskId}
+            userId={currentOpenedTask && currentOpenedTask.assign_to}
+            taskId={currentOpenedTask && currentOpenedTask.TaskId}
             isSingleTask
           />
           <ReAssignTasksModal
             openModal={isShowReAssignModalForApprover}
             setShowModal={setIsShowReAssignModalForApprover}
-            userId={getTaskById && getTaskById.AprovalAssignedToID}
-            taskId={getTaskById && getTaskById.TaskId}
+            userId={currentOpenedTask && currentOpenedTask.AprovalAssignedToID}
+            taskId={currentOpenedTask && currentOpenedTask.TaskId}
             isSingleTask
           />
           <div className="col-12 right-side-bar">
@@ -4426,7 +4435,7 @@ function RightSideGrid({
                 <div className="task-details-header">
                   <div className="closing-icon">
                     <div className="task-details-title">
-                      {getTaskById && getTaskById.EntityName}
+                      {currentOpenedTask && currentOpenedTask.customer_name}
                     </div>
                     <div
                       className="task-close-icon"
@@ -4436,7 +4445,7 @@ function RightSideGrid({
                         setShowComments(false);
                         setShowHtoDoIt(false);
                         setShowReference(false);
-                        setExpandedFlags([]);
+                        // setExpandedFlags([]);
                         dispatch(notificationActions.setTaskID(null));
                       }}
                     >
@@ -4444,34 +4453,35 @@ function RightSideGrid({
                     </div>
                   </div>
                   <div className="task-details-sub-title">
-                    {getTaskById && getTaskById.TaskName}{" "}
+                    {currentOpenedTask && currentOpenedTask.subject}{" "}
                     <span className="nse-label d-none d-md-block">
-                      {getTaskById && getTaskById.LicenseCode}
+                      {currentOpenedTask && currentOpenedTask.license}
                     </span>
                   </div>
 
                   <div className="d-flex d-block d-md-none">
                     <span className="nse-label ml-0">
-                      {getTaskById && getTaskById.LicenseCode}
+                      {currentOpenedTask && currentOpenedTask.license}
                     </span>
                     <div
                       className="pink-label-mobile ml-0"
                       style={{
                         backgroundColor:
-                          getTaskById && getTaskById.Status
-                            ? getTaskById.Status === "Assign"
+                          currentOpenedTask && currentOpenedTask.status
+                            ? currentOpenedTask.status === "Not Assigned"
                               ? "#fcf3cd"
-                              : getTaskById.Status === "Completed By User"
+                              : currentOpenedTask.status === "Completed By User"
                               ? moment(
-                                  getTaskById && getTaskById.ActualTaskEndDate
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
                                 ).isBefore(today)
                                 ? "#cdfcd8"
                                 : "#ffefea"
-                              : getTaskById.Status === "Approved"
+                              : currentOpenedTask.status === "Approved"
                               ? "#cdfcd8"
-                              : getTaskById.Status === "Assigned"
+                              : currentOpenedTask.status === "Assigned"
                               ? "#ffefea"
-                              : getTaskById.Status === "Request Rejected"
+                              : currentOpenedTask.status === "Request Rejected"
                               ? "#ffefea"
                               : "#d2fccd"
                             : "#d2fccd",
@@ -4481,40 +4491,43 @@ function RightSideGrid({
                         className="approved-text"
                         style={{
                           color:
-                            getTaskById && getTaskById.Status
-                              ? getTaskById.Status === "Completed By User"
+                            currentOpenedTask && currentOpenedTask.status
+                              ? currentOpenedTask.status === "Completed By User"
                                 ? moment(
-                                    getTaskById && getTaskById.ActualTaskEndDate
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
                                   ).isBefore(today)
                                   ? "#7fba7a"
                                   : "#ff5f31"
-                                : getTaskById.Status === "Approved"
+                                : currentOpenedTask.status === "Approved"
                                 ? "#7fba7a"
-                                : getTaskById.Status === "Assigned"
+                                : currentOpenedTask.status === "Assigned"
                                 ? "#f8c102"
-                                : getTaskById.Status === "Assign"
+                                : currentOpenedTask.status === "Not Assigned"
                                 ? "#f8c102"
-                                : getTaskById.Status === "Request Rejected"
+                                : currentOpenedTask.status ===
+                                  "Request Rejected"
                                 ? "#ff5f31"
                                 : ""
                               : "#fcf3cd",
                         }}
                       >
-                        {getTaskById && getTaskById.Status && (
+                        {currentOpenedTask && currentOpenedTask.status && (
                           <div style={{ textTransform: "uppercase" }}>
-                            {getTaskById.Status === "Completed By User"
+                            {currentOpenedTask.status === "Completed By User"
                               ? moment(
-                                  getTaskById && getTaskById.ActualTaskEndDate
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
                                 ).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
-                              : getTaskById.Status === "Assign"
+                              : currentOpenedTask.status === "Not Assigned"
                               ? "Assign Task"
-                              : getTaskById.Status === "Assigned"
+                              : currentOpenedTask.status === "Assigned"
                               ? "Task Assigned"
-                              : getTaskById.Status === "Approved"
+                              : currentOpenedTask.status === "Approved"
                               ? "Task Approved"
-                              : getTaskById.Status === "Request Rejected"
+                              : currentOpenedTask.status === "Request Rejected"
                               ? "Task Rejected"
                               : null}
                           </div>
@@ -4524,25 +4537,28 @@ function RightSideGrid({
                   </div>
 
                   <div className="border-header d-none d-md-block">
-                    {getTaskById && getTaskById.ExReview === 0 && (
+                    {currentOpenedTask && currentOpenedTask.status !== "" && (
                       <div
                         className="approved-label"
                         style={{
                           backgroundColor:
-                            getTaskById && getTaskById.Status
-                              ? getTaskById.Status === "Assign"
+                            currentOpenedTask && currentOpenedTask.status
+                              ? currentOpenedTask.status === "Not Assigned"
                                 ? "#fcf3cd"
-                                : getTaskById.Status === "Completed By User"
+                                : currentOpenedTask.status ===
+                                  "Completed By User"
                                 ? moment(
-                                    getTaskById && getTaskById.ActualTaskEndDate
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
                                   ).isBefore(today)
                                   ? "#cdfcd8"
                                   : "#ffefea"
-                                : getTaskById.Status === "Approved"
+                                : currentOpenedTask.status === "Approved"
                                 ? "#cdfcd8"
-                                : getTaskById.Status === "Assigned"
+                                : currentOpenedTask.status === "Assigned"
                                 ? "#ffefea"
-                                : getTaskById.Status === "Request Rejected"
+                                : currentOpenedTask.status ===
+                                  "Request Rejected"
                                 ? "#ffefea"
                                 : "#d2fccd"
                               : "#d2fccd",
@@ -4552,40 +4568,45 @@ function RightSideGrid({
                           className="approved-text"
                           style={{
                             color:
-                              getTaskById && getTaskById.Status
-                                ? getTaskById.Status === "Completed By User"
+                              currentOpenedTask && currentOpenedTask.status
+                                ? currentOpenedTask.status ===
+                                  "Completed By User"
                                   ? moment(
-                                      getTaskById && getTaskById.EndDate
+                                      currentOpenedTask &&
+                                        currentOpenedTask.due_date
                                     ).isBefore(today)
                                     ? "#7fba7a"
                                     : "#ff5f31"
-                                  : getTaskById.Status === "Approved"
+                                  : currentOpenedTask.status === "Approved"
                                   ? "#7fba7a"
-                                  : getTaskById.Status === "Assigned"
+                                  : currentOpenedTask.status === "Assigned"
                                   ? "#f8c102"
-                                  : getTaskById.Status === "Assign"
+                                  : currentOpenedTask.status === "Not Assigned"
                                   ? "#f8c102"
-                                  : getTaskById.Status === "Request Rejected"
+                                  : currentOpenedTask.status ===
+                                    "Request Rejected"
                                   ? "#ff5f31"
                                   : ""
                                 : "#fcf3cd",
                           }}
                         >
-                          {getTaskById && getTaskById.Status && (
+                          {currentOpenedTask && currentOpenedTask.status && (
                             <div style={{ textTransform: "uppercase" }}>
-                              {getTaskById.Status === "Completed By User"
+                              {currentOpenedTask.status === "Completed By User"
                                 ? moment(
-                                    getTaskById && getTaskById.ActualTaskEndDate
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
                                   ).isBefore(today)
                                   ? "Not reviewed"
                                   : "Approval Pending"
-                                : getTaskById.Status === "Assign"
+                                : currentOpenedTask.status === "Not Assigned"
                                 ? "Assign Task"
-                                : getTaskById.Status === "Assigned"
+                                : currentOpenedTask.status === "Assigned"
                                 ? "Task Assigned"
-                                : getTaskById.Status === "Approved"
+                                : currentOpenedTask.status === "Approved"
                                 ? "Task Approved"
-                                : getTaskById.Status === "Request Rejected"
+                                : currentOpenedTask.status ===
+                                  "Request Rejected"
                                 ? "Task Rejected"
                                 : null}
                             </div>
@@ -4593,21 +4614,22 @@ function RightSideGrid({
                         </div>
                       </div>
                     )}
-                    {getTaskById && getTaskById.ExReview === 1 && (
+                    {currentOpenedTask && currentOpenedTask.ExReview === 1 && (
                       <div className="d-flex align-items-center labels-container">
                         {/* Approver Status */}
-                        {getTaskById && getTaskById.AprStatus && (
+                        {currentOpenedTask && currentOpenedTask.AprStatus && (
                           <div
                             className="er-approved-label mr-3"
                             style={{
                               backgroundColor:
-                                getTaskById && getTaskById.AprStatus
-                                  ? getTaskById.AprStatus === "Not Started"
+                                currentOpenedTask && currentOpenedTask.AprStatus
+                                  ? currentOpenedTask.AprStatus ===
+                                    "Not Assigned"
                                     ? "#ffefea"
-                                    : getTaskById.AprStatus ===
+                                    : currentOpenedTask.AprStatus ===
                                       "Approved by Approver"
                                     ? "#cdfcd8"
-                                    : getTaskById.AprStatus ===
+                                    : currentOpenedTask.AprStatus ===
                                       "Rejected by Approver"
                                     ? "#ffefea"
                                     : "#d2fccd"
@@ -4618,62 +4640,67 @@ function RightSideGrid({
                               className="approved-text"
                               style={{
                                 color:
-                                  getTaskById && getTaskById.AprStatus
-                                    ? getTaskById.AprStatus === "Not Started"
+                                  currentOpenedTask &&
+                                  currentOpenedTask.AprStatus
+                                    ? currentOpenedTask.AprStatus ===
+                                      "Not Assigned"
                                       ? "#f8c102"
-                                      : getTaskById.AprStatus ===
+                                      : currentOpenedTask.AprStatus ===
                                         "Approved by Approver"
                                       ? "#7fba7a"
-                                      : getTaskById.AprStatus ===
+                                      : currentOpenedTask.AprStatus ===
                                         "Reject by Approver"
                                       ? "#ff5f31"
                                       : "#fcf3cd"
                                     : "#fcf3cd",
                               }}
                             >
-                              {getTaskById && getTaskById.AprStatus && (
-                                <div style={{ textTransform: "uppercase" }}>
-                                  {getTaskById && getTaskById.AprStatus
-                                    ? getTaskById.AprStatus === "Not Started"
-                                      ? `${
-                                          userDetails.UserType === 5
-                                            ? "Not Started"
-                                            : "Approver Not Started Task"
-                                        }`
-                                      : getTaskById.AprStatus ===
-                                        "Approved by Approver"
-                                      ? `${
-                                          userDetails.UserType === 5
-                                            ? "Task Approved"
-                                            : "Approved By Approver"
-                                        }`
-                                      : getTaskById.AprStatus ===
-                                        "Rejected by Approver"
-                                      ? `${
-                                          userDetails.UserType === 5
-                                            ? "Task Rejected"
-                                            : "Rejected By Approver"
-                                        }`
-                                      : null
-                                    : null}
-                                </div>
-                              )}
+                              {currentOpenedTask &&
+                                currentOpenedTask.AprStatus && (
+                                  <div style={{ textTransform: "uppercase" }}>
+                                    {currentOpenedTask &&
+                                    currentOpenedTask.AprStatus
+                                      ? currentOpenedTask.AprStatus ===
+                                        "Not Assigned"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Not Started"
+                                              : "Approver Not Started Task"
+                                          }`
+                                        : currentOpenedTask.AprStatus ===
+                                          "Approved by Approver"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Task Approved"
+                                              : "Approved By Approver"
+                                          }`
+                                        : currentOpenedTask.AprStatus ===
+                                          "Rejected by Approver"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Task Rejected"
+                                              : "Rejected By Approver"
+                                          }`
+                                        : null
+                                      : null}
+                                  </div>
+                                )}
                             </div>
                           </div>
                         )}
                         {/* Expert Reviewer Status */}
-                        {getTaskById && getTaskById.ExStatus && (
+                        {currentOpenedTask && currentOpenedTask.ExStatus && (
                           <div
                             className="er-approved-label"
                             style={{
                               backgroundColor:
-                                getTaskById && getTaskById.ExStatus
-                                  ? getTaskById.ExStatus === "Not Started"
+                                currentOpenedTask && currentOpenedTask.ExStatus
+                                  ? currentOpenedTask.ExStatus === "Not Started"
                                     ? "#ffefea"
-                                    : getTaskById.ExStatus ===
+                                    : currentOpenedTask.ExStatus ===
                                       "Approved by Expert"
                                     ? "#cdfcd8"
-                                    : getTaskById.ExStatus ===
+                                    : currentOpenedTask.ExStatus ===
                                       "Rejected by Expert"
                                     ? "#ffefea"
                                     : "#d2fccd"
@@ -4684,34 +4711,39 @@ function RightSideGrid({
                               className="approved-text"
                               style={{
                                 color:
-                                  getTaskById && getTaskById.ExStatus
-                                    ? getTaskById.ExStatus === "Not Started"
+                                  currentOpenedTask &&
+                                  currentOpenedTask.ExStatus
+                                    ? currentOpenedTask.ExStatus ===
+                                      "Not Started"
                                       ? "#f8c102"
-                                      : getTaskById.ExStatus ===
+                                      : currentOpenedTask.ExStatus ===
                                         "Approved by Expert"
                                       ? "#7fba7a"
-                                      : getTaskById.ExStatus ===
+                                      : currentOpenedTask.ExStatus ===
                                         "Rejected by Expert"
                                       ? "#ff5f31"
                                       : "#fcf3cd"
                                     : "#fcf3cd",
                               }}
                             >
-                              {getTaskById && getTaskById.ExStatus && (
-                                <div style={{ textTransform: "uppercase" }}>
-                                  {getTaskById && getTaskById.ExStatus
-                                    ? getTaskById.ExStatus === "Not Started"
-                                      ? "Expert Not Started Task"
-                                      : getTaskById.ExStatus ===
-                                        "Approved by Expert"
-                                      ? "Approved By Expert"
-                                      : getTaskById.ExStatus ===
-                                        "Rejected by Expert"
-                                      ? "Rejected By Expert"
-                                      : null
-                                    : null}
-                                </div>
-                              )}
+                              {currentOpenedTask &&
+                                currentOpenedTask.ExStatus && (
+                                  <div style={{ textTransform: "uppercase" }}>
+                                    {currentOpenedTask &&
+                                    currentOpenedTask.ExStatus
+                                      ? currentOpenedTask.ExStatus ===
+                                        "Not Started"
+                                        ? "Expert Not Started Task"
+                                        : currentOpenedTask.ExStatus ===
+                                          "Approved by Expert"
+                                        ? "Approved By Expert"
+                                        : currentOpenedTask.ExStatus ===
+                                          "Rejected by Expert"
+                                        ? "Rejected By Expert"
+                                        : null
+                                      : null}
+                                  </div>
+                                )}
                             </div>
                           </div>
                         )}
@@ -4719,32 +4751,33 @@ function RightSideGrid({
                     )}
                   </div>
                   <div className="task-detail-data">
-                    {getTaskById && getTaskById.RegulatoryUpdates === 1 && (
-                      <div className="row">
-                        <div className="col-12">
-                          <div className="regulation-changes">
-                            <div className="float-left">
-                              <img
-                                src={redCircle}
-                                alt="account Circle Purple"
-                              />
-                              <div className="recent-title-circle">
-                                Recent Regulation Changes
+                    {currentOpenedTask &&
+                      currentOpenedTask.RegulatoryUpdates === 1 && (
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="regulation-changes">
+                              <div className="float-left">
+                                <img
+                                  src={redCircle}
+                                  alt="account Circle Purple"
+                                />
+                                <div className="recent-title-circle">
+                                  Recent Regulation Changes
+                                </div>
                               </div>
-                            </div>
-                            <div className="float-right">
-                              <div
-                                style={{ cursor: "pointer" }}
-                                onClick={() => onRCViewDetailClick()}
-                                className="red-circle-detail"
-                              >
-                                View details
+                              <div className="float-right">
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => onRCViewDetailClick()}
+                                  className="red-circle-detail"
+                                >
+                                  View details
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                     {userDetails.UserType !== 4 && (
                       <div className="row">
                         <div className="col-4 col-sm-3 col-md-3 col-xl-3">
@@ -4753,7 +4786,8 @@ function RightSideGrid({
                           </div>
                         </div>
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          {getTaskById && getTaskById.AssignedTo !== 0 ? (
+                          {currentOpenedTask &&
+                          currentOpenedTask.assign_to !== null ? (
                             <div
                               className="holding-list-bold-title"
                               style={{ cursor: "pointer" }}
@@ -4761,16 +4795,17 @@ function RightSideGrid({
                                 setIsShowReAssignModalForTeamMember(true)
                               }
                             >
-                              {getTaskById &&
-                              getTaskById.AssignedToUserName === "" ? null : (
-                                <span className="cicrcle-name">
-                                  {getInitials(
-                                    getTaskById &&
-                                      getTaskById.AssignedToUserName
-                                  )}
-                                </span>
-                              )}
-                              {getTaskById && getTaskById.AssignedToUserName}
+                              {currentOpenedTask &&
+                                currentOpenedTask.assign_to_name !== null && (
+                                  <span className="cicrcle-name">
+                                    {getInitials(
+                                      currentOpenedTask &&
+                                        currentOpenedTask.assign_to_name
+                                    )}
+                                  </span>
+                                )}
+                              {currentOpenedTask.assign_to_name ||
+                                "Not Assigned"}
                             </div>
                           ) : (
                             <div className="holding-list-bold-title AssinTo">
@@ -4936,29 +4971,32 @@ function RightSideGrid({
                         </div>
                       </div>
                     )}
-                    {userDetails.UserType !== 3 && (
-                      <div className="row">
-                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                          <div className="holding-list-normal-title">
-                            Assigned by
+                    {userDetails.UserType !== 3 &&
+                      currentOpenedTask.AssignedFromUserName && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Assigned by
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {currentOpenedTask &&
+                              currentOpenedTask.AssignedFromUserName ===
+                                "" ? null : (
+                                <span className="cicrcle-name">
+                                  {getInitials(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.AssignedFromUserName
+                                  )}
+                                </span>
+                              )}
+                              {currentOpenedTask &&
+                                currentOpenedTask.AssignedFromUserName}
+                            </div>
                           </div>
                         </div>
-                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          <div className="holding-list-bold-title">
-                            {getTaskById &&
-                            getTaskById.AssignedFromUserName === "" ? null : (
-                              <span className="cicrcle-name">
-                                {getInitials(
-                                  getTaskById &&
-                                    getTaskById.AssignedFromUserName
-                                )}
-                              </span>
-                            )}
-                            {getTaskById && getTaskById.AssignedFromUserName}
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                      )}
                     {userDetails.UserType !== 5 && (
                       <div className="row">
                         <div className="col-4 col-sm-3 col-md-3 col-xl-3">
@@ -4967,8 +5005,8 @@ function RightSideGrid({
                           </div>
                         </div>
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          {getTaskById &&
-                          getTaskById.ApproverName !== "Assign" ? (
+                          {currentOpenedTask &&
+                          currentOpenedTask.approver_name !== null ? (
                             <div
                               className="holding-list-bold-title"
                               style={{ cursor: "pointer" }}
@@ -4976,15 +5014,17 @@ function RightSideGrid({
                                 setIsShowReAssignModalForApprover(true)
                               }
                             >
-                              {getTaskById &&
-                              getTaskById.ApproverName === "" ? null : (
+                              {currentOpenedTask &&
+                              currentOpenedTask.approver_name === "" ? null : (
                                 <span className="cicrcle-name">
                                   {getInitials(
-                                    getTaskById && getTaskById.ApproverName
+                                    currentOpenedTask &&
+                                      currentOpenedTask.approver_name
                                   )}
                                 </span>
                               )}
-                              {getTaskById && getTaskById.ApproverName}
+                              {currentOpenedTask &&
+                                currentOpenedTask.approver_name}
                             </div>
                           ) : (
                             <div className="holding-list-bold-title">
@@ -5165,9 +5205,9 @@ function RightSideGrid({
                       </div>
                       <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                         <div className="holding-list-bold-title">
-                          {moment(getTaskById && getTaskById.EndDate).format(
-                            "DD MMM"
-                          )}
+                          {moment(
+                            currentOpenedTask && currentOpenedTask.EndDate
+                          ).format("DD MMM")}
                         </div>
                       </div>
                     </div>
@@ -5180,14 +5220,14 @@ function RightSideGrid({
                       <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                         <div className="holding-list-bold-title">
                           {moment(
-                            getTaskById && getTaskById.ActualTaskEndDate
+                            currentOpenedTask && currentOpenedTask.deadline_date
                           ).format("DD MMM")}
                         </div>
                       </div>
                     </div>
-                    {getTaskById &&
-                      getTaskById.DateOfApproval !== "" &&
-                      getTaskById.Status === "Approved" &&
+                    {currentOpenedTask &&
+                      currentOpenedTask.DateOfApproval !== "" &&
+                      currentOpenedTask.status === "Approved" &&
                       userDetails.UserType !== 4 && (
                         <div className="row">
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
@@ -5197,7 +5237,7 @@ function RightSideGrid({
                           </div>
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                             <div className="holding-list-bold-title">
-                              {moment(getTaskById.DateOfApproval).format(
+                              {moment(currentOpenedTask.DateOfApproval).format(
                                 "DD MMM  h:mm a"
                               )}
                             </div>
@@ -5206,7 +5246,8 @@ function RightSideGrid({
                       )}
                     {userDetails.UserType !== 4 && (
                       <div className="row">
-                        {getTaskById && getTaskById.Status !== "Assigned" ? (
+                        {currentOpenedTask &&
+                        currentOpenedTask.status !== "Assigned" ? (
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
                               Status
@@ -5215,24 +5256,27 @@ function RightSideGrid({
                         ) : (
                           ""
                         )}
-                        {getTaskById && getTaskById.Status !== "Assigned" ? (
+                        {currentOpenedTask &&
+                        currentOpenedTask.status !== "Assigned" ? (
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                             <div className="holding-list-bold-title">
-                              {getTaskById && getTaskById.Status
-                                ? getTaskById.Status === "Completed By User"
+                              {currentOpenedTask && currentOpenedTask.status
+                                ? currentOpenedTask.status ===
+                                  "Completed By User"
                                   ? moment(
-                                      getTaskById &&
-                                        getTaskById.ActualTaskEndDate
+                                      currentOpenedTask &&
+                                        currentOpenedTask.deadline_date
                                     ).isBefore(today)
                                     ? "Not reviewed"
                                     : "Approval Pending"
-                                  : getTaskById.Status === "Assign"
-                                  ? "Assign Task"
-                                  : getTaskById.Status === "Assigned"
+                                  : currentOpenedTask.status === "Not Assigned"
+                                  ? currentOpenedTask.status
+                                  : currentOpenedTask.status === "Assigned"
                                   ? "Task Assigned"
-                                  : getTaskById.Status === "Approved"
+                                  : currentOpenedTask.status === "Approved"
                                   ? "Task Approved"
-                                  : getTaskById.Status === "Request Rejected"
+                                  : currentOpenedTask.status ===
+                                    "Request Rejected"
                                   ? "Task Rejected"
                                   : null
                                 : ""}
@@ -5244,8 +5288,8 @@ function RightSideGrid({
                       </div>
                     )}
                     {userDetails.UserType !== 4 &&
-                      getTaskById &&
-                      getTaskById.ExReview === 1 && (
+                      currentOpenedTask &&
+                      currentOpenedTask.ExReview === 1 && (
                         <div className="row">
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
@@ -5254,7 +5298,7 @@ function RightSideGrid({
                           </div>
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                             <div className="holding-list-bold-title">
-                              {getTaskById.ExStatus}
+                              {currentOpenedTask.ExStatus}
                             </div>
                           </div>
                         </div>
@@ -5277,11 +5321,11 @@ function RightSideGrid({
                         </div>
                       )} */}
                     {userDetails.UserType !== 4 &&
-                      getTaskById &&
-                      getTaskById.ExReview === 1 &&
-                      getTaskById.ReviewerEmailID !== "" &&
-                      getTaskById.ReviewerName !== "" &&
-                      getTaskById.ReviewerMobile && (
+                      currentOpenedTask &&
+                      currentOpenedTask.ExReview === 1 &&
+                      currentOpenedTask.ReviewerEmailID !== "" &&
+                      currentOpenedTask.ReviewerName !== "" &&
+                      currentOpenedTask.ReviewerMobile && (
                         <div className="row">
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
@@ -5290,7 +5334,7 @@ function RightSideGrid({
                           </div>
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                             <div className="holding-list-bold-title">
-                              {`${getTaskById.ReviewerMobile} | ${getTaskById.ReviewerEmailID}`}
+                              {`${currentOpenedTask.ReviewerMobile} | ${currentOpenedTask.ReviewerEmailID}`}
                             </div>
                           </div>
                         </div>
@@ -5476,14 +5520,14 @@ function RightSideGrid({
                         userDetails.UserType === 5)) ? (
                       <>
                         {/* check here */}
-                        {getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.TaskStatus !== 1 &&
-                        // (getTaskById.Status === "Assigned" ||
-                        // getTaskById.Status === "Request Rejected") &&
-                        (getTaskById.TaskStatus === 0 ||
-                          getTaskById.TaskStatus === 3 ||
-                          getTaskById.TaskStatus === 4) ? (
+                        {currentOpenedTask &&
+                        currentOpenedTask.status &&
+                        currentOpenedTask.TaskStatus !== 1 &&
+                        // (currentOpenedTask.status === "Assigned" ||
+                        // currentOpenedTask.status === "Request Rejected") &&
+                        (currentOpenedTask.TaskStatus === 0 ||
+                          currentOpenedTask.TaskStatus === 3 ||
+                          currentOpenedTask.TaskStatus === 4) ? (
                           (user && user.UserType && user.UserType === 4) ||
                           (user &&
                             user.UserType &&
@@ -5566,11 +5610,12 @@ function RightSideGrid({
                                         </div>
                                       </div>
                                       <div className="pr-3">
-                                        {getTaskById &&
-                                          getTaskById.TaskId !== undefined && (
+                                        {currentOpenedTask &&
+                                          currentOpenedTask.TaskId !==
+                                            undefined && (
                                             <a
                                               target="_blank"
-                                              href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
+                                              href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${currentOpenedTask.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
                                               style={{ textDecoration: "none" }}
                                               className="file-download-title pointer d-flex"
                                             >
@@ -5620,10 +5665,11 @@ function RightSideGrid({
                                     </div>
                                   </div>
                                   <div className="col-4 col-sm-8 col-md-8 col-xl-8">
-                                    {getTaskById &&
-                                      getTaskById.TaskId !== undefined && (
+                                    {currentOpenedTask &&
+                                      currentOpenedTask.TaskId !==
+                                        undefined && (
                                         <a
-                                          href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
+                                          href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${currentOpenedTask.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
                                           style={{ textDecoration: "none" }}
                                           className="file-download-title pointer d-flex"
                                         >
@@ -5645,27 +5691,27 @@ function RightSideGrid({
 
                     {user.UserType !== 4 &&
                     moment(
-                      getTaskById && getTaskById.ActualTaskEndDate
+                      currentOpenedTask && currentOpenedTask.deadline_date
                     ).isBefore(today) === true ? (
                       ""
-                    ) : (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.Status === "Approved") ||
-                      (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.TaskStatus === 1) ? (
+                    ) : (currentOpenedTask &&
+                        currentOpenedTask.status &&
+                        currentOpenedTask.status === "Approved") ||
+                      (currentOpenedTask &&
+                        currentOpenedTask.status &&
+                        currentOpenedTask.TaskStatus === 1) ? (
                       (user &&
                         user.UserType &&
                         (userDetails.UserType === 3 ||
                           userDetails.UserType === 5)) ||
                       user.UserType === 4 ||
                       (user.UserType === 5 && " ")
-                    ) : getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Assigned" &&
-                      getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 0 ? (
+                    ) : currentOpenedTask &&
+                      currentOpenedTask.status &&
+                      currentOpenedTask.status === "Assigned" &&
+                      currentOpenedTask &&
+                      currentOpenedTask.status &&
+                      currentOpenedTask.TaskStatus === 0 ? (
                       (user && user.UserType && user.UserType === 4) ||
                       (user && user.UserType && user.UserType === 3) ? (
                         <button
@@ -5679,19 +5725,19 @@ function RightSideGrid({
                       ) : (
                         ""
                       )
-                    ) : getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Assign" &&
-                      getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 0 ? (
+                    ) : currentOpenedTask &&
+                      currentOpenedTask.status &&
+                      currentOpenedTask.status === "Assign" &&
+                      currentOpenedTask &&
+                      currentOpenedTask.status &&
+                      currentOpenedTask.TaskStatus === 0 ? (
                       ""
-                    ) : getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Request Rejected" &&
-                      getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 3 ? (
+                    ) : currentOpenedTask &&
+                      currentOpenedTask.status &&
+                      currentOpenedTask.status === "Request Rejected" &&
+                      currentOpenedTask &&
+                      currentOpenedTask.status &&
+                      currentOpenedTask.TaskStatus === 3 ? (
                       user &&
                       user.UserType &&
                       user.UserType === 4 && (
@@ -5704,18 +5750,18 @@ function RightSideGrid({
                           Mark Complete
                         </button>
                       )
-                    ) : (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.Status === "Completed By User") ||
-                      (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.TaskStatus === 4) ? (
+                    ) : (currentOpenedTask &&
+                        currentOpenedTask.status &&
+                        currentOpenedTask.status === "Completed By User") ||
+                      (currentOpenedTask &&
+                        currentOpenedTask.status &&
+                        currentOpenedTask.TaskStatus === 4) ? (
                       (user && user.UserType && user.UserType === 3) ||
                       (user && user.UserType && user.UserType === 5) ? (
                         <div class="btn-toolbar text-center well">
                           <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
                             <button
-                              onClick={(e) => handleAppTask(getTaskById)}
+                              onClick={(e) => handleAppTask(currentOpenedTask)}
                               className="btn save-details-bnt approve-task"
                             >
                               approve task
@@ -5747,32 +5793,26 @@ function RightSideGrid({
                           <div className="comment-box">
                             <div className="name-box">
                               {getInitials(
-                                comment &&
-                                  comment.B &&
-                                  comment.B[0] &&
-                                  comment.B[0].UserName &&
-                                  comment.B[0].UserName !== ""
-                                  ? comment.B[0].UserName
+                                comment && comment.user_name
+                                  ? comment.user_name
                                   : "No Username"
                               )}
                             </div>
                             <div className="rigt-box-comment">
                               <div className="d-flex">
                                 <div className="right-box-text">
-                                  {comment &&
-                                  comment.B &&
-                                  comment.B[0] &&
-                                  comment.B[0].UserName &&
-                                  comment.B[0].UserName !== ""
-                                    ? comment.B[0].UserName
+                                  {comment && comment.user_name
+                                    ? comment.user_name
                                     : "No Username"}
                                 </div>
                                 <div className="days-ago">
-                                  {moment(comment.CommentOn).format("DD MMM")}
+                                  {moment(comment.commented_on).format(
+                                    "DD MMM"
+                                  )}
                                 </div>
                               </div>
                               <div className="comment-desc">
-                                {comment.Comment}
+                                {comment.content}
                               </div>
                             </div>
                           </div>
@@ -5784,7 +5824,7 @@ function RightSideGrid({
 
                     <div className="comment-box">
                       <div className="name-box">
-                        {getInitials(user && user.UserName)}
+                        {getInitials(user && user.full_name)}
                       </div>
                       <div className="rigt-box-comment">
                         <div className="input-comment-box input-comment-boxLeft">

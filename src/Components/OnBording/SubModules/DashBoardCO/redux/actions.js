@@ -20,6 +20,13 @@ const GET_TASK_COMMENTS_SUCCESS_BY_TASK_ID =
 const GET_TASK_COMMENTS_FAILED_BY_TASK_ID =
   "CAPMTECH/GET_TASK_COMMENTS_FAILED_BY_TASK_ID";
 
+const GET_TASK_REFERENSES_BY_TASK_NAME =
+  "CAPMTECH/GET_TASK_REFERENSES_BY_TASK_NAME";
+const GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS =
+  "CAPMTECH/GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS";
+const GET_TASK_REFERENSES_BY_TASK_NAME_FAILED =
+  "CAPMTECH/GET_TASK_REFERENSES_BY_TASK_NAME_FAILED";
+
 const POST_TASK_COMMENT_BY_TASK_ID = "CAPMTECH/POST_TASK_COMMENT_BY_TASK_ID";
 const POST_TASK_COMMENT_SUCCESS_BY_TASK_ID =
   "CAPMTECH/POST_TASK_COMMENT_SUCCESS_BY_TASK_ID";
@@ -113,6 +120,16 @@ const taskReportByIdRequestSuccess = createAction(
   GET_TASK_REPORT_SUCCESS_BY_ID
 );
 const taskReportByIdRequestFailed = createAction(GET_TASK_REPORT_FAILED_BY_ID);
+
+const taskReferensesByNameRequest = createAction(
+  GET_TASK_REFERENSES_BY_TASK_NAME
+);
+const taskReferensesByNameSuccess = createAction(
+  GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS
+);
+const taskReferensesByNameFailed = createAction(
+  GET_TASK_REFERENSES_BY_TASK_NAME_FAILED
+);
 
 const userByRoleRequest = createAction(GET_USER_BY_ROLE);
 const userByRoleRequestSuccess = createAction(GET_USER_SUCCESS_BY_ROLE);
@@ -254,6 +271,10 @@ export const actions = {
   taskReportByIdRequestSuccess,
   taskReportByIdRequestFailed,
 
+  taskReferensesByNameRequest,
+  taskReferensesByNameSuccess,
+  taskReferensesByNameFailed,
+
   userByRoleRequest,
   userByRoleRequestSuccess,
   userByRoleRequestFailed,
@@ -333,6 +354,10 @@ export const types = {
   GET_TASK_REPORT_BY_ID,
   GET_TASK_REPORT_SUCCESS_BY_ID,
   GET_TASK_REPORT_FAILED_BY_ID,
+
+  GET_TASK_REFERENSES_BY_TASK_NAME,
+  GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS,
+  GET_TASK_REFERENSES_BY_TASK_NAME_FAILED,
 
   GET_USER_BY_ROLE,
   GET_USER_SUCCESS_BY_ROLE,
