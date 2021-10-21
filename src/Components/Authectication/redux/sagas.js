@@ -10,11 +10,31 @@ const loginReq = function* loginReq({ payload }) {
     const { data } = yield call(api.loginAccount, payload);
     const { message } = data;
     if (message.status) {
-      const { token, user_type } = message;
+      const { token, UserType } = message;
       localStorage.setItem("basicToken", token);
-      yield put(actions.signInRequestSuccess({ loginSuccess: false, data }));
       if (data) {
-        payload.history.push("/dashboard");
+        let complainceOfficer;
+        let teamMember;
+        let userType = 0;
+        complainceOfficer = UserType.filter(
+          (userType) => userType.User_type_no === 3
+        );
+
+        teamMember = UserType.filter((userType) => userType.User_type_no === 4);
+
+        if (complainceOfficer.length !== 0) userType = 3;
+        else if (teamMember.length !== 0) userType = 4;
+        else userType = 3;
+        message.userType = userType;
+        yield put(
+          actions.signInRequestSuccess({ loginSuccess: false, data: message })
+        );
+
+        if (userType === 3) {
+          payload.history.push("/dashboard-view");
+        } else {
+          payload.history.push("/dashboard");
+        }
       } else if (data.IscreateBySecmark === 1) {
         payload.history.push("/expert-review/");
       } else {
