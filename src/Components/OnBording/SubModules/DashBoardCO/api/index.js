@@ -1,18 +1,19 @@
 import api from "../../../../../apiServices";
 
 const getTaskReport = (payload) =>
-  api.post("compliance.api.GetTaskList", payload);
+  api.get("compliance.api.GetTaskList", payload);
 
-const getTaskReportByID = (payload) => api.post("/api/GetTask", payload);
-
+const getTaskReportByID = (payload) =>
+  api.post("compliance.api.getSingleTaskDetail", payload);
+const getTaskReferencesByName = (payload) =>
+  api.post("compliance.api.GetTaskReferences", payload);
 const getUsersByRole = (payload) => api.post("/api/getUsersByRole", payload);
 
 const getTaskComments = (payload) =>
-  api.post(
-    `/api/bindTaskComments?taskid=${payload.taskid}&link=${payload.link || 0}`
-  );
+  api.post("compliance.api.GetTaskComments", payload);
 
-const postTaskComments = (payload) => api.post("/api/TaskComments", payload);
+const postTaskComments = (payload) =>
+  api.post("compliance.api.SetTaskComments", payload);
 const getTaskFiles = (payload) => api.post("/api/getTaskfile", payload);
 const postUploadFile = ({ taskid, fileData, userId, ftype }) =>
   api.post(
@@ -27,7 +28,8 @@ const postUploadFile = ({ taskid, fileData, userId, ftype }) =>
 // const postUploadFile = (payload) =>
 //   api.post(`/api/UploadFile?Taskid=${payload.TaskId}`);
 
-const postAssignTask = (payload) => api.post("/api/ChangeTaskStatus", payload);
+const postAssignTask = (payload) =>
+  api.post("compliance.api.AssignTasks", payload);
 
 const getAvailabilityCheck = (payload) =>
   api.post("compliance.api.getUserDetails", payload);
@@ -68,4 +70,5 @@ export default {
   coSettingCommonApi,
   migrateTasks,
   getTeamMembers,
+  getTaskReferencesByName,
 };

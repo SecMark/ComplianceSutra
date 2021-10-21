@@ -4,50 +4,37 @@ import "../style.css";
 import viewAllArow from "../../../../../../../assets/Icons/viewAllArow.png";
 import viewAllArowTop from "../../../../../../../assets/Icons/viewAllArowTop.png";
 import keyboardArrowRightBlack from "../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
-import axios from "axios";
-import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
 import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
 import downArrow from "../../../../../../../assets/Icons/downArrow.png";
 import upArrow from "../../../../../../../assets/Icons/topArrowAccordian.png";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { setNotificationTaskId } from "../../notification/Redux/Action";
 import { actions as taskReportActions } from "../../../redux/actions";
 import { getDataByLicenses } from "../../../../../../../CommonModules/helpers/tasks.helper";
 export default function LicenseTaskList(props) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const { setCurrentOpenedTask, setIsTaskListOpen } = props;
   const [assignRowCount, setAssignRowCount] = useState([]);
   const [companyTaskData, setCompanyTaskData] = useState([]);
   const [today, setToday] = useState(new Date());
   const [showUserToolTip, setShowUserToolTip] = useState("");
   const [expandedFlags, setExpandedFlags] = useState([]);
   const userDetails = state && state.auth && state.auth.loginInfo;
-
+  const taskList =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
   useEffect(() => {
-    const payload = {
-      entityid: "1",
-      userID: props.user.UserID,
-      usertype: props.user.UserType,
-    };
-    axios
-      .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`, {
-        headers: {
-          Authorization: `Basic ZmVhY2NiOGJkNWZkMDJhOjc4NTAzYWI3N2UwNzI5Ng==`,
-        },
-      })
-      .then((response) => {
-        const { status, status_response, task_details } = response.data.message;
-        if (status && status_response) {
-          const taskByLicenses = getDataByLicenses(task_details);
-          console.log("taskdatdfdjk: ", taskByLicenses);
-          setCompanyTaskData(taskByLicenses);
-        }
-      })
-      .catch((error) => {
-        console.log("error => ", error);
-      });
-  }, []);
+    if (taskList && taskList.length !== 0) {
+      const taskByCompany = getDataByLicenses(taskList);
+      setCompanyTaskData(taskByCompany);
+    } else {
+      dispatch(taskReportActions.taskReportRequest());
+    }
+  }, [taskList]);
 
   const getInitials = (str) => {
     var initials = " ";
@@ -63,7 +50,6 @@ export default function LicenseTaskList(props) {
     return initials;
   };
 
-  const getSelectTaskDetails = (e) => {};
   useEffect(() => {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
@@ -137,9 +123,8 @@ export default function LicenseTaskList(props) {
           <Link
             to="/dashboard"
             onClick={() => {
-              if (userDetails && userDetails.UserType !== 6) {
-                dispatch(setNotificationTaskId(task.TaskId));
-              }
+              setCurrentOpenedTask(task);
+              setIsTaskListOpen(true);
             }}
             style={{
               textDecoration: "none",
@@ -155,7 +140,10 @@ export default function LicenseTaskList(props) {
               <div className="col-10 col-md-6 col-sm-6 col-xl-6">
                 <div className="all-companies-sub-title">
                   <div
-                    onClick={(e) => getSelectTaskDetails(task)}
+                    onClick={() => {
+                      setCurrentOpenedTask(task);
+                      setIsTaskListOpen(true);
+                    }}
                     style={{ cursor: "pointer", display: "flex" }}
                   >
                     <span className="pink-label-title-right">
@@ -167,7 +155,10 @@ export default function LicenseTaskList(props) {
                             : "black-week d-block d-sm-none"
                         }
                         style={{ cursor: "pointer" }}
-                        onClick={(e) => getSelectTaskDetails(task)}
+                        onClick={() => {
+                          setCurrentOpenedTask(task);
+                          setIsTaskListOpen(true);
+                        }}
                       >
                         <div className="d-block d-sm-none">
                           {getDayDate(task.due_date, 2)}
@@ -179,7 +170,7 @@ export default function LicenseTaskList(props) {
                           style={{
                             backgroundColor:
                               task && task.status
-                                ? task.status === "Open"
+                                ? task.status === "Not Assigned"
                                   ? "#fcf3cd"
                                   : task.status === "Completed By User"
                                   ? moment(task.due_date).isBefore(today)
@@ -203,7 +194,7 @@ export default function LicenseTaskList(props) {
                                   ? "#7fba7a"
                                   : task.status === "Assigned"
                                   ? "#f8c102"
-                                  : task.status === "Open"
+                                  : task.status === "Not Assigned"
                                   ? "#f8c102"
                                   : task.status === "Request Rejected"
                                   ? "#ff5f31"
@@ -215,7 +206,7 @@ export default function LicenseTaskList(props) {
                             ? moment(task.due_date).isBefore(today)
                               ? "NOT REVIEWED"
                               : "Approval Pending"
-                            : task.status === "Open"
+                            : task.status === "Not Assigned"
                             ? "Assign Task"
                             : task.status === "Assigned"
                             ? "Task Assigned"
@@ -235,7 +226,10 @@ export default function LicenseTaskList(props) {
                   className="circle-front-text"
                   style={{ width: "fit-content", cursor: "pointer" }}
                   value={task.TaskId}
-                  onClick={(e) => getSelectTaskDetails(task)}
+                  onClick={() => {
+                    setCurrentOpenedTask(task);
+                    setIsTaskListOpen(true);
+                  }}
                 >
                   {task.customer_name}
                 </div>
@@ -243,7 +237,10 @@ export default function LicenseTaskList(props) {
               <div
                 className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block"
                 style={{ cursor: "pointer" }}
-                onClick={(e) => getSelectTaskDetails(task)}
+                onClick={() => {
+                  setCurrentOpenedTask(task);
+                  setIsTaskListOpen(true);
+                }}
               >
                 {task.assign_to !== null ? (
                   <div className="d-flex">
@@ -297,14 +294,20 @@ export default function LicenseTaskList(props) {
                           : "black-week d-none d-sm-block"
                       }
                       style={{ cursor: "pointer" }}
-                      onClick={(e) => getSelectTaskDetails(task)}
+                      onClick={() => {
+                        setCurrentOpenedTask(task);
+                        setIsTaskListOpen(true);
+                      }}
                     >
                       {getDayDate(task.due_date, 1)}
                     </div>
                     <div
                       className="right-arrow-week-company text-right-grid"
                       style={{ cursor: "pointer" }}
-                      onClick={(e) => getSelectTaskDetails(task)}
+                      onClick={() => {
+                        setCurrentOpenedTask(task);
+                        setIsTaskListOpen(true);
+                      }}
                     >
                       {
                         <img
@@ -356,14 +359,8 @@ export default function LicenseTaskList(props) {
         {props.isExpertReviewer && (
           <div
             onClick={() => {
-              if (userDetails && userDetails.UserType !== 6) {
-                props.setIsTaskDetailsShow(true);
-                dispatch(
-                  taskReportActions.taskReportByIdRequest({
-                    taskID: task.TaskId,
-                  })
-                );
-              }
+              setCurrentOpenedTask(task);
+              setIsTaskListOpen(true);
             }}
             style={{
               textDecoration: "none",
@@ -379,7 +376,10 @@ export default function LicenseTaskList(props) {
               <div className="col-10 col-md-6 col-sm-6 col-xl-6">
                 <div className="all-companies-sub-title">
                   <div
-                    onClick={(e) => getSelectTaskDetails(task)}
+                    onClick={() => {
+                      setCurrentOpenedTask(task);
+                      setIsTaskListOpen(true);
+                    }}
                     style={{ cursor: "pointer", display: "flex" }}
                   >
                     <span className="pink-label-title-right">
@@ -391,7 +391,10 @@ export default function LicenseTaskList(props) {
                             : "black-week d-block d-sm-none"
                         }
                         style={{ cursor: "pointer" }}
-                        onClick={(e) => getSelectTaskDetails(task)}
+                        onClick={() => {
+                          setCurrentOpenedTask(task);
+                          setIsTaskListOpen(true);
+                        }}
                       >
                         <div className="d-block d-sm-none">
                           {getDayDate(task.due_date, 2)}
@@ -403,7 +406,7 @@ export default function LicenseTaskList(props) {
                           style={{
                             backgroundColor:
                               task && task.status
-                                ? task.status === "Open"
+                                ? task.status === "Not Assigned"
                                   ? "#fcf3cd"
                                   : task.status === "Completed By User"
                                   ? moment(task.due_date).isBefore(today)
@@ -427,7 +430,7 @@ export default function LicenseTaskList(props) {
                                   ? "#7fba7a"
                                   : task.status === "Assigned"
                                   ? "#f8c102"
-                                  : task.status === "Open"
+                                  : task.status === "Not Assigned"
                                   ? "#f8c102"
                                   : task.status === "Request Rejected"
                                   ? "#ff5f31"
@@ -439,7 +442,7 @@ export default function LicenseTaskList(props) {
                             ? moment(task.due_date).isBefore(today)
                               ? "NOT REVIEWED"
                               : "Approval Pending"
-                            : task.status === "Open"
+                            : task.status === "Not Assigned"
                             ? "Assign Task"
                             : task.status === "Assigned"
                             ? "Task Assigned"
@@ -459,7 +462,10 @@ export default function LicenseTaskList(props) {
                   className="circle-front-text"
                   style={{ width: "fit-content", cursor: "pointer" }}
                   value={task.TaskId}
-                  onClick={(e) => getSelectTaskDetails(task)}
+                  onClick={() => {
+                    setCurrentOpenedTask(task);
+                    setIsTaskListOpen(true);
+                  }}
                 >
                   {task.customer_name}
                 </div>
@@ -467,7 +473,10 @@ export default function LicenseTaskList(props) {
               <div
                 className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block"
                 style={{ cursor: "pointer" }}
-                onClick={(e) => getSelectTaskDetails(task)}
+                onClick={() => {
+                  setCurrentOpenedTask(task);
+                  setIsTaskListOpen(true);
+                }}
               >
                 {task.assign_to !== null ? (
                   <div className="d-flex">
@@ -521,14 +530,20 @@ export default function LicenseTaskList(props) {
                           : "black-week d-none d-sm-block"
                       }
                       style={{ cursor: "pointer" }}
-                      onClick={(e) => getSelectTaskDetails(task)}
+                      onClick={() => {
+                        setCurrentOpenedTask(task);
+                        setIsTaskListOpen(true);
+                      }}
                     >
                       {getDayDate(task.due_date, 1)}
                     </div>
                     <div
                       className="right-arrow-week-company text-right-grid"
                       style={{ cursor: "pointer" }}
-                      onClick={(e) => getSelectTaskDetails(task)}
+                      onClick={() => {
+                        setCurrentOpenedTask(task);
+                        setIsTaskListOpen(true);
+                      }}
                     >
                       {
                         <img
@@ -585,26 +600,27 @@ export default function LicenseTaskList(props) {
       <Link
         style={{ textDecoration: "none" }}
         onClick={() => {
-          dispatch(setNotificationTaskId(task.TaskId));
+          setCurrentOpenedTask(task);
         }}
       >
         <div
           className={
-            props.getTaskById && task.TaskId == props.getTaskById.TaskId
+            props.currentOpenedTask &&
+            task.task_name === props.currentOpenedTask.task_name
               ? " row active-action-card-sidebar "
               : "row action-card-sidebar"
           }
-          onClick={(e) => getSelectTaskDetails(task)}
+          onClick={(e) => setCurrentOpenedTask(task)}
           style={{ cursor: "pointer" }}
         >
           <div className="col-10 pl-0">
             <div className="all-companies-sub-title">
               <div
                 className="pink-label-title-right"
-                onClick={(e) => getSelectTaskDetails(task)}
+                onClick={(e) => setCurrentOpenedTask(task)}
               >
                 <div className="overdue-title-sidebar-title pl-1">
-                  {task.TaskName}
+                  {task.subject}
                 </div>
                 <div
                   className="red-week  date-font pl-1"
@@ -621,7 +637,7 @@ export default function LicenseTaskList(props) {
                 <div
                   className="right-arrow-week text-right-grid"
                   style={{ cursor: "pointer" }}
-                  onClick={(e) => getSelectTaskDetails(task)}
+                  onClick={(e) => setCurrentOpenedTask(task)}
                 >
                   <img
                     className=""
