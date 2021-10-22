@@ -72,7 +72,9 @@ function DashBoardView({ history }) {
   }, []);
 
   useEffect(() => {
-    dispatch(taskReportActions.taskReportRequest());
+    if (taskList && taskList.length === 0) {
+      dispatch(taskReportActions.taskReportRequest());
+    }
   }, [state.adminMenu.currentMenu]);
 
   useEffect(() => {

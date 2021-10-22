@@ -409,22 +409,10 @@ function RightSideGrid({
     );
   };
 
-  const getSelectTaskDetails = (e) => {
-    setShowFiles(true);
-    setShowComments(false);
-    setExpandedFlags([]);
-    setCurrentTaskData(e);
-    let taskID = null;
-    let task_id = null;
-
-    if (task_id !== null && e === undefined) {
-      taskID = task_id;
-    } else {
-      taskID = e.TaskId;
-    }
+  const getSelectTaskDetails = (task) => {
     dispatch(
-      taskReportActions.taskReportByIdRequest({
-        taskID: taskID,
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
       })
     );
   };
@@ -839,30 +827,19 @@ function RightSideGrid({
     return (
       <Link
         to="/dashboard"
-        style={{ textDecoration: "none" }}
         onClick={() => {
-          if (userDetails && userDetails.UserType !== 6) {
-            dispatch(setNotificationTaskId(task.TaskId));
-            localStorage.setItem(
-              "expandedFlagss",
-              expandedFlags,
-              "allRowCount-copy",
-              rowCount
-            );
-            localStorage.setItem("allRowCount", JSON.stringify(rowCount));
-          }
+          getSelectTaskDetails(task)
         }}
         style={{
-          pointerEvents: `${
-            userDetails && userDetails.UserType === 6 ? "none" : "auto"
-          }`,
+          textDecoration: 'none',
+          ...(userDetails && userDetails.UserType === 6 && {pointerEvents: 'none'})
         }}
       >
         <div
           className="row"
           style={{ marginBottom: "15px", position: "relative" }}
         >
-          {listType === 1 && Status === "overdue" && (
+          {listType === 1 && Status === "Overdue" && (
             <div className="redWidth">
               <div className="redLine">
                 {" "}
@@ -883,7 +860,7 @@ function RightSideGrid({
                   <div className="overdue-title">{task.subject}</div>
                   <div
                     className={
-                      Status === "overdue"
+                      Status === "Overdue"
                         ? "red-week d-block d-sm-none"
                         : "black-week d-block d-sm-none"
                     }
@@ -902,7 +879,7 @@ function RightSideGrid({
                           task && task.status
                             ? task.status === "Not Assigned"
                               ? "#fcf3cd"
-                              : task.status === "Completed"
+                              : task.status === "Approval Pending"
                               ? moment(task.deadline_date).isBefore(today)
                                 ? "#cdfcd8"
                                 : "#ffefea"
@@ -916,7 +893,7 @@ function RightSideGrid({
                             : "#d2fccd",
                         color:
                           task && task.status
-                            ? task.status === "Completed"
+                            ? task.status === "Approval Pending"
                               ? moment(task.ActualTaskEndDate).isBefore(today)
                                 ? "#7fba7a"
                                 : "#ff5f31"
@@ -932,7 +909,7 @@ function RightSideGrid({
                             : "#fcf3cd",
                       }}
                     >
-                      {task.status && task.status === "Completed"
+                      {task.status && task.status === "Approval Pending"
                         ? moment(task.ActualTaskEndDate).isBefore(today)
                           ? "NOT REVIEWED"
                           : "Approval Pending"
@@ -1011,7 +988,7 @@ function RightSideGrid({
               <div className="d-flex">
                 <div
                   className={
-                    Status === "overdue"
+                    Status === "Overdue"
                       ? "red-week d-none d-sm-block"
                       : "black-week d-none d-sm-block"
                   }
@@ -1087,7 +1064,7 @@ function RightSideGrid({
         className="row"
         style={{ marginBottom: "15px", position: "relative" }}
       >
-        {listType === 1 && Status === "overdue" && (
+        {listType === 1 && Status === "Overdue" && (
           <div className="redWidth">
             <div className="redLine">
               {" "}
@@ -1108,7 +1085,7 @@ function RightSideGrid({
                 <div className="overdue-title">{task.subject}</div>
                 <div
                   className={
-                    Status === "overdue"
+                    Status === "Overdue"
                       ? "red-week d-block d-sm-none"
                       : "black-week d-block d-sm-none"
                   }
@@ -1127,7 +1104,7 @@ function RightSideGrid({
                         task && task.status
                           ? task.status === "Assign"
                             ? "#fcf3cd"
-                            : task.status === "Completed"
+                            : task.status === "Approval Pending"
                             ? moment(task.ActualTaskEndDate).isBefore(today)
                               ? "#cdfcd8"
                               : "#ffefea"
@@ -1141,7 +1118,7 @@ function RightSideGrid({
                           : "#d2fccd",
                       color:
                         task && task.status
-                          ? task.status === "Completed"
+                          ? task.status === "Approval Pending"
                             ? moment(task.ActualTaskEndDate).isBefore(today)
                               ? "#7fba7a"
                               : "#ff5f31"
@@ -1157,7 +1134,7 @@ function RightSideGrid({
                           : "#fcf3cd",
                     }}
                   >
-                    {task.status && task.status === "Completed"
+                    {task.status && task.status === "Approval Pending"
                       ? moment(task.ActualTaskEndDate).isBefore(today)
                         ? "NOT REVIEWED"
                         : "Approval Pending"
@@ -1238,7 +1215,7 @@ function RightSideGrid({
             <div className="d-flex">
               <div
                 className={
-                  Status === "overdue"
+                  Status === "Overdue"
                     ? "red-week d-none d-sm-block"
                     : "black-week d-none d-sm-block"
                 }
@@ -1295,7 +1272,7 @@ function RightSideGrid({
             </div>
           </div>
         </div>
-        {Status === "overdue" && (
+        {Status === "Overdue" && (
           <div className="redWidth-bottom ">
             <div className="redLine">
               {" "}
@@ -2053,9 +2030,9 @@ function RightSideGrid({
                                 )}
                                 {(item.status === "Upcoming"
                                   ? expandedFlags.includes(index)
-                                  : item.status === "Completed"
+                                  : item.status === "Approval Pending"
                                   ? expandedFlags.includes(index)
-                                  : item.status === "overdue"
+                                  : item.status === "Overdue"
                                   ? !expandedFlags.includes(index)
                                   : item.status === "Pending"
                                   ? !expandedFlags.includes(index)
