@@ -25,7 +25,8 @@ const loginReq = function* loginReq({ payload }) {
         if (complainceOfficer.length !== 0) userType = 3;
         else if (teamMember.length !== 0) userType = 4;
         else userType = 3;
-        message.userType = userType;
+        message.UserType = userType;
+        message.full_name = data.full_name;
         yield put(
           actions.signInRequestSuccess({ loginSuccess: false, data: message })
         );

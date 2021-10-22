@@ -173,7 +173,7 @@ export default function LicenseTaskList(props) {
                               task && task.status
                                 ? task.status === "Not Assigned"
                                   ? "#fcf3cd"
-                                  : task.status === "Completed By User"
+                                  : task.status === "Completed"
                                   ? moment(task.due_date).isBefore(today)
                                     ? "#cdfcd8"
                                     : "#ffefea"
@@ -181,13 +181,13 @@ export default function LicenseTaskList(props) {
                                   ? "#cdfcd8"
                                   : task.status === "Assigned"
                                   ? "#ffefea"
-                                  : task.status === "Request Rejected"
+                                  : task.status === "Rejected"
                                   ? "#ffefea"
                                   : "#d2fccd"
                                 : "#d2fccd",
                             color:
                               task && task.status
-                                ? task.status === "Completed By User"
+                                ? task.status === "Completed"
                                   ? moment(task.due_date).isBefore(today)
                                     ? "#7fba7a"
                                     : "#ff5f31"
@@ -197,13 +197,13 @@ export default function LicenseTaskList(props) {
                                   ? "#f8c102"
                                   : task.status === "Not Assigned"
                                   ? "#f8c102"
-                                  : task.status === "Request Rejected"
+                                  : task.status === "Rejected"
                                   ? "#ff5f31"
                                   : ""
                                 : "#fcf3cd",
                           }}
                         >
-                          {task.status && task.status === "Completed By User"
+                          {task.status && task.status === "Completed"
                             ? moment(task.due_date).isBefore(today)
                               ? "NOT REVIEWED"
                               : "Approval Pending"
@@ -213,7 +213,7 @@ export default function LicenseTaskList(props) {
                             ? "Task Assigned"
                             : task.status === "Approved"
                             ? "Task Approved"
-                            : task.status === "Request Rejected"
+                            : task.status === "Rejected"
                             ? "Task Rejected"
                             : ""}
                         </p>
@@ -409,7 +409,7 @@ export default function LicenseTaskList(props) {
                               task && task.status
                                 ? task.status === "Not Assigned"
                                   ? "#fcf3cd"
-                                  : task.status === "Completed By User"
+                                  : task.status === "Completed"
                                   ? moment(task.due_date).isBefore(today)
                                     ? "#cdfcd8"
                                     : "#ffefea"
@@ -417,13 +417,13 @@ export default function LicenseTaskList(props) {
                                   ? "#cdfcd8"
                                   : task.status === "Assigned"
                                   ? "#ffefea"
-                                  : task.status === "Request Rejected"
+                                  : task.status === "Rejected"
                                   ? "#ffefea"
                                   : "#d2fccd"
                                 : "#d2fccd",
                             color:
                               task && task.status
-                                ? task.status === "Completed By User"
+                                ? task.status === "Completed"
                                   ? moment(task.due_date).isBefore(today)
                                     ? "#7fba7a"
                                     : "#ff5f31"
@@ -433,13 +433,13 @@ export default function LicenseTaskList(props) {
                                   ? "#f8c102"
                                   : task.status === "Not Assigned"
                                   ? "#f8c102"
-                                  : task.status === "Request Rejected"
+                                  : task.status === "Rejected"
                                   ? "#ff5f31"
                                   : ""
                                 : "#fcf3cd",
                           }}
                         >
-                          {task.status && task.status === "Completed By User"
+                          {task.status && task.status === "Completed"
                             ? moment(task.due_date).isBefore(today)
                               ? "NOT REVIEWED"
                               : "Approval Pending"
@@ -449,7 +449,7 @@ export default function LicenseTaskList(props) {
                             ? "Task Assigned"
                             : task.status === "Approved"
                             ? "Task Approved"
-                            : task.status === "Request Rejected"
+                            : task.status === "Rejected"
                             ? "Task Rejected"
                             : ""}
                         </p>

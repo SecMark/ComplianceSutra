@@ -149,7 +149,7 @@ export default function AssignedView(props) {
                                 task && task.status
                                   ? task.status === "Not Assigned"
                                     ? "#fcf3cd"
-                                    : task.status === "Completed By User"
+                                    : task.status === "Completed"
                                     ? moment(task.due_date).isBefore(today)
                                       ? "#cdfcd8"
                                       : "#ffefea"
@@ -157,13 +157,13 @@ export default function AssignedView(props) {
                                     ? "#cdfcd8"
                                     : task.status === "Assigned"
                                     ? "#ffefea"
-                                    : task.status === "Request Rejected"
+                                    : task.status === "Rejected"
                                     ? "#ffefea"
                                     : "#d2fccd"
                                   : "#d2fccd",
                               color:
                                 task && task.status
-                                  ? task.status === "Completed By User"
+                                  ? task.status === "Completed"
                                     ? moment(task.due_date).isBefore(today)
                                       ? "#7fba7a"
                                       : "#ff5f31"
@@ -173,13 +173,13 @@ export default function AssignedView(props) {
                                     ? "#f8c102"
                                     : task.status === "Not Assigned"
                                     ? "#f8c102"
-                                    : task.status === "Request Rejected"
+                                    : task.status === "Rejected"
                                     ? "#ff5f31"
                                     : ""
                                   : "#fcf3cd",
                             }}
                           >
-                            {task.status && task.status === "Completed By User"
+                            {task.status && task.status === "Completed"
                               ? moment(task.due_date).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
@@ -189,7 +189,7 @@ export default function AssignedView(props) {
                               ? "Task Assigned"
                               : task.status === "Approved"
                               ? "Task Approved"
-                              : task.status === "Request Rejected"
+                              : task.status === "Rejected"
                               ? "Task Rejected"
                               : ""}
                           </span>
@@ -304,9 +304,9 @@ export default function AssignedView(props) {
                             style={{
                               backgroundColor:
                                 task && task.status
-                                  ? task.status === "Assign"
+                                  ? task.status === "Not Assigned"
                                     ? "#fcf3cd"
-                                    : task.status === "Completed By User"
+                                    : task.status === "Completed"
                                     ? moment(task.due_date).isBefore(today)
                                       ? "#cdfcd8"
                                       : "#ffefea"
@@ -314,13 +314,13 @@ export default function AssignedView(props) {
                                     ? "#cdfcd8"
                                     : task.status === "Assigned"
                                     ? "#ffefea"
-                                    : task.status === "Request Rejected"
+                                    : task.status === "Rejected"
                                     ? "#ffefea"
                                     : "#d2fccd"
                                   : "#d2fccd",
                               color:
                                 task && task.status
-                                  ? task.status === "Completed By User"
+                                  ? task.status === "Completed"
                                     ? moment(task.due_date).isBefore(today)
                                       ? "#7fba7a"
                                       : "#ff5f31"
@@ -328,25 +328,25 @@ export default function AssignedView(props) {
                                     ? "#7fba7a"
                                     : task.status === "Assigned"
                                     ? "#f8c102"
-                                    : task.status === "Assign"
+                                    : task.status === "Not Assigned"
                                     ? "#f8c102"
-                                    : task.status === "Request Rejected"
+                                    : task.status === "Rejected"
                                     ? "#ff5f31"
                                     : ""
                                   : "#fcf3cd",
                             }}
                           >
-                            {task.status && task.status === "Completed By User"
+                            {task.status && task.status === "Completed"
                               ? moment(task.due_date).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
-                              : task.status === "Assign"
+                              : task.status === "Not Assigned"
                               ? "Assign Task"
                               : task.status === "Assigned"
                               ? "Task Assigned"
                               : task.status === "Approved"
                               ? "Task Approved"
-                              : task.status === "Request Rejected"
+                              : task.status === "Rejected"
                               ? "Task Rejected"
                               : ""}
                           </span>
@@ -599,7 +599,7 @@ export default function AssignedView(props) {
           licensetaskData.map((item, index) => {
             return (
               <>
-                {item.status !== "Assign" && (
+                {item.status !== "Not Assigned" && (
                   <div className="all-companies-task-grid-2 inside-padding-sidebar">
                     <div className="">
                       <div className="task-list-grid">

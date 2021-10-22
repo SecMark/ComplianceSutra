@@ -57,13 +57,14 @@ import { actions as notificationActions } from ".././notification/Redux/actions.
 import RiskAndDelaysTaskList from "./component/RiskAndDelaysTaskList";
 import PendingAction from "./component/PendingAction";
 import { setNotificationTaskId } from "../notification/Redux/Action";
+import { getDataByStatus } from "../../../../../../CommonModules/helpers/tasks.helper";
 
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
   isTaskApproved,
   setIsTaskApproved,
-  taskList,
+  // taskList,
   companyName,
   user,
   history,
@@ -141,20 +142,26 @@ function RightSideGrid({
     state.taskReport.taskReportById &&
     state.taskReport.taskReportById.taskReportById;
 
+  const taskList =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
   useEffect(() => {
-    if (taskList != undefined && taskList.length > 0) {
-      let tempArr = [];
-      let tempRowCount = {};
-      taskList.map((item) => {
-        if (item.Details.length >= 1 && item.Details[0].TaskId != 0) {
-          tempArr.push({ ...item });
-          tempRowCount[item.Status.trim()] = 3;
+    if (taskList && taskList.length > 0) {
+      const tempRowCount = {};
+      const taskByStatus = getDataByStatus(taskList);
+      [...taskByStatus].forEach((item) => {
+        if (item.tasks.length > 0) {
+          tempRowCount[item.status.trim()] = item.tasks.length;
         }
       });
-      let sortedArray = tempArr.sort((a, b) => a.ORD - b.ORD);
       setRowCount(tempRowCount);
-      setTaskData(sortedArray);
-      setTaskDataBackup(sortedArray);
+      setTaskData(taskByStatus);
+      setTaskDataBackup(taskByStatus);
+    } else {
+      dispatch(taskReportActions.taskReportRequest());
     }
   }, [taskList]);
 
@@ -953,7 +960,7 @@ function RightSideGrid({
               value={task.TaskId}
               onClick={(e) => getSelectTaskDetails(task)}
             >
-              {task.EntityName}
+              {task.customer_name}
             </div>
           </div>
           <div
@@ -961,33 +968,33 @@ function RightSideGrid({
             style={{ cursor: "pointer" }}
             onClick={(e) => getSelectTaskDetails(task)}
           >
-            {task.AssignedTo != 0 ? (
+            {task.assign_to !== null ? (
               <div className="d-flex new-task-list">
                 {userDetails.UserType === 4 ? (
-                  task.ApproverName === "Assign" ? null : (
+                  task.approver_name === "Assign" ? null : (
                     <div className="circle-name d-none d-md-block">
                       <div className="circle-text">
                         {userDetails.UserType === 4 &&
-                          getInitials(task.ApproverName)}
+                          getInitials(task.approver_name)}
                       </div>
                     </div>
                   )
                 ) : (
                   <div className="circle-name d-none d-md-block">
                     <div className="circle-text">
-                      {getInitials(task.AssignedName)}
+                      {getInitials(task.assign_to_name)}
                     </div>
                   </div>
                 )}
                 {userDetails.UserType === 4 ? (
                   <div className="circle-front-text d-none d-md-block">
-                    {task.ApproverName === "Assign"
+                    {task.approver_name === "Assign"
                       ? "No Approver"
-                      : task.ApproverName}
+                      : task.approver_name}
                   </div>
                 ) : (
                   <div className="circle-front-text d-none d-md-block mail">
-                    {_getAssignedName(task.AssignedName)}
+                    {_getAssignedName(task.assign_to_name)}
                   </div>
                 )}
               </div>
@@ -1025,7 +1032,7 @@ function RightSideGrid({
                       alt="Right Arrow"
                     />
                   }
-                  {task.AssignedTo !== 0 && (
+                  {task.assign_to !== 0 && (
                     <img
                       className="d-block d-md-none"
                       src={keyboardArrowRightBlack}
@@ -1036,12 +1043,12 @@ function RightSideGrid({
                     <div className="toolTip-input">
                       <div className="tooltiptext1 mobDisplaynone">
                         <span className="font-normal-text1">
-                          {_getAssignedName(task.AssignedName)}
+                          {_getAssignedName(task.assign_to_name)}
                         </span>
                       </div>
                     </div>
                   )}
-                  {task.AssignedTo === 0 && (
+                  {task.assign_to === 0 && (
                     <div className="only-mobile-assign-add d-block d-md-none">
                       <div
                         className="assign-user-icon"
@@ -1175,7 +1182,7 @@ function RightSideGrid({
             value={task.TaskId}
             onClick={(e) => getSelectTaskDetails(task)}
           >
-            {task.EntityName}
+            {task.customer_name}
           </div>
         </div>
         <div
@@ -1183,33 +1190,33 @@ function RightSideGrid({
           style={{ cursor: "pointer" }}
           onClick={(e) => getSelectTaskDetails(task)}
         >
-          {task.AssignedTo != 0 ? (
+          {task.assign_to !==null ? (
             <div className="" z style={{ display: "none" }}>
               {userDetails.UserType === 4 ? (
-                task.ApproverName === "Assign" ? null : (
+                task.approver_name === null ? null : (
                   <div className="circle-name d-none d-md-block">
                     <div className="circle-text">
                       {userDetails.UserType === 4 &&
-                        getInitials(task.ApproverName)}
+                        getInitials(task.approver_name)}
                     </div>
                   </div>
                 )
               ) : (
                 <div className="circle-name d-none d-md-block">
                   <div className="circle-text" style={{ display: "none" }}>
-                    {getInitials(task.AssignedName)}
+                    {getInitials(task.assign_to_name)}
                   </div>
                 </div>
               )}
               {userDetails.UserType === 4 ? (
                 <div className="circle-front-text d-none d-md-block">
-                  {task.ApproverName === "Assign"
+                  {task.approver_name === "Assign"
                     ? "No Approver"
-                    : task.ApproverName}
+                    : task.approver_name}
                 </div>
               ) : (
                 <div className="circle-front-text d-none d-md-block">
-                  {_getAssignedName(task.AssignedName)}
+                  {_getAssignedName(task.assign_to_name)}
                 </div>
               )}
             </div>
@@ -1250,7 +1257,7 @@ function RightSideGrid({
                     alt="Right Arrow"
                   />
                 }
-                {task.AssignedTo !== 0 && (
+                {task.assign_to !== 0 && (
                   <img
                     className="d-block d-md-none"
                     src={keyboardArrowRightBlack}
@@ -1261,12 +1268,12 @@ function RightSideGrid({
                   <div className="toolTip-input">
                     <div className="tooltiptext1 mobDisplaynone">
                       <span className="font-normal-text1">
-                        {_getAssignedName(task.AssignedName)}
+                        {_getAssignedName(task.assign_to_name)}
                       </span>
                     </div>
                   </div>
                 )}
-                {task.AssignedTo === 0 && (
+                {task.assign_to === 0 && (
                   <div className="only-mobile-assign-add d-block d-md-none">
                     <div
                       className="assign-user-icon"
@@ -1976,7 +1983,7 @@ function RightSideGrid({
                           <div className="mobile-dashboard-view">
                             <div className="take-action">
                               <div className="task-list-grid">
-                                {item.Status.trim() === "overdue" && (
+                                {item.status.trim() === "Overdue" && (
                                   <div
                                     className="action-title upcoming-btn"
                                     style={{
@@ -1993,7 +2000,7 @@ function RightSideGrid({
                                   >
                                     {"Overdue"}{" "}
                                     <p className="red-circle-overide">
-                                      {item.Details.length}
+                                      {item.tasks.length}
                                     </p>
                                     {!expandedFlags.includes(index) ? (
                                       <img
@@ -2022,7 +2029,7 @@ function RightSideGrid({
                                     )}
                                   </div>
                                 )}
-                                {item.Status.trim() === "Pending" && (
+                                {item.status.trim() === "Task Action" && (
                                   <div
                                     className="upcoming-btn"
                                     style={{
@@ -2042,7 +2049,7 @@ function RightSideGrid({
                                       {"Take Action"}
                                       <span className="black-circle">
                                         <p className="black-circle-text">
-                                          {item.Details.length}
+                                          {item.tasks.length}
                                         </p>
                                       </span>
                                       {!expandedFlags.includes(index) ? (
@@ -2061,8 +2068,8 @@ function RightSideGrid({
                                     </div>
                                   </div>
                                 )}
-                                {(item.Status.trim() === "Upcoming" ||
-                                  item.Status.trim() === "Completed") && (
+                                {(item.status.trim() === "Upcoming" ||
+                                  item.status.trim() === "Completed") && (
                                   <div
                                     className="upcoming-btn"
                                     style={{
@@ -2078,23 +2085,23 @@ function RightSideGrid({
                                     <div
                                       style={{ cursor: "pointer" }}
                                       className={
-                                        item.Status.trim() === "Upcoming"
+                                        item.status.trim() === "Upcoming"
                                           ? "upcoming-title"
                                           : "complete-title"
                                       }
                                     >
-                                      {item.Status.trim() === "Upcoming"
+                                      {item.status.trim() === "Upcoming"
                                         ? "Upcoming"
                                         : "Completed"}
                                       <span
                                         className={
-                                          item.Status.trim() === "Upcoming"
+                                          item.status.trim() === "Upcoming"
                                             ? "black-circle"
                                             : "green-circle"
                                         }
                                       >
                                         <p className="black-circle-text">
-                                          {item.Details.length}
+                                          {item.tasks.length}
                                         </p>
                                       </span>
                                       {!expandedFlags.includes(index) ? (
@@ -2114,33 +2121,32 @@ function RightSideGrid({
                                   </div>
                                 )}
 
-                                {item.Status.trim() != "" &&
-                                  (item.Status.trim() === ""
+                                {item.status.trim() != "" &&
+                                  (item.status.trim() === ""
                                     ? true
                                     : !expandedFlags.includes(index)) && (
                                     <>
-                                      {item.Details.slice(
-                                        0,
-                                        rowCount[item.Status.trim()]
-                                      ).map((task) => {
-                                        return (
-                                          <>
-                                            {renderTaskList(
-                                              task,
-                                              item.Status.trim(),
-                                              1
-                                            )}
-                                          </>
-                                        );
-                                      })}
+                                      {item.tasks
+                                        .slice(0, rowCount[item.status.trim()])
+                                        .map((task) => {
+                                          return (
+                                            <>
+                                              {renderTaskList(
+                                                task,
+                                                item.status.trim(),
+                                                1
+                                              )}
+                                            </>
+                                          );
+                                        })}
                                       <div>
-                                        {item.Details.length > 3 && (
+                                        {item.tasks.length > 3 && (
                                           <>
-                                            {rowCount[item.Status.trim()] >
+                                            {rowCount[item.status.trim()] >
                                               3 && (
                                               <div
                                                 onClick={() =>
-                                                  showLessMore(item.Status, 3)
+                                                  showLessMore(item.status, 3)
                                                 }
                                                 className="viewAll showLess"
                                               >
@@ -2151,19 +2157,19 @@ function RightSideGrid({
                                                 />
                                               </div>
                                             )}
-                                            {rowCount[item.Status.trim()] ===
+                                            {rowCount[item.status.trim()] ===
                                               3 && (
                                               <div
                                                 onClick={() =>
                                                   showLessMore(
-                                                    item.Status,
-                                                    item.Details.length
+                                                    item.status,
+                                                    item.tasks.length
                                                   )
                                                 }
                                                 className="viewAll"
                                               >
                                                 View All (
-                                                {item.Details.length - 3} MORE )
+                                                {item.tasks.length - 3} MORE )
                                                 <img
                                                   src={viewAllArow}
                                                   alt="view All Arow"

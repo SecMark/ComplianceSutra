@@ -62,9 +62,10 @@ const getDataByStatus = (task_details) => {
       case "Upcoming":
         tasksByStatus = [...tasks].filter((task) => {
           if (
-            task.status !== "Completed" &&
-            task.status !== "Rejected" &&
-            task.status !== "Approved"
+            task.status !== "Completed"
+            // task.status !== "Rejected"
+            // &&
+            // task.status !== "Approved"
           ) {
             const taskDueDate = moment(
               task.due_date || task.deadline_date,

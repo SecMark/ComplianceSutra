@@ -33,6 +33,10 @@ const POST_TASK_COMMENT_SUCCESS_BY_TASK_ID =
 const POST_TASK_COMMENTS_FAILED_BY_TASK_ID =
   "CAPMTECH/POST_TASK_COMMENTS_FAILED_BY_TASK_ID";
 
+const CHANGE_TASK_STATUS = "CAPMTECH/CHANGE_TASK_STATUS";
+const CHANGE_TASK_STATUS_SUCCESS = "CAPMTECH/CHANGE_TASK_STATUS_SUCCESS";
+const CHANGE_TASK_STATUS_FAILED = "CAPMTECH/CHANGE_TASK_STATUS_FAILED";
+
 const GET_TASK_FILES_BY_TASK_ID = "CAPMTECH/GET_TASK_FILES_BY_TASK_ID";
 const GET_TASK_FILES_SUCESS_BY_TASK_ID =
   "CAPMTECH/GET_TASK_FILES_SUCESS_BY_TASK_ID";
@@ -150,6 +154,10 @@ const postTaskCommentByTaskIDSuccess = createAction(
 const postTaskCommentByTaskIDFailed = createAction(
   POST_TASK_COMMENTS_FAILED_BY_TASK_ID
 );
+
+const changeTaskStatusRequest = createAction(CHANGE_TASK_STATUS);
+const changeTaskStatusSuccess = createAction(CHANGE_TASK_STATUS_SUCCESS);
+const changeTaskStatusFailed = createAction(CHANGE_TASK_STATUS_FAILED);
 
 const getTaskFilesById = createAction(GET_TASK_FILES_BY_TASK_ID);
 const getTaskFilesByIdSucess = createAction(GET_TASK_FILES_SUCESS_BY_TASK_ID);
@@ -287,6 +295,10 @@ export const actions = {
   postTaskCommentByTaskIDSuccess,
   postTaskCommentByTaskIDFailed,
 
+  changeTaskStatusRequest,
+  changeTaskStatusSuccess,
+  changeTaskStatusFailed,
+
   getTaskFilesById,
   getTaskFilesByIdSucess,
   getTaskFilesByIdFailed,
@@ -382,6 +394,10 @@ export const types = {
   POST_ASSIGN_TASK_BY_TASKID,
   POST_ASSIGN_TASK_SUCCESS_BY_TASKID,
   POST_ASSIGN_TASK_FAILED_BY_TASKID,
+
+  CHANGE_TASK_STATUS,
+  CHANGE_TASK_STATUS_SUCCESS,
+  CHANGE_TASK_STATUS_FAILED,
 
   GET_AVAILABILITY_CHECK,
   GET_AVAILABILITY_CHECK_SUCCESS,
