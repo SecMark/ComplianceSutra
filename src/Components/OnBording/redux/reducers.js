@@ -167,11 +167,16 @@ const actionHandler = {
   }),
   [types.SET_LICENSE_LIST]: (state, { payload }) => ({
     ...state,
-    licencedata : { industry_type: payload.category,country: payload.country}
+    licencedata: { industry_type: payload.category, country: payload.country },
   }),
   [types.SET_LICENSE_LIST]: (state, { payload }) => ({
     ...state,
     licenseList: payload,
+  }),
+
+  [types.SET_LOADER]: (state, { payload }) => ({
+    ...state,
+    loader: payload,
   }),
 };
 
@@ -198,5 +203,5 @@ export default handleActions(actionHandler, {
   userData: {},
   goveranceData: {},
   licenseList: {},
-  licencedata:{}
+  licencedata: {},
 });
