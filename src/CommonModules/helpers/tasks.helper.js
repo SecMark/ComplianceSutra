@@ -62,10 +62,9 @@ const getDataByStatus = (task_details) => {
       case "Upcoming":
         tasksByStatus = [...tasks].filter((task) => {
           if (
-            task.status !== "Completed"
+            task.status !== "Completed" &&
             // task.status !== "Rejected"
-            // &&
-            // task.status !== "Approved"
+            task.status !== "Approved"
           ) {
             const taskDueDate = moment(
               task.due_date || task.deadline_date,
@@ -81,7 +80,7 @@ const getDataByStatus = (task_details) => {
       case "Take Action":
         tasksByStatus = [...tasks].filter((task) => {
           if (
-            task.status !== "Completed" &&
+            task.status === "Approval Pending" &&
             task.status !== "Rejected" &&
             task.status !== "Approved"
           ) {
@@ -93,11 +92,10 @@ const getDataByStatus = (task_details) => {
             }
           }
         });
-        console.log("From Take Action: ", tasksByStatus);
         break;
       case "Completed":
         tasksByStatus = [...tasks].filter((task) => {
-          if (task.status === "Completed") {
+          if (task.status === "Approved") {
             return task;
           }
         });

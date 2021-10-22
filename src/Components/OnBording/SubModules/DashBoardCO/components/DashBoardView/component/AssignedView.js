@@ -12,7 +12,7 @@ import { getDataByTeam } from "../../../../../../../CommonModules/helpers/tasks.
 import { actions as taskReportActions } from "../../../redux/actions";
 
 export default function AssignedView(props) {
-  const { setCurrentOpenedTask, setIsTaskListOpen } = props;
+  // const { setCurrentOpenedTask, setIsTaskListOpen } = props;
   const [assignRowCount, setAssignRowCount] = useState([]);
   const [licensetaskData, setLicensetaskData] = useState([]);
   const [today, setToday] = useState(new Date());
@@ -59,6 +59,13 @@ export default function AssignedView(props) {
     setToday(today);
   }, []);
 
+  const setCurrentOpenedTask = (task) => {
+    dispatch(
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
+      })
+    );
+  };
   const handleExpandList = (flag, index) => {
     let tempExtend = [...expandedFlags];
     if (flag === "show") {
@@ -100,7 +107,6 @@ export default function AssignedView(props) {
             to="/dashboard"
             onClick={() => {
               setCurrentOpenedTask(task);
-              setIsTaskListOpen(true);
             }}
             style={{
               textDecoration: "none",
@@ -119,7 +125,6 @@ export default function AssignedView(props) {
                   <div
                     onClick={() => {
                       setCurrentOpenedTask(task);
-                      setIsTaskListOpen(true);
                     }}
                     style={{ cursor: "pointer", display: "flex" }}
                   >
@@ -135,7 +140,6 @@ export default function AssignedView(props) {
                         style={{ cursor: "pointer" }}
                         onClick={() => {
                           setCurrentOpenedTask(task);
-                          setIsTaskListOpen(true);
                         }}
                       >
                         <div className="d-block d-sm-none">
@@ -149,7 +153,7 @@ export default function AssignedView(props) {
                                 task && task.status
                                   ? task.status === "Not Assigned"
                                     ? "#fcf3cd"
-                                    : task.status === "Completed"
+                                    : task.status === "Approval Pending"
                                     ? moment(task.due_date).isBefore(today)
                                       ? "#cdfcd8"
                                       : "#ffefea"
@@ -163,7 +167,7 @@ export default function AssignedView(props) {
                                   : "#d2fccd",
                               color:
                                 task && task.status
-                                  ? task.status === "Completed"
+                                  ? task.status === "Approval Pending"
                                     ? moment(task.due_date).isBefore(today)
                                       ? "#7fba7a"
                                       : "#ff5f31"
@@ -179,7 +183,7 @@ export default function AssignedView(props) {
                                   : "#fcf3cd",
                             }}
                           >
-                            {task.status && task.status === "Completed"
+                            {task.status && task.status === "Approval Pending"
                               ? moment(task.due_date).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
@@ -206,7 +210,6 @@ export default function AssignedView(props) {
                   value={task.task_name}
                   onClick={() => {
                     setCurrentOpenedTask(task);
-                    setIsTaskListOpen(true);
                   }}
                 >
                   {task.customer_name}
@@ -220,7 +223,6 @@ export default function AssignedView(props) {
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCurrentOpenedTask(task);
-                        setIsTaskListOpen(true);
                       }}
                     >
                       {getDayDate(task.due_date, 1)}
@@ -230,7 +232,6 @@ export default function AssignedView(props) {
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCurrentOpenedTask(task);
-                        setIsTaskListOpen(true);
                       }}
                     >
                       {
@@ -258,7 +259,6 @@ export default function AssignedView(props) {
           <div
             onClick={() => {
               setCurrentOpenedTask(task);
-              setIsTaskListOpen(true);
             }}
             style={{
               textDecoration: "none",
@@ -276,7 +276,6 @@ export default function AssignedView(props) {
                   <div
                     onClick={() => {
                       setCurrentOpenedTask(task);
-                      setIsTaskListOpen(true);
                     }}
                     style={{ cursor: "pointer", display: "flex" }}
                   >
@@ -292,7 +291,6 @@ export default function AssignedView(props) {
                         style={{ cursor: "pointer" }}
                         onClick={() => {
                           setCurrentOpenedTask(task);
-                          setIsTaskListOpen(true);
                         }}
                       >
                         <div className="d-block d-sm-none">
@@ -306,7 +304,7 @@ export default function AssignedView(props) {
                                 task && task.status
                                   ? task.status === "Not Assigned"
                                     ? "#fcf3cd"
-                                    : task.status === "Completed"
+                                    : task.status === "Approval Pending"
                                     ? moment(task.due_date).isBefore(today)
                                       ? "#cdfcd8"
                                       : "#ffefea"
@@ -320,7 +318,7 @@ export default function AssignedView(props) {
                                   : "#d2fccd",
                               color:
                                 task && task.status
-                                  ? task.status === "Completed"
+                                  ? task.status === "Approval Pending"
                                     ? moment(task.due_date).isBefore(today)
                                       ? "#7fba7a"
                                       : "#ff5f31"
@@ -336,7 +334,7 @@ export default function AssignedView(props) {
                                   : "#fcf3cd",
                             }}
                           >
-                            {task.status && task.status === "Completed"
+                            {task.status && task.status === "Approval Pending"
                               ? moment(task.due_date).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
@@ -363,7 +361,6 @@ export default function AssignedView(props) {
                   value={task.task_name}
                   onClick={() => {
                     setCurrentOpenedTask(task);
-                    setIsTaskListOpen(true);
                   }}
                 >
                   {task.customer_name}
@@ -377,7 +374,6 @@ export default function AssignedView(props) {
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCurrentOpenedTask(task);
-                        setIsTaskListOpen(true);
                       }}
                     >
                       {getDayDate(task.due_date, 1)}
@@ -387,7 +383,6 @@ export default function AssignedView(props) {
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCurrentOpenedTask(task);
-                        setIsTaskListOpen(true);
                       }}
                     >
                       {

@@ -253,7 +253,11 @@ const changeTaskStatus = function* changeTaskStatus({ payload }) {
   try {
     const { data, status } = yield call(api.changeTaskStatus, payload);
     if (status === 200 && data.message.status === true) {
-      toast.success(`Task ${payload.status} successfully!`);
+      if (payload.status === "Approval Pending") {
+        toast.success(`Task completed successfully!`);
+      } else {
+        toast.success(`Task ${payload.status} successfully!`);
+      }
       yield put(actions.changeTaskStatusSuccess({ changeTaskStatus: true }));
       yield put(
         actions.taskReportByIdRequest({

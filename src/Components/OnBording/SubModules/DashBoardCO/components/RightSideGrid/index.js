@@ -166,6 +166,7 @@ function RightSideGrid({
   useEffect(() => {
     if (getTaskById && Object.keys(getTaskById).length !== 0) {
       setCurrentOpenedTask(getTaskById);
+      setIsTaskListOpen(true);
     }
   }, [getTaskById]);
   useEffect(() => {
@@ -234,9 +235,10 @@ function RightSideGrid({
       });
       setRowCount(tempRowCount);
       setListTaskData(taskByStatus);
-    } else {
-      dispatch(taskReportActions.taskReportRequest());
     }
+    //  else {
+    //   dispatch(taskReportActions.taskReportRequest());
+    // }
   }, [taskList]);
 
   useEffect(() => {
@@ -473,9 +475,9 @@ function RightSideGrid({
                   style={{
                     backgroundColor:
                       currentOpenedTask && currentOpenedTask.status
-                        ? currentOpenedTask.status === "Assign"
+                        ? currentOpenedTask.status === "Not Assigned"
                           ? "#fcf3cd"
-                          : currentOpenedTask.status === "Completed"
+                          : currentOpenedTask.status === "Approval Pending"
                           ? moment(
                               currentOpenedTask &&
                                 currentOpenedTask.deadline_date
@@ -497,7 +499,7 @@ function RightSideGrid({
                     style={{
                       color:
                         currentOpenedTask && currentOpenedTask.status
-                          ? currentOpenedTask.status === "Completed"
+                          ? currentOpenedTask.status === "Approval Pending"
                             ? moment(
                                 currentOpenedTask &&
                                   currentOpenedTask.deadline_date
@@ -508,7 +510,7 @@ function RightSideGrid({
                             ? "#7fba7a"
                             : currentOpenedTask.status === "Assigned"
                             ? "#f8c102"
-                            : currentOpenedTask.status === "Assign"
+                            : currentOpenedTask.status === "Not Assigned"
                             ? "#f8c102"
                             : currentOpenedTask.status === "Rejected"
                             ? "#ff5f31"
@@ -518,14 +520,14 @@ function RightSideGrid({
                   >
                     {currentOpenedTask && currentOpenedTask.status && (
                       <div style={{ textTransform: "uppercase" }}>
-                        {currentOpenedTask.status === "Completed"
+                        {currentOpenedTask.status === "Approval Pending"
                           ? moment(
                               currentOpenedTask &&
                                 currentOpenedTask.deadline_date
                             ).isBefore(today)
                             ? "Not reviewed"
                             : "Approval Pending"
-                          : currentOpenedTask.status === "Assign"
+                          : currentOpenedTask.status === "Not Assigned"
                           ? "Assign Task"
                           : currentOpenedTask.status === "Assigned"
                           ? "Task Assigned"
@@ -549,7 +551,7 @@ function RightSideGrid({
                         currentOpenedTask && currentOpenedTask.status
                           ? currentOpenedTask.status === "Not Assigned"
                             ? "#fcf3cd"
-                            : currentOpenedTask.status === "Completed"
+                            : currentOpenedTask.status === "Approval Pending"
                             ? moment(
                                 currentOpenedTask &&
                                   currentOpenedTask.deadline_date
@@ -571,7 +573,7 @@ function RightSideGrid({
                       style={{
                         color:
                           currentOpenedTask && currentOpenedTask.status
-                            ? currentOpenedTask.status === "Completed"
+                            ? currentOpenedTask.status === "Approval Pending"
                               ? moment(
                                   currentOpenedTask &&
                                     currentOpenedTask.deadline_date
@@ -592,7 +594,7 @@ function RightSideGrid({
                     >
                       {currentOpenedTask && currentOpenedTask.status && (
                         <div style={{ textTransform: "uppercase" }}>
-                          {currentOpenedTask.status === "Completed"
+                          {currentOpenedTask.status === "Approval Pending"
                             ? moment(
                                 currentOpenedTask &&
                                   currentOpenedTask.deadline_date
@@ -1025,14 +1027,14 @@ function RightSideGrid({
                       <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                         <div className="holding-list-bold-title">
                           {currentOpenedTask && currentOpenedTask.status
-                            ? currentOpenedTask.status === "Completed"
+                            ? currentOpenedTask.status === "Approval Pending"
                               ? moment(
                                   currentOpenedTask &&
                                     currentOpenedTask.deadline_date
                                 ).isBefore(today)
                                 ? "Not reviewed"
                                 : "Approval Pending"
-                              : currentOpenedTask.status === "Assign"
+                              : currentOpenedTask.status === "Not Assigned"
                               ? "Assign Task"
                               : currentOpenedTask.status === "Assigned"
                               ? "Task Assigned"
@@ -1050,7 +1052,7 @@ function RightSideGrid({
                   <div className="row">
                     <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                       <div className="holding-list-normal-title">
-                        Completed on
+                        Approval Pending on
                       </div>
                     </div>
                     <div className="col-8 col-sm-9 col-md-9 col-xl-9">
@@ -1453,7 +1455,7 @@ function RightSideGrid({
                   )
                 ) : currentOpenedTask &&
                   currentOpenedTask.status &&
-                  currentOpenedTask.status === "Assign" &&
+                  currentOpenedTask.status === "Not Assigned" &&
                   currentOpenedTask &&
                   currentOpenedTask.status &&
                   currentOpenedTask.TaskStatus === 0 ? (
@@ -1478,7 +1480,7 @@ function RightSideGrid({
                   )
                 ) : (currentOpenedTask &&
                     currentOpenedTask.status &&
-                    currentOpenedTask.status === "Completed") ||
+                    currentOpenedTask.status === "Approval Pending") ||
                   (currentOpenedTask &&
                     currentOpenedTask.status &&
                     currentOpenedTask.TaskStatus === 4) ? (
@@ -1667,7 +1669,7 @@ function RightSideGrid({
     dispatch(
       taskReportActions.changeTaskStatusRequest({
         task_name: currentOpenedTask.task_name,
-        status: "Completed",
+        status: "Approval Pending",
       })
     );
   };
@@ -1760,49 +1762,12 @@ function RightSideGrid({
       })
     );
   };
-  const getSelectTaskDetails = (e) => {
-    // setShowFiles(true);
-    // setShowComments(false);
-    // setCurrentDropDown("");
-    // let taskID = null;
-    // let task_id_bv = state && state.adminMenu && state.adminMenu.taskID;
-    // let task_id_cal =
-    //   state && state.adminMenu && state.adminMenu.taskIDByCalendarView;
-    // let task_id =
-    //   state && state.NotificationRedu && state.NotificationRedu.taskID;
-    // if (task_id !== null && e === undefined) {
-    //   if (localStorage.expandedFlagss) {
-    //     let getItem = localStorage.getItem("expandedFlagss");
-    //     let getItemArr = getItem && getItem.split(",");
-    //     const nuevo =
-    //       getItemArr &&
-    //       getItemArr.length > 0 &&
-    //       getItemArr.map((i) => Number(i));
-    //     if (nuevo !== null) {
-    //       setExpandedFlags([...nuevo]);
-    //     }
-    //   }
-    //   taskID = task_id;
-    //   setIsTaskListOpen(true);
-    //   setCurrentTaskData(task_id);
-    // } else if (task_id_bv !== null && e === undefined) {
-    //   setIsTaskModalOpen(true);
-    //   taskID = task_id_bv;
-    //   setCurrentTaskData(task_id_bv);
-    // } else if (task_id_cal !== null && e === undefined) {
-    //   setIsTaskModalOpen(true);
-    //   taskID = task_id_cal;
-    //   setCurrentTaskData(taskID);
-    // } else {
-    //   taskID = e.TaskId;
-    //   setCurrentTaskData(e);
-    //   setIsTaskListOpen(true);
-    // }
-    // dispatch(
-    //   taskReportActions.taskReportByIdRequest({
-    //     taskID: taskID,
-    //   })
-    // );
+  const getSelectTaskDetails = (task) => {
+    dispatch(
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
+      })
+    );
   };
 
   const getApproveUsers = () => {
@@ -2306,8 +2271,8 @@ function RightSideGrid({
           }`,
         }}
         onClick={(e) => {
-          setCurrentOpenedTask(task);
-          setIsTaskListOpen(true);
+          getSelectTaskDetails(task);
+          // setIsTaskListOpen(true);
         }}
       >
         {listType === 1 && Status === "Overdue" && (
@@ -2358,9 +2323,9 @@ function RightSideGrid({
                         style={{
                           backgroundColor:
                             task && task.status
-                              ? task.status === "Assign"
+                              ? task.status === "Not Assigned"
                                 ? "#fcf3cd"
-                                : task.status === "Completed"
+                                : task.status === "Approval Pending"
                                 ? moment(task.deadline_date).isBefore(today)
                                   ? "#cdfcd8"
                                   : "#ffefea"
@@ -2374,7 +2339,7 @@ function RightSideGrid({
                               : "#d2fccd",
                           color:
                             task && task.status
-                              ? task.status === "Completed"
+                              ? task.status === "Approval Pending"
                                 ? moment(task.deadline_date).isBefore(today)
                                   ? "#7fba7a"
                                   : "#ff5f31"
@@ -2390,7 +2355,7 @@ function RightSideGrid({
                               : "#fcf3cd",
                         }}
                       >
-                        {task.status && task.status === "Completed"
+                        {task.status && task.status === "Approval Pending"
                           ? moment(task.deadline_date).isBefore(today)
                             ? "Not reviewed"
                             : "Approval Pending"
@@ -2416,7 +2381,7 @@ function RightSideGrid({
                         task && task.status
                           ? task.status === "Not Assigned"
                             ? "#fcf3cd"
-                            : task.status === "Completed"
+                            : task.status === "Approval Pending"
                             ? moment(task.deadline_date).isBefore(today)
                               ? "#cdfcd8"
                               : "#ffefea"
@@ -2430,7 +2395,7 @@ function RightSideGrid({
                           : "#d2fccd",
                       color:
                         task && task.status
-                          ? task.status === "Completed"
+                          ? task.status === "Approval Pending"
                             ? moment(task.deadline_date).isBefore(today)
                               ? "#7fba7a"
                               : "#ff5f31"
@@ -2446,7 +2411,7 @@ function RightSideGrid({
                           : "#fcf3cd",
                     }}
                   >
-                    {task.status && task.status === "Completed"
+                    {task.status && task.status === "Approval Pending"
                       ? moment(task.deadline_date).isBefore(today)
                         ? "Not reviewed"
                         : "Approval Pending"
@@ -2974,7 +2939,7 @@ function RightSideGrid({
                       </div>
                       <div className="float-left">
                         <div className="this-Month d-none d-md-block">
-                          Completed
+                          Approval Pending
                         </div>
                         <div className="count-total">
                           {completedTask !== "Norec" ? completedTask : "0"}
@@ -3689,7 +3654,7 @@ function RightSideGrid({
                           ? expandedFlags.includes(index)
                           : item.status.trim() === "Completed"
                           ? expandedFlags.includes(index)
-                          : item.status.trim() === "overdue"
+                          : item.status.trim() === "Overdue"
                           ? !expandedFlags.includes(index)
                           : item.status.trim() === "Pending"
                           ? !expandedFlags.includes(index)
@@ -3756,29 +3721,23 @@ function RightSideGrid({
 
             {searchValue === "" && taskListDisplay === "2" && (
               <CompanyTaskList
-                setIsTaskListOpen={setIsTaskListOpen}
                 user={user}
                 sideBarTaskList={false}
                 currentOpenedTask={currentOpenedTask}
-                setCurrentOpenedTask={setCurrentOpenedTask}
               />
             )}
             {searchValue === "" && taskListDisplay === "3" && (
               <LicenseTaskList
-                setIsTaskListOpen={setIsTaskListOpen}
                 user={user}
                 sideBarTaskList={false}
                 currentOpenedTask={currentOpenedTask}
-                setCurrentOpenedTask={setCurrentOpenedTask}
               />
             )}
             {searchValue === "" && taskListDisplay === "4" && (
               <AssigneList
-                setIsTaskListOpen={setIsTaskListOpen}
                 user={user}
                 sideBarTaskList={false}
                 currentOpenedTask={currentOpenedTask}
-                setCurrentOpenedTask={setCurrentOpenedTask}
               />
             )}
 
@@ -3889,7 +3848,9 @@ function RightSideGrid({
                                 />
                               </div>
                               <div className="float-left">
-                                <div className="this-Month ">Completed</div>
+                                <div className="this-Month ">
+                                  Approval Pending
+                                </div>
                                 <div className="count-total">
                                   {completedTask !== "Norec"
                                     ? completedTask
@@ -4111,26 +4072,28 @@ function RightSideGrid({
                         >
                           Company
                         </span>
-                        <span
-                          className={
-                            taskListDisplay === "4"
-                              ? "activebuttonListView"
-                              : "inactivebuttonListView"
-                          }
-                          style={{
-                            fontSize: "9px",
-                            marginLeft: "5px",
-                            paddingLeft: "5px",
-                            paddingRight: "5px",
-                            cursor: "pointer",
-                          }}
-                          onClick={(e) => {
-                            setTaskListDisplay("4");
-                            setDisplayTask("1");
-                          }}
-                        >
-                          Team
-                        </span>
+                        {userDetails && userDetails.UserType !== 4 && (
+                          <span
+                            className={
+                              taskListDisplay === "4"
+                                ? "activebuttonListView"
+                                : "inactivebuttonListView"
+                            }
+                            style={{
+                              fontSize: "9px",
+                              marginLeft: "5px",
+                              paddingLeft: "5px",
+                              paddingRight: "5px",
+                              cursor: "pointer",
+                            }}
+                            onClick={(e) => {
+                              setTaskListDisplay("4");
+                              setDisplayTask("1");
+                            }}
+                          >
+                            Team
+                          </span>
+                        )}
                       </ul>
                     </span>
                   </div>
@@ -4301,7 +4264,7 @@ function RightSideGrid({
                             )}
                             {(item.status.trim() === "Upcoming"
                               ? expandedFlags.includes(index)
-                              : item.status.trim() === "Completed"
+                              : item.status.trim() === "Approval Pending"
                               ? expandedFlags.includes(index)
                               : item.status.trim() === "overdue"
                               ? !expandedFlags.includes(index)
@@ -4457,7 +4420,7 @@ function RightSideGrid({
                           currentOpenedTask && currentOpenedTask.status
                             ? currentOpenedTask.status === "Not Assigned"
                               ? "#fcf3cd"
-                              : currentOpenedTask.status === "Completed"
+                              : currentOpenedTask.status === "Approval Pending"
                               ? moment(
                                   currentOpenedTask &&
                                     currentOpenedTask.deadline_date
@@ -4479,7 +4442,7 @@ function RightSideGrid({
                         style={{
                           color:
                             currentOpenedTask && currentOpenedTask.status
-                              ? currentOpenedTask.status === "Completed"
+                              ? currentOpenedTask.status === "Approval Pending"
                                 ? moment(
                                     currentOpenedTask &&
                                       currentOpenedTask.deadline_date
@@ -4500,7 +4463,7 @@ function RightSideGrid({
                       >
                         {currentOpenedTask && currentOpenedTask.status && (
                           <div style={{ textTransform: "uppercase" }}>
-                            {currentOpenedTask.status === "Completed"
+                            {currentOpenedTask.status === "Approval Pending"
                               ? moment(
                                   currentOpenedTask &&
                                     currentOpenedTask.deadline_date
@@ -4531,7 +4494,8 @@ function RightSideGrid({
                             currentOpenedTask && currentOpenedTask.status
                               ? currentOpenedTask.status === "Not Assigned"
                                 ? "#fcf3cd"
-                                : currentOpenedTask.status === "Completed"
+                                : currentOpenedTask.status ===
+                                  "Approval Pending"
                                 ? moment(
                                     currentOpenedTask &&
                                       currentOpenedTask.deadline_date
@@ -4553,7 +4517,8 @@ function RightSideGrid({
                           style={{
                             color:
                               currentOpenedTask && currentOpenedTask.status
-                                ? currentOpenedTask.status === "Completed"
+                                ? currentOpenedTask.status ===
+                                  "Approval Pending"
                                   ? moment(
                                       currentOpenedTask &&
                                         currentOpenedTask.due_date
@@ -4574,7 +4539,7 @@ function RightSideGrid({
                         >
                           {currentOpenedTask && currentOpenedTask.status && (
                             <div style={{ textTransform: "uppercase" }}>
-                              {currentOpenedTask.status === "Completed"
+                              {currentOpenedTask.status === "Approval Pending"
                                 ? moment(
                                     currentOpenedTask &&
                                       currentOpenedTask.deadline_date
@@ -5213,7 +5178,7 @@ function RightSideGrid({
                         <div className="row">
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
-                              Completed on
+                              Approval Pending on
                             </div>
                           </div>
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
@@ -5242,7 +5207,8 @@ function RightSideGrid({
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                             <div className="holding-list-bold-title">
                               {currentOpenedTask && currentOpenedTask.status
-                                ? currentOpenedTask.status === "Completed"
+                                ? currentOpenedTask.status ===
+                                  "Approval Pending"
                                   ? moment(
                                       currentOpenedTask &&
                                         currentOpenedTask.deadline_date
@@ -5289,7 +5255,7 @@ function RightSideGrid({
                         <div className="row">
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
-                              Completed on
+                              Approval Pending on
                             </div>
                           </div>
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
@@ -5499,7 +5465,7 @@ function RightSideGrid({
                         {/* check here */}
                         {currentOpenedTask &&
                         currentOpenedTask.status &&
-                        currentOpenedTask.status !== "Completed" ? (
+                        currentOpenedTask.status !== "Approval Pending" ? (
                           (user &&
                             user.UserType &&
                             user.UserType &&
@@ -5698,7 +5664,7 @@ function RightSideGrid({
                       // )
                       // ) : currentOpenedTask &&
                       //   currentOpenedTask.status &&
-                      //   currentOpenedTask.status === "Assign" &&
+                      //   currentOpenedTask.status === "Not Assigned" &&
                       //   currentOpenedTask &&
                       //   currentOpenedTask.status &&
                       //   currentOpenedTask.TaskStatus === 0 ? (
@@ -5723,7 +5689,7 @@ function RightSideGrid({
                       //   )
                       // ) : (currentOpenedTask &&
                       //     currentOpenedTask.status &&
-                      //     currentOpenedTask.status === "Completed") ||
+                      //     currentOpenedTask.status === "Approval Pending") ||
                       //   (currentOpenedTask &&
                       //     currentOpenedTask.status &&
                       //     currentOpenedTask.TaskStatus === 4) ? (
@@ -5758,7 +5724,8 @@ function RightSideGrid({
                       // )
                     }
                     {currentOpenedTask &&
-                      (currentOpenedTask.status === "Assigned" || currentOpenedTask.status === "Rejected") &&
+                      (currentOpenedTask.status === "Assigned" ||
+                        currentOpenedTask.status === "Rejected") &&
                       (userDetails.UserType === 3 ||
                         userDetails.UserType === 5) &&
                       user.EmailID !== "" && (
@@ -5772,7 +5739,7 @@ function RightSideGrid({
                         </button>
                       )}
                     {currentOpenedTask &&
-                      currentOpenedTask.status === "Assigned" &&
+                      currentOpenedTask.status === "Approval Pending" &&
                       (user.UserType === 3 || user.UserType === 5) &&
                       user.EmailID !== "" && (
                         <div class="btn-toolbar text-center well">

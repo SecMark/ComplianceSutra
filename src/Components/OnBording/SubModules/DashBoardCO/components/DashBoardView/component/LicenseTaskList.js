@@ -15,7 +15,7 @@ import axiosInstance from "../../../../../../../apiServices";
 export default function LicenseTaskList(props) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const { setCurrentOpenedTask, setIsTaskListOpen } = props;
+
   const [assignRowCount, setAssignRowCount] = useState([]);
   const [companyTaskData, setCompanyTaskData] = useState([]);
   const [today, setToday] = useState(new Date());
@@ -37,6 +37,13 @@ export default function LicenseTaskList(props) {
     }
   }, [taskList]);
 
+  const setCurrentOpenedTask = (task) => {
+    dispatch(
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
+      })
+    );
+  };
   const getInitials = (str) => {
     var initials = " ";
     if (str != "" && str) {
@@ -118,6 +125,7 @@ export default function LicenseTaskList(props) {
   };
 
   const renderTaskList = (task, Status, listType) => {
+    console.log(task.status);
     return (
       <>
         {!props.isExpertReviewer && (
@@ -125,7 +133,6 @@ export default function LicenseTaskList(props) {
             to="/dashboard"
             onClick={() => {
               setCurrentOpenedTask(task);
-              setIsTaskListOpen(true);
             }}
             style={{
               textDecoration: "none",
@@ -143,7 +150,6 @@ export default function LicenseTaskList(props) {
                   <div
                     onClick={() => {
                       setCurrentOpenedTask(task);
-                      setIsTaskListOpen(true);
                     }}
                     style={{ cursor: "pointer", display: "flex" }}
                   >
@@ -151,14 +157,13 @@ export default function LicenseTaskList(props) {
                       <div className="overdue-title">{task.subject}</div>
                       <div
                         className={
-                          Status === "overdue"
+                          Status === "Overdue"
                             ? "red-week d-block d-sm-none"
                             : "black-week d-block d-sm-none"
                         }
                         style={{ cursor: "pointer" }}
                         onClick={() => {
                           setCurrentOpenedTask(task);
-                          setIsTaskListOpen(true);
                         }}
                       >
                         <div className="d-block d-sm-none">
@@ -173,7 +178,7 @@ export default function LicenseTaskList(props) {
                               task && task.status
                                 ? task.status === "Not Assigned"
                                   ? "#fcf3cd"
-                                  : task.status === "Completed"
+                                  : task.status === "Approval Pending"
                                   ? moment(task.due_date).isBefore(today)
                                     ? "#cdfcd8"
                                     : "#ffefea"
@@ -187,7 +192,7 @@ export default function LicenseTaskList(props) {
                                 : "#d2fccd",
                             color:
                               task && task.status
-                                ? task.status === "Completed"
+                                ? task.status === "Approval Pending"
                                   ? moment(task.due_date).isBefore(today)
                                     ? "#7fba7a"
                                     : "#ff5f31"
@@ -203,10 +208,8 @@ export default function LicenseTaskList(props) {
                                 : "#fcf3cd",
                           }}
                         >
-                          {task.status && task.status === "Completed"
-                            ? moment(task.due_date).isBefore(today)
-                              ? "NOT REVIEWED"
-                              : "Approval Pending"
+                          {task.status && task.status === "Approval Pending"
+                            ? "Approval Pending"
                             : task.status === "Not Assigned"
                             ? "Assign Task"
                             : task.status === "Assigned"
@@ -229,7 +232,6 @@ export default function LicenseTaskList(props) {
                   value={task.TaskId}
                   onClick={() => {
                     setCurrentOpenedTask(task);
-                    setIsTaskListOpen(true);
                   }}
                 >
                   {task.customer_name}
@@ -240,7 +242,6 @@ export default function LicenseTaskList(props) {
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   setCurrentOpenedTask(task);
-                  setIsTaskListOpen(true);
                 }}
               >
                 {task.assign_to !== null ? (
@@ -290,14 +291,13 @@ export default function LicenseTaskList(props) {
                   <div className="d-flex">
                     <div
                       className={
-                        Status === "overdue"
+                        Status === "Overdue"
                           ? "red-week d-none d-sm-block"
                           : "black-week d-none d-sm-block"
                       }
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCurrentOpenedTask(task);
-                        setIsTaskListOpen(true);
                       }}
                     >
                       {getDayDate(task.due_date, 1)}
@@ -307,7 +307,6 @@ export default function LicenseTaskList(props) {
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCurrentOpenedTask(task);
-                        setIsTaskListOpen(true);
                       }}
                     >
                       {
@@ -361,7 +360,6 @@ export default function LicenseTaskList(props) {
           <div
             onClick={() => {
               setCurrentOpenedTask(task);
-              setIsTaskListOpen(true);
             }}
             style={{
               textDecoration: "none",
@@ -379,7 +377,6 @@ export default function LicenseTaskList(props) {
                   <div
                     onClick={() => {
                       setCurrentOpenedTask(task);
-                      setIsTaskListOpen(true);
                     }}
                     style={{ cursor: "pointer", display: "flex" }}
                   >
@@ -394,7 +391,6 @@ export default function LicenseTaskList(props) {
                         style={{ cursor: "pointer" }}
                         onClick={() => {
                           setCurrentOpenedTask(task);
-                          setIsTaskListOpen(true);
                         }}
                       >
                         <div className="d-block d-sm-none">
@@ -409,7 +405,7 @@ export default function LicenseTaskList(props) {
                               task && task.status
                                 ? task.status === "Not Assigned"
                                   ? "#fcf3cd"
-                                  : task.status === "Completed"
+                                  : task.status === "Approval Pending"
                                   ? moment(task.due_date).isBefore(today)
                                     ? "#cdfcd8"
                                     : "#ffefea"
@@ -423,7 +419,7 @@ export default function LicenseTaskList(props) {
                                 : "#d2fccd",
                             color:
                               task && task.status
-                                ? task.status === "Completed"
+                                ? task.status === "Approval Pending"
                                   ? moment(task.due_date).isBefore(today)
                                     ? "#7fba7a"
                                     : "#ff5f31"
@@ -439,7 +435,7 @@ export default function LicenseTaskList(props) {
                                 : "#fcf3cd",
                           }}
                         >
-                          {task.status && task.status === "Completed"
+                          {task.status && task.status === "Approval Pending"
                             ? moment(task.due_date).isBefore(today)
                               ? "NOT REVIEWED"
                               : "Approval Pending"
@@ -465,7 +461,6 @@ export default function LicenseTaskList(props) {
                   value={task.TaskId}
                   onClick={() => {
                     setCurrentOpenedTask(task);
-                    setIsTaskListOpen(true);
                   }}
                 >
                   {task.customer_name}
@@ -476,7 +471,6 @@ export default function LicenseTaskList(props) {
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   setCurrentOpenedTask(task);
-                  setIsTaskListOpen(true);
                 }}
               >
                 {task.assign_to !== null ? (
@@ -526,14 +520,13 @@ export default function LicenseTaskList(props) {
                   <div className="d-flex">
                     <div
                       className={
-                        Status === "overdue"
+                        Status === "Overdue"
                           ? "red-week d-none d-sm-block"
                           : "black-week d-none d-sm-block"
                       }
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCurrentOpenedTask(task);
-                        setIsTaskListOpen(true);
                       }}
                     >
                       {getDayDate(task.due_date, 1)}
@@ -543,7 +536,6 @@ export default function LicenseTaskList(props) {
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCurrentOpenedTask(task);
-                        setIsTaskListOpen(true);
                       }}
                     >
                       {
@@ -789,7 +781,7 @@ export default function LicenseTaskList(props) {
                           {item.status}
                         </div>
                       </div>
-                      {item.status.trim() != "overdue" &&
+                      {item.status.trim() != "Overdue" &&
                         (item.status.trim() === "Pending"
                           ? true
                           : !expandedFlags.includes(index)) && (
