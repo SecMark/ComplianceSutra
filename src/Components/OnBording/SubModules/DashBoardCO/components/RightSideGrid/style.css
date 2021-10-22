@@ -1837,6 +1837,13 @@ textarea.form-control.textAreaHeight::placeholder {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+span.view-by__status-box {
+  z-index: 1;
+}
+span.view-by__status-box {
+  background-color: #fff;
+}
 @media screen and (min-width: 1650px) {
   .new-side-bar {
     left: 3.5%;

@@ -11,6 +11,9 @@
   /* margin-bottom: 20px; */
   padding: 24px 48px 0px;
 }
+.all-companies-task-grid .take-action:first-child {
+  padding: 46px 48px 0px;
+}
 .task-grid-scroll {
   overflow-y: auto;
   overflow-x: hidden;

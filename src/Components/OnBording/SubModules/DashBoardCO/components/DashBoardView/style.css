@@ -241,7 +241,7 @@
 }
 .all-companies-task-grid .take-action {
   margin-bottom: 0px;
-  padding: 24px 48px 0px;
+  padding: 36px 48px 0px;
   overflow-x: auto;
   overflow-y: auto;
   width: 100%;
@@ -1121,6 +1121,10 @@ button.btn.-new:focus {
 .border-top-left-radius {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
+}
+.view-by__status-box {
+  z-index: 1;
+  background-color: #fff;
 }
 @media screen and (max-width: 767px) {
   .remove-scroll-b {

@@ -48,7 +48,10 @@ import View from "../../../../../CalenderView/View";
 
 import TextareaAutosize from "react-textarea-autosize";
 import ReAssignTasksModal from "../../../../../ReAssignTasks";
-import { getDataByStatus } from "../../../../../../CommonModules/helpers/tasks.helper";
+import {
+  getDataByStatus,
+  getAllTasks,
+} from "../../../../../../CommonModules/helpers/tasks.helper";
 import axiosInstance from "../../../../../../apiServices";
 function RightSideGrid({
   isTaskListOpen,
@@ -106,7 +109,7 @@ function RightSideGrid({
 
   const [selectedUser, setSelectedUser] = useState("");
 
-  const [currentTaskData, setCurrentTaskData] = useState([]);
+  const [allTaskList, setAllTaskList] = useState([]);
   const [currentDropDown, setCurrentDropDown] = useState("");
   const [fileList, setFileList] = useState([]);
   const [searchBoxShow, setsearchBoxShow] = useState(false);
@@ -158,6 +161,20 @@ function RightSideGrid({
     state.taskReport.taskReport.taskReport;
 
   const taskReferences = state && state.taskReport && state.taskReferences;
+
+  const setCurrentTask = (task) => {
+    dispatch(
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
+      })
+    );
+  };
+  useEffect(() => {
+    if (taskList && taskList.length !== 0) {
+      const allTasks = getAllTasks(taskList);
+      setAllTaskList(allTasks);
+    }
+  }, [taskList]);
   useEffect(() => {
     if (taskReferences) {
       setReferenceSectionData(taskReferences);
@@ -236,9 +253,6 @@ function RightSideGrid({
       setRowCount(tempRowCount);
       setListTaskData(taskByStatus);
     }
-    //  else {
-    //   dispatch(taskReportActions.taskReportRequest());
-    // }
   }, [taskList]);
 
   useEffect(() => {
@@ -2112,7 +2126,6 @@ function RightSideGrid({
     );
     setSelectedUser("");
   };
-  console.log("user: ", user, userDetails.UserType);
   const AssignTaskToMe = (e) => {
     dispatch(
       taskReportActions.taskAssignByTaskID({
@@ -2233,18 +2246,15 @@ function RightSideGrid({
     if (searchText !== "") {
       let searchQuery = searchText.toLowerCase();
       listTaskData &&
+        listTaskData.length !== 0 &&
         listTaskData.forEach((tasksByStatus) => {
           tasksByStatus.tasks.forEach((task) => {
             if (task.subject !== "" && task.subject !== "Norec") {
               if (
-                task.subject.toLowerCase().includes(searchQuery) ||
-                task.customer_name
-                  .toLowerCase()
-                  .includes(
-                    searchQuery ||
-                      task.license.toLowerCase().includes(searchQuery) ||
-                      task.assign_to_name.toLowerCase().includes(searchQuery)
-                  )
+                task?.subject?.toLowerCase().includes(searchQuery) ||
+                task?.customer_name?.toLowerCase().includes(searchQuery) ||
+                task?.license?.toLowerCase().includes(searchQuery) ||
+                task?.assign_to_name?.toLowerCase().includes(searchQuery)
               ) {
                 let searchResults = {
                   status: tasksByStatus.status,
@@ -2475,7 +2485,7 @@ function RightSideGrid({
                 </div>
               )}
             </div>
-          ) : (
+          ) : userDetails.UserType === 3 ? (
             <div>
               <div
                 className="circle-front-text NoStatus"
@@ -2485,7 +2495,7 @@ function RightSideGrid({
                 <img src={assignIconCircle} alt="" /> ASSIGN
               </div>
             </div>
-          )}
+          ) : null}
         </div>
         <div className="col-2">
           <div className="align-right">
@@ -2570,7 +2580,7 @@ function RightSideGrid({
             ? " row active-action-card-sidebar "
             : "row action-card-sidebar"
         }
-        onClick={(e) => setCurrentOpenedTask(task)}
+        onClick={(e) => setCurrentTask(task)}
         style={{ cursor: "pointer" }}
       >
         <div className="col-10">
@@ -2580,7 +2590,7 @@ function RightSideGrid({
             </div>
             <div
               className="pink-label-title-right"
-              onClick={(e) => setCurrentOpenedTask(task)}
+              onClick={(e) => setCurrentTask(task)}
             >
               <div className="overdue-title-sidebar-title pl-1">
                 {task.subject}
@@ -2600,7 +2610,7 @@ function RightSideGrid({
               <div
                 className="right-arrow-week text-right-grid"
                 style={{ cursor: "pointer" }}
-                onClick={(e) => setCurrentOpenedTask(task)}
+                onClick={(e) => setCurrentTask(task)}
               >
                 <img
                   className=""
@@ -3137,7 +3147,7 @@ function RightSideGrid({
               (searchBoxShow === false &&
                 displayTask === "2" &&
                 !isMobile)) && (
-              <span className="take-action d-none d-md-block">
+              <span className="take-action d-none d-md-block view-by__status-box">
                 <ul className="pull-right" style={{ float: "right" }}>
                   <span
                     style={{ fontSize: "10px", backgroundColor: "transparent" }}
@@ -4336,7 +4346,7 @@ function RightSideGrid({
                         user={user}
                         sideBarTaskList={true}
                         currentOpenedTask={currentOpenedTask}
-                        setCurrentOpenedTask={setCurrentOpenedTask}
+                        setCurrentTask={setCurrentTask}
                       />
                     </>
                   )}
@@ -4345,7 +4355,7 @@ function RightSideGrid({
                       user={user}
                       sideBarTaskList={true}
                       currentOpenedTask={currentOpenedTask}
-                      setCurrentOpenedTask={setCurrentOpenedTask}
+                      setCurrentTask={setCurrentTask}
                     />
                   )}
                   {searchValue === "" && taskListDisplay === "4" && (
@@ -4353,7 +4363,7 @@ function RightSideGrid({
                       user={user}
                       sideBarTaskList={true}
                       currentOpenedTask={currentOpenedTask}
-                      setCurrentOpenedTask={setCurrentOpenedTask}
+                      setCurrentTask={setCurrentTask}
                     />
                   )}
                 </div>
@@ -4396,6 +4406,7 @@ function RightSideGrid({
                         setShowHtoDoIt(false);
                         setShowReference(false);
                         // setExpandedFlags([]);
+                        setCurrentTask({});
                         dispatch(notificationActions.setTaskID(null));
                       }}
                     >
@@ -4918,7 +4929,7 @@ function RightSideGrid({
                       </div>
                     )}
                     {userDetails.UserType !== 3 &&
-                      currentOpenedTask.AssignedFromUserName && (
+                      currentOpenedTask?.assigned_by && (
                         <div className="row">
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
@@ -4928,17 +4939,17 @@ function RightSideGrid({
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                             <div className="holding-list-bold-title">
                               {currentOpenedTask &&
-                              currentOpenedTask.AssignedFromUserName ===
-                                "" ? null : (
+                              currentOpenedTask?.assigned_by_name ===
+                                null ? null : (
                                 <span className="cicrcle-name">
                                   {getInitials(
                                     currentOpenedTask &&
-                                      currentOpenedTask.AssignedFromUserName
+                                      currentOpenedTask?.assigned_by_name
                                   )}
                                 </span>
                               )}
                               {currentOpenedTask &&
-                                currentOpenedTask.AssignedFromUserName}
+                                currentOpenedTask?.assigned_by_name}
                             </div>
                           </div>
                         </div>
@@ -5465,7 +5476,7 @@ function RightSideGrid({
                         {/* check here */}
                         {currentOpenedTask &&
                         currentOpenedTask.status &&
-                        currentOpenedTask.status !== "Approval Pending" ? (
+                        currentOpenedTask.status !== "Approved" ? (
                           (user &&
                             user.UserType &&
                             user.UserType &&
