@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 import "../../style.css";
-import comtech from "../../../../assets/Images/CapmTech.png";
-import secmark from "../../../../assets/Images/secmark.png";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../SideBar";
@@ -12,6 +10,9 @@ import { actions as emailActions } from "../../../OnBording/redux/actions";
 import { toast } from "react-toastify";
 import Modal from "../../../Terms&Conditions/Modal";
 import Terms from "../../../Terms&Conditions/Terms";
+import comtech from "../../../../assets/Images/CapmTech.png";
+import secmark from "../../../../assets/Images/secmark.png";
+import BackDrop from "../../../../CommonModules/sharedComponents/Loader/BackDrop";
 
 function GetStart({ history }) {
   const dispatch = useDispatch();
@@ -22,6 +23,9 @@ function GetStart({ history }) {
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.emailAlreadExist;
+
+  let isLoading =
+    state && state?.complianceOfficer && state?.complianceOfficer.loader;
 
   useEffect(() => {
     if (emailAlreadExist === false && emailAlreadExist !== "") {
@@ -57,6 +61,7 @@ function GetStart({ history }) {
     setCheckBoxState(false);
   };
   const onSubmit = () => {
+    dispatch(emailActions.setLoader(true));
     setIsValidate(true);
     if (!isEmail(values.loginID) || values.loginID === "") {
       return;
@@ -100,6 +105,7 @@ function GetStart({ history }) {
         />
         <div className="get-main-get-start">
           <div className="container">
+            <BackDrop isLoading={isLoading} />
             <div className="">
               <div className="get-started-header">
                 <div className="row">

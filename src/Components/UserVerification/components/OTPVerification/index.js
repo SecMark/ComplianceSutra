@@ -101,15 +101,6 @@ function VeryOTP({ history, currentStep }) {
   }, [tempMobileNumber]);
 
   useEffect(() => {
-    let location = window.location.href;
-    let data = location.split("=");
-    let splitEmailAndType = data && data[1].split("&");
-    let emailFromLink = splitEmailAndType[0];
-    let typeFromLink = data[2];
-    getUserId(emailFromLink, typeFromLink);
-  }, []);
-
-  useEffect(() => {
     if (mobile_number !== undefined) {
       let mobNo = mobile_number.substring(2);
       // setPhoneNumber(mobNo)
@@ -188,6 +179,7 @@ function VeryOTP({ history, currentStep }) {
         return "";
       } else {
         setPhoneNumber(value);
+
         setMobileNumber(value);
       }
       if (value.length < 10) {
@@ -221,7 +213,7 @@ function VeryOTP({ history, currentStep }) {
     setShowResendSection(false);
 
     let payload = {
-      mobile_number: value || "7837679339",
+      mobile_number: value,
     };
     api
       .post("compliance.api.generateOtp", payload)
@@ -264,54 +256,15 @@ function VeryOTP({ history, currentStep }) {
   };
 
   const availabilityCheck = (phoneNumber) => {
-    let countryCode;
-    let strr = values.countryCode;
-    countryCode = strr.replace(/\D/g, "");
     let payload = {
-      loginID: mobileNumber,
-      loginty: "AdminMobile",
-      countrycode:
-        values.countryCode === "" || values.countryCode === "+"
-          ? "91"
-          : countryCode,
+      mobile_number: mobileNumber,
     };
     api
-      .post("/api/availabilityCheck", payload)
+      .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
-        if (response && response.data && response.data.Status === "false") {
-          let location = window.location.href;
-          let data = location.split("=");
-          let splitEmailAndType = data && data[1].split("&");
-          let emailFromLink = splitEmailAndType[0];
-          let typeFromLink = data[2];
-          let countryCode;
-          let strr = values.countryCode;
-          // countryCode = strr.replace(/\D/g, '');
-          countryCode = strr;
-          const pwd =
-            state &&
-            state.users &&
-            state.users.personalInfo &&
-            state.users.personalInfo.formData &&
-            state.users.personalInfo.formData.adminPWD;
-
-          dispatch(
-            otpVerificationActions.updateMobileNumberOTPRequest({
-              adminName: "adminName",
-              adminMobile: mobileNumber,
-              adminEmail: emailFromLink,
-              adminPWD: pwd,
-              isClientTypeUser: 0,
-              actionFlag: 2,
-              userID: userID,
-              countrycode:
-                countryCode === "" || countryCode === "+" ? "+91" : countryCode,
-            })
-          );
-          setMinutes(1);
-          setSeconds(0);
-          setIsEnabledSecureOTP(true);
-          setShowChangeMobileSection(false);
+        if (response && response.data && response.data.message.status) {
+          localStorage.setItem("mobileNumber", mobileNumber);
+          sendOTPRequest();
         } else {
           toast.error("Mobile Number Already registered");
         }
@@ -328,7 +281,7 @@ function VeryOTP({ history, currentStep }) {
 
     let payload = {};
     payload = {
-      mobile_number: mobileNumber || "+919104675084",
+      mobile_number: localStorage.getItem(mobileNumber),
     };
 
     api
@@ -376,20 +329,12 @@ function VeryOTP({ history, currentStep }) {
   });
 
   const verifyOTP = () => {
-    let location = window.location.href;
-    let data = location.split("=");
-    let splitEmailAndType = data && data[1].split("&");
-    let emailFromLink = splitEmailAndType[0];
-    let typeFromLink = data[2];
-    let payload = {};
-    payload = {
-      phn: phoneNumber,
-      email: emailFromLink,
-      otp: otp,
+    const payload = {
+      input_otp: otp,
     };
     if (otp !== "") {
       api
-        .post("/api/GetOTP", payload)
+        .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
           if (
@@ -403,7 +348,7 @@ function VeryOTP({ history, currentStep }) {
             setOtpInValid(false);
             toast.success("OTP is verified successfully");
             setTimeout(() => {
-              history.push("/redirect-user-dashboard");
+              history.push("/dashboard");
             }, 2000);
           }
         })
@@ -452,7 +397,7 @@ function VeryOTP({ history, currentStep }) {
               <div className="wrapper_login">
                 <p className="login_title">
                   <img className="right-back-arrow" src={leftArrow} alt="" />{" "}
-                  Let's secure your accounthhhhhhhhhhhhhhhhhh
+                  Let's secure your account
                   <br />
                   with verified mobile
                 </p>
@@ -465,9 +410,7 @@ function VeryOTP({ history, currentStep }) {
                         account. And you don't have to remember any password
                       </p>
                       <p className="will-send-text">
-                        We will send OTP on{" "}
-                        {countrycode && countrycode == 0 ? "" : countrycode}{" "}
-                        {mobileNumber}{" "}
+                        We will send OTP on {localStorage.getItem(mobileNumber)}
                         <span className="space-mobile d-block d-sm-none">
                           <br />
                         </span>
@@ -595,8 +538,8 @@ function VeryOTP({ history, currentStep }) {
                         name="otp"
                         onChange={handelChange}
                         id="OTP"
-                        maxLength={5}
-                        placeholder="Enter 5 digit OTP"
+                        maxLength={6}
+                        placeholder="Enter 6 digit OTP"
                         required
                       />
                       {otp !== "" && otpValid === true && (

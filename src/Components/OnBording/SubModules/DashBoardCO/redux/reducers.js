@@ -285,6 +285,10 @@ const actionHandler = {
     ...state,
     companyDeleteStatus: payload,
   }),
+  [types.CO_SET_LOADER]: (state, { payload }) => ({
+    ...state,
+    loader: payload,
+  }),
 };
 
 export default handleActions(actionHandler, {
@@ -307,4 +311,5 @@ export default handleActions(actionHandler, {
   coAccountUpdStatus: {},
   companyDeleteStatus: {},
   paymentDetail: {},
+  loader: false,
 });
