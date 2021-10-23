@@ -6,42 +6,13 @@ import { toast } from "react-toastify";
 
 const userDataSaveRequest = function* userDataSaveRequest({ payload }) {
   try {
-    const { data, status } = yield call(api.insertUpdateUserRequets, payload);
-    if (status === 200) {
-      let userID = "";
-      if (data && data[0] && data[0].StatusCode === false) {
-        toast.error(data[0].Message);
-      } else {
-        userID =
-          data &&
-          data[0] &&
-          data[0][0] &&
-          data[0][0].UserDetails &&
-          data[0][0].UserDetails[0] &&
-          data[0][0].UserDetails[0].UserID;
-        if (userID === "" || userID === 0) {
-          toast.error("Unable to generate user ID ", userID);
-        } else if (userID !== "") {
-          yield put(
-            actions.userDataSaveRequestSuccess({
-              userType: payload.userType,
-              formData: payload,
-            })
-          );
-          toast.success("Personal Information saved successfully", {
-            toastId: "personal-info-save",
-          });
-          yield delay(2000);
-          payload.history.push(
-            `/otp-verification?email=${payload.adminEmail}&type=${payload.userType}`
-          );
-        } else {
-          toast.error("Something went wrong");
-        }
-      }
-    } else {
-      toast.success("Something went wrong");
-      yield put(actions.userDataSaveRequestFailed());
+    const { data } = yield call(api.insertUpdateUserRequets, payload);
+    const { message } = data;
+    if (message.status !== false) {
+      const { token } = message;
+      localStorage.setItem("basicToken", token);
+      toast.success("Personal Information saved successfully");
+      payload.history.push("/otp-verification");
     }
   } catch (err) {
     toast.error("Something went wrong");

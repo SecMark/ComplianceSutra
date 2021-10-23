@@ -2073,12 +2073,6 @@ function RightSideGrid({
   const handleAssignToTask = (e) => {
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        // taskID: id,
-        // email: selectedUser,
-        // userType: 4,
-        // invitee: user.EmailID,
-        // isApproved: 0,
-        // loginID: userDetails.UserID,
         task_details: [
           {
             name: currentOpenedTask.task_name,
@@ -2095,12 +2089,6 @@ function RightSideGrid({
     let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        // taskID: id,
-        // email: selectedUser,
-        // userType: 5,
-        // invitee: user.EmailID,
-        // isApproved: 0,
-        // loginID: userDetails.UserID,
         task_details: [
           {
             name: currentOpenedTask.task_name,
@@ -2112,8 +2100,9 @@ function RightSideGrid({
     );
     setSelectedUser("");
   };
-  console.log("user: ", user, userDetails.UserType);
+
   const AssignTaskToMe = (e) => {
+    dispatch(taskReportActions.setLoader(true));
     dispatch(
       taskReportActions.taskAssignByTaskID({
         task_details: [

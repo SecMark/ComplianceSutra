@@ -112,6 +112,7 @@ const CO_ACCOUNT_UPDATE_REQUEST_FAILED = "CO_ACCOUNT_UPDATE_REQUEST_FAILED";
 const CO_COMPANY_DELETE_REQUEST = "CO_COMPANY_DELETE_REQUEST";
 const CO_COMPANY_DELETE_REQUEST_SUCCESS = "CO_COMPANY_DELETE_REQUEST_SUCCESS";
 const CO_COMPANY_DELETE_REQUEST_FAILED = "CO_COMPANY_DELETE_REQUEST_FAILED";
+const CO_SET_LOADER = "CO_SET_LOADER";
 
 // Action method
 
@@ -269,6 +270,8 @@ const deleteCompanyRequestFailed = createAction(
   CO_COMPANY_DELETE_REQUEST_FAILED
 );
 
+const setLoader = createAction(CO_SET_LOADER);
+
 export const actions = {
   setActiveMenu,
   taskReportRequest,
@@ -354,6 +357,7 @@ export const actions = {
   deleteCompanyRequest,
   deleteCompanyRequestSuccess,
   deleteCompanyRequestFailed,
+  setLoader,
 };
 
 export const types = {
@@ -442,4 +446,6 @@ export const types = {
   CO_COMPANY_DELETE_REQUEST,
   CO_COMPANY_DELETE_REQUEST_SUCCESS,
   CO_COMPANY_DELETE_REQUEST_FAILED,
+
+  CO_SET_LOADER,
 };

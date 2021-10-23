@@ -199,52 +199,23 @@ const postAssignTask = function* postAssignTask({ payload }) {
     if (status === 200 && data.message.status_response === "Success") {
       toast.success("Task Assigned Successfully!");
       yield put(actions.taskReportRequest());
+      yield put(actions.setLoader(false));
       yield put(
         actions.taskReportByIdRequest({
           task_name: payload.task_details[0].name,
         })
       );
-      // if (
-      //   payload.isApproved === 1 &&
-      //   payload.userDetails.IscreateBySecmark === 1
-      // ) {
-      //   toast.dark(
-      //     `${payload.LicenseCode} task for ${payload.EntityName} is approved successfully!`,
-      //     {
-      //       position: toast.POSITION.BOTTOM_RIGHT,
-      //     }
-      //   );
-      // }
-      // if (
-      //   payload.isApproved === 3 &&
-      //   payload.userDetails.IscreateBySecmark === 1
-      // ) {
-      //   toast.dark(
-      //     `${payload.LicenseCode} task for ${payload.EntityName} is rejected successfully!`,
-      //     {
-      //       position: toast.POSITION.BOTTOM_RIGHT,
-      //     }
-      //   );
-      // }
+
       yield put(actions.taskAssignByTaskIDSuccess({ postAssignTask: data }));
-      // yield put(
-      //   actions.taskReportByIdRequest({
-      //     taskid: payload.taskID,
-      //   })
-      // );
-      // yield put(
-      //   actions.taskReportRequest({
-      //     entityid: "",
-      //     userID: payload.userDetails.UserID,
-      //     usertype: payload.userDetails.UserType,
-      //   })
-      // );
+
       toast.success(data && data.Message);
     } else {
       toast.success(data && data.Message);
+      yield put(actions.setLoader(false));
       yield put(actions.taskAssignByTaskIDFailed({ postAssignTask: {} }));
     }
   } catch (err) {
+    yield put(actions.setLoader(false));
     yield put(actions.taskAssignByTaskIDFailed({ postAssignTask: {} }));
   }
 };
