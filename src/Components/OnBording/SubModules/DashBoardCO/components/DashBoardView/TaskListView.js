@@ -106,21 +106,23 @@ function RightSideGrid({
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
   useEffect(() => {
-    if (taskList && taskList.length > 0) {
-      const tempRowCount = {};
-      const taskByStatus = getDataByStatus(taskList);
-      [...taskByStatus].forEach((item) => {
-        if (item.tasks.length > 0) {
-          tempRowCount[item.status.trim()] = item.tasks.length;
-        }
-      });
-      setRowCount(tempRowCount);
-      setTaskData(taskByStatus);
-      setTaskDataBackup(taskByStatus);
-    } else {
-      dispatch(taskReportActions.taskReportRequest());
+    if (taskListDisplay === "1") {
+      if (taskList && taskList.length > 0) {
+        const tempRowCount = {};
+        const taskByStatus = getDataByStatus(taskList);
+        [...taskByStatus].forEach((item) => {
+          if (item.tasks.length > 0) {
+            tempRowCount[item.status.trim()] = item.tasks.length;
+          }
+        });
+        setRowCount(tempRowCount);
+        setListTaskData(taskByStatus);
+        setTaskDataBackup(taskByStatus);
+      } else {
+        dispatch(taskReportActions.taskReportRequest());
+      }
     }
-  }, [taskList]);
+  }, [taskList, taskListDisplay]);
 
   useEffect(() => {
     const ApproverUsers =
@@ -163,28 +165,6 @@ function RightSideGrid({
         .catch((error) => {});
     }
   }, [getTaskById, uploadFile]);
-
-  useEffect(() => {
-    if (taskListDisplay === "1") {
-      const payload = {
-        entityid: "",
-        userID: user.UserID,
-        usertype: user.UserType,
-      };
-
-      axiosInstance
-        .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`)
-        .then((response) => {
-          const { status, status_response, task_details } =
-            response.data.message;
-          if (status && status_response) {
-            const taskByStatus = getDataByStatus(task_details);
-            setListTaskData(taskByStatus);
-          }
-        })
-        .catch((error) => {});
-    }
-  }, [taskListDisplay]);
 
   const innerRefDrop = useDropdownOuterClick((e) => {
     if (openBoardDrD === true && !e.target.id.includes("dropDown")) {
@@ -786,20 +766,16 @@ function RightSideGrid({
     let tempArr = [];
     if (searchText !== "") {
       let searchQuery = searchText.toLowerCase();
-      console.log("searchText:", searchQuery, taskList);
       listTaskData &&
+        listTaskData.length !== 0 &&
         listTaskData.forEach((tasksByStatus) => {
           tasksByStatus.tasks.forEach((task) => {
             if (task.subject !== "" && task.subject !== "Norec") {
               if (
-                task.subject.toLowerCase().includes(searchQuery) ||
-                task.customer_name
-                  .toLowerCase()
-                  .includes(
-                    searchQuery ||
-                      task.license.toLowerCase().includes(searchQuery) ||
-                      task.assign_to_name.toLowerCase().includes(searchQuery)
-                  )
+                task?.subject?.toLowerCase().includes(searchQuery) ||
+                task?.customer_name?.toLowerCase().includes(searchQuery) ||
+                task?.license?.toLowerCase().includes(searchQuery) ||
+                task?.assign_to_name?.toLowerCase().includes(searchQuery)
               ) {
                 let searchResults = {
                   status: tasksByStatus.status,
@@ -810,7 +786,6 @@ function RightSideGrid({
             }
           });
         });
-      console.log("TempArray: ", tempArr);
       setSearchData(tempArr);
     }
   };
@@ -828,11 +803,12 @@ function RightSideGrid({
       <Link
         to="/dashboard"
         onClick={() => {
-          getSelectTaskDetails(task)
+          getSelectTaskDetails(task);
         }}
         style={{
-          textDecoration: 'none',
-          ...(userDetails && userDetails.UserType === 6 && {pointerEvents: 'none'})
+          textDecoration: "none",
+          ...(userDetails &&
+            userDetails.UserType === 6 && { pointerEvents: "none" }),
         }}
       >
         <div
@@ -974,14 +950,14 @@ function RightSideGrid({
                   </div>
                 )}
               </div>
-            ) : (
+            ) : userDetails.UserType === 3 ? (
               <div>
                 <div className="circle-front-text NoStatus">
                   {" "}
                   <img src={assignIconCircle} alt="" /> ASSIGN
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
           <div className="col-2">
             <div className="align-right task-list-new">
@@ -1559,7 +1535,7 @@ function RightSideGrid({
                   )}
                   {((searchValue === "" && displayTask === "1") ||
                     (searchValue === "" && displayTask === "2")) && (
-                    <div className="take-action mb-0 d-none d-sm-block">
+                    <div className="take-action mb-0 d-none d-sm-block view-by__status-box">
                       <ul className="pull-right" style={{ float: "right" }}>
                         <span
                           style={{

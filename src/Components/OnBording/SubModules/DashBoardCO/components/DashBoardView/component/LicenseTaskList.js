@@ -125,7 +125,6 @@ export default function LicenseTaskList(props) {
   };
 
   const renderTaskList = (task, Status, listType) => {
-    console.log(task.status);
     return (
       <>
         {!props.isExpertReviewer && (
@@ -247,7 +246,7 @@ export default function LicenseTaskList(props) {
                 {task.assign_to !== null ? (
                   <div className="d-flex">
                     {props.user.UserType === 4 ? (
-                      task.approver_name === "Assign" ? null : (
+                      task.approver_name === null ? null : (
                         <div className="circle-name d-none d-sm-block">
                           <div className="circle-text">
                             {props.user.UserType === 4 &&
@@ -274,7 +273,7 @@ export default function LicenseTaskList(props) {
                       </div>
                     )}
                   </div>
-                ) : (
+                ) : userDetails.UserType === 3 ? (
                   <div>
                     <div
                       className="circle-front-text NoStatus"
@@ -284,7 +283,7 @@ export default function LicenseTaskList(props) {
                       <img src={assignIconCircle} alt="" /> ASSIGN
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
               <div className="col-2">
                 <div className="align-right">
@@ -316,7 +315,7 @@ export default function LicenseTaskList(props) {
                           alt="Right Arrow"
                         />
                       }
-                      {task.assign_to !== 0 && (
+                      {task.assign_to !== null && (
                         <img
                           className="d-block d-sm-none"
                           src={keyboardArrowRightBlack}
@@ -332,7 +331,7 @@ export default function LicenseTaskList(props) {
                           </div>
                         </div>
                       )}
-                      {task.assign_to === 0 && (
+                      {task.assign_to === null && (
                         <div className="only-mobile-assign-add d-block d-sm-none">
                           <div
                             className="assign-user-icon"
@@ -493,7 +492,7 @@ export default function LicenseTaskList(props) {
                     )}
                     {props.user.UserType === 4 ? (
                       <div className="circle-front-text d-none d-sm-block">
-                        {task.approver_name === "Assign"
+                        {task.approver_name === null
                           ? "No Approver"
                           : task.approver_name}
                       </div>
@@ -545,7 +544,7 @@ export default function LicenseTaskList(props) {
                           alt="Right Arrow"
                         />
                       }
-                      {task.assign_to !== 0 && (
+                      {task.assign_to !== null && (
                         <img
                           className="d-block d-sm-none"
                           src={keyboardArrowRightBlack}
@@ -561,7 +560,7 @@ export default function LicenseTaskList(props) {
                           </div>
                         </div>
                       )}
-                      {task.assign_to === 0 && (
+                      {task.assign_to === null && (
                         <div className="only-mobile-assign-add d-block d-sm-none">
                           <div
                             className="assign-user-icon"

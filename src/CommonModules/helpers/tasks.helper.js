@@ -1,5 +1,14 @@
 import moment from "moment";
-
+const sortByDate = (data) =>
+  data.sort((a, b) => {
+    if (a.due_date && b.due_date) {
+      return (
+        new Date(a.due_date || a.deadline_date) -
+        new Date(b.due_date || b.deadline_date)
+      );
+    }
+    return false;
+  });
 // Get Data by Company
 const getDataByCompany = (data) => {
   try {
@@ -15,7 +24,7 @@ const getDataByCompany = (data) => {
         status: data.companyName,
         company_name: data.companyName,
         company_id: data.company_id,
-        tasks: [...new Set(tasks)],
+        tasks: sortByDate([...new Set(tasks)]),
       };
     });
   } catch (err) {
@@ -30,7 +39,7 @@ const getAllTasks = (task_details) => {
       tasks = [...tasks, ...item.taskList];
     });
   });
-  return tasks;
+  return sortByDate(tasks);
 };
 // get Data by Status
 const getDataByStatus = (task_details) => {
@@ -79,11 +88,7 @@ const getDataByStatus = (task_details) => {
         break;
       case "Take Action":
         tasksByStatus = [...tasks].filter((task) => {
-          if (
-            task.status === "Approval Pending" &&
-            task.status !== "Rejected" &&
-            task.status !== "Approved"
-          ) {
+          if (task.status !== "Approved") {
             const due_date = task.due_date || task.deadline_date;
             const taskDueDate = moment(due_date, "YYYY-MM-DD");
             const diffrenceInDays = taskDueDate.diff(todayDate, "days");
@@ -105,10 +110,10 @@ const getDataByStatus = (task_details) => {
     }
     getDataByStatus.push({
       status: filter,
-      tasks: tasksByStatus,
+      tasks: sortByDate(tasksByStatus),
     });
   });
-  return getDataByStatus;
+  return getDataByStatus.filter((item) => item.tasks.length > 0);
 };
 
 // Get Data by licenses
@@ -120,7 +125,7 @@ const getDataByLicenses = (task_details) => {
     dataByLicense.push({
       status: license,
       license,
-      tasks: [...tasks].filter((item) => item.license === license),
+      tasks: sortByDate([...tasks].filter((item) => item.license === license)),
     });
   });
   return dataByLicense;
@@ -139,12 +144,20 @@ const getDataByTeam = (task_details) => {
       tasks: [...tasks].filter((item) => item.assign_to_name === team),
     });
   });
-  return dataByTeam.map((item) => {
-    if (item.assign_to_name === null && item.status === null) {
-      item.status = "Not Assigned";
-    }
-    return item;
-  });
+  return sortByDate(
+    dataByTeam.map((item) => {
+      if (item.assign_to_name === null && item.status === null) {
+        item.status = "Not Assigned";
+      }
+      return item;
+    })
+  );
 };
 
-export { getDataByStatus, getDataByLicenses, getDataByCompany, getDataByTeam };
+export {
+  getDataByStatus,
+  getDataByLicenses,
+  getDataByCompany,
+  getDataByTeam,
+  getAllTasks,
+};
