@@ -133,7 +133,12 @@ function RightSideGrid({
   const [completedTask, setCompletedTask] = useState("0");
   const [scheduledTask, setScheduledTask] = useState("0");
   const [noRecords, setNoRecords] = useState(false);
-
+  const [
+    isShowReAssignModalForTeamMember,
+    setIsShowReAssignModalForTeamMember,
+  ] = useState(false);
+  const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
+    useState(false);
   const taskModalOpenStatus =
     state &&
     state.adminMenu &&
@@ -142,12 +147,13 @@ function RightSideGrid({
 
   const currentFilterViewByRedux =
     state && state.adminMenu && state.adminMenu.currentFilterViewBy;
-  const [
-    isShowReAssignModalForTeamMember,
-    setIsShowReAssignModalForTeamMember,
-  ] = useState(false);
-  const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
-    useState(false);
+
+  const taskFilesById =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskFilesById &&
+    state.taskReport.taskFilesById.taskFiles;
+
   const getTaskById =
     state &&
     state.taskReport &&
@@ -161,7 +167,6 @@ function RightSideGrid({
     state.taskReport.taskReport.taskReport;
 
   const taskReferences = state && state.taskReport && state.taskReferences;
-
   const setCurrentTask = (task) => {
     dispatch(
       taskReportActions.taskReportByIdRequestSuccess({
@@ -303,23 +308,22 @@ function RightSideGrid({
   });
 
   useEffect(() => {
-    const getTaskId = currentOpenedTask;
-    if (getTaskId) {
-      const taskId = currentOpenedTask.TaskId;
+    dispatch(
+      taskReportActions.getTaskFilesById({
+        doctype: "Task",
+        docname: currentOpenedTask.task_name,
+        is_references: 0,
+      })
+    );
+  }, [currentOpenedTask]);
 
-      const payload = {
-        taskID: taskId,
-        actionFlag: 0,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          let fileData = response.data;
-          setFileList(fileData);
-        })
-        .catch((error) => {});
+  useEffect(() => {
+    if (taskFilesById && taskFilesById.length !== 0) {
+      setFileList(taskFilesById);
+    } else {
+      setFileList([]);
     }
-  }, [currentOpenedTask, uploadFile]);
+  }, [taskFilesById]);
 
   useEffect(() => {
     var today = new Date();
@@ -1380,7 +1384,7 @@ function RightSideGrid({
                                   <div className="pr-3">
                                     <div
                                       style={{ cursor: "pointer" }}
-                                      onClick={() => deleteFile(files)}
+                                      onClick={() => deleteUploadedFile(files.file_id)}
                                       className="file-download-title pointer d-flex"
                                     >
                                       <img
@@ -1605,72 +1609,18 @@ function RightSideGrid({
       </Modal>
     );
   };
-  const getAllFile = () => {
-    if (currentOpenedTask != undefined) {
-      const taskId = currentOpenedTask.TaskId;
-      const payload = {
-        taskID: taskId,
-        actionFlag: 0,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          let fileData = response.data;
-          setFileList(fileData);
-        })
-        .catch((error) => {
-          console.log("error => ", error);
-        });
-    }
-  };
 
-  const deleteFile = (file) => {
-    if (userDetails.UserType === 4) {
-      const payload = {
-        taskID: 0,
-        TaskFileId: file.TaskFileId,
-        actionFlag: 3,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          if (
-            response &&
-            response.data &&
-            response.data[0] &&
-            response.data[0].Status === "Deleted"
-          ) {
-            getAllFile();
-            toast.success("File deleted successfully");
-          } else {
-            toast.error("Error in the deleting file !!!");
-          }
-        })
-        .catch((error) => {});
-    }
-  };
+
   // Submit Reject Task Modal
   const submitModal = () => {
-    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.changeTaskStatusRequest({
-        // taskID: id,
-        // userType: 1,
-        // email: "",
-        // invitee: "",
-        // isApproved: 3,
-        // loginID: userDetails.UserID,
-        // userDetails: userDetails,
         task_name: currentOpenedTask.task_name,
         status: "Rejected",
       })
     );
     dispatch(
       taskReportActions.postTaskCommentByTaskID({
-        // actionFlag: 1, //Action Flag
-        // taskID: currentOpenedTask.TaskId, //TaskID
-        // comment: rejectTaskInput,
-        // commentBy: user.UserID, //UserID
         task_name: currentOpenedTask.task_name,
         content: rejectTaskInput,
       })
@@ -1841,13 +1791,31 @@ function RightSideGrid({
     }
   }, [currentOpenedTask]);
 
+  const deleteUploadedFile = async (file_id) => {
+    if(file_id && file_id!== "") {
+      try {
+      const {data, status} = await axiosInstance.post('compliance.api.DeleteFile', {file_id});
+      if(status === 200 && data.message && data.message.status) {
+        toast.success('File deleted successfully!');
+        // Get task files
+        dispatch(
+          taskReportActions.getTaskFilesById({
+            doctype: "Task",
+            docname: currentOpenedTask.task_name,
+            is_references: 0,
+          })
+        );
+      }else {
+        toast.error('Something went wrong. Please try again after some time.')
+      }
+      }catch(err) {
+        toast.error('Something went wrong. Please try again after some time.')
+      }
+    }
+  }
+
   const getUpload = (file) => {
     let url = "";
-    // if (currentTaskData && currentTaskData.TaskId) {
-    //   url = `${BACKEND_BASE_URL}compliance.api.UploadFile`;
-    // } else {
-    //   url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData}`;
-    // }
     if (currentOpenedTask && currentOpenedTask.task_name) {
       url = `${BACKEND_BASE_URL}compliance.api.UploadFile`;
     } else {
@@ -1870,12 +1838,12 @@ function RightSideGrid({
   };
 
   const handleSelectUploadFile = (file) => {
-    const _fileList = (fileList && fileList[0] && fileList[0].Files) || [];
+    const _fileList = (fileList && fileList.length > 0 && fileList) || [];
     var isPresent = false;
     let fileArray = [];
     file.forEach((file) => {
       isPresent = _fileList.some(function (el) {
-        return el.FileName === file.name;
+        return el.file_name === file.name;
       });
       if (!isPresent) {
         fileArray.push(file);
@@ -1886,14 +1854,23 @@ function RightSideGrid({
         return "";
       }
     });
-    getUpload(fileArray).then((response) => {
-      const { data, status } = response;
-      if (status === 200 && data.message && data.message.status === true) {
-        toast.success("File Uploaded Successfully");
-        setUploadFile("");
-        // getAllFile();
-      }
-    });
+    if(fileArray && fileArray.length!==0) {
+      getUpload(fileArray).then((response) => {
+        const { data, status } = response;
+        if (status === 200 && data.message && data.message.status === true) {
+          toast.success("File Uploaded Successfully");
+          if (currentOpenedTask && currentOpenedTask.task_name !== "") {
+            dispatch(
+              taskReportActions.getTaskFilesById({
+                doctype: "Task",
+                docname: currentOpenedTask.task_name,
+                is_references: 0,
+              })
+            );
+          }
+        }
+      });
+    }
   };
 
   const ApprovDisplay = (e) => {
@@ -5535,84 +5512,80 @@ function RightSideGrid({
                           ) : null
                         ) : null}
 
-                        {fileList && fileList.length > 0 ? (
-                          fileList.map((file, index) => (
-                            <div className="no-files">
-                              {file && file.Files && file.Files.length > 0
-                                ? file.Files.map((files, index) => (
-                                    <div className="d-flex">
-                                      <div className="pr-3">
-                                        <div className="file-upload-title file-img-width">
-                                          <img
-                                            src={fileIcon}
-                                            alt="file Icon"
-                                            className="file-icon-box"
-                                            value={files.TaskFileId}
-                                          />{" "}
-                                          {files.FileName}
-                                        </div>
-                                      </div>
-                                      <div className="pr-3">
-                                        {currentOpenedTask &&
-                                          currentOpenedTask.TaskId !==
-                                            undefined && (
-                                            <a
-                                              target="_blank"
-                                              href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${currentOpenedTask.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
-                                              style={{ textDecoration: "none" }}
-                                              className="file-download-title pointer d-flex"
-                                            >
-                                              download{" "}
-                                              <span className="d-none d-md-block">
-                                                &nbsp;file
-                                              </span>
-                                            </a>
-                                          )}
-                                      </div>
-                                      <div className="pr-3">
-                                        <div
-                                          style={{ cursor: "pointer" }}
-                                          onClick={() => deleteFile(files)}
+                        <div className="no-files">
+                          {fileList && fileList.length > 0
+                            ? fileList.map((files, index) => (
+                                <div className="d-flex">
+                                  <div className="pr-3">
+                                    <div className="file-upload-title file-img-width">
+                                      <img
+                                        src={fileIcon}
+                                        alt="file Icon"
+                                        className="file-icon-box"
+                                        value={files.file_name}
+                                      />{" "}
+                                      {files.file_name}
+                                    </div>
+                                  </div>
+                                  <div className="pr-3">
+                                    {currentOpenedTask &&
+                                      currentOpenedTask.task_name !==
+                                        undefined && (
+                                        <a
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          href={`${BACKEND_BASE_URL}`}
+                                          style={{ textDecoration: "none" }}
                                           className="file-download-title pointer d-flex"
                                         >
-                                          <img
-                                            className="delete-icon"
-                                            src={deleteBlack}
-                                            alt="delete Icon"
-                                          />
-                                        </div>
-                                      </div>
+                                          download{" "}
+                                          <span className="d-none d-md-block">
+                                            &nbsp;file
+                                          </span>
+                                        </a>
+                                      )}
+                                  </div>
+                                  <div className="pr-3">
+                                    <div
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() => deleteUploadedFile(files.file_id)}
+                                      className="file-download-title pointer d-flex"
+                                    >
+                                      <img
+                                        className="delete-icon"
+                                        src={deleteBlack}
+                                        alt="delete Icon"
+                                      />
                                     </div>
-                                  ))
-                                : "No Files To View here"}
-                            </div>
-                          ))
-                        ) : (
-                          <div className="no-files">No Files To View here</div>
-                        )}
+                                  </div>
+                                </div>
+                              ))
+                            : "No Files To View here"}
+                        </div>
+                        {/* <div className="no-files">No Files To View here</div> */}
                       </>
                     ) : fileList && fileList.length > 0 ? (
                       fileList.map((file, index) => (
                         <div className="no-files">
                           {file && file.Files && file.Files.length > 0
                             ? file.Files.map((files, index) => (
-                                <div className="row">
+                                <div className="row" key={files.file_id}>
                                   <div className="col-8 col-sm-4 col-md-4 col-xl-4">
                                     <div className="file-upload-title file-img-width">
                                       <img
                                         src={fileIcon}
                                         alt="file Icon"
-                                        value={files.TaskFileId}
+                                        value={files.file_name}
                                       />{" "}
-                                      {files.FileName}
+                                      {files.file_name}
                                     </div>
                                   </div>
                                   <div className="col-4 col-sm-8 col-md-8 col-xl-8">
                                     {currentOpenedTask &&
-                                      currentOpenedTask.TaskId !==
+                                      currentOpenedTask.task_name !==
                                         undefined && (
                                         <a
-                                          href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${currentOpenedTask.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
+                                          href={`${BACKEND_BASE_URL}`}
                                           style={{ textDecoration: "none" }}
                                           className="file-download-title pointer d-flex"
                                         >

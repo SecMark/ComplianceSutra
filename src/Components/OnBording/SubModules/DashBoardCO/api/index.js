@@ -14,7 +14,8 @@ const getTaskComments = (payload) =>
 
 const postTaskComments = (payload) =>
   api.post("compliance.api.SetTaskComments", payload);
-const getTaskFiles = (payload) => api.post("/api/getTaskfile", payload);
+const getTaskFiles = (payload) =>
+  api.post("compliance.api.GetExistingFileNames", payload);
 const postUploadFile = ({ taskid, fileData, userId, ftype }) =>
   api.post(
     `/api/UploadFile?Taskid=${taskid}&Userid=${userId}&ftype=${ftype}`,

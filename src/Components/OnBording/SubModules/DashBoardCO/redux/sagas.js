@@ -161,12 +161,13 @@ const postCommentBytaskID = function* postCommentBytaskID({ payload }) {
 const getTaskFilesById = function* getTaskFilesById({ payload }) {
   try {
     const { data, status } = yield call(api.getTaskFiles, payload);
-    if (status === 200) {
-      if (payload.ftype === 0) {
-        yield put(actions.getTaskFilesByIdSucess({ taskFiles: data }));
-      }
-      if (payload.ftype === 1) {
-        yield put(actions.getTaskFilesByIdSucess({ taskFilesReference: data }));
+    if (status === 200 && data.message && data.message.status === true) {
+      if (payload.is_references === 0) {
+        yield put(
+          actions.getTaskFilesByIdSucess({
+            taskFiles: data.message.file_details,
+          })
+        );
       }
     } else {
       yield put(actions.getTaskFilesByIdFailed());
