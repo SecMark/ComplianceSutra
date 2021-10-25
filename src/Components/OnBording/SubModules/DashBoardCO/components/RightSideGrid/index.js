@@ -174,6 +174,10 @@ function RightSideGrid({
       })
     );
   };
+
+  useEffect(() => {
+    console.log("taskListDisplay: ", taskListDisplay);
+  }, [taskListDisplay]);
   useEffect(() => {
     if (taskList && taskList.length !== 0) {
       const allTasks = getAllTasks(taskList);
@@ -189,6 +193,8 @@ function RightSideGrid({
     if (getTaskById && Object.keys(getTaskById).length !== 0) {
       setCurrentOpenedTask(getTaskById);
       setIsTaskListOpen(true);
+      setDisplayTask("1");
+      setTaskListDisplay("1");
     }
   }, [getTaskById]);
   useEffect(() => {
@@ -233,9 +239,9 @@ function RightSideGrid({
   }, [state.adminMenu.taskIDByCalendarView]);
 
   useEffect(() => {
-    let task_id = state && state.adminMenu && state.adminMenu.taskID;
-    if (task_id !== null && taskModalOpenStatus !== "") {
-      getSelectTaskDetails();
+    let task = state && state.adminMenu && state.adminMenu.taskID;
+    if (task !== null && taskModalOpenStatus !== "") {
+      getSelectTaskDetails(task);
     }
   }, [state.adminMenu.taskID]);
 
@@ -1016,7 +1022,7 @@ function RightSideGrid({
                   <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                     <div className="holding-list-bold-title">
                       {moment(
-                        currentOpenedTask && currentOpenedTask.EndDate
+                        currentOpenedTask && currentOpenedTask.due_date
                       ).format("DD MMM")}
                     </div>
                   </div>
@@ -1384,7 +1390,9 @@ function RightSideGrid({
                                   <div className="pr-3">
                                     <div
                                       style={{ cursor: "pointer" }}
-                                      onClick={() => deleteUploadedFile(files.file_id)}
+                                      onClick={() =>
+                                        deleteUploadedFile(files.file_id)
+                                      }
                                       className="file-download-title pointer d-flex"
                                     >
                                       <img
@@ -1610,7 +1618,6 @@ function RightSideGrid({
     );
   };
 
-
   // Submit Reject Task Modal
   const submitModal = () => {
     dispatch(
@@ -1792,27 +1799,32 @@ function RightSideGrid({
   }, [currentOpenedTask]);
 
   const deleteUploadedFile = async (file_id) => {
-    if(file_id && file_id!== "") {
+    if (file_id && file_id !== "") {
       try {
-      const {data, status} = await axiosInstance.post('compliance.api.DeleteFile', {file_id});
-      if(status === 200 && data.message && data.message.status) {
-        toast.success('File deleted successfully!');
-        // Get task files
-        dispatch(
-          taskReportActions.getTaskFilesById({
-            doctype: "Task",
-            docname: currentOpenedTask.task_name,
-            is_references: 0,
-          })
+        const { data, status } = await axiosInstance.post(
+          "compliance.api.DeleteFile",
+          { file_id }
         );
-      }else {
-        toast.error('Something went wrong. Please try again after some time.')
-      }
-      }catch(err) {
-        toast.error('Something went wrong. Please try again after some time.')
+        if (status === 200 && data.message && data.message.status) {
+          toast.success("File deleted successfully!");
+          // Get task files
+          dispatch(
+            taskReportActions.getTaskFilesById({
+              doctype: "Task",
+              docname: currentOpenedTask.task_name,
+              is_references: 0,
+            })
+          );
+        } else {
+          toast.error(
+            "Something went wrong. Please try again after some time."
+          );
+        }
+      } catch (err) {
+        toast.error("Something went wrong. Please try again after some time.");
       }
     }
-  }
+  };
 
   const getUpload = (file) => {
     let url = "";
@@ -1854,7 +1866,7 @@ function RightSideGrid({
         return "";
       }
     });
-    if(fileArray && fileArray.length!==0) {
+    if (fileArray && fileArray.length !== 0) {
       getUpload(fileArray).then((response) => {
         const { data, status } = response;
         if (status === 200 && data.message && data.message.status === true) {
@@ -3097,6 +3109,7 @@ function RightSideGrid({
                   onClick={(e) => {
                     setDisplayTask("2");
                     setTaskListDisplay("0");
+                    setCurrentBoardViewBy("status");
                   }}
                 >
                   Board
@@ -3963,6 +3976,7 @@ function RightSideGrid({
                               setDisplayTask("2");
                               setTaskListDisplay("0");
                               setIsTaskListOpen(false);
+                              setCurrentBoardViewBy("status");
                             }}
                           >
                             Board
@@ -5129,7 +5143,7 @@ function RightSideGrid({
                       <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                         <div className="holding-list-bold-title">
                           {moment(
-                            currentOpenedTask && currentOpenedTask.EndDate
+                            currentOpenedTask && currentOpenedTask.due_date
                           ).format("DD MMM")}
                         </div>
                       </div>
@@ -5149,7 +5163,7 @@ function RightSideGrid({
                       </div>
                     </div>
                     {currentOpenedTask &&
-                      currentOpenedTask.DateOfApproval !== "" &&
+                      currentOpenedTask.date_of_approval &&
                       currentOpenedTask.status === "Approved" &&
                       userDetails.UserType !== 4 && (
                         <div className="row">
@@ -5534,9 +5548,13 @@ function RightSideGrid({
                                         <a
                                           target="_blank"
                                           rel="noreferrer"
-                                          href={`${BACKEND_BASE_URL}`}
+                                          href={
+                                            new URL(BACKEND_BASE_URL).origin +
+                                            files.file_url
+                                          }
                                           style={{ textDecoration: "none" }}
                                           className="file-download-title pointer d-flex"
+                                          // download={files.file_name}
                                         >
                                           download{" "}
                                           <span className="d-none d-md-block">
@@ -5548,7 +5566,9 @@ function RightSideGrid({
                                   <div className="pr-3">
                                     <div
                                       style={{ cursor: "pointer" }}
-                                      onClick={() => deleteUploadedFile(files.file_id)}
+                                      onClick={() =>
+                                        deleteUploadedFile(files.file_id)
+                                      }
                                       className="file-download-title pointer d-flex"
                                     >
                                       <img
