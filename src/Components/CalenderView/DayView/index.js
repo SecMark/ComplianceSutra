@@ -10,7 +10,7 @@ const DayView = ({ daysData, userDetails }) => {
   const history = useHistory();
 
   const getNameInitials = (name) => {
-    if (name != undefined) {
+    if (name !== undefined) {
       let initials = "";
       initials = name
         .split(" ")
@@ -33,7 +33,7 @@ const DayView = ({ daysData, userDetails }) => {
             className="detail-container align-items-start align-items-md-center flex-column flex-md-row"
             onClick={() => {
               if (userDetails && userDetails.UserType !== 6) {
-                openTaskDetail(day?.TaskId);
+                openTaskDetail(day);
               }
             }}
             style={{
@@ -43,15 +43,15 @@ const DayView = ({ daysData, userDetails }) => {
             }}
           >
             <div className="detail-content flex-column flex-md-row align-items-start align-items-md-center">
-              <button className="license-code">{day?.LicenseCode}</button>
-              <h2 className="my-2 my-md-0">{day?.TaskName}</h2>
+              <button className="license-code">{day?.license}</button>
+              <h2 className="my-2 my-md-0">{day?.subject}</h2>
               <div className="status-container d-none d-md-block">
                 <Link
                   to="/dashboard"
                   className={`${
-                    day?.Status === "Approval Pending"
+                    day?.status === "Approval Pending"
                       ? "approval-day"
-                      : day?.Status == "Assigned" || day?.Status == "Approved"
+                      : day?.status === "Assigned" || day?.status === "Approved"
                       ? "assigned-day"
                       : "approval-day"
                   }`}
@@ -59,31 +59,31 @@ const DayView = ({ daysData, userDetails }) => {
                     dispatch(setNotificationTaskId(day?.TaskId));
                   }}
                 >
-                  {day?.Status === "Approval Pending"
+                  {day?.status === "Approval Pending"
                     ? "Approval Pending"
-                    : day?.Status === "Completed By User"
+                    : day?.status === "Completed By User"
                     ? "Approval Pending"
-                    : day?.Status}
+                    : day?.status}
                 </Link>
               </div>
               <button
                 className={`${
-                  day?.Status === "Assign" ? "assigned-day" : "approval-day"
+                  day?.status === "Assign" ? "assigned-day" : "approval-day"
                 } d-block d-md-none`}
               >
-                {day?.Status === "Assign" ? "Assigned" : "Approval Pending"}
+                {day?.status === "Assign" ? "Assigned" : "Approval Pending"}
               </button>
             </div>
             <div className="d-flex justify-content-between detail-footer">
               <div className="detail-name">
-                <span>{day?.EntityName}</span>
+                <span>{day?.customer_name}</span>
               </div>
               <div className="detail-name align-left-always">
                 <p>
                   <span className="circle-dp">
-                    {getNameInitials(day?.AssignedName)}
+                    {getNameInitials(day?.assign_to_name)}
                   </span>{" "}
-                  <span className="user-name">{day?.AssignedName}</span>
+                  <span className="user-name">{day?.assign_to_name}</span>
                 </p>
               </div>
             </div>

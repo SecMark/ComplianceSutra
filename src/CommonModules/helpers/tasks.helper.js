@@ -52,11 +52,7 @@ const getDataByStatus = (task_details) => {
     switch (filter) {
       case "Overdue":
         tasksByStatus = [...tasks].filter((task) => {
-          if (
-            task.status !== "Completed" &&
-            task.status !== "Rejected" &&
-            task.status !== "Approved"
-          ) {
+          if (task.status !== "Approved") {
             const taskDueDate = moment(
               task.due_date || task.deadline_date,
               "YYYY-MM-DD"
@@ -70,11 +66,7 @@ const getDataByStatus = (task_details) => {
         break;
       case "Upcoming":
         tasksByStatus = [...tasks].filter((task) => {
-          if (
-            task.status !== "Completed" &&
-            // task.status !== "Rejected"
-            task.status !== "Approved"
-          ) {
+          if (task.status !== "Approved") {
             const taskDueDate = moment(
               task.due_date || task.deadline_date,
               "YYYY-MM-DD"

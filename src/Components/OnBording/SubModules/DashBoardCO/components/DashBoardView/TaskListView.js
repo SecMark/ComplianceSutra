@@ -1655,7 +1655,7 @@ function RightSideGrid({
                       className="take-action"
                       style={{ height: "72vh", overflowY: "hidden" }}
                     >
-                      {taskData && taskData.length > 0 && (
+                      {listTaskData && listTaskData.length > 0 && (
                         <div className="task-list-grid">
                           <BoardView
                             setCurrentBoardViewBy={setCurrentBoardViewBy}
@@ -2033,7 +2033,7 @@ function RightSideGrid({
                                           {rowCount[item.status] > 3 && (
                                             <div
                                               onClick={() =>
-                                                showLessMore(item.Status, 3)
+                                                showLessMore(item.status, 3)
                                               }
                                               className="viewAll showLess"
                                             >
@@ -2048,7 +2048,7 @@ function RightSideGrid({
                                             <div
                                               onClick={() =>
                                                 showLessMore(
-                                                  item.Status,
+                                                  item.status,
                                                   item.tasks.length
                                                 )
                                               }
