@@ -292,14 +292,16 @@ function CoSettingRightGrid({ handleClose, history }) {
 
   const resendOTP = () => {
     setShowResendSection(false);
-    let payload = {
-      mobile_number: values.mobile_no,
+    let payload ={};
+    let MobNowithCountryCode = values.countrycode + values.mobile_no
+    payload = {
+      mobile_number: MobNowithCountryCode,
     };
     api
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.statuscode === "200") {
+        if (response && response.status === 200) {
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
@@ -360,7 +362,7 @@ function CoSettingRightGrid({ handleClose, history }) {
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
-          if (response && response.data && response.data.message) {
+          if (response && response.data && response.data.message.status || response.data.message === true) {
             setOtpInValid(true);
             setIsOtpVerfied(true);
             setOtpModal(false);
@@ -385,15 +387,15 @@ function CoSettingRightGrid({ handleClose, history }) {
   const sendOTPRequest = (text) => {
     setDisabled(true);
     let payload = {};
+    let MobNowithCountryCode = values.countrycode + values.mobile_no
     payload = {
-      mobile_number: values.mobile_no,
+      mobile_number: MobNowithCountryCode,
     };
 
     api
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        console.log("got this response", response);
         if (response && response.status === 200) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
