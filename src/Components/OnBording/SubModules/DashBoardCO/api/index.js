@@ -39,7 +39,7 @@ const postCodetailsInsUpdDel = (payload) =>
   api.post("compliance.api.setUserDetails", payload);
 
 const GetEntityLicenseTask = (payload) =>
-  api.post("api/GetEntityLicenseTask", payload);
+  api.get("compliance.api.getCompanyDetails");
 
 const GetCOCompanyType = (payload) => api.post("api/BindCompanyType", payload);
 

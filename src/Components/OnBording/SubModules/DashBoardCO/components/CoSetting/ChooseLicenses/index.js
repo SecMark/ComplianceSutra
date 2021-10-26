@@ -28,9 +28,9 @@ function ChooseLicenses({ fields, close }) {
   useEffect(() => {
     dispatch(
       coActions.getCompanyTypeRequest({
-        country: "INDIA",
+        country: "India",
         category: fields.category,
-        eid: "",
+  
       })
     )
 

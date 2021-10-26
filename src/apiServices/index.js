@@ -11,6 +11,7 @@ axiosInstance.interceptors.request.use(
     if (auth) {
       config.headers = {
         Authorization: `Basic ${auth}`,
+        // Authorization:'Basic OWE2MzcwOTczZjZlNTBlOmZkMzJlMjBjNzVhODkxOA=='
       };
     }
     return config;

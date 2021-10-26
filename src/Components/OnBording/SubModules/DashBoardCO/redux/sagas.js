@@ -303,7 +303,7 @@ const getCoEntityLicenseTask = function* getCoEntityLicenseTask({ payload }) {
     let statusCode = data && data[0] && data[0].StatusCode;
     if (status === 200 && statusCode != false) {
       yield put(
-        actions.getEntityLicenseTaskRequestSuccess({ entityLicenseInfo: data })
+        actions.getEntityLicenseTaskRequestSuccess({ entityLicenseInfo: data.message.company_details_list})
       );
     } else {
       yield put(
