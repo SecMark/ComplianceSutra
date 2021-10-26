@@ -35,7 +35,14 @@ export default function AssignedView(props) {
   useEffect(() => {
     if (taskList && taskList.length !== 0) {
       const taskByCompany = getDataByCompany(taskList);
+      let tempRowCount = {};
       setCompanyTaskData(taskByCompany);
+      [...taskByCompany].forEach((item) => {
+        if (item.tasks && item.tasks.length > 0) {
+          tempRowCount[item.status.trim()] = 3;
+        }
+      });
+      setAssignRowCount(tempRowCount);
     } else {
       dispatch(taskReportActions.taskReportRequest());
     }
@@ -672,7 +679,7 @@ export default function AssignedView(props) {
                                     {item.tasks.length}
                                   </p>
                                 </span>
-                                {expandedFlags.includes(index) ? (
+                                {!expandedFlags.includes(index) ? (
                                   <img
                                     src={upArrow}
                                     className="arrowDown"
@@ -779,8 +786,8 @@ export default function AssignedView(props) {
                           {item.status}
                         </div>
                       </div>
-                      {item.status.trim() != "overdue" &&
-                        (item.status.trim() === "Pending"
+                      {item.status.trim() !== "Ovedue" &&
+                        (item.status.trim() === "Take Action"
                           ? true
                           : !expandedFlags.includes(index)) && (
                           <>

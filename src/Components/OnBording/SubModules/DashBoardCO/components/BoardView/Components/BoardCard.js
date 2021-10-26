@@ -139,13 +139,6 @@ function CustomCard(props) {
       )
     );
   };
-  const getSelectTaskDetails = (task) => {
-    dispatch(
-      taskReportActions.taskReportByIdRequestSuccess({
-        taskReportById: task,
-      })
-    );
-  };
   return (
     <div className="">
       {currentItem ? (
@@ -153,28 +146,20 @@ function CustomCard(props) {
           style={{
             maxWidth: "100%",
             pointerEvents: `${userDetails.UserType === 6 ? "none" : "auto"}`,
+            cursor: "pointer",
           }}
           className="board-tab-design"
         >
-          <Link
-            to={"/dashboard"}
-            onClick={() => getSelectTaskDetails(currentItem)}
-            // onClick={() => {
-            //   redirectToTaskListView(currentItem);
-            // }}
+          <div
+            onClick={() => {
+              redirectToTaskListView(currentItem);
+            }}
           >
             <div style={defineStyle(props)} className="risk-pink-grid">
               <div className="nse-label">
                 {currentItem && currentItem.license}
               </div>
               <div className="w-100 d-flex pb-20">
-                {/* <div className="checkIcon">
-                                <img
-                                    className="three-dot three-dot-small"
-                                    src={mobileSteperIcon}
-                                    alt="three Dots Icon"
-                                />
-                            </div> */}
                 <div className="checkIconText">
                   {currentItem && currentItem.subject}
                 </div>
@@ -222,7 +207,7 @@ function CustomCard(props) {
                 </div>
               </div>
             </div>
-          </Link>
+          </div>
         </div>
       ) : (
         <div className="board-tab-design">

@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { actions as taskReportActions } from "../../../redux/actions";
 import { getDataByLicenses } from "../../../../../../../CommonModules/helpers/tasks.helper";
-import axiosInstance from "../../../../../../../apiServices";
 export default function LicenseTaskList(props) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -31,7 +30,14 @@ export default function LicenseTaskList(props) {
   useEffect(() => {
     if (taskList && taskList.length !== 0) {
       const taskByCompany = getDataByLicenses(taskList);
+      let tempRowCount = {};
+      [...taskByCompany].forEach((item) => {
+        if (item.tasks && item.tasks.length > 0) {
+          tempRowCount[item.status.trim()] = 3;
+        }
+      });
       setCompanyTaskData(taskByCompany);
+      setAssignRowCount(tempRowCount);
     } else {
       dispatch(taskReportActions.taskReportRequest());
     }
@@ -676,7 +682,7 @@ export default function LicenseTaskList(props) {
                                     {item.tasks.length}
                                   </p>
                                 </span>
-                                {expandedFlags.includes(index) ? (
+                                {!expandedFlags.includes(index) ? (
                                   <img
                                     src={upArrow}
                                     className="arrowDown"
