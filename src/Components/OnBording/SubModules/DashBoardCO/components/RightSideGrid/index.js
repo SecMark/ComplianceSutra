@@ -189,8 +189,6 @@ function RightSideGrid({
     if (getTaskById && Object.keys(getTaskById).length !== 0) {
       setCurrentOpenedTask(getTaskById);
       setIsTaskListOpen(true);
-      setDisplayTask("1");
-      setTaskListDisplay("1");
     }
   }, [getTaskById]);
   useEffect(() => {
@@ -407,6 +405,7 @@ function RightSideGrid({
       setSelectedUser("");
     }
   });
+
   const userDetails = state && state.auth && state.auth.loginInfo;
 
   const getCommentsbyId =
@@ -6981,15 +6980,10 @@ function RightSideGrid({
                                       currentOpenedTask.task_name !==
                                         undefined && (
                                         <a
-                                          target="_blank"
-                                          rel="noreferrer"
-                                          href={
-                                            new URL(BACKEND_BASE_URL).origin +
-                                            files.file_url
-                                          }
+                                          href={`data:application/${files.file_name.split('.').pop()};base64,${files.encoded_string}`}
                                           style={{ textDecoration: "none" }}
                                           className="file-download-title pointer d-flex"
-                                          // download={files.file_name}
+                                          download={files.file_name}
                                         >
                                           download{" "}
                                           <span className="d-none d-md-block">
