@@ -25,6 +25,7 @@ import axiosInstance from "../../../apiServices";
 import { actions as taskReportActions } from "../../OnBording/SubModules/DashBoardCO/redux/actions";
 import { getAllTasks } from "../../../CommonModules/helpers/tasks.helper";
 
+
 const View = ({ getSelectTaskDetails, isRedirect }) => {
   const [activeDays, setActiveDays] = useState(constant.week);
   const [dayDate, setDayDate] = useState(new Date());
@@ -39,6 +40,7 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
   const userDetails = state && state.auth && state.auth.loginInfo;
   const { daysData, weekData, monthData } = state.CalenderReducer;
   const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
+
   const [allTaskList, setAllTaskList] = useState([]);
 
   const taskList =
@@ -53,6 +55,7 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
       dispatch(taskReportActions.taskReportRequest());
     }
   }, [taskList]);
+
 
   const viewBy = [
     {
@@ -72,10 +75,12 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
     },
   ];
 
+
   useEffect(() => {
     fetchDayData();
     fetchWeekData();
     fetchMonthData();
+
     getMonths();
   }, []);
   useEffect(() => {
@@ -85,8 +90,10 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
   }, [weekStartDate]);
 
   useEffect(() => {
+
     // dispatch(clearState());
     fetchDayData();
+
   }, [dayDate]);
 
   //Get Days from start date to end date.
@@ -231,7 +238,7 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
     setDays(constant.day, constant.increment);
     setActiveDays(constant.day);
     setDayDate(newDate);
-    fetchDayData();
+    // fetchDayData();
   };
 
   return (
@@ -323,7 +330,7 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
       {activeDays === constant.week && (
         <WeekView
           sevenDays={sevenDays}
-          weekData={weekData}
+          weekData={weekTaskList}
           goToDateDay={goToDateDay}
           userDetails={userDetails}
         />

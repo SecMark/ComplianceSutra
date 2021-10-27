@@ -2,23 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import ReAssignTasksModal from "../../../../../../ReAssignTasks";
 import api from "../../../../../../../apiServices";
-import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
-import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
 import redCheck from "../../../../../../../assets/Icons/redCheck.png";
-import grayCheck from "../../../../../../../assets/Icons/grayCheck.png";
 import greenCheck from "../../../../../../../assets/Icons/greenCheck.png";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import changeRoleClose from "../../../../../../../assets/Icons/changeRoleClose.png";
 import dropDownIcon from "../../../../../../../assets/Icons/dropDownIcon.png";
-import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
-import smallClose from "../../../../../../../assets/Icons/smallClose.png";
-import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
 import threeDots from "../../../../../../../assets/Icons/threeDots.PNG";
 import teamSearch from "../../../../../../../assets/Icons/teamSearch.png";
 import closeIconGray from "../../../../../../../assets/Icons/closeIconGray.png";
 import searchIcon from "../../../../../../../assets/Icons/searchIcon.png";
-import circleDot from "../../../../../../../assets/Icons/circleDot.png";
-import { actions as teamactions } from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useOuterClick } from "../../RightSideGrid/outerClick";
 import { Modal } from "react-responsive-modal";
@@ -26,6 +18,10 @@ import Dropdown from "react-dropdown";
 import { toast } from "react-toastify";
 import "react-responsive-modal/styles.css";
 import { isEmail } from "../../../../AssignTask/utils";
+import axiosInstance from "../../../../../../../apiServices";
+import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
+import Searchable from "react-searchable-dropdown";
+import BackDrop from "../../../../../../../CommonModules/sharedComponents/Loader/BackDrop";
 
 var _ = require("lodash");
 
@@ -46,9 +42,9 @@ function CoManagment({ handleClose }) {
   ];
 
   const optionsInputBoxRole = [
-    { value: "4", label: "Team Member" },
-    { value: "3", label: "Compliance Officer" },
-    { value: "5", label: "Approver" },
+    { value: 4, label: "Team Member" },
+    { value: 3, label: "Compliance Officer" },
+    { value: 5, label: "Approver" },
   ];
 
   const roleOptionMobile = [
@@ -74,7 +70,7 @@ function CoManagment({ handleClose }) {
   const [searchText, setSearchText] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [inputTeamMember, setInputTeamMember] = useState({
-    fullName: "",
+    full_name: "",
     email: "",
     role: [],
   });
@@ -86,15 +82,13 @@ function CoManagment({ handleClose }) {
 
   const [fields, setFields] = useState([
     {
-      id: "",
-      index: 0,
-      initialsName: "",
-      fullName: "",
-      role: "",
-      roleDropDown: "",
+      first_name: "",
+      last_name: "",
+      full_name: "",
+      designation: "",
       email: "",
-      mobileNuber: "",
-      showAcceptDelectIcon: false,
+      mobile_no: "",
+      countrycode: "",
     },
   ]);
 
@@ -111,7 +105,7 @@ function CoManagment({ handleClose }) {
       id: "",
       index: 0,
       initialsName: "",
-      fullName: "",
+      full_name: "",
       role: "",
       UserType: "",
       roleDropDown: "",
@@ -128,7 +122,7 @@ function CoManagment({ handleClose }) {
       id: "",
       index: 0,
       initialsName: "",
-      fullName: "",
+      full_name: "",
       role: "",
       UserType: "",
       roleDropDown: "",
@@ -149,44 +143,23 @@ function CoManagment({ handleClose }) {
     useState(false);
   const [reAssignUserType, setReAssignUserType] = useState(null);
   const [reAssignUserId, setReAssignUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangeInput = (e) => {};
 
   useEffect(() => {
     getSettingData();
     setFilterOption(filterOptions[0]);
+    setIsLoading(true);
   }, []);
-  // useEffect(() => {
-  //     dispatch(adminMenuActions.setActiveTabInSetting("team-member"))
-  // }, [])
 
-  const getSettingData = () => {
-    const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
-      settingType: 6,
-      actionFlag: 0,
-      entityID: 0,
-      licID: 0,
-      uUserID: 0,
-      utype: 0,
-      // notificationList: "",
-      // pwd: "",
-      fullName: "",
-      emailID: "",
-      // mobile: "",
-    };
-    api
-      .post("/api/CoSettings", payload)
-      .then(function (response) {
-        if (response && response.data && response.data.length > 0) {
-          setMemberData(response.data);
-        } else {
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-        }
-      });
+  const getSettingData = async () => {
+    const { data } = await axiosInstance.post(
+      `${BACKEND_BASE_URL}compliance.api.getUserList`
+    );
+    const { message } = data;
+    setMemberData(message);
+    setIsLoading(false);
   };
   const onChangeRoleClick = (type, item, index) => {
     if (item.id) {
@@ -259,17 +232,19 @@ function CoManagment({ handleClose }) {
     if (teamMemberData && teamMemberData.length > 0) {
       teamMemberData.map((item, index) => {
         let obj = {
-          id: item.UserID,
+          id: index,
           index: index,
-          fullName: item.FullName,
+          full_name: item.full_name,
           initialsName: getInitials(
-            item.FullName && item.FullName.toUpperCase()
+            item.full_name && item.full_name.toUpperCase()
           ),
-          role: item.UserRole,
+          role: item.user_type.map((types) => types.role).toString(),
           roleDropDown: "",
-          UserType: item.UserType,
-          email: item.EmailID,
-          mobileNuber: item.Mobile,
+          UserType: item.user_type
+            .map((types) => types.user_type_no)
+            .toString(),
+          email: item.email,
+          mobileNuber: item.mobile_no,
           showAcceptDelectIcon: false,
         };
         fieldArray.push(obj);
@@ -292,7 +267,7 @@ function CoManagment({ handleClose }) {
       utype: 0,
       // notificationList: "",
       // pwd: "",
-      fullName: "",
+      full_name: "",
       emailID: "",
       // mobile: "",
     };
@@ -382,10 +357,10 @@ function CoManagment({ handleClose }) {
 
       data = filterData.filter((field) => {
         return (
-          field.email.toLowerCase().includes(value.toLowerCase()) ||
-          field.role.toLowerCase().includes(value.toLowerCase()) ||
-          field.fullName.toLowerCase().includes(value.toLowerCase()) ||
-          field.mobileNuber.toLowerCase().includes(value.toLowerCase())
+          field?.email?.toLowerCase().includes(value.toLowerCase()) ||
+          field?.role?.toLowerCase().includes(value.toLowerCase()) ||
+          field?.full_name?.toLowerCase().includes(value.toLowerCase()) ||
+          field?.mobileNuber?.toLowerCase().includes(value.toLowerCase())
         );
       });
 
@@ -422,17 +397,18 @@ function CoManagment({ handleClose }) {
   };
 
   const _filterBy = (filterOption, mobileFilter) => {
+    console.log(fieldArray);
     let data = [];
     if (mobileFilter === undefined) {
       setFilterOption(filterOption);
       if (filterOption.value === "za") {
         data = _.values(fieldArray).sort((a, b) =>
-          b.fullName.localeCompare(a.fullName)
+          b.full_name.localeCompare(a.full_name)
         );
         setFields(data);
       } else if (filterOption.value === "az") {
         data = _.values(fieldArray).sort((a, b) =>
-          a.fullName.localeCompare(b.fullName)
+          a.full_name.localeCompare(b.full_name)
         );
         setFields(data);
       } else if (filterOption.value === "0") {
@@ -440,17 +416,17 @@ function CoManagment({ handleClose }) {
         setFields(list);
       } else if (filterOption.value === "3") {
         data = fieldArray.filter(function (item) {
-          return item.UserType === parseInt(filterOption.value);
+          return item.UserType.includes(parseInt(filterOption.value));
         });
         setFields(data);
       } else if (filterOption.value === "4") {
         data = fieldArray.filter(function (item) {
-          return item.UserType === parseInt(filterOption.value);
+          return item.UserType.includes(parseInt(filterOption.value));
         });
         setFields(data);
       } else if (filterOption.value === "5") {
         data = fieldArray.filter(function (item) {
-          return item.UserType === parseInt(filterOption.value);
+          return item.UserType.includes(parseInt(filterOption.value));
         });
         setFields(data);
       }
@@ -458,12 +434,12 @@ function CoManagment({ handleClose }) {
       setShowMobileFilter(false);
       if (filterOption === "za") {
         data = _.values(fieldArray).sort((a, b) =>
-          b.fullName.localeCompare(a.fullName)
+          b.full_name.localeCompare(a.full_name)
         );
         setFields(data);
       } else if (filterOption === "az") {
         data = _.values(fieldArray).sort((a, b) =>
-          a.fullName.localeCompare(b.fullName)
+          a.full_name.localeCompare(b.full_name)
         );
         setFields(data);
       } else if (filterOption === "0") {
@@ -519,7 +495,7 @@ function CoManagment({ handleClose }) {
       utype: userType ? parseInt(userType) : 0,
       // notificationList: "",
       // pwd: "",
-      fullName: "",
+      full_name: "",
       emailID: "",
       // mobile: "",
     };
@@ -560,7 +536,13 @@ function CoManagment({ handleClose }) {
   };
 
   const handleChangeInputBoxRole = (value) => {
-    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
+    const newValue = value.map((types) => {
+      return {
+        role: optionsInputBoxRole.filter((role) => role.value === types)[0]
+          .label,
+      };
+    });
+    setInputTeamMember({ ...inputTeamMember, ["role"]: newValue });
   };
 
   const handleChangeInputBoxRoleMobile = (value) => {
@@ -568,7 +550,13 @@ function CoManagment({ handleClose }) {
   };
 
   const handleChangeRoleMobile = (value) => {
-    setInputTeamMember({ ...inputTeamMember, ["role"]: value });
+    const newValue = value.map((types) => {
+      return {
+        role: optionsInputBoxRole.filter((role) => role.value === types)[0]
+          .label,
+      };
+    });
+    setInputTeamMember({ ...inputTeamMember, ["role"]: newValue });
     onConfirmChangeRole(currentRow, openPopupIndex, value);
     closeChangeRole();
   };
@@ -576,7 +564,7 @@ function CoManagment({ handleClose }) {
     setIsValidEmail(true);
     setAlreadyExist(false);
     const { name, value } = e.target;
-    if (name === "fullName") {
+    if (name === "full_name") {
       const re = /^[a-z|A-Z_ ]*$/;
       if (e.target.value && !re.test(e.target.value)) {
         return "";
@@ -597,15 +585,12 @@ function CoManagment({ handleClose }) {
       if (emailAssign === undefined) {
         setAlreadyExist(false);
         let payload = {
-          loginID: e.target.value,
-          pwd: "",
-          rememberme: 0,
-          loginty: "AdminEmail",
+          email: e.target.value,
         };
-        await api
-          .post("/api/availabilityCheck", payload)
+        await axiosInstance
+          .post(`${BACKEND_BASE_URL}compliance.api.avabilityCheck`, payload)
           .then(function (response) {
-            if (response && response.data && response.data.Status === "True") {
+            if (response && response.data && response.data.message.status) {
               setIsValidEmail(false);
             } else {
               setIsValidEmail(true);
@@ -621,11 +606,11 @@ function CoManagment({ handleClose }) {
     }
   };
   const checkButtonDisabled = () => {
+    console.log(inputTeamMember);
     let isNext = true;
     if (
-      inputTeamMember.fullName === "" ||
+      inputTeamMember.full_name === "" ||
       inputTeamMember.email === "" ||
-      inputTeamMember.role.length === 0 ||
       !isEmail(inputTeamMember.email)
     ) {
       isNext = false;
@@ -679,8 +664,9 @@ function CoManagment({ handleClose }) {
   };
   const onsubmit = (str) => {
     setIsValidate(true);
+    setIsLoading(true);
     if (
-      inputTeamMember.fullName === "" ||
+      inputTeamMember.full_name === "" ||
       inputTeamMember.email === "" ||
       !isEmail(inputTeamMember.email) ||
       inputTeamMember.role.length === 0 ||
@@ -690,36 +676,34 @@ function CoManagment({ handleClose }) {
     }
     let _userRole = inputTeamMember.role;
     setIsValidate(false);
-    const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
-      settingType: 6,
-      actionFlag: 1,
-      entityID: 0,
-      licID: 0,
-      uUserID: 0,
-      utype:
-        _userRole && typeof _userRole === "object"
-          ? parseInt(_userRole.value)
-          : parseInt(_userRole),
-      // notificationList: "",
-      // pwd: "",
-      fullName: inputTeamMember.fullName,
-      emailID: inputTeamMember.email,
-      // mobile: ""
+    console.log(inputTeamMember);
+    const details = {
+      first_name: inputTeamMember.full_name,
+      last_name: null,
+      full_name: inputTeamMember.full_name,
+      designation: null,
+      email: inputTeamMember.email,
+      mobile_no: null,
+      countrycode: null,
+      user_type: _userRole,
     };
+
     if (_userRole) {
-      api
-        .post("/api/CoSettings", payload)
+      setIsLoading(true);
+      axiosInstance
+        .post(`${BACKEND_BASE_URL}compliance.api.setUser`, { details })
         .then(function (response) {
-          if (response && response.data) {
-            if (response.data.Status === false) {
+          if (response && response.data.message) {
+            if (response.data.message.status === false) {
               toast.error("Something went wrong !!!");
+              setIsLoading(false);
             } else {
+              setIsLoading(false);
               toast.success("The invitation has been sent through email");
               setTimeout(() => {
                 setAddNew(false);
                 setInputTeamMember({
-                  fullName: "",
+                  full_name: "",
                   email: "",
                   role: [],
                 });
@@ -735,12 +719,14 @@ function CoManagment({ handleClose }) {
         })
         .catch(function (error) {
           if (error) {
+            setIsLoading(false);
           }
         });
     }
   };
   return (
     <div className="co-team-member">
+      <BackDrop isLoading={isLoading} />
       <ReAssignTasksModal
         openModal={isShowReAssignModal}
         setShowModal={setIsShowReAssignModal}
@@ -828,7 +814,7 @@ function CoManagment({ handleClose }) {
           <div className="mobile-py">
             <div className="d-flex position-relative">
               <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
-                <div className="personal-mgt-title">Team Members</div>
+                <div className="personal-mgt-title">Team Memberss</div>
               </div>
               <div className="col-2 col-sm-12 col-md-12 col-xl-12 d-block d-md-none">
                 <img
@@ -843,29 +829,6 @@ function CoManagment({ handleClose }) {
             </div>
           </div>
           <div className="scroll-personal-grid position-relative">
-            {/* <div className="">
-                    <div className="col-12">
-                    <div className="right-search-bar searchBox">
-                        <div className="input-group form-group">
-                            <img className="IconGrayInput" src={searchIcon} alt="team Search Icon" />
-
-                            <input
-                                className="form-control"
-                                type="text"
-                                placeholder="Search by name, email and number"
-                                value=""
-                                
-                            />
-                            <span className="input-group-append">
-                                <button className="btn border-start-0 border-top-0 border-bottom-0 border-0 ms-n5" type="button">
-                                    <img src={closeIconGray} alt="team Search Icon" />
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                    <br /> */}
             <div className="d-flex position-relative">
               <div className="col-4 col-sm-2 col-md-2 col-xl-2 pl-0">
                 {userDetails && userDetails.UserType !== 6 ? (
@@ -989,120 +952,123 @@ function CoManagment({ handleClose }) {
             </div>
             {fields &&
               fields.length > 0 &&
-              fields.map((item, index) => (
-                <div className="team-member-list">
-                  <div className="d-flex">
-                    <div className="left-side-circleName">
-                      <div className="col-12 pl-0">
-                        <div className="holding-list-bold-title-background">
-                          <span className="circle-dp">
-                            {getInitials(item.fullName)}
-                          </span>{" "}
-                          {item.fullName}{" "}
+              fields.map((item, index) => {
+                return (
+                  <div className="team-member-list">
+                    <div className="d-flex">
+                      <div className="left-side-circleName">
+                        <div className="col-12 pl-0">
+                          <div className="holding-list-bold-title-background">
+                            <span className="circle-dp">
+                              {getInitials(item.full_name)}
+                            </span>{" "}
+                            {item.full_name}{" "}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="left-side-circleName">
+                        <div className="col-10 pl-0">
+                          <div className="roleEmailText">
+                            {item.designation}
+                          </div>
+                        </div>
+                        <div className="col-2 pl-0">
+                          {item.showAcceptDelectIcon === false &&
+                            teamMemberData &&
+                            teamMemberData.length > 0 && (
+                              <img
+                                className="three-dot"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                  setReAssignUserType(
+                                    fieldArray.filter(
+                                      (users) => users.id === item.id
+                                    )[0].UserType
+                                  );
+                                  setReAssignUserId(item.id);
+                                  if (openPopupIndex !== "") {
+                                    setOpenPopupIndex("");
+                                  } else {
+                                    openPopup(index);
+                                  }
+                                }}
+                                src={threeDots}
+                                alt="three Dots Icon"
+                              />
+                            )}
+
+                          {openPopupIndex !== "" && openPopupIndex === index && (
+                            <div
+                              ref={innerRef}
+                              className="three-dot-tooltip"
+                              style={{
+                                height: `${
+                                  userDetails && userDetails.UserType === 6
+                                    ? "44px"
+                                    : "177px"
+                                }`,
+                              }}
+                            >
+                              <div
+                                className="change-role"
+                                onClick={() => {
+                                  MoreDetails(item);
+                                  setOpenPopupIndex("");
+                                }}
+                              >
+                                More details
+                              </div>
+                              {userDetails && userDetails.UserType !== 6 && (
+                                <>
+                                  <div
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => {
+                                      onChangeRoleClick("mobile", item, index);
+                                      // changeRoleMobile(item, index);
+                                      // setOpenPopupIndex("");
+                                    }}
+                                    className="change-role"
+                                  >
+                                    Change role
+                                  </div>
+                                  <div
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => {
+                                      setIsShowReAssignModalMobile(true);
+                                      setOpenPopupIndex("");
+                                    }}
+                                    className="change-role"
+                                  >
+                                    Re-Assign
+                                  </div>
+
+                                  <div
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => {
+                                      setVisible(true);
+                                      setDeleteMemberIndex(index);
+                                      setOpenPopupIndex("");
+                                    }}
+                                    className="delete-member"
+                                  >
+                                    Delete member
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
-                    <div className="left-side-circleName">
-                      <div className="col-10 pl-0">
-                        <div className="roleEmailText">{item.role}</div>
-                      </div>
-                      <div className="col-2 pl-0">
-                        {item.showAcceptDelectIcon === false &&
-                          teamMemberData &&
-                          teamMemberData.length > 0 && (
-                            <img
-                              className="three-dot"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setReAssignUserType(
-                                  fieldArray.filter(
-                                    (users) => users.id === item.id
-                                  )[0].UserType
-                                );
-                                setReAssignUserId(item.id);
-                                if (openPopupIndex !== "") {
-                                  setOpenPopupIndex("");
-                                } else {
-                                  openPopup(index);
-                                }
-                              }}
-                              src={threeDots}
-                              alt="three Dots Icon"
-                            />
-                          )}
-
-                        {openPopupIndex !== "" && openPopupIndex === index && (
-                          <div
-                            ref={innerRef}
-                            className="three-dot-tooltip"
-                            style={{
-                              height: `${
-                                userDetails && userDetails.UserType === 6
-                                  ? "44px"
-                                  : "177px"
-                              }`,
-                            }}
-                          >
-                            <div
-                              className="change-role"
-                              onClick={() => {
-                                MoreDetails(item);
-                                setOpenPopupIndex("");
-                              }}
-                            >
-                              More details
-                            </div>
-                            {userDetails && userDetails.UserType !== 6 && (
-                              <>
-                                <div
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => {
-                                    onChangeRoleClick("mobile", item, index);
-                                    // changeRoleMobile(item, index);
-                                    // setOpenPopupIndex("");
-                                  }}
-                                  className="change-role"
-                                >
-                                  Change role
-                                </div>
-                                <div
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => {
-                                    setIsShowReAssignModalMobile(true);
-                                    setOpenPopupIndex("");
-                                  }}
-                                  className="change-role"
-                                >
-                                  Re-Assign
-                                </div>
-
-                                <div
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => {
-                                    setVisible(true);
-                                    setDeleteMemberIndex(index);
-                                    setOpenPopupIndex("");
-                                  }}
-                                  className="delete-member"
-                                >
-                                  Delete member
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        )}
-                      </div>
+                    <div className="row">
+                      <div className="bottom-line"></div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="bottom-line"></div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
           </div>
         </div>
       </div>
-
       <div id="moreDetailsParent" className="">
         <div id="moreDetailsChild" className="bottomBarFixedMoreDetails">
           <div className="change-role-mobile">
@@ -1144,7 +1110,6 @@ function CoManagment({ handleClose }) {
           )}
         </div>
       </div>
-
       <div id="drawerParent" className="">
         <div id="drawerChild" className="bottomBarFixedChangeRole">
           <div className="change-role-mobile">
@@ -1163,28 +1128,17 @@ function CoManagment({ handleClose }) {
               <span className="role-text">Role</span>
             </div>
             <div className="col-10 pl-0">
-              <Dropdown
-                style={{ width: 240 }}
-                onChange={(value) => handleChangeRoleMobile(value)}
-                arrowClosed={<span className="arrow-closed" />}
-                arrowOpen={<span className="arrow-open" />}
-                options={roleOptionMobile}
-                value={roleTitle}
-                placeholder="Select role"
+              <Searchable
+                className=""
+                placeholder="Select Role"
+                notFoundText="No result found"
+                listMaxHeight={200}
+                multiple={true}
+                options={optionsInputBoxRole}
+                onSelect={(value) => handleChangeRoleMobile(value)}
               />
             </div>
           </div>
-          {/* <div className="d-flex row">
-                    
-                        <div className="col-2"><span className="role-text">Email:</span></div>
-                        <div className="col-10 pl-0"><span className="user-email-right-mobile">animeshmishra@bnksecurities.com</span></div>
-                    </div>
-                    <div className="d-flex row">
-                    
-                        <div className="col-2"><span className="role-text">Mobile:</span></div>
-                        <div className="col-10 pl-0"><span className="user-email-right-mobile">+91 9876543211</span></div>
-                    </div> */}
-          {/* <span onClick={() => closeMoreDetails()}>More Deatils</span> */}
         </div>
       </div>
       {/* <div className="border-header"></div> */}
@@ -1206,13 +1160,13 @@ function CoManagment({ handleClose }) {
               <label className="label-mobile">Full name</label>
               <input
                 type="text"
-                name="fullName"
-                value={inputTeamMember.fullName}
-                onChange={onChangeHandler("fullName")}
+                name="full_name"
+                value={inputTeamMember.full_name}
+                onChange={onChangeHandler("full_name")}
                 className="form-control countryCode-sucess"
                 placeholder="Enter member's full name"
               />
-              {isValidate && inputTeamMember.fullName === "" && (
+              {isValidate && inputTeamMember.full_name === "" && (
                 <p className="input-error-message">Member name is required</p>
               )}
             </div>
@@ -1248,18 +1202,15 @@ function CoManagment({ handleClose }) {
             </div>
             <div className="form-group">
               <label className="label-mobile">Role</label>
-              <Dropdown
-                style={{ width: 240 }}
-                onChange={(value) => handleChangeInputBoxRoleMobile(value)}
-                arrowClosed={<span className="arrow-closed" />}
-                arrowOpen={<span className="arrow-open" />}
+
+              <Searchable
+                className=""
+                placeholder="Select Role"
+                notFoundText="No result found"
+                listMaxHeight={200}
+                multiple={true}
                 options={optionsInputBoxRole}
-                value={
-                  inputTeamMember.role.length === 0
-                    ? null
-                    : inputTeamMember.role
-                }
-                placeholder="Select role"
+                onSelect={(value) => handleChangeRoleMobile(value)}
               />
             </div>
           </div>
@@ -1288,7 +1239,7 @@ function CoManagment({ handleClose }) {
                 onClick={() => {
                   closeMemberMobilePOP();
                   setInputTeamMember({
-                    fullName: "",
+                    full_name: "",
                     email: "",
                     role: [],
                   });
@@ -1303,9 +1254,6 @@ function CoManagment({ handleClose }) {
       </div>
       <div className="scroll-personal-grid d-none d-md-block position-relative">
         <table className="table co-company-details-tbl table_legenda">
-          {/* <caption className="add-company-link">
-                        Add another company
-    </caption> */}
           <thead>
             <tr>
               <th className="tw-30" clscope="col">
@@ -1333,13 +1281,13 @@ function CoManagment({ handleClose }) {
                   <div className="form-group mb-0">
                     <input
                       type="text"
-                      name="fullName"
-                      value={inputTeamMember.fullName}
-                      onChange={onChangeHandler("fullName")}
+                      name="full_name"
+                      value={inputTeamMember.full_name}
+                      onChange={onChangeHandler("full_name")}
                       className="form-control countryCode-sucess full-btn-tabel"
                       placeholder="Enter member's full name"
                     />
-                    {isValidate && inputTeamMember.fullName === "" && (
+                    {isValidate && inputTeamMember.full_name === "" && (
                       <p className="input-error-message absPosition">
                         Member name is required
                       </p>
@@ -1347,7 +1295,16 @@ function CoManagment({ handleClose }) {
                   </div>
                 </td>
                 <td>
-                  <Dropdown
+                  <Searchable
+                    className=""
+                    placeholder="Select Role"
+                    notFoundText="No result found"
+                    listMaxHeight={200}
+                    multiple={true}
+                    options={optionsInputBoxRole}
+                    onSelect={(value) => handleChangeInputBoxRole(value)}
+                  />
+                  {/* <Dropdown
                     style={{ width: 240 }}
                     onChange={(value) => handleChangeInputBoxRole(value)}
                     arrowClosed={<span className="arrow-closed" />}
@@ -1359,7 +1316,7 @@ function CoManagment({ handleClose }) {
                         : inputTeamMember.role
                     }
                     placeholder="Select role"
-                  />
+                  /> */}
                 </td>
 
                 <td>
@@ -1421,7 +1378,7 @@ function CoManagment({ handleClose }) {
                     onClick={() => {
                       setAddNew(false);
                       setInputTeamMember({
-                        fullName: "",
+                        full_name: "",
                         email: "",
                         role: [],
                       });
@@ -1437,11 +1394,11 @@ function CoManagment({ handleClose }) {
               fields.length > 0 &&
               fields.map((item, index) => (
                 <tr className="focusRemove">
-                  {item && item.fullName !== "" && (
+                  {item && item.full_name !== "" && (
                     <td>
                       <div className="holding-list-bold-title-background">
                         <span className="circle-dp">{item.initialsName}</span>{" "}
-                        <div className="nameCirle"> {item.fullName} </div>
+                        <div className="nameCirle"> {item.full_name} </div>
                       </div>
                     </td>
                   )}

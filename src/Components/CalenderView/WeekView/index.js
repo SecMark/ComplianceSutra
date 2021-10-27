@@ -32,6 +32,7 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
           <tr>
             {sevenDays &&
               sevenDays.map((data) => {
+               
                 const startDate = moment(data?.date).format("YYYY-MM-DD");
                 const filterList = weekData.filter((details) => {
                   return (

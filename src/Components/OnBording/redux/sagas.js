@@ -566,6 +566,7 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
   payload,
 }) {
   try {
+    localStorage.setItem("basicToken", "");
     const { data, status } = yield call(
       api.checkEmailVerifiedThroughEmail,
       payload
