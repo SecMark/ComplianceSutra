@@ -3215,12 +3215,12 @@ function RightSideGrid({
           )}
           <div className="d-flex mobile-height-dasboardView">
             <div className="companies-sub-title w-25 d-none d-md-block">
-              Taskss
+              Tasks
             </div>
             {!searchBoxShowMobile && (
               <div className="w-75 d-flex pl-0">
                 <div className="companies-sub-title d-block d-md-none">
-                  Taskss
+                  Tasks
                 </div>
               </div>
             )}
