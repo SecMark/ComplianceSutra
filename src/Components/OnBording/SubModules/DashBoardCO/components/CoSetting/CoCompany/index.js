@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "./style.css";
 import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
 import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
@@ -13,7 +13,7 @@ import grayPlusIcon from "../../../../../../../assets/Icons/grayPlusIcon.png";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
 import mobileAssignIconSmall from "../../../../../../../assets/Icons/mobileAssignIconSmall.png";
-import {actions as companyAction} from "../../../../../../OnBording/redux/actions";
+import { actions as companyAction } from "../../../../../../OnBording/redux/actions";
 import { toast } from "react-toastify";
 import Dropdown from "react-dropdown";
 import { actions as coActions } from "../../../redux/actions";
@@ -181,13 +181,13 @@ function CoManagment({ handleClose }) {
       category: selectedObj,
       selectedLiecenseIdArray: lic,
     };
-   setFields(FieldObj);
-   dispatch(
-    companyAction.getLicenseList({
-      industry_type: companyDetails[index].business_category,
-      country: "India",
-    })
-  );
+    setFields(FieldObj);
+    dispatch(
+      companyAction.getLicenseList({
+        industry_type: companyDetails[index].business_category,
+        country: "India",
+      })
+    );
     if (!isMobile) {
       const drawerParent = document.getElementById("drawerParent");
       const drawerChild = document.getElementById("drawerChild");
@@ -226,16 +226,18 @@ function CoManagment({ handleClose }) {
       }
     } else if (name === "company_type") {
       companyList[index].company_type = e;
-    }else if(name === "company_country"){
-      companyList[index].company_country = e
-    }else if(name === "company_pincode"){
-        companyList[index].company_pincode = e.target.value;
-    }else if (name == "compliance_officer") {
-      console.log("Gadsfasdfsdfsdf",e);
-      companyList[index].compliance_officer = {
-        email: e.userEmail,
-        full_name: e.UserName,
-      };
+    } else if (name === "company_country") {
+      companyList[index].company_country = e;
+    } else if (name === "company_pincode") {
+      companyList[index].company_pincode = e.target.value;
+    } else if (name == "compliance_officer") {
+      console.log("Gadsfasdfsdfsdf", e);
+      companyList[index].compliance_officer = [
+        {
+          email: e.userEmail,
+          full_name: e.UserName,
+        },
+      ];
       setAssignPromptIndex(undefined);
       hideBlock();
     } else {
@@ -366,7 +368,6 @@ function CoManagment({ handleClose }) {
         drawerChild.style.bottom = "-100%";
       }
       setLicenseModalHideShow(false);
-      
     }
     setSelectedIndex(undefined);
     setSelectedCompany(undefined);
@@ -393,11 +394,11 @@ function CoManagment({ handleClose }) {
     // }
   };
   const addLicense = (index, licenseList) => {
-    console.log("have to set this fields",fields,index,licenseList)
+    console.log("have to set this fields", fields, index, licenseList);
     setFields({
       ...fields,
-      selectedLiecenseIdArray:licenseList
-    })
+      selectedLiecenseIdArray: licenseList,
+    });
     // let FieldObj = {
     //   ...temp,
     //   selectedLiecenseIdArray: licenseList,
@@ -593,11 +594,11 @@ function CoManagment({ handleClose }) {
           <div id="drawerChild" className="sideBarFixed">
             {licenseModalHideShow && (
               <License
-              fields={fields}
-              addLicense={addLicense}
-              index={selectedIndex}
-              closeDrawer={close}
-            />
+                fields={fields}
+                addLicense={addLicense}
+                index={selectedIndex}
+                closeDrawer={close}
+              />
             )}
           </div>
         </div>
@@ -644,7 +645,7 @@ function CoManagment({ handleClose }) {
           </caption>
           <thead>
             <tr>
-            <th scope="col">Company Name</th>
+              <th scope="col">Company Name</th>
               <th scope="col">Company Type</th>
               <th scope="col">Country</th>
               <th scope="col">Pincode</th>
@@ -656,7 +657,7 @@ function CoManagment({ handleClose }) {
           </thead>
           <tbody>
             {companyDetails?.map((item, index) => {
-              console.log("got this items",item);
+              console.log("got this items", item);
               return (
                 <>
                   <tr className="focusRemove">
@@ -728,7 +729,7 @@ function CoManagment({ handleClose }) {
                       </div>
                     </td>
                     <td className="dropList">
-                          <div  className="holding-list-bold-title">
+                      <div className="holding-list-bold-title">
                         <Searchable
                           options={options}
                           placeholder={
@@ -745,27 +746,25 @@ function CoManagment({ handleClose }) {
                               : true
                           }
                         />
-                        </div>
-                      </td>
-                      <td>
-                          <div className="bk-Securities">
-                            
+                      </div>
+                    </td>
+                    <td>
+                      <div className="bk-Securities">
                         <input
                           type="text"
                           className="form-control border-0"
                           placeholder="Pincode"
                           name="company_pincode"
                           value={item.company_pincode}
-                           onChange={(e) =>
+                          onChange={(e) =>
                             selectedIndex === undefined ||
                             selectedIndex === index
                               ? handelChange(e, "company_pincode", index, item)
                               : true
                           }
                         />
-                        
-                        </div>
-                      </td>
+                      </div>
+                    </td>
                     <td className="dropList">
                       <div className="holding-list-bold-title">
                         <Searchable
@@ -804,10 +803,10 @@ function CoManagment({ handleClose }) {
                         >
                           <span className="circle-dp">
                             {getNameInitials(
-                              item?.compliance_officer[1]?.full_name
+                              item?.compliance_officer[0]?.full_name
                             )}
                           </span>{" "}
-                          {item?.compliance_officer[1]?.full_name}{" "}
+                          {item?.compliance_officer[0]?.full_name}{" "}
                         </div>
                       )}
                       {item.isExist && (
@@ -830,7 +829,8 @@ function CoManagment({ handleClose }) {
                               item?.compliance_officer[0]?.full_name
                             )}
                           </span>{" "}
-                          {item?.compliance_officer[0]?.full_name}{" "}
+                          {item?.compliance_officer[0]?.full_name}
+                          {"  Hre"}
                         </div>
                       )}
 
@@ -875,14 +875,15 @@ function CoManagment({ handleClose }) {
                                     <span className="or-devider"> or</span>
                                     <button
                                       className="btn save-details assign-me"
-                                      onClick={() =>
+                                      onClick={() => {
+                                        console.log("user Login", loggedUser);
                                         handelChange(
                                           loggedUser,
                                           "compliance_officer",
                                           index,
                                           item
-                                        )
-                                      }
+                                        );
+                                      }}
                                     >
                                       Assign to me
                                     </button>
@@ -895,6 +896,7 @@ function CoManagment({ handleClose }) {
                                   {userData &&
                                     userData.length > 0 &&
                                     userData.map((user) => {
+                                      console.log("user", user);
                                       return (
                                         <>
                                           <div
@@ -902,7 +904,7 @@ function CoManagment({ handleClose }) {
                                             onClick={() =>
                                               handelChange(
                                                 user,
-                                                "complianceOfficer",
+                                                "compliance_officer",
                                                 index,
                                                 item
                                               )
