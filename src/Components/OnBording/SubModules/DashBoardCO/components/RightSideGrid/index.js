@@ -119,7 +119,7 @@ function RightSideGrid({
   const [taskData, setTaskData] = useState([]);
   const [listTaskData, setListTaskData] = useState("");
   const [taskDataBackup, setTaskDataBackup] = useState([]);
-  const [expandedFlags, setExpandedFlags] = useState([0]);
+  const [expandedFlags, setExpandedFlags] = useState([0, 1, 2]);
   const [rowCount, setRowCount] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [searchData, setSearchData] = useState([]);
@@ -174,10 +174,6 @@ function RightSideGrid({
       })
     );
   };
-
-  useEffect(() => {
-    console.log("taskListDisplay: ", taskListDisplay);
-  }, [taskListDisplay]);
   useEffect(() => {
     if (taskList && taskList.length !== 0) {
       const allTasks = getAllTasks(taskList);
@@ -193,8 +189,6 @@ function RightSideGrid({
     if (getTaskById && Object.keys(getTaskById).length !== 0) {
       setCurrentOpenedTask(getTaskById);
       setIsTaskListOpen(true);
-      setDisplayTask("1");
-      setTaskListDisplay("1");
     }
   }, [getTaskById]);
   useEffect(() => {
@@ -206,6 +200,7 @@ function RightSideGrid({
     if (taskModalOpenStatus === "board") {
       setDisplayTask("2");
       setTaskListDisplay("0");
+      setIsTaskModalOpen(true);
     }
   }, [taskModalOpenStatus]);
 
@@ -240,8 +235,13 @@ function RightSideGrid({
 
   useEffect(() => {
     let task = state && state.adminMenu && state.adminMenu.taskID;
-    if (task !== null && taskModalOpenStatus !== "") {
-      getSelectTaskDetails(task);
+    if (
+      task !== null &&
+      task &&
+      Object.keys(task).length !== 0 &&
+      taskModalOpenStatus !== ""
+    ) {
+      setCurrentOpenedTask(task);
     }
   }, [state.adminMenu.taskID]);
 
@@ -258,7 +258,7 @@ function RightSideGrid({
       const taskByStatus = getDataByStatus(taskList);
       [...taskByStatus].forEach((item) => {
         if (item.tasks.length > 0) {
-          tempRowCount[item.status.trim()] = item.tasks.length;
+          tempRowCount[item.status.trim()] = 3;
         }
       });
       setRowCount(tempRowCount);
@@ -405,6 +405,7 @@ function RightSideGrid({
       setSelectedUser("");
     }
   });
+
   const userDetails = state && state.auth && state.auth.loginInfo;
 
   const getCommentsbyId =
@@ -456,7 +457,7 @@ function RightSideGrid({
         styles={{ width: "500px", height: "100%" }}
         onOverlayClick={() => closeTaskModalOpen(false)}
       >
-        <div className="">
+        {/* <div className="">
           <div className="task-details-modal sddsdsdsd">
             <div className="task-details-header">
               <div className="closing-icon">
@@ -1613,11 +1614,1440 @@ function RightSideGrid({
               </div>
             )}
           </div>
-        </div>
+        </div> */}
       </Modal>
     );
   };
 
+  const TaskViewModal = () => {
+    return (
+      <Modal
+        blockScroll={false}
+        classNames={{
+          overlayAnimationIn: "",
+          overlayAnimationOut: "",
+          modalAnimationIn: "",
+          modalAnimationOut: "",
+          modal: "calendarCustomModal",
+        }}
+        open={true}
+        center={true}
+        showCloseIcon={false}
+        modalId="calendarModal"
+        onClose={() => closeTaskModalOpen(false)}
+        styles={{ width: "500px", height: "100%" }}
+        onOverlayClick={() => closeTaskModalOpen(false)}
+      >
+        <div>
+          <ReAssignTasksModal
+            openModal={isShowReAssignModalForTeamMember}
+            setShowModal={setIsShowReAssignModalForTeamMember}
+            userId={currentOpenedTask && currentOpenedTask.assign_to}
+            taskId={currentOpenedTask && currentOpenedTask.TaskId}
+            isSingleTask
+          />
+          <ReAssignTasksModal
+            openModal={isShowReAssignModalForApprover}
+            setShowModal={setIsShowReAssignModalForApprover}
+            userId={currentOpenedTask && currentOpenedTask.AprovalAssignedToID}
+            taskId={currentOpenedTask && currentOpenedTask.TaskId}
+            isSingleTask
+          />
+          <div className="col-12">
+            <div className="">
+              <div
+                className="task-details-veiw scroll-remove-file"
+                style={{
+                  animation: "none",
+                }}
+              >
+                <div className="task-details-header">
+                  <div className="closing-icon">
+                    <div className="task-details-title">
+                      {currentOpenedTask && currentOpenedTask.customer_name}
+                    </div>
+                    <div
+                      className="task-close-icon"
+                      onClick={() => {
+                        setIsTaskListOpen(false);
+                        // setExpandedFlags([]);
+                        setShowFiles(true);
+                        setShowComments(false);
+                        setShowHtoDoIt(false);
+                        setShowReference(false);
+                        setIsTaskModalOpen(false);
+                        dispatch(
+                          adminMenuActions.setCurrentBoardViewTaskId(null)
+                        );
+                        dispatch(
+                          adminMenuActions.setCurrentCalendarViewTaskId(null)
+                        );
+                        dispatch(adminMenuActions.setIsModalOpen(""));
+                      }}
+                    >
+                      <img src={closeBlack} alt="Arrow close" />
+                    </div>
+                  </div>
+                  <div className="task-details-sub-title">
+                    {currentOpenedTask && currentOpenedTask.subject}{" "}
+                    <span className="nse-label d-none d-md-block">
+                      {currentOpenedTask && currentOpenedTask.license}
+                    </span>
+                  </div>
+
+                  <div className="d-flex d-block d-md-none">
+                    <span className="nse-label ml-0">
+                      {currentOpenedTask && currentOpenedTask.license}
+                    </span>
+                    <div
+                      className="pink-label-mobile ml-0"
+                      style={{
+                        backgroundColor:
+                          currentOpenedTask && currentOpenedTask.status
+                            ? currentOpenedTask.status === "Not Assigned"
+                              ? "#fcf3cd"
+                              : currentOpenedTask.status === "Approval Pending"
+                              ? moment(
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
+                                ).isBefore(today)
+                                ? "#cdfcd8"
+                                : "#ffefea"
+                              : currentOpenedTask.status === "Approved"
+                              ? "#cdfcd8"
+                              : currentOpenedTask.status === "Assigned"
+                              ? "#ffefea"
+                              : currentOpenedTask.status === "Rejected"
+                              ? "#ffefea"
+                              : "#d2fccd"
+                            : "#d2fccd",
+                      }}
+                    >
+                      <div
+                        className="approved-text"
+                        style={{
+                          color:
+                            currentOpenedTask && currentOpenedTask.status
+                              ? currentOpenedTask.status === "Approval Pending"
+                                ? moment(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
+                                  ).isBefore(today)
+                                  ? "#7fba7a"
+                                  : "#ff5f31"
+                                : currentOpenedTask.status === "Approved"
+                                ? "#7fba7a"
+                                : currentOpenedTask.status === "Assigned"
+                                ? "#f8c102"
+                                : currentOpenedTask.status === "Not Assigned"
+                                ? "#f8c102"
+                                : currentOpenedTask.status === "Rejected"
+                                ? "#ff5f31"
+                                : ""
+                              : "#fcf3cd",
+                        }}
+                      >
+                        {currentOpenedTask && currentOpenedTask.status && (
+                          <div style={{ textTransform: "uppercase" }}>
+                            {currentOpenedTask.status === "Approval Pending"
+                              ? moment(
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
+                                ).isBefore(today)
+                                ? "Not reviewed"
+                                : "Approval Pending"
+                              : currentOpenedTask.status === "Not Assigned"
+                              ? "Assign Task"
+                              : currentOpenedTask.status === "Assigned"
+                              ? "Task Assigned"
+                              : currentOpenedTask.status === "Approved"
+                              ? "Task Approved"
+                              : currentOpenedTask.status === "Rejected"
+                              ? "Task Rejected"
+                              : null}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-header d-none d-md-block">
+                    {currentOpenedTask && currentOpenedTask.status !== "" && (
+                      <div
+                        className="approved-label"
+                        style={{
+                          backgroundColor:
+                            currentOpenedTask && currentOpenedTask.status
+                              ? currentOpenedTask.status === "Not Assigned"
+                                ? "#fcf3cd"
+                                : currentOpenedTask.status ===
+                                  "Approval Pending"
+                                ? moment(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
+                                  ).isBefore(today)
+                                  ? "#cdfcd8"
+                                  : "#ffefea"
+                                : currentOpenedTask.status === "Approved"
+                                ? "#cdfcd8"
+                                : currentOpenedTask.status === "Assigned"
+                                ? "#ffefea"
+                                : currentOpenedTask.status === "Rejected"
+                                ? "#ffefea"
+                                : "#d2fccd"
+                              : "#d2fccd",
+                        }}
+                      >
+                        <div
+                          className="approved-text"
+                          style={{
+                            color:
+                              currentOpenedTask && currentOpenedTask.status
+                                ? currentOpenedTask.status ===
+                                  "Approval Pending"
+                                  ? moment(
+                                      currentOpenedTask &&
+                                        currentOpenedTask.due_date
+                                    ).isBefore(today)
+                                    ? "#7fba7a"
+                                    : "#ff5f31"
+                                  : currentOpenedTask.status === "Approved"
+                                  ? "#7fba7a"
+                                  : currentOpenedTask.status === "Assigned"
+                                  ? "#f8c102"
+                                  : currentOpenedTask.status === "Not Assigned"
+                                  ? "#f8c102"
+                                  : currentOpenedTask.status === "Rejected"
+                                  ? "#ff5f31"
+                                  : ""
+                                : "#fcf3cd",
+                          }}
+                        >
+                          {currentOpenedTask && currentOpenedTask.status && (
+                            <div style={{ textTransform: "uppercase" }}>
+                              {currentOpenedTask.status === "Approval Pending"
+                                ? moment(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
+                                  ).isBefore(today)
+                                  ? "Not reviewed"
+                                  : "Approval Pending"
+                                : currentOpenedTask.status === "Not Assigned"
+                                ? "Assign Task"
+                                : currentOpenedTask.status === "Assigned"
+                                ? "Task Assigned"
+                                : currentOpenedTask.status === "Approved"
+                                ? "Task Approved"
+                                : currentOpenedTask.status === "Rejected"
+                                ? "Task Rejected"
+                                : null}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {currentOpenedTask && currentOpenedTask.ExReview === 1 && (
+                      <div className="d-flex align-items-center labels-container">
+                        {/* Approver Status */}
+                        {currentOpenedTask && currentOpenedTask.AprStatus && (
+                          <div
+                            className="er-approved-label mr-3"
+                            style={{
+                              backgroundColor:
+                                currentOpenedTask && currentOpenedTask.AprStatus
+                                  ? currentOpenedTask.AprStatus ===
+                                    "Not Assigned"
+                                    ? "#ffefea"
+                                    : currentOpenedTask.AprStatus ===
+                                      "Approved by Approver"
+                                    ? "#cdfcd8"
+                                    : currentOpenedTask.AprStatus ===
+                                      "Rejected by Approver"
+                                    ? "#ffefea"
+                                    : "#d2fccd"
+                                  : "#d2fccd",
+                            }}
+                          >
+                            <div
+                              className="approved-text"
+                              style={{
+                                color:
+                                  currentOpenedTask &&
+                                  currentOpenedTask.AprStatus
+                                    ? currentOpenedTask.AprStatus ===
+                                      "Not Assigned"
+                                      ? "#f8c102"
+                                      : currentOpenedTask.AprStatus ===
+                                        "Approved by Approver"
+                                      ? "#7fba7a"
+                                      : currentOpenedTask.AprStatus ===
+                                        "Reject by Approver"
+                                      ? "#ff5f31"
+                                      : "#fcf3cd"
+                                    : "#fcf3cd",
+                              }}
+                            >
+                              {currentOpenedTask &&
+                                currentOpenedTask.AprStatus && (
+                                  <div style={{ textTransform: "uppercase" }}>
+                                    {currentOpenedTask &&
+                                    currentOpenedTask.AprStatus
+                                      ? currentOpenedTask.AprStatus ===
+                                        "Not Assigned"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Not Started"
+                                              : "Approver Not Started Task"
+                                          }`
+                                        : currentOpenedTask.AprStatus ===
+                                          "Approved by Approver"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Task Approved"
+                                              : "Approved By Approver"
+                                          }`
+                                        : currentOpenedTask.AprStatus ===
+                                          "Rejected by Approver"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Task Rejected"
+                                              : "Rejected By Approver"
+                                          }`
+                                        : null
+                                      : null}
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        )}
+                        {/* Expert Reviewer Status */}
+                        {currentOpenedTask && currentOpenedTask.ExStatus && (
+                          <div
+                            className="er-approved-label"
+                            style={{
+                              backgroundColor:
+                                currentOpenedTask && currentOpenedTask.ExStatus
+                                  ? currentOpenedTask.ExStatus === "Not Started"
+                                    ? "#ffefea"
+                                    : currentOpenedTask.ExStatus ===
+                                      "Approved by Expert"
+                                    ? "#cdfcd8"
+                                    : currentOpenedTask.ExStatus ===
+                                      "Rejected by Expert"
+                                    ? "#ffefea"
+                                    : "#d2fccd"
+                                  : "#d2fccd",
+                            }}
+                          >
+                            <div
+                              className="approved-text"
+                              style={{
+                                color:
+                                  currentOpenedTask &&
+                                  currentOpenedTask.ExStatus
+                                    ? currentOpenedTask.ExStatus ===
+                                      "Not Started"
+                                      ? "#f8c102"
+                                      : currentOpenedTask.ExStatus ===
+                                        "Approved by Expert"
+                                      ? "#7fba7a"
+                                      : currentOpenedTask.ExStatus ===
+                                        "Rejected by Expert"
+                                      ? "#ff5f31"
+                                      : "#fcf3cd"
+                                    : "#fcf3cd",
+                              }}
+                            >
+                              {currentOpenedTask &&
+                                currentOpenedTask.ExStatus && (
+                                  <div style={{ textTransform: "uppercase" }}>
+                                    {currentOpenedTask &&
+                                    currentOpenedTask.ExStatus
+                                      ? currentOpenedTask.ExStatus ===
+                                        "Not Started"
+                                        ? "Expert Not Started Task"
+                                        : currentOpenedTask.ExStatus ===
+                                          "Approved by Expert"
+                                        ? "Approved By Expert"
+                                        : currentOpenedTask.ExStatus ===
+                                          "Rejected by Expert"
+                                        ? "Rejected By Expert"
+                                        : null
+                                      : null}
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="task-detail-data">
+                    {currentOpenedTask &&
+                      currentOpenedTask.RegulatoryUpdates === 1 && (
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="regulation-changes">
+                              <div className="float-left">
+                                <img
+                                  src={redCircle}
+                                  alt="account Circle Purple"
+                                />
+                                <div className="recent-title-circle">
+                                  Recent Regulation Changes
+                                </div>
+                              </div>
+                              <div className="float-right">
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => onRCViewDetailClick()}
+                                  className="red-circle-detail"
+                                >
+                                  View details
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    {userDetails.UserType !== 4 && (
+                      <div className="row">
+                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                          <div className="holding-list-normal-title">
+                            Assigned to
+                          </div>
+                        </div>
+                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                          {currentOpenedTask &&
+                          currentOpenedTask.assign_to !== null ? (
+                            <div
+                              className="holding-list-bold-title"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                setIsShowReAssignModalForTeamMember(true)
+                              }
+                            >
+                              {currentOpenedTask &&
+                                currentOpenedTask.assign_to_name !== null && (
+                                  <span className="cicrcle-name">
+                                    {getInitials(
+                                      currentOpenedTask &&
+                                        currentOpenedTask.assign_to_name
+                                    )}
+                                  </span>
+                                )}
+                              {currentOpenedTask.assign_to_name ||
+                                "Not Assigned"}
+                            </div>
+                          ) : (
+                            <div className="holding-list-bold-title AssinTo">
+                              <div className="col-9 pl-0">
+                                <div
+                                  className="dashboard-assign"
+                                  id="assignBtn"
+                                  style={{
+                                    cursor: "pointer",
+                                    width: "fit-content",
+                                  }}
+                                  onClick={(e) => AssignDisplay(e)}
+                                >
+                                  <img
+                                    src={assignIconCircle}
+                                    alt="account Circle Purple"
+                                  />{" "}
+                                  Assign
+                                </div>
+                                {currentDropDown === "open" && (
+                                  <div
+                                    ref={innerRef}
+                                    className="bottom-tool-tip"
+                                    style={{ display: "block" }}
+                                  >
+                                    <div
+                                      className="shadow-tooltip"
+                                      style={{
+                                        minHeight: "113px",
+                                        maxHeight: "auto",
+                                        height: "auto",
+                                      }}
+                                    >
+                                      <div className="">
+                                        <div className="tool-tip-head">
+                                          <div className="add-Email border-bottom">
+                                            <div class="form-group">
+                                              <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Enter name or email"
+                                                value={selectedUser}
+                                                onKeyPress={(e) =>
+                                                  handleAssignKeyDown(e)
+                                                }
+                                                onChange={(e) =>
+                                                  handleAppSearch(
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                              {!validEmail && (
+                                                <div
+                                                  className=""
+                                                  style={{
+                                                    color: "#ef5d5d",
+                                                    paddingLeft: "7px",
+                                                    position: "absolute",
+                                                  }}
+                                                >
+                                                  Please Enter valid Email
+                                                </div>
+                                              )}
+                                              {emailAvaliableCheck &&
+                                                selectedUser !== "" && (
+                                                  <div
+                                                    className=""
+                                                    style={{
+                                                      color: "#ef5d5d",
+                                                      paddingLeft: "7px",
+                                                      position: "absolute",
+                                                    }}
+                                                  >
+                                                    Email already exists
+                                                  </div>
+                                                )}
+                                            </div>
+                                            <span className="or-devider">
+                                              or{" "}
+                                            </span>
+                                            <button
+                                              class="btn save-details assign-me"
+                                              value="4"
+                                              onClick={(e) => AssignTaskToMe(e)}
+                                            >
+                                              Assign to me
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div
+                                          className="email-list-box"
+                                          style={{
+                                            paddingBottom: "15px",
+                                            maxHeight: "115px",
+                                            height: "auto",
+                                          }}
+                                        >
+                                          {allUser && allUser.length > 0 ? (
+                                            allUser.map((user, index) => (
+                                              <div
+                                                className="email-list-row"
+                                                key={index}
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() =>
+                                                  onAssignTaskClick(user)
+                                                }
+                                              >
+                                                <span class="name-circle">
+                                                  {getInitials(
+                                                    user.UserName
+                                                      ? user.UserName
+                                                      : user.EmailID
+                                                      ? user.EmailID
+                                                      : null
+                                                  )}
+                                                </span>
+                                                <span className="name-of-emailer">
+                                                  {user.UserName
+                                                    ? user.UserName
+                                                    : ""}
+                                                </span>
+                                                <span className="last-email-box">
+                                                  {user.EmailID}
+                                                </span>
+                                              </div>
+                                            ))
+                                          ) : (
+                                            <span
+                                              className="last-email-box email-list-row"
+                                              style={{
+                                                textAlign: "center",
+                                                opacity: "inherit",
+                                              }}
+                                              onClick={() =>
+                                                handleOnClickAssignBtn()
+                                              }
+                                            >
+                                              {/* No records Available */}
+                                              {selectedUser !== "" && (
+                                                <div className="dropbox-add-line">
+                                                  <img
+                                                    src={plusIcon}
+                                                    alt="account Circle Purple"
+                                                  />
+                                                  {selectedUser !== "" &&
+                                                    `Invite '${selectedUser}' via email`}
+                                                </div>
+                                              )}
+
+                                              {noRecords === true &&
+                                                selectedUser === "" &&
+                                                "No records Available"}
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {userDetails.UserType !== 3 &&
+                      currentOpenedTask?.assigned_by && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Assigned by
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {currentOpenedTask &&
+                              currentOpenedTask?.assigned_by_name ===
+                                null ? null : (
+                                <span className="cicrcle-name">
+                                  {getInitials(
+                                    currentOpenedTask &&
+                                      currentOpenedTask?.assigned_by_name
+                                  )}
+                                </span>
+                              )}
+                              {currentOpenedTask &&
+                                currentOpenedTask?.assigned_by_name}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    {userDetails.UserType !== 5 && (
+                      <div className="row">
+                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                          <div className="holding-list-normal-title">
+                            Approver
+                          </div>
+                        </div>
+                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                          {currentOpenedTask &&
+                          currentOpenedTask.approver_name !== null ? (
+                            <div
+                              className="holding-list-bold-title"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                setIsShowReAssignModalForApprover(true)
+                              }
+                            >
+                              {currentOpenedTask &&
+                              currentOpenedTask.approver_name === "" ? null : (
+                                <span className="cicrcle-name">
+                                  {getInitials(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.approver_name
+                                  )}
+                                </span>
+                              )}
+                              {currentOpenedTask &&
+                                currentOpenedTask.approver_name}
+                            </div>
+                          ) : (
+                            <div className="holding-list-bold-title">
+                              <div className="col-9 pl-0">
+                                {user && user.UserType === 4 ? (
+                                  <div className="holding-list-bold-title">
+                                    Not Assigned
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="dashboard-assign"
+                                    style={{
+                                      cursor: "pointer",
+                                      width: "fit-content",
+                                    }}
+                                    onClick={(e) => ApprovDisplay(e)}
+                                  >
+                                    <img
+                                      src={assignIconCircle}
+                                      alt="account Circle Purple"
+                                    />{" "}
+                                    Assign
+                                  </div>
+                                )}
+                                {approverDropDown ===
+                                  "openapproverdropdown" && (
+                                  <div
+                                    ref={approverDropDownRef}
+                                    className="bottom-tool-tip"
+                                    style={{ display: "block" }}
+                                  >
+                                    <div
+                                      className="shadow-tooltip"
+                                      style={{
+                                        minHeight: "113px",
+                                        maxHeight: "auto",
+                                        height: "auto",
+                                      }}
+                                    >
+                                      <div className="">
+                                        <div className="tool-tip-head">
+                                          <div className="add-Email border-bottom">
+                                            <div class="form-group">
+                                              <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Enter name or email"
+                                                value={selectedUser}
+                                                onKeyPress={(e) =>
+                                                  handleKeyDown(e)
+                                                }
+                                                onChange={(e) =>
+                                                  handleAppSearch(
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                              {emailAvaliableCheck &&
+                                                selectedUser !== "" && (
+                                                  <div
+                                                    className=""
+                                                    style={{
+                                                      color: "#ef5d5d",
+                                                      paddingLeft: "7px",
+                                                      position: "absolute",
+                                                    }}
+                                                  >
+                                                    Email already exists
+                                                  </div>
+                                                )}
+                                              {!validEmail && (
+                                                <div
+                                                  className=""
+                                                  style={{
+                                                    color: "#ef5d5d",
+                                                    paddingLeft: "7px",
+                                                    position: "absolute",
+                                                  }}
+                                                >
+                                                  Please Enter valid Email
+                                                </div>
+                                              )}
+                                            </div>
+                                            <span className="or-devider">
+                                              {" "}
+                                              or
+                                            </span>
+                                            <button
+                                              class="btn save-details assign-me"
+                                              value="5"
+                                              onClick={(e) => approvTaskToMe(e)}
+                                            >
+                                              Assign to me
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div
+                                          className="email-list-box"
+                                          style={{
+                                            paddingBottom: "15px",
+                                            maxHeight: "115px",
+                                            height: "auto",
+                                          }}
+                                        >
+                                          {allUser && allUser.length > 0 ? (
+                                            allUser.map((user, index) => (
+                                              <div
+                                                className="email-list-row"
+                                                key={index}
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() =>
+                                                  handleChooseApprove(user)
+                                                }
+                                              >
+                                                <span class="name-circle">
+                                                  {getInitials(
+                                                    user.UserName
+                                                      ? user.UserName
+                                                      : user.EmailID
+                                                      ? user.EmailID
+                                                      : null
+                                                  )}
+                                                </span>
+                                                <span className="name-of-emailer">
+                                                  {user.UserName
+                                                    ? user.UserName
+                                                    : ""}
+                                                </span>
+                                                <span className="last-email-box">
+                                                  {user.EmailID}
+                                                </span>
+                                              </div>
+                                            ))
+                                          ) : (
+                                            <span
+                                              className="last-email-box email-list-row"
+                                              style={{
+                                                textAlign: "center",
+                                                opacity: "inherit",
+                                              }}
+                                              onClick={() =>
+                                                handleOnClickApproverBtn()
+                                              }
+                                            >
+                                              {/* No records Available */}
+                                              {selectedUser !== "" && (
+                                                <div className="dropbox-add-line">
+                                                  <img
+                                                    src={plusIcon}
+                                                    alt="account Circle Purple"
+                                                  />
+                                                  {selectedUser !== "" &&
+                                                    `Invite '${selectedUser}' via email`}
+                                                </div>
+                                              )}
+
+                                              {noRecords === true &&
+                                                selectedUser === "" &&
+                                                "No records Available"}
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    <div className="row">
+                      <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                        <div className="holding-list-normal-title">
+                          Due Date
+                        </div>
+                      </div>
+                      <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                        <div className="holding-list-bold-title">
+                          {moment(
+                            currentOpenedTask && currentOpenedTask.due_date
+                          ).format("DD MMM")}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                        <div className="holding-list-normal-title">
+                          Deadline
+                        </div>
+                      </div>
+                      <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                        <div className="holding-list-bold-title">
+                          {moment(
+                            currentOpenedTask && currentOpenedTask.deadline_date
+                          ).format("DD MMM")}
+                        </div>
+                      </div>
+                    </div>
+                    {currentOpenedTask &&
+                      currentOpenedTask.date_of_approval &&
+                      currentOpenedTask.status === "Approved" &&
+                      userDetails.UserType !== 4 && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Approval Pending on
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {moment(currentOpenedTask.DateOfApproval).format(
+                                "DD MMM  h:mm a"
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    {userDetails.UserType !== 4 && (
+                      <div className="row">
+                        {currentOpenedTask &&
+                        currentOpenedTask.status !== "Assigned" ? (
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Status
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        {currentOpenedTask &&
+                        currentOpenedTask.status !== "Assigned" ? (
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {currentOpenedTask && currentOpenedTask.status
+                                ? currentOpenedTask.status ===
+                                  "Approval Pending"
+                                  ? moment(
+                                      currentOpenedTask &&
+                                        currentOpenedTask.deadline_date
+                                    ).isBefore(today)
+                                    ? "Not reviewed"
+                                    : "Approval Pending"
+                                  : currentOpenedTask.status === "Not Assigned"
+                                  ? currentOpenedTask.status
+                                  : currentOpenedTask.status === "Assigned"
+                                  ? "Task Assigned"
+                                  : currentOpenedTask.status === "Approved"
+                                  ? "Task Approved"
+                                  : currentOpenedTask.status === "Rejected"
+                                  ? "Task Rejected"
+                                  : null
+                                : ""}
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    )}
+                    {/* {userDetails.UserType !== 4 &&
+                      currentOpenedTask &&
+                      currentOpenedTask.ExReview === 1 && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Expert Review Status
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {currentOpenedTask.ExStatus}
+                            </div>
+                          </div>
+                        </div>
+                      )} */}
+
+                    {/* {completedDate &&
+                      isTaskApproved &&
+                      userDetails.UserType !== 4 && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Approval Pending on
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {moment(completedDate).format("DD MMM  h:mm a")}
+                            </div>
+                          </div>
+                        </div>
+                      )} */}
+                    {userDetails.UserType !== 4 &&
+                      currentOpenedTask &&
+                      currentOpenedTask.ExReview === 1 &&
+                      currentOpenedTask.ReviewerEmailID !== "" &&
+                      currentOpenedTask.ReviewerName !== "" &&
+                      currentOpenedTask.ReviewerMobile && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Contact Details
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {`${currentOpenedTask.ReviewerMobile} | ${currentOpenedTask.ReviewerEmailID}`}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                  </div>
+                </div>
+                <div>
+                  <div className="task-details-file-grid1">
+                    <div className="d-flex">
+                      <div className="tab-list-space">
+                        {showFiles ? (
+                          <div
+                            className="file-title pointer"
+                            onClick={() => {
+                              setShowFiles(true);
+                              setShowComments(false);
+                              setShowHtoDoIt(false);
+                              setShowReference(false);
+                            }}
+                          >
+                            Files
+                          </div>
+                        ) : (
+                          <div
+                            className="file-title unActiveText-color pointer"
+                            onClick={() => {
+                              setShowFiles(true);
+                              setShowComments(false);
+                              setShowHtoDoIt(false);
+                              setShowReference(false);
+                            }}
+                          >
+                            Files
+                          </div>
+                        )}
+                        {showFiles && (
+                          <div className="file-title-progress col-5"></div>
+                        )}
+                      </div>
+                      <div className="tab-list-space">
+                        {showComments ? (
+                          <div
+                            className="file-title  pointer"
+                            style={{ color: "#2c2738" }}
+                            onClick={() => getComments()}
+                          >
+                            Comments
+                          </div>
+                        ) : (
+                          <div
+                            className="file-title unActiveText-color"
+                            onClick={() => getComments()}
+                          >
+                            Comments
+                          </div>
+                        )}
+                        {showComments && (
+                          <div className="file-title-progress comments-progress-width"></div>
+                        )}
+                      </div>
+                      <div className="tab-list-space">
+                        {referenceShow ? (
+                          <div
+                            className="file-title  pointer"
+                            style={{ color: "#2c2738" }}
+                            onClick={() => {
+                              _fetchReferenceSectionData("2");
+                              setShowFiles(false);
+                              setShowComments(false);
+                              setShowReference(true);
+                            }}
+                          >
+                            References
+                          </div>
+                        ) : (
+                          <div
+                            className="file-title unActiveText-color"
+                            onClick={() => {
+                              _fetchReferenceSectionData("2");
+                              setShowFiles(false);
+                              setShowComments(false);
+                              setShowReference(true);
+                            }}
+                          >
+                            References
+                          </div>
+                        )}
+                        {referenceShow && (
+                          <div className="file-title-progress comments-progress-width"></div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {referenceShow && (
+                    <div className="11">
+                      {referenceSectionData &&
+                      referenceSectionData.length > 0 ? (
+                        <div className="auto-scroll">
+                          {referenceSectionData &&
+                          referenceSectionData[0] &&
+                          referenceSectionData[0].Linktype === "F" ? (
+                            <div className="d-flex ">
+                              <div className="pr-5 w-38">
+                                <div className="file-upload-title file-img-width">
+                                  <img
+                                    src={fileIcon}
+                                    alt="file Icon"
+                                    className="file-icon-box"
+                                    value="aaaa"
+                                  />{" "}
+                                  {referenceSectionData &&
+                                    referenceSectionData[0] &&
+                                    referenceSectionData[0].Filename}
+                                </div>
+                              </div>
+                              <div className="pr-5 w-62">
+                                <a
+                                  target="_blank"
+                                  href={`${
+                                    referenceSectionData[0] &&
+                                    referenceSectionData[0].Fileloc /
+                                      referenceSectionData[0] &&
+                                    referenceSectionData[0].Filename
+                                  }`}
+                                  style={{ textDecoration: "none" }}
+                                  className="file-download-title pointer d-flex"
+                                >
+                                  download
+                                  <span className="d-none d-md-block">
+                                    &nbsp;file
+                                  </span>
+                                </a>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="d-flex">
+                              <div className="pr-5 w-38">
+                                <div
+                                  className="file-upload-title file-img-width"
+                                  style={{ color: "#6c5dd3" }}
+                                >
+                                  <img
+                                    src={fileIcon}
+                                    alt="file Icon"
+                                    className="file-icon-box"
+                                    value="aaaa"
+                                  />{" "}
+                                  {referenceSectionData &&
+                                    referenceSectionData[0] &&
+                                    referenceSectionData[0].Fileloc /
+                                      referenceSectionData[0] &&
+                                    referenceSectionData[0].Fileloc}
+                                </div>
+                              </div>
+                              <div className="pr-5 w-62">
+                                <a
+                                  href={`${
+                                    referenceSectionData &&
+                                    referenceSectionData[0] &&
+                                    referenceSectionData[0].Fileloc /
+                                      referenceSectionData[0] &&
+                                    referenceSectionData[0].Filename
+                                  }`}
+                                  target="_blank"
+                                  style={{ textDecoration: "none" }}
+                                  className="file-download-title pointer d-flex"
+                                >
+                                  view
+                                </a>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="no-files">No Files To View here</div>
+                      )}
+                    </div>
+                  )}
+                  {showFiles && (
+                    <div className="file-grid-data">
+                      {(user && user.UserType && user.UserType === 4) ||
+                      (user && user.UserType && userDetails.UserType === 3) ||
+                      (user && user.UserType && userDetails.UserType === 5) ? (
+                        <>
+                          {/* check here */}
+                          {currentOpenedTask &&
+                          currentOpenedTask.status &&
+                          currentOpenedTask.status !== "Approved" &&
+                          currentOpenedTask.status !== "Not Assigned" ? (
+                            (user &&
+                              user.UserType &&
+                              user.UserType &&
+                              userDetails.UserType === 4) ||
+                            (user &&
+                              user.UserType &&
+                              userDetails.UserType === 3) ||
+                            (user &&
+                              user.UserType &&
+                              userDetails.UserType === 5) ? (
+                              <>
+                                {" "}
+                                <div className="row">
+                                  <div className="col-12 col-sm-4 col-md-4 col-xl-4">
+                                    <div className="file-upload-title file-img-width">
+                                      <div className="">
+                                        <div className="file-upload-box">
+                                          <div className="image-display">
+                                            <Dropzone
+                                              multiple={true}
+                                              maxSize={26214400}
+                                              accept=".png,.jpg,
+                                        application/pdf,application/rtf,application/msword,image/bmp,
+                                        application/vnd.ms-excel,image/tiff,image/tif,image/jpeg,
+                                        application/ms-excel,
+                                        .tiff,.pdf,.doc,.docx,
+                                        .XLS,.xlsx,.CSV,.zip,.rar,.txt"
+                                              onDrop={(acceptedFiles) =>
+                                                handleSelectUploadFile(
+                                                  acceptedFiles
+                                                )
+                                              }
+                                            >
+                                              {({
+                                                getRootProps,
+                                                getInputProps,
+                                              }) => (
+                                                <div
+                                                  {...getRootProps({
+                                                    className: "dropzone",
+                                                  })}
+                                                >
+                                                  <div>
+                                                    <input
+                                                      {...getInputProps()}
+                                                    />
+                                                  </div>
+                                                  <img
+                                                    src={fileUploadIcon}
+                                                    className="cloudImg"
+                                                    alt="File Upload icon"
+                                                  />
+                                                  <div className="drag-drop-title text-center">
+                                                    Drag and drop your files
+                                                    here
+                                                  </div>
+                                                  <div className="text-center">
+                                                    Upload files
+                                                  </div>
+                                                </div>
+                                              )}
+                                            </Dropzone>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </>
+                            ) : null
+                          ) : null}
+
+                          <div className="no-files">
+                            {fileList && fileList.length > 0
+                              ? fileList.map((files, index) => (
+                                  <div className="d-flex">
+                                    <div className="pr-3">
+                                      <div className="file-upload-title file-img-width">
+                                        <img
+                                          src={fileIcon}
+                                          alt="file Icon"
+                                          className="file-icon-box"
+                                          value={files.file_name}
+                                        />{" "}
+                                        {files.file_name}
+                                      </div>
+                                    </div>
+                                    <div className="pr-3">
+                                      {currentOpenedTask &&
+                                        currentOpenedTask.task_name !==
+                                          undefined && (
+                                          <a
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            href={
+                                              new URL(BACKEND_BASE_URL).origin +
+                                              files.file_url
+                                            }
+                                            style={{ textDecoration: "none" }}
+                                            className="file-download-title pointer d-flex"
+                                            // download={files.file_name}
+                                          >
+                                            download{" "}
+                                            <span className="d-none d-md-block">
+                                              &nbsp;file
+                                            </span>
+                                          </a>
+                                        )}
+                                    </div>
+                                    <div className="pr-3">
+                                      <div
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() =>
+                                          deleteUploadedFile(files.file_id)
+                                        }
+                                        className="file-download-title pointer d-flex"
+                                      >
+                                        <img
+                                          className="delete-icon"
+                                          src={deleteBlack}
+                                          alt="delete Icon"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))
+                              : "No Files To View here"}
+                          </div>
+                        </>
+                      ) : fileList && fileList.length > 0 ? (
+                        fileList.map((file, index) => (
+                          <div className="no-files">
+                            {file && file.Files && file.Files.length > 0
+                              ? file.Files.map((files, index) => (
+                                  <div className="row" key={files.file_id}>
+                                    <div className="col-8 col-sm-4 col-md-4 col-xl-4">
+                                      <div className="file-upload-title file-img-width">
+                                        <img
+                                          src={fileIcon}
+                                          alt="file Icon"
+                                          value={files.file_name}
+                                        />{" "}
+                                        {files.file_name}
+                                      </div>
+                                    </div>
+                                    <div className="col-4 col-sm-8 col-md-8 col-xl-8">
+                                      {currentOpenedTask &&
+                                        currentOpenedTask.task_name !==
+                                          undefined && (
+                                          <a
+                                            href={`${BACKEND_BASE_URL}`}
+                                            style={{ textDecoration: "none" }}
+                                            className="file-download-title pointer d-flex"
+                                          >
+                                            download{" "}
+                                            <span className="d-none d-md-block">
+                                              &nbsp;file
+                                            </span>
+                                          </a>
+                                        )}
+                                    </div>
+                                  </div>
+                                ))
+                              : "No Files To View here"}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="no-files">No Filess To View here</div>
+                      )}
+
+                      {/* Task Actions (Approval, Rejection, Mark Complete) */}
+                      {currentOpenedTask &&
+                        (currentOpenedTask.status === "Assigned" ||
+                          currentOpenedTask.status === "Rejected") &&
+                        (userDetails.UserType === 3 ||
+                          userDetails.UserType === 5) &&
+                        user.EmailID !== "" && (
+                          <button
+                            style={{ marginTop: 10, width: 150 }}
+                            onClick={() => teamMemberMarkComplete()}
+                            className="btn save-details-bnt approve-task"
+                            value="3"
+                          >
+                            Mark Complete
+                          </button>
+                        )}
+                      {currentOpenedTask &&
+                        currentOpenedTask.status === "Approval Pending" &&
+                        (user.UserType === 3 || user.UserType === 5) &&
+                        user.EmailID !== "" && (
+                          <div class="btn-toolbar text-center well">
+                            <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
+                              <button
+                                onClick={(e) =>
+                                  handleAppTask(currentOpenedTask)
+                                }
+                                className="btn save-details-bnt approve-task"
+                              >
+                                approve task
+                              </button>
+                            </div>
+                            <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-45">
+                              <button
+                                className="btn save-details-bnt reject-task"
+                                value="3"
+                                onClick={() => setVisibleRejectTaskModal(true)}
+                              >
+                                reject Task
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                    </div>
+                  )}
+                  {showComments && (
+                    <div className="file-grid-data blank-space-height">
+                      {getCommentsbyId && getCommentsbyId.length > 0 ? (
+                        getCommentsbyId.map((comment, index) => (
+                          <div>
+                            <div className="comment-box">
+                              <div className="name-box">
+                                {getInitials(
+                                  comment && comment.user_name
+                                    ? comment.user_name
+                                    : "No Username"
+                                )}
+                              </div>
+                              <div className="rigt-box-comment">
+                                <div className="d-flex">
+                                  <div className="right-box-text">
+                                    {comment && comment.user_name
+                                      ? comment.user_name
+                                      : "No Username"}
+                                  </div>
+                                  <div className="days-ago">
+                                    {moment(comment.commented_on).format(
+                                      "DD MMM"
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="comment-desc">
+                                  {comment.content}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="no-comments">No Comments</div>
+                      )}
+
+                      <div className="comment-box">
+                        <div className="name-box">
+                          {getInitials(user && user.full_name)}
+                        </div>
+                        <div className="rigt-box-comment">
+                          <div className="input-comment-box input-comment-boxLeft">
+                            <TextareaAutosize
+                              minRows={1.3}
+                              style={{ overflow: "hidden" }}
+                              type="text"
+                              className="form-control textAreaHeight"
+                              value={inputComment}
+                              placeholder="Add a comment"
+                              onChange={(e) => handleChange(e)}
+                              required
+                            />
+                            <div className="inputIcon">
+                              <img
+                                src={inputRightArrow}
+                                alt=""
+                                style={{ cursor: "pointer" }}
+                                onClick={() => submitComment()}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {showHtoDoIt && (
+                    <div className="file-grid-data blank-space-height">
+                      <h1>We Don't Know</h1>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    );
+  };
   // Submit Reject Task Modal
   const submitModal = () => {
     dispatch(
@@ -2707,7 +4137,7 @@ function RightSideGrid({
   return (
     <>
       {visibleRejectTaskModal && renderRejectTaskModal()}
-      {isTaskModalOpen && _renderTaskViewModal()}
+      {isTaskModalOpen && TaskViewModal()}
       {!isMobile && (
         <div id="drawerParent" className="">
           <div id="drawerChild" className="sideBarFixed right-fix-width">
@@ -3502,6 +4932,9 @@ function RightSideGrid({
               listTaskData &&
               listTaskData.length > 0 &&
               listTaskData.map((item, index) => {
+                if (expandedFlags.includes(index)) {
+                  console.log(item.status);
+                }
                 return (
                   <>
                     <div className="take-action">
@@ -3526,7 +4959,7 @@ function RightSideGrid({
                             <p className="red-circle-overide">
                               {item.tasks.length}
                             </p>
-                            {!expandedFlags.includes(index) ? (
+                            {expandedFlags.includes(index) ? (
                               <img
                                 src={redArrowTop}
                                 className="redArrowTop arrowDown"
@@ -3644,8 +5077,8 @@ function RightSideGrid({
                           : item.status.trim() === "Completed"
                           ? expandedFlags.includes(index)
                           : item.status.trim() === "Overdue"
-                          ? !expandedFlags.includes(index)
-                          : item.status.trim() === "Pending"
+                          ? expandedFlags.includes(index)
+                          : item.status.trim() === "Take Action"
                           ? !expandedFlags.includes(index)
                           : expandedFlags.includes(index)) && (
                           <>
@@ -4137,7 +5570,7 @@ function RightSideGrid({
                                     {item.tasks.length}
                                   </p>
                                 </span>
-                                {!expandedFlags.includes(index) ? (
+                                {expandedFlags.includes(index) ? (
                                   <img
                                     src={redArrowTop}
                                     className="redArrowTop arrowDown"
@@ -5223,7 +6656,7 @@ function RightSideGrid({
                         )}
                       </div>
                     )}
-                    {userDetails.UserType !== 4 &&
+                    {/* {userDetails.UserType !== 4 &&
                       currentOpenedTask &&
                       currentOpenedTask.ExReview === 1 && (
                         <div className="row">
@@ -5238,7 +6671,7 @@ function RightSideGrid({
                             </div>
                           </div>
                         </div>
-                      )}
+                      )} */}
 
                     {/* {completedDate &&
                       isTaskApproved &&
@@ -5456,7 +6889,8 @@ function RightSideGrid({
                         {/* check here */}
                         {currentOpenedTask &&
                         currentOpenedTask.status &&
-                        currentOpenedTask.status !== "Approved" ? (
+                        currentOpenedTask.status !== "Approved" &&
+                        currentOpenedTask.status !== "Not Assigned" ? (
                           (user &&
                             user.UserType &&
                             user.UserType &&
@@ -5546,15 +6980,10 @@ function RightSideGrid({
                                       currentOpenedTask.task_name !==
                                         undefined && (
                                         <a
-                                          target="_blank"
-                                          rel="noreferrer"
-                                          href={
-                                            new URL(BACKEND_BASE_URL).origin +
-                                            files.file_url
-                                          }
+                                          href={`data:application/${files.file_name.split('.').pop()};base64,${files.encoded_string}`}
                                           style={{ textDecoration: "none" }}
                                           className="file-download-title pointer d-flex"
-                                          // download={files.file_name}
+                                          download={files.file_name}
                                         >
                                           download{" "}
                                           <span className="d-none d-md-block">
@@ -5582,7 +7011,6 @@ function RightSideGrid({
                               ))
                             : "No Files To View here"}
                         </div>
-                        {/* <div className="no-files">No Files To View here</div> */}
                       </>
                     ) : fileList && fileList.length > 0 ? (
                       fileList.map((file, index) => (
@@ -5625,97 +7053,7 @@ function RightSideGrid({
                       <div className="no-files">No Filess To View here</div>
                     )}
 
-                    {
-                      // user.UserType !== 4 &&
-                      // moment(
-                      //   currentOpenedTask && currentOpenedTask.deadline_date
-                      // ).isBefore(today) === true ? (
-                      //   ""
-                      // ) :
-                      // (currentOpenedTask &&
-                      //   currentOpenedTask.status &&
-                      //   currentOpenedTask.status === "Approved") ||
-                      // (currentOpenedTask &&
-                      //   currentOpenedTask.status) ? (
-                      //   (user && user.UserType && userDetails.UserType === 3) ||
-                      //   (user && user.UserType && userDetails.UserType === 5)
-                      // ) :
-                      // true ?
-                      // (
-                      // (user && user.UserType && user.UserType === 4) ||
-                      // (user && user.UserType && user.UserType === 3) ? (
-                      // <button
-                      //   style={{ marginTop: 10, width: 150 }}
-                      //   onClick={() => teamMemberMarkComplete()}
-                      //   className="btn save-details-bnt approve-task"
-                      //   value="3"
-                      // >
-                      //   Mark Complete
-                      // </button>
-                      // ) : (
-                      //   ""
-                      // )
-                      // ) : currentOpenedTask &&
-                      //   currentOpenedTask.status &&
-                      //   currentOpenedTask.status === "Not Assigned" &&
-                      //   currentOpenedTask &&
-                      //   currentOpenedTask.status &&
-                      //   currentOpenedTask.TaskStatus === 0 ? (
-                      //   ""
-                      // ) : currentOpenedTask &&
-                      //   currentOpenedTask.status &&
-                      //   currentOpenedTask.status === "Rejected" &&
-                      //   currentOpenedTask &&
-                      //   currentOpenedTask.status &&
-                      //   currentOpenedTask.TaskStatus === 3 ? (
-                      //   user &&
-                      //   user.UserType &&
-                      //   user.UserType === 4 && (
-                      //     <button
-                      //       style={{ marginTop: 10, width: 150 }}
-                      //       onClick={() => teamMemberMarkComplete()}
-                      //       className="btn save-details-bnt approve-task"
-                      //       value="3"
-                      //     >
-                      //       Mark Complete
-                      //     </button>
-                      //   )
-                      // ) : (currentOpenedTask &&
-                      //     currentOpenedTask.status &&
-                      //     currentOpenedTask.status === "Approval Pending") ||
-                      //   (currentOpenedTask &&
-                      //     currentOpenedTask.status &&
-                      //     currentOpenedTask.TaskStatus === 4) ? (
-                      //   (user && user.UserType && user.UserType === 3) ||
-                      //   (user && user.UserType && user.UserType === 5) ? (
-                      //     <div class="btn-toolbar text-center well">
-                      //       <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
-                      //         <button
-                      //           onClick={(e) =>
-                      //             handleAppTask(currentOpenedTask)
-                      //           }
-                      //           className="btn save-details-bnt approve-task"
-                      //         >
-                      //           approve task
-                      //         </button>
-                      //       </div>
-                      //       <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-45">
-                      //         <button
-                      //           className="btn save-details-bnt reject-task"
-                      //           value="3"
-                      //           onClick={() => setVisibleRejectTaskModal(true)}
-                      //         >
-                      //           reject Task
-                      //         </button>
-                      //       </div>
-                      //     </div>
-                      //   ) : (
-                      //     ""
-                      //   )
-                      // ) : (
-                      //   ""
-                      // )
-                    }
+                    {/* Task Actions (Approval, Rejection, Mark Complete) */}
                     {currentOpenedTask &&
                       (currentOpenedTask.status === "Assigned" ||
                         currentOpenedTask.status === "Rejected") &&

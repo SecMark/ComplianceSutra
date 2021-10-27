@@ -82,7 +82,7 @@ function RightSideGrid({
   const [taskData, setTaskData] = useState([]);
   const [listTaskData, setListTaskData] = useState("");
   const [taskDataBackup, setTaskDataBackup] = useState([]);
-  const [expandedFlags, setExpandedFlags] = useState([]);
+  const [expandedFlags, setExpandedFlags] = useState([0, 1, 2]);
   const [rowCount, setRowCount] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [searchData, setSearchData] = useState([]);
@@ -112,7 +112,7 @@ function RightSideGrid({
         const taskByStatus = getDataByStatus(taskList);
         [...taskByStatus].forEach((item) => {
           if (item.tasks.length > 0) {
-            tempRowCount[item.status.trim()] = item.tasks.length;
+            tempRowCount[item.status.trim()] = 3;
           }
         });
         setRowCount(tempRowCount);
@@ -1885,7 +1885,7 @@ function RightSideGrid({
                                     <p className="red-circle-overide">
                                       {item.tasks.length}
                                     </p>
-                                    {!expandedFlags.includes(index) ? (
+                                    {expandedFlags.includes(index) ? (
                                       <img
                                         src={redArrowTop}
                                         className="redArrowTop arrowDown"
@@ -1936,7 +1936,7 @@ function RightSideGrid({
                                           {item.tasks.length}
                                         </p>
                                       </span>
-                                      {!expandedFlags.includes(index) ? (
+                                      {expandedFlags.includes(index) ? (
                                         <img
                                           src={upArrow}
                                           className="arrowDown"
@@ -2006,12 +2006,12 @@ function RightSideGrid({
                                 )}
                                 {(item.status === "Upcoming"
                                   ? expandedFlags.includes(index)
-                                  : item.status === "Approval Pending"
+                                  : item.status === "Completed"
                                   ? expandedFlags.includes(index)
                                   : item.status === "Overdue"
-                                  ? !expandedFlags.includes(index)
-                                  : item.status === "Pending"
-                                  ? !expandedFlags.includes(index)
+                                  ? expandedFlags.includes(index)
+                                  : item.status === "Take Action"
+                                  ? expandedFlags.includes(index)
                                   : !expandedFlags.includes(index)) && (
                                   <>
                                     {item.tasks

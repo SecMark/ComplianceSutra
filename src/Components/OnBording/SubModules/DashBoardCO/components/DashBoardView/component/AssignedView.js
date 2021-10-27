@@ -29,6 +29,13 @@ export default function AssignedView(props) {
   useEffect(() => {
     if (taskList && taskList.length !== 0) {
       const taskByCompany = getDataByTeam(taskList);
+      let tempRowCount = {};
+      [...taskByCompany].forEach((item) => {
+        if (item.tasks && item.tasks.length > 0) {
+          tempRowCount[item.status.trim()] = 3;
+        }
+      });
+      setAssignRowCount(tempRowCount);
       setLicensetaskData(taskByCompany);
     } else {
       dispatch(taskReportActions.taskReportRequest());
@@ -505,7 +512,7 @@ export default function AssignedView(props) {
                                   {item.tasks.length}
                                 </p>
                               </span>
-                              {expandedFlags.includes(index) ? (
+                              {!expandedFlags.includes(index) ? (
                                 <img
                                   src={upArrow}
                                   className="arrowDown"
