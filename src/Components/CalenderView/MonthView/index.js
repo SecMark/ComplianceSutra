@@ -37,7 +37,7 @@ const MonthView = ({
             const compareDate = moment(day).format("YYYY-MM-DD");
 
             const list = monthData.filter(
-              ({ due_date }) => due_date === compareDate
+              ({ EndDate }) => EndDate === compareDate
             );
 
             return (
@@ -61,27 +61,24 @@ const MonthView = ({
                 >
                   {currentDay}
                 </p>
-                {month === currentMonth && list && list[0]?.license && (
+                {month === currentMonth && list && list[0]?.LicenseCode && (
                   <>
                     <div className="button-code">
-                      {list[0]?.license}
+                      {list[0]?.LicenseCode}
                       <div className="tooltip-container">
-                        <h2 className="tooltip-title">{list[0]?.subject}</h2>
+                        <h2 className="tooltip-title">{list[0]?.TaskName}</h2>
                         <div className="tooltip-company-detail">
                           <span className="tooltip-compant-name">
-                            {list[0]?.customer_name}
+                            {list[0]?.EntityName}
                           </span>
-                          {list[0]?.assign_to_name && (
-                            <p>
-                              <span className="circle-dp-tooltip">
-                                {list[0]?.assign_to_name &&
-                                  getIntialName(list[0]?.assign_to_name)}
-                              </span>{" "}
-                              <span className="user-name-tooltip">
-                                {list[0]?.assign_to_name}
-                              </span>
-                            </p>
-                          )}
+                          <p>
+                            <span className="circle-dp-tooltip">
+                              {getIntialName(list[0]?.AssignedName)}
+                            </span>{" "}
+                            <span className="user-name-tooltip">
+                              {list[0]?.AssignedName}
+                            </span>
+                          </p>
                         </div>
 
                         <button
@@ -99,22 +96,22 @@ const MonthView = ({
                   </>
                 )}
 
-                {month === currentMonth && list && list[1]?.license && (
+                {month === currentMonth && list && list[1]?.LicenseCode && (
                   <>
                     <div className="button-code">
-                      {list[1]?.license}
+                      {list[1]?.LicenseCode}
                       <div className="tooltip-container">
-                        <h2 className="tooltip-title">{list[1]?.subject}</h2>
+                        <h2 className="tooltip-title">{list[1]?.TaskName}</h2>
                         <div className="tooltip-company-detail">
                           <span className="tooltip-compant-name">
-                            {list[1]?.customer_name}
+                            {list[1]?.EntityName}
                           </span>
                           <p>
                             <span className="circle-dp-tooltip">
-                              {getIntialName(list[1]?.assign_to_name)}
+                              {getIntialName(list[1]?.AssignedName)}
                             </span>{" "}
                             <span className="user-name-tooltip">
-                              {list[1]?.assign_to_name}
+                              {list[1]?.AssignedName}
                             </span>
                           </p>
                         </div>
@@ -197,7 +194,7 @@ const MonthView = ({
             const currentDayName = moment(day).format("ddd");
             const currentDay = moment(day).format("DD");
             const list = monthData.filter(
-              ({ due_date }) => due_date === compareDate
+              ({ EndDate }) => EndDate === compareDate
             );
             return (
               <div
@@ -227,7 +224,7 @@ const MonthView = ({
                   <p className="my-0">{currentDayName}</p>
                 </div>
                 <div className="right">
-                  {list && list[0]?.license && (
+                  {list && list[0]?.LicenseCode && (
                     <>
                       <div
                         className="right-item d-flex align-items-center"
@@ -238,16 +235,16 @@ const MonthView = ({
                         }}
                       >
                         <div className="button-code m-0">
-                          {list[0]?.license}
+                          {list[0]?.LicenseCode}
                         </div>
                         <h6 className="right-item-task-name mb-0">
-                          {list[0]?.subject}
+                          {list[0]?.TaskName}
                         </h6>
                       </div>
                     </>
                   )}
 
-                  {list && list[0]?.license && (
+                  {list && list[0]?.LicenseCode && (
                     <>
                       <div
                         className="right-item d-flex align-items-center"
@@ -258,10 +255,10 @@ const MonthView = ({
                         }}
                       >
                         <div className="button-code m-0">
-                          {list[0]?.license}
+                          {list[0]?.LicenseCode}
                         </div>
                         <h6 className="right-item-task-name mb-0">
-                          {list[0]?.subject}
+                          {list[0]?.TaskName}
                         </h6>
                       </div>
                     </>

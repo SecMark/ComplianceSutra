@@ -92,6 +92,7 @@ export default {
 
   expertReview: "exp",
   complianceOfficer: "compl",
+<<<<<<< HEAD
   day: "day",
   month: "month",
   week: "week",
@@ -100,4 +101,6 @@ export default {
   ist: "list",
   calender: "calender",
   board: "board",
+=======
+>>>>>>> parent of c0b0510 (calender view fixed)
 };

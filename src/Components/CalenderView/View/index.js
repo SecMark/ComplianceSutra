@@ -20,12 +20,15 @@ import {
 } from "../redux/actions";
 import WeekView from "../WeekView";
 import "./style.css";
+<<<<<<< HEAD
 import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 import axiosInstance from "../../../apiServices";
 import { actions as taskReportActions } from "../../OnBording/SubModules/DashBoardCO/redux/actions";
 import { getAllTasks } from "../../../CommonModules/helpers/tasks.helper";
+=======
+>>>>>>> parent of c0b0510 (calender view fixed)
 
-const View = ({ getSelectTaskDetails, isRedirect }) => {
+const View = ({ getSelectTaskDetails }) => {
   const [activeDays, setActiveDays] = useState(constant.week);
   const [dayDate, setDayDate] = useState(new Date());
   const [monthDate, setMonthDate] = useState(new Date());
@@ -39,6 +42,7 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
   const userDetails = state && state.auth && state.auth.loginInfo;
   const { daysData, weekData, monthData } = state.CalenderReducer;
   const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
+<<<<<<< HEAD
   const [allTaskList, setAllTaskList] = useState([]);
 
   const taskList =
@@ -54,6 +58,8 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
     }
   }, [taskList]);
 
+=======
+>>>>>>> parent of c0b0510 (calender view fixed)
   const viewBy = [
     {
       id: 1,
@@ -71,21 +77,36 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
       name: "By Month",
     },
   ];
+<<<<<<< HEAD
 
   useEffect(() => {
     fetchDayData();
     fetchWeekData();
     fetchMonthData();
+=======
+  useEffect(() => {
+    fetchDayData();
+    fetchWeekData();
+  }, [state.auth.loginInfo?.UserID]);
+
+  useEffect(() => {
+    getDays();
+>>>>>>> parent of c0b0510 (calender view fixed)
     getMonths();
   }, []);
+
   useEffect(() => {
-    dispatch(clearState());
     getDays();
+    dispatch(clearState());
     fetchWeekData();
   }, [weekStartDate]);
 
   useEffect(() => {
+<<<<<<< HEAD
     // dispatch(clearState());
+=======
+    dispatch(clearState());
+>>>>>>> parent of c0b0510 (calender view fixed)
     fetchDayData();
   }, [dayDate]);
 
@@ -182,6 +203,7 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
 
   //Dispatch Day API
   const fetchDayData = () => {
+<<<<<<< HEAD
     dispatch(
       getDayData({
         taskList: taskList && taskList.length > 0 ? taskList : [],
@@ -199,6 +221,26 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
         EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
       })
     );
+=======
+    const dayPayload = {
+      userID: state.auth.loginInfo?.UserID,
+      EntityID: "M",
+      StartDate: moment(dayDate).format("YYYY-MM-DD"),
+      EndDate: moment(dayDate).format("YYYY-MM-DD"),
+    };
+    dispatch(getDayData(dayPayload));
+  };
+
+  //Dispatch Week API
+  const fetchWeekData = () => {
+    const dayPayload = {
+      userID: state.auth.loginInfo?.UserID,
+      EntityID: "M",
+      StartDate: moment(weekStartDate).format("YYYY-MM-DD"),
+      EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
+    };
+    dispatch(getWeekData(dayPayload));
+>>>>>>> parent of c0b0510 (calender view fixed)
   };
 
   //Dispatch Month API
@@ -207,7 +249,8 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
     var startDate = new Date(date.getFullYear(), date.getMonth(), 1);
 
     const dayPayload = {
-      taskList: taskList && taskList.length > 0 ? taskList : [],
+      userID: state.auth.loginInfo?.UserID,
+      EntityID: "M",
       StartDate: moment(startDate).format("YYYY-MM-DD"),
       EndDate: moment(moment(endDate).format()).format("YYYY-MM-DD"),
     };
@@ -252,7 +295,7 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
             <span className="current-date">
               {`${moment(weekStartDate).format("ddd D")}-${moment(
                 addDaysInDate(weekStartDate, 7)
-              ).format("ddd D MMM,YYYY")}`}
+              ).format("ddd D,YYYY")}`}
             </span>
           )}
 
@@ -313,11 +356,7 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
         </div>
       </div>
       {activeDays === constant.day && (
-        <DayView
-          daysData={daysData}
-          userDetails={userDetails}
-          isRedirect={isRedirect}
-        />
+        <DayView daysData={daysData} userDetails={userDetails} />
       )}
 
       {activeDays === constant.week && (

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import styled from "styled-components";
-
-import { useSelector, useDispatch } from "react-redux";
-
+import styled, { createGlobalStyle, css } from "styled-components";
+import threeDots from "../../../../../../assets/Icons/threeDots.PNG";
+import mobileSteperIcon from "../../../../../../assets/Icons/mobileSteperIcon.png";
+import { useSelector, useDispatch, connect } from "react-redux";
+import assignIconCircle from "../../../../../../assets/Icons/assignIconCircle.png";
+import { actions as taskReportActions } from "../../redux/actions";
 import CustomCard from "./Components/BoardCard";
 import MyLaneHeader from "./Components/BoardHeader";
 import Board from "react-trello";
@@ -13,10 +15,11 @@ import {
   getDataByStatus,
   getDataByTeam,
 } from "../../../../../../CommonModules/helpers/tasks.helper";
-function BoardView({ setCurrentBoardViewBy, currentBoardViewBy, isRedirect }) {
+function BoardView({ setCurrentBoardViewBy, currentBoardViewBy }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const [taskData, setTaskData] = useState([]);
+
   const taskList =
     state &&
     state.taskReport &&
@@ -24,6 +27,9 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy, isRedirect }) {
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
   const userDetails = state && state.auth && state.auth.loginInfo;
+  // useEffect(() => {
+  //   dispatch(taskReportActions.taskReportRequest());
+  // }, [currentBoardViewBy]);
 
   useEffect(() => {
     if (taskList && taskList.length > 0) {
@@ -87,7 +93,6 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy, isRedirect }) {
                     status: taskData[i].status,
                     style: { color: "red" },
                     currentItem: item,
-                    isRedirect,
                   });
                 }
               });

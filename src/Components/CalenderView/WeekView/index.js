@@ -1,5 +1,5 @@
 import React from "react";
-import moment, { weekdays } from "moment";
+import moment from "moment";
 import "./style.css";
 
 const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
@@ -33,11 +33,17 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
             {sevenDays &&
               sevenDays.map((data) => {
                 const startDate = moment(data?.date).format("YYYY-MM-DD");
+<<<<<<< HEAD
                 const filterList = weekData.filter((details) => {
                   return (
                     moment(details.due_date).format("YYYY-MM-DD") === startDate
                   );
                 });
+=======
+                const filterList = weekData.filter(
+                  (details) => details.EndDate == startDate
+                );
+>>>>>>> parent of c0b0510 (calender view fixed)
 
                 return (
                   <td>
@@ -46,7 +52,7 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                         className="week-main"
                         onClick={() => {
                           if (userDetails && userDetails.UserType !== 6) {
-                            moveToDay(list?.due_date);
+                            moveToDay(list?.EndDate);
                           }
                         }}
                         style={{
@@ -66,8 +72,8 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                             className={`${
                               list?.Status === "Approval Pending"
                                 ? "approval-day"
-                                : list?.status === "Assigned" ||
-                                  list?.status === "Approved"
+                                : list?.Status == "Assigned" ||
+                                  list?.Status == "Approved"
                                 ? "assigned-day"
                                 : "approval-day"
                             }`}
@@ -75,7 +81,11 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                             {" "}
                             {list?.Status === "Approval Pending"
                               ? "Approval Pending"
+<<<<<<< HEAD
                               : list?.status === "Approval Pending"
+=======
+                              : list?.Status === "Completed By User"
+>>>>>>> parent of c0b0510 (calender view fixed)
                               ? "Approval Pending"
                               : list?.Status}
                           </button>
@@ -83,6 +93,7 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                         <div className="CompanyName">
                           <span>{list?.EntityName}</span>
                         </div>
+<<<<<<< HEAD
                         {list?.assign_to_name && (
                           <div>
                             <p className="UserNameDp">
@@ -96,6 +107,18 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                             </p>
                           </div>
                         )}
+=======
+                        <div>
+                          <p className="UserNameDp">
+                            <span className="circle-dp">
+                              {getNameInitials(list?.AssignedName)}
+                            </span>{" "}
+                            <span className="user-name">
+                              {list?.AssignedName}
+                            </span>
+                          </p>
+                        </div>
+>>>>>>> parent of c0b0510 (calender view fixed)
                       </div>
                     ))}
                   </td>

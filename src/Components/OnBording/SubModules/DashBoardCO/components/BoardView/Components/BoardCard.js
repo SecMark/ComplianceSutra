@@ -1,17 +1,18 @@
-import React from "react";
-import moment from "moment";
+import React, { useState, useEffect } from "react";
+import mobileSteperIcon from "../../../../../../../assets/Icons/mobileSteperIcon.png";
 import "../style.css";
 import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
-import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { withRouter, Link } from "react-router-dom";
+import { useSelector, useDispatch, connect } from "react-redux";
+import { actions as notificationActions } from "../../notification/Redux/actions";
 import { actions as taskDetailsModalOpen } from "../../../MenuRedux/actions";
-
+import { actions as taskReportActions } from "../../../redux/actions";
+import moment from "moment";
 function CustomCard(props) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const { currentItem, isRedirect } = props;
+  const currentItem = props.currentItem;
   const userDetails = state && state.auth && state.auth.loginInfo;
-  const history = useHistory();
   const defineStyle = (props) => {
     let obj = {};
     if (props && currentItem && currentItem.status === "Overdue") {
@@ -130,9 +131,6 @@ function CustomCard(props) {
   };
 
   const redirectToTaskListView = (TaskId) => {
-    if (isRedirect) {
-      history.push("/dashboard");
-    }
     dispatch(taskDetailsModalOpen.setCurrentBoardViewTaskId(TaskId));
     dispatch(taskDetailsModalOpen.setIsModalOpen("board"));
     dispatch(
