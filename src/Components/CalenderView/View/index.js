@@ -20,12 +20,15 @@ import {
 } from "../redux/actions";
 import WeekView from "../WeekView";
 import "./style.css";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
+import axiosInstance from "../../../apiServices";
+
 
 const View = ({ getSelectTaskDetails }) => {
   const [activeDays, setActiveDays] = useState(constant.week);
   const [dayDate, setDayDate] = useState(new Date());
   const [monthDate, setMonthDate] = useState(new Date());
-
+ 
   const [weekStartDate, setWeekStartDate] = useState(new Date());
   const [sevenDays, setSevenDays] = useState([]);
   const [months, setMonths] = useState([]);
@@ -52,9 +55,13 @@ const View = ({ getSelectTaskDetails }) => {
       name: "By Month",
     },
   ];
+
+  const [taskList, setTaskList] = useState([]);
+  const [weekTaskList,setWeekTaskList] = useState([]);
+
   useEffect(() => {
     fetchDayData();
-    fetchWeekData();
+    //fetchWeekData();
   }, [state.auth.loginInfo?.UserID]);
 
   useEffect(() => {
@@ -175,15 +182,37 @@ const View = ({ getSelectTaskDetails }) => {
     dispatch(getDayData(dayPayload));
   };
 
+  const fetchTaskList = async () => {
+    
+    const taskDetail = await axiosInstance.post(`${BACKEND_BASE_URL}compliance.api.GetTaskList`);
+    const {task_details} = taskDetail.data.message;
+    setTaskList(task_details);
+
+  }
+
   //Dispatch Week API
-  const fetchWeekData = () => {
-    const dayPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      EntityID: "M",
-      StartDate: moment(weekStartDate).format("YYYY-MM-DD"),
-      EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
-    };
-    dispatch(getWeekData(dayPayload));
+  const fetchWeekData = async () => {
+   await fetchTaskList()
+    let temp = [...taskList];
+    let weeklyData = [];
+    
+    const StartDate = moment(weekStartDate).format("YYYY-MM-DD")
+     const EndDate = moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD");
+
+     temp.map((licensesTaskList) => {
+      licensesTaskList.licenseAndTaskList.map((tasks) => {
+        tasks.taskList.map(list => weeklyData.push(list))
+      })
+     })
+
+     const filtedList = weeklyData.filter((task) => {
+       return moment(task.deadline_date).format("YYYY-MM-DD") >= StartDate && moment(task.deadline_date).format("YYYY-MM-DD") <= EndDate
+     })
+
+     setWeekTaskList(filtedList)
+
+
+ 
   };
 
   //Dispatch Month API
@@ -305,7 +334,7 @@ const View = ({ getSelectTaskDetails }) => {
       {activeDays === constant.week && (
         <WeekView
           sevenDays={sevenDays}
-          weekData={weekData}
+          weekData={weekTaskList}
           goToDateDay={goToDateDay}
           userDetails={userDetails}
         />
