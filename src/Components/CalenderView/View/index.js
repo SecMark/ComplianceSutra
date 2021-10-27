@@ -20,13 +20,10 @@ import {
 } from "../redux/actions";
 import WeekView from "../WeekView";
 import "./style.css";
-<<<<<<< Updated upstream
-=======
 import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 import axiosInstance from "../../../apiServices";
 import { actions as taskReportActions } from "../../OnBording/SubModules/DashBoardCO/redux/actions";
 import { getAllTasks } from "../../../CommonModules/helpers/tasks.helper";
->>>>>>> Stashed changes
 
 const View = ({ getSelectTaskDetails, isRedirect }) => {
   const [activeDays, setActiveDays] = useState(constant.week);
@@ -42,8 +39,6 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
   const userDetails = state && state.auth && state.auth.loginInfo;
   const { daysData, weekData, monthData } = state.CalenderReducer;
   const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
-<<<<<<< Updated upstream
-=======
   const [allTaskList, setAllTaskList] = useState([]);
 
   const taskList =
@@ -59,7 +54,6 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
     }
   }, [taskList]);
 
->>>>>>> Stashed changes
   const viewBy = [
     {
       id: 1,
@@ -77,21 +71,11 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
       name: "By Month",
     },
   ];
-<<<<<<< Updated upstream
-  useEffect(() => {
-    fetchDayData();
-    fetchWeekData();
-  }, [state.auth.loginInfo?.UserID]);
-
-  useEffect(() => {
-    getDays();
-=======
 
   useEffect(() => {
     fetchDayData();
     fetchWeekData();
     fetchMonthData();
->>>>>>> Stashed changes
     getMonths();
   }, []);
   useEffect(() => {
@@ -101,11 +85,7 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
   }, [weekStartDate]);
 
   useEffect(() => {
-<<<<<<< Updated upstream
-    dispatch(clearState());
-=======
     // dispatch(clearState());
->>>>>>> Stashed changes
     fetchDayData();
   }, [dayDate]);
 
@@ -202,26 +182,6 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
 
   //Dispatch Day API
   const fetchDayData = () => {
-<<<<<<< Updated upstream
-    const dayPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      EntityID: "M",
-      StartDate: moment(dayDate).format("YYYY-MM-DD"),
-      EndDate: moment(dayDate).format("YYYY-MM-DD"),
-    };
-    dispatch(getDayData(dayPayload));
-  };
-
-  //Dispatch Week API
-  const fetchWeekData = () => {
-    const dayPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      EntityID: "M",
-      StartDate: moment(weekStartDate).format("YYYY-MM-DD"),
-      EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
-    };
-    dispatch(getWeekData(dayPayload));
-=======
     dispatch(
       getDayData({
         taskList: taskList && taskList.length > 0 ? taskList : [],
@@ -239,7 +199,6 @@ const View = ({ getSelectTaskDetails, isRedirect }) => {
         EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
       })
     );
->>>>>>> Stashed changes
   };
 
   //Dispatch Month API

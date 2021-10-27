@@ -92,8 +92,6 @@ export default {
 
   expertReview: "exp",
   complianceOfficer: "compl",
-<<<<<<< Updated upstream
-=======
   day: "day",
   month: "month",
   week: "week",
@@ -102,5 +100,4 @@ export default {
   ist: "list",
   calender: "calender",
   board: "board",
->>>>>>> Stashed changes
 };

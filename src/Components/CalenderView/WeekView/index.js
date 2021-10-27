@@ -33,17 +33,11 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
             {sevenDays &&
               sevenDays.map((data) => {
                 const startDate = moment(data?.date).format("YYYY-MM-DD");
-<<<<<<< Updated upstream
-                const filterList = weekData.filter(
-                  (details) => details.EndDate == startDate
-                );
-=======
                 const filterList = weekData.filter((details) => {
                   return (
                     moment(details.due_date).format("YYYY-MM-DD") === startDate
                   );
                 });
->>>>>>> Stashed changes
 
                 return (
                   <td>
@@ -81,11 +75,7 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                             {" "}
                             {list?.Status === "Approval Pending"
                               ? "Approval Pending"
-<<<<<<< Updated upstream
-                              : list?.Status === "Completed By User"
-=======
                               : list?.status === "Approval Pending"
->>>>>>> Stashed changes
                               ? "Approval Pending"
                               : list?.Status}
                           </button>
@@ -93,18 +83,6 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                         <div className="CompanyName">
                           <span>{list?.EntityName}</span>
                         </div>
-<<<<<<< Updated upstream
-                        <div>
-                          <p className="UserNameDp">
-                            <span className="circle-dp">
-                              {getNameInitials(list?.AssignedName)}
-                            </span>{" "}
-                            <span className="user-name">
-                              {list?.AssignedName}
-                            </span>
-                          </p>
-                        </div>
-=======
                         {list?.assign_to_name && (
                           <div>
                             <p className="UserNameDp">
@@ -118,7 +96,6 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                             </p>
                           </div>
                         )}
->>>>>>> Stashed changes
                       </div>
                     ))}
                   </td>
