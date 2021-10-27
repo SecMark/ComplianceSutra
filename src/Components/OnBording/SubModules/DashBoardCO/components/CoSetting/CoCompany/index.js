@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useMemo } from "react";
 import "./style.css";
 import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
 import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
@@ -13,6 +13,7 @@ import grayPlusIcon from "../../../../../../../assets/Icons/grayPlusIcon.png";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
 import mobileAssignIconSmall from "../../../../../../../assets/Icons/mobileAssignIconSmall.png";
+import {actions as companyAction} from "../../../../../../OnBording/redux/actions";
 import { toast } from "react-toastify";
 import Dropdown from "react-dropdown";
 import { actions as coActions } from "../../../redux/actions";
@@ -23,9 +24,12 @@ import { useOuterClick } from "./utils";
 import { Modal } from "react-responsive-modal";
 import Searchable from "react-searchable-dropdown";
 import { isMobile } from "react-device-detect";
+import countryList from "react-select-country-list";
+import License from "../ChooseLicenses/License";
 function CoManagment({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const options = useMemo(() => countryList().getData(), []);
 
   const [editShow, setEditShow] = useState(false);
   const [doEdit, setdoEdit] = useState(undefined);
@@ -93,6 +97,29 @@ function CoManagment({ handleClose }) {
   };
 
   useEffect(() => {
+    const tempUsers =
+      state &&
+      state.taskReport &&
+      state.taskReport.companyTypeInfo &&
+      state.taskReport.companyTypeInfo.CompanyInfo;
+    if (tempUsers != undefined && tempUsers.length > 0) {
+      let users = [];
+      tempUsers.forEach((element) => {
+        element.compliance_officer.map((item) => {
+          const obj = {
+            UserName: item.full_name,
+            userEmail: item.email,
+          };
+          users.push(obj);
+        });
+      });
+
+      setUserData(users);
+      setUserDataBackup(users);
+    }
+  }, [state.taskReport.coEntityLicenseTask]);
+
+  useEffect(() => {
     const companyTypes =
       state && state?.taskReport && state?.taskReport?.companyTypeInfo;
 
@@ -147,12 +174,20 @@ function CoManagment({ handleClose }) {
   };
 
   const openChooseLicenseModel = (type, index, item) => {
-    let selectedObj = companyDetails[index];
+    let selectedObj = companyDetails[index].business_category;
+    let lic = companyDetails[index].licenses;
     let FieldObj = {
-      category: selectedObj.Category,
-      selectedLiecenseIdArray: selectedObj.selectedLicenseArray,
+      ...fields,
+      category: selectedObj,
+      selectedLiecenseIdArray: lic,
     };
-    setFields(FieldObj);
+   setFields(FieldObj);
+   dispatch(
+    companyAction.getLicenseList({
+      industry_type: companyDetails[index].business_category,
+      country: "India",
+    })
+  );
     if (!isMobile) {
       const drawerParent = document.getElementById("drawerParent");
       const drawerChild = document.getElementById("drawerChild");
@@ -191,11 +226,15 @@ function CoManagment({ handleClose }) {
       }
     } else if (name === "company_type") {
       companyList[index].company_type = e;
-    } else if (name == "compliance_officer") {
-      console.log("Gadsfasdfsdfsdf");
+    }else if(name === "company_country"){
+      companyList[index].company_country = e
+    }else if(name === "company_pincode"){
+        companyList[index].company_pincode = e.target.value;
+    }else if (name == "compliance_officer") {
+      console.log("Gadsfasdfsdfsdf",e);
       companyList[index].compliance_officer = {
-        email: "finbyz.anuj@gmail.com",
-        full_name: "Anuj Sanklecha",
+        email: e.userEmail,
+        full_name: e.UserName,
       };
       setAssignPromptIndex(undefined);
       hideBlock();
@@ -327,29 +366,44 @@ function CoManagment({ handleClose }) {
         drawerChild.style.bottom = "-100%";
       }
       setLicenseModalHideShow(false);
+      
     }
-
-    let tempCoCompany = [...companyDetails];
-    const isSameLicenses = checkWithPreviousLicenses(
-      selectedCompany.selectedLicenseArray,
-      fieldData.selectedLiecenseIdArray
-    );
-    if (isSameLicenses === false || isSameLicenses === undefined) {
-      tempCoCompany[selectedIndex].selectedLicenseArray =
-        fieldData.selectedLiecenseIdArray;
-      setCompanyDetails(tempCoCompany);
-    } else {
-      if (
-        tempCoCompany[selectedIndex].EntityTypeID ===
-          selectedCompany.EntityTypeID &&
-        tempCoCompany[selectedIndex].Category === selectedCompany.Category &&
-        tempCoCompany[selectedIndex].coUserID === selectedCompany.coUserID &&
-        tempCoCompany[selectedIndex].EntityName === selectedCompany.EntityName
-      ) {
-        setSelectedIndex(undefined);
-        setSelectedCompany(undefined);
-      }
-    }
+    setSelectedIndex(undefined);
+    setSelectedCompany(undefined);
+    // let tempCoCompany = [...companyDetails];
+    // const isSameLicenses = checkWithPreviousLicenses(
+    //   selectedCompany.selectedLicenseArray,
+    //   fields.selectedLiecenseIdArray
+    // );
+    // if (isSameLicenses === false || isSameLicenses === undefined) {
+    //   tempCoCompany[selectedIndex].selectedLicenseArray =
+    //     fields.selectedLiecenseIdArray;
+    //   setCompanyDetails(tempCoCompany);
+    // } else {
+    //   if (
+    //     tempCoCompany[selectedIndex].company_docname ===
+    //       selectedCompany.company_docname &&
+    //     tempCoCompany[selectedIndex].business_category === selectedCompany.business_category &&
+    //     tempCoCompany[selectedIndex].company_docname === selectedCompany.company_docname &&
+    //     tempCoCompany[selectedIndex].company_type === selectedCompany.company_type
+    //   ) {
+    //     setSelectedIndex(undefined);
+    //     setSelectedCompany(undefined);
+    //   }
+    // }
+  };
+  const addLicense = (index, licenseList) => {
+    console.log("have to set this fields",fields,index,licenseList)
+    setFields({
+      ...fields,
+      selectedLiecenseIdArray:licenseList
+    })
+    // let FieldObj = {
+    //   ...temp,
+    //   selectedLiecenseIdArray: licenseList,
+    // };
+    //  temp[index].selectedLiecenseIdArray = licenseList;
+    // setFields(temp);
   };
 
   const handleDeleteClick = (item, flag) => {
@@ -538,10 +592,12 @@ function CoManagment({ handleClose }) {
         <div id="drawerParent" className="">
           <div id="drawerChild" className="sideBarFixed">
             {licenseModalHideShow && (
-              <LicenseDrawer
-                fields={fields}
-                close={(data, action) => close(data, action)}
-              />
+              <License
+              fields={fields}
+              addLicense={addLicense}
+              index={selectedIndex}
+              closeDrawer={close}
+            />
             )}
           </div>
         </div>
@@ -588,8 +644,10 @@ function CoManagment({ handleClose }) {
           </caption>
           <thead>
             <tr>
-              <th scope="col">Company Name</th>
+            <th scope="col">Company Name</th>
               <th scope="col">Company Type</th>
+              <th scope="col">Country</th>
+              <th scope="col">Pincode</th>
               <th scope="col">Business category</th>
               <th scope="col">Compliance Officer</th>
               <th scope="col">Licenses</th>
@@ -598,7 +656,7 @@ function CoManagment({ handleClose }) {
           </thead>
           <tbody>
             {companyDetails?.map((item, index) => {
-              console.log(item);
+              console.log("got this items",item);
               return (
                 <>
                   <tr className="focusRemove">
@@ -670,6 +728,45 @@ function CoManagment({ handleClose }) {
                       </div>
                     </td>
                     <td className="dropList">
+                          <div  className="holding-list-bold-title">
+                        <Searchable
+                          options={options}
+                          placeholder={
+                            item.company_country
+                              ? item.company_country
+                              : "Select Type"
+                          }
+                          className="form-control border-0"
+                          value={item.company_country}
+                          onSelect={(e) =>
+                            selectedIndex === undefined ||
+                            selectedIndex === index
+                              ? handelChange(e, "company_country", index, item)
+                              : true
+                          }
+                        />
+                        </div>
+                      </td>
+                      <td>
+                          <div className="bk-Securities">
+                            
+                        <input
+                          type="text"
+                          className="form-control border-0"
+                          placeholder="Pincode"
+                          name="company_pincode"
+                          value={item.company_pincode}
+                           onChange={(e) =>
+                            selectedIndex === undefined ||
+                            selectedIndex === index
+                              ? handelChange(e, "company_pincode", index, item)
+                              : true
+                          }
+                        />
+                        
+                        </div>
+                      </td>
+                    <td className="dropList">
                       <div className="holding-list-bold-title">
                         <Searchable
                           //value={item.selectedCategory}
@@ -739,7 +836,7 @@ function CoManagment({ handleClose }) {
 
                       {!item.isExist && item?.compliance_officer.length === 0 && (
                         <div
-                          className="assign-with-icon"
+                          className="assign-with-icofn"
                           onClick={() =>
                             selectedIndex === undefined ||
                             selectedIndex === index
