@@ -20,6 +20,8 @@ import {
 } from "../redux/actions";
 import WeekView from "../WeekView";
 import "./style.css";
+import axiosInstance from "../../../apiServices";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 
 const View = ({ getSelectTaskDetails }) => {
   const [activeDays, setActiveDays] = useState(constant.week);
@@ -35,6 +37,8 @@ const View = ({ getSelectTaskDetails }) => {
   const userDetails = state && state.auth && state.auth.loginInfo;
   const { daysData, weekData, monthData } = state.CalenderReducer;
   const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
+  const [taskList, setTaskList] = useState([]);
+
   const viewBy = [
     {
       id: 1,
@@ -70,7 +74,7 @@ const View = ({ getSelectTaskDetails }) => {
 
   useEffect(() => {
     dispatch(clearState());
-    fetchDayData();
+    // fetchDayData();
   }, [dayDate]);
 
   //Get Days from start date to end date.
@@ -166,13 +170,44 @@ const View = ({ getSelectTaskDetails }) => {
 
   //Dispatch Day API
   const fetchDayData = () => {
-    const dayPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      EntityID: "M",
-      StartDate: moment(dayDate).format("YYYY-MM-DD"),
-      EndDate: moment(dayDate).format("YYYY-MM-DD"),
-    };
-    dispatch(getDayData(dayPayload));
+    axiosInstance
+      .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`)
+      .then((response) => {
+        const { status, status_response, task_details } = response.data.message;
+        if (status && status_response) {
+          console.log(task_details);
+          setTaskList(task_details);
+          getWeeklyTaskList();
+        }
+      })
+      .catch((error) => {});
+  };
+
+  const getWeeklyTaskList = () => {
+    const StartDate = moment(weekStartDate).format("YYYY-MM-DD");
+    const EndDate = moment(addDaysInDate(weekStartDate, 7)).format(
+      "YYYY-MM-DD"
+    );
+
+    let temp = [...taskList];
+    const weeklyTaskList = [];
+    temp &&
+      temp.map((licenses) => {
+        licenses.licenseAndTaskList.map((tasks) => {
+          tasks.taskList.map((list) => {
+            weeklyTaskList.push(list);
+          });
+        });
+      });
+
+    const filterWeeklyList = weeklyTaskList.filter((list) => {
+      return (
+        moment(list.deadline_date).format("YYYY-MM-DD") >= StartDate &&
+        moment(list.deadline_date).format("YYYY-MM-DD") <= EndDate
+      );
+    });
+
+    console.log(filterWeeklyList);
   };
 
   //Dispatch Week API
@@ -217,7 +252,7 @@ const View = ({ getSelectTaskDetails }) => {
     setDays(constant.day, constant.increment);
     setActiveDays(constant.day);
     setDayDate(newDate);
-    fetchDayData();
+    // fetchDayData();
   };
 
   return (

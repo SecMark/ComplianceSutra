@@ -92,4 +92,7 @@ export default {
 
   expertReview: "exp",
   complianceOfficer: "compl",
+  month: "month",
+  week: "week",
+  day: "day",
 };
