@@ -814,7 +814,7 @@ function CoManagment({ handleClose }) {
           <div className="mobile-py">
             <div className="d-flex position-relative">
               <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
-                <div className="personal-mgt-title">Team Members</div>
+                <div className="personal-mgt-title">Team Memberss</div>
               </div>
               <div className="col-2 col-sm-12 col-md-12 col-xl-12 d-block d-md-none">
                 <img
@@ -1254,9 +1254,6 @@ function CoManagment({ handleClose }) {
       </div>
       <div className="scroll-personal-grid d-none d-md-block position-relative">
         <table className="table co-company-details-tbl table_legenda">
-          {/* <caption className="add-company-link">
-                        Add another company
-    </caption> */}
           <thead>
             <tr>
               <th className="tw-30" clscope="col">

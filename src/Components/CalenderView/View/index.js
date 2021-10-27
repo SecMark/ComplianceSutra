@@ -57,7 +57,6 @@ const View = ({ getSelectTaskDetails }) => {
     },
   ];
 
-  const [taskList, setTaskList] = useState([]);
   const [weekTaskList, setWeekTaskList] = useState([]);
 
   useEffect(() => {

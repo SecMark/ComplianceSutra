@@ -320,10 +320,14 @@ const getCoEntityLicenseTask = function* getCoEntityLicenseTask({ payload }) {
 
 const getCOCompnayType = function* getCOCompnayType({ payload }) {
   try {
-    const { data, status } = yield call(api.GetCOCompanyType, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
-      yield put(actions.getCompanyTypeRequestSuccess({ CompanyInfo: data }));
+    const { data } = yield call(api.GetCOCompanyType, payload);
+    const { message } = data;
+    if (message.status) {
+      yield put(
+        actions.getCompanyTypeRequestSuccess({
+          CompanyInfo: message.company_details_list,
+        })
+      );
     } else {
       yield put(actions.getCompanyTypeRequestFailed({ CompanyInfo: {} }));
     }

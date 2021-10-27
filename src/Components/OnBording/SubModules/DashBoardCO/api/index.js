@@ -1,4 +1,6 @@
+import axiosInstance from "../../../../../apiServices";
 import api from "../../../../../apiServices";
+import { BACKEND_BASE_URL } from "../../../../../apiServices/baseurl";
 
 const getTaskReport = (payload) =>
   api.get("compliance.api.GetTaskList", payload);
@@ -42,7 +44,8 @@ const postCodetailsInsUpdDel = (payload) =>
 const GetEntityLicenseTask = (payload) =>
   api.post("api/GetEntityLicenseTask", payload);
 
-const GetCOCompanyType = (payload) => api.post("api/BindCompanyType", payload);
+const GetCOCompanyType = () =>
+  axiosInstance.get(`${BACKEND_BASE_URL}compliance.api.getCompanyDetails`);
 
 const insertCerificateDetailsArray = (payload) =>
   api.post("api/InsertCertifateDetailsArray", payload);
