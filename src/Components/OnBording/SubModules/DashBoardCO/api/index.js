@@ -55,7 +55,11 @@ const getAllNotifications = (payload) => api.post("api/Notifications", payload);
 const coSettingCommonApi = (payload) => api.post("api/CoSettings", payload);
 
 const migrateTasks = (payload) => api.post("api/Migrate", payload);
-const getTeamMembers = (payload) => api.post("api/Migrate", payload);
+const getTeamMembers = (payload) =>
+  axiosInstance.post(
+    `${BACKEND_BASE_URL}compliance.api.getUserByRole`,
+    payload
+  );
 
 export default {
   getTaskReport,

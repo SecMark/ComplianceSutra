@@ -21,6 +21,8 @@ import {
   searchUsers,
 } from "./utilties";
 import apiServices from "../OnBording/SubModules/DashBoardCO/api/index";
+import axiosInstance from "../../apiServices";
+import { BACKEND_BASE_URL } from "../../apiServices/baseurl";
 function ReAssignTasksModal({
   openModal,
   setShowModal,
@@ -28,6 +30,8 @@ function ReAssignTasksModal({
   userId,
   isSingleTask,
   taskId,
+  memberList,
+  user,
 }) {
   const { migrateTasks, getTeamMembers } = apiServices;
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
@@ -51,465 +55,45 @@ function ReAssignTasksModal({
     setShowModal(false);
   };
 
-  const handleReAssign = () => {
-    // For Single Tasks
-    if (
-      isSingleTask &&
-      Object.entries(assignTo).length !== 0 &&
-      Object.entries(filter).length !== 0 &&
-      taskId
-    ) {
-      // For Team Member
-      if (assignTo.UserType === 4 && userId) {
-        let payload = {
-          coUserType: "4",
-          migrateID: assignTo.UserID,
-          taskID: taskId,
-          flag: Flags[0],
-        };
-        if (filter.name === FilterTypes.migrateAllTasksForever) {
-          migrateTasks(payload).then((response) => {
-            if (checkResponse(response)) {
-              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
-            } else {
-              toast.error(Messages.error);
-            }
-          });
-        } else if (
-          filter.name === FilterTypes.migrateAllTasksOfParticularDate
-        ) {
-          payload = {
-            coUserType: "4",
-            migrateID: assignTo.UserID,
-            taskID: taskId,
-            migratefrom: moment(
-              filter.value.dueOn.join("-"),
-              "DD-MM-YYYY"
-            ).format("YYYY-MM-DD"),
-            flag: Flags[1],
-          };
-          migrateTasks(payload).then((response) => {
-            if (checkResponse(response)) {
-              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
-            } else {
-              toast.error(Messages.error);
-            }
-          });
-        } else if (filter.name === FilterTypes.migrateAllTasksInDateRange) {
-          payload = {
-            coUserType: "4",
-            migrateID: assignTo.UserID,
-            taskID: taskId,
-            migratefrom: moment(
-              filter.value.from.join("-"),
-              "DD-MM-YYYY"
-            ).format("YYYY-MM-DD"),
-            migrateto: moment(filter.value.to.join("-"), "DD-MM-YYYY").format(
-              "YYYY-MM-DD"
-            ),
-            flag: Flags[2],
-          };
-          migrateTasks(payload).then((response) => {
-            if (checkResponse(response)) {
-              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
-            } else {
-              toast.error(Messages.error);
-            }
-          });
-        }
-      }
-      // For Approver
-      if (assignTo.UserType === 5 && userId) {
-        let payload = {
-          coUserType: "5",
-          migrateID: assignTo.UserID,
-          taskID: taskId,
-          flag: Flags[0],
-        };
-        if (filter.name === FilterTypes.migrateAllTasksForever) {
-          migrateTasks(payload).then((response) => {
-            if (checkResponse(response)) {
-              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
-            } else {
-              toast.error(Messages.error);
-            }
-          });
-        } else if (
-          filter.name === FilterTypes.migrateAllTasksOfParticularDate
-        ) {
-          payload = {
-            coUserType: "5",
-            migrateID: assignTo.UserID,
-            taskID: taskId,
-            migratefrom: moment(
-              filter.value.dueOn.join("-"),
-              "DD-MM-YYYY"
-            ).format("YYYY-MM-DD"),
-            flag: Flags[1],
-          };
-          migrateTasks(payload).then((response) => {
-            if (checkResponse(response)) {
-              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
-            } else {
-              toast.error(Messages.error);
-            }
-          });
-        } else if (filter.name === FilterTypes.migrateAllTasksInDateRange) {
-          payload = {
-            coUserType: "5",
-            migrateID: assignTo.UserID,
-            taskID: taskId,
-            migratefrom: moment(
-              filter.value.from.join("-"),
-              "DD-MM-YYYY"
-            ).format("YYYY-MM-DD"),
-            migrateto: moment(filter.value.to.join("-"), "DD-MM-YYYY").format(
-              "YYYY-MM-DD"
-            ),
-            flag: Flags[2],
-          };
-          migrateTasks(payload).then((response) => {
-            if (checkResponse(response)) {
-              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
-            } else {
-              toast.error(Messages.error);
-            }
-          });
-        }
-      }
-      // For Compliance Officer
-      if (assignTo.UserType === 3 && userId) {
-        let payload = {
-          coUserType: "3",
-          migrateID: assignTo.UserID,
-          taskID: taskId,
-          flag: Flags[0],
-        };
-        if (filter.name === FilterTypes.migrateAllTasksForever) {
-          migrateTasks(payload).then((response) => {
-            if (checkResponse(response)) {
-              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
-            } else {
-              toast.error(Messages.error);
-            }
-          });
-        } else if (
-          filter.name === FilterTypes.migrateAllTasksOfParticularDate
-        ) {
-          payload = {
-            coUserType: "3",
-            migrateID: assignTo.UserID,
-            taskID: taskId,
-            migratefrom: moment(
-              filter.value.dueOn.join("-"),
-              "DD-MM-YYYY"
-            ).format("YYYY-MM-DD"),
-            flag: Flags[1],
-          };
-          migrateTasks(payload).then((response) => {
-            if (checkResponse(response)) {
-              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
-            } else {
-              toast.error(Messages.error);
-            }
-          });
-        } else if (filter.name === FilterTypes.migrateAllTasksInDateRange) {
-          payload = {
-            coUserType: "3",
-            migrateID: assignTo.UserID,
-            taskID: taskId,
-            migratefrom: moment(
-              filter.value.from.join("-"),
-              "DD-MM-YYYY"
-            ).format("YYYY-MM-DD"),
-            migrateto: moment(filter.value.to.join("-"), "DD-MM-YYYY").format(
-              "YYYY-MM-DD"
-            ),
-            flag: Flags[2],
-          };
-          migrateTasks(payload).then((response) => {
-            if (checkResponse(response)) {
-              toast.success(Messages.individualTaskSuccess + assignTo.UserName);
-            } else {
-              toast.error(Messages.error);
-            }
-          });
-        }
-      }
+  const handleReAssign = async () => {
+    let payload = {
+      user: user,
+      from_date: "",
+      to_date: "",
+      suggested_user: assignTo.email,
+    };
+    if (filter.name === "MIGRATE_ALL_TASKS_OF_PARTICULAR_DATE") {
+      const due_date = filter.value.dueOn
+        .reverse()
+        .toString()
+        .replace(/,/g, "-");
+      payload.from_date = due_date;
+      payload.to_date = due_date;
+    } else if (filter.name === "MIGRATE_ALL_TASKS_IN_DATE_RANGE") {
+      payload.from_date = filter.value.from
+        .reverse()
+        .toString()
+        .replace(/,/g, "-");
+      payload.to_date = filter.value.to.reverse().toString().replace(/,/g, "-");
+    } else {
+      payload.from_date = moment().format("YYYY-MM-DD");
+      payload.to_date = "";
     }
-
-    // For All Tasks
-    if (
-      Object.entries(assignTo).length !== 0 &&
-      Object.entries(filter).length !== 0 &&
-      isSingleTask === undefined
-    ) {
-      // For Team Member
-      if (userType === 4 && assignTo.UserType === 4 && userId) {
-        let payload = {
-          coUserType: "4",
-          migrateID: assignTo.UserID,
-          ecoUserId: userId,
-          flag: 0,
-        };
-        if (filter.name === FilterTypes.migrateAllTasksForever) {
-          migrateTasks(payload)
-            .then((response) => {
-              if (checkResponse(response)) {
-                toast.success(Messages.success + assignTo.UserName);
-              } else {
-                toast.error(Messages.error);
-              }
-            })
-            .catch((err) => {
-              toast.error(Messages.error);
-            });
-        } else if (filter.name === FilterTypes.migrateAllTasksInDateRange) {
-          payload = {
-            coUserType: "4",
-            migrateID: assignTo.UserID,
-            ecoUserId: userId,
-            migratefrom: moment(
-              filter.value.from.join("-"),
-              "DD-MM-YYYY"
-            ).format("YYYY-MM-DD"),
-            migrateto: moment(filter.value.to.join("-"), "DD-MM-YYYY").format(
-              "YYYY-MM-DD"
-            ),
-            flag: "2",
-          };
-          migrateTasks(payload)
-            .then((response) => {
-              if (checkResponse(response)) {
-                toast.success(Messages.success + assignTo.UserName);
-              } else {
-                toast.error(Messages.error);
-              }
-            })
-            .catch((err) => {
-              toast.error(Messages.error);
-            });
-        } else if (
-          filter.name === FilterTypes.migrateAllTasksOfParticularDate
-        ) {
-          payload = {
-            coUserType: "4",
-            migrateID: assignTo.UserID,
-            ecoUserId: userId,
-            migratefrom: moment(
-              filter.value.dueOn.join("-"),
-              "DD-M-YYYY"
-            ).format("YYYY-MM-DD"),
-            flag: Flags[1],
-          };
-          migrateTasks(payload)
-            .then((response) => {
-              if (checkResponse(response)) {
-                toast.success(Messages.success + assignTo.UserName);
-              } else {
-                toast.error(Messages.error);
-              }
-            })
-            .catch((err) => {
-              toast.error(Messages.error);
-            });
-        }
+    const { data } = await axiosInstance.post(
+      `${BACKEND_BASE_URL}compliance.api.sendMigrationRequest`,
+      {
+        data: {
+          migration_request: [payload],
+        },
       }
-      // For Approver
-      if (userType === 5 && assignTo.UserType === 5 && userId) {
-        let payload = {
-          coUserType: "5",
-          migrateID: assignTo.UserID,
-          ecoUserId: userId,
-          flag: "0",
-        };
-        if (filter.name === FilterTypes.migrateAllTasksForever) {
-          migrateTasks(payload)
-            .then((response) => {
-              if (checkResponse(response)) {
-                toast.success(Messages.success + assignTo.UserName);
-              } else {
-                toast.error(Messages.error);
-              }
-            })
-            .catch((err) => {
-              toast.error(Messages.error);
-            });
-        } else if (filter.name === FilterTypes.migrateAllTasksInDateRange) {
-          payload = {
-            coUserType: "5",
-            migrateID: assignTo.UserID,
-            ecoUserId: userId,
-            migratefrom: moment(
-              filter.value.from.join("-"),
-              "DD-MM-YYYY"
-            ).format("YYYY-MM-DD"),
-            migrateto: moment(filter.value.to.join("-"), "DD-MM-YYYY").format(
-              "YYYY-MM-DD"
-            ),
-            flag: Flags[2],
-          };
-          migrateTasks(payload)
-            .then((response) => {
-              if (checkResponse(response)) {
-                toast.success(Messages.success + assignTo.UserName);
-              } else {
-                toast.error(Messages.error);
-              }
-            })
-            .catch((err) => {
-              toast.error(Messages.error);
-            });
-        } else if (
-          filter.name === FilterTypes.migrateAllTasksOfParticularDate
-        ) {
-          payload = {
-            coUserType: "5",
-            migrateID: assignTo.UserID,
-            ecoUserId: userId,
-            migratefrom: moment(
-              filter.value.dueOn.join("-"),
-              "DD-M-YYYY"
-            ).format("YYYY-MM-DD"),
-            flag: Flags[1],
-          };
-          migrateTasks(payload)
-            .then((response) => {
-              if (checkResponse(response)) {
-                toast.success(Messages.success + assignTo.UserName);
-              } else {
-                toast.error(Messages.error);
-              }
-            })
-            .catch((err) => {
-              toast.error(Messages.error);
-            });
-        }
-      }
-      // For Compliance Officer
-      if (assignTo.UserType === 3 && userId) {
-        let payload = {
-          coUserType: "3",
-          migrateID: assignTo.UserID,
-          ecoUserId: userId,
-          flag: 0,
-        };
-        if (filter.name === FilterTypes.migrateAllTasksForever) {
-          migrateTasks(payload)
-            .then((response) => {
-              if (checkResponse(response)) {
-                toast.success(Messages.success + assignTo.UserName);
-              } else {
-                toast.error(Messages.error);
-              }
-            })
-            .catch((err) => {
-              toast.error(Messages.error);
-            });
-        } else if (filter.name === FilterTypes.migrateAllTasksInDateRange) {
-          payload = {
-            coUserType: "3",
-            migrateID: assignTo.UserID,
-            ecoUserId: userId,
-            migratefrom: moment(
-              filter.value.from.join("-"),
-              "DD-MM-YYYY"
-            ).format("YYYY-MM-DD"),
-            migrateto: moment(filter.value.to.join("-"), "DD-MM-YYYY").format(
-              "YYYY-MM-DD"
-            ),
-            flag: "2",
-          };
-          migrateTasks(payload)
-            .then((response) => {
-              if (checkResponse(response)) {
-                toast.success(Messages.success + assignTo.UserName);
-              } else {
-                toast.error(Messages.error);
-              }
-            })
-            .catch((err) => {
-              toast.error(Messages.error);
-            });
-        } else if (
-          filter.name === FilterTypes.migrateAllTasksOfParticularDate
-        ) {
-          payload = {
-            coUserType: "3",
-            migrateID: assignTo.UserID,
-            ecoUserId: userId,
-            migratefrom: moment(
-              filter.value.dueOn.join("-"),
-              "DD-M-YYYY"
-            ).format("YYYY-MM-DD"),
-            flag: Flags[1],
-          };
-          migrateTasks(payload)
-            .then((response) => {
-              if (checkResponse(response)) {
-                toast.success(Messages.success + assignTo.UserName);
-              } else {
-                toast.error(Messages.error);
-              }
-            })
-            .catch((err) => {
-              toast.error(Messages.error);
-            });
-        }
-      }
+    );
+    if (data.message.status) {
+      toast.success("Task has been migrated to " + assignTo.full_name);
+      handleClose();
+    } else {
+      toast.error(data.message.status_response);
     }
-    handleClose();
   };
-
-  useEffect(() => {
-    // Fetching data of members.
-    if (auth && auth.loginInfo && auth.loginInfo.UserID && userId) {
-      let payload = {
-        coUserId: auth.loginInfo.UserID,
-        coUserType: "0",
-      };
-      if (userType === 3) {
-        payload = {
-          coUserId: auth.loginInfo.UserID,
-          coUserType: "3",
-        };
-      }
-      if (userType === 4) {
-        payload = {
-          coUserId: auth.loginInfo.UserID,
-          coUserType: "4",
-        };
-      }
-      if (userType === 5) {
-        payload = {
-          coUserId: auth.loginInfo.UserID,
-          coUserType: "5",
-        };
-      }
-      getTeamMembers(payload)
-        .then((response) => {
-          // This is all task
-          const responseData = response.data[0].GEN_Users;
-          if (userType) {
-            setData(responseData.filter((item) => item.UserID !== userId));
-            return;
-          }
-          if (userType === undefined) {
-            // This is for single task
-            const dataByUserId = responseData.find(
-              (item) => item.UserID === userId
-            );
-            const dataByUserType = responseData.filter(
-              (item) => item.UserType === dataByUserId.UserType
-            );
-            setData(dataByUserType.filter((item) => item.UserID !== userId));
-          }
-        })
-        .catch((err) => {
-          toast.error(err);
-        });
-    }
-  }, [userId]);
 
   // For updating selected dates in state variables.
   useEffect(() => {
@@ -534,10 +118,12 @@ function ReAssignTasksModal({
 
   // For checking is all input filled
   useEffect(() => {
+    console.log("giiii", assignTo);
     if (
       Object.entries(assignTo).length !== 0 &&
       Object.entries(filter).length !== 0
     ) {
+      console.log("giiieei");
       if (filter.name === FilterTypes.migrateAllTasksForever) {
         setIsAllInputFilled(true);
       } else if (
@@ -605,10 +191,12 @@ function ReAssignTasksModal({
                 className="btn re-assign-to-me"
                 onClick={() => {
                   setAssignTo({
-                    EmailID: auth.loginInfo.EmailID,
+                    EmailID: auth.loginInfo.email,
                     UserName: auth.loginInfo.UserName,
                     UserType: auth.loginInfo.UserType,
                     UserID: auth.loginInfo.UserID,
+                    email: auth.loginInfo.email,
+                    full_name: auth.loginInfo.UserName,
                   });
                 }}
               >
@@ -620,9 +208,9 @@ function ReAssignTasksModal({
             <div className="header-after-selected">
               <div className="selected-member">
                 <span className="circle-dp">
-                  {getInitials(assignTo.UserName)}
+                  {getInitials(assignTo.full_name)}
                 </span>
-                <span className="member-name">{assignTo.UserName}</span>
+                <span className="member-name">{assignTo.full_name}</span>
                 <img
                   src={closeIconGray}
                   alt="croxx"
@@ -635,22 +223,27 @@ function ReAssignTasksModal({
         </div>
         <div className="main-content">
           {Object.entries(assignTo).length === 0 && (
-            <div className="members-list">
+            <div
+              className="members-list"
+              style={{ overflowY: "auto", maxHeight: "390px" }}
+            >
               {/* {data && data.length > 0 ? (
                 data.map((member) => { */}
-              {searchUsers(searchValue, data) &&
-              searchUsers(searchValue, data).length > 0 ? (
-                searchUsers(searchValue, data).map((member) => {
-                  const { UserID, EmailID, UserName } = member;
+              {searchUsers(searchValue, memberList) &&
+              searchUsers(searchValue, memberList).length > 0 ? (
+                searchUsers(searchValue, memberList).map((member, index) => {
+                  const { email, full_name } = member;
                   return (
                     <article
                       className="member"
-                      key={UserID}
+                      key={index}
                       onClick={() => setAssignTo(member)}
                     >
-                      <span className="circle-dp">{getInitials(UserName)}</span>
-                      <span className="member-name">{UserName}</span>
-                      <span className="member-email">{EmailID}</span>
+                      <span className="circle-dp">
+                        {getInitials(full_name)}
+                      </span>
+                      <span className="member-name">{full_name}</span>
+                      <span className="member-email">{email}</span>
                     </article>
                   );
                 })
@@ -753,7 +346,7 @@ function ReAssignTasksModal({
                       alt="check"
                     />{" "}
                     <span>
-                      Re-assign this task to {assignTo.UserName} for a specific
+                      Re-assign this task to {assignTo.full_name} for a specific
                       duration
                     </span>
                   </p>

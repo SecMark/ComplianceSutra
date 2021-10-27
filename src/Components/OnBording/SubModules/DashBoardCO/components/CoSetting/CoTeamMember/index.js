@@ -23,6 +23,8 @@ import { BACKEND_BASE_URL } from "../../../../../../../apiServices/baseurl";
 import Searchable from "react-searchable-dropdown";
 import BackDrop from "../../../../../../../CommonModules/sharedComponents/Loader/BackDrop";
 
+import apiServices from "../../../api/index";
+const { migrateTasks, getTeamMembers } = apiServices;
 var _ = require("lodash");
 
 function CoManagment({ handleClose }) {
@@ -79,6 +81,7 @@ function CoManagment({ handleClose }) {
   const [roleTitle, setRoleTitle] = useState("");
 
   const [teamMemberData, setMemberData] = useState([]);
+  const [user, setUser] = useState("");
 
   const [fields, setFields] = useState([
     {
@@ -116,6 +119,7 @@ function CoManagment({ handleClose }) {
   ]);
 
   const [currentRow, setCurrentRow] = useState([]);
+  const [memberList, setMemberList] = useState([]);
 
   const [fieldArrayBackup, setFieldsArrayBackup] = useState([
     {
@@ -258,29 +262,14 @@ function CoManagment({ handleClose }) {
   const onDeletePress = (index) => {
     setOpenPopupIndex("");
     const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
-      settingType: 6,
-      actionFlag: 3,
-      entityID: 0,
-      licID: 0,
-      uUserID: fields && fields[index] && fields[index].id,
-      utype: 0,
-      // notificationList: "",
-      // pwd: "",
-      full_name: "",
-      emailID: "",
-      // mobile: "",
+      email: fields[index].email,
     };
-    api
-      .post("/api/CoSettings", payload)
+    axiosInstance
+      .post(`${BACKEND_BASE_URL}compliance.api.deactivateUser`, payload)
       .then(function (response) {
-        if (response && response.data && response.data.length > 0) {
-          if (response.data[0].Status === "Updated") {
-            toast.success("Deleted records sucessfully");
-            getSettingData();
-            setVisible(false);
-            setOpenPopupIndex("");
-          }
+        if (response && response.data && response.data.message.status) {
+          getSettingData();
+          toast.success("Deleted records sucessfully");
         } else {
           toast.error("Something went wrong !!!");
           setVisible(false);
@@ -724,6 +713,21 @@ function CoManagment({ handleClose }) {
         });
     }
   };
+
+  const getMembers = (role, user) => {
+    getTeamMembers({ role: [role] })
+      .then((response) => {
+        const { data } = response;
+        const { message } = data;
+        setUser(user);
+        setMemberList(message);
+        setIsShowReAssignModal(true);
+        setOpenPopupIndex("");
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+  };
   return (
     <div className="co-team-member">
       <BackDrop isLoading={isLoading} />
@@ -732,12 +736,16 @@ function CoManagment({ handleClose }) {
         setShowModal={setIsShowReAssignModal}
         userType={reAssignUserType}
         userId={reAssignUserId}
+        memberList={memberList}
+        user={user}
       />
       <ReAssignTasksModal
         openModal={isShowReAssignModalMobile}
         setShowModal={setIsShowReAssignModalMobile}
         userType={reAssignUserType}
         userId={reAssignUserId}
+        memberList={memberList}
+        user={user}
       />
       {visible &&
         deleteMemeberIndex !== "" &&
@@ -1304,19 +1312,6 @@ function CoManagment({ handleClose }) {
                     options={optionsInputBoxRole}
                     onSelect={(value) => handleChangeInputBoxRole(value)}
                   />
-                  {/* <Dropdown
-                    style={{ width: 240 }}
-                    onChange={(value) => handleChangeInputBoxRole(value)}
-                    arrowClosed={<span className="arrow-closed" />}
-                    arrowOpen={<span className="arrow-open" />}
-                    options={optionsInputBoxRole}
-                    value={
-                      inputTeamMember.role.length === 0
-                        ? null
-                        : inputTeamMember.role
-                    }
-                    placeholder="Select role"
-                  /> */}
                 </td>
 
                 <td>
@@ -1463,8 +1458,6 @@ function CoManagment({ handleClose }) {
                                 style={{ cursor: "pointer" }}
                                 onClick={() => {
                                   onChangeRoleClick("desktop", item, index);
-                                  // changeRole(index);
-                                  // setOpenPopupIndex("");
                                 }}
                                 className="change-role"
                               >
@@ -1472,10 +1465,9 @@ function CoManagment({ handleClose }) {
                               </div>
                               <div
                                 style={{ cursor: "pointer" }}
-                                onClick={() => {
-                                  setIsShowReAssignModal(true);
-                                  setOpenPopupIndex("");
-                                }}
+                                onClick={() =>
+                                  getMembers(item.role, item.email)
+                                }
                                 className="change-role"
                               >
                                 Re-Assign Tasks
@@ -1514,196 +1506,11 @@ function CoManagment({ handleClose }) {
                       />
                     </td>
                   )}
-
-                  {/* {openPopupIndex !== "" && openPopupIndex === index && (<td className="last-td" ref={innerRef}>
-                                    <div className="three-dot-tooltip">
-                                        <div style={{ cursor: "pointer" }} onClick={() => changeRole(index)} className="change-role">Change role</div>
-                                        <div style={{ cursor: "pointer" }} onClick={() => setVisible(true)} className="delete-member">Delete member</div>
-                                    </div>
-                                </td>)} */}
                 </tr>
               ))}
-            {/* <tr className="focusRemove">
-                            <td>
-                                <div className="holding-list-bold-title-background"><span className="circle-dp">DP</span> Dhananjay Prakash </div>
-                            </td>
-                            <td>
-                                <Dropdown
-                                    arrowClosed={<span className="arrow-closed" />}
-                                    arrowOpen={<span className="arrow-open" />}
-                                    options={options} value={defaultOption}
-                                    placeholder="Select an option" />
-
-                            </td>
-                            <td className="dropList">
-                                <div className="roleEmailText">
-                                    animeshm@bnksecurities.com
-                            </div>
-                            </td>
-                            <td>
-                                <div className="contact-team"> +91 9876453211</div>
-                            </td>
-                            <td className="float-right border-0">
-                                <img className="check-Icon-circle" src={greenCheck} alt="check Icon" />
-                                 <img className="delete-Icon-check" src={grayCheck} alt="check Icon" /> 
-                                <img className="delete-Icon-check" src={redCheck} alt="delete Icon" />
-
-                            </td>
-                        </tr> */}
-            {/* <tr className="focusRemove">
-                            <td>
-                                <div className="holding-list-bold-title-background"><span className="circle-dp">DP</span> Dhananjay Prakash </div>
-                            </td>
-                            <td>
-                                <div className="roleEmailText">
-                                    Team Member
-                          </div>
-                            </td>
-                            <td className="dropList">
-                                <div className="roleEmailText">
-                                    animeshm@bnksecurities.com
-                            </div>
-                            </td>
-                            <td>
-                                <div className="contact-team"> +91 9876453211</div>
-                            </td>
-                            <td>
-                                <span><img className="three-dot" src={threeDots} alt="three Dots Icon" /></span>
-                                <div className="three-dot-tooltip">
-                                    <div className="change-role">Change role</div>
-                                    <div className="delete-member">Delete member</div>
-                                </div>
-                            </td>
-                        </tr> */}
-            {/* <tr className="focusRemove">
-                            <td>
-                                <div className="holding-list-bold-title-background"><span className="circle-dp">DP</span> Dhananjay Prakash </div>
-                            </td>
-                            <td>
-                                <Dropdown arrowClosed={<span className="arrow-closed" />}
-                                    arrowOpen={<span className="arrow-open" />} options={options} value={defaultOption} placeholder="Select an option" />
-
-                            </td>
-                            <td className="dropList">
-                                <div className="roleEmailText">
-                                    animeshm@bnksecurities.com
-                         </div>
-                            </td>
-                            <td>
-                                <div className="contact-team"> +91 9876453211</div>
-                            </td>
-                            <td className="float-right border-0">
-                                <img className="check-Icon-circle" src={greenCheck} alt="check Icon" />
-                                <img className="delete-Icon-check" src={grayCheck} alt="check Icon" /> 
-                                <img className="delete-Icon-check" src={redCheck} alt="delete Icon" />
-
-                            </td>
-                        </tr> */}
-            {/* <tr className="focusRemove">
-                            <td>
-                                <div className="holding-list-bold-title-background"><span className="circle-dp">DP</span> Dhananjay Prakash </div>
-                            </td>
-                            <td>
-                                <Dropdown arrowClosed={<span className="arrow-closed" />}
-                                    arrowOpen={<span className="arrow-open" />} options={options} value={defaultOption} placeholder="Select an option" />
-
-                            </td>
-                            <td className="dropList">
-                                <div className="roleEmailText">
-                                    animeshm@bnksecurities.com
-                            </div>
-                            </td>
-                            <td>
-                                <div className="contact-team"> +91 9876453211</div>
-                            </td>
-                            <td className="float-right border-0">
-                                <img className="check-Icon-circle" src={greenCheck} alt="check Icon" />
-                                 <img className="delete-Icon-check" src={grayCheck} alt="check Icon" /> 
-                                <img className="delete-Icon-check" src={redCheck} alt="delete Icon" />
-
-                            </td>
-                        </tr> */}
-            {/* <tr className="focusRemove">
-                            <td>
-                                <div className="holding-list-bold-title-background"><span className="circle-dp">DP</span> Dhananjay Prakash </div>
-                            </td>
-                            <td>
-                                <Dropdown arrowClosed={<span className="arrow-closed" />}
-                                    arrowOpen={<span className="arrow-open" />} options={options} value={defaultOption} placeholder="Select an option" />
-
-                            </td>
-                            <td className="dropList">
-                                <div className="roleEmailText">
-                                    animeshm@bnksecurities.com
-                        </div>
-                            </td>
-                            <td>
-                                <div className="contact-team"> +91 9876453211</div>
-                            </td>
-                            <td className="float-right border-0">
-                                <img className="check-Icon-circle" src={greenCheck} alt="check Icon" />
-                                 <img className="delete-Icon-check" src={grayCheck} alt="check Icon" />
-                                <img className="delete-Icon-check" src={redCheck} alt="delete Icon" />
-
-                            </td>
-                        </tr>
-                        <tr className="focusRemove">
-                            <td>
-                                <div className="holding-list-bold-title-background"><span className="circle-dp">DP</span> Dhananjay Prakash </div>
-                            </td>
-                            <td>
-                                <Dropdown arrowClosed={<span className="arrow-closed" />}
-                                    arrowOpen={<span className="arrow-open" />} options={options} value={defaultOption} placeholder="Select an option" />
-
-                            </td>
-                            <td className="dropList">
-                                <div className="roleEmailText">
-                                    animeshm@bnksecurities.com
-                               </div>
-                            </td>
-                            <td>
-                                <div className="contact-team"> +91 9876453211</div>
-                            </td>
-                            <td className="float-right border-0">
-                                <img className="check-Icon-circle" src={greenCheck} alt="check Icon" />
-                                 <img className="delete-Icon-check" src={grayCheck} alt="check Icon" /> 
-                                <img className="delete-Icon-check" src={redCheck} alt="delete Icon" />
-
-                            </td>
-                        </tr> */}
-            {/* <tr className="focusRemove">
-            <td>
-               <div className="bk-Securities">B&K Insurance</div>
-            </td>
-            <td>
-            <Dropdown arrowClosed={<span className="arrow-closed" />}
-            arrowOpen={<span className="arrow-open" />} options={options} value={defaultOption} placeholder="Select an option" />
-            </td>
-            <td className="dropList">
-            <Dropdown arrowClosed={<span className="arrow-closed" />}
-            arrowOpen={<span className="arrow-open" />} options={options} value={defaultOption} placeholder="Select an option" />
-            </td>
-            <td>
-               <div className="assign-with-icon"><img className="delete-Icon-check" src={assignIconCircle} alt="check Icon" /> assign </div>
-            </td>
-            <td>
-              <div className="holding-list-bold-title"> <button className="btn buttonprimarygray">Add Licenses</button> </div>
-            </td>
-            <td>                              
-             <img className="delete-Icon-check" src={greenCheck} alt="check Icon" /> 
-             <img className="delete-Icon-check" src={grayCheck} alt="check Icon" /> <img className="delete-Icon-check" src={redCheck} alt="delete Icon" />
-            </td>
-        </tr> */}
           </tbody>
         </table>
       </div>
-      {/* <div className="bottom-logo-strip personal-details">
-                <div className="row aligncenter">
-                    <div className="col-12">
-                        <div className="company-delete-right-bottom"><img className="check-icon-small" src={checkIocnSmall} alt="close Gray Icon" /> Member removed  <img className="small-icon-close" src={smallClose} alt="close Gray Icon" /></div>
-                    </div>
-                </div>
-            </div> */}
     </div>
   );
 }
