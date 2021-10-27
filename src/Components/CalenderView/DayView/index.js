@@ -3,12 +3,12 @@ import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import NoResultFound from "../../../CommonModules/sharedComponents/NoResultFound";
 import { setNotificationTaskId } from "../../OnBording/SubModules/DashBoardCO/components/notification/Redux/Action";
+import { actions as taskReportActions } from "../../OnBording/SubModules/DashBoardCO/redux/actions";
 import "./style.css";
 
-const DayView = ({ daysData, userDetails }) => {
+const DayView = ({ daysData, userDetails, isRedirect }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-
   const getNameInitials = (name) => {
     if (name !== undefined) {
       let initials = "";
@@ -19,10 +19,14 @@ const DayView = ({ daysData, userDetails }) => {
       return initials.toUpperCase();
     }
   };
+  const getSelectTaskDetails = (task) => {
+    dispatch(
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
+      })
+    );
 
-  const openTaskDetail = (TaskId) => {
-    dispatch(setNotificationTaskId(TaskId));
-    history.push("/dashboard");
+    if (isRedirect) history.push("/dashboard");
   };
 
   return (
@@ -33,7 +37,7 @@ const DayView = ({ daysData, userDetails }) => {
             className="detail-container align-items-start align-items-md-center flex-column flex-md-row"
             onClick={() => {
               if (userDetails && userDetails.UserType !== 6) {
-                openTaskDetail(day);
+                getSelectTaskDetails(day);
               }
             }}
             style={{
@@ -78,14 +82,17 @@ const DayView = ({ daysData, userDetails }) => {
               <div className="detail-name">
                 <span>{day?.customer_name}</span>
               </div>
-              <div className="detail-name align-left-always">
-                <p>
-                  <span className="circle-dp">
-                    {getNameInitials(day?.assign_to_name)}
-                  </span>{" "}
-                  <span className="user-name">{day?.assign_to_name}</span>
-                </p>
-              </div>
+              {day?.assign_to_name && (
+                <div className="detail-name align-left-always">
+                  <p>
+                    <span className="circle-dp">
+                      {day?.assign_to_name &&
+                        getNameInitials(day?.assign_to_name)}
+                    </span>{" "}
+                    <span className="user-name">{day?.assign_to_name}</span>
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         ))

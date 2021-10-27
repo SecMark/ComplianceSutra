@@ -92,4 +92,12 @@ export default {
 
   expertReview: "exp",
   complianceOfficer: "compl",
+  day: "day",
+  month: "month",
+  week: "week",
+  increment: "increment",
+  decrement: "decrement",
+  list: "list",
+  calender: "calender",
+  board: "board",
 };
