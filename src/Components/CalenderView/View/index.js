@@ -20,8 +20,15 @@ import {
 } from "../redux/actions";
 import WeekView from "../WeekView";
 import "./style.css";
+<<<<<<< Updated upstream
+=======
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
+import axiosInstance from "../../../apiServices";
+import { actions as taskReportActions } from "../../OnBording/SubModules/DashBoardCO/redux/actions";
+import { getAllTasks } from "../../../CommonModules/helpers/tasks.helper";
+>>>>>>> Stashed changes
 
-const View = ({ getSelectTaskDetails }) => {
+const View = ({ getSelectTaskDetails, isRedirect }) => {
   const [activeDays, setActiveDays] = useState(constant.week);
   const [dayDate, setDayDate] = useState(new Date());
   const [monthDate, setMonthDate] = useState(new Date());
@@ -35,6 +42,24 @@ const View = ({ getSelectTaskDetails }) => {
   const userDetails = state && state.auth && state.auth.loginInfo;
   const { daysData, weekData, monthData } = state.CalenderReducer;
   const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
+<<<<<<< Updated upstream
+=======
+  const [allTaskList, setAllTaskList] = useState([]);
+
+  const taskList =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
+
+  useEffect(() => {
+    if (!(taskList && taskList.length > 0)) {
+      dispatch(taskReportActions.taskReportRequest());
+    }
+  }, [taskList]);
+
+>>>>>>> Stashed changes
   const viewBy = [
     {
       id: 1,
@@ -52,6 +77,7 @@ const View = ({ getSelectTaskDetails }) => {
       name: "By Month",
     },
   ];
+<<<<<<< Updated upstream
   useEffect(() => {
     fetchDayData();
     fetchWeekData();
@@ -59,17 +85,27 @@ const View = ({ getSelectTaskDetails }) => {
 
   useEffect(() => {
     getDays();
-    getMonths();
-  }, []);
+=======
 
   useEffect(() => {
-    getDays();
+    fetchDayData();
+    fetchWeekData();
+    fetchMonthData();
+>>>>>>> Stashed changes
+    getMonths();
+  }, []);
+  useEffect(() => {
     dispatch(clearState());
+    getDays();
     fetchWeekData();
   }, [weekStartDate]);
 
   useEffect(() => {
+<<<<<<< Updated upstream
     dispatch(clearState());
+=======
+    // dispatch(clearState());
+>>>>>>> Stashed changes
     fetchDayData();
   }, [dayDate]);
 
@@ -166,6 +202,7 @@ const View = ({ getSelectTaskDetails }) => {
 
   //Dispatch Day API
   const fetchDayData = () => {
+<<<<<<< Updated upstream
     const dayPayload = {
       userID: state.auth.loginInfo?.UserID,
       EntityID: "M",
@@ -184,6 +221,25 @@ const View = ({ getSelectTaskDetails }) => {
       EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
     };
     dispatch(getWeekData(dayPayload));
+=======
+    dispatch(
+      getDayData({
+        taskList: taskList && taskList.length > 0 ? taskList : [],
+        StartDate: moment(dayDate).format("YYYY-MM-DD"),
+      })
+    );
+  };
+
+  //Dispatch Week API
+  const fetchWeekData = async () => {
+    dispatch(
+      getWeekData({
+        taskList: taskList && taskList.length > 0 ? taskList : [],
+        StartDate: moment(weekStartDate).format("YYYY-MM-DD"),
+        EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
+      })
+    );
+>>>>>>> Stashed changes
   };
 
   //Dispatch Month API
@@ -192,8 +248,7 @@ const View = ({ getSelectTaskDetails }) => {
     var startDate = new Date(date.getFullYear(), date.getMonth(), 1);
 
     const dayPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      EntityID: "M",
+      taskList: taskList && taskList.length > 0 ? taskList : [],
       StartDate: moment(startDate).format("YYYY-MM-DD"),
       EndDate: moment(moment(endDate).format()).format("YYYY-MM-DD"),
     };
@@ -238,7 +293,7 @@ const View = ({ getSelectTaskDetails }) => {
             <span className="current-date">
               {`${moment(weekStartDate).format("ddd D")}-${moment(
                 addDaysInDate(weekStartDate, 7)
-              ).format("ddd D,YYYY")}`}
+              ).format("ddd D MMM,YYYY")}`}
             </span>
           )}
 
@@ -299,7 +354,11 @@ const View = ({ getSelectTaskDetails }) => {
         </div>
       </div>
       {activeDays === constant.day && (
-        <DayView daysData={daysData} userDetails={userDetails} />
+        <DayView
+          daysData={daysData}
+          userDetails={userDetails}
+          isRedirect={isRedirect}
+        />
       )}
 
       {activeDays === constant.week && (
