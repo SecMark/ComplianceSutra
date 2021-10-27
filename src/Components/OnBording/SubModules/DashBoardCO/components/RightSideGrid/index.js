@@ -48,7 +48,10 @@ import View from "../../../../../CalenderView/View";
 
 import TextareaAutosize from "react-textarea-autosize";
 import ReAssignTasksModal from "../../../../../ReAssignTasks";
-import { getDataByStatus } from "../../../../../../CommonModules/helpers/tasks.helper";
+import {
+  getDataByStatus,
+  getAllTasks,
+} from "../../../../../../CommonModules/helpers/tasks.helper";
 import axiosInstance from "../../../../../../apiServices";
 function RightSideGrid({
   isTaskListOpen,
@@ -106,7 +109,7 @@ function RightSideGrid({
 
   const [selectedUser, setSelectedUser] = useState("");
 
-  const [currentTaskData, setCurrentTaskData] = useState([]);
+  const [allTaskList, setAllTaskList] = useState([]);
   const [currentDropDown, setCurrentDropDown] = useState("");
   const [fileList, setFileList] = useState([]);
   const [searchBoxShow, setsearchBoxShow] = useState(false);
@@ -130,7 +133,12 @@ function RightSideGrid({
   const [completedTask, setCompletedTask] = useState("0");
   const [scheduledTask, setScheduledTask] = useState("0");
   const [noRecords, setNoRecords] = useState(false);
-
+  const [
+    isShowReAssignModalForTeamMember,
+    setIsShowReAssignModalForTeamMember,
+  ] = useState(false);
+  const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
+    useState(false);
   const taskModalOpenStatus =
     state &&
     state.adminMenu &&
@@ -139,12 +147,13 @@ function RightSideGrid({
 
   const currentFilterViewByRedux =
     state && state.adminMenu && state.adminMenu.currentFilterViewBy;
-  const [
-    isShowReAssignModalForTeamMember,
-    setIsShowReAssignModalForTeamMember,
-  ] = useState(false);
-  const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
-    useState(false);
+
+  const taskFilesById =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskFilesById &&
+    state.taskReport.taskFilesById.taskFiles;
+
   const getTaskById =
     state &&
     state.taskReport &&
@@ -158,6 +167,23 @@ function RightSideGrid({
     state.taskReport.taskReport.taskReport;
 
   const taskReferences = state && state.taskReport && state.taskReferences;
+  const setCurrentTask = (task) => {
+    dispatch(
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
+      })
+    );
+  };
+
+  useEffect(() => {
+    console.log("taskListDisplay: ", taskListDisplay);
+  }, [taskListDisplay]);
+  useEffect(() => {
+    if (taskList && taskList.length !== 0) {
+      const allTasks = getAllTasks(taskList);
+      setAllTaskList(allTasks);
+    }
+  }, [taskList]);
   useEffect(() => {
     if (taskReferences) {
       setReferenceSectionData(taskReferences);
@@ -167,6 +193,8 @@ function RightSideGrid({
     if (getTaskById && Object.keys(getTaskById).length !== 0) {
       setCurrentOpenedTask(getTaskById);
       setIsTaskListOpen(true);
+      setDisplayTask("1");
+      setTaskListDisplay("1");
     }
   }, [getTaskById]);
   useEffect(() => {
@@ -211,9 +239,9 @@ function RightSideGrid({
   }, [state.adminMenu.taskIDByCalendarView]);
 
   useEffect(() => {
-    let task_id = state && state.adminMenu && state.adminMenu.taskID;
-    if (task_id !== null && taskModalOpenStatus !== "") {
-      getSelectTaskDetails();
+    let task = state && state.adminMenu && state.adminMenu.taskID;
+    if (task !== null && taskModalOpenStatus !== "") {
+      getSelectTaskDetails(task);
     }
   }, [state.adminMenu.taskID]);
 
@@ -236,9 +264,6 @@ function RightSideGrid({
       setRowCount(tempRowCount);
       setListTaskData(taskByStatus);
     }
-    //  else {
-    //   dispatch(taskReportActions.taskReportRequest());
-    // }
   }, [taskList]);
 
   useEffect(() => {
@@ -289,23 +314,22 @@ function RightSideGrid({
   });
 
   useEffect(() => {
-    const getTaskId = currentOpenedTask;
-    if (getTaskId) {
-      const taskId = currentOpenedTask.TaskId;
+    dispatch(
+      taskReportActions.getTaskFilesById({
+        doctype: "Task",
+        docname: currentOpenedTask.task_name,
+        is_references: 0,
+      })
+    );
+  }, [currentOpenedTask]);
 
-      const payload = {
-        taskID: taskId,
-        actionFlag: 0,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          let fileData = response.data;
-          setFileList(fileData);
-        })
-        .catch((error) => {});
+  useEffect(() => {
+    if (taskFilesById && taskFilesById.length !== 0) {
+      setFileList(taskFilesById);
+    } else {
+      setFileList([]);
     }
-  }, [currentOpenedTask, uploadFile]);
+  }, [taskFilesById]);
 
   useEffect(() => {
     var today = new Date();
@@ -998,7 +1022,7 @@ function RightSideGrid({
                   <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                     <div className="holding-list-bold-title">
                       {moment(
-                        currentOpenedTask && currentOpenedTask.EndDate
+                        currentOpenedTask && currentOpenedTask.due_date
                       ).format("DD MMM")}
                     </div>
                   </div>
@@ -1366,7 +1390,9 @@ function RightSideGrid({
                                   <div className="pr-3">
                                     <div
                                       style={{ cursor: "pointer" }}
-                                      onClick={() => deleteFile(files)}
+                                      onClick={() =>
+                                        deleteUploadedFile(files.file_id)
+                                      }
                                       className="file-download-title pointer d-flex"
                                     >
                                       <img
@@ -1591,72 +1617,17 @@ function RightSideGrid({
       </Modal>
     );
   };
-  const getAllFile = () => {
-    if (currentOpenedTask != undefined) {
-      const taskId = currentOpenedTask.TaskId;
-      const payload = {
-        taskID: taskId,
-        actionFlag: 0,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          let fileData = response.data;
-          setFileList(fileData);
-        })
-        .catch((error) => {
-          console.log("error => ", error);
-        });
-    }
-  };
 
-  const deleteFile = (file) => {
-    if (userDetails.UserType === 4) {
-      const payload = {
-        taskID: 0,
-        TaskFileId: file.TaskFileId,
-        actionFlag: 3,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          if (
-            response &&
-            response.data &&
-            response.data[0] &&
-            response.data[0].Status === "Deleted"
-          ) {
-            getAllFile();
-            toast.success("File deleted successfully");
-          } else {
-            toast.error("Error in the deleting file !!!");
-          }
-        })
-        .catch((error) => {});
-    }
-  };
   // Submit Reject Task Modal
   const submitModal = () => {
-    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.changeTaskStatusRequest({
-        // taskID: id,
-        // userType: 1,
-        // email: "",
-        // invitee: "",
-        // isApproved: 3,
-        // loginID: userDetails.UserID,
-        // userDetails: userDetails,
         task_name: currentOpenedTask.task_name,
         status: "Rejected",
       })
     );
     dispatch(
       taskReportActions.postTaskCommentByTaskID({
-        // actionFlag: 1, //Action Flag
-        // taskID: currentOpenedTask.TaskId, //TaskID
-        // comment: rejectTaskInput,
-        // commentBy: user.UserID, //UserID
         task_name: currentOpenedTask.task_name,
         content: rejectTaskInput,
       })
@@ -1827,13 +1798,36 @@ function RightSideGrid({
     }
   }, [currentOpenedTask]);
 
+  const deleteUploadedFile = async (file_id) => {
+    if (file_id && file_id !== "") {
+      try {
+        const { data, status } = await axiosInstance.post(
+          "compliance.api.DeleteFile",
+          { file_id }
+        );
+        if (status === 200 && data.message && data.message.status) {
+          toast.success("File deleted successfully!");
+          // Get task files
+          dispatch(
+            taskReportActions.getTaskFilesById({
+              doctype: "Task",
+              docname: currentOpenedTask.task_name,
+              is_references: 0,
+            })
+          );
+        } else {
+          toast.error(
+            "Something went wrong. Please try again after some time."
+          );
+        }
+      } catch (err) {
+        toast.error("Something went wrong. Please try again after some time.");
+      }
+    }
+  };
+
   const getUpload = (file) => {
     let url = "";
-    // if (currentTaskData && currentTaskData.TaskId) {
-    //   url = `${BACKEND_BASE_URL}compliance.api.UploadFile`;
-    // } else {
-    //   url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData}`;
-    // }
     if (currentOpenedTask && currentOpenedTask.task_name) {
       url = `${BACKEND_BASE_URL}compliance.api.UploadFile`;
     } else {
@@ -1856,12 +1850,12 @@ function RightSideGrid({
   };
 
   const handleSelectUploadFile = (file) => {
-    const _fileList = (fileList && fileList[0] && fileList[0].Files) || [];
+    const _fileList = (fileList && fileList.length > 0 && fileList) || [];
     var isPresent = false;
     let fileArray = [];
     file.forEach((file) => {
       isPresent = _fileList.some(function (el) {
-        return el.FileName === file.name;
+        return el.file_name === file.name;
       });
       if (!isPresent) {
         fileArray.push(file);
@@ -1872,14 +1866,23 @@ function RightSideGrid({
         return "";
       }
     });
-    getUpload(fileArray).then((response) => {
-      const { data, status } = response;
-      if (status === 200 && data.message && data.message.status === true) {
-        toast.success("File Uploaded Successfully");
-        setUploadFile("");
-        // getAllFile();
-      }
-    });
+    if (fileArray && fileArray.length !== 0) {
+      getUpload(fileArray).then((response) => {
+        const { data, status } = response;
+        if (status === 200 && data.message && data.message.status === true) {
+          toast.success("File Uploaded Successfully");
+          if (currentOpenedTask && currentOpenedTask.task_name !== "") {
+            dispatch(
+              taskReportActions.getTaskFilesById({
+                doctype: "Task",
+                docname: currentOpenedTask.task_name,
+                is_references: 0,
+              })
+            );
+          }
+        }
+      });
+    }
   };
 
   const ApprovDisplay = (e) => {
@@ -2100,7 +2103,6 @@ function RightSideGrid({
     );
     setSelectedUser("");
   };
-
   const AssignTaskToMe = (e) => {
     dispatch(taskReportActions.setLoader(true));
     dispatch(
@@ -2222,18 +2224,15 @@ function RightSideGrid({
     if (searchText !== "") {
       let searchQuery = searchText.toLowerCase();
       listTaskData &&
+        listTaskData.length !== 0 &&
         listTaskData.forEach((tasksByStatus) => {
           tasksByStatus.tasks.forEach((task) => {
             if (task.subject !== "" && task.subject !== "Norec") {
               if (
-                task.subject.toLowerCase().includes(searchQuery) ||
-                task.customer_name
-                  .toLowerCase()
-                  .includes(
-                    searchQuery ||
-                      task.license.toLowerCase().includes(searchQuery) ||
-                      task.assign_to_name.toLowerCase().includes(searchQuery)
-                  )
+                task?.subject?.toLowerCase().includes(searchQuery) ||
+                task?.customer_name?.toLowerCase().includes(searchQuery) ||
+                task?.license?.toLowerCase().includes(searchQuery) ||
+                task?.assign_to_name?.toLowerCase().includes(searchQuery)
               ) {
                 let searchResults = {
                   status: tasksByStatus.status,
@@ -2464,7 +2463,7 @@ function RightSideGrid({
                 </div>
               )}
             </div>
-          ) : (
+          ) : userDetails.UserType === 3 ? (
             <div>
               <div
                 className="circle-front-text NoStatus"
@@ -2474,7 +2473,7 @@ function RightSideGrid({
                 <img src={assignIconCircle} alt="" /> ASSIGN
               </div>
             </div>
-          )}
+          ) : null}
         </div>
         <div className="col-2">
           <div className="align-right">
@@ -2559,7 +2558,7 @@ function RightSideGrid({
             ? " row active-action-card-sidebar "
             : "row action-card-sidebar"
         }
-        onClick={(e) => setCurrentOpenedTask(task)}
+        onClick={(e) => setCurrentTask(task)}
         style={{ cursor: "pointer" }}
       >
         <div className="col-10">
@@ -2569,7 +2568,7 @@ function RightSideGrid({
             </div>
             <div
               className="pink-label-title-right"
-              onClick={(e) => setCurrentOpenedTask(task)}
+              onClick={(e) => setCurrentTask(task)}
             >
               <div className="overdue-title-sidebar-title pl-1">
                 {task.subject}
@@ -2589,7 +2588,7 @@ function RightSideGrid({
               <div
                 className="right-arrow-week text-right-grid"
                 style={{ cursor: "pointer" }}
-                onClick={(e) => setCurrentOpenedTask(task)}
+                onClick={(e) => setCurrentTask(task)}
               >
                 <img
                   className=""
@@ -3110,6 +3109,7 @@ function RightSideGrid({
                   onClick={(e) => {
                     setDisplayTask("2");
                     setTaskListDisplay("0");
+                    setCurrentBoardViewBy("status");
                   }}
                 >
                   Board
@@ -3126,7 +3126,7 @@ function RightSideGrid({
               (searchBoxShow === false &&
                 displayTask === "2" &&
                 !isMobile)) && (
-              <span className="take-action d-none d-md-block">
+              <span className="take-action d-none d-md-block view-by__status-box">
                 <ul className="pull-right" style={{ float: "right" }}>
                   <span
                     style={{ fontSize: "10px", backgroundColor: "transparent" }}
@@ -3976,6 +3976,7 @@ function RightSideGrid({
                               setDisplayTask("2");
                               setTaskListDisplay("0");
                               setIsTaskListOpen(false);
+                              setCurrentBoardViewBy("status");
                             }}
                           >
                             Board
@@ -4325,7 +4326,7 @@ function RightSideGrid({
                         user={user}
                         sideBarTaskList={true}
                         currentOpenedTask={currentOpenedTask}
-                        setCurrentOpenedTask={setCurrentOpenedTask}
+                        setCurrentTask={setCurrentTask}
                       />
                     </>
                   )}
@@ -4334,7 +4335,7 @@ function RightSideGrid({
                       user={user}
                       sideBarTaskList={true}
                       currentOpenedTask={currentOpenedTask}
-                      setCurrentOpenedTask={setCurrentOpenedTask}
+                      setCurrentTask={setCurrentTask}
                     />
                   )}
                   {searchValue === "" && taskListDisplay === "4" && (
@@ -4342,7 +4343,7 @@ function RightSideGrid({
                       user={user}
                       sideBarTaskList={true}
                       currentOpenedTask={currentOpenedTask}
-                      setCurrentOpenedTask={setCurrentOpenedTask}
+                      setCurrentTask={setCurrentTask}
                     />
                   )}
                 </div>
@@ -4385,6 +4386,7 @@ function RightSideGrid({
                         setShowHtoDoIt(false);
                         setShowReference(false);
                         // setExpandedFlags([]);
+                        setCurrentTask({});
                         dispatch(notificationActions.setTaskID(null));
                       }}
                     >
@@ -4907,7 +4909,7 @@ function RightSideGrid({
                       </div>
                     )}
                     {userDetails.UserType !== 3 &&
-                      currentOpenedTask.AssignedFromUserName && (
+                      currentOpenedTask?.assigned_by && (
                         <div className="row">
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
@@ -4917,17 +4919,17 @@ function RightSideGrid({
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                             <div className="holding-list-bold-title">
                               {currentOpenedTask &&
-                              currentOpenedTask.AssignedFromUserName ===
-                                "" ? null : (
+                              currentOpenedTask?.assigned_by_name ===
+                                null ? null : (
                                 <span className="cicrcle-name">
                                   {getInitials(
                                     currentOpenedTask &&
-                                      currentOpenedTask.AssignedFromUserName
+                                      currentOpenedTask?.assigned_by_name
                                   )}
                                 </span>
                               )}
                               {currentOpenedTask &&
-                                currentOpenedTask.AssignedFromUserName}
+                                currentOpenedTask?.assigned_by_name}
                             </div>
                           </div>
                         </div>
@@ -5141,7 +5143,7 @@ function RightSideGrid({
                       <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                         <div className="holding-list-bold-title">
                           {moment(
-                            currentOpenedTask && currentOpenedTask.EndDate
+                            currentOpenedTask && currentOpenedTask.due_date
                           ).format("DD MMM")}
                         </div>
                       </div>
@@ -5161,7 +5163,7 @@ function RightSideGrid({
                       </div>
                     </div>
                     {currentOpenedTask &&
-                      currentOpenedTask.DateOfApproval !== "" &&
+                      currentOpenedTask.date_of_approval &&
                       currentOpenedTask.status === "Approved" &&
                       userDetails.UserType !== 4 && (
                         <div className="row">
@@ -5454,7 +5456,7 @@ function RightSideGrid({
                         {/* check here */}
                         {currentOpenedTask &&
                         currentOpenedTask.status &&
-                        currentOpenedTask.status !== "Approval Pending" ? (
+                        currentOpenedTask.status !== "Approved" ? (
                           (user &&
                             user.UserType &&
                             user.UserType &&
@@ -5524,84 +5526,86 @@ function RightSideGrid({
                           ) : null
                         ) : null}
 
-                        {fileList && fileList.length > 0 ? (
-                          fileList.map((file, index) => (
-                            <div className="no-files">
-                              {file && file.Files && file.Files.length > 0
-                                ? file.Files.map((files, index) => (
-                                    <div className="d-flex">
-                                      <div className="pr-3">
-                                        <div className="file-upload-title file-img-width">
-                                          <img
-                                            src={fileIcon}
-                                            alt="file Icon"
-                                            className="file-icon-box"
-                                            value={files.TaskFileId}
-                                          />{" "}
-                                          {files.FileName}
-                                        </div>
-                                      </div>
-                                      <div className="pr-3">
-                                        {currentOpenedTask &&
-                                          currentOpenedTask.TaskId !==
-                                            undefined && (
-                                            <a
-                                              target="_blank"
-                                              href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${currentOpenedTask.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
-                                              style={{ textDecoration: "none" }}
-                                              className="file-download-title pointer d-flex"
-                                            >
-                                              download{" "}
-                                              <span className="d-none d-md-block">
-                                                &nbsp;file
-                                              </span>
-                                            </a>
-                                          )}
-                                      </div>
-                                      <div className="pr-3">
-                                        <div
-                                          style={{ cursor: "pointer" }}
-                                          onClick={() => deleteFile(files)}
-                                          className="file-download-title pointer d-flex"
-                                        >
-                                          <img
-                                            className="delete-icon"
-                                            src={deleteBlack}
-                                            alt="delete Icon"
-                                          />
-                                        </div>
-                                      </div>
+                        <div className="no-files">
+                          {fileList && fileList.length > 0
+                            ? fileList.map((files, index) => (
+                                <div className="d-flex">
+                                  <div className="pr-3">
+                                    <div className="file-upload-title file-img-width">
+                                      <img
+                                        src={fileIcon}
+                                        alt="file Icon"
+                                        className="file-icon-box"
+                                        value={files.file_name}
+                                      />{" "}
+                                      {files.file_name}
                                     </div>
-                                  ))
-                                : "No Files To View here"}
-                            </div>
-                          ))
-                        ) : (
-                          <div className="no-files">No Files To View here</div>
-                        )}
+                                  </div>
+                                  <div className="pr-3">
+                                    {currentOpenedTask &&
+                                      currentOpenedTask.task_name !==
+                                        undefined && (
+                                        <a
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          href={
+                                            new URL(BACKEND_BASE_URL).origin +
+                                            files.file_url
+                                          }
+                                          style={{ textDecoration: "none" }}
+                                          className="file-download-title pointer d-flex"
+                                          // download={files.file_name}
+                                        >
+                                          download{" "}
+                                          <span className="d-none d-md-block">
+                                            &nbsp;file
+                                          </span>
+                                        </a>
+                                      )}
+                                  </div>
+                                  <div className="pr-3">
+                                    <div
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() =>
+                                        deleteUploadedFile(files.file_id)
+                                      }
+                                      className="file-download-title pointer d-flex"
+                                    >
+                                      <img
+                                        className="delete-icon"
+                                        src={deleteBlack}
+                                        alt="delete Icon"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ))
+                            : "No Files To View here"}
+                        </div>
+                        {/* <div className="no-files">No Files To View here</div> */}
                       </>
                     ) : fileList && fileList.length > 0 ? (
                       fileList.map((file, index) => (
                         <div className="no-files">
                           {file && file.Files && file.Files.length > 0
                             ? file.Files.map((files, index) => (
-                                <div className="row">
+                                <div className="row" key={files.file_id}>
                                   <div className="col-8 col-sm-4 col-md-4 col-xl-4">
                                     <div className="file-upload-title file-img-width">
                                       <img
                                         src={fileIcon}
                                         alt="file Icon"
-                                        value={files.TaskFileId}
+                                        value={files.file_name}
                                       />{" "}
-                                      {files.FileName}
+                                      {files.file_name}
                                     </div>
                                   </div>
                                   <div className="col-4 col-sm-8 col-md-8 col-xl-8">
                                     {currentOpenedTask &&
-                                      currentOpenedTask.TaskId !==
+                                      currentOpenedTask.task_name !==
                                         undefined && (
                                         <a
-                                          href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${currentOpenedTask.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
+                                          href={`${BACKEND_BASE_URL}`}
                                           style={{ textDecoration: "none" }}
                                           className="file-download-title pointer d-flex"
                                         >

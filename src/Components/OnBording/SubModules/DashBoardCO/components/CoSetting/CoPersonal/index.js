@@ -360,7 +360,7 @@ function CoSettingRightGrid({ handleClose, history }) {
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
-          if (response && response.data && response.data.Status != "False") {
+          if (response && response.data && response.data.message) {
             setOtpInValid(true);
             setIsOtpVerfied(true);
             setOtpModal(false);
@@ -510,6 +510,7 @@ function CoSettingRightGrid({ handleClose, history }) {
                 placeholder="Enter 6 digit OTP"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
+                maxLength="6"
               />
 
               {!showResendSection && (

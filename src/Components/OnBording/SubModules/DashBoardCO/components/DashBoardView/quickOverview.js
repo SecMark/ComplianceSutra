@@ -424,7 +424,10 @@ function QuickOverView({ click, setClick, setListView, listView }) {
             >
               <div className="right-side">
                 <div className="user-title">
-                  Hi {userDetails && userDetails.UserName},
+                  Hi{" "}
+                  {userDetails &&
+                    (userDetails.full_name || userDetails.UserName)}
+                  ,
                 </div>
                 <div className="bold-title-sidebar">
                   Here is a quick
