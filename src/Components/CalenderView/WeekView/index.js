@@ -33,11 +33,9 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
             {sevenDays &&
               sevenDays.map((data) => {
                 const startDate = moment(data?.date).format("YYYY-MM-DD");
-                const filterList = weekData.filter((details) => {
-                  return (
-                    moment(details.due_date).format("YYYY-MM-DD") === startDate
-                  );
-                });
+                const filterList = weekData.filter(
+                  (details) => details.EndDate == startDate
+                );
 
                 return (
                   <td>
@@ -75,7 +73,7 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                             {" "}
                             {list?.Status === "Approval Pending"
                               ? "Approval Pending"
-                              : list?.status === "Approval Pending"
+                              : list?.Status === "Completed By User"
                               ? "Approval Pending"
                               : list?.Status}
                           </button>
@@ -83,19 +81,16 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                         <div className="CompanyName">
                           <span>{list?.EntityName}</span>
                         </div>
-                        {list?.assign_to_name && (
-                          <div>
-                            <p className="UserNameDp">
-                              <span className="circle-dp">
-                                {list?.assign_to_name &&
-                                  getNameInitials(list?.assign_to_name)}
-                              </span>{" "}
-                              <span className="user-name">
-                                {list?.assign_to_name}
-                              </span>
-                            </p>
-                          </div>
-                        )}
+                        <div>
+                          <p className="UserNameDp">
+                            <span className="circle-dp">
+                              {getNameInitials(list?.AssignedName)}
+                            </span>{" "}
+                            <span className="user-name">
+                              {list?.AssignedName}
+                            </span>
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </td>

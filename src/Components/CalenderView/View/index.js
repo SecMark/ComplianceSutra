@@ -20,10 +20,6 @@ import {
 } from "../redux/actions";
 import WeekView from "../WeekView";
 import "./style.css";
-import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
-import axiosInstance from "../../../apiServices";
-import { actions as taskReportActions } from "../../OnBording/SubModules/DashBoardCO/redux/actions";
-import { getAllTasks } from "../../../CommonModules/helpers/tasks.helper";
 
 const View = ({ getSelectTaskDetails }) => {
   const [activeDays, setActiveDays] = useState(constant.week);
@@ -39,21 +35,6 @@ const View = ({ getSelectTaskDetails }) => {
   const userDetails = state && state.auth && state.auth.loginInfo;
   const { daysData, weekData, monthData } = state.CalenderReducer;
   const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
-  const [allTaskList, setAllTaskList] = useState([]);
-
-  const taskList =
-    state &&
-    state.taskReport &&
-    state.taskReport.taskReport &&
-    state.taskReport.taskReport.taskReport &&
-    state.taskReport.taskReport.taskReport;
-
-  useEffect(() => {
-    if (!(taskList && taskList.length > 0)) {
-      dispatch(taskReportActions.taskReportRequest());
-    }
-  }, [taskList]);
-
   const viewBy = [
     {
       id: 1,
@@ -71,11 +52,13 @@ const View = ({ getSelectTaskDetails }) => {
       name: "By Month",
     },
   ];
-
   useEffect(() => {
     fetchDayData();
     fetchWeekData();
-    fetchMonthData();
+  }, [state.auth.loginInfo?.UserID]);
+
+  useEffect(() => {
+    getDays();
     getMonths();
   }, []);
 
@@ -86,7 +69,7 @@ const View = ({ getSelectTaskDetails }) => {
   }, [weekStartDate]);
 
   useEffect(() => {
-    // dispatch(clearState());
+    dispatch(clearState());
     fetchDayData();
   }, [dayDate]);
 
@@ -183,23 +166,24 @@ const View = ({ getSelectTaskDetails }) => {
 
   //Dispatch Day API
   const fetchDayData = () => {
-    dispatch(
-      getDayData({
-        taskList: taskList && taskList.length > 0 ? taskList : [],
-        StartDate: moment(dayDate).format("YYYY-MM-DD"),
-      })
-    );
+    const dayPayload = {
+      userID: state.auth.loginInfo?.UserID,
+      EntityID: "M",
+      StartDate: moment(dayDate).format("YYYY-MM-DD"),
+      EndDate: moment(dayDate).format("YYYY-MM-DD"),
+    };
+    dispatch(getDayData(dayPayload));
   };
 
   //Dispatch Week API
-  const fetchWeekData = async () => {
-    dispatch(
-      getWeekData({
-        taskList: taskList && taskList.length > 0 ? taskList : [],
-        StartDate: moment(weekStartDate).format("YYYY-MM-DD"),
-        EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
-      })
-    );
+  const fetchWeekData = () => {
+    const dayPayload = {
+      userID: state.auth.loginInfo?.UserID,
+      EntityID: "M",
+      StartDate: moment(weekStartDate).format("YYYY-MM-DD"),
+      EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
+    };
+    dispatch(getWeekData(dayPayload));
   };
 
   //Dispatch Month API
