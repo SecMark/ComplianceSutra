@@ -552,7 +552,8 @@ function CoManagment({ handleClose }) {
     };
 
     dispatch(coActions.insCertificateDetailsRequest(payload));
-    dispatch(coActions.getCompanyTypeRequest());
+    // dispatch(coActions.getCompanyTypeRequest());
+    initialDispatch();
     setShowAdd(false);
     setEditShow(undefined);
     setSelectedIndex(undefined);
@@ -648,10 +649,13 @@ function CoManagment({ handleClose }) {
         <div id="drawerParentMobile" className="">
           <div id="drawerChildMobile" className="sideBarFixedAccount">
             {licenseModalHideShow && (
-              <LicenseDrawer
-                fields={fields}
-                close={(data, action) => close(data, action)}
-              />
+               <License
+               setEditShow={setEditShow}
+               fields={fields}
+               addLicense={addLicense}
+               index={selectedIndex}
+               closeDrawer={close}
+             />
             )}
           </div>
         </div>
