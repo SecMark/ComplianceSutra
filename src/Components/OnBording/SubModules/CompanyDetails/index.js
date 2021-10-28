@@ -67,7 +67,6 @@ function CompanyDetails({ history }) {
   const [value, setValue] = useState("");
   const [currentIndex, setCurrentIndex] = useState();
   const options = useMemo(() => countryList().getData(), []);
-
   const changeHandler = (value) => {
     setValue(value);
   };
@@ -429,6 +428,7 @@ function CompanyDetails({ history }) {
       temp[index].company_type = value;
     }
     if (type == "country") {
+      console.log({ company_country: value });
       temp[index].company_country = value;
     }
 
@@ -560,7 +560,11 @@ function CompanyDetails({ history }) {
             options={options}
             value={value}
             onSelect={(value) => {
-              handleCompanyTypeChange(value, index, "country");
+              handleCompanyTypeChange(
+                options.find((item) => item.value === value).label,
+                index,
+                "country"
+              );
             }}
           />
         </td>

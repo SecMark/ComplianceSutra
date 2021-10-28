@@ -17,9 +17,8 @@ function PersonalDetails({ history, location }) {
   const state = useSelector((state) => state);
 
   const search = useLocation().search;
-  const email = new URLSearchParams(search).get("email");
+  const email = new URLSearchParams(search).get("email").replace(" ", "+");
   const key = new URLSearchParams(search).get("key");
-
   localStorage.setItem("coemail", email);
   localStorage.setItem("accessToken", key);
 
@@ -59,23 +58,30 @@ function PersonalDetails({ history, location }) {
 
   const checkNumberAvailable = () => {
     let payload = {
-      countrycode: values.countryCode.replace("+", ""),
-      loginID: values.mobileNumber,
-      loginty: "AdminMobile",
+      mobile_no: values.mobileNumber,
     };
     api
-      .post("/api/availabilityCheck", payload)
+      .post("compliance.api.avabilityCheck", payload)
       .then((result) => {
-        setMobileNumberValid(result.data.Status);
+        if (
+          result &&
+          result.data &&
+          result.data.message &&
+          result.data.message.status === true
+        ) {
+          setMobileNumberValid(true);
+        } else {
+          setMobileNumberValid(false);
+        }
       })
       .catch((error) => {});
   };
 
-  useEffect(() => {
-    if (values.mobileNumber.length >= 10) {
-      checkNumberAvailable();
-    }
-  }, [values.mobileNumber]);
+  // useEffect(() => {
+  //   if (values.mobileNumber.length >= 10) {
+  //     checkNumberAvailable();
+  //   }
+  // }, [values.mobileNumber]);
 
   const onChangeHandler = (name) => (event) => {
     if (
@@ -194,20 +200,21 @@ function PersonalDetails({ history, location }) {
   };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onSubmit();
+      // onSubmit();
     }
   };
 
   const onSubmit = () => {
+    console.log({ onSubmit: "clicked" });
     if (
       values.fullName !== "" &&
       values.mobileNumber !== "" &&
       values.mobileNumber !== "" &&
       values.designation !== "" &&
       values.password !== "" &&
-      values.confirmPassword !== ""
+      values.confirmPassword !== "" &&
+      values.countryCode !== ""
     ) {
-      localStorage.setItem("mobileNumber", values.mobileNumber);
       dispatch(
         personalDetailsAction.userDataSaveRequest({
           email: email,
@@ -217,6 +224,8 @@ function PersonalDetails({ history, location }) {
           designation: values.designation,
           password: values.password,
           confirm_password: values.confirmPassword,
+          countrycode: values.countryCode || "+91",
+          history,
         })
       );
     } else {
@@ -228,31 +237,9 @@ function PersonalDetails({ history, location }) {
     let strr = e.target.value;
     let str = strr.replace(/\D/g, "");
     if (str === "") {
-      str = "91";
+      str = "+91";
     }
-    //
-    let payload = {
-      cntryCode: str,
-    };
-    api
-      .post("/api/CountryCodeCheck", payload)
-      .then(function (response) {
-        // handle success
-        if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true);
-          let inputKey = "countryCodeErr";
-          setErrors({ ...errors, [inputKey]: "" });
-        } else {
-          setCountryCode(false);
-          // setErrors(errors);
-          let inputKey = "countryCodeErr";
-          setErrors({ ...errors, [inputKey]: "true" });
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-        }
-      });
+    setCountryCode(true);
   };
   return (
     <div className="row">

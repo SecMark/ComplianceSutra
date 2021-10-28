@@ -13,18 +13,19 @@ const loginReq = function* loginReq({ payload }) {
       const { token, UserType } = message;
       localStorage.setItem("basicToken", token);
       if (data) {
-        let complainceOfficer;
+        let complainceOfficer, approver;
         let teamMember;
         let userType = 0;
         complainceOfficer = UserType.filter(
           (userType) => userType.User_type_no === 3
         );
-
+        approver = UserType.filter((userType) => userType.User_type_no === 5);
         teamMember = UserType.filter((userType) => userType.User_type_no === 4);
 
         if (complainceOfficer.length !== 0) userType = 3;
         else if (teamMember.length !== 0) userType = 4;
-        else userType = 3;
+        else if (approver.length !== 0) userType = 5;
+        else userType = 4;
         message.UserType = userType;
         message.full_name = data.full_name;
         yield put(
