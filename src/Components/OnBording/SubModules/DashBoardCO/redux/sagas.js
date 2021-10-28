@@ -2,6 +2,7 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { actions, types } from "./actions";
 import api from "../api";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 const taskReportRequest = function* taskReportRequest() {
   try {
@@ -345,10 +346,11 @@ const insertCerificateDetailsRequest =
       );
       let statusCode = data && data[0] && data[0].StatusCode;
       if (data.message.status) {
-        toast.success("Company added Successfully")
+        toast.success("Company added Successfully");
         yield put(
-          actions.insCertificateDetailsRequestSuccess({ Status: "Success" })    
+          actions.insCertificateDetailsRequestSuccess({ Status: "Success" })
         );
+        yield put(actions.getCompanyTypeRequest());
       } else {
         toast.error("Something went wrong.");
         yield put(
@@ -446,7 +448,9 @@ const CompanyDeleteRequest = function* CompanyDeleteRequest({ payload }) {
     let statusCode = data && data[0] && data[0].StatusCode;
     if (data.message.status) {
       toast.success("Company deleted successfully.");
+
       yield put(actions.deleteCompanyRequestSuccess({ Status: "Success" }));
+      yield put(actions.getCompanyTypeRequest());
     } else {
       toast.error(data.message.status_response);
       yield put(actions.deleteCompanyRequestFailed({ Status: "Failed" }));
