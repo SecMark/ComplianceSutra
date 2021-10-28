@@ -120,9 +120,7 @@ function CoSetting({ history }) {
           {state.adminMenu.activeTab === "security" && (
             <CoSecurity activeTabKey={selectedTabKey} />
           )}
-          {/*<CoChangePassword /> */}
-          {/* <CoAccount />  */}
-          {/* <CoSecurity />  */}
+
           {state.adminMenu.activeTab === "team-member" && (
             <CoTeamMember activeTabKey={selectedTabKey} />
           )}

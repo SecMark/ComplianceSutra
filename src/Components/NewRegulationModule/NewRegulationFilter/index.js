@@ -137,7 +137,7 @@ const NewRegulationFilter = (props) => {
     };
 
     dispatch(setBadges(setBagdesPayload));
-    dispatch(setFilterPayload(filterRequestPayload));
+    dispatch(setFilterPayload({ filters: filterRequestPayload }));
     dispatch(setIsFilter(true));
     props.setIsShowFilter(!props.isShowFilter);
     props.setIsShowMobileFilter(!props.isShowMobileFilter);

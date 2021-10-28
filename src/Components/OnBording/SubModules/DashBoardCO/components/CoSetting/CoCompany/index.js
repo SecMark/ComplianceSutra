@@ -93,6 +93,10 @@ function CoManagment({ handleClose }) {
   };
 
   useEffect(() => {
+    setCompanyRecord();
+  }, [state.taskReport.companyTypeInfo]);
+
+  const setCompanyRecord = () => {
     const companyTypes =
       state && state?.taskReport && state?.taskReport?.companyTypeInfo;
 
@@ -112,7 +116,7 @@ function CoManagment({ handleClose }) {
     });
 
     setCompanyDetails(updateCompanyDetails);
-  }, [state.taskReport.companyTypeInfo]);
+  };
 
   const getNameInitials = (name) => {
     if (name != undefined) {
@@ -463,6 +467,7 @@ function CoManagment({ handleClose }) {
     setEditShow(undefined);
     tempCoCompany[index].isEdited = false;
     setCompanyDetails(tempCoCompany);
+    setCompanyRecord();
   };
 
   const handleOnNameClick = (index, item) => {
