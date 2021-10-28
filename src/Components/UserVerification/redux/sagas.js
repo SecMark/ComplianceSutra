@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const userDataSaveRequest = function* userDataSaveRequest({ payload }) {
   try {
+    console.log("SDfsdfafsadfdsa");
     const { history } = payload;
     delete payload.history;
     const { data } = yield call(api.insertUpdateUserRequets, payload);
