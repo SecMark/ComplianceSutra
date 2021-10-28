@@ -756,7 +756,7 @@ function CoManagment({ handleClose }) {
                               ? handelChange(e, "company_type", index, item)
                               : true
                           }
-                          listMaxHeight={200} //by default 140
+                          listMaxHeight={200} 
                         />
                       </div>
                     </td>
