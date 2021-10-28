@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "./style.css";
 import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
 import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
@@ -13,6 +13,7 @@ import grayPlusIcon from "../../../../../../../assets/Icons/grayPlusIcon.png";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
 import mobileAssignIconSmall from "../../../../../../../assets/Icons/mobileAssignIconSmall.png";
+import { actions as companyAction } from "../../../../../../OnBording/redux/actions";
 import { toast } from "react-toastify";
 import Dropdown from "react-dropdown";
 import { actions as coActions } from "../../../redux/actions";
@@ -23,9 +24,13 @@ import { useOuterClick } from "./utils";
 import { Modal } from "react-responsive-modal";
 import Searchable from "react-searchable-dropdown";
 import { isMobile } from "react-device-detect";
+import countryList from "react-select-country-list";
+import License from "../ChooseLicenses/License";
 function CoManagment({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+ const options = useMemo(() => countryList().getData(), []);
+// const options = ["India","Albania","south Africa"]
 
   const [editShow, setEditShow] = useState(false);
   const [doEdit, setdoEdit] = useState(undefined);
@@ -93,6 +98,60 @@ function CoManagment({ handleClose }) {
   };
 
   useEffect(() => {
+    const tempUsers =
+      state &&
+      state.taskReport &&
+      state.taskReport.companyTypeInfo &&
+      state.taskReport.companyTypeInfo.CompanyInfo;
+    if (tempUsers != undefined && tempUsers.length > 0) {
+      let users = [];
+      tempUsers.forEach((element) => {
+        element.compliance_officer.map((item) => {
+          const obj = {
+            UserName: item.full_name,
+            userEmail: item.email,
+          };
+          users.push(obj);
+        });
+      });
+
+      setUserData(users);
+      setUserDataBackup(users);
+    }
+  }, [state.taskReport.companyTypeInfo.CompanyInfo]);
+  useEffect(() => {
+    let addEditStatus =
+      state &&
+      state.taskReport &&
+      state.taskReport.CompanyAddEditStatus &&
+      state.taskReport.CompanyAddEditStatus.Status;
+    if (addEditStatus != undefined) {
+      if (addEditStatus === "Success" && selectedIndex != undefined) {
+        setToastType(1);
+        toast.success("Company details added");
+        //document.getElementById("toasterPrompt").classList.add("show");
+        setTimeout(() => {
+          //document.getElementById("toasterPrompt").classList.remove("show");
+          setSelectedCompany(undefined);
+          setSelectedIndex(undefined);
+          setCompanyDetails([]);
+          initialDispatch();
+        }, 5000);
+      } else {
+        setToastType(2);
+        if (addEditStatus !== "Success") {
+          toast.error("Something went wrong");
+        }
+
+        //document.getElementById("toasterPrompt").classList.add("show");
+        setTimeout(() => {
+          //document.getElementById("toasterPrompt").classList.remove("show");
+        }, 5000);
+      }
+    }
+  }, [state.taskReport.CompanyAddEditStatus]);
+
+  useEffect(() => {
     const companyTypes =
       state && state?.taskReport && state?.taskReport?.companyTypeInfo;
 
@@ -112,7 +171,7 @@ function CoManagment({ handleClose }) {
     });
 
     setCompanyDetails(updateCompanyDetails);
-  }, [state.taskReport.companyTypeInfo]);
+  }, [state.taskReport.companyTypeInfo.CompanyInfo]);
 
   const getNameInitials = (name) => {
     if (name != undefined) {
@@ -147,12 +206,20 @@ function CoManagment({ handleClose }) {
   };
 
   const openChooseLicenseModel = (type, index, item) => {
-    let selectedObj = companyDetails[index];
+    let selectedObj = companyDetails[index].business_category;
+    let lic = companyDetails[index].licenses;
     let FieldObj = {
-      category: selectedObj.Category,
-      selectedLiecenseIdArray: selectedObj.selectedLicenseArray,
+      ...fields,
+      category: selectedObj,
+      selectedLiecenseIdArray: lic,
     };
     setFields(FieldObj);
+    dispatch(
+      companyAction.getLicenseList({
+        industry_type: companyDetails[index].business_category,
+        country: "India",
+      })
+    );
     if (!isMobile) {
       const drawerParent = document.getElementById("drawerParent");
       const drawerChild = document.getElementById("drawerChild");
@@ -183,6 +250,7 @@ function CoManagment({ handleClose }) {
     }
     let companyList = [...companyDetails];
     if (name === "company_name") {
+      setEditShow(true)
       const re = /^(?=.*\S).+$/;
       if (e.target.value && !re.test(e.target.value)) {
         return "";
@@ -190,13 +258,26 @@ function CoManagment({ handleClose }) {
         companyList[index].company_name = e.target.value;
       }
     } else if (name === "company_type") {
+      setEditShow(true)
       companyList[index].company_type = e;
+    } else if (name === "company_country") {
+      let countryvalue = countryList().getLabel(e)
+      setEditShow(true)
+      companyList[index].company_country = countryvalue;
+
+    } else if (name === "company_pincode") {
+      console.log("setshowad",showAdd )
+      setEditShow(true)
+      companyList[index].company_pincode = e.target.value;
     } else if (name == "compliance_officer") {
-      console.log("Gadsfasdfsdfsdf");
-      companyList[index].compliance_officer = {
-        email: "finbyz.anuj@gmail.com",
-        full_name: "Anuj Sanklecha",
-      };
+      setEditShow(true)
+      console.log("Gadsfasdfsdfsdf", e);
+      companyList[index].compliance_officer = [
+        {
+          email: e.userEmail,
+          full_name: e.UserName,
+        },
+      ];
       setAssignPromptIndex(undefined);
       hideBlock();
     } else {
@@ -328,28 +409,50 @@ function CoManagment({ handleClose }) {
       }
       setLicenseModalHideShow(false);
     }
+    setSelectedIndex(fieldData);
+    setSelectedCompany(undefined);
+    // let tempCoCompany = [...companyDetails];
+    // const isSameLicenses = checkWithPreviousLicenses(
+    //   selectedCompany.selectedLicenseArray,
+    //   fields.selectedLiecenseIdArray
+    // );
+    // if (isSameLicenses === false || isSameLicenses === undefined) {
+    //   tempCoCompany[selectedIndex].selectedLicenseArray =
+    //     fields.selectedLiecenseIdArray;
+    //   setCompanyDetails(tempCoCompany);
+    // } else {
+    //   if (
+    //     tempCoCompany[selectedIndex].company_docname ===
+    //       selectedCompany.company_docname &&
+    //     tempCoCompany[selectedIndex].business_category === selectedCompany.business_category &&
+    //     tempCoCompany[selectedIndex].company_docname === selectedCompany.company_docname &&
+    //     tempCoCompany[selectedIndex].company_type === selectedCompany.company_type
+    //   ) {
+    //     setSelectedIndex(undefined);
+    //     setSelectedCompany(undefined);
+    //   }
+    // }
+  };
+  const addLicense = (index, licenseList) => {
+    
+    setEditShow(true);
+    console.log("have to set this fields", fields, index, licenseList);
+    setFields({
+      ...fields,
+      selectedLiecenseIdArray: licenseList,
+    });
 
-    let tempCoCompany = [...companyDetails];
-    const isSameLicenses = checkWithPreviousLicenses(
-      selectedCompany.selectedLicenseArray,
-      fieldData.selectedLiecenseIdArray
-    );
-    if (isSameLicenses === false || isSameLicenses === undefined) {
-      tempCoCompany[selectedIndex].selectedLicenseArray =
-        fieldData.selectedLiecenseIdArray;
-      setCompanyDetails(tempCoCompany);
-    } else {
-      if (
-        tempCoCompany[selectedIndex].EntityTypeID ===
-          selectedCompany.EntityTypeID &&
-        tempCoCompany[selectedIndex].Category === selectedCompany.Category &&
-        tempCoCompany[selectedIndex].coUserID === selectedCompany.coUserID &&
-        tempCoCompany[selectedIndex].EntityName === selectedCompany.EntityName
-      ) {
-        setSelectedIndex(undefined);
-        setSelectedCompany(undefined);
-      }
-    }
+    let compDetails = [...companyDetails];
+
+    compDetails[index].licenses= licenseList;
+    setCompanyDetails(compDetails);
+    setEditShow(true)
+    // let FieldObj = {
+    //   ...temp,
+    //   selectedLiecenseIdArray: licenseList,
+    // };
+    //  temp[index].selectedLiecenseIdArray = licenseList;
+    // setFields(temp);
   };
 
   const handleDeleteClick = (item, flag) => {
@@ -361,17 +464,11 @@ function CoManagment({ handleClose }) {
     } else if (flag === 2) {
       dispatch(
         coActions.deleteCompanyRequest({
-          gUserID: loggedUser.UserID,
-          settingType: 2,
-          actionFlag: 3,
-          EntityID: selectedCompany.EntityId,
-          licID: 0,
-          uUserID: 0,
-          utype: 0,
-          notificationList: "",
-          pwd: "",
+         company : selectedCompany.company_docname
         })
       );
+      dispatch(coActions.getCompanyTypeRequest());
+      setDeleteBoxHideShow(false);
     } else {
       setSelectedCompany(undefined);
       setDeleteBoxHideShow(false);
@@ -439,28 +536,27 @@ function CoManagment({ handleClose }) {
   };
   const handleSaveChanges = (index) => {
     let tempCoCompany = [...companyDetails];
-    let selectedLiecenseList = tempCoCompany[index].selectedLicenseArray;
-    const licenseIDgrpStr =
-      selectedLiecenseList.length > 0 ? selectedLiecenseList.join(",") : "";
+    // let selectedLiecenseList = tempCoCompany[index].selectedLicenseArray;
+    // const licenseIDgrpStr =
+    //   selectedLiecenseList.length > 0 ? selectedLiecenseList.join(",") : "";
 
     const payload = {
-      licenseSubID: 0,
-      entityId:
-        tempCoCompany && tempCoCompany[index] && tempCoCompany[index].isExist
-          ? tempCoCompany[index].EntityId
-          : 0,
-      userId: loggedUser.UserID,
-      entityName: tempCoCompany[index].EntityName,
-      coUserId: tempCoCompany[index].coUserID,
-      status: 0,
-      licenseIDgrp: licenseIDgrpStr,
-      category: tempCoCompany[index].Category,
-      cmptype: tempCoCompany[index].EntityTypeID.toString(),
+      company_docname: tempCoCompany[index].company_docname,
+      company_name:tempCoCompany[index].company_name ,
+      company_type: tempCoCompany[index].company_type,
+      company_country:tempCoCompany[index].company_country ,
+      company_pincode:tempCoCompany[index].company_pincode,
+      business_category:tempCoCompany[index].business_category ,
+      compliance_officer:tempCoCompany[index].compliance_officer ,
+      licenses:tempCoCompany[index].licenses ,
     };
 
     dispatch(coActions.insCertificateDetailsRequest(payload));
+    // dispatch(coActions.getCompanyTypeRequest());
+    initialDispatch();
     setShowAdd(false);
     setEditShow(undefined);
+    setSelectedIndex(undefined);
     tempCoCompany[index].isEdited = false;
     setCompanyDetails(tempCoCompany);
   };
@@ -538,9 +634,12 @@ function CoManagment({ handleClose }) {
         <div id="drawerParent" className="">
           <div id="drawerChild" className="sideBarFixed">
             {licenseModalHideShow && (
-              <LicenseDrawer
+              <License
+                setEditShow={setEditShow}
                 fields={fields}
-                close={(data, action) => close(data, action)}
+                addLicense={addLicense}
+                index={selectedIndex}
+                closeDrawer={close}
               />
             )}
           </div>
@@ -550,10 +649,13 @@ function CoManagment({ handleClose }) {
         <div id="drawerParentMobile" className="">
           <div id="drawerChildMobile" className="sideBarFixedAccount">
             {licenseModalHideShow && (
-              <LicenseDrawer
-                fields={fields}
-                close={(data, action) => close(data, action)}
-              />
+               <License
+               setEditShow={setEditShow}
+               fields={fields}
+               addLicense={addLicense}
+               index={selectedIndex}
+               closeDrawer={close}
+             />
             )}
           </div>
         </div>
@@ -590,6 +692,8 @@ function CoManagment({ handleClose }) {
             <tr>
               <th scope="col">Company Name</th>
               <th scope="col">Company Type</th>
+              <th scope="col">Country</th>
+              <th scope="col">Pincode</th>
               <th scope="col">Business category</th>
               <th scope="col">Compliance Officer</th>
               <th scope="col">Licenses</th>
@@ -598,7 +702,7 @@ function CoManagment({ handleClose }) {
           </thead>
           <tbody>
             {companyDetails?.map((item, index) => {
-              console.log(item);
+              console.log("got this items", item);
               return (
                 <>
                   <tr className="focusRemove">
@@ -672,10 +776,48 @@ function CoManagment({ handleClose }) {
                     <td className="dropList">
                       <div className="holding-list-bold-title">
                         <Searchable
+                          options={options}
+                          placeholder={
+                            item.company_country
+                              ? item.company_country
+                              : "Select Type"
+                          }
+                          className="form-control border-0"
+                          value={item.company_country}
+                          onSelect={(e) =>
+                            
+                            selectedIndex === undefined ||
+                            selectedIndex === index
+                              ? handelChange(e, "company_country", index, item)
+                              : true
+                          }
+                        />
+                      </div>
+                    </td>
+                    <td>
+                      <div className="bk-Securities">
+                        <input
+                          type="text"
+                          className="form-control border-0"
+                          placeholder="Pincode"
+                          name="company_pincode"
+                          value={item.company_pincode}
+                          onChange={(e) =>
+                            selectedIndex === undefined ||
+                            selectedIndex === index
+                              ? handelChange(e, "company_pincode", index, item)
+                              : true
+                          }
+                        />
+                      </div>
+                    </td>
+                    <td className="dropList">
+                      <div className="holding-list-bold-title">
+                        <Searchable
                           //value={item.selectedCategory}
                           className="form-control border-0"
                           placeholder={
-                            item.Category ? item.Category : "Select Category"
+                            item.business_category ? item.business_category : "Select Category"
                           } // by default "Search"
                           notFoundText="No result found" // by default "No result found"
                           options={categoryTypes}
@@ -707,10 +849,10 @@ function CoManagment({ handleClose }) {
                         >
                           <span className="circle-dp">
                             {getNameInitials(
-                              item?.compliance_officer[1]?.full_name
+                              item?.compliance_officer[0]?.full_name
                             )}
                           </span>{" "}
-                          {item?.compliance_officer[1]?.full_name}{" "}
+                          {item?.compliance_officer[0]?.full_name}{" "}
                         </div>
                       )}
                       {item.isExist && (
@@ -733,13 +875,14 @@ function CoManagment({ handleClose }) {
                               item?.compliance_officer[0]?.full_name
                             )}
                           </span>{" "}
-                          {item?.compliance_officer[0]?.full_name}{" "}
+                          {item?.compliance_officer[0]?.full_name}
+                          {"  Hre"}
                         </div>
                       )}
 
                       {!item.isExist && item?.compliance_officer.length === 0 && (
                         <div
-                          className="assign-with-icon"
+                          className="assign-with-icofn"
                           onClick={() =>
                             selectedIndex === undefined ||
                             selectedIndex === index
@@ -778,14 +921,15 @@ function CoManagment({ handleClose }) {
                                     <span className="or-devider"> or</span>
                                     <button
                                       className="btn save-details assign-me"
-                                      onClick={() =>
+                                      onClick={() => {
+                                        console.log("user Login", loggedUser);
                                         handelChange(
                                           loggedUser,
                                           "compliance_officer",
                                           index,
                                           item
-                                        )
-                                      }
+                                        );
+                                      }}
                                     >
                                       Assign to me
                                     </button>
@@ -798,6 +942,7 @@ function CoManagment({ handleClose }) {
                                   {userData &&
                                     userData.length > 0 &&
                                     userData.map((user) => {
+                                      console.log("user", user);
                                       return (
                                         <>
                                           <div
@@ -805,7 +950,7 @@ function CoManagment({ handleClose }) {
                                             onClick={() =>
                                               handelChange(
                                                 user,
-                                                "complianceOfficer",
+                                                "compliance_officer",
                                                 index,
                                                 item
                                               )
@@ -852,7 +997,9 @@ function CoManagment({ handleClose }) {
                         {item.licenses.length <= 0 && (
                           <button
                             id={"addLicense" + index}
-                            className="btn buttonprimarygray"
+                            className={item.company_name !== "" &&
+                            item.company_type !== "" 
+                             ?"btn buttonprimary": "btn buttonprimarygray"}
                             onClick={() =>
                               openChooseLicenseModel(1, index, item)
                             }
@@ -880,7 +1027,8 @@ function CoManagment({ handleClose }) {
                             src={
                               item.company_name !== "" &&
                               item.company_type !== "" &&
-                              item.licenses.length != 0
+                              item.licenses.length != 0 &&
+                              editShow 
                                 ? greenCheck
                                 : grayCheck
                             }

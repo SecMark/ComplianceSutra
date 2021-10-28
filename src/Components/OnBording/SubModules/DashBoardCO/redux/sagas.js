@@ -346,16 +346,19 @@ const insertCerificateDetailsRequest =
         payload
       );
       let statusCode = data && data[0] && data[0].StatusCode;
-      if (status === 200 && statusCode != false) {
+      if (data.message.status) {
+        toast.success("Company added Successfully")
         yield put(
-          actions.insCertificateDetailsRequestSuccess({ Status: "Success" })
+          actions.insCertificateDetailsRequestSuccess({ Status: "Success" })    
         );
       } else {
+        toast.error("Something went wrong.");
         yield put(
           actions.insCertificateDetailsRequestFailed({ Status: "Failed" })
         );
       }
     } catch (err) {
+      toast.error("Something went wrong.");
       yield put(
         actions.insCertificateDetailsRequestFailed({ Status: "Failed" })
       );
@@ -443,11 +446,11 @@ const CompanyDeleteRequest = function* CompanyDeleteRequest({ payload }) {
   try {
     const { data, status } = yield call(api.coSettingCommonApi, payload);
     let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
+    if (data.message.status) {
       toast.success("Company deleted successfully.");
       yield put(actions.deleteCompanyRequestSuccess({ Status: "Success" }));
     } else {
-      toast.error("Something went wrong.");
+      toast.error(data.message.status_response);
       yield put(actions.deleteCompanyRequestFailed({ Status: "Failed" }));
     }
   } catch (err) {
