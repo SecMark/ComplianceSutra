@@ -157,15 +157,17 @@ function VeryOTP({ history, currentStep }) {
 
   const resendOTP = () => {
     setShowResendSection(false);
+    let countrycodewithmobile =
+      values.countryCode + localStorage.getItem("mobileNumber");
     let payload = {
-      mobile_number: localStorage.getItem("mobileNumber"),
+      mobile_number: countrycodewithmobile,
     };
 
     api
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response.data.message.status) {
+        if (response && response.status === 200) {
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
@@ -263,15 +265,17 @@ function VeryOTP({ history, currentStep }) {
 
   const sendOTPRequest = (text) => {
     setDisabled(true);
+    let countrycodewithmobile =
+      values.countryCode + localStorage.getItem("mobileNumber");
     let payload = {
-      mobile_number: localStorage.getItem("mobileNumber"),
+      mobile_number: countrycodewithmobile,
     };
 
     api
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.message === true) {
+        if (response && response.status === 200) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
           toast.success(
@@ -320,19 +324,46 @@ function VeryOTP({ history, currentStep }) {
       api
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
-          setOtpInValid(false);
-          setTimeout(() => {
-            history.push("/dashboard");
-          }, 4000);
+          // handle success
+          if (
+            (response && response.data && response.data.message.status) ||
+            response.data.message === true
+          ) {
+            setOtpInValid(false);
+            setTimeout(() => {
+              history.push("/dashboard");
+            }, 1000);
+          } else {
+            toast.error("Invalid OTP");
+            setOtpInValid(true);
+          }
         })
         .catch(function (error) {
           if (error) {
             setOtpInValid(false);
+            toast.error("Invalid OTP");
           }
         });
     } else {
       toast.error("Enter OTP");
     }
+    // if (otp !== "") {
+    //   api
+    //     .post("compliance.api.verifyOtp", payload)
+    //     .then(function (response) {
+    //       setOtpInValid(false);
+    //       setTimeout(() => {
+    //         history.push("/dashboard");
+    //       }, 4000);
+    //     })
+    //     .catch(function (error) {
+    //       if (error) {
+    //         setOtpInValid(false);
+    //       }
+    //     });
+    // } else {
+    //   toast.error("Enter OTP");
+    // }
   };
 
   return (
