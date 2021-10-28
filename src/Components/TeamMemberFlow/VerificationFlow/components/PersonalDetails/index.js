@@ -114,7 +114,7 @@ function PersonalDetails({ history }) {
                         alt="COMPLIANCE SUTRA"
                         title="COMPLIANCE SUTRA"
                       />
-                      <span className="camp">COMPLIANCE SUTRA</span>
+                      <span className="camp">COMPLIANCE SUTRAAA</span>
                     </div>
                   </div>
                 </div>

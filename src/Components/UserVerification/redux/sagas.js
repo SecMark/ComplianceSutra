@@ -6,13 +6,16 @@ import { toast } from "react-toastify";
 
 const userDataSaveRequest = function* userDataSaveRequest({ payload }) {
   try {
+    const { history } = payload;
+    delete payload.history;
     const { data } = yield call(api.insertUpdateUserRequets, payload);
     const { message } = data;
     if (message.status !== false) {
       const { token } = message;
       localStorage.setItem("basicToken", token);
+      yield put(actions.userDataSaveRequestSuccess(payload));
       toast.success("Personal Information saved successfully");
-      payload.history.push("/otp-verification");
+      history.push("/otp-verification");
     }
   } catch (err) {
     toast.error("Something went wrong");

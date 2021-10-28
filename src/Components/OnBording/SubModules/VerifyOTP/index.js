@@ -7,6 +7,7 @@ import secmark from "../../../../assets/Images/secmark.png";
 import { useDispatch, useSelector } from "react-redux";
 import SideBarInputControl from "../SideBarInputControl";
 import { actions as otpVerificationActions } from "../../redux/actions";
+import { actions as authActions } from "../../../Authectication/redux/actions";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
@@ -320,14 +321,66 @@ function VeryOTP({ history, currentStep }) {
       api
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
-          setOtpInValid(false);
-          setTimeout(() => {
-            history.push("/dashboard");
-          }, 4000);
+          if (response && response.data && response.data.message === true) {
+            setOtpInValid(false);
+            api.get("compliance.api.getUserDetails").then((res) => {
+              if (res.data && res.data.message && res.data.message.status) {
+                const { message } = res.data;
+                const { user_details } = message;
+                let complianceOfficer, teamMember, approver;
+                let userType = 0;
+                complianceOfficer = user_details.user_type.filter(
+                  (type) => type.user_type_no === 3
+                );
+                approver = user_details.user_type.filter(
+                  (type) => type.user_type_no === 5
+                );
+                teamMember = user_details.user_type.filter(
+                  (type) => type.user_type_no === 4
+                );
+                if (complianceOfficer.length !== 0) userType = 3;
+                else if (approver.length !== 0) userType = 5;
+                else if (teamMember.length !== 0) userType = 4;
+                console.log({
+                  complianceOfficer,
+                  approver,
+                  teamMember,
+                  userType,
+                });
+
+                user_details.UserType = userType;
+                dispatch(
+                  authActions.signInRequestSuccess({
+                    loginSuccess: true,
+                    data: user_details,
+                  })
+                );
+
+                if (userType === 3) {
+                  setTimeout(() => {
+                    history.push("/dashboard-view");
+                  }, 3000);
+                } else {
+                  setTimeout(() => {
+                    history.push("/dashboard");
+                  }, 3000);
+                }
+              }
+            });
+          } else if (
+            response &&
+            response.data &&
+            response.data.message &&
+            response.data.message.status === false
+          ) {
+            setOtpInValid(true);
+            toast.error("Please enter valid OTP.");
+          }
         })
         .catch(function (error) {
           if (error) {
             setOtpInValid(false);
+            toast.error("Something went wrong. Please try again");
           }
         });
     } else {
