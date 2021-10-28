@@ -53,6 +53,15 @@ import {
   getAllTasks,
 } from "../../../../../../CommonModules/helpers/tasks.helper";
 import axiosInstance from "../../../../../../apiServices";
+
+const getUserLlistByUserType = (userList, userType) => {
+  return [...userList].filter(element=>{
+    if(element.user_type.length>0) {
+      const isTeamMember = element.user_type.find(type=>type.user_type_no === userType);
+      return isTeamMember && element
+    }
+  })
+  }
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
@@ -276,19 +285,9 @@ function RightSideGrid({
       state.taskReport.getUserByRole &&
       state.taskReport.getUserByRole.getUserByRole;
 
-    if (ApproverUsers !== undefined) {
-      let temp = [];
-      ApproverUsers &&
-        ApproverUsers.length > 0 &&
-        ApproverUsers.forEach((obj1) => {
-          obj1 &&
-            obj1.GEN_Users &&
-            obj1.GEN_Users.forEach((obj2) => {
-              temp.push(obj2);
-            });
-        });
-      setAllUser(temp);
-      setAllUserBackup(temp);
+    if (ApproverUsers !== undefined && ApproverUsers.length !== 0) {
+      setAllUser(ApproverUsers);
+      setAllUserBackup(ApproverUsers);
     }
   }, [state.taskReport.getUserByRole]);
 
@@ -957,7 +956,7 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            allUser.map((user, index) => (
+                                            getUserLlistByUserType(allUser, 4).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -967,21 +966,21 @@ function RightSideGrid({
                                                 }
                                               >
                                                 <span class="name-circle">
-                                                  {getInitials(
-                                                    user.UserName
-                                                      ? user.UserName
-                                                      : user.EmailID
-                                                      ? user.EmailID
-                                                      : null
+                                                  { (user.full_name || user.email) &&
+                                                  getInitials(
+                                                    user.full_name
+                                                      ? user.full_name
+                                                      : user.email
+              
                                                   )}
                                                 </span>
                                                 <span className="name-of-emailer">
-                                                  {user.UserName
-                                                    ? user.UserName
+                                                  {user.full_name
+                                                    ? user.full_name
                                                     : ""}
                                                 </span>
                                                 <span className="last-email-box">
-                                                  {user.EmailID}
+                                                  {user.email}
                                                 </span>
                                               </div>
                                             ))
@@ -1183,7 +1182,7 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            allUser.map((user, index) => (
+                                            getUserLlistByUserType(allUser, 5).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -1193,21 +1192,20 @@ function RightSideGrid({
                                                 }
                                               >
                                                 <span class="name-circle">
-                                                  {getInitials(
-                                                    user.UserName
-                                                      ? user.UserName
-                                                      : user.EmailID
-                                                      ? user.EmailID
-                                                      : null
+                                                  { (user.full_name || user.email) && getInitials(
+                                                    user.full_name
+                                                      ? user.full_name
+                                                      : user.email
+                                                      
                                                   )}
                                                 </span>
                                                 <span className="name-of-emailer">
-                                                  {user.UserName
-                                                    ? user.UserName
+                                                  {user.full_name
+                                                    ? user.full_name
                                                     : ""}
                                                 </span>
                                                 <span className="last-email-box">
-                                                  {user.EmailID}
+                                                  {user.email}
                                                 </span>
                                               </div>
                                             ))
@@ -1997,23 +1995,11 @@ function RightSideGrid({
   };
 
   const getApproveUsers = () => {
-    // dispatch(
-    //   taskReportActions.userByRoleRequest({
-    //     coUserId: user.UserID,
-    //     ecoUserId: "",
-    //     coUserType: 5,
-    //   })
-    // );
+    dispatch(taskReportActions.userByRoleRequest());
   };
 
   const getUserDetail = (e) => {
-    // dispatch(
-    //   taskReportActions.userByRoleRequest({
-    //     coUserId: user.UserID,
-    //     ecoUserId: "",
-    //     coUserType: 4,
-    //   })
-    // );
+    dispatch(taskReportActions.userByRoleRequest());
   };
 
   const handleChange = (e) => {
@@ -2198,32 +2184,29 @@ function RightSideGrid({
   };
 
   const handleChooseApprove = (data) => {
-    let approvEmail = data.EmailID;
-    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: approvEmail,
-        userType: 5,
-        invitee: user.EmailID,
-        isApproved: 0,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            approver: data.email,
+            assigned_by: user.EmailID,
+          },
+        ],
       })
     );
   };
 
   const onAssignTaskClick = (data) => {
-    let assignEmail = data.EmailID;
-    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: assignEmail,
-        userType: 4,
-        invitee: user.EmailID,
-        isApproved: 0,
-        userDetails: userDetails,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            assign_to: data.email,
+            assigned_by: user.EmailID,
+          },
+        ],
       })
     );
   };
@@ -2255,8 +2238,6 @@ function RightSideGrid({
   const handleCheckAssignToEmailAvailability = (event) => {
     axios
       .post(`${BACKEND_BASE_URL}compliance.api.avabilityCheck`, {
-        // loginID: selectedUser,
-        // loginty: "AdminEmail",
         email: selectedUser,
       })
       .then((response) => {
@@ -5099,7 +5080,7 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            allUser.map((user, index) => (
+                                            getUserLlistByUserType(allUser, 4).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -5109,21 +5090,19 @@ function RightSideGrid({
                                                 }
                                               >
                                                 <span class="name-circle">
-                                                  {getInitials(
-                                                    user.UserName
-                                                      ? user.UserName
-                                                      : user.EmailID
-                                                      ? user.EmailID
-                                                      : null
+                                                  {user?.full_name && getInitials(
+                                                    user.full_name
+                                                      ? user.full_name
+                                                      : user.email
                                                   )}
                                                 </span>
                                                 <span className="name-of-emailer">
-                                                  {user.UserName
-                                                    ? user.UserName
+                                                  {user.full_name
+                                                    ? user.full_name
                                                     : ""}
                                                 </span>
                                                 <span className="last-email-box">
-                                                  {user.EmailID}
+                                                  {user.email}
                                                 </span>
                                               </div>
                                             ))
@@ -5325,7 +5304,7 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            allUser.map((user, index) => (
+                                            getUserLlistByUserType(allUser, 5).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -5335,21 +5314,21 @@ function RightSideGrid({
                                                 }
                                               >
                                                 <span class="name-circle">
-                                                  {getInitials(
-                                                    user.UserName
-                                                      ? user.UserName
-                                                      : user.EmailID
-                                                      ? user.EmailID
-                                                      : null
-                                                  )}
+                                                  {(user?.full_name ||
+                                                    user?.email) &&
+                                                    getInitials(
+                                                      user?.full_name
+                                                        ? user.full_name
+                                                        : user.email
+                                                    )}
                                                 </span>
                                                 <span className="name-of-emailer">
-                                                  {user.UserName
-                                                    ? user.UserName
-                                                    : ""}
+                                                  {user.full_name
+                                                    ? user?.full_name
+                                                    : user?.email}
                                                 </span>
                                                 <span className="last-email-box">
-                                                  {user.EmailID}
+                                                  {user.email}
                                                 </span>
                                               </div>
                                             ))
