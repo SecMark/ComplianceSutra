@@ -380,12 +380,7 @@ function CoManagment({ handleClose }) {
     compDetails[index].licenses = licenseList;
     setCompanyDetails(compDetails);
     setEditShow(true);
-    // let FieldObj = {
-    //   ...temp,
-    //   selectedLiecenseIdArray: licenseList,
-    // };
-    //  temp[index].selectedLiecenseIdArray = licenseList;
-    // setFields(temp);
+    
   };
 
   const handleDeleteClick = (item, flag) => {
@@ -681,8 +676,8 @@ function CoManagment({ handleClose }) {
                             item.company_type
                               ? item.company_type
                               : "Select Type"
-                          } // by default "Search"
-                          notFoundText="No result found" // by default "No result found"
+                          } 
+                          notFoundText="No result found" // by default "No result found hj"
                           options={companyTypeInfo}
                           onSelect={(e) =>
                             selectedIndex === undefined ||
@@ -690,7 +685,7 @@ function CoManagment({ handleClose }) {
                               ? handelChange(e, "company_type", index, item)
                               : true
                           }
-                          listMaxHeight={200} //by default 140
+                          listMaxHeight={200} 
                         />
                       </div>
                     </td>
