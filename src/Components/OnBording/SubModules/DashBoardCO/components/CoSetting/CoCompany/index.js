@@ -533,10 +533,6 @@ function CoManagment({ handleClose }) {
   };
   const handleSaveChanges = (index) => {
     let tempCoCompany = [...companyDetails];
-    // let selectedLiecenseList = tempCoCompany[index].selectedLicenseArray;
-    // const licenseIDgrpStr =
-    //   selectedLiecenseList.length > 0 ? selectedLiecenseList.join(",") : "";
-
     const payload = {
       company_docname: tempCoCompany[index].company_docname,
       company_name: tempCoCompany[index].company_name,
