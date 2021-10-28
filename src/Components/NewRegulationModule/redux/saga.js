@@ -19,14 +19,12 @@ import {
 
 function* fetchUpdates(action) {
   try {
-    console.log("hello function call");
     yield put(setLoading(true));
     //  yield put(setSuccess(false));
-    const { data, status } = yield call(api.getUpdates, action.payload);
-    if (status === 200 && data) {
+    const { data } = yield call(api.getUpdates, action.payload);
+    if (data.message) {
       yield put(setLoading(false));
-      // yield put(setSuccess(true));
-      yield put(setUpdates(data));
+      yield put(setUpdates(data.message));
     } else {
       yield put(setLoading(false));
       yield put(setSuccess(false));
@@ -97,11 +95,11 @@ function* fetchTopicList(action) {
 
 function* fetchFilterIndustryList(action) {
   try {
-    const { data, status } = yield call(api.getUpdates, action.payload);
-    if (status === 200) {
+    const { data } = yield call(api.getUpdates, action.payload);
+    if (data.message) {
       yield put(setLoading(false));
       // yield put(setSuccess(true));
-      yield put(setUpdates(data));
+      yield put(setUpdates(data.message));
     } else {
       yield put(setLoading(false));
       //   yield put(setSuccess(false));

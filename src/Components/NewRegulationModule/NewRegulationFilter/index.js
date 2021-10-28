@@ -93,11 +93,10 @@ const NewRegulationFilter = (props) => {
 
   const getResultByFilter = () => {
     const filterRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
-      regbodies: state.UpdatesReducer.issuer,
-      submissionfrom:
+      issuer: state.UpdatesReducer.issuer,
+      from_date:
         (state.UpdatesReducer.from !== "" &&
           state.UpdatesReducer.from.length !== 0 &&
           state.UpdatesReducer.from.length === 3 &&
@@ -105,7 +104,7 @@ const NewRegulationFilter = (props) => {
             "YYYY-MM-DD"
           )) ||
         "",
-      submissionto:
+      to_date:
         (state.UpdatesReducer.to !== "" &&
           state.UpdatesReducer.to.length !== 0 &&
           state.UpdatesReducer.to.length === 3 &&
@@ -113,22 +112,21 @@ const NewRegulationFilter = (props) => {
             "YYYY-MM-DD"
           )) ||
         "",
-      flag: constant.filterFlag,
     };
 
     const setBagdesPayload = {
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
       issuer: state.UpdatesReducer.issuer,
-      fromDate:
+      from_date:
         (state.UpdatesReducer.to !== "" &&
           state.UpdatesReducer.to.length !== 0 &&
           state.UpdatesReducer.to.length === 3 &&
-          moment(state.UpdatesReducer.from.join("-"), "DD-M-YYYY").format(
+          moment(state.UpdatesReducer?.from.join("-"), "DD-M-YYYY").format(
             "MMM Do YYYY"
           )) ||
         "",
-      toDate:
+      to_date:
         (state.UpdatesReducer.to !== "" &&
           state.UpdatesReducer.to.length !== 0 &&
           state.UpdatesReducer.to.length === 3 &&

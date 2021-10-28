@@ -32,26 +32,24 @@ const NewRegulationDetail = ({
             cursor: "pointer",
           }}
         />
-        <h3>{detail?.Title}</h3>
+        <h3>{detail?.name}</h3>
         <div className="detail-popup-main-content">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: detail?.Gist,
-            }}
-          />
+          <div>{detail?.title}</div>
         </div>
         <div className="detail-popup-main-footer">
           <p>Tags:</p>
           <div className="detail-popup-main-footer-labels">
             <div className="tags">
               <div className="tag-buttons">
-                <buton className="tags-button">{detail?.Industry}</buton>
-                <buton className="tags-button">{detail?.Topic}</buton>
-                <buton className="tags-button">{detail?.Regbodies}</buton>
+                <buton className="tags-button">{detail?.industry[0]}</buton>
+                <buton className="tags-button">{detail?.topic}</buton>
+                <buton className="tags-button">{detail?.issuer}</buton>
               </div>
               <a
-                href={`${detail?.FileLOcation}${detail?.c_file}`}
+                href={detail?.circular_link}
                 className="download-file"
+                download
+                target="_blank"
               >
                 Download File
               </a>
