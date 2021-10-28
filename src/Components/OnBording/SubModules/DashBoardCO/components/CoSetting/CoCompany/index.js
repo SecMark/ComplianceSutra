@@ -380,12 +380,7 @@ function CoManagment({ handleClose }) {
     compDetails[index].licenses = licenseList;
     setCompanyDetails(compDetails);
     setEditShow(true);
-    // let FieldObj = {
-    //   ...temp,
-    //   selectedLiecenseIdArray: licenseList,
-    // };
-    //  temp[index].selectedLiecenseIdArray = licenseList;
-    // setFields(temp);
+    
   };
 
   const handleDeleteClick = (item, flag) => {
