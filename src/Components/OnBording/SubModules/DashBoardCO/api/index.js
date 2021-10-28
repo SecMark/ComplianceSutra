@@ -9,7 +9,7 @@ const getTaskReportByID = (payload) =>
   api.post("compliance.api.getSingleTaskDetail", payload);
 const getTaskReferencesByName = (payload) =>
   api.post("compliance.api.GetTaskReferences", payload);
-const getUsersByRole = (payload) => api.post("/api/getUsersByRole", payload);
+const getUsersByRole = () => api.get("compliance.api.getUserList");
 
 const getTaskComments = (payload) =>
   api.post("compliance.api.GetTaskComments", payload);

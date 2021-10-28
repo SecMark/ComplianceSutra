@@ -7,7 +7,7 @@ import leftArrow from "../../../../assets/Icons/leftArrow.png";
 import { useDispatch, useSelector } from "react-redux";
 import SideBarInputControl from "../WebStepper.js";
 import { actions as otpVerificationActions } from "../../redux/actions";
-import {actions as authActions} from "../../../Authectication/redux/actions"
+import { actions as authActions } from "../../../Authectication/redux/actions";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
@@ -167,7 +167,7 @@ function VeryOTP({ history, currentStep }) {
     setCountryCode(true);
     const { name, value } = e.target;
     const mobileNumberReg = /^[0-9]{0,10}$/;
-    const otpRE = /^[0-9]{0,5}$/;
+    const otpRE = /^[0-9]{0,6}$/;
     if (e.target.name === "otp") {
       if (!mobileNumberReg.test(e.target.value)) {
         return "";
@@ -212,7 +212,7 @@ function VeryOTP({ history, currentStep }) {
     setShowResendSection(false);
 
     let payload = {
-      mobile_number: value,
+      mobile_number: countrycode + value,
     };
     api
       .post("compliance.api.generateOtp", payload)
@@ -221,15 +221,23 @@ function VeryOTP({ history, currentStep }) {
         if (
           response &&
           response.data &&
-          response.data.otp != "" &&
-          response.data.statuscode === "200"
+          response.data.message &&
+          response.data.message.status === true
         ) {
           setMinutes(1);
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
+        } else if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.status === false &&
+          response.data.message.status_response
+        ) {
+          toast.error(response.data.message.status_response);
         } else {
-          toast.error("something went wrong please try again !!!");
+          toast.error("Something went wrong. Please try again.");
         }
       })
       .catch(function (error) {
@@ -287,14 +295,29 @@ function VeryOTP({ history, currentStep }) {
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response && response.message && response.message.status === true) {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.status === true
+        ) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
+        } else if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.status === false &&
+          response.data.message.status_response
+        ) {
+          toast.error(response.data.message.status_response);
+          setIsEnabledSecureOTP(true);
+          setShowChangeMobileSection(false);
         } else {
-          toast.error("something went wrong please try again !!!");
+          toast.error("Something went wrong. Please try again.");
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
         }
@@ -336,14 +359,7 @@ function VeryOTP({ history, currentStep }) {
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
-          if (
-            response &&
-            response.data &&
-            response.data.message && 
-            response.data.message.status === true
-          ) {
-            setOtpInValid(true);
-          } else {
+          if (response && response.data && response.data.message === true) {
             setOtpInValid(false);
             toast.success("OTP is verified successfully");
             api.get("compliance.api.getUserDetails").then((res) => {
@@ -380,12 +396,15 @@ function VeryOTP({ history, currentStep }) {
                 );
 
                 if (userType === 3) {
-                    history.push("/dashboard-view");
+                  history.push("/dashboard-view");
                 } else {
-                    history.push("/dashboard");
+                  history.push("/dashboard");
                 }
               }
             });
+          } else {
+            setOtpInValid(true);
+            toast.error("Something went wrong. Please try again.");
           }
         })
         .catch(function (error) {
