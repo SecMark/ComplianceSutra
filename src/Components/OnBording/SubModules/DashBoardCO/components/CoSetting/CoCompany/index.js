@@ -748,7 +748,7 @@ function CoManagment({ handleClose }) {
                               ? item.company_type
                               : "Select Type"
                           } 
-                          notFoundText="No result found" // by default "No result found"
+                          notFoundText="No result found" // by default "No result found hj"
                           options={companyTypeInfo}
                           onSelect={(e) =>
                             selectedIndex === undefined ||
