@@ -747,7 +747,7 @@ function CoManagment({ handleClose }) {
                             item.company_type
                               ? item.company_type
                               : "Select Type"
-                          } // by default "Search"
+                          } 
                           notFoundText="No result found" // by default "No result found"
                           options={companyTypeInfo}
                           onSelect={(e) =>
