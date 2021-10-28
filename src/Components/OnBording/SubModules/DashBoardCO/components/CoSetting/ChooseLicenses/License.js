@@ -10,7 +10,7 @@ import { BsChevronUp, BsChevronDown } from "react-icons/bs";
 
 import "./style.css";
 
-const License = ({ index, addLicense, closeDrawer,fields }) => {
+const License = ({ index, addLicense, closeDrawer,fields ,setEditShow}) => {
   const state = useSelector((state) => state);
   const [listOfLicense, setListOfLicense] = useState([]);
   const [searchEnable, setSearchEnable] = useState(false);
@@ -186,7 +186,7 @@ const License = ({ index, addLicense, closeDrawer,fields }) => {
           <MdClose
             onClick={() => {
               setSelectedListOfLicenses([]);
-              closeDrawer();
+              closeDrawer(index);
             }}
             className="mb-3 license__close-button"
           />
@@ -321,7 +321,8 @@ const License = ({ index, addLicense, closeDrawer,fields }) => {
           disabled={selectedListOfLicenses.length === 0}
           onClick={() => {
             addLicense(index, selectedListOfLicenses);
-            closeDrawer();
+            closeDrawer(index);
+            setEditShow(true)
           }}
           className="mx-4 mt-4 btn save-details common-button-drower  mb-2"
           style={{

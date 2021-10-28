@@ -29,7 +29,8 @@ import License from "../ChooseLicenses/License";
 function CoManagment({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const options = useMemo(() => countryList().getData(), []);
+ const options = useMemo(() => countryList().getData(), []);
+// const options = ["India","Albania","south Africa"]
 
   const [editShow, setEditShow] = useState(false);
   const [doEdit, setdoEdit] = useState(undefined);
@@ -117,7 +118,38 @@ function CoManagment({ handleClose }) {
       setUserData(users);
       setUserDataBackup(users);
     }
-  }, [state.taskReport.coEntityLicenseTask]);
+  }, [state.taskReport.companyTypeInfo.CompanyInfo]);
+  useEffect(() => {
+    let addEditStatus =
+      state &&
+      state.taskReport &&
+      state.taskReport.CompanyAddEditStatus &&
+      state.taskReport.CompanyAddEditStatus.Status;
+    if (addEditStatus != undefined) {
+      if (addEditStatus === "Success" && selectedIndex != undefined) {
+        setToastType(1);
+        toast.success("Company details added");
+        //document.getElementById("toasterPrompt").classList.add("show");
+        setTimeout(() => {
+          //document.getElementById("toasterPrompt").classList.remove("show");
+          setSelectedCompany(undefined);
+          setSelectedIndex(undefined);
+          setCompanyDetails([]);
+          initialDispatch();
+        }, 5000);
+      } else {
+        setToastType(2);
+        if (addEditStatus !== "Success") {
+          toast.error("Something went wrong");
+        }
+
+        //document.getElementById("toasterPrompt").classList.add("show");
+        setTimeout(() => {
+          //document.getElementById("toasterPrompt").classList.remove("show");
+        }, 5000);
+      }
+    }
+  }, [state.taskReport.CompanyAddEditStatus]);
 
   useEffect(() => {
     const companyTypes =
@@ -139,7 +171,7 @@ function CoManagment({ handleClose }) {
     });
 
     setCompanyDetails(updateCompanyDetails);
-  }, [state.taskReport.companyTypeInfo]);
+  }, [state.taskReport.companyTypeInfo.CompanyInfo]);
 
   const getNameInitials = (name) => {
     if (name != undefined) {
@@ -218,6 +250,7 @@ function CoManagment({ handleClose }) {
     }
     let companyList = [...companyDetails];
     if (name === "company_name") {
+      setEditShow(true)
       const re = /^(?=.*\S).+$/;
       if (e.target.value && !re.test(e.target.value)) {
         return "";
@@ -225,12 +258,19 @@ function CoManagment({ handleClose }) {
         companyList[index].company_name = e.target.value;
       }
     } else if (name === "company_type") {
+      setEditShow(true)
       companyList[index].company_type = e;
     } else if (name === "company_country") {
-      companyList[index].company_country = e;
+      let countryvalue = countryList().getLabel(e)
+      setEditShow(true)
+      companyList[index].company_country = countryvalue;
+
     } else if (name === "company_pincode") {
+      console.log("setshowad",showAdd )
+      setEditShow(true)
       companyList[index].company_pincode = e.target.value;
     } else if (name == "compliance_officer") {
+      setEditShow(true)
       console.log("Gadsfasdfsdfsdf", e);
       companyList[index].compliance_officer = [
         {
@@ -369,7 +409,7 @@ function CoManagment({ handleClose }) {
       }
       setLicenseModalHideShow(false);
     }
-    setSelectedIndex(undefined);
+    setSelectedIndex(fieldData);
     setSelectedCompany(undefined);
     // let tempCoCompany = [...companyDetails];
     // const isSameLicenses = checkWithPreviousLicenses(
@@ -394,11 +434,19 @@ function CoManagment({ handleClose }) {
     // }
   };
   const addLicense = (index, licenseList) => {
+    
+    setEditShow(true);
     console.log("have to set this fields", fields, index, licenseList);
     setFields({
       ...fields,
       selectedLiecenseIdArray: licenseList,
     });
+
+    let compDetails = [...companyDetails];
+
+    compDetails[index].licenses= licenseList;
+    setCompanyDetails(compDetails);
+    setEditShow(true)
     // let FieldObj = {
     //   ...temp,
     //   selectedLiecenseIdArray: licenseList,
@@ -416,17 +464,11 @@ function CoManagment({ handleClose }) {
     } else if (flag === 2) {
       dispatch(
         coActions.deleteCompanyRequest({
-          gUserID: loggedUser.UserID,
-          settingType: 2,
-          actionFlag: 3,
-          EntityID: selectedCompany.EntityId,
-          licID: 0,
-          uUserID: 0,
-          utype: 0,
-          notificationList: "",
-          pwd: "",
+         company : selectedCompany.company_docname
         })
       );
+      dispatch(coActions.getCompanyTypeRequest());
+      setDeleteBoxHideShow(false);
     } else {
       setSelectedCompany(undefined);
       setDeleteBoxHideShow(false);
@@ -494,28 +536,26 @@ function CoManagment({ handleClose }) {
   };
   const handleSaveChanges = (index) => {
     let tempCoCompany = [...companyDetails];
-    let selectedLiecenseList = tempCoCompany[index].selectedLicenseArray;
-    const licenseIDgrpStr =
-      selectedLiecenseList.length > 0 ? selectedLiecenseList.join(",") : "";
+    // let selectedLiecenseList = tempCoCompany[index].selectedLicenseArray;
+    // const licenseIDgrpStr =
+    //   selectedLiecenseList.length > 0 ? selectedLiecenseList.join(",") : "";
 
     const payload = {
-      licenseSubID: 0,
-      entityId:
-        tempCoCompany && tempCoCompany[index] && tempCoCompany[index].isExist
-          ? tempCoCompany[index].EntityId
-          : 0,
-      userId: loggedUser.UserID,
-      entityName: tempCoCompany[index].EntityName,
-      coUserId: tempCoCompany[index].coUserID,
-      status: 0,
-      licenseIDgrp: licenseIDgrpStr,
-      category: tempCoCompany[index].Category,
-      cmptype: tempCoCompany[index].EntityTypeID.toString(),
+      company_docname: tempCoCompany[index].company_docname,
+      company_name:tempCoCompany[index].company_name ,
+      company_type: tempCoCompany[index].company_type,
+      company_country:tempCoCompany[index].company_country ,
+      company_pincode:tempCoCompany[index].company_pincode,
+      business_category:tempCoCompany[index].business_category ,
+      compliance_officer:tempCoCompany[index].compliance_officer ,
+      licenses:tempCoCompany[index].licenses ,
     };
 
     dispatch(coActions.insCertificateDetailsRequest(payload));
+    dispatch(coActions.getCompanyTypeRequest());
     setShowAdd(false);
     setEditShow(undefined);
+    setSelectedIndex(undefined);
     tempCoCompany[index].isEdited = false;
     setCompanyDetails(tempCoCompany);
   };
@@ -594,6 +634,7 @@ function CoManagment({ handleClose }) {
           <div id="drawerChild" className="sideBarFixed">
             {licenseModalHideShow && (
               <License
+                setEditShow={setEditShow}
                 fields={fields}
                 addLicense={addLicense}
                 index={selectedIndex}
@@ -740,6 +781,7 @@ function CoManagment({ handleClose }) {
                           className="form-control border-0"
                           value={item.company_country}
                           onSelect={(e) =>
+                            
                             selectedIndex === undefined ||
                             selectedIndex === index
                               ? handelChange(e, "company_country", index, item)
@@ -771,7 +813,7 @@ function CoManagment({ handleClose }) {
                           //value={item.selectedCategory}
                           className="form-control border-0"
                           placeholder={
-                            item.Category ? item.Category : "Select Category"
+                            item.business_category ? item.business_category : "Select Category"
                           } // by default "Search"
                           notFoundText="No result found" // by default "No result found"
                           options={categoryTypes}
@@ -951,7 +993,9 @@ function CoManagment({ handleClose }) {
                         {item.licenses.length <= 0 && (
                           <button
                             id={"addLicense" + index}
-                            className="btn buttonprimarygray"
+                            className={item.company_name !== "" &&
+                            item.company_type !== "" 
+                             ?"btn buttonprimary": "btn buttonprimarygray"}
                             onClick={() =>
                               openChooseLicenseModel(1, index, item)
                             }
@@ -979,7 +1023,8 @@ function CoManagment({ handleClose }) {
                             src={
                               item.company_name !== "" &&
                               item.company_type !== "" &&
-                              item.licenses.length != 0
+                              item.licenses.length != 0 &&
+                              editShow 
                                 ? greenCheck
                                 : grayCheck
                             }

@@ -48,11 +48,11 @@ const GetCOCompanyType = () =>
   axiosInstance.get(`${BACKEND_BASE_URL}compliance.api.getCompanyDetails`);
 
 const insertCerificateDetailsArray = (payload) =>
-  api.post("api/InsertCertifateDetailsArray", payload);
+  api.post("compliance.api.setSingleCompanyDetails", payload);
 
 const getAllNotifications = (payload) => api.post("api/Notifications", payload);
 
-const coSettingCommonApi = (payload) => api.post("api/CoSettings", payload);
+const coSettingCommonApi = (payload) => api.post("compliance.api.deactivateCompany", payload);
 
 const migrateTasks = (payload) => api.post("api/Migrate", payload);
 const getTeamMembers = (payload) => api.post("api/Migrate", payload);
