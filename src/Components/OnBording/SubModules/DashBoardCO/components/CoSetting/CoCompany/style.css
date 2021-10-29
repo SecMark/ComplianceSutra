@@ -213,6 +213,7 @@
   letter-spacing: 0px;
   text-align: left;
   color: #2c2738;
+  width: 100px;
 }
 .co-personal-grid .task-detail-data {
   /* margin: 20px 0px; */
@@ -417,9 +418,23 @@
   min-width: 80px;
   padding-left: 0px;
 }
-.co-personal-grid .table td.companyName {
-  min-width: 240px;
+/* .co-personal-grid .table td.companyName {
+  min-width: 140px;
+} */
+
+.dropbox-add-line {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #6c5dd3;
 }
+
 .co-personal-grid .buttonprimarygray:focus:not(:focus-visible) {
   outline: 0;
   background-color: #000000 !important;

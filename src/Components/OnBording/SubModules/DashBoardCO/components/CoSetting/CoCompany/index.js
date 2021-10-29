@@ -25,19 +25,17 @@ import { Modal } from "react-responsive-modal";
 import Searchable from "react-searchable-dropdown";
 import { isMobile } from "react-device-detect";
 import countryList from "react-select-country-list";
+import plusIcon from "../../../../../../../assets/Icons/plusIcon3.png";
 import License from "../ChooseLicenses/License";
 function CoManagment({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const options = useMemo(() => countryList().getData(), []);
-  // const options = ["India","Albania","south Africa"]
-
   const [editShow, setEditShow] = useState(false);
   const [doEdit, setdoEdit] = useState(undefined);
   const [showAdd, setShowAdd] = useState(false);
   const [companyDetails, setCompanyDetails] = useState([]);
   const [companyDetailsBackup, setCompanyDetailsBackup] = useState([]);
-
   const [companyTypesBackup, setCompanyTypesBackup] = useState([]);
   const [categoryTypes, setCategoryTypes] = useState([]);
   const [categoryTypesBackup, setCategoryTypesBackup] = useState([]);
@@ -45,6 +43,7 @@ function CoManagment({ handleClose }) {
   const [licenseModalHideShow, setLicenseModalHideShow] = useState(false);
   const [fields, setFields] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [addAnotherCompliance, setAddanotherCompiance] = useState([])
   const [userDataBackup, setUserDataBackup] = useState([]);
   const [assignPromptIndex, setAssignPromptIndex] = useState(undefined);
   const [selectedIndex, setSelectedIndex] = useState(undefined);
@@ -53,6 +52,7 @@ function CoManagment({ handleClose }) {
   const [deleteBoxHideShow, setDeleteBoxHideShow] = useState(false);
   const [userSearchText, setUserSearchText] = useState("");
   const [companyTypeInfo, setCompanyTypeoInfo] = useState([]);
+  const [validEmail,setValidEmail] =useState(true);
   const innerRef = useOuterClick((e) => {
     if (
       assignPromptIndex != undefined &&
@@ -165,6 +165,7 @@ function CoManagment({ handleClose }) {
         business_category: values.business_category,
         compliance_officer: values.compliance_officer,
         licenses: values.license,
+        selectedLicenseArray:values.license,
         companyNameError:"",
         isExist: true,
         isEdited: false,
@@ -195,6 +196,7 @@ function CoManagment({ handleClose }) {
       business_category: "",
       compliance_officer: [],
       licenses: [],
+      selectedLicenseArray:[],
       companyNameError:"",
       isExist: false,
       isEdited: true,
@@ -311,7 +313,7 @@ function CoManagment({ handleClose }) {
   };
 
   const validateExistingName = (e, index) => {
-    if (e.target.value != selectedCompany.EntityName && e.target.value != "") {
+    if (e.target.value != selectedCompany.company_name && e.target.value != "") {
       validateCompanyName(e, index);
     } else {
       let tempCoCompany = [...companyDetails];
@@ -319,13 +321,13 @@ function CoManagment({ handleClose }) {
         selectedCompany.selectedLicenseArray,
         tempCoCompany[index].selectedLicenseArray
       );
-      tempCoCompany[index].EntityName = selectedCompany.EntityName;
+      tempCoCompany[index].company_name = selectedCompany.company_name;
       tempCoCompany[index].isEdited = false;
 
       if (
-        tempCoCompany[index].EntityTypeID === selectedCompany.EntityTypeID &&
-        tempCoCompany[index].Category === selectedCompany.Category &&
-        tempCoCompany[index].coUserID === selectedCompany.coUserID &&
+        tempCoCompany[index].company_docname === selectedCompany.company_docname &&
+        tempCoCompany[index].business_category === selectedCompany.business_category &&
+        tempCoCompany[index].company_docname === selectedCompany.company_docname &&
         isSameLicenses === true
       ) {
         setSelectedIndex(undefined);
@@ -510,9 +512,11 @@ function CoManagment({ handleClose }) {
       </Modal>
     );
   };
-  const handleUndoChanges = (index) => {
+  const handleUndoChanges = (index,item) => {
+    setSelectedCompany({...item})
     let tempCoCompany = [...companyDetails];
     if (tempCoCompany[index].isExist) {
+      console.log("selected this company",selectedCompany)
       tempCoCompany[index].selectedCompany = selectedCompany;
       tempCoCompany[index].isEdited = false;
     } else {
@@ -561,7 +565,16 @@ function CoManagment({ handleClose }) {
   };
 
   const handleUserSearch = (e) => {
-    setUserSearchText(e.target.value);
+    setUserSearchText(e.target.value); 
+    if (
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        e.target.value
+      )
+    ) {
+      setValidEmail(true);}
+      else{
+        setValidEmail(false)
+      }
     if (e.target.value === "") {
       setUserData(userDataBackup);
     } else {
@@ -572,9 +585,11 @@ function CoManagment({ handleClose }) {
           item.userEmail.toLowerCase().includes(e.target.value.toLowerCase())
         ) {
           tempArray.push(item);
+          console.log("search result",item)
         }
       });
       setUserData(tempArray);
+      setAddanotherCompiance(tempArray)
     }
   };
 
@@ -585,9 +600,11 @@ function CoManagment({ handleClose }) {
       list.map((item, index) => {
         if (index === key) {
           if (
-            item.EntityName === "" ||
-            item.Category === "" ||
-            item.companyNameError != ""
+            item.company_name === "" ||
+            item.business_category === "" ||
+            item.companyNameError != "" ||
+            item.license.length <=0 ||
+            validEmail
           ) {
             isNext = false;
             return isNext;
@@ -901,7 +918,7 @@ function CoManagment({ handleClose }) {
                                         type="text"
                                         className="form-control"
                                         placeholder="Enter name or email"
-                                        onChange={(e) => handleUserSearch(e)}
+                                        onChange={(e) => handleUserSearch(e,index)}
                                         value={userSearchText}
                                       />
                                     </div>
@@ -952,10 +969,45 @@ function CoManagment({ handleClose }) {
                                             <span className="last-email-box">
                                               {user.userEmail}
                                             </span>
+                                            
                                           </div>
                                         </>
                                       );
                                     })}
+                                    { userSearchText !== "" && (
+                                                <a className="dropbox-add-line"
+                                                  href="#"
+                                                  onClick={(e)=>{
+                                                    e.preventDefault()
+                                                    handelChange(
+                                                      { userEmail : userSearchText,
+                                                        UserName : userSearchText},
+                                                      "compliance_officer",
+                                                      index,
+                                                      item
+                                                    )
+                                                  }}
+                                                >
+                                                  <img
+                                                    src={plusIcon}
+                                                    alt="account Circle Purple"
+                                                  />
+                                                  {!validEmail && (
+                                                <div
+                                                  className=""
+                                                  style={{
+                                                    color: "#ef5d5d",
+                                                    paddingLeft: "7px",
+                                                    position: "absolute",
+                                                  }}
+                                                >
+                                                  Please Enter valid Email
+                                                </div>
+                                              )}
+                                                  {userSearchText !== "" &&
+                                                    `Invite '${userSearchText}' via email`}
+                                                </a>
+                                              )}
                                 </div>
                               </div>
                             </div>
@@ -1018,7 +1070,7 @@ function CoManagment({ handleClose }) {
                               item.company_name !== "" &&
                               item.company_type !== "" &&
                               item.licenses.length != 0 &&
-                              editShow
+                              editShow && validEmail
                                 ? greenCheck
                                 : grayCheck
                             }
@@ -1026,7 +1078,7 @@ function CoManagment({ handleClose }) {
                             onClick={() => {
                               item.company_name !== "" &&
                                 item.company_type !== "" &&
-                                item.licenses.length != 0 &&
+                                item.licenses.length != 0 && 
                                 handleSaveChanges(index);
                             }}
                           />
@@ -1034,7 +1086,7 @@ function CoManagment({ handleClose }) {
                             className="delete-Icon-check"
                             src={redCheck}
                             alt="delete Icon"
-                            onClick={() => handleUndoChanges(index)}
+                            onClick={() => handleUndoChanges(index,item)}
                           />
                         </div>
                       )}

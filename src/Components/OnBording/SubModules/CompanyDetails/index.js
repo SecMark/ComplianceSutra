@@ -199,11 +199,8 @@ function CompanyDetails({ history }) {
   };
   const validateCompanyName = (e, index) => {
     let payload = {
-      loginID: e.target.value.trim(),
-      pwd: "",
-      rememberme: 0,
-      loginty: "AdminCompany",
-    };
+       company_name: e.target.value.trim(),
+    }
     if (e.target.value != "") {
       const companyNameErr = () => {
         let list = [...errors];
@@ -226,7 +223,7 @@ function CompanyDetails({ history }) {
         }
       };
 
-      if (companyName !== payload.loginID) {
+      if (companyName !== payload.company_name) {
         api
           .post("compliance.api.avabilityCheck", {
             company_name: e.target.value,
@@ -370,7 +367,7 @@ function CompanyDetails({ history }) {
       dispatch(
         companyActions.getLicenseList({
           industry_type: fields[index].business_category,
-          country: "India",
+          country: fields[index].company_country,
         })
       );
       setOpen(true);
@@ -395,6 +392,7 @@ function CompanyDetails({ history }) {
   };
 
   const addLicense = (index, licenseList) => {
+    
     var temp = [...fields];
     temp[index].licenses = licenseList;
     setFields(temp);
@@ -671,6 +669,7 @@ function CompanyDetails({ history }) {
         !re.test(e.target.value) &&
         name === "company_name"
       ) {
+        validateCompanyName(e, i);
         return "";
       }
 
