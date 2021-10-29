@@ -360,8 +360,9 @@ function CoSettingRightGrid({ handleClose, history }) {
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
-          if (response && response.data && response.data.message) {
-            setOtpInValid(true);
+          if (response && response.data && response.data.message.status ||
+          response.data.message === true) {
+            setOtpInValid(false);
             setIsOtpVerfied(true);
             setOtpModal(false);
             handleFinalSubmit();
@@ -373,7 +374,7 @@ function CoSettingRightGrid({ handleClose, history }) {
         })
         .catch(function (error) {
           if (error) {
-            setOtpInValid(false);
+            setOtpInValid(true);
             toast.error("Invalid OTP");
           }
         });
@@ -641,6 +642,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           <div>
             <input
               type="text"
+              disabled
               className={`form-control right-input-row ${
                 isValidate &&
                 (values.email === "" ||
