@@ -165,6 +165,7 @@ function CoManagment({ handleClose }) {
         business_category: values.business_category,
         compliance_officer: values.compliance_officer,
         licenses: values.license,
+        companyNameError:"",
         isExist: true,
         isEdited: false,
       };
@@ -194,6 +195,7 @@ function CoManagment({ handleClose }) {
       business_category: "",
       compliance_officer: [],
       licenses: [],
+      companyNameError:"",
       isExist: false,
       isEdited: true,
     };
@@ -217,7 +219,7 @@ function CoManagment({ handleClose }) {
     dispatch(
       companyAction.getLicenseList({
         industry_type: companyDetails[index].business_category,
-        country: "India",
+        country: companyDetails[index].company_country,
       })
     );
     if (!isMobile) {
@@ -335,16 +337,13 @@ function CoManagment({ handleClose }) {
   const validateCompanyName = (e, index) => {
     if (e.target.value != "") {
       let payload = {
-        loginID: e.target.value.trim(),
-        pwd: "",
-        rememberme: 0,
-        loginty: "AdminCompany",
+        company_name: e.target.value.trim(),
       };
       let companyList = [...companyDetails];
       api
-        .post("/api/availabilityCheck", payload)
+        .post("compliance.api.avabilityCheck", payload)
         .then(function (response) {
-          if (response && response.data && response.data.Status === "True") {
+          if (response && response.data && response.data.message.status) {
             companyList[index].companyNameError = "Company alreday exists";
             if (!companyList[index].isExist) {
               let Button = document.getElementById("addLicense" + index);

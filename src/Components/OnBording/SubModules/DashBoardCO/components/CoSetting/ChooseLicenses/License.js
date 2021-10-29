@@ -25,7 +25,7 @@ const License = ({ index, addLicense, closeDrawer,fields ,setEditShow}) => {
         show: false,
         selected: false,
         license: values.license.map((licenseValue) => {
-          console.log("licence value",licenseValue.name)
+          console.log("licence value",licenseValue.total_task)
           return {
             name: licenseValue.name,
             total_task: licenseValue.total_task,
@@ -266,7 +266,7 @@ const License = ({ index, addLicense, closeDrawer,fields ,setEditShow}) => {
                               <div className="col-4 d-flex align-item-center">
                                 {" "}
                                 <span>
-                                  {licenseItem.sublicense.length} Task{" "}
+                                  {licenseItem.total_task} Tasks{" "}
                                 </span>
                               </div>
                               <div
@@ -278,11 +278,11 @@ const License = ({ index, addLicense, closeDrawer,fields ,setEditShow}) => {
                               ) : (
                                 <BsChevronUp className="license__expand-more-button" />
                               )} */}
-                                <MdExpandMore
+                                {/* <MdExpandMore
                                   className={`license__expand-more-button ${
                                     licenseItem.show && "rotate-180"
                                   }`}
-                                />
+                                /> */}
                               </div>
                             </div>
                             {/* Sub license list */}
