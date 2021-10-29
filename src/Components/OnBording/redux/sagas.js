@@ -13,16 +13,16 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
       email: payload.email,
     };
     toast.success("Please Wait!!");
-    const { data } = yield call(api.verifyEmail, obj);
+    const response = yield call(api.verifyEmail, obj);
 
-    if (data.message.status !== false) {
+    if (response.data.message.status !== false) {
       yield put(actions.setLoader(false));
       toast.success(
         "The verification link has been sent to your email account successfully"
       );
     } else {
       yield put(actions.setLoader(false));
-      toast.error(data.message.status_response);
+      toast.error(response.data.message.status_response);
     }
   } catch (err) {
     yield put(actions.setLoader(false));

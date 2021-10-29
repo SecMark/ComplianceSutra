@@ -20,18 +20,16 @@ import {
 function* fetchUpdates(action) {
   try {
     yield put(setLoading(true));
-    //  yield put(setSuccess(false));
     const { data } = yield call(api.getUpdates, action.payload);
-    if (data.message) {
+    if (data.message.status) {
       yield put(setLoading(false));
-      yield put(setUpdates(data.message));
+      yield put(setUpdates(data.message.data));
     } else {
       yield put(setLoading(false));
       yield put(setSuccess(false));
     }
   } catch (error) {
     yield put(setLoading(false));
-    // yield put(setSuccess(false));
     console.log(error.message);
   }
 }
@@ -42,7 +40,6 @@ function* fetchIndustryList(action) {
     const { data, status } = yield call(api.getUpdates, action.payload);
     if (status === 200) {
       yield put(setLoading(false));
-      //  yield put(setSuccess(true));
       yield put(setIndustryList(data));
     } else {
       yield put(setLoading(false));
@@ -50,7 +47,6 @@ function* fetchIndustryList(action) {
     }
   } catch (error) {
     yield put(setLoading(false));
-    //  yield put(setSuccess(false));
     console.log(error.message);
   }
 }
@@ -61,15 +57,12 @@ function* fetchIssuerList(action) {
     const { data, status } = yield call(api.getUpdates, action.payload);
     if (status === 200) {
       yield put(setLoading(false));
-      // yield put(setSuccess(true));
       yield put(setIssuerList(data));
     } else {
       yield put(setLoading(false));
-      //  yield put(setSuccess(false));
     }
   } catch (error) {
     yield put(setLoading(false));
-    // yield put(setSuccess(false));
     console.log(error.message);
   }
 }
@@ -80,11 +73,9 @@ function* fetchTopicList(action) {
     const { data, status } = yield call(api.getUpdates, action.payload);
     if (status === 200) {
       yield put(setLoading(false));
-      // yield put(setSuccess(true));
       yield put(setTopicList(data));
     } else {
       yield put(setLoading(false));
-      //yield put(setSuccess(false));
     }
   } catch (error) {
     yield put(setLoading(false));
@@ -98,11 +89,9 @@ function* fetchFilterIndustryList(action) {
     const { data } = yield call(api.getUpdates, action.payload);
     if (data.message) {
       yield put(setLoading(false));
-      // yield put(setSuccess(true));
       yield put(setUpdates(data.message));
     } else {
       yield put(setLoading(false));
-      //   yield put(setSuccess(false));
     }
   } catch (error) {
     yield put(setLoading(false));

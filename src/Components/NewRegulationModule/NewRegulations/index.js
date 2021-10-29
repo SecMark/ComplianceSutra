@@ -30,6 +30,10 @@ import NewRegulationSearchResult from "../NewRegulationSearchResult";
 import "./style.css";
 import NewRegulationSearchBadge from "../NewRegulationSearchBadge";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
+import axiosInstance from "../../../apiServices";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
+import { toast } from "react-toastify";
+import BackDrop from "../../../CommonModules/sharedComponents/Loader/BackDrop";
 
 const NewRegulations = (props) => {
   const [isShowFilter, setIsShowFilter] = useState(false);
@@ -44,6 +48,8 @@ const NewRegulations = (props) => {
   const [isShowMobileFilter, setIsShowMobileFilter] = useState(false);
   const [isShowRegulationDetailMobile, setIsShowRegulationDetailMobile] =
     useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const [filters, setFilters] = useState({
     issuer: [],
@@ -102,17 +108,31 @@ const NewRegulations = (props) => {
     setIsShowRegulationDetail(!isShowRegulationDetail);
   };
 
-  const fetchAndSetNewRegulationDetail = (updatesId) => {
-    setNewRegulationDetail({});
+  const fetchAndSetNewRegulationDetail = async (updatesId) => {
+    try {
+      setNewRegulationDetail({});
+      setLoading(true);
 
-    if (updateList.length > 0) {
-      const getNewRegulationDetailById = updateList[updatesId];
-      setNewRegulationDetail({
-        ...newRegulationDetail,
-        getNewRegulationDetailById,
-      });
+      if (updateList.length > 0) {
+        const { data } = await axiosInstance.post(
+          `${BACKEND_BASE_URL}compliance.api.getRegulationDetails`,
+          {
+            name: updatesId,
+          }
+        );
+
+        if (data.message.status) {
+          const { circular_details } = data.message;
+          setNewRegulationDetail(circular_details);
+          setLoading(false);
+          setIsShowRegulationDetail(!isShowRegulationDetail);
+        }
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error("Failed to fetch circular details!Please try later");
     }
-    setIsShowRegulationDetail(!isShowRegulationDetail);
   };
 
   const setSeachTextAndFetchIndustryList = (event) => {
@@ -186,6 +206,7 @@ const NewRegulations = (props) => {
   return (
     <>
       <div className="new-regulation-side-bar">
+        <BackDrop isLoading={loading} />
         {isMobile && (
           <div id="sideBarParent" className="" ref={sideBarParent}>
             <div
@@ -373,7 +394,9 @@ const NewRegulations = (props) => {
                       return (
                         <div
                           className="list"
-                          onClick={() => fetchAndSetNewRegulationDetail(index)}
+                          onClick={() =>
+                            fetchAndSetNewRegulationDetail(updates?.name)
+                          }
                         >
                           <h2
                             className={
@@ -382,8 +405,8 @@ const NewRegulations = (props) => {
                                 : "new-regulation-title"
                             }
                           >
-                            {updates?.name &&
-                              getHighlightedText(updates.name, searchValue)}
+                            {updates?.topic &&
+                              getHighlightedText(updates.topic, searchValue)}
                           </h2>
                           <div className="description">
                             <p
@@ -525,7 +548,7 @@ const NewRegulations = (props) => {
                         <div
                           className="list"
                           onClick={() => {
-                            fetchAndSetNewRegulationDetail(index);
+                            fetchAndSetNewRegulationDetail(updates?.name);
                             setIsShowRegulationDetailMobile(
                               !isShowRegulationDetailMobile
                             );
@@ -538,8 +561,8 @@ const NewRegulations = (props) => {
                                 : "new-regulation-title"
                             }
                           >
-                            {updates?.name &&
-                              getHighlightedText(updates.name, searchValue)}
+                            {updates?.topic &&
+                              getHighlightedText(updates.topic, searchValue)}
                           </h2>
                           <div className="description">
                             <p

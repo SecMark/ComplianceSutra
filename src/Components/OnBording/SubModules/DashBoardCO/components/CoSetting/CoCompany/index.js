@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "./style.css";
 import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
 import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
@@ -13,6 +13,7 @@ import grayPlusIcon from "../../../../../../../assets/Icons/grayPlusIcon.png";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
 import mobileAssignIconSmall from "../../../../../../../assets/Icons/mobileAssignIconSmall.png";
+import { actions as companyAction } from "../../../../../../OnBording/redux/actions";
 import { toast } from "react-toastify";
 import Dropdown from "react-dropdown";
 import { actions as coActions } from "../../../redux/actions";
@@ -23,6 +24,8 @@ import { useOuterClick } from "./utils";
 import { Modal } from "react-responsive-modal";
 import Searchable from "react-searchable-dropdown";
 import { isMobile } from "react-device-detect";
+import countryList from "react-select-country-list";
+import License from "../ChooseLicenses/License";
 function CoManagment({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -95,6 +98,60 @@ function CoManagment({ handleClose }) {
   };
 
   useEffect(() => {
+    const tempUsers =
+      state &&
+      state.taskReport &&
+      state.taskReport.companyTypeInfo &&
+      state.taskReport.companyTypeInfo.CompanyInfo;
+    if (tempUsers != undefined && tempUsers.length > 0) {
+      let users = [];
+      tempUsers.forEach((element) => {
+        element.compliance_officer.map((item) => {
+          const obj = {
+            UserName: item.full_name,
+            userEmail: item.email,
+          };
+          users.push(obj);
+        });
+      });
+
+      setUserData(users);
+      setUserDataBackup(users);
+    }
+  }, [state.taskReport.companyTypeInfo.CompanyInfo]);
+  useEffect(() => {
+    let addEditStatus =
+      state &&
+      state.taskReport &&
+      state.taskReport.CompanyAddEditStatus &&
+      state.taskReport.CompanyAddEditStatus.Status;
+    if (addEditStatus != undefined) {
+      if (addEditStatus === "Success" && selectedIndex != undefined) {
+        setToastType(1);
+        toast.success("Company details added");
+        //document.getElementById("toasterPrompt").classList.add("show");
+        setTimeout(() => {
+          //document.getElementById("toasterPrompt").classList.remove("show");
+          setSelectedCompany(undefined);
+          setSelectedIndex(undefined);
+          setCompanyDetails([]);
+          initialDispatch();
+        }, 5000);
+      } else {
+        setToastType(2);
+        if (addEditStatus !== "Success") {
+          toast.error("Something went wrong");
+        }
+
+        //document.getElementById("toasterPrompt").classList.add("show");
+        setTimeout(() => {
+          //document.getElementById("toasterPrompt").classList.remove("show");
+        }, 5000);
+      }
+    }
+  }, [state.taskReport.CompanyAddEditStatus]);
+
+  useEffect(() => {
     const companyTypes =
       state && state?.taskReport && state?.taskReport?.companyTypeInfo;
 
@@ -114,7 +171,7 @@ function CoManagment({ handleClose }) {
     });
 
     setCompanyDetails(updateCompanyDetails);
-  }, [state.taskReport.companyTypeInfo]);
+  }, [state.taskReport.companyTypeInfo.CompanyInfo]);
 
   const getNameInitials = (name) => {
     if (name != undefined) {
@@ -149,12 +206,20 @@ function CoManagment({ handleClose }) {
   };
 
   const openChooseLicenseModel = (type, index, item) => {
-    let selectedObj = companyDetails[index];
+    let selectedObj = companyDetails[index].business_category;
+    let lic = companyDetails[index].licenses;
     let FieldObj = {
-      category: selectedObj.Category,
-      selectedLiecenseIdArray: selectedObj.selectedLicenseArray,
+      ...fields,
+      category: selectedObj,
+      selectedLiecenseIdArray: lic,
     };
     setFields(FieldObj);
+    dispatch(
+      companyAction.getLicenseList({
+        industry_type: companyDetails[index].business_category,
+        country: "India",
+      })
+    );
     if (!isMobile) {
       const drawerParent = document.getElementById("drawerParent");
       const drawerChild = document.getElementById("drawerChild");
@@ -380,7 +445,6 @@ function CoManagment({ handleClose }) {
     compDetails[index].licenses = licenseList;
     setCompanyDetails(compDetails);
     setEditShow(true);
-    
   };
 
   const handleDeleteClick = (item, flag) => {
@@ -478,6 +542,7 @@ function CoManagment({ handleClose }) {
 
     setShowAdd(false);
     setEditShow(undefined);
+    setSelectedIndex(undefined);
     tempCoCompany[index].isEdited = false;
     setCompanyDetails(tempCoCompany);
   };
@@ -555,9 +620,12 @@ function CoManagment({ handleClose }) {
         <div id="drawerParent" className="">
           <div id="drawerChild" className="sideBarFixed">
             {licenseModalHideShow && (
-              <LicenseDrawer
+              <License
+                setEditShow={setEditShow}
                 fields={fields}
-                close={(data, action) => close(data, action)}
+                addLicense={addLicense}
+                index={selectedIndex}
+                closeDrawer={close}
               />
             )}
           </div>
@@ -610,6 +678,8 @@ function CoManagment({ handleClose }) {
             <tr>
               <th scope="col">Company Name</th>
               <th scope="col">Company Type</th>
+              <th scope="col">Country</th>
+              <th scope="col">Pincode</th>
               <th scope="col">Business category</th>
               <th scope="col">Compliance Officer</th>
               <th scope="col">Licenses</th>
@@ -618,7 +688,7 @@ function CoManagment({ handleClose }) {
           </thead>
           <tbody>
             {companyDetails?.map((item, index) => {
-              console.log(item);
+              console.log("got this items", item);
               return (
                 <>
                   <tr className="focusRemove">
@@ -676,7 +746,7 @@ function CoManagment({ handleClose }) {
                             item.company_type
                               ? item.company_type
                               : "Select Type"
-                          } 
+                          }
                           notFoundText="No result found" // by default "No result found hj"
                           options={companyTypeInfo}
                           onSelect={(e) =>
@@ -685,7 +755,7 @@ function CoManagment({ handleClose }) {
                               ? handelChange(e, "company_type", index, item)
                               : true
                           }
-                          listMaxHeight={200} 
+                          listMaxHeight={200}
                         />
                       </div>
                     </td>
@@ -766,10 +836,10 @@ function CoManagment({ handleClose }) {
                         >
                           <span className="circle-dp">
                             {getNameInitials(
-                              item?.compliance_officer[1]?.full_name
+                              item?.compliance_officer[0]?.full_name
                             )}
                           </span>{" "}
-                          {item?.compliance_officer[1]?.full_name}{" "}
+                          {item?.compliance_officer[0]?.full_name}{" "}
                         </div>
                       )}
                       {item.isExist && (
@@ -792,13 +862,14 @@ function CoManagment({ handleClose }) {
                               item?.compliance_officer[0]?.full_name
                             )}
                           </span>{" "}
-                          {item?.compliance_officer[0]?.full_name}{" "}
+                          {item?.compliance_officer[0]?.full_name}
+                          {"  Hre"}
                         </div>
                       )}
 
                       {!item.isExist && item?.compliance_officer.length === 0 && (
                         <div
-                          className="assign-with-icon"
+                          className="assign-with-icofn"
                           onClick={() =>
                             selectedIndex === undefined ||
                             selectedIndex === index
@@ -837,14 +908,15 @@ function CoManagment({ handleClose }) {
                                     <span className="or-devider"> or</span>
                                     <button
                                       className="btn save-details assign-me"
-                                      onClick={() =>
+                                      onClick={() => {
+                                        console.log("user Login", loggedUser);
                                         handelChange(
                                           loggedUser,
                                           "compliance_officer",
                                           index,
                                           item
-                                        )
-                                      }
+                                        );
+                                      }}
                                     >
                                       Assign to me
                                     </button>
@@ -857,6 +929,7 @@ function CoManagment({ handleClose }) {
                                   {userData &&
                                     userData.length > 0 &&
                                     userData.map((user) => {
+                                      console.log("user", user);
                                       return (
                                         <>
                                           <div
@@ -864,7 +937,7 @@ function CoManagment({ handleClose }) {
                                             onClick={() =>
                                               handelChange(
                                                 user,
-                                                "complianceOfficer",
+                                                "compliance_officer",
                                                 index,
                                                 item
                                               )

@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import assignIcon1 from "../../../../../../../assets/Icons/assignIcon.png"
-import assignIcon3 from "../../../../../../../assets/Icons/assignIcon2.png"
-import assignIcon5 from "../../../../../../../assets/Icons/assignIcon3.png"
-import assignIcon2 from "../../../../../../../assets/Icons/assignIcon4.png"
-import assignIcon4 from "../../../../../../../assets/Icons/assignIcon5.png"
+import assignIcon1 from "../../../../../../../assets/Icons/assignIcon.png";
+import assignIcon3 from "../../../../../../../assets/Icons/assignIcon2.png";
+import assignIcon5 from "../../../../../../../assets/Icons/assignIcon3.png";
+import assignIcon2 from "../../../../../../../assets/Icons/assignIcon4.png";
+import assignIcon4 from "../../../../../../../assets/Icons/assignIcon5.png";
 import { MdClose, MdExpandMore } from "react-icons/md";
 import { BsChevronUp, BsChevronDown } from "react-icons/bs";
 
 import "./style.css";
 
-const License = ({ index, addLicense, closeDrawer,fields ,setEditShow}) => {
+const License = ({ index, addLicense, closeDrawer, fields, setEditShow }) => {
   const state = useSelector((state) => state);
   const [listOfLicense, setListOfLicense] = useState([]);
   const [searchEnable, setSearchEnable] = useState(false);
   const [selectedListOfLicenses, setSelectedListOfLicenses] = useState([]);
   const [headerHight, setHeaderHight] = useState(0);
   const licenseInfo = state?.complianceOfficer?.licenseList?.licenseList;
-  console.log("got this fields",fields.selectedLiecenseIdArray)
+  console.log("got this fields", fields.selectedLiecenseIdArray);
   useEffect(() => {
     const newLicenseList = licenseInfo?.map((values) => {
       return {
@@ -25,12 +25,14 @@ const License = ({ index, addLicense, closeDrawer,fields ,setEditShow}) => {
         show: false,
         selected: false,
         license: values.license.map((licenseValue) => {
-          console.log("licence value",licenseValue.name)
+          console.log("licence value", licenseValue.name);
           return {
             name: licenseValue.name,
             total_task: licenseValue.total_task,
             show: false,
-            selected:fields.selectedLiecenseIdArray.includes(licenseValue.name) ? true : false,
+            selected: fields.selectedLiecenseIdArray.includes(licenseValue.name)
+              ? true
+              : false,
             sublicense: licenseValue.sublicense.map((subValue) => {
               return {
                 name: subValue.name,
@@ -322,7 +324,7 @@ const License = ({ index, addLicense, closeDrawer,fields ,setEditShow}) => {
           onClick={() => {
             addLicense(index, selectedListOfLicenses);
             closeDrawer(index);
-            setEditShow(true)
+            setEditShow(true);
           }}
           className="mx-4 mt-4 btn save-details common-button-drower  mb-2"
           style={{

@@ -148,7 +148,8 @@ function CoManagment({ handleClose }) {
   const [reAssignUserType, setReAssignUserType] = useState(null);
   const [reAssignUserId, setReAssignUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const emailAddress = state?.auth?.loginInfo?.EmailID;
+  console.log("email", emailAddress);
   const handleChangeInput = (e) => {};
 
   useEffect(() => {
@@ -1049,18 +1050,19 @@ function CoManagment({ handleClose }) {
                                   >
                                     Re-Assign
                                   </div>
-
-                                  <div
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => {
-                                      setVisible(true);
-                                      setDeleteMemberIndex(index);
-                                      setOpenPopupIndex("");
-                                    }}
-                                    className="delete-member"
-                                  >
-                                    Delete member
-                                  </div>
+                                  {emailAddress !== item.email && (
+                                    <div
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() => {
+                                        setVisible(true);
+                                        setDeleteMemberIndex(index);
+                                        setOpenPopupIndex("");
+                                      }}
+                                      className="delete-member"
+                                    >
+                                      Delete member
+                                    </div>
+                                  )}
                                 </>
                               )}
                             </div>
@@ -1472,17 +1474,19 @@ function CoManagment({ handleClose }) {
                               >
                                 Re-Assign Tasks
                               </div>
-                              <div
-                                style={{ cursor: "pointer" }}
-                                onClick={() => {
-                                  setVisible(true);
-                                  setDeleteMemberIndex(index);
-                                  setOpenPopupIndex("");
-                                }}
-                                className="delete-member"
-                              >
-                                Delete member
-                              </div>
+                              {emailAddress !== item.email && (
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    setVisible(true);
+                                    setDeleteMemberIndex(index);
+                                    setOpenPopupIndex("");
+                                  }}
+                                  className="delete-member"
+                                >
+                                  Delete member
+                                </div>
+                              )}
                             </div>
                           </div>
                         )}
