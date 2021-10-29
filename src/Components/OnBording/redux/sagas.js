@@ -576,6 +576,7 @@ const insertUpdateDeleteAPIReq = function* insertUpdateDeleteAPIReq({
       const { token } = message;
       localStorage.setItem("basicToken", token);
       toast.success("Personal Information saved successfully");
+      yield put(actions.insUpdateDeletAPIRequestSuccess(payload));
       payload.history.push("/company-details");
     } else {
       toast.error(message.status_response);

@@ -53,23 +53,13 @@ function VeryOTP({ history, currentStep }) {
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].Mobile;
+    state.complianceOfficer.personalInfo?.mobile_number;
 
   const cntryCode =
     state &&
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].countrycode;
+    state.complianceOfficer.personalInfo?.countrycode;
 
   const userID =
     state &&
@@ -166,7 +156,13 @@ function VeryOTP({ history, currentStep }) {
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response.data.message.status) {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          (response.data.message === true ||
+            response.data.message.status === true)
+        ) {
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
@@ -272,7 +268,13 @@ function VeryOTP({ history, currentStep }) {
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.message === true) {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          (response.data.message === true ||
+            response.data.message.status === true)
+        ) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
           toast.success(

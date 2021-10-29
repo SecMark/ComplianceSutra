@@ -55,13 +55,15 @@ import {
 import axiosInstance from "../../../../../../apiServices";
 
 const getUserLlistByUserType = (userList, userType) => {
-  return [...userList].filter(element=>{
-    if(element.user_type.length>0) {
-      const isTeamMember = element.user_type.find(type=>type.user_type_no === userType);
-      return isTeamMember && element
+  return [...userList].filter((element) => {
+    if (element.user_type.length > 0) {
+      const isTeamMember = element.user_type.find(
+        (type) => type.user_type_no === userType
+      );
+      return isTeamMember && element;
     }
-  })
-  }
+  });
+};
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
@@ -956,7 +958,10 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            getUserLlistByUserType(allUser, 4).map((user, index) => (
+                                            getUserLlistByUserType(
+                                              allUser,
+                                              4
+                                            ).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -966,13 +971,13 @@ function RightSideGrid({
                                                 }
                                               >
                                                 <span class="name-circle">
-                                                  { (user.full_name || user.email) &&
-                                                  getInitials(
-                                                    user.full_name
-                                                      ? user.full_name
-                                                      : user.email
-              
-                                                  )}
+                                                  {(user.full_name ||
+                                                    user.email) &&
+                                                    getInitials(
+                                                      user.full_name
+                                                        ? user.full_name
+                                                        : user.email
+                                                    )}
                                                 </span>
                                                 <span className="name-of-emailer">
                                                   {user.full_name
@@ -1182,7 +1187,10 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            getUserLlistByUserType(allUser, 5).map((user, index) => (
+                                            getUserLlistByUserType(
+                                              allUser,
+                                              5
+                                            ).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -1192,12 +1200,13 @@ function RightSideGrid({
                                                 }
                                               >
                                                 <span class="name-circle">
-                                                  { (user.full_name || user.email) && getInitials(
-                                                    user.full_name
-                                                      ? user.full_name
-                                                      : user.email
-                                                      
-                                                  )}
+                                                  {(user.full_name ||
+                                                    user.email) &&
+                                                    getInitials(
+                                                      user.full_name
+                                                        ? user.full_name
+                                                        : user.email
+                                                    )}
                                                 </span>
                                                 <span className="name-of-emailer">
                                                   {user.full_name
@@ -1573,7 +1582,11 @@ function RightSideGrid({
                           {currentOpenedTask &&
                           currentOpenedTask.status &&
                           currentOpenedTask.status !== "Approved" &&
-                          currentOpenedTask.status !== "Not Assigned" ? (
+                          currentOpenedTask.status !== "Not Assigned" &&
+                          currentOpenedTask.status !== "Approval Pending" &&
+                          (currentOpenedTask.assign_to === null ||
+                            currentOpenedTask.assign_to ===
+                              (userDetails.EmailID || userDetails.email)) ? (
                             (user &&
                               user.UserType &&
                               user.UserType &&
@@ -1753,8 +1766,11 @@ function RightSideGrid({
                         (currentOpenedTask.status === "Assigned" ||
                           currentOpenedTask.status === "Rejected") &&
                         (userDetails.UserType === 3 ||
-                          userDetails.UserType === 5) &&
-                        user.EmailID !== "" && (
+                          userDetails.UserType === 5 ||
+                          userDetails.UserType === 4) &&
+                        (currentOpenedTask.assign_to === null ||
+                          currentOpenedTask.assign_to ===
+                            (userDetails.EmailID || userDetails.email)) && (
                           <button
                             style={{ marginTop: 10, width: 150 }}
                             onClick={() => teamMemberMarkComplete()}
@@ -1828,34 +1844,37 @@ function RightSideGrid({
                       ) : (
                         <div className="no-comments">No Comments</div>
                       )}
-
-                      <div className="comment-box">
-                        <div className="name-box">
-                          {getInitials(user && user.full_name)}
-                        </div>
-                        <div className="rigt-box-comment">
-                          <div className="input-comment-box input-comment-boxLeft">
-                            <TextareaAutosize
-                              minRows={1.3}
-                              style={{ overflow: "hidden" }}
-                              type="text"
-                              className="form-control textAreaHeight"
-                              value={inputComment}
-                              placeholder="Add a comment"
-                              onChange={(e) => handleChange(e)}
-                              required
-                            />
-                            <div className="inputIcon">
-                              <img
-                                src={inputRightArrow}
-                                alt=""
-                                style={{ cursor: "pointer" }}
-                                onClick={() => submitComment()}
-                              />
+                      {currentOpenedTask &&
+                        currentOpenedTask?.status !== "Approved" &&
+                        currentOpenedTask?.status !== "Approval Pending" && (
+                          <div className="comment-box">
+                            <div className="name-box">
+                              {getInitials(user && user.full_name)}
+                            </div>
+                            <div className="rigt-box-comment">
+                              <div className="input-comment-box input-comment-boxLeft">
+                                <TextareaAutosize
+                                  minRows={1.3}
+                                  style={{ overflow: "hidden" }}
+                                  type="text"
+                                  className="form-control textAreaHeight"
+                                  value={inputComment}
+                                  placeholder="Add a comment"
+                                  onChange={(e) => handleChange(e)}
+                                  required
+                                />
+                                <div className="inputIcon">
+                                  <img
+                                    src={inputRightArrow}
+                                    alt=""
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => submitComment()}
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                        )}
                     </div>
                   )}
                   {showHtoDoIt && (
@@ -2156,9 +2175,9 @@ function RightSideGrid({
         allUserBackup.length > 0 &&
         allUserBackup.filter((item, index) => {
           if (
-            item.EmailID.toLowerCase().includes(searchText.toLowerCase()) ||
-            (item.UserName &&
-              item.UserName.toLowerCase().includes(searchText.toLowerCase()))
+            item.email.toLowerCase().includes(searchText.toLowerCase()) ||
+            (item.full_name &&
+              item.full_name.toLowerCase().includes(searchText.toLowerCase()))
           ) {
             temp.push(item);
           }
@@ -3363,7 +3382,7 @@ function RightSideGrid({
                 displayTask === "2" &&
                 !isMobile)) && (
               <span className="take-action d-none d-md-block view-by__status-box">
-                <ul className="pull-right" style={{ float: "right" }}>
+                <ul className="pull-right my-2" style={{ float: "right" }}>
                   <span
                     style={{ fontSize: "10px", backgroundColor: "transparent" }}
                   >
@@ -5080,7 +5099,10 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            getUserLlistByUserType(allUser, 4).map((user, index) => (
+                                            getUserLlistByUserType(
+                                              allUser,
+                                              4
+                                            ).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -5090,11 +5112,12 @@ function RightSideGrid({
                                                 }
                                               >
                                                 <span class="name-circle">
-                                                  {user?.full_name && getInitials(
-                                                    user.full_name
-                                                      ? user.full_name
-                                                      : user.email
-                                                  )}
+                                                  {user?.full_name &&
+                                                    getInitials(
+                                                      user.full_name
+                                                        ? user.full_name
+                                                        : user.email
+                                                    )}
                                                 </span>
                                                 <span className="name-of-emailer">
                                                   {user.full_name
@@ -5304,7 +5327,10 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            getUserLlistByUserType(allUser, 5).map((user, index) => (
+                                            getUserLlistByUserType(
+                                              allUser,
+                                              5
+                                            ).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -5694,7 +5720,11 @@ function RightSideGrid({
                         {currentOpenedTask &&
                         currentOpenedTask.status &&
                         currentOpenedTask.status !== "Approved" &&
-                        currentOpenedTask.status !== "Not Assigned" ? (
+                        currentOpenedTask.status !== "Not Assigned" &&
+                        currentOpenedTask.status !== "Approval Pending" &&
+                        (currentOpenedTask.assign_to === null ||
+                          currentOpenedTask.assign_to ===
+                            (userDetails.EmailID || userDetails.email)) ? (
                           (user &&
                             user.UserType &&
                             user.UserType &&
@@ -5870,9 +5900,12 @@ function RightSideGrid({
                     {currentOpenedTask &&
                       (currentOpenedTask.status === "Assigned" ||
                         currentOpenedTask.status === "Rejected") &&
-                      (userDetails.UserType === 3 ||
-                        userDetails.UserType === 5) &&
-                      user.EmailID !== "" && (
+                      // (userDetails.UserType === 3 ||
+                      //   userDetails.UserType === 5 ||
+                      //   userDetails.UserType === 4) &&
+                      (currentOpenedTask?.assign_to === null ||
+                        currentOpenedTask?.assign_to ===
+                          (userDetails.EmailID || userDetails.email)) && (
                         <button
                           style={{ marginTop: 10, width: 150 }}
                           onClick={() => teamMemberMarkComplete()}
@@ -5944,34 +5977,37 @@ function RightSideGrid({
                     ) : (
                       <div className="no-comments">No Comments</div>
                     )}
-
-                    <div className="comment-box">
-                      <div className="name-box">
-                        {getInitials(user && user.full_name)}
-                      </div>
-                      <div className="rigt-box-comment">
-                        <div className="input-comment-box input-comment-boxLeft">
-                          <TextareaAutosize
-                            minRows={1.3}
-                            style={{ overflow: "hidden" }}
-                            type="text"
-                            className="form-control textAreaHeight"
-                            value={inputComment}
-                            placeholder="Add a comment"
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
-                          <div className="inputIcon">
-                            <img
-                              src={inputRightArrow}
-                              alt=""
-                              style={{ cursor: "pointer" }}
-                              onClick={() => submitComment()}
-                            />
+                    {currentOpenedTask &&
+                      currentOpenedTask?.status !== "Approved" &&
+                      currentOpenedTask?.status !== "Approval Pending" && (
+                        <div className="comment-box">
+                          <div className="name-box">
+                            {getInitials(user && user.full_name)}
+                          </div>
+                          <div className="rigt-box-comment">
+                            <div className="input-comment-box input-comment-boxLeft">
+                              <TextareaAutosize
+                                minRows={1.3}
+                                style={{ overflow: "hidden" }}
+                                type="text"
+                                className="form-control textAreaHeight"
+                                value={inputComment}
+                                placeholder="Add a comment"
+                                onChange={(e) => handleChange(e)}
+                                required
+                              />
+                              <div className="inputIcon">
+                                <img
+                                  src={inputRightArrow}
+                                  alt=""
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => submitComment()}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      )}
                   </div>
                 )}
                 {showHtoDoIt && (

@@ -1535,7 +1535,10 @@ function RightSideGrid({
                   {((searchValue === "" && displayTask === "1") ||
                     (searchValue === "" && displayTask === "2")) && (
                     <div className="take-action mb-0 d-none d-sm-block view-by__status-box">
-                      <ul className="pull-right" style={{ float: "right" }}>
+                      <ul
+                        className="pull-right my-2"
+                        style={{ float: "right" }}
+                      >
                         <span
                           style={{
                             fontSize: "10px",
