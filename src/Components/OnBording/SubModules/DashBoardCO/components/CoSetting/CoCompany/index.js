@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "./style.css";
 import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
 import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
@@ -23,6 +23,8 @@ import { useOuterClick } from "./utils";
 import { Modal } from "react-responsive-modal";
 import Searchable from "react-searchable-dropdown";
 import { isMobile } from "react-device-detect";
+import License from "../ChooseLicenses/License";
+import countryList from "react-select-country-list";
 function CoManagment({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -380,7 +382,6 @@ function CoManagment({ handleClose }) {
     compDetails[index].licenses = licenseList;
     setCompanyDetails(compDetails);
     setEditShow(true);
-    
   };
 
   const handleDeleteClick = (item, flag) => {
@@ -676,7 +677,7 @@ function CoManagment({ handleClose }) {
                             item.company_type
                               ? item.company_type
                               : "Select Type"
-                          } 
+                          }
                           notFoundText="No result found" // by default "No result found hj"
                           options={companyTypeInfo}
                           onSelect={(e) =>
@@ -685,7 +686,7 @@ function CoManagment({ handleClose }) {
                               ? handelChange(e, "company_type", index, item)
                               : true
                           }
-                          listMaxHeight={200} 
+                          listMaxHeight={200}
                         />
                       </div>
                     </td>
