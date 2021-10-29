@@ -7,6 +7,7 @@ import leftArrow from "../../../../assets/Icons/leftArrow.png";
 import { useDispatch, useSelector } from "react-redux";
 import SideBarInputControl from "../WebStepper.js";
 import { actions as otpVerificationActions } from "../../redux/actions";
+import { actions as authActions } from "../../../Authectication/redux/actions";
 import api from "../../../../apiServices";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
@@ -50,15 +51,13 @@ function VeryOTP({ history, currentStep }) {
     state &&
     state.users &&
     state.users.personalInfo &&
-    state.users.personalInfo.formData &&
-    state.users.personalInfo.formData.adminMobile;
+    state.users.personalInfo.mobile_number;
 
   const countrycode =
     state &&
     state.users &&
     state.users.personalInfo &&
-    state.users.personalInfo.formData &&
-    state.users.personalInfo.formData.countrycode;
+    state.users.personalInfo.countrycode;
 
   let tempMobileNumber =
     state &&
@@ -168,7 +167,7 @@ function VeryOTP({ history, currentStep }) {
     setCountryCode(true);
     const { name, value } = e.target;
     const mobileNumberReg = /^[0-9]{0,10}$/;
-    const otpRE = /^[0-9]{0,5}$/;
+    const otpRE = /^[0-9]{0,6}$/;
     if (e.target.name === "otp") {
       if (!mobileNumberReg.test(e.target.value)) {
         return "";
@@ -213,7 +212,7 @@ function VeryOTP({ history, currentStep }) {
     setShowResendSection(false);
 
     let payload = {
-      mobile_number: value,
+      mobile_number: countrycode + value,
     };
     api
       .post("compliance.api.generateOtp", payload)
@@ -222,15 +221,23 @@ function VeryOTP({ history, currentStep }) {
         if (
           response &&
           response.data &&
-          response.data.otp != "" &&
-          response.data.statuscode === "200"
+          response.data.message &&
+          response.data.message.status === true
         ) {
           setMinutes(1);
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
+        } else if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.status === false &&
+          response.data.message.status_response
+        ) {
+          toast.error(response.data.message.status_response);
         } else {
-          toast.error("something went wrong please try again !!!");
+          toast.error("Something went wrong. Please try again.");
         }
       })
       .catch(function (error) {
@@ -281,21 +288,36 @@ function VeryOTP({ history, currentStep }) {
 
     let payload = {};
     payload = {
-      mobile_number: localStorage.getItem(mobileNumber),
+      mobile_number: countrycode + mobile_number,
     };
 
     api
       .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response && response.message && response.message.status === true) {
+        if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.status === true
+        ) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
           toast.success(
             "The OTP has been sent to your registered mobile number"
           );
+        } else if (
+          response &&
+          response.data &&
+          response.data.message &&
+          response.data.message.status === false &&
+          response.data.message.status_response
+        ) {
+          toast.error(response.data.message.status_response);
+          setIsEnabledSecureOTP(true);
+          setShowChangeMobileSection(false);
         } else {
-          toast.error("something went wrong please try again !!!");
+          toast.error("Something went wrong. Please try again.");
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
         }
@@ -337,19 +359,52 @@ function VeryOTP({ history, currentStep }) {
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
-          if (
-            response &&
-            response.data &&
-            response.data.otp != "" &&
-            response.data.Status === "False"
-          ) {
-            setOtpInValid(true);
-          } else {
+          if (response && response.data && response.data.message === true) {
             setOtpInValid(false);
             toast.success("OTP is verified successfully");
-            setTimeout(() => {
-              history.push("/dashboard");
-            }, 2000);
+            api.get("compliance.api.getUserDetails").then((res) => {
+              if (res.data && res.data.message && res.data.message.status) {
+                const { message } = res.data;
+                const { user_details } = message;
+                let complianceOfficer, teamMember, approver;
+                let userType = 0;
+                complianceOfficer = user_details.user_type.filter(
+                  (type) => type.user_type_no === 3
+                );
+                approver = user_details.user_type.filter(
+                  (type) => type.user_type_no === 5
+                );
+                teamMember = user_details.user_type.filter(
+                  (type) => type.user_type_no === 4
+                );
+                if (complianceOfficer.length !== 0) userType = 3;
+                else if (approver.length !== 0) userType = 5;
+                else if (teamMember.length !== 0) userType = 4;
+                console.log({
+                  complianceOfficer,
+                  approver,
+                  teamMember,
+                  userType,
+                });
+
+                user_details.UserType = userType;
+                dispatch(
+                  authActions.signInRequestSuccess({
+                    loginSuccess: true,
+                    data: user_details,
+                  })
+                );
+
+                if (userType === 3) {
+                  history.push("/dashboard-view");
+                } else {
+                  history.push("/dashboard");
+                }
+              }
+            });
+          } else {
+            setOtpInValid(true);
+            toast.error("Something went wrong. Please try again.");
           }
         })
         .catch(function (error) {
@@ -410,7 +465,7 @@ function VeryOTP({ history, currentStep }) {
                         account. And you don't have to remember any password
                       </p>
                       <p className="will-send-text">
-                        We will send OTP on {localStorage.getItem(mobileNumber)}
+                        We will send OTP on {countrycode + mobile_number}
                         <span className="space-mobile d-block d-sm-none">
                           <br />
                         </span>

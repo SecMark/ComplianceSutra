@@ -36,7 +36,6 @@ import dropdownCheckIcon from "../../../../../../assets/Icons/dropdownCheckIcon.
 import RiskAndDelaysTaskList from "./component/RiskAndDelaysTaskList";
 import PendingAction from "./component/PendingAction";
 import View from "../../../../../CalenderView/View";
-import { setNotificationTaskId } from "../notification/Redux/Action";
 import { getDataByStatus } from "../../../../../../CommonModules/helpers/tasks.helper";
 import axiosInstance from "../../../../../../apiServices";
 
@@ -1536,7 +1535,10 @@ function RightSideGrid({
                   {((searchValue === "" && displayTask === "1") ||
                     (searchValue === "" && displayTask === "2")) && (
                     <div className="take-action mb-0 d-none d-sm-block view-by__status-box">
-                      <ul className="pull-right" style={{ float: "right" }}>
+                      <ul
+                        className="pull-right my-2"
+                        style={{ float: "right" }}
+                      >
                         <span
                           style={{
                             fontSize: "10px",
@@ -1660,6 +1662,7 @@ function RightSideGrid({
                           <BoardView
                             setCurrentBoardViewBy={setCurrentBoardViewBy}
                             currentBoardViewBy={currentBoardViewBy}
+                            isRedirect
                           />
                         </div>
                       )}
@@ -1669,9 +1672,12 @@ function RightSideGrid({
                 {displayTask === "3" && searchValue === "" && (
                   <div>
                     <div className="take-action" style={{ height: "72vh" }}>
-                      {taskData && taskData.length > 0 && (
+                      {listTaskData && listTaskData.length > 0 && (
                         <div className="task-list-grid">
-                          <View getSelectTaskDetails={getSelectTaskDetails} />
+                          <View
+                            getSelectTaskDetails={getSelectTaskDetails}
+                            isRedirect
+                          />
                         </div>
                       )}
                     </div>

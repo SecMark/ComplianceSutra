@@ -1,5 +1,5 @@
 import React from "react";
-import moment from "moment";
+import moment, { weekdays } from "moment";
 import "./style.css";
 
 const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
@@ -34,10 +34,11 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
               sevenDays.map((data) => {
                
                 const startDate = moment(data?.date).format("YYYY-MM-DD");
-                const filterList = weekData.filter(
-                  (details) => { 
-                    return moment(details.deadline_date).format("YYYY-MM-DD") == startDate
-                  });
+                const filterList = weekData.filter((details) => {
+                  return (
+                    moment(details.due_date).format("YYYY-MM-DD") === startDate
+                  );
+                });
 
                 return (
                   <td>
@@ -46,7 +47,7 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                         className="week-main"
                         onClick={() => {
                           if (userDetails && userDetails.UserType !== 6) {
-                            moveToDay(list?.EndDate);
+                            moveToDay(list?.due_date);
                           }
                         }}
                         style={{
@@ -61,13 +62,13 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                           <button className="license-code">
                             {list?.license}
                           </button>
-                          <h2>{list?.task_name}</h2>
+                          <h2>{list?.subject}</h2>
                           <button
                             className={`${
                               list?.status === "Approval Pending"
                                 ? "approval-day"
-                                : list?.Status == "Assigned" ||
-                                  list?.Status == "Approved"
+                                : list?.status === "Assigned" ||
+                                  list?.status === "Approved"
                                 ? "assigned-day"
                                 : "approval-day"
                             }`}
@@ -75,7 +76,7 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                             {" "}
                             {list?.status === "Approval Pending"
                               ? "Approval Pending"
-                              : list?.status === "Completed By User"
+                              : list?.status === "Approval Pending"
                               ? "Approval Pending"
                               : list?.status}
                           </button>
@@ -83,16 +84,19 @@ const WeekView = ({ sevenDays, weekData, goToDateDay, userDetails }) => {
                         <div className="CompanyName">
                           <span>{list?.customer_name}</span>
                         </div>
-                        <div>
-                          <p className="UserNameDp">
-                            <span className="circle-dp">
-                              {getNameInitials(list?.customer_name)}
-                            </span>{" "}
-                            <span className="user-name">
-                              {list?.assign_to_name}
-                            </span>
-                          </p>
-                        </div>
+                        {list?.assign_to_name && (
+                          <div>
+                            <p className="UserNameDp">
+                              <span className="circle-dp">
+                                {list?.assign_to_name &&
+                                  getNameInitials(list?.assign_to_name)}
+                              </span>{" "}
+                              <span className="user-name">
+                                {list?.assign_to_name}
+                              </span>
+                            </p>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </td>

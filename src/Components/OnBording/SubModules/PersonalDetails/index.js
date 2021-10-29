@@ -236,6 +236,7 @@ function PersonalDetails({ history }) {
           designation: values.designation,
           password: values.password,
           confirm_password: values.password,
+          countrycode: values.countryCode || "+91",
           history: history,
         })
       );
@@ -732,7 +733,9 @@ function PersonalDetails({ history }) {
                         errors.passwordErr !== "" ||
                         errors.confirmPasswordErr !== "" ||
                         errors.countryCodeErr === "true" ||
-                        values.mobileNumber.length < 10
+                        values.mobileNumber.length < 10 ||
+                        isValidate ||
+                        !isMobileValid
                       }
                       style={{ width: 134 }}
                     >

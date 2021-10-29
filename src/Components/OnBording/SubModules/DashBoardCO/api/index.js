@@ -9,7 +9,7 @@ const getTaskReportByID = (payload) =>
   api.post("compliance.api.getSingleTaskDetail", payload);
 const getTaskReferencesByName = (payload) =>
   api.post("compliance.api.GetTaskReferences", payload);
-const getUsersByRole = (payload) => api.post("/api/getUsersByRole", payload);
+const getUsersByRole = () => api.get("compliance.api.getUserList");
 
 const getTaskComments = (payload) =>
   api.post("compliance.api.GetTaskComments", payload);
@@ -55,7 +55,11 @@ const getAllNotifications = (payload) => api.post("api/Notifications", payload);
 const coSettingCommonApi = (payload) => api.post("compliance.api.deactivateCompany", payload);
 
 const migrateTasks = (payload) => api.post("api/Migrate", payload);
-const getTeamMembers = (payload) => api.post("api/Migrate", payload);
+const getTeamMembers = (payload) =>
+  axiosInstance.post(
+    `${BACKEND_BASE_URL}compliance.api.getUserByRole`,
+    payload
+  );
 
 export default {
   getTaskReport,

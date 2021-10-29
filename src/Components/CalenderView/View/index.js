@@ -22,8 +22,10 @@ import WeekView from "../WeekView";
 import "./style.css";
 import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 import axiosInstance from "../../../apiServices";
+import { actions as taskReportActions } from "../../OnBording/SubModules/DashBoardCO/redux/actions";
+import { getAllTasks } from "../../../CommonModules/helpers/tasks.helper";
 
-const View = ({ getSelectTaskDetails }) => {
+const View = ({ getSelectTaskDetails, isRedirect }) => {
   const [activeDays, setActiveDays] = useState(constant.week);
   const [dayDate, setDayDate] = useState(new Date());
   const [monthDate, setMonthDate] = useState(new Date());
@@ -37,7 +39,21 @@ const View = ({ getSelectTaskDetails }) => {
   const userDetails = state && state.auth && state.auth.loginInfo;
   const { daysData, weekData, monthData } = state.CalenderReducer;
   const [isShowSmallCalender, setIsShowSmallCalender] = useState(false);
-  const [taskList, setTaskList] = useState([]);
+
+  const [allTaskList, setAllTaskList] = useState([]);
+
+  const taskList =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
+
+  useEffect(() => {
+    if (!(taskList && taskList.length > 0)) {
+      dispatch(taskReportActions.taskReportRequest());
+    }
+  }, [taskList]);
 
   const viewBy = [
     {
@@ -57,27 +73,22 @@ const View = ({ getSelectTaskDetails }) => {
     },
   ];
 
-  const [weekTaskList, setWeekTaskList] = useState([]);
-
   useEffect(() => {
     fetchDayData();
-    //fetchWeekData();
-  }, [state.auth.loginInfo?.UserID]);
+    fetchWeekData();
+    fetchMonthData();
 
-  useEffect(() => {
-    getDays();
     getMonths();
   }, []);
-
   useEffect(() => {
-    getDays();
     dispatch(clearState());
+    getDays();
     fetchWeekData();
   }, [weekStartDate]);
 
   useEffect(() => {
-    dispatch(clearState());
-    // fetchDayData();
+    // dispatch(clearState());
+    fetchDayData();
   }, [dayDate]);
 
   //Get Days from start date to end date.
@@ -173,79 +184,23 @@ const View = ({ getSelectTaskDetails }) => {
 
   //Dispatch Day API
   const fetchDayData = () => {
-    axiosInstance
-      .get(`${BACKEND_BASE_URL}compliance.api.GetTaskList`)
-      .then((response) => {
-        const { status, status_response, task_details } = response.data.message;
-        if (status && status_response) {
-          console.log(task_details);
-          setTaskList(task_details);
-          getWeeklyTaskList();
-        }
+    dispatch(
+      getDayData({
+        taskList: taskList && taskList.length > 0 ? taskList : [],
+        StartDate: moment(dayDate).format("YYYY-MM-DD"),
       })
-      .catch((error) => {});
-  };
-
-  const getWeeklyTaskList = () => {
-    const StartDate = moment(weekStartDate).format("YYYY-MM-DD");
-    const EndDate = moment(addDaysInDate(weekStartDate, 7)).format(
-      "YYYY-MM-DD"
     );
-
-    let temp = [...taskList];
-    const weeklyTaskList = [];
-    temp &&
-      temp.map((licenses) => {
-        licenses.licenseAndTaskList.map((tasks) => {
-          tasks.taskList.map((list) => {
-            weeklyTaskList.push(list);
-          });
-        });
-      });
-
-    const filterWeeklyList = weeklyTaskList.filter((list) => {
-      return (
-        moment(list.deadline_date).format("YYYY-MM-DD") >= StartDate &&
-        moment(list.deadline_date).format("YYYY-MM-DD") <= EndDate
-      );
-    });
-
-    console.log(filterWeeklyList);
-  };
-
-  const fetchTaskList = async () => {
-    const taskDetail = await axiosInstance.post(
-      `${BACKEND_BASE_URL}compliance.api.GetTaskList`
-    );
-    const { task_details } = taskDetail.data.message;
-    setTaskList(task_details);
   };
 
   //Dispatch Week API
   const fetchWeekData = async () => {
-    await fetchTaskList();
-    let temp = [...taskList];
-    let weeklyData = [];
-
-    const StartDate = moment(weekStartDate).format("YYYY-MM-DD");
-    const EndDate = moment(addDaysInDate(weekStartDate, 7)).format(
-      "YYYY-MM-DD"
+    dispatch(
+      getWeekData({
+        taskList: taskList && taskList.length > 0 ? taskList : [],
+        StartDate: moment(weekStartDate).format("YYYY-MM-DD"),
+        EndDate: moment(addDaysInDate(weekStartDate, 7)).format("YYYY-MM-DD"),
+      })
     );
-
-    temp.map((licensesTaskList) => {
-      licensesTaskList.licenseAndTaskList.map((tasks) => {
-        tasks.taskList.map((list) => weeklyData.push(list));
-      });
-    });
-
-    const filtedList = weeklyData.filter((task) => {
-      return (
-        moment(task.deadline_date).format("YYYY-MM-DD") >= StartDate &&
-        moment(task.deadline_date).format("YYYY-MM-DD") <= EndDate
-      );
-    });
-
-    setWeekTaskList(filtedList);
   };
 
   //Dispatch Month API
@@ -254,8 +209,7 @@ const View = ({ getSelectTaskDetails }) => {
     var startDate = new Date(date.getFullYear(), date.getMonth(), 1);
 
     const dayPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      EntityID: "M",
+      taskList: taskList && taskList.length > 0 ? taskList : [],
       StartDate: moment(startDate).format("YYYY-MM-DD"),
       EndDate: moment(moment(endDate).format()).format("YYYY-MM-DD"),
     };
@@ -300,7 +254,7 @@ const View = ({ getSelectTaskDetails }) => {
             <span className="current-date">
               {`${moment(weekStartDate).format("ddd D")}-${moment(
                 addDaysInDate(weekStartDate, 7)
-              ).format("ddd D,YYYY")}`}
+              ).format("ddd D MMM,YYYY")}`}
             </span>
           )}
 
@@ -361,13 +315,17 @@ const View = ({ getSelectTaskDetails }) => {
         </div>
       </div>
       {activeDays === constant.day && (
-        <DayView daysData={daysData} userDetails={userDetails} />
+        <DayView
+          daysData={daysData}
+          userDetails={userDetails}
+          isRedirect={isRedirect}
+        />
       )}
 
       {activeDays === constant.week && (
         <WeekView
           sevenDays={sevenDays}
-          weekData={weekTaskList}
+          weekData={weekData}
           goToDateDay={goToDateDay}
           userDetails={userDetails}
         />

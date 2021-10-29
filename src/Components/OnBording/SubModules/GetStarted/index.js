@@ -28,6 +28,10 @@ function GetStart({ history }) {
     state && state?.complianceOfficer && state?.complianceOfficer.loader;
 
   useEffect(() => {
+    dispatch(emailActions.setLoader(false));
+  }, []);
+
+  useEffect(() => {
     if (emailAlreadExist === false && emailAlreadExist !== "") {
       setIsEmailExist(false);
     } else if (emailAlreadExist === true && emailAlreadExist !== "") {
@@ -61,7 +65,6 @@ function GetStart({ history }) {
     setCheckBoxState(false);
   };
   const onSubmit = () => {
-    dispatch(emailActions.setLoader(true));
     setIsValidate(true);
     if (!isEmail(values.loginID) || values.loginID === "") {
       return;
@@ -74,6 +77,7 @@ function GetStart({ history }) {
           email: values.loginID,
         })
       );
+      dispatch(emailActions.setLoader(true));
       setTimeout(() => {
         let status = state.complianceOfficer.isVerifiedEmail;
       }, [100]);

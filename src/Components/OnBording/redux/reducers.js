@@ -35,7 +35,7 @@ const actionHandler = {
     isVerifiedEmail: true,
     emailInfo: payload,
     personalInfo: payload,
-    userData: payload.userInfo,
+    userData: payload,
   }),
   [types.COMPANY_TYPE_REQUEST]: (state) => ({
     ...state,

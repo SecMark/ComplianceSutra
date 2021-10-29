@@ -63,11 +63,13 @@ const userRequestByRole = function* userRequestByRole({ payload }) {
   try {
     const { data, status } = yield call(api.getUsersByRole, payload);
     // console.log(data);
-    let statusCode = data && data[0] && data[0].StatuCode;
-    if (status === 200 && statusCode != false && statusCode !== "norec") {
-      // console.log("getUsersByRole  => ",data , status);
-      yield put(actions.userByRoleRequestSuccess({ getUserByRole: data }));
-      toast.success(data && data.Message);
+
+    if (status === 200 && data && data.message && data.message.length !== 0) {
+      console.log("getUsersByRole  => ", data, status);
+      yield put(
+        actions.userByRoleRequestSuccess({ getUserByRole: data.message })
+      );
+      // toast.success(data && data.Message);
     } else {
       toast.success(data && data.Message);
       yield put(actions.userByRoleRequestFailed({ getUserByRole: {} }));
