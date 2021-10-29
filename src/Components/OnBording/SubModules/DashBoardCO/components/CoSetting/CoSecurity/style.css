@@ -1,4 +1,3 @@
-
 .co-security {
   object-fit: contain;
   border-radius: 36px;
@@ -9,9 +8,8 @@
   margin: 20px 20px 20px 0px;
   padding-left: 48px;
   padding-top: 56px;
-
 }
-.co-security .scroll-sction{
+.co-security .scroll-sction {
   overflow-y: auto;
   height: calc(100vh - 200px);
   overflow-x: hidden;
@@ -30,7 +28,7 @@
   align-items: center;
   justify-content: space-between;
 }
-.co-security .change-password{
+.co-security .change-password {
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -43,7 +41,7 @@
   margin-bottom: 0;
   margin-top: 10px;
 }
-.co-security .notification-div-flex .form-control{
+.co-security .notification-div-flex .form-control {
   width: 261px;
   height: 40px;
   opacity: 0.5;
@@ -61,31 +59,35 @@
   color: #aeaeae;
   padding: 0px 40px 0px 20px;
 }
-.co-security .notification-div-flex .form-group{
+.co-security .notification-div-flex .form-group {
   position: relative;
   width: 261px;
 }
-.co-security .notification-div-flex  img{
+.co-security .notification-div-flex img {
   width: 15px;
   position: absolute;
   right: 15px;
   top: 15px;
 }
-.co-security .notification-div-flex .form-control::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+.co-security .notification-div-flex .form-control::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
   line-height: 40px;
   vertical-align: middle;
 }
-.co-security .notification-div-flex.form-control::-moz-placeholder { /* Firefox 19+ */
+.co-security .notification-div-flex.form-control::-moz-placeholder {
+  /* Firefox 19+ */
   line-height: 40px;
   vertical-align: middle;
 }
-.co-security .notification-div-flex .form-control:-ms-input-placeholder { /* IE 10+ */
+.co-security .notification-div-flex .form-control:-ms-input-placeholder {
+  /* IE 10+ */
   line-height: 40px;
 }
-.co-security .nnotification-div-flex .form-control:-moz-placeholder { /* Firefox 18- */
+.co-security .nnotification-div-flex .form-control:-moz-placeholder {
+  /* Firefox 18- */
   line-height: 40px;
 }
-.co-security .cheading{
+.co-security .cheading {
   opacity: 0.5;
   font-family: Poppins;
   font-size: 18px;
@@ -97,10 +99,10 @@
   text-align: left;
   color: #1b1d21;
 }
-.co-security .channel-div{
+.co-security .channel-div {
   margin-bottom: 20px;
 }
-.co-security .password-text{
+.co-security .password-text {
   font-family: Poppins;
   font-size: 12px;
   font-weight: normal;
@@ -110,85 +112,84 @@
   letter-spacing: 0px;
   text-align: left;
   color: #2c2738;
-
 }
-.co-security .mar-bottom{
+.co-security .mar-bottom {
   margin-bottom: 10px;
 }
 .co-security .check-box {
   text-align: right;
   padding-top: 13px;
 }
-.co-security  .switch {
-    position: relative;
-    display: inline-block;
-    width: 47px;
-    height: 24px;   
-     outline: none;
-  }  
-.co-security  .switch input { 
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }  
-.co-security .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #e4e4e4;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }  
-.co-security .slider:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 0px;
-    bottom: 2px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }  
-.co-security input:checked + .slider {
-    background-color: #6c5dd3;
-  }  
-.co-security input:focus + .slider {
-    box-shadow: 0 0 1px #6c5dd3;
-  }
-.co-security input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .co-security .slider.round {
-    border-radius: 34px;
-  }  
-  .co-security .slider.round:before {
-    border-radius: 50%;
-  }
-  .co-security ul.Instruction {
-    list-style-type: none;
-    padding-left: 0;
-    font-family: Poppins;
-    font-size: 10px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0px;
-    text-align: left;
-    color: #1b1d21;
-    margin-top: 0px;
+.co-security .switch {
+  position: relative;
+  display: inline-block;
+  width: 47px;
+  height: 24px;
+  outline: none;
 }
-.account-password-title{
+.co-security .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.co-security .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e4e4e4;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.co-security .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.co-security input:checked + .slider {
+  background-color: #6c5dd3;
+}
+.co-security input:focus + .slider {
+  box-shadow: 0 0 1px #6c5dd3;
+}
+.co-security input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.co-security .slider.round {
+  border-radius: 34px;
+}
+.co-security .slider.round:before {
+  border-radius: 50%;
+}
+.co-security ul.Instruction {
+  list-style-type: none;
+  padding-left: 0;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #1b1d21;
+  margin-top: 0px;
+}
+.account-password-title {
   margin: 0px 0px 24px 0;
-  
+
   font-family: Poppins;
   font-size: 14px;
   font-weight: 500;
@@ -200,7 +201,17 @@
   color: rgb(32 32 32 / 50%);
 }
 
-  @media screen and (max-width: 767px) {
+.visible-password__icon {
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  color: #adadad;
+  line-height: 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+@media screen and (max-width: 767px) {
   .co-security {
     object-fit: contain;
     border-radius: 0px;
@@ -212,36 +223,36 @@
     padding-left: 20px;
     padding-top: 34px;
     padding-right: 20px;
-    }
-    .co-sequrity-bottom  .bottom-logo-strip {
-      position: relative !important;
-      /* padding-top: 220px; */
-      padding-top: 173px;
-    }
-    .co-security .scroll-sction {
-      padding-right: 0%;
-    }
-    .change-pass-Co-setting .password-text {
-      font-family: Poppins;
-      font-size: 13px;
-      font-weight: normal;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: normal;
-      letter-spacing: 0px;
-      text-align: left;
-      color: #2c2738;
-      padding-bottom: 0px;
-      margin-bottom: 2px;
-    }
-    .change-pass-Co-setting .notification-div-flex {
-      display: block !important;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .change-pass-Co-setting  .notification-div-flex .form-group {
-      position: relative;
-      width: 100%;
+  }
+  .co-sequrity-bottom .bottom-logo-strip {
+    position: relative !important;
+    /* padding-top: 220px; */
+    padding-top: 173px;
+  }
+  .co-security .scroll-sction {
+    padding-right: 0%;
+  }
+  .change-pass-Co-setting .password-text {
+    font-family: Poppins;
+    font-size: 13px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #2c2738;
+    padding-bottom: 0px;
+    margin-bottom: 2px;
+  }
+  .change-pass-Co-setting .notification-div-flex {
+    display: block !important;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .change-pass-Co-setting .notification-div-flex .form-group {
+    position: relative;
+    width: 100%;
   }
   .change-pass-Co-setting .notification-div-flex .form-control {
     width: 100%;
