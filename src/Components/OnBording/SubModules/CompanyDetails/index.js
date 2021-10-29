@@ -646,7 +646,6 @@ function CompanyDetails({ history }) {
 
   const redirectToAssignTaskScreen = async () => {
     try {
-      console.log(fields);
       const { data } = await axiosInstance.post(
         "compliance.api.setCompanyDetails",
         {
@@ -657,7 +656,7 @@ function CompanyDetails({ history }) {
         history.push("/governance");
       }
     } catch (error) {
-      toast.error("Please Add License");
+      toast.error(error.message || "Something wrong");
     }
   };
 
