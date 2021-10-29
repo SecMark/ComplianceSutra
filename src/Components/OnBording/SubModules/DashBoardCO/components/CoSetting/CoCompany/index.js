@@ -24,8 +24,8 @@ import { useOuterClick } from "./utils";
 import { Modal } from "react-responsive-modal";
 import Searchable from "react-searchable-dropdown";
 import { isMobile } from "react-device-detect";
-import countryList from "react-select-country-list";
 import License from "../ChooseLicenses/License";
+import countryList from "react-select-country-list";
 function CoManagment({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
