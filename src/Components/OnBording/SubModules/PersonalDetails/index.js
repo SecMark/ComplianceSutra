@@ -734,7 +734,8 @@ function PersonalDetails({ history }) {
                         errors.confirmPasswordErr !== "" ||
                         errors.countryCodeErr === "true" ||
                         values.mobileNumber.length < 10 ||
-                        isValidate
+                        isValidate ||
+                        !isMobileValid
                       }
                       style={{ width: 134 }}
                     >
