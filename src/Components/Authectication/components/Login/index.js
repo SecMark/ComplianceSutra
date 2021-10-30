@@ -135,23 +135,25 @@ function Login({ history }) {
                 <div className="comtech_form_wrapper">
                   <div className="form-group">
                     <label htmlFor="Company Email">Company Email</label>
-                    <input
-                      type="text"
-                      className={
-                        "form-control" +
-                        (errors && errors.emailErr !== ""
-                          ? " input-error error-msg-border"
-                          : " ") +
-                        // ( values && values.LoginId !== "" ? "  succes-input-borde" : " 11-1succes-input-border")
-                        (values && values.LoginId === ""
-                          ? ""
-                          : " countryCode-sucess   ") +
-                        (errors.emailErr == "" && " activeForm-control")
-                      }
-                      placeholder="Enter your company email"
-                      value={values.LoginId}
-                      onChange={onChangeHandler("LoginId")}
-                    />
+                    <div className="input-wrapper">
+                      <input
+                        type="text"
+                        className={
+                          "form-control" +
+                          (errors && errors.emailErr !== ""
+                            ? " input-error error-msg-border"
+                            : " ") +
+                          // ( values && values.LoginId !== "" ? "  succes-input-borde" : " 11-1succes-input-border")
+                          (values && values.LoginId === ""
+                            ? ""
+                            : " countryCode-sucess   ") +
+                          (errors.emailErr == "" && " activeForm-control")
+                        }
+                        placeholder="Enter your company email"
+                        value={values.LoginId}
+                        onChange={onChangeHandler("LoginId")}
+                      />
+                    </div>
                     {errors && errors.emailErr !== "" && (
                       <p className="input-error-message">Email is invalid</p>
                     )}
@@ -161,7 +163,7 @@ function Login({ history }) {
                   </div>
                   <div className="form-group">
                     <label htmlFor="Company Email">Password</label>
-                    <div className="">
+                    <div className="input-wrapper">
                       <input
                         type={InputType}
                         className={
@@ -178,7 +180,6 @@ function Login({ history }) {
                         onChange={onChangeHandler("Pwd")}
                         onKeyPress={handleKeyPress}
                       />
-
                       <span className="password-toggle-ico">{Icon}</span>
                     </div>
                   </div>
