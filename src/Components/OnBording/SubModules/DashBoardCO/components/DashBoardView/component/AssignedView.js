@@ -137,7 +137,7 @@ export default function AssignedView(props) {
                   >
                     <div class="graybox-left">
                       <span class="all-companies-nse-label">
-                        {task.license}
+                        {task.license_display}
                       </span>
                     </div>
                     <span className="pink-label-title-right">
@@ -288,7 +288,7 @@ export default function AssignedView(props) {
                   >
                     <div class="graybox-left">
                       <span class="all-companies-nse-label">
-                        {task.license}
+                        {task.license_display}
                       </span>
                     </div>
                     <span className="pink-label-title-right">
@@ -441,7 +441,9 @@ export default function AssignedView(props) {
           <div className="col-10 pl-0">
             <div className="all-companies-sub-title">
               <div className="graybox-left">
-                <span className="all-companies-nse-label">{task.license}</span>{" "}
+                <span className="all-companies-nse-label">
+                  {task.license_display}
+                </span>{" "}
               </div>
               <div
                 className="pink-label-title-right"

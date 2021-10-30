@@ -52,7 +52,8 @@ const insertCerificateDetailsArray = (payload) =>
 
 const getAllNotifications = (payload) => api.post("api/Notifications", payload);
 
-const coSettingCommonApi = (payload) => api.post("compliance.api.deactivateCompany", payload);
+const coSettingCommonApi = (payload) =>
+  api.post("compliance.api.deactivateCompany", payload);
 
 const migrateTasks = (payload) => api.post("api/Migrate", payload);
 const getTeamMembers = (payload) =>
@@ -60,6 +61,8 @@ const getTeamMembers = (payload) =>
     `${BACKEND_BASE_URL}compliance.api.getUserByRole`,
     payload
   );
+const getCompanyUsers = (payload) =>
+  api.post("compliance.api.getCompanyUsers", payload);
 
 export default {
   getTaskReport,
@@ -81,4 +84,5 @@ export default {
   getTeamMembers,
   getTaskReferencesByName,
   changeTaskStatus,
+  getCompanyUsers,
 };

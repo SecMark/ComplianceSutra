@@ -79,6 +79,11 @@ function Dashboard({ history }) {
   }, [state.adminMenu.currentMenu]);
 
   useEffect(() => {
+    setInterval(() => {
+      dispatch(taskReportActions.taskReportRequest());
+    }, 30000);
+  }, []);
+  useEffect(() => {
     if (
       window.location.href.includes("dashboard") &&
       state.adminMenu.currentMenu !== "taskList"

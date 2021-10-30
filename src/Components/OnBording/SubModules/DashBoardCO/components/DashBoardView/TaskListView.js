@@ -829,7 +829,7 @@ function RightSideGrid({
                 style={{ cursor: "pointer", display: "flex" }}
               >
                 <div class="graybox-left">
-                  <span class="all-companies-nse-label">{task.license}</span>
+                  <span class="all-companies-nse-label">{task.license_display}</span>
                 </div>
                 <span className="pink-label-title-right">
                   <div className="overdue-title">{task.subject}</div>
