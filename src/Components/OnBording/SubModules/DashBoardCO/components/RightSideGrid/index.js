@@ -461,20 +461,27 @@ function RightSideGrid({
         onOverlayClick={() => closeTaskModalOpen(false)}
       >
         <div>
-          <ReAssignTasksModal
-            openModal={isShowReAssignModalForTeamMember}
-            setShowModal={setIsShowReAssignModalForTeamMember}
-            userId={currentOpenedTask && currentOpenedTask.assign_to}
-            taskId={currentOpenedTask && currentOpenedTask.TaskId}
-            isSingleTask
-          />
-          <ReAssignTasksModal
-            openModal={isShowReAssignModalForApprover}
-            setShowModal={setIsShowReAssignModalForApprover}
-            userId={currentOpenedTask && currentOpenedTask.AprovalAssignedToID}
-            taskId={currentOpenedTask && currentOpenedTask.TaskId}
-            isSingleTask
-          />
+          {currentOpenedTask && currentOpenedTask.status !== "Approved" && (
+            <>
+              <ReAssignTasksModal
+                openModal={isShowReAssignModalForTeamMember}
+                setShowModal={setIsShowReAssignModalForTeamMember}
+                userId={currentOpenedTask && currentOpenedTask.assign_to}
+                taskId={currentOpenedTask && currentOpenedTask.task_name}
+                company={currentOpenedTask && currentOpenedTask.company_id}
+                isSingleTask
+                isTeamMember
+              />
+              <ReAssignTasksModal
+                openModal={isShowReAssignModalForApprover}
+                setShowModal={setIsShowReAssignModalForApprover}
+                userId={currentOpenedTask && currentOpenedTask.approver}
+                taskId={currentOpenedTask && currentOpenedTask.task_name}
+                company={currentOpenedTask && currentOpenedTask.company_id}
+                isSingleTask
+              />
+            </>
+          )}
           <div className="col-12">
             <div className="">
               <div
@@ -513,13 +520,13 @@ function RightSideGrid({
                   <div className="task-details-sub-title">
                     {currentOpenedTask && currentOpenedTask.subject}{" "}
                     <span className="nse-label d-none d-md-block">
-                      {currentOpenedTask && currentOpenedTask.license}
+                      {currentOpenedTask && currentOpenedTask.license_display}
                     </span>
                   </div>
 
                   <div className="d-flex d-block d-md-none">
                     <span className="nse-label ml-0">
-                      {currentOpenedTask && currentOpenedTask.license}
+                      {currentOpenedTask && currentOpenedTask.license_display}
                     </span>
                     <div
                       className="pink-label-mobile ml-0"
@@ -845,9 +852,14 @@ function RightSideGrid({
                             <div
                               className="holding-list-bold-title"
                               style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                setIsShowReAssignModalForTeamMember(true)
-                              }
+                              onClick={() => {
+                                if (
+                                  currentOpenedTask &&
+                                  currentOpenedTask.status !== "Approved"
+                                ) {
+                                  setIsShowReAssignModalForTeamMember(true);
+                                }
+                              }}
                             >
                               {currentOpenedTask &&
                                 currentOpenedTask.assign_to_name !== null && (
@@ -1067,9 +1079,14 @@ function RightSideGrid({
                             <div
                               className="holding-list-bold-title"
                               style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                setIsShowReAssignModalForApprover(true)
-                              }
+                              onClick={() => {
+                                if (
+                                  currentOpenedTask &&
+                                  currentOpenedTask.status !== "Approved"
+                                ) {
+                                  setIsShowReAssignModalForApprover(true);
+                                }
+                              }}
                             >
                               {currentOpenedTask &&
                               currentOpenedTask.approver_name === "" ? null : (
@@ -4613,20 +4630,27 @@ function RightSideGrid({
 
       {isTaskListOpen && Object.keys(currentOpenedTask).length !== 0 && (
         <div className="row ">
-          <ReAssignTasksModal
-            openModal={isShowReAssignModalForTeamMember}
-            setShowModal={setIsShowReAssignModalForTeamMember}
-            userId={currentOpenedTask && currentOpenedTask.assign_to}
-            taskId={currentOpenedTask && currentOpenedTask.TaskId}
-            isSingleTask
-          />
-          <ReAssignTasksModal
-            openModal={isShowReAssignModalForApprover}
-            setShowModal={setIsShowReAssignModalForApprover}
-            userId={currentOpenedTask && currentOpenedTask.AprovalAssignedToID}
-            taskId={currentOpenedTask && currentOpenedTask.TaskId}
-            isSingleTask
-          />
+          {currentOpenedTask && currentOpenedTask?.status !== "Approved" && (
+            <>
+              <ReAssignTasksModal
+                openModal={isShowReAssignModalForTeamMember}
+                setShowModal={setIsShowReAssignModalForTeamMember}
+                userId={currentOpenedTask && currentOpenedTask.assign_to}
+                taskId={currentOpenedTask && currentOpenedTask.task_name}
+                company={currentOpenedTask && currentOpenedTask.company_id}
+                isSingleTask
+                isTeamMember
+              />
+              <ReAssignTasksModal
+                openModal={isShowReAssignModalForApprover}
+                setShowModal={setIsShowReAssignModalForApprover}
+                userId={currentOpenedTask && currentOpenedTask.approver}
+                taskId={currentOpenedTask && currentOpenedTask.task_name}
+                company={currentOpenedTask && currentOpenedTask.company_id}
+                isSingleTask
+              />
+            </>
+          )}
           <div className="col-12 right-side-bar">
             <div className="">
               <div className="task-details-veiw scroll-remove-file">
@@ -4654,13 +4678,13 @@ function RightSideGrid({
                   <div className="task-details-sub-title">
                     {currentOpenedTask && currentOpenedTask.subject}{" "}
                     <span className="nse-label d-none d-md-block">
-                      {currentOpenedTask && currentOpenedTask.license}
+                      {currentOpenedTask && currentOpenedTask.license_display}
                     </span>
                   </div>
 
                   <div className="d-flex d-block d-md-none">
                     <span className="nse-label ml-0">
-                      {currentOpenedTask && currentOpenedTask.license}
+                      {currentOpenedTask && currentOpenedTask.license_display}
                     </span>
                     <div
                       className="pink-label-mobile ml-0"
@@ -4986,9 +5010,14 @@ function RightSideGrid({
                             <div
                               className="holding-list-bold-title"
                               style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                setIsShowReAssignModalForTeamMember(true)
-                              }
+                              onClick={() => {
+                                if (
+                                  currentOpenedTask &&
+                                  currentOpenedTask.status !== "Approved"
+                                ) {
+                                  setIsShowReAssignModalForTeamMember(true);
+                                }
+                              }}
                             >
                               {currentOpenedTask &&
                                 currentOpenedTask.assign_to_name !== null && (
@@ -5207,9 +5236,14 @@ function RightSideGrid({
                             <div
                               className="holding-list-bold-title"
                               style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                setIsShowReAssignModalForApprover(true)
-                              }
+                              onClick={() => {
+                                if (
+                                  currentOpenedTask &&
+                                  currentOpenedTask.status !== "Approved"
+                                ) {
+                                  setIsShowReAssignModalForApprover(true);
+                                }
+                              }}
                             >
                               {currentOpenedTask &&
                               currentOpenedTask.approver_name === "" ? null : (

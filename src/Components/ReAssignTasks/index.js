@@ -9,8 +9,9 @@ import closeIcon from "../../assets/Icons/closeIcon.png";
 import Datepicker from "../../CommonModules/sharedComponents/Datepicker/index";
 import constants from "../../CommonModules/sharedComponents/constants/constant";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import reducer from "./reducer";
+import { actions as taskReportActions } from "../OnBording/SubModules/DashBoardCO/redux/actions";
 import {
   getInitials,
   checkResponse,
@@ -32,11 +33,13 @@ function ReAssignTasksModal({
   taskId,
   memberList,
   user,
+  isTeamMember,
 }) {
-  const { migrateTasks, getTeamMembers } = apiServices;
+  const { migrateTasks, getTeamMembers, postAssignTask } = apiServices;
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
   const auth = useSelector((state) => state.auth);
   const [data, setData] = useState([]);
+  const dispatcher = useDispatch();
   const [{ from, to, dueOn }, dispatch] = useReducer(reducer, {
     from: [],
     to: [],
@@ -55,13 +58,30 @@ function ReAssignTasksModal({
     setShowModal(false);
   };
 
+  useEffect(() => {
+    if (isSingleTask && openModal) {
+      try {
+        getTeamMembers({
+          role: [isTeamMember ? "Team Member" : "Approver"],
+        }).then((response) => {
+          const { data, status } = response;
+          if (
+            status === 200 &&
+            data &&
+            data.message &&
+            data.message.length !== 0
+          ) {
+            setData(data.message);
+          }
+        });
+      } catch (error) {
+        toast.error("Something went wrong. Please try again");
+      }
+    }
+  }, [openModal, isSingleTask]);
+
   const handleReAssign = async () => {
-    let payload = {
-      user: user,
-      from_date: "",
-      to_date: "",
-      suggested_user: assignTo.email,
-    };
+    let payload = {};
     if (filter.name === "MIGRATE_ALL_TASKS_OF_PARTICULAR_DATE") {
       const due_date = filter.value.dueOn
         .reverse()
@@ -79,19 +99,58 @@ function ReAssignTasksModal({
       payload.from_date = moment().format("YYYY-MM-DD");
       payload.to_date = "";
     }
-    const { data } = await axiosInstance.post(
-      `${BACKEND_BASE_URL}compliance.api.sendMigrationRequest`,
-      {
-        data: {
-          migration_request: [payload],
-        },
+    if (!isSingleTask) {
+      payload = {
+        user: user,
+        suggested_user: assignTo.email,
+        ...payload,
+      };
+      try {
+        const { data } = await axiosInstance.post(
+          `${BACKEND_BASE_URL}compliance.api.sendMigrationRequest`,
+          {
+            data: {
+              migration_request: [payload],
+            },
+          }
+        );
+        if (data.message.status) {
+          toast.success("Task has been migrated to " + assignTo.full_name);
+          handleClose();
+        } else {
+          toast.error(data.message.status_response);
+        }
+      } catch (error) {
+        toast.error("Something went wrong. Please try again.");
       }
-    );
-    if (data.message.status) {
-      toast.success("Task has been migrated to " + assignTo.full_name);
+    }
+
+    if (isSingleTask) {
+      payload = {
+        task_details: [
+          {
+            name: taskId,
+            assign_by: auth.loginInfo.email || auth.loginInfo.EmailID,
+            ...(isTeamMember
+              ? { assign_to: assignTo.email }
+              : { approver: assignTo.email }),
+            ...payload,
+          },
+        ],
+      };
+      dispatcher(taskReportActions.taskAssignByTaskID(payload));
       handleClose();
-    } else {
-      toast.error(data.message.status_response);
+      // try {
+      //   const { data, status } = await postAssignTask(payload);
+      //   if (status === 200 && data && data.message && data.message.status) {
+      //     toast.success("Task has been migrated to " + assignTo.full_name);
+      //     handleClose();
+      //   } else {
+      //     toast.error(data.message.status_response || "Something went wrong");
+      //   }
+      // } catch (error) {
+      //   toast.error("Somthing went wrong. Please try again");
+      // }
     }
   };
 
@@ -118,7 +177,6 @@ function ReAssignTasksModal({
 
   // For checking is all input filled
   useEffect(() => {
-    console.log("giiii", assignTo);
     if (
       Object.entries(assignTo).length !== 0 &&
       Object.entries(filter).length !== 0
@@ -229,24 +287,26 @@ function ReAssignTasksModal({
             >
               {/* {data && data.length > 0 ? (
                 data.map((member) => { */}
-              {searchUsers(searchValue, memberList) &&
-              searchUsers(searchValue, memberList).length > 0 ? (
-                searchUsers(searchValue, memberList).map((member, index) => {
-                  const { email, full_name } = member;
-                  return (
-                    <article
-                      className="member"
-                      key={index}
-                      onClick={() => setAssignTo(member)}
-                    >
-                      <span className="circle-dp">
-                        {getInitials(full_name)}
-                      </span>
-                      <span className="member-name">{full_name}</span>
-                      <span className="member-email">{email}</span>
-                    </article>
-                  );
-                })
+              {searchUsers(searchValue, memberList || data) &&
+              searchUsers(searchValue, memberList || data).length > 0 ? (
+                searchUsers(searchValue, memberList || data).map(
+                  (member, index) => {
+                    const { email, full_name } = member;
+                    return (
+                      <article
+                        className="member"
+                        key={index}
+                        onClick={() => setAssignTo(member)}
+                      >
+                        <span className="circle-dp">
+                          {getInitials(full_name)}
+                        </span>
+                        <span className="member-name">{full_name}</span>
+                        <span className="member-email">{email}</span>
+                      </article>
+                    );
+                  }
+                )
               ) : (
                 <p>No members found</p>
               )}
