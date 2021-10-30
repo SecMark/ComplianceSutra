@@ -67,6 +67,7 @@ function CompanyDetails({ history }) {
   const [value, setValue] = useState("");
   const [currentIndex, setCurrentIndex] = useState();
   const options = useMemo(() => countryList().getData(), []);
+  
   const changeHandler = (value) => {
     setValue(value);
   };
@@ -124,16 +125,16 @@ function CompanyDetails({ history }) {
     list[0].companyName = companyName;
   }, []);
 
-  const updateEnityName = (entityId, entityName, index) => {
+  const updateEnityName = ( entityName, index) => {
     const payload = {
-      entityID: entityId,
-      entityName: entityName,
+      
+      company_name: entityName,
     };
     api
-      .post("/api/UpdateEntityName", payload)
+      .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.Status === "True") {
+        if (response && response.data && response.data.message.status === true) {
           let list = [...errors];
           list[index].companyNameError = "Company name already exists";
           setErrors(list);
@@ -213,8 +214,7 @@ function CompanyDetails({ history }) {
             info.map((data, key) => {
               if (key === index && data.countShow === true) {
                 updateEnityName(
-                  fields && fields[currentSelectedIndex].entityID,
-                  fields && fields[currentSelectedIndex].companyName,
+                 fields && fields[currentSelectedIndex].company_name,
                   key
                 );
               }
@@ -346,9 +346,11 @@ function CompanyDetails({ history }) {
       list.map((item, index) => {
         if (index === key) {
           if (
-            item.companyName === "" ||
-            item.companyType === "" ||
-            item.category === "" ||
+            item.company_name === "" ||
+            item.company_type === "" ||
+            item.business_category === "" ||
+            item.company_country === "" ||
+            item.company_pincode === "" ||
             (errors && errors[index] && errors[index].companyNameError != "")
           ) {
             isNext = false;
@@ -437,6 +439,27 @@ function CompanyDetails({ history }) {
     handelChange("", index, "", "");
   };
 
+  // to Add Another Company 
+  const AddAnotherCompany = () =>{
+    const values = [...fields];
+    values.push({
+      company_name: "",
+      company_country: "",
+      company_pincode: "",
+      company_type: "",
+      business_category: "",
+      countShow: false,
+    });
+    setFields(values);
+    const errorInfo = [...errors];
+    errorInfo.push({
+      companyNameError: "",
+      companyTypeError: "",
+      categoryErr: "",
+    });
+    setErrors(errorInfo);
+  }
+
   const generateDropdown = (
     data,
     propertyTOBind,
@@ -452,7 +475,7 @@ function CompanyDetails({ history }) {
             className="dropdown-email"
             onClick={(e) => {
               const list = [...fields];
-              if (list[i].category === "") {
+              if (list[i].business_category === "") {
                 if (e.target.classList.contains("dropdown-email")) {
                   const values = [...fields];
 
@@ -652,6 +675,8 @@ function CompanyDetails({ history }) {
       );
       if (data.message.status) {
         history.push("/governance");
+      } else if(!data.message.status){
+         toast.error(data.message.status_response)
       }
     } catch (error) {
       toast.error(error.message || "Something wrong");
@@ -665,6 +690,7 @@ function CompanyDetails({ history }) {
     }
     if (e != "") {
       const { value, name } = e.target;
+      validateCompanyName(e, i);
 
       const re = /^(?=.*\S).+$/;
       if (
@@ -691,7 +717,7 @@ function CompanyDetails({ history }) {
                 type="text"
                 className="form-control border-0"
                 placeholder="Enter Name"
-                value={item.companyName}
+                value={item.company_name}
                 autoComplete="off"
                 name="companyName"
                 onBlur={(e) => validateCompanyName(e, index)}
@@ -712,10 +738,10 @@ function CompanyDetails({ history }) {
             </div>
             <div className="input-box-mobile">
               <Searchable
-                value={item.companyType}
+                value={item.company_type}
                 className="form-control border-0"
                 placeholder={
-                  item.companyType ? item.companyType : "Select Company"
+                  item.company_type ? item.company_type : "Select Company"
                 } // by default "Search"
                 notFoundText="No result found" // by default "No result found"
                 options={companyTypeoInfo}
@@ -727,9 +753,9 @@ function CompanyDetails({ history }) {
             </div>
             <div className="input-box-mobile">
               <Searchable
-                value={item.category}
+                value={item.business_category}
                 className="form-control border-0"
-                placeholder={item.category ? item.category : "Select Category"} // by default "Search"
+                placeholder={item.business_category ? item.business_category : "Select Category"} // by default "Search"
                 notFoundText="No result found" // by default "No result found"
                 // options={categoryo}
                 options={mobCategoryo}
@@ -764,18 +790,18 @@ function CompanyDetails({ history }) {
                       : "btn add-license-mobile-disabled"
                   }
                   disabled={
-                    fields[index].companyName === "" ||
-                    fields[index].companyType === "" ||
-                    fields[index].category === "" ||
+                    fields[index].company_name === "" ||
+                    fields[index].company_type === "" ||
+                    fields[index].business_category === "" ||
                     (errors &&
                       errors[index] &&
                       errors[index].companyNameError !== "")
                   }
                 >
                   add licenses
-                  {fields[index].companyName === "" ||
-                  fields[index].companyType === "" ||
-                  fields[index].category === "" ||
+                  {fields[index].company_name === "" ||
+                  fields[index].company_type === "" ||
+                  fields[index].business_category === "" ||
                   (errors &&
                     errors[index] &&
                     errors[index].companyNameError !== "") ? (
@@ -835,8 +861,8 @@ function CompanyDetails({ history }) {
   };
   const addNewCompanymobile = (item, index) => {
     if (
-      item.companyType === "" ||
-      item.category == "" ||
+      item.company_type === "" ||
+      item.business_category == "" ||
       item.liecenseCount === null ||
       item.countShow === false
     ) {
@@ -848,7 +874,7 @@ function CompanyDetails({ history }) {
             <div className="company-details-filled-mobile">
               <div className="d-flex">
                 <div className="col-10 pl-0">
-                  <div className="bk-seq-title">{item.companyName}</div>
+                  <div className="bk-seq-title">{item.company_name}</div>
                 </div>
                 <div className="col-2 pr-0">
                   <div className="license-count-selected-mobile">
@@ -858,8 +884,8 @@ function CompanyDetails({ history }) {
               </div>
               <div className="d-flex">
                 <div className="col-10 pl-0">
-                  <div className="firm-name-mobile">{item.category}</div>
-                  <div className="firm-name-mobile">{item.companyType}</div>
+                  <div className="firm-name-mobile">{item.business_category}</div>
+                  <div className="firm-name-mobile">{item.company_type}</div>
                 </div>
                 <div className="col-2 pr-0">
                   <div className="edit-delete">
@@ -984,23 +1010,7 @@ function CompanyDetails({ history }) {
                 <caption
                   style={{ width: "fit-content" }}
                   onClick={() => {
-                    const values = [...fields];
-                    values.push({
-                      company_name: "",
-                      company_country: "",
-                      company_pincode: "",
-                      company_type: "",
-                      business_category: "",
-                      countShow: false,
-                    });
-                    setFields(values);
-                    const errorInfo = [...errors];
-                    errorInfo.push({
-                      companyNameError: "",
-                      companyTypeError: "",
-                      categoryErr: "",
-                    });
-                    setErrors(errorInfo);
+                    AddAnotherCompany();
                   }}
                   className="add-company-link"
                 >

@@ -354,13 +354,13 @@ const insertCerificateDetailsRequest =
         );
         yield put(actions.getCompanyTypeRequest());
       } else {
-        toast.error("Something went wrong.");
+        toast.error(data.message.status_response);
         yield put(
           actions.insCertificateDetailsRequestFailed({ Status: "Failed" })
         );
       }
     } catch (err) {
-      toast.error("Something went wrong.");
+      // toast.error("Something went wrong.");
       yield put(
         actions.insCertificateDetailsRequestFailed({ Status: "Failed" })
       );
