@@ -457,6 +457,22 @@
   width:20%;
   white-space: nowrap;
 }
+.co-personal-grid .add-company-link-grey {
+  margin: 16px 0px 0 0;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  text-transform: uppercase;
+  color: grey;
+  cursor: pointer;
+  width:20%;
+  white-space: nowrap;
+}
 .co-personal-grid .count-text-title {
   font-family: Poppins;
   font-size: 12px;

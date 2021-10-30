@@ -53,6 +53,7 @@ function CoManagment({ handleClose }) {
   const [userSearchText, setUserSearchText] = useState("");
   const [companyTypeInfo, setCompanyTypeoInfo] = useState([]);
   const [validEmail,setValidEmail] =useState(true);
+  const [err,setErr] = useState(true);  
   const innerRef = useOuterClick((e) => {
     if (
       assignPromptIndex != undefined &&
@@ -128,7 +129,7 @@ function CoManagment({ handleClose }) {
     if (addEditStatus != undefined) {
       if (addEditStatus === "Success" && selectedIndex != undefined) {
         setToastType(1);
-        toast.success("Company details added");
+        setErr(true);
         //document.getElementById("toasterPrompt").classList.add("show");
         setTimeout(() => {
           //document.getElementById("toasterPrompt").classList.remove("show");
@@ -140,13 +141,8 @@ function CoManagment({ handleClose }) {
       } else {
         setToastType(2);
         if (addEditStatus !== "Success") {
-          toast.error("Something went wrong");
+          setErr(false);
         }
-
-        //document.getElementById("toasterPrompt").classList.add("show");
-        setTimeout(() => {
-          //document.getElementById("toasterPrompt").classList.remove("show");
-        }, 5000);
       }
     }
   }, [state.taskReport.CompanyAddEditStatus]);
@@ -254,6 +250,7 @@ function CoManagment({ handleClose }) {
     }
     let companyList = [...companyDetails];
     if (name === "company_name") {
+      validateCompanyName(e,index);
       setEditShow(true);
       const re = /^(?=.*\S).+$/;
       if (e.target.value && !re.test(e.target.value)) {
@@ -355,8 +352,8 @@ function CoManagment({ handleClose }) {
           } else {
             companyList[index].companyNameError = "";
             if (
-              //companyList[index].selectedCompany != null &&
-              companyList[index].selectedCategory != null &&
+              companyList[index].company_name != null &&
+              companyList[index].business_category != null &&
               //companyList[index].coUserID != null &&
               !companyList[index].isExist
             ) {
@@ -545,7 +542,7 @@ function CoManagment({ handleClose }) {
 
     setShowAdd(false);
     setEditShow(undefined);
-    setSelectedIndex(undefined);
+    // setSelectedIndex(undefined);
     tempCoCompany[index].isEdited = false;
     setCompanyDetails(tempCoCompany);
   };
@@ -927,7 +924,8 @@ function CoManagment({ handleClose }) {
                                       onClick={() => {
                                         console.log("user Login", loggedUser);
                                         handelChange(
-                                          loggedUser,
+                                          {userEmail : loggedUser.email,
+                                            UserName : loggedUser.full_name},
                                           "compliance_officer",
                                           index,
                                           item
@@ -1069,7 +1067,7 @@ function CoManagment({ handleClose }) {
                               item.company_name !== "" &&
                               item.company_type !== "" &&
                               item.licenses.length != 0 &&
-                              editShow && validEmail
+                              editShow && validEmail 
                                 ? greenCheck
                                 : grayCheck
                             }
