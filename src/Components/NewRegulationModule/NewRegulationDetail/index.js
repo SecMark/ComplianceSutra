@@ -39,7 +39,14 @@ const NewRegulationDetail = ({
               __html: detail?.description,
             }}
           ></div>
+          <p>
+            For more information click this link{" "}
+            <a href={detail?.circular_link} target="blank">
+              {detail?.circular_link}
+            </a>
+          </p>
         </div>
+
         <div className="detail-popup-main-footer">
           <p>Tags:</p>
           <div className="detail-popup-main-footer-labels">
