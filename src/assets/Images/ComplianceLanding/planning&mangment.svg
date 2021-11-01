@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="603" height="914" viewBox="0 0 603 914">
+  <defs>
+    <style>
+      .cls-1, .cls-16, .cls-20 {
+        fill: #fff;
+      }
+
+      .cls-12, .cls-2 {
+        fill: #e3e6ec;
+        mix-blend-mode: multiply;
+        isolation: isolate;
+      }
+
+      .cls-2 {
+        opacity: 0.908;
+      }
+
+      .cls-3 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-14, .cls-4, .cls-8 {
+        fill: #11142d;
+      }
+
+      .cls-4 {
+        font-size: 16px;
+        font-family: Poppins-Regular, Poppins;
+      }
+
+      .cls-5 {
+        fill: #e4e4e4;
+        opacity: 0.5;
+      }
+
+      .cls-6 {
+        fill: #ffa2c0;
+      }
+
+      .cls-13, .cls-7 {
+        fill: none;
+      }
+
+      .cls-8 {
+        font-size: 14px;
+        font-family: Poppins-SemiBold, Poppins;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+      }
+
+      .cls-9 {
+        fill: #6c5dd3;
+      }
+
+      .cls-10 {
+        fill: #7fba7a;
+      }
+
+      .cls-11 {
+        fill: #ffce73;
+      }
+
+      .cls-13 {
+        stroke: #11142d;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-14 {
+        font-size: 24px;
+        font-family: Poppins-Bold, Poppins;
+        font-weight: 700;
+      }
+
+      .cls-15 {
+        fill: #7e6ff7;
+      }
+
+      .cls-15, .cls-18 {
+        opacity: 0.8;
+      }
+
+      .cls-16 {
+        font-size: 12px;
+        font-family: Poppins-Light, Poppins;
+        font-weight: 300;
+        letter-spacing: 0.16em;
+      }
+
+      .cls-17 {
+        fill: #c5331e;
+      }
+
+      .cls-18 {
+        fill: #ef85a9;
+      }
+
+      .cls-19 {
+        fill: #7a73ff;
+      }
+
+      .cls-20 {
+        opacity: 0.7;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="bg" class="cls-1" width="338" height="613" rx="24" transform="translate(778 157)"/>
+    </clipPath>
+  </defs>
+  <g id="Group_14366" data-name="Group 14366" transform="translate(10671 13553)">
+    <g id="Group_14365" data-name="Group 14365">
+      <g id="bg_big_shadow" data-name="bg big shadow" transform="translate(-10539 -13425)">
+        <rect id="Shadow" class="cls-2" width="303" height="614" rx="24" transform="translate(18 22)"/>
+        <rect id="bg-2" data-name="bg" class="cls-1" width="338" height="614" rx="24"/>
+        <g id="Group_300" data-name="Group 300" transform="translate(-778 -157)">
+          <rect id="Shadow-2" data-name="Shadow" class="cls-2" width="303" height="376" rx="24" transform="translate(796 179)"/>
+          <rect id="bg-3" data-name="bg" class="cls-1" width="338" height="398" rx="24" transform="translate(778 157)"/>
+          <g id="Mask_Group_23" data-name="Mask Group 23" class="cls-3">
+            <g id="Group_305" data-name="Group 305" transform="translate(778 321)">
+              <text id="Bento_Illustration" data-name="Bento Illustration" class="cls-4" transform="translate(76 248)"><tspan x="0" y="0">Pradeep Reddy</tspan></text>
+              <g id="goal_element_progress-bar_40_" data-name="goal/element/progress-bar/40%" transform="translate(28 270)">
+                <rect id="grey" class="cls-5" width="284" height="8" rx="4"/>
+                <rect id="active" class="cls-6" width="192" height="8" rx="4"/>
+              </g>
+              <g id="account_circle-24px" transform="translate(28 224)">
+                <path id="Path_60" data-name="Path 60" class="cls-7" d="M0,0H36V36H0Z"/>
+                <path id="Path_61" data-name="Path 61" class="cls-6" d="M18,2A16,16,0,1,0,34,18,16.006,16.006,0,0,0,18,2Zm0,4.8a4.8,4.8,0,1,1-4.8,4.8A4.794,4.794,0,0,1,18,6.8Zm0,22.72a11.521,11.521,0,0,1-9.6-5.152c.048-3.184,6.4-4.928,9.6-4.928,3.184,0,9.552,1.744,9.6,4.928A11.521,11.521,0,0,1,18,29.52Z"/>
+              </g>
+              <text id="Bento_Illustration-2" data-name="Bento Illustration" class="cls-8" transform="translate(239 233)"><tspan x="-45.29" y="15">GOOD</tspan></text>
+            </g>
+          </g>
+          <g id="Group_302" data-name="Group 302" transform="translate(778 105)">
+            <text id="Bento_Illustration-3" data-name="Bento Illustration" class="cls-4" transform="translate(76 248)"><tspan x="0" y="0">Prakash Khot</tspan></text>
+            <g id="goal_element_progress-bar_40_2" data-name="goal/element/progress-bar/40%" transform="translate(28 270)">
+              <rect id="grey-2" data-name="grey" class="cls-5" width="284" height="8" rx="4"/>
+              <rect id="active-2" data-name="active" class="cls-9" width="146" height="8" rx="4"/>
+            </g>
+            <g id="account_circle-24px-2" data-name="account_circle-24px" transform="translate(28 224)">
+              <path id="Path_60-2" data-name="Path 60" class="cls-7" d="M0,0H36V36H0Z"/>
+              <path id="Path_61-2" data-name="Path 61" class="cls-9" d="M18,2A16,16,0,1,0,34,18,16.006,16.006,0,0,0,18,2Zm0,4.8a4.8,4.8,0,1,1-4.8,4.8A4.794,4.794,0,0,1,18,6.8Zm0,22.72a11.521,11.521,0,0,1-9.6-5.152c.048-3.184,6.4-4.928,9.6-4.928,3.184,0,9.552,1.744,9.6,4.928A11.521,11.521,0,0,1,18,29.52Z"/>
+            </g>
+            <text id="Bento_Illustration-4" data-name="Bento Illustration" class="cls-8" transform="translate(239 233)"><tspan x="-69.664" y="15">AVERAGE</tspan></text>
+          </g>
+          <g id="Group_303" data-name="Group 303" transform="translate(778 177)">
+            <text id="Bento_Illustration-5" data-name="Bento Illustration" class="cls-4" transform="translate(76 248)"><tspan x="0" y="0">Sameet Sansan</tspan></text>
+            <g id="goal_element_progress-bar_40_3" data-name="goal/element/progress-bar/40%" transform="translate(28 270)">
+              <rect id="grey-3" data-name="grey" class="cls-5" width="284" height="8" rx="4"/>
+              <rect id="active-3" data-name="active" class="cls-10" width="236" height="8" rx="4"/>
+            </g>
+            <g id="account_circle-24px-3" data-name="account_circle-24px" transform="translate(28 224)">
+              <path id="Path_60-3" data-name="Path 60" class="cls-7" d="M0,0H36V36H0Z"/>
+              <path id="Path_61-3" data-name="Path 61" class="cls-10" d="M18,2A16,16,0,1,0,34,18,16.006,16.006,0,0,0,18,2Zm0,4.8a4.8,4.8,0,1,1-4.8,4.8A4.794,4.794,0,0,1,18,6.8Zm0,22.72a11.521,11.521,0,0,1-9.6-5.152c.048-3.184,6.4-4.928,9.6-4.928,3.184,0,9.552,1.744,9.6,4.928A11.521,11.521,0,0,1,18,29.52Z"/>
+            </g>
+            <text id="Bento_Illustration-6" data-name="Bento Illustration" class="cls-8" transform="translate(239 233)"><tspan x="-35.574" y="15">BEST</tspan></text>
+          </g>
+          <g id="Group_304" data-name="Group 304" transform="translate(778 249)">
+            <text id="Bento_Illustration-7" data-name="Bento Illustration" class="cls-4" transform="translate(76 248)"><tspan x="0" y="0">Rajesh Kumar</tspan></text>
+            <g id="goal_element_progress-bar_40_4" data-name="goal/element/progress-bar/40%" transform="translate(28 270)">
+              <rect id="grey-4" data-name="grey" class="cls-5" width="284" height="8" rx="4"/>
+              <rect id="active-4" data-name="active" class="cls-11" width="85" height="8" rx="4"/>
+            </g>
+            <g id="account_circle-24px-4" data-name="account_circle-24px" transform="translate(28 224)">
+              <path id="Path_60-4" data-name="Path 60" class="cls-7" d="M0,0H36V36H0Z"/>
+              <path id="Path_61-4" data-name="Path 61" class="cls-11" d="M18,2A16,16,0,1,0,34,18,16.006,16.006,0,0,0,18,2Zm0,4.8a4.8,4.8,0,1,1-4.8,4.8A4.794,4.794,0,0,1,18,6.8Zm0,22.72a11.521,11.521,0,0,1-9.6-5.152c.048-3.184,6.4-4.928,9.6-4.928,3.184,0,9.552,1.744,9.6,4.928A11.521,11.521,0,0,1,18,29.52Z"/>
+            </g>
+            <text id="Bento_Illustration-8" data-name="Bento Illustration" class="cls-8" transform="translate(239 233)"><tspan x="-41.986" y="15">POOR</tspan></text>
+          </g>
+          <g id="Frame_90" data-name="Frame 90" transform="translate(810 270)">
+            <g id="arrow">
+              <g id="circle_button_bg_with_shadow" data-name="circle button bg/with shadow">
+                <circle id="shadow-3" data-name="shadow" class="cls-12" cx="9.5" cy="9.5" r="9.5" transform="translate(2.5 9)"/>
+                <circle id="Oval" class="cls-1" cx="12" cy="12" r="12"/>
+              </g>
+              <g id="ui_icon_arrow_small_left_2" data-name="ui icon/arrow/small left 2" transform="translate(6 6)">
+                <rect id="bound" class="cls-7" width="12" height="12"/>
+                <g id="small-right">
+                  <path id="Path" class="cls-13" d="M0,0,4,4,0,8" transform="translate(5 10) rotate(180)"/>
+                  <path id="Path_2" data-name="Path 2" class="cls-13" d="M0,.5H10.329" transform="translate(1 5.5)"/>
+                </g>
+              </g>
+            </g>
+            <g id="arrow-2" data-name="arrow" transform="translate(32)">
+              <g id="circle_button_bg_with_shadow-2" data-name="circle button bg/with shadow">
+                <circle id="shadow-4" data-name="shadow" class="cls-12" cx="9.5" cy="9.5" r="9.5" transform="translate(2.5 9)"/>
+                <circle id="Oval-2" data-name="Oval" class="cls-1" cx="12" cy="12" r="12"/>
+              </g>
+              <g id="ui_icon_arrow_small_right_2" data-name="ui icon/arrow/small right 2" transform="translate(6 6)">
+                <rect id="bound-2" data-name="bound" class="cls-7" width="12" height="12"/>
+                <g id="small-right-2" data-name="small-right">
+                  <path id="Path-2" data-name="Path" class="cls-13" d="M0,0,4,4,0,8" transform="matrix(1, 0, 0, 1, 8, 2)"/>
+                  <path id="Path_2-2" data-name="Path 2" class="cls-13" d="M0,.5H10.329" transform="matrix(-1, 0, 0, -1, 12, 6.5)"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+      <text id="Earning_by_items" data-name="Earning by items" class="cls-14" transform="translate(-10507 -13344)"><tspan x="0" y="25">Dashboard</tspan></text>
+    </g>
+    <g id="Group_357" data-name="Group 357" transform="translate(1347 4261)">
+      <rect id="Rectangle_92" data-name="Rectangle 92" class="cls-15" width="156" height="156" rx="8" transform="translate(-11993 -17286)"/>
+      <text id="Signup" class="cls-16" transform="translate(-11915 -17152)"><tspan x="-19.722" y="0">EMAIL</tspan></text>
+      <g id="Group_403" data-name="Group 403" transform="translate(-11935 -17240)">
+        <circle id="Ellipse_64" data-name="Ellipse 64" class="cls-17" cx="20" cy="20" r="20"/>
+        <path id="Path_97" data-name="Path 97" class="cls-1" d="M20.342,18.442V22.4h5.383A5.562,5.562,0,1,1,20.5,14.879a5.848,5.848,0,0,1,3.246,1.029l.317.237,2.375-3.087-.317-.238A9.514,9.514,0,1,0,30,20.5V18.521H20.342Z"/>
+      </g>
+    </g>
+    <g id="Group_14361" data-name="Group 14361" transform="translate(-10 -75)">
+      <rect id="Rectangle_120" data-name="Rectangle 120" class="cls-18" width="197" height="144" rx="8" transform="translate(-10299 -13334)"/>
+      <text id="Signup-2" data-name="Signup" class="cls-16" transform="translate(-10200.5 -13217)"><tspan x="-12.6" y="0">APP</tspan></text>
+      <g id="Group_100" data-name="Group 100" transform="translate(-10310.854 -13362.563)">
+        <rect id="Rectangle_18" data-name="Rectangle 18" class="cls-19" width="35.258" height="35.258" rx="3" transform="translate(89.846 90.841) rotate(-45)"/>
+        <rect id="Rectangle_17" data-name="Rectangle 17" class="cls-20" width="26.444" height="26.444" rx="2" transform="translate(80 90.967) rotate(-45)"/>
+      </g>
+    </g>
+  </g>
+</svg>

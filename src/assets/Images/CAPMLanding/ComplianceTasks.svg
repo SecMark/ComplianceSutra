@@ -1,0 +1,286 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1004" height="914" viewBox="0 0 1004 914">
+  <defs>
+    <style>
+      .cls-1, .cls-15, .cls-25, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #897ddc;
+      }
+
+      .cls-3 {
+        font-size: 16px;
+      }
+
+      .cls-15, .cls-3, .cls-7 {
+        font-family: Poppins-SemiBold, Poppins;
+        font-weight: 600;
+      }
+
+      .cls-23, .cls-24, .cls-3 {
+        opacity: 0.8;
+      }
+
+      .cls-4 {
+        fill: #0c0060;
+        font-family: Poppins-Regular, Poppins;
+        opacity: 0.56;
+      }
+
+      .cls-25, .cls-4 {
+        font-size: 12px;
+      }
+
+      .cls-12, .cls-19, .cls-5 {
+        fill: none;
+      }
+
+      .cls-5 {
+        stroke: #e4e4e4;
+      }
+
+      .cls-6 {
+        fill: #f1d8ff;
+      }
+
+      .cls-7 {
+        fill: #1b1d21;
+      }
+
+      .cls-7, .cls-8 {
+        font-size: 14px;
+      }
+
+      .cls-8 {
+        fill: #6c5dd3;
+        font-family: Poppins-Medium, Poppins;
+        font-weight: 500;
+      }
+
+      .cls-9 {
+        fill: #f1ffd8;
+      }
+
+      .cls-10 {
+        fill: #fff7d8;
+      }
+
+      .cls-11 {
+        fill: #d8f7ff;
+      }
+
+      .cls-13 {
+        fill: #00a9d5;
+      }
+
+      .cls-14 {
+        fill: #ef5d5d;
+      }
+
+      .cls-15 {
+        font-size: 8px;
+        letter-spacing: 0.016em;
+      }
+
+      .cls-16, .cls-18 {
+        fill: #e3e6ec;
+        mix-blend-mode: multiply;
+        isolation: isolate;
+      }
+
+      .cls-16 {
+        opacity: 0.908;
+      }
+
+      .cls-17 {
+        fill: #11142d;
+        font-size: 24px;
+        font-family: Poppins-Bold, Poppins;
+        font-weight: 700;
+      }
+
+      .cls-19 {
+        stroke: #11142d;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-20 {
+        fill: #b7d900;
+      }
+
+      .cls-21 {
+        fill: #8600d1;
+      }
+
+      .cls-22 {
+        fill: #de9100;
+      }
+
+      .cls-23 {
+        fill: #ef85a9;
+      }
+
+      .cls-24 {
+        fill: #7e6ff7;
+      }
+
+      .cls-25 {
+        font-family: Poppins-Light, Poppins;
+        font-weight: 300;
+        letter-spacing: 0.16em;
+      }
+
+      .cls-26 {
+        filter: url(#Rectangle_73);
+      }
+
+      .cls-27 {
+        filter: url(#Rectangle_71);
+      }
+    </style>
+    <filter id="Rectangle_71" x="247" y="25" width="757" height="528" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feFlood flood-opacity="0.078"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_73" x="277" y="47" width="697" height="148" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="8" result="blur-2"/>
+      <feFlood flood-opacity="0.078"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_449" data-name="Group 449" transform="translate(-551 -1174)">
+    <g id="Group_369" data-name="Group 369" transform="translate(251 1057)">
+      <g id="Group_230" data-name="Group 230" transform="translate(0 -68)">
+        <g class="cls-27" transform="matrix(1, 0, 0, 1, 300, 185)">
+          <rect id="Rectangle_71-2" data-name="Rectangle 71" class="cls-1" width="649" height="420" rx="8" transform="translate(301 71)"/>
+        </g>
+        <g class="cls-26" transform="matrix(1, 0, 0, 1, 300, 185)">
+          <path id="Rectangle_73-2" data-name="Rectangle 73" class="cls-2" d="M8,0H641a8,8,0,0,1,8,8v92a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V8A8,8,0,0,1,8,0Z" transform="translate(301 71)"/>
+        </g>
+        <text id="An_activation_link_will_be_sent_to_you_on_your_abouve_mentioned_email" data-name="An activation link will be sent to you on your abouve mentioned email" class="cls-3" transform="translate(625 297)"><tspan x="0" y="0">Compliance Calendar 2021</tspan></text>
+        <text id="An_activation_link_will_be_sent_to_you_on_your_abouve_mentioned_email-2" data-name="An activation link will be sent to you on your abouve mentioned email" class="cls-4" transform="translate(625 340)"><tspan x="0" y="0">Jan</tspan></text>
+        <text id="An_activation_link_will_be_sent_to_you_on_your_abouve_mentioned_email-3" data-name="An activation link will be sent to you on your abouve mentioned email" class="cls-4" transform="translate(775 340)"><tspan x="0" y="0">Feb</tspan></text>
+        <text id="An_activation_link_will_be_sent_to_you_on_your_abouve_mentioned_email-4" data-name="An activation link will be sent to you on your abouve mentioned email" class="cls-4" transform="translate(925 340)"><tspan x="0" y="0">Mar</tspan></text>
+        <text id="An_activation_link_will_be_sent_to_you_on_your_abouve_mentioned_email-5" data-name="An activation link will be sent to you on your abouve mentioned email" class="cls-4" transform="translate(1076 340)"><tspan x="0" y="0">Apr</tspan></text>
+        <text id="An_activation_link_will_be_sent_to_you_on_your_abouve_mentioned_email-6" data-name="An activation link will be sent to you on your abouve mentioned email" class="cls-4" transform="translate(1225 340)"><tspan x="0" y="0">May</tspan></text>
+        <line id="Line_13" data-name="Line 13" class="cls-5" y2="321" transform="translate(713 355)"/>
+        <line id="Line_14" data-name="Line 14" class="cls-5" y2="321" transform="translate(861 357)"/>
+        <line id="Line_15" data-name="Line 15" class="cls-5" y2="321" transform="translate(1012 357)"/>
+        <line id="Line_16" data-name="Line 16" class="cls-5" y2="321" transform="translate(1161 357)"/>
+      </g>
+      <g id="Group_232" data-name="Group 232" transform="translate(343 -98)">
+        <rect id="Rectangle_74" data-name="Rectangle 74" class="cls-6" width="261" height="56" rx="8" transform="translate(698 414)"/>
+        <text id="CDSL" class="cls-7" transform="translate(722 447)"><tspan x="0" y="0">CDSL</tspan></text>
+        <text id="ASSIGN" class="cls-8" transform="translate(884 447)"><tspan x="0" y="0">ASSIGN</tspan></text>
+      </g>
+      <g id="Group_233" data-name="Group 233" transform="translate(54 -3)">
+        <rect id="Rectangle_74-2" data-name="Rectangle 74" class="cls-9" width="261" height="56" rx="8" transform="translate(698 414)"/>
+        <text id="GST" class="cls-7" transform="translate(722 447)"><tspan x="0" y="0">GST</tspan></text>
+        <text id="ASSIGN-2" data-name="ASSIGN" class="cls-8" transform="translate(884 447)"><tspan x="0" y="0">ASSIGN</tspan></text>
+      </g>
+      <g id="Group_234" data-name="Group 234" transform="translate(259 94)">
+        <rect id="Rectangle_74-3" data-name="Rectangle 74" class="cls-10" width="261" height="56" rx="8" transform="translate(698 414)"/>
+        <text id="MCX" class="cls-7" transform="translate(722 447)"><tspan x="0" y="0">MCX</tspan></text>
+        <text id="ASSIGN-3" data-name="ASSIGN" class="cls-8" transform="translate(884 447)"><tspan x="0" y="0">ASSIGN</tspan></text>
+      </g>
+      <g id="Group_242" data-name="Group 242">
+        <rect id="Rectangle_74-4" data-name="Rectangle 74" class="cls-11" width="261" height="56" rx="8" transform="translate(648 316)"/>
+        <text id="NSE" class="cls-7" transform="translate(672 349)"><tspan x="0" y="0">NSE</tspan></text>
+        <g id="account_circle-24px" transform="translate(861 332)">
+          <path id="Path_60" data-name="Path 60" class="cls-12" d="M0,0H24V24H0Z"/>
+          <path id="Path_61" data-name="Path 61" class="cls-13" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,3A3,3,0,1,1,9,8,3,3,0,0,1,12,5Zm0,14.2a7.2,7.2,0,0,1-6-3.22c.03-1.99,4-3.08,6-3.08s5.97,1.09,6,3.08A7.2,7.2,0,0,1,12,19.2Z"/>
+        </g>
+        <g id="Group_241" data-name="Group 241" transform="translate(-63)">
+          <rect id="Rectangle_75" data-name="Rectangle 75" class="cls-14" width="58" height="16" rx="8" transform="translate(769 336)"/>
+          <text id="DUE_TODAY" data-name="DUE TODAY" class="cls-15" transform="translate(775 347)"><tspan x="0" y="0">DUE TODAY</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g id="Group_370" data-name="Group 370" transform="translate(-95 1145)">
+      <g id="Group_272" data-name="Group 272">
+        <g id="bg_big_shadow" data-name="bg big shadow" transform="translate(778 157)">
+          <rect id="Shadow" class="cls-16" width="303" height="614" rx="24" transform="translate(18 22)"/>
+          <rect id="bg" class="cls-1" width="338" height="614" rx="24"/>
+        </g>
+        <text id="Earning_by_items" data-name="Earning by items" class="cls-17" transform="translate(810 191)"><tspan x="0" y="25">Compliance </tspan><tspan x="0" y="55">Tasks</tspan></text>
+        <g id="Frame_90" data-name="Frame 90" transform="translate(810 270)">
+          <g id="arrow">
+            <g id="circle_button_bg_with_shadow" data-name="circle button bg/with shadow">
+              <circle id="shadow-2" data-name="shadow" class="cls-18" cx="9.5" cy="9.5" r="9.5" transform="translate(2.5 9)"/>
+              <circle id="Oval" class="cls-1" cx="12" cy="12" r="12"/>
+            </g>
+            <g id="ui_icon_arrow_small_left_2" data-name="ui icon/arrow/small left 2" transform="translate(6 6)">
+              <rect id="bound" class="cls-12" width="12" height="12"/>
+              <g id="small-right">
+                <path id="Path" class="cls-19" d="M0,0,4,4,0,8" transform="translate(5 10) rotate(180)"/>
+                <path id="Path_2" data-name="Path 2" class="cls-19" d="M0,.5H10.329" transform="translate(1 5.5)"/>
+              </g>
+            </g>
+          </g>
+          <g id="arrow-2" data-name="arrow" transform="translate(32)">
+            <g id="circle_button_bg_with_shadow-2" data-name="circle button bg/with shadow">
+              <circle id="shadow-3" data-name="shadow" class="cls-18" cx="9.5" cy="9.5" r="9.5" transform="translate(2.5 9)"/>
+              <circle id="Oval-2" data-name="Oval" class="cls-1" cx="12" cy="12" r="12"/>
+            </g>
+            <g id="ui_icon_arrow_small_right_2" data-name="ui icon/arrow/small right 2" transform="translate(6 6)">
+              <rect id="bound-2" data-name="bound" class="cls-12" width="12" height="12"/>
+              <g id="small-right-2" data-name="small-right">
+                <path id="Path-2" data-name="Path" class="cls-19" d="M0,0,4,4,0,8" transform="matrix(1, 0, 0, 1, 8, 2)"/>
+                <path id="Path_2-2" data-name="Path 2" class="cls-19" d="M0,.5H10.329" transform="matrix(-1, 0, 0, -1, 12, 6.5)"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <rect id="Rectangle_74-5" data-name="Rectangle 74" class="cls-6" width="261" height="56" rx="8" transform="translate(810 480)"/>
+        <text id="CDSL-2" data-name="CDSL" class="cls-7" transform="translate(834 513)"><tspan x="0" y="0">CDSL</tspan></text>
+        <rect id="Rectangle_74-6" data-name="Rectangle 74" class="cls-9" width="261" height="56" rx="8" transform="translate(810 408)"/>
+        <text id="BSE" class="cls-7" transform="translate(834 441)"><tspan x="0" y="0">BSE</tspan></text>
+        <rect id="Rectangle_74-7" data-name="Rectangle 74" class="cls-10" width="261" height="56" rx="8" transform="translate(810 552)"/>
+        <text id="MCX-2" data-name="MCX" class="cls-7" transform="translate(834 585)"><tspan x="0" y="0">MCX</tspan></text>
+        <rect id="Rectangle_74-8" data-name="Rectangle 74" class="cls-11" width="261" height="56" rx="8" transform="translate(810 336)"/>
+        <text id="NSE-2" data-name="NSE" class="cls-7" transform="translate(834 369)"><tspan x="0" y="0">NSE</tspan></text>
+        <g id="account_circle-24px-2" data-name="account_circle-24px" transform="translate(1023 352)">
+          <path id="Path_60-2" data-name="Path 60" class="cls-12" d="M0,0H24V24H0Z"/>
+          <path id="Path_61-2" data-name="Path 61" class="cls-13" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,3A3,3,0,1,1,9,8,3,3,0,0,1,12,5Zm0,14.2a7.2,7.2,0,0,1-6-3.22c.03-1.99,4-3.08,6-3.08s5.97,1.09,6,3.08A7.2,7.2,0,0,1,12,19.2Z"/>
+        </g>
+        <g id="Group_241-2" data-name="Group 241" transform="translate(99 20)">
+          <rect id="Rectangle_75-2" data-name="Rectangle 75" class="cls-14" width="58" height="16" rx="8" transform="translate(769 336)"/>
+          <text id="DUE_TODAY-2" data-name="DUE TODAY" class="cls-15" transform="translate(775 347)"><tspan x="0" y="0">DUE TODAY</tspan></text>
+        </g>
+        <g id="account_circle-24px-3" data-name="account_circle-24px" transform="translate(1023 424)">
+          <path id="Path_60-3" data-name="Path 60" class="cls-12" d="M0,0H24V24H0Z"/>
+          <path id="Path_61-3" data-name="Path 61" class="cls-20" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,3A3,3,0,1,1,9,8,3,3,0,0,1,12,5Zm0,14.2a7.2,7.2,0,0,1-6-3.22c.03-1.99,4-3.08,6-3.08s5.97,1.09,6,3.08A7.2,7.2,0,0,1,12,19.2Z"/>
+        </g>
+        <g id="account_circle-24px-4" data-name="account_circle-24px" transform="translate(1023 496)">
+          <path id="Path_60-4" data-name="Path 60" class="cls-12" d="M0,0H24V24H0Z"/>
+          <path id="Path_61-4" data-name="Path 61" class="cls-21" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,3A3,3,0,1,1,9,8,3,3,0,0,1,12,5Zm0,14.2a7.2,7.2,0,0,1-6-3.22c.03-1.99,4-3.08,6-3.08s5.97,1.09,6,3.08A7.2,7.2,0,0,1,12,19.2Z"/>
+        </g>
+        <g id="account_circle-24px-5" data-name="account_circle-24px" transform="translate(1023 568)">
+          <path id="Path_60-5" data-name="Path 60" class="cls-12" d="M0,0H24V24H0Z"/>
+          <path id="Path_61-5" data-name="Path 61" class="cls-22" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,3A3,3,0,1,1,9,8,3,3,0,0,1,12,5Zm0,14.2a7.2,7.2,0,0,1-6-3.22c.03-1.99,4-3.08,6-3.08s5.97,1.09,6,3.08A7.2,7.2,0,0,1,12,19.2Z"/>
+        </g>
+      </g>
+      <rect id="Rectangle_94" data-name="Rectangle 94" class="cls-23" width="245" height="144" rx="8" transform="translate(989 258)"/>
+      <g id="Group_280" data-name="Group 280" transform="translate(16 85)">
+        <rect id="Rectangle_92" data-name="Rectangle 92" class="cls-24" width="128" height="128" rx="8" transform="translate(698 528)"/>
+        <text id="Signup" class="cls-25" transform="translate(762 634)"><tspan x="-13.836" y="0">SMS</tspan></text>
+        <g id="sms-24px" transform="translate(738 558)">
+          <path id="Path_80" data-name="Path 80" class="cls-12" d="M0,0H48V48H0Z"/>
+          <path id="Path_81" data-name="Path 81" class="cls-1" d="M38,2H6A4,4,0,0,0,2.02,6L2,42l8-8H38a4.012,4.012,0,0,0,4-4V6A4.012,4.012,0,0,0,38,2ZM16,20H12V16h4Zm8,0H20V16h4Zm8,0H28V16h4Z" transform="translate(2 2)"/>
+        </g>
+      </g>
+      <g id="mail-24px" transform="translate(1088 296)">
+        <path id="Path_78" data-name="Path 78" class="cls-12" d="M0,0H48V48H0Z"/>
+        <path id="Path_79" data-name="Path 79" class="cls-1" d="M38,4H6A4,4,0,0,0,2.02,8L2,32a4.012,4.012,0,0,0,4,4H38a4.012,4.012,0,0,0,4-4V8A4.012,4.012,0,0,0,38,4Zm0,8L22,22,6,12V8L22,18,38,8Z" transform="translate(2 4)"/>
+      </g>
+      <text id="Signup-2" data-name="Signup" class="cls-25" transform="translate(1112 380)"><tspan x="-19.722" y="0">EMAIL</tspan></text>
+    </g>
+  </g>
+</svg>

@@ -106,7 +106,7 @@ function ForgotPassword({ history }) {
       .then(function (error) {});
   };
   const redirectToSignupScreen = () => {
-    return history.push("/");
+    return history.push("/sign-up");
   };
   return (
     <div className="row forgot-pass-mobile">
