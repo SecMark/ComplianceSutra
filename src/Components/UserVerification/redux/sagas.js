@@ -18,6 +18,10 @@ const userDataSaveRequest = function* userDataSaveRequest({ payload }) {
       toast.success("Personal Information saved successfully");
       history.push("/otp-verification");
     }
+    else{
+      toast.error(message.status_response);
+      yield put(actions.userDataSaveRequestFailed());
+    }
   } catch (err) {
     toast.error("Something went wrong");
     yield put(actions.userDataSaveRequestFailed());

@@ -683,14 +683,35 @@ function CompanyDetails({ history }) {
     }
   };
 
+  const companyChecking = (e,i) =>{
+    
+    let err = [...errors]
+      fields.map((item,index)=>{
+        if(item.company_name == e){
+          console.log("company Checking",item,i)
+          
+          // let list = [...errors]
+          // list[i].companyNameError = "Company name already existssssssssss";
+          // setErrors(list)
+          err[i].companyNameError ="Company name already existssssssssss";
+        }
+        else{
+        
+        }
+      })
+      setErrors(err)
+  }
   const handelChange = (e, i, item, dropDownId) => {
     const values = [...fields];
+    const check = [...fields];
     if (e == "") {
       setFields(values);
     }
     if (e != "") {
       const { value, name } = e.target;
       validateCompanyName(e, i);
+     // companyChecking(value,i);
+      // validateCompanyName(e, i);
 
       const re = /^(?=.*\S).+$/;
       if (
@@ -699,6 +720,7 @@ function CompanyDetails({ history }) {
         name === "company_name"
       ) {
         validateCompanyName(e, i);
+        companyChecking(e.target.value,i);
         return "";
       }
 

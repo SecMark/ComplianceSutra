@@ -43,7 +43,7 @@ function CoSettingRightGrid({ handleClose, history }) {
   const [isEnableSecureOTP, setIsEnabledSecureOTP] = useState(false);
   const [showChangeMobileSection, setShowChangeMobileSection] = useState(false);
   const [disabled, setDisabled] = useState(false);
-
+  const [mobileErr, setMobileErr] = useState("");
   const [verifyPassword, setVerifyPassword] = useState({
     password: "",
     passwordError: "",
@@ -192,6 +192,9 @@ function CoSettingRightGrid({ handleClose, history }) {
 
   const onSubmit = () => {
     let isSubmit = false;
+    // if(values.mobile_no === valuesBackup.mobile_no){
+    //   console.log("previous and this mobile no",values.mobile_no,valuesBackup.mobile_no);
+    // }
     if (
       values.full_name === "" ||
       values.mobile_no === "" ||
@@ -207,7 +210,7 @@ function CoSettingRightGrid({ handleClose, history }) {
     } else {
       if (
         values.email === valuesBackup.email &&
-        values.mobile_no === valuesBackup.mobile_no
+        !values.mobile_no === valuesBackup.mobile_no
       ) {
         setIsValidate(false);
         handleFinalSubmit();
@@ -216,7 +219,7 @@ function CoSettingRightGrid({ handleClose, history }) {
         // if (email)
         // setVerifyModalHideShow(true);
         // else {
-        if (!otpValid) {
+        if (!otpValid && mobileErr === "") {
           setOtpModal(true);
           setOtpInValid(false);
           setSeconds(59);
@@ -334,10 +337,18 @@ function CoSettingRightGrid({ handleClose, history }) {
       }
     }
     if (name === "mobile_no") {
-      const mobileNumberReg = /^[0-9]{0,10}$/;
-      if (!mobileNumberReg.test(Number(event.target.value))) {
-        return "";
+      if (event.target.value == valuesBackup.mobile_no) {
+        setMobileErr("the mobile no is same as before");
+        setIsValidate(true);
+        setValuesChanged(false);
+      } else {
+        setMobileErr("");
+        const mobileNumberReg = /^[0-9]{0,10}$/;
+        if (!mobileNumberReg.test(Number(event.target.value))) {
+          return "";
+        }
       }
+
       setNumber(event.target.value);
     }
     if (name === "email") {
@@ -360,8 +371,10 @@ function CoSettingRightGrid({ handleClose, history }) {
         .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
-          if (response && response.data && response.data.message.status ||
-          response.data.message === true) {
+          if (
+            (response && response.data && response.data.message.status) ||
+            response.data.message === true
+          ) {
             setOtpInValid(false);
             setIsOtpVerfied(true);
             setOtpModal(false);
@@ -385,7 +398,12 @@ function CoSettingRightGrid({ handleClose, history }) {
 
   const sendOTPRequest = (text) => {
     setDisabled(true);
-    let payload = {};
+    if(valuesBackup.mobile_no === values.mobile_no){
+      setMobileErr("the no you typed is already saved")
+      setValuesChanged(false);
+    }
+    else{
+      let payload = {};
     payload = {
       mobile_number: values.mobile_no,
     };
@@ -412,6 +430,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           setIsEnabledSecureOTP(false);
         }
       });
+    }
   };
 
   const renderVerifyDialog = () => {
@@ -738,6 +757,11 @@ function CoSettingRightGrid({ handleClose, history }) {
                     Mobile number is invalid
                   </p>
                 )}
+                {mobileErr !== "" && (
+                <p className="input-error-message absPosition">
+                  {mobileErr}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -756,7 +780,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           <div className="col-12 col-sm-12 col-md-12 col-xl-12 flex">
             <button
               className={
-                valuesChanged !== false
+                valuesChanged !== false && mobileErr ===""
                   ? "btn save-changes-blue-btn"
                   : "btn save-changes-btn"
               }
@@ -774,6 +798,7 @@ function CoSettingRightGrid({ handleClose, history }) {
                   setValues(valuesBackup);
                   setValuesChanged(false);
                   setIsValidate(false);
+                  setMobileErr("")
                 }}
               >
                 discard changes
