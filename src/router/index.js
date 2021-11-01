@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import CapmTechLandingPage from "../Components/CapmTechLandingPage";
+import ComplianceLanding from "../Components/ComplianceLandingPage";
 import TeamMember from "../Components/TeamMemberFlow/DashBoard";
 import DashBoardView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView";
 import OnBoarding from "../Components/OnBording/SubModules/GetStarted";
@@ -51,12 +52,18 @@ export default function AppRouter() {
     <div>
       <>
         <div>
-          <Route exact path="/" component={OnBoarding} />
+          <Route exact path="/sign-up" component={OnBoarding} />
           <Route exact path="/assign-task" component={AssignTask} />
           <Route
             exact
-            path="/capm-tect-landing"
+            path="/"
             component={CapmTechLandingPage}
+          />
+          <Route
+          exact
+          path="/compliance-landing"
+          component={ComplianceLanding}
+
           />
           <Route exact path="/on-boarding" component={OnBoarding} />
           <Route exact path="/board-view" component={BoardView} />

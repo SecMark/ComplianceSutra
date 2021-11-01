@@ -23,7 +23,7 @@ function ComplianceDemo7() {
                   <p className="compliance compliance-mobile">Compliance Module Demo</p>
                      <p className="title-hassle">Hassle free <br />compliance!</p>
                      <p className="title-hassle-desc">Access to both macro and micro level view of <br />things with regular status updates on your<br /> WhatsApp and mail.</p>
-                     <Link class="btn get-started-button common-button" to={'/on-boarding'}>GET STARTED</Link>
+                     <Link class="btn get-started-button common-button" to="/sign-up">GET STARTED</Link>
                      {/* <button type="button" class="btn get-started-button common-button">GET STARTED</button> */}
                   </div>
                   <div className="email-subscribe">

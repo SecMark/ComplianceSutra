@@ -70,7 +70,7 @@ function MultiSelectCompanyDropdown({
           ></span>
         </div>
         <div className="dropdown-container" onBlur={() => setIsOpen(true)}>
-          <div className={`dropdown ${isOpen && "dropdown--open"}`}>
+          <div className={`dropdown-multi ${isOpen && "dropdown--open"}`}>
             {options.map((option) => {
               const id = option.EntityGroupID;
               return (

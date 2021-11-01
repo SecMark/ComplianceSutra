@@ -1,0 +1,54 @@
+.Compliance-second-section-heading1 {
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.8;
+  letter-spacing: normal;
+  text-align: center;
+  color: #6c5dd3;
+}
+
+.Compliance-second-section-heading2 {
+  font-family: Poppins;
+  font-size: 36px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: center;
+  color: #1b1d21;
+}
+
+.Compliance-second-section-list-style{
+    list-style-type: none;
+}
+
+.Compliance-second-section-features-text{
+    margin-top: 250px;
+}
+.Compliance-second-section-list-style > li{
+    margin-top: 15px;
+    opacity: 0.56;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #1b1d21;
+}
+
+
+@media (max-width: 767.98px) {
+        .Compliance-second-section-banner-images{
+                width: 314px;
+        }
+        .Compliance-second-section-features-text{
+            margin-top: 10px;
+        }
+}

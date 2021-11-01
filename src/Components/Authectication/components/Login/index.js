@@ -93,7 +93,7 @@ function Login({ history }) {
     return history.push("/forgot-password");
   };
   const redirectToSignupScreen = () => {
-    return history.push("/");
+    return history.push("/sign-up");
   };
   return (
     <div className="row get-login-mobile">
