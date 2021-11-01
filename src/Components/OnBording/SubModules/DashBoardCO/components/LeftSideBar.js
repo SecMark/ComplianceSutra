@@ -132,7 +132,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
     } else {
       dispatch(adminMenuActions.setCurrentMenu("taskList"));
     }
-
+    dispatch(adminMenuActions.setActiveTabInSetting("personal"));
     dispatch(loginActions.createLogoutAction());
     dispatch(adminMenuActions.setCurrentBoardViewTaskId(null));
     dispatch(adminMenuActions.setCurrentCalendarViewTaskId(null));

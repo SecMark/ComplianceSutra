@@ -24,7 +24,8 @@ import Searchable from "react-searchable-dropdown";
 import BackDrop from "../../../../../../../CommonModules/sharedComponents/Loader/BackDrop";
 
 import apiServices from "../../../api/index";
-const { migrateTasks, getTeamMembers } = apiServices;
+import { getUserLlistByUserType } from "../../RightSideGrid";
+const { migrateTasks, getTeamMembers, getUsersByRole } = apiServices;
 var _ = require("lodash");
 
 function CoManagment({ handleClose }) {
@@ -386,7 +387,6 @@ function CoManagment({ handleClose }) {
   };
 
   const _filterBy = (filterOption, mobileFilter) => {
-    console.log(fieldArray);
     let data = [];
     if (mobileFilter === undefined) {
       setFilterOption(filterOption);
@@ -595,7 +595,6 @@ function CoManagment({ handleClose }) {
     }
   };
   const checkButtonDisabled = () => {
-    console.log(inputTeamMember);
     let isNext = true;
     if (
       inputTeamMember.full_name === "" ||
@@ -715,14 +714,28 @@ function CoManagment({ handleClose }) {
   };
 
   const getMembers = (role, user) => {
-    getTeamMembers({ role: [role] })
+    getUsersByRole()
       .then((response) => {
         const { data } = response;
         const { message } = data;
-        setUser(user);
-        setMemberList(message);
-        setIsShowReAssignModal(true);
-        setOpenPopupIndex("");
+        if (message && message?.length !== 0) {
+          const roles = role?.split(",");
+          setUser(user);
+          setMemberList(
+            getUserLlistByUserType(
+              message,
+              roles?.includes("Compliance Officer")
+                ? 3
+                : roles?.includes("Approver")
+                ? 5
+                : roles?.includes("Team Member")
+                ? 4
+                : ""
+            )
+          );
+          setIsShowReAssignModal(true);
+          setOpenPopupIndex("");
+        }
       })
       .catch((err) => {
         toast.error(err);

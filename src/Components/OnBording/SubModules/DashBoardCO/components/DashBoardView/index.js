@@ -29,31 +29,6 @@ function DashBoardView({ history }) {
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
 
-  const entityID =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
-
-  const userData =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
-
-  const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
-
   const userDetails = state && state.auth && state.auth.loginInfo;
 
   const companyName =
@@ -76,7 +51,13 @@ function DashBoardView({ history }) {
       dispatch(taskReportActions.taskReportRequest());
     }
   }, [state.adminMenu.currentMenu]);
-
+  useEffect(() => {
+    dispatch(taskReportActions.taskReportRequest());
+    const refresh_taskList = setInterval(() => {
+      dispatch(taskReportActions.taskReportRequest());
+    }, 30000);
+    return () => clearInterval(refresh_taskList);
+  }, []);
   useEffect(() => {
     if (userDetails.UserType === 3) {
       if (window.location.href.includes("dashboard-view")) {
