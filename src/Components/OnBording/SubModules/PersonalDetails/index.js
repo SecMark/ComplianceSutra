@@ -422,7 +422,7 @@ function PersonalDetails({ history }) {
                             />
 
                             <input
-                              type="text"
+                              type="Number"
                               className={
                                 "form-control " +
                                 (values.mobileNumber !== "" &&
