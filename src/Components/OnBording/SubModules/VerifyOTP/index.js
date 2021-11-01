@@ -14,6 +14,7 @@ import { withRouter } from "react-router-dom";
 import MobileStepper from "../mobileStepper";
 
 function VeryOTP({ history, currentStep }) {
+  console.log({ history });
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [currentOTP, setCurrentOTP] = useState("");
@@ -149,7 +150,11 @@ function VeryOTP({ history, currentStep }) {
   const resendOTP = () => {
     setShowResendSection(false);
     let payload = {
-      mobile_number: localStorage.getItem("mobileNumber"),
+      mobile_number: history.location?.state?.mobile_number
+        ? history.location?.state?.mobile_number
+        : phoneNumber !== ""
+        ? phoneNumber
+        : cntryCode && mobileNumber && cntryCode + mobileNumber,
     };
 
     api
@@ -190,79 +195,18 @@ function VeryOTP({ history, currentStep }) {
     sendOTPRequest("test");
   };
 
-  const availabilityCheck = (phoneNumber) => {
-    let countryCode;
-    let strr = values.countryCode;
-    countryCode = strr.replace(/\D/g, "");
-    let payload = {
-      loginID: phoneNumber,
-      loginty: "AdminMobile",
-      countrycode:
-        values.countryCode === "" || values.countryCode === "+"
-          ? "91"
-          : countryCode,
-    };
-    api
-      .post("/api/availabilityCheck", payload)
-      .then(function (response) {
-        if (response && response.data && response.data.Status === "false") {
-          if (countryCode) {
-            const adminPWD =
-              state &&
-              state.complianceOfficer &&
-              state.complianceOfficer.userData &&
-              state.complianceOfficer.userData &&
-              state.complianceOfficer.userData &&
-              state.complianceOfficer.userData.adminPWD;
-
-            let countryCode;
-            let strr = values.countryCode;
-
-            countryCode = strr;
-
-            setTimeout(() => {
-              dispatch(
-                otpVerificationActions.updatePhoneNumberOTPRequest({
-                  entityName: "",
-                  adminName: "",
-                  adminMobile: phoneNumber,
-                  adminEmail: email,
-                  adminPWD: adminPWD,
-                  isClientTypeUser: 0,
-
-                  actionFlag: 2,
-                  designation: "",
-                  userID: userID,
-                  history,
-                  countrycode:
-                    countryCode === "" || countryCode === "+"
-                      ? "+91"
-                      : countryCode,
-                  from: "personal-details-team",
-                })
-              );
-            }, 1000);
-            setIsEnabledSecureOTP(true);
-            setShowChangeMobileSection(false);
-          } else {
-            setCountryCode(false);
-          }
-        } else {
-          toast.error("Mobile Number Already registered");
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-          toast.error(error);
-        }
-      });
-  };
-
   const sendOTPRequest = (text) => {
     setDisabled(true);
     let payload = {
-      mobile_number: localStorage.getItem("mobileNumber"),
+      mobile_number: history.location?.state?.mobile_number
+        ? history.location?.state?.mobile_number
+        : phoneNumber !== ""
+        ? phoneNumber
+        : cntryCode && mobileNumber && cntryCode + mobileNumber,
     };
+    if (text === "test") {
+      payload.mobile_number = phoneNumber;
+    }
 
     api
       .post("compliance.api.generateOtp", payload)
@@ -314,6 +258,29 @@ function VeryOTP({ history, currentStep }) {
     };
   });
 
+  useEffect(() => {
+    const mobile_number = history.location?.state?.mobile_number;
+    const typeOfValidation = history.location?.state?.type;
+    if (typeOfValidation === "mobile-validation") {
+      if (mobile_number !== null && mobile_number !== "") {
+        setPhoneNumber(mobile_number);
+      } else {
+        setShowChangeMobileSection(true);
+        setIsEnabledSecureOTP(true);
+      }
+    } else if (!cntryCode && !mobileNumber) {
+      setShowChangeMobileSection(true);
+      setIsEnabledSecureOTP(true);
+    }
+  }, []);
+  useEffect(() => {
+    console.log({
+      phoneNumber,
+      cntryCode,
+      mobileNumber,
+      historyMobile: history.location?.state?.mobile_number,
+    });
+  }, [phoneNumber, cntryCode, mobileNumber]);
   const verifyOTP = () => {
     let payload = {};
     payload = {
@@ -325,6 +292,8 @@ function VeryOTP({ history, currentStep }) {
         .then(function (response) {
           if (response && response.data && response.data.message === true) {
             setOtpInValid(false);
+            toast.success("Mobile number successfully verified.");
+
             api.get("compliance.api.getUserDetails").then((res) => {
               if (res.data && res.data.message && res.data.message.status) {
                 const { message } = res.data;
@@ -343,14 +312,14 @@ function VeryOTP({ history, currentStep }) {
                 if (complianceOfficer.length !== 0) userType = 3;
                 else if (approver.length !== 0) userType = 5;
                 else if (teamMember.length !== 0) userType = 4;
-                console.log({
-                  complianceOfficer,
-                  approver,
-                  teamMember,
-                  userType,
-                });
 
                 user_details.UserType = userType;
+                if (
+                  history.location?.state?.type === "mobile-validation" &&
+                  history.location?.state?.token !== ""
+                ) {
+                  user_details.token = history.location?.state?.token;
+                }
                 dispatch(
                   authActions.signInRequestSuccess({
                     loginSuccess: true,
@@ -392,12 +361,19 @@ function VeryOTP({ history, currentStep }) {
 
   return (
     <div className="row">
-      <div className="col-3 left-fixed">
-        <div className="on-boarding">
-          <SideBarInputControl currentStep={5} />
+      {!(history.location?.state?.type === "mobile-validation") && (
+        <div className="col-3 left-fixed">
+          <div className="on-boarding">
+            <SideBarInputControl currentStep={5} />
+          </div>
         </div>
-      </div>
-      <div className="col-12 padding-right">
+      )}
+      <div
+        className={`col-12 ${
+          !(history.location?.state?.type === "mobile-validation") &&
+          "padding-right"
+        }`}
+      >
         <img
           className="bottom-right-bg"
           src={RightImageBg}
@@ -442,8 +418,14 @@ function VeryOTP({ history, currentStep }) {
                         account. And you don't have to remember any password
                       </p>
                       <p className="will-send-text">
-                        We will send OTP on +91
-                        {localStorage.getItem("mobileNumber")}{" "}
+                        We will send OTP on{" "}
+                        {history.location?.state?.mobile_number
+                          ? history.location?.state?.mobile_number
+                          : showChangeMobileSection
+                          ? phoneNumber
+                          : cntryCode &&
+                            mobileNumber &&
+                            cntryCode + mobileNumber}
                         <span className="space-mobile d-block d-sm-none">
                           <br />
                         </span>
@@ -542,8 +524,11 @@ function VeryOTP({ history, currentStep }) {
                       Please enter the verification code sent to your phone no.
                     </p>
                     <p className="will-send-text">
-                      {" "}
-                      {cntryCode} {mobileNumber}{" "}
+                      {!showChangeMobileSection
+                        ? phoneNumber
+                        : history.location?.state?.mobile_number
+                        ? history.location?.state?.mobile_number
+                        : cntryCode && mobileNumber && cntryCode + mobileNumber}
                       <span
                         style={{ cursor: "pointer" }}
                         onClick={() => updateMobileNumber()}

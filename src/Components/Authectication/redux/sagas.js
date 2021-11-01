@@ -43,17 +43,21 @@ const loginReq = function* loginReq({ payload }) {
         yield put(
           actions.signInRequestSuccess({ loginSuccess: false, data: message })
         );
-
-        if (userType === 3) {
+        console.log({ isMobileVerified: message.mobileVerified });
+        if (message.mobileVerified === 0) {
+          payload.history.push({
+            pathname: "/otpverification-co",
+            state: {
+              mobile_number: message.Mobile,
+              token: message.token,
+              type: "mobile-validation",
+            },
+          });
+        } else if (userType === 3) {
           payload.history.push("/dashboard-view");
         } else {
           payload.history.push("/dashboard");
         }
-      } else if (data.IscreateBySecmark === 1) {
-        payload.history.push("/expert-review/");
-      } else {
-        yield put(menuActions.setCurrentMenu("taskList"));
-        payload.history.push("/dashboard");
       }
     } else {
       toast.error("Invalid username and password !!!");

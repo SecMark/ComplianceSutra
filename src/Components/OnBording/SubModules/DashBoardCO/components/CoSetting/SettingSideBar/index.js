@@ -19,6 +19,13 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
   const userDetails = state && state.auth && state.auth.loginInfo;
 
   const onLogoutClick = () => {
+    if (userDetails.UserType === 3) {
+      dispatch(adminMenuActions.setCurrentMenu("dashboard"));
+    } else {
+      dispatch(adminMenuActions.setCurrentMenu("taskList"));
+    }
+    dispatch(adminMenuActions.setActiveTabInSetting("personal"));
+
     dispatch(loginActions.createLogoutAction());
     dispatch(adminMenuActions.setCurrentBoardViewTaskId(null));
     dispatch(notficationActions.setTaskID(null));
