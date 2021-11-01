@@ -65,13 +65,13 @@ const userRequestByRole = function* userRequestByRole({ payload }) {
     // console.log(data);
 
     if (status === 200 && data && data.message && data.message.length !== 0) {
-      console.log("getUsersByRole  => ", data, status);
+      console.log({ userbyrole: data.message });
       yield put(
-        actions.userByRoleRequestSuccess({ getUserByRole: data.message })
+        actions.userByRoleRequestSuccess({
+          getUserByRole: data?.message,
+        })
       );
-      // toast.success(data && data.Message);
     } else {
-      toast.success(data && data.Message);
       yield put(actions.userByRoleRequestFailed({ getUserByRole: {} }));
     }
   } catch (err) {
@@ -211,14 +211,18 @@ const postAssignTask = function* postAssignTask({ payload }) {
       );
 
       yield put(actions.taskAssignByTaskIDSuccess({ postAssignTask: data }));
-
-      toast.success(data && data.Message);
-    } else {
-      toast.success(data && data.Message);
+    } else if (data && data.message && data.message) {
+      toast.error(
+        data.message.status_response ||
+          "Something went worng. Please try again."
+      );
       yield put(actions.setLoader(false));
       yield put(actions.taskAssignByTaskIDFailed({ postAssignTask: {} }));
+    } else {
+      toast.error("Something went wrong. Please try again.");
     }
   } catch (err) {
+    toast.error("Something went wrong. Please try again.");
     yield put(actions.setLoader(false));
     yield put(actions.taskAssignByTaskIDFailed({ postAssignTask: {} }));
   }

@@ -24,6 +24,7 @@ import {
 import apiServices from "../OnBording/SubModules/DashBoardCO/api/index";
 import axiosInstance from "../../apiServices";
 import { BACKEND_BASE_URL } from "../../apiServices/baseurl";
+import { getUserLlistByUserType } from "../OnBording/SubModules/DashBoardCO/components/RightSideGrid";
 function ReAssignTasksModal({
   openModal,
   setShowModal,
@@ -34,8 +35,9 @@ function ReAssignTasksModal({
   memberList,
   user,
   isTeamMember,
+  company,
 }) {
-  const { migrateTasks, getTeamMembers, postAssignTask } = apiServices;
+  const { getCompanyUsers, getUsersByRole } = apiServices;
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
   const auth = useSelector((state) => state.auth);
   const [data, setData] = useState([]);
@@ -59,11 +61,9 @@ function ReAssignTasksModal({
   };
 
   useEffect(() => {
-    if (isSingleTask && openModal) {
+    if (isSingleTask && openModal && company) {
       try {
-        getTeamMembers({
-          role: [isTeamMember ? "Team Member" : "Approver"],
-        }).then((response) => {
+        getUsersByRole().then((response) => {
           const { data, status } = response;
           if (
             status === 200 &&
@@ -71,7 +71,11 @@ function ReAssignTasksModal({
             data.message &&
             data.message.length !== 0
           ) {
-            setData(data.message);
+            const users = getUserLlistByUserType(
+              data.message,
+              isTeamMember ? 4 : 5
+            );
+            setData(users || []);
           }
         });
       } catch (error) {
@@ -134,7 +138,6 @@ function ReAssignTasksModal({
             ...(isTeamMember
               ? { assign_to: assignTo.email }
               : { approver: assignTo.email }),
-            ...payload,
           },
         ],
       };
@@ -216,6 +219,11 @@ function ReAssignTasksModal({
       setIsAllInputFilled(false);
     }
   }, [assignTo, filter, from, to, dueOn]);
+  useEffect(() => {
+    if (assignTo && Object.keys(assignTo).length !== 0 && isSingleTask) {
+      handleReAssign();
+    }
+  }, [assignTo]);
   return (
     <Modal
       center={true}
@@ -312,7 +320,7 @@ function ReAssignTasksModal({
               )}
             </div>
           )}
-          {Object.entries(assignTo).length !== 0 && (
+          {Object.entries(assignTo).length !== 0 && !isSingleTask && (
             <>
               <div className="filters">
                 <div
@@ -525,6 +533,7 @@ function ReAssignTasksModal({
                     Re-assign for all future tasks
                   </p>
                 </div>
+
                 <div className="buttons-re-assign">
                   {isAllInputFilled ? (
                     <button className="btn re-assign" onClick={handleReAssign}>

@@ -113,7 +113,7 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy, isRedirect }) {
     flex: 1;
     overflow-y: auto;
     min-width: 100%;
-    overflow-x: hidden;
+    overflow-x: auto;
     align-self: center;
     max-height: 55vh;
     margin-top: 10px;
@@ -139,11 +139,12 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy, isRedirect }) {
               laneStyle={
                 userDetails.UserType === 3 ||
                 userDetails.UserType === 5 ||
+                userDetails.UserType === 4 ||
                 userDetails.UserType === 6
                   ? {
                       maxHeight: "98vh",
                       maxWidth: "100%",
-                      height: "60vh",
+                      height: "59vh",
                     }
                   : { maxHeight: "98vh", maxWidth: "100%", height: "50vh" }
               }

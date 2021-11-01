@@ -54,7 +54,7 @@ import {
 } from "../../../../../../CommonModules/helpers/tasks.helper";
 import axiosInstance from "../../../../../../apiServices";
 
-const getUserLlistByUserType = (userList, userType) => {
+export const getUserLlistByUserType = (userList, userType) => {
   return [...userList].filter((element) => {
     if (element.user_type.length > 0) {
       const isTeamMember = element.user_type.find(
@@ -468,7 +468,7 @@ function RightSideGrid({
                 setShowModal={setIsShowReAssignModalForTeamMember}
                 userId={currentOpenedTask && currentOpenedTask.assign_to}
                 taskId={currentOpenedTask && currentOpenedTask.task_name}
-                company={currentOpenedTask && currentOpenedTask.company_id}
+                company={currentOpenedTask && currentOpenedTask.customer}
                 isSingleTask
                 isTeamMember
               />
@@ -477,7 +477,7 @@ function RightSideGrid({
                 setShowModal={setIsShowReAssignModalForApprover}
                 userId={currentOpenedTask && currentOpenedTask.approver}
                 taskId={currentOpenedTask && currentOpenedTask.task_name}
-                company={currentOpenedTask && currentOpenedTask.company_id}
+                company={currentOpenedTask && currentOpenedTask.customer}
                 isSingleTask
               />
             </>
@@ -2031,11 +2031,21 @@ function RightSideGrid({
   };
 
   const getApproveUsers = () => {
-    dispatch(taskReportActions.userByRoleRequest());
+    dispatch(
+      taskReportActions.userByRoleRequest({
+        company: currentOpenedTask && currentOpenedTask?.customer,
+        role_type: "Approver",
+      })
+    );
   };
 
   const getUserDetail = (e) => {
-    dispatch(taskReportActions.userByRoleRequest());
+    dispatch(
+      taskReportActions.userByRoleRequest({
+        company: currentOpenedTask && currentOpenedTask?.customer,
+        role_type: "Team Member",
+      })
+    );
   };
 
   const handleChange = (e) => {
@@ -3775,7 +3785,6 @@ function RightSideGrid({
               listTaskData.length > 0 &&
               listTaskData.map((item, index) => {
                 if (expandedFlags.includes(index)) {
-                  console.log(item.status);
                 }
                 return (
                   <>
@@ -4637,7 +4646,7 @@ function RightSideGrid({
                 setShowModal={setIsShowReAssignModalForTeamMember}
                 userId={currentOpenedTask && currentOpenedTask.assign_to}
                 taskId={currentOpenedTask && currentOpenedTask.task_name}
-                company={currentOpenedTask && currentOpenedTask.company_id}
+                company={currentOpenedTask && currentOpenedTask.customer}
                 isSingleTask
                 isTeamMember
               />
@@ -4646,7 +4655,7 @@ function RightSideGrid({
                 setShowModal={setIsShowReAssignModalForApprover}
                 userId={currentOpenedTask && currentOpenedTask.approver}
                 taskId={currentOpenedTask && currentOpenedTask.task_name}
-                company={currentOpenedTask && currentOpenedTask.company_id}
+                company={currentOpenedTask && currentOpenedTask.customer}
                 isSingleTask
               />
             </>
@@ -5864,21 +5873,24 @@ function RightSideGrid({
                                         </a>
                                       )}
                                   </div>
-                                  <div className="pr-3">
-                                    <div
-                                      style={{ cursor: "pointer" }}
-                                      onClick={() =>
-                                        deleteUploadedFile(files.file_id)
-                                      }
-                                      className="file-download-title pointer d-flex"
-                                    >
-                                      <img
-                                        className="delete-icon"
-                                        src={deleteBlack}
-                                        alt="delete Icon"
-                                      />
-                                    </div>
-                                  </div>
+                                  {currentOpenedTask &&
+                                    currentOpenedTask.status !== "Approved" && (
+                                      <div className="pr-3">
+                                        <div
+                                          style={{ cursor: "pointer" }}
+                                          onClick={() =>
+                                            deleteUploadedFile(files.file_id)
+                                          }
+                                          className="file-download-title pointer d-flex"
+                                        >
+                                          <img
+                                            className="delete-icon"
+                                            src={deleteBlack}
+                                            alt="delete Icon"
+                                          />
+                                        </div>
+                                      </div>
+                                    )}
                                 </div>
                               ))
                             : "No Files To View here"}
