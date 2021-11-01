@@ -15,7 +15,11 @@ function App() {
 function MainApp() {
   library.add(faEye, faEyeSlash);
   const [show, setShow] = useState(false);
-  const [notification, setNotification] = useState({ title: "", body: "" });
+  const [notification, setNotification] = useState({
+    title: "",
+    body: "",
+    data: "",
+  });
   useEffect(() => {
     setShow(false);
   }, []);
@@ -26,8 +30,8 @@ function MainApp() {
       setNotification({
         title: payload.notification.title,
         body: payload.notification.body,
+        data: payload.data,
       });
-      console.log(payload);
     })
     .catch((err) => console.log("failed: ", err));
 
@@ -47,6 +51,7 @@ function MainApp() {
           <DisplayNotification
             title={notification.title}
             body={notification.body}
+            data={notification.data}
           />
         )}
 
