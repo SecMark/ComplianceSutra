@@ -4,6 +4,8 @@ import { actions, types } from "./actions";
 import api from "../api";
 import { toast } from "react-toastify";
 import { actions as menuActions } from "../../OnBording/SubModules/DashBoardCO/MenuRedux/actions";
+import axios from "axios";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 
 const loginReq = function* loginReq({ payload }) {
   try {
@@ -13,6 +15,16 @@ const loginReq = function* loginReq({ payload }) {
       const { token, UserType } = message;
       localStorage.setItem("basicToken", token);
       if (data) {
+        const deviceToken = localStorage.getItem("deviceToken");
+
+        axios.post(
+          `${BACKEND_BASE_URL}compliance.api.setFCMToken`,
+          { token: deviceToken },
+          {
+            headers: { Authorization: `Basic ${token}` },
+          }
+        );
+
         let complainceOfficer, approver;
         let teamMember;
         let userType = 0;

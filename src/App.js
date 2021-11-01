@@ -27,7 +27,7 @@ function MainApp() {
         title: payload.notification.title,
         body: payload.notification.body,
       });
-      console.log(payload.notification.title);
+      console.log(payload);
     })
     .catch((err) => console.log("failed: ", err));
 

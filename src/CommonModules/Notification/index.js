@@ -4,13 +4,13 @@ import { getToken } from "../../firebaseConfig/firebaseInit";
 
 const Notifications = (props) => {
   const [isTokenFound, setTokenFound] = useState(false);
-  console.log("Token found", isTokenFound);
+  localStorage.setItem("deviceToken", "");
   useEffect(() => {
     let data;
     async function tokenFunc() {
       data = await getToken(setTokenFound);
       if (data) {
-        axiosInstance.console.log("Token is", data);
+        localStorage.setItem("deviceToken", data);
       }
       return data;
     }

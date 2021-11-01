@@ -38,6 +38,8 @@ import SingleNotification from "../../../../../CustomNotification/SingleNotifica
 import api from "../../../../../apiServices";
 import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
 import { toast } from "react-toastify";
+import axiosInstance from "../../../../../apiServices";
+import { BACKEND_BASE_URL } from "../../../../../apiServices/baseurl";
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
@@ -137,6 +139,11 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
     dispatch(adminMenuActions.setCurrentBoardViewTaskId(null));
     dispatch(adminMenuActions.setCurrentCalendarViewTaskId(null));
     dispatch(notficationActions.setTaskID(null));
+
+    const deviceToken = localStorage.getItem("deviceToken");
+    axiosInstance.post(`${BACKEND_BASE_URL}compliance.api.removeFCMToken`, {
+      token: deviceToken,
+    });
     history.push("/login");
   };
 
