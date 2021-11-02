@@ -320,7 +320,6 @@ function CompanyDetails({ history }) {
         center={true}
         showCloseIcon={false}
         onClose={() => setVisible(false)}
-        //modalId="governance"
         styles={{ width: 373, height: 210, overflow: "hidden" }}
         onOverlayClick={() => setVisible(false)}
       >
