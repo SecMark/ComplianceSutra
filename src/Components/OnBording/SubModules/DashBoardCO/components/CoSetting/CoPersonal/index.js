@@ -757,11 +757,11 @@ function CoSettingRightGrid({ handleClose, history }) {
                     Mobile number is invalid
                   </p>
                 )}
-                {mobileErr !== "" && (
+                {/* {mobileErr !== "" && (
                 <p className="input-error-message absPosition">
                   {mobileErr}
                 </p>
-              )}
+              )} */}
             </div>
           </div>
         </div>

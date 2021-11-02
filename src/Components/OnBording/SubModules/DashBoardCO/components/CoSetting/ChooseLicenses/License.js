@@ -37,7 +37,9 @@ const License = ({ index, addLicense, closeDrawer, fields, setEditShow }) => {
                 name: subValue.name,
                 total_task: subValue.total_tasks,
                 show: false,
-                selected: false,
+                selected:fields.selectedLiecenseIdArray.includes(subValue.name)
+                ? true
+                : false,
               };
             }),
           };
@@ -267,7 +269,7 @@ const License = ({ index, addLicense, closeDrawer, fields, setEditShow }) => {
                               <div className="col-4 d-flex align-item-center">
                                 {" "}
                                 <span>
-                                  {licenseItem.total_task} Tasks{" "}
+                                  {licenseItem.sublicense.length} sublicense{" "}
                                 </span>
                               </div>
                               <div
@@ -279,11 +281,11 @@ const License = ({ index, addLicense, closeDrawer, fields, setEditShow }) => {
                               ) : (
                                 <BsChevronUp className="license__expand-more-button" />
                               )} */}
-                                {/* <MdExpandMore
+                                <MdExpandMore
                                   className={`license__expand-more-button ${
                                     licenseItem.show && "rotate-180"
                                   }`}
-                                /> */}
+                                />
                               </div>
                             </div>
                             {/* Sub license list */}
