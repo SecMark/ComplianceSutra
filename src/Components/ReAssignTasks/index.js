@@ -74,7 +74,7 @@ function ReAssignTasksModal({
             const users = getUserLlistByUserType(
               data.message,
               isTeamMember ? 4 : 5
-            );
+            ).filter((item) => item?.email !== userId);
             setData(users || []);
           }
         });

@@ -50,7 +50,7 @@ const GetCOCompanyType = () =>
 const insertCerificateDetailsArray = (payload) =>
   api.post("compliance.api.setSingleCompanyDetails", payload);
 
-const getAllNotifications = (payload) => api.post("api/Notifications", payload);
+const getAllNotifications = () => api.get("compliance.api.getNotifications");
 
 const coSettingCommonApi = (payload) =>
   api.post("compliance.api.deactivateCompany", payload);

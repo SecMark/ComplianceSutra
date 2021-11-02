@@ -150,7 +150,6 @@ function CoManagment({ handleClose }) {
   const [reAssignUserId, setReAssignUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const emailAddress = state?.auth?.loginInfo?.EmailID;
-  console.log("email", emailAddress);
   const handleChangeInput = (e) => {};
 
   useEffect(() => {
@@ -665,7 +664,6 @@ function CoManagment({ handleClose }) {
     }
     let _userRole = inputTeamMember.role;
     setIsValidate(false);
-    console.log(inputTeamMember);
     const details = {
       first_name: inputTeamMember.full_name,
       last_name: null,
@@ -732,7 +730,7 @@ function CoManagment({ handleClose }) {
                 : roles?.includes("Team Member")
                 ? 4
                 : ""
-            )
+            ).filter((item) => item.email !== user)
           );
           setIsShowReAssignModal(true);
           setOpenPopupIndex("");
