@@ -14,7 +14,7 @@ import { actions as coActions } from "../../../redux/actions";
 import { isMobile } from "react-device-detect";
 import { useOuterClick } from "./outerClick.js";
 import { Link } from "react-router-dom";
-
+import { actions as adminMenuActions } from "../../../MenuRedux/actions";
 import NoResultFound from "../../../../../../../CommonModules/sharedComponents/NoResultFound";
 import { setNotificationTaskId } from "../Redux/Action";
 import axios from "axios";
@@ -48,32 +48,39 @@ function NotificationGrid(props) {
       state.taskReport &&
       state.taskReport.userNotifications &&
       state.taskReport.userNotifications.notifications;
-    let tempArray = [];
-    let tempFinalArray = [];
-    if (tempNotification != undefined && tempNotification.length > 0) {
-      tempNotification.map((element) => {
-        tempArray = tempNotification.filter(
-          (e) =>
-            new Date(e.date).toLocaleDateString() ===
-            new Date(element.date).toLocaleDateString()
-        );
-        let dateObj = { date: element.date, notificationOfDay: tempArray };
-        let isObjPresent = tempFinalArray.some(
-          (e) =>
-            new Date(e.date).toLocaleDateString() ===
-            new Date(element.date).toLocaleDateString()
-        );
-        if (!isObjPresent) {
-          tempFinalArray.push(dateObj);
-        }
-      });
-      tempFinalArray = tempFinalArray.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
-    }
-    setNotificationList(tempFinalArray);
-    setNotification(tempFinalArray);
-    setNotificationBackup(tempFinalArray);
+    // let tempArray = [];
+    // let tempFinalArray = [];
+    // if (tempNotification !== undefined && tempNotification.length > 0) {
+    //   tempNotification.map((element) => {
+    //     console.log(element);
+    //     tempArray = tempNotification.filter(
+    //       (e) =>
+    //         new Date(e.date).toLocaleDateString() ===
+    //         new Date(element.date).toLocaleDateString()
+    //     );
+    //     let dateObj = { date: element.date, notificationOfDay: tempArray };
+    //     let isObjPresent = tempFinalArray.some(
+    //       (e) =>
+    //         new Date(e.date).toLocaleDateString() ===
+    //         new Date(element.date).toLocaleDateString()
+    //     );
+    //     if (!isObjPresent) {
+    //       tempFinalArray.push(dateObj);
+    //     }
+    //   });
+    //   tempFinalArray = tempFinalArray.sort(
+    //     (a, b) => new Date(b.date) - new Date(a.date)
+    //   );
+    // }
+    let tempArray = [
+      {
+        date: new Date(),
+        notificationOfDay: tempNotification,
+      },
+    ];
+    setNotificationList(tempArray || []);
+    setNotification(tempArray || []);
+    setNotificationBackup(tempArray || []);
     setSelectedCategory({
       value: "All Notifications",
       label: "All Notifications",
@@ -124,9 +131,11 @@ function NotificationGrid(props) {
     var dateObj = new Date(date);
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (dateObj.toLocaleDateString() == today.toLocaleDateString()) {
+    if (dateObj.toLocaleDateString() === today.toLocaleDateString()) {
       return "Today";
-    } else if (dateObj.toLocaleDateString() == yesterday.toLocaleDateString()) {
+    } else if (
+      dateObj.toLocaleDateString() === yesterday.toLocaleDateString()
+    ) {
       return "Yesterday";
     } else {
       let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(
@@ -277,7 +286,7 @@ function NotificationGrid(props) {
             notifications.map((item) => {
               return (
                 <>
-                  {item.notificationOfDay.length > 0 ? (
+                  {item?.notificationOfDay?.length > 0 ? (
                     <div className="today-grid">
                       <p className="gride-heading">
                         {getDeviderSection(item.date)}
@@ -288,20 +297,30 @@ function NotificationGrid(props) {
                             return (
                               <>
                                 {/* <div className={element.isRead == 0 ? "white-background" : "grey-background"}> */}
-                                {element.Comment !== null &&
-                                element.Comment !== undefined &&
-                                element.Comment !== "" ? (
+                                {element.id !== null &&
+                                element.id !== undefined &&
+                                element.id !== "" ? (
                                   <Link
-                                    to="/dashboard"
-                                    style={{ textDecoration: "none" }}
+                                    to={
+                                      element.type === "Circular"
+                                        ? "/new-regulations"
+                                        : "/dashboard"
+                                    }
                                     onClick={() => {
                                       if (
                                         loggedUser &&
                                         loggedUser.UserType !== 6
                                       ) {
-                                        dispatch(
-                                          setNotificationTaskId(element.TaskId)
-                                        );
+                                        // dispatch(
+                                        //   setNotificationTaskId(element.TaskId)
+                                        // );
+                                        if (element.type === "Circular") {
+                                          dispatch(
+                                            adminMenuActions.setCurrentMenu(
+                                              "new-regulations"
+                                            )
+                                          );
+                                        }
                                       }
                                     }}
                                     style={{
@@ -310,6 +329,7 @@ function NotificationGrid(props) {
                                           ? "none"
                                           : "auto"
                                       }`,
+                                      textDecoration: "none",
                                     }}
                                   >
                                     <div className={"white-background"}>
@@ -329,19 +349,23 @@ function NotificationGrid(props) {
                                                 {element.notificationType === 'Updates' && <li className="normal-text"><span className="bold-text"> New regulatory changes introduced by SEBI. Click to know more </span></li>} */}
                                             <li
                                               className="normal-text d-block d-sm-none"
-                                              dangerouslySetInnerHTML={{
-                                                __html: element.Comment,
-                                              }}
-                                            ></li>
+                                              // dangerouslySetInnerHTML={{
+                                              //   __html: element.Comment,
+                                              // }}
+                                            >
+                                              {element?.body}
+                                            </li>
                                             <li
                                               className="normal-text d-none d-sm-block"
-                                              dangerouslySetInnerHTML={{
-                                                __html: element.Comment,
-                                              }}
-                                            ></li>
+                                              // dangerouslySetInnerHTML={{
+                                              //   __html: element.Comment,
+                                              // }}
+                                            >
+                                              {element?.body}
+                                            </li>
                                           </ul>
                                         </div>
-                                        <div className="col-md-3">
+                                        {/* <div className="col-md-3">
                                           {isToday(element.date) && (
                                             <p className="right-hr">
                                               {gethourCalculation(element.date)}
@@ -352,7 +376,7 @@ function NotificationGrid(props) {
                                               {getTimeCalculation(element.date)}
                                             </p>
                                           )}
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                   </Link>

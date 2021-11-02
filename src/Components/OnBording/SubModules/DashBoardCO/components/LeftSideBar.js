@@ -249,7 +249,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             <img
               style={{ cursor: "pointer" }}
               title="Notfications"
-              // onClick={() => onMenuClick("notfications")}
+              onClick={() => onMenuClick("notfications")}
               src={
                 !openProfile &&
                 state &&

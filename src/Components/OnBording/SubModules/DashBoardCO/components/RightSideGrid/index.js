@@ -2095,13 +2095,17 @@ function RightSideGrid({
         if (status === 200 && data.message && data.message.status) {
           toast.success("File deleted successfully!");
           // Get task files
-          dispatch(
-            taskReportActions.getTaskFilesById({
-              doctype: "Task",
-              docname: currentOpenedTask.task_name,
-              is_references: 0,
-            })
-          );
+          const _tempFileList = [...fileList];
+          setFileList([
+            ..._tempFileList.filter((file) => file.file_id !== file_id),
+          ]);
+          // dispatch(
+          //   taskReportActions.getTaskFilesById({
+          //     doctype: "Task",
+          //     docname: currentOpenedTask.task_name,
+          //     is_references: 0,
+          //   })
+          // );
         } else {
           toast.error(
             "Something went wrong. Please try again after some time."
@@ -2236,11 +2240,12 @@ function RightSideGrid({
           {
             name: currentOpenedTask.task_name,
             approver: data.email,
-            assigned_by: user.EmailID,
+            assigned_by: user.EmailID || user.email,
           },
         ],
       })
     );
+    setApproverDropDown("");
   };
 
   const onAssignTaskClick = (data) => {
@@ -2250,11 +2255,12 @@ function RightSideGrid({
           {
             name: currentOpenedTask.task_name,
             assign_to: data.email,
-            assigned_by: user.EmailID,
+            assigned_by: user.EmailID || user.email,
           },
         ],
       })
     );
+    setCurrentDropDown("");
   };
 
   const handleCheckEmailAvailability = (event) => {

@@ -373,11 +373,12 @@ const insertCerificateDetailsRequest =
 
 const getCoNotifications = function* getCoNotifications({ payload }) {
   try {
-    const { data, status } = yield call(api.getAllNotifications, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
+    const { data, status } = yield call(api.getAllNotifications);
+    if (status === 200 && data.message && data.message?.length !== 0) {
       yield put(
-        actions.getCoNotificationsRequestSuccess({ notifications: data })
+        actions.getCoNotificationsRequestSuccess({
+          notifications: data.message,
+        })
       );
     } else {
       yield put(actions.getCoNotificationsRequestFailed({ notifications: {} }));

@@ -20,8 +20,21 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
       toast.success(
         "The verification link has been sent to your email account successfully"
       );
+      yield put(
+        actions.verifyEmailRequestSuccess({
+          verifyEmail: true,
+          email: payload.email,
+        })
+      );
     } else {
       yield put(actions.setLoader(false));
+      yield put(
+        actions.verifyEmailRequestFailed({
+          verifyEmail: false,
+          emailAlreadyExistMessage: true,
+          email: payload.email,
+        })
+      );
       toast.error(response.data.message.status_response);
     }
   } catch (err) {
