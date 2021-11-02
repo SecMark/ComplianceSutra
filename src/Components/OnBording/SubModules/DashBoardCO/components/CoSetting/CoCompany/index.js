@@ -27,6 +27,9 @@ import { isMobile } from "react-device-detect";
 import plusIcon from "../../../../../../../assets/Icons/plusIcon3.png";
 import License from "../ChooseLicenses/License";
 import countryList from "react-select-country-list";
+import axios from "axios";
+import axiosInstance from "../../../../../../../apiServices";
+import { data } from "jquery";
 function CoManagment({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -43,7 +46,7 @@ function CoManagment({ handleClose }) {
   const [licenseModalHideShow, setLicenseModalHideShow] = useState(false);
   const [fields, setFields] = useState(null);
   const [userData, setUserData] = useState([]);
-  const [addAnotherCompliance, setAddanotherCompiance] = useState([])
+  const [addAnotherCompliance, setAddanotherCompiance] = useState([]);
   const [userDataBackup, setUserDataBackup] = useState([]);
   const [assignPromptIndex, setAssignPromptIndex] = useState(undefined);
   const [selectedIndex, setSelectedIndex] = useState(undefined);
@@ -52,8 +55,9 @@ function CoManagment({ handleClose }) {
   const [deleteBoxHideShow, setDeleteBoxHideShow] = useState(false);
   const [userSearchText, setUserSearchText] = useState("");
   const [companyTypeInfo, setCompanyTypeoInfo] = useState([]);
-  const [validEmail,setValidEmail] =useState(true);
-  const [err,setErr] = useState(true);  
+  const [validEmail, setValidEmail] = useState(true);
+  const [validPincode, setValidPincode] = useState("");
+  const [err, setErr] = useState(true);
   const innerRef = useOuterClick((e) => {
     if (
       assignPromptIndex != undefined &&
@@ -88,6 +92,7 @@ function CoManagment({ handleClose }) {
 
   useEffect(() => {
     initialDispatch();
+    dispatch(companyAction.companyTypeRequest());
   }, []);
 
   const initialDispatch = () => {
@@ -161,8 +166,9 @@ function CoManagment({ handleClose }) {
         business_category: values.business_category,
         compliance_officer: values.compliance_officer,
         licenses: values.license,
-        selectedLicenseArray:values.license,
-        companyNameError:"",
+        selectedLicenseArray: values.license,
+        companyNameError: "",
+        pinCodeError: "",
         isExist: true,
         isEdited: false,
       };
@@ -192,8 +198,9 @@ function CoManagment({ handleClose }) {
       business_category: "",
       compliance_officer: [],
       licenses: [],
-      selectedLicenseArray:[],
-      companyNameError:"",
+      selectedLicenseArray: [],
+      companyNameError: "",
+      pinCodeError: "",
       isExist: false,
       isEdited: true,
     };
@@ -203,6 +210,38 @@ function CoManagment({ handleClose }) {
     setCompanyDetails(tempCompanyData);
     setSelectedIndex(tempCompanyData.length - 1);
     setShowAdd(true);
+  };
+
+  const pinCodeValidation = async (pincode, index) => {
+    if (pincode !== "") {
+      let payload = {
+        pincode: pincode,
+      };
+      let companyList = [...companyDetails];
+      await api
+        .post("compliance.api.checkPincode", payload)
+        .then((response) => {
+          if (response.data.message.status === !true) {
+
+            console.log("Invalid pincode",response.data.message.status)
+            companyList[index].pinCodeError = "Invalid Pincode";
+            let Button = document.getElementById("addLicense" + index);
+            Button.className = "btn buttonprimarygray";
+            Button.disabled = true;
+
+          } else if(response.data.message.status === true) {
+            
+            console.log("valid pincode",response.data.message.status)
+
+            companyList[index].pinCodeError = "";
+            let Button = document.getElementById("addLicense" + index);
+              Button.className = "btn buttonprimary";
+              Button.disabled = false;
+          }
+          setCompanyDetails(companyList);
+        })
+        .catch(function (error) {});
+    }
   };
 
   const openChooseLicenseModel = (type, index, item) => {
@@ -250,7 +289,7 @@ function CoManagment({ handleClose }) {
     }
     let companyList = [...companyDetails];
     if (name === "company_name") {
-      validateCompanyName(e,index);
+      validateCompanyName(e, index);
       setEditShow(true);
       const re = /^(?=.*\S).+$/;
       if (e.target.value && !re.test(e.target.value)) {
@@ -267,6 +306,8 @@ function CoManagment({ handleClose }) {
       companyList[index].company_country = countryvalue;
     } else if (name === "company_pincode") {
       console.log("setshowad", showAdd);
+      let {value} = e.target
+      pinCodeValidation(value, index);
       setEditShow(true);
       companyList[index].company_pincode = e.target.value;
     } else if (name == "compliance_officer") {
@@ -310,7 +351,10 @@ function CoManagment({ handleClose }) {
   };
 
   const validateExistingName = (e, index) => {
-    if (e.target.value != selectedCompany.company_name && e.target.value != "") {
+    if (
+      e.target.value != selectedCompany.company_name &&
+      e.target.value != ""
+    ) {
       validateCompanyName(e, index);
     } else {
       let tempCoCompany = [...companyDetails];
@@ -322,9 +366,12 @@ function CoManagment({ handleClose }) {
       tempCoCompany[index].isEdited = false;
 
       if (
-        tempCoCompany[index].company_docname === selectedCompany.company_docname &&
-        tempCoCompany[index].business_category === selectedCompany.business_category &&
-        tempCoCompany[index].company_docname === selectedCompany.company_docname &&
+        tempCoCompany[index].company_docname ===
+          selectedCompany.company_docname &&
+        tempCoCompany[index].business_category ===
+          selectedCompany.business_category &&
+        tempCoCompany[index].company_docname ===
+          selectedCompany.company_docname &&
         isSameLicenses === true
       ) {
         setSelectedIndex(undefined);
@@ -508,11 +555,11 @@ function CoManagment({ handleClose }) {
       </Modal>
     );
   };
-  const handleUndoChanges = (index,item) => {
-    setSelectedCompany({...item})
+  const handleUndoChanges = (index, item) => {
+    setSelectedCompany({ ...item });
     let tempCoCompany = [...companyDetails];
     if (tempCoCompany[index].isExist) {
-      console.log("selected this company",selectedCompany)
+      console.log("selected this company", selectedCompany);
       tempCoCompany[index].selectedCompany = selectedCompany;
       tempCoCompany[index].isEdited = false;
     } else {
@@ -561,16 +608,16 @@ function CoManagment({ handleClose }) {
   };
 
   const handleUserSearch = (e) => {
-    setUserSearchText(e.target.value); 
+    setUserSearchText(e.target.value);
     if (
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
         e.target.value
       )
     ) {
-      setValidEmail(true);}
-      else{
-        setValidEmail(false)
-      }
+      setValidEmail(true);
+    } else {
+      setValidEmail(false);
+    }
     if (e.target.value === "") {
       setUserData(userDataBackup);
     } else {
@@ -581,11 +628,11 @@ function CoManagment({ handleClose }) {
           item.userEmail.toLowerCase().includes(e.target.value.toLowerCase())
         ) {
           tempArray.push(item);
-          console.log("search result",item)
+          console.log("search result", item);
         }
       });
       setUserData(tempArray);
-      setAddanotherCompiance(tempArray)
+      setAddanotherCompiance(tempArray);
     }
   };
 
@@ -599,7 +646,7 @@ function CoManagment({ handleClose }) {
             item.company_name === "" ||
             item.business_category === "" ||
             item.companyNameError != "" ||
-            item.license.length <=0 ||
+            item.license.length <= 0 ||
             validEmail
           ) {
             isNext = false;
@@ -807,6 +854,11 @@ function CoManagment({ handleClose }) {
                               : true
                           }
                         />
+                       {item.pinCodeError != "" && (
+                            <p className="input-error-message">
+                              {item.pinCodeError}
+                            </p>
+                          )}
                       </div>
                     </td>
                     <td className="dropList">
@@ -914,7 +966,9 @@ function CoManagment({ handleClose }) {
                                         type="text"
                                         className="form-control"
                                         placeholder="Enter name or email"
-                                        onChange={(e) => handleUserSearch(e,index)}
+                                        onChange={(e) =>
+                                          handleUserSearch(e, index)
+                                        }
                                         value={userSearchText}
                                       />
                                     </div>
@@ -924,8 +978,10 @@ function CoManagment({ handleClose }) {
                                       onClick={() => {
                                         console.log("user Login", loggedUser);
                                         handelChange(
-                                          {userEmail : loggedUser.email,
-                                            UserName : loggedUser.full_name},
+                                          {
+                                            userEmail: loggedUser.email,
+                                            UserName: loggedUser.full_name,
+                                          },
                                           "compliance_officer",
                                           index,
                                           item
@@ -966,45 +1022,47 @@ function CoManagment({ handleClose }) {
                                             <span className="last-email-box">
                                               {user.userEmail}
                                             </span>
-                                            
                                           </div>
                                         </>
                                       );
                                     })}
-                                    { userSearchText !== "" && (
-                                                <a className="dropbox-add-line"
-                                                  href="#"
-                                                  onClick={(e)=>{
-                                                    e.preventDefault()
-                                                    handelChange(
-                                                      { userEmail : userSearchText,
-                                                        UserName : userSearchText},
-                                                      "compliance_officer",
-                                                      index,
-                                                      item
-                                                    )
-                                                  }}
-                                                >
-                                                  <img
-                                                    src={plusIcon}
-                                                    alt="account Circle Purple"
-                                                  />
-                                                  {!validEmail && (
-                                                <div
-                                                  className=""
-                                                  style={{
-                                                    color: "#ef5d5d",
-                                                    paddingLeft: "7px",
-                                                    position: "absolute",
-                                                  }}
-                                                >
-                                                  Please Enter valid Email
-                                                </div>
-                                              )}
-                                                  {userSearchText !== "" &&
-                                                    `Invite '${userSearchText}' via email`}
-                                                </a>
-                                              )}
+                                  {userSearchText !== "" && (
+                                    <a
+                                      className="dropbox-add-line"
+                                      href="#"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handelChange(
+                                          {
+                                            userEmail: userSearchText,
+                                            UserName: userSearchText,
+                                          },
+                                          "compliance_officer",
+                                          index,
+                                          item
+                                        );
+                                      }}
+                                    >
+                                      <img
+                                        src={plusIcon}
+                                        alt="account Circle Purple"
+                                      />
+                                      {!validEmail && (
+                                        <div
+                                          className=""
+                                          style={{
+                                            color: "#ef5d5d",
+                                            paddingLeft: "7px",
+                                            position: "absolute",
+                                          }}
+                                        >
+                                          Please Enter valid Email
+                                        </div>
+                                      )}
+                                      {userSearchText !== "" &&
+                                        `Invite '${userSearchText}' via email`}
+                                    </a>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -1067,7 +1125,9 @@ function CoManagment({ handleClose }) {
                               item.company_name !== "" &&
                               item.company_type !== "" &&
                               item.licenses.length != 0 &&
-                              editShow && validEmail 
+                              item.pinCodeError === ""&&
+                              editShow &&
+                              validEmail
                                 ? greenCheck
                                 : grayCheck
                             }
@@ -1075,7 +1135,8 @@ function CoManagment({ handleClose }) {
                             onClick={() => {
                               item.company_name !== "" &&
                                 item.company_type !== "" &&
-                                item.licenses.length != 0 && 
+                                item.licenses.length != 0 &&
+                                item.pinCodeError === ""&&
                                 handleSaveChanges(index);
                             }}
                           />
@@ -1083,7 +1144,7 @@ function CoManagment({ handleClose }) {
                             className="delete-Icon-check"
                             src={redCheck}
                             alt="delete Icon"
-                            onClick={() => handleUndoChanges(index,item)}
+                            onClick={() => handleUndoChanges(index, item)}
                           />
                         </div>
                       )}

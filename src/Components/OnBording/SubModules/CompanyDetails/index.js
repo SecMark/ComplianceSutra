@@ -44,6 +44,7 @@ function CompanyDetails({ history }) {
   const [errors, setErrors] = useState([
     {
       companyNameError: "",
+      pinCodeError:"",
       companyTypeError: "",
       categoryErr: "",
       countShow: false,
@@ -197,6 +198,36 @@ function CompanyDetails({ history }) {
       return e.countShow === true;
     });
   };
+
+  const pinCodeValidation = async (pincode, index) => {
+    if (pincode !== "") {
+      let payload = {
+        pincode: pincode,
+      };
+      await api
+        .post("compliance.api.checkPincode", payload)
+        .then((response) => {
+          if (response.data.message.status === !true) {
+
+            console.log("Invalid pincode",response.data.message.status)
+            let list = [...errors];
+          list[index].pinCodeError = "Invalid Pincode";
+          setErrors(list);
+
+          } else if(response.data.message.status === true) {
+            
+            console.log("valid pincode",response.data.message.status)
+
+            let list = [...errors];
+            list[index].pinCodeError = "";
+            setErrors(list);
+          }
+          // setCompanyDetails(companyList);
+        })
+        .catch(function (error) {});
+    }
+  };
+
   const validateCompanyName = (e, index) => {
     let payload = {
        company_name: e.target.value.trim(),
@@ -329,7 +360,9 @@ function CompanyDetails({ history }) {
             if (
               item.company_name === "" ||
               item.company_type === "" ||
-              item.business_category === ""
+              item.business_category === "" ||
+              error.companyNameError !== "" ||
+              error.pinCodeError !==""
             ) {
               isNext = false;
               return isNext;
@@ -351,7 +384,8 @@ function CompanyDetails({ history }) {
             item.business_category === "" ||
             item.company_country === "" ||
             item.company_pincode === "" ||
-            (errors && errors[index] && errors[index].companyNameError != "")
+            (errors && errors[index] && errors[index].companyNameError != "") || (errors && errors[index] && errors[index].pinCodeError != "")
+            
           ) {
             isNext = false;
             return isNext;
@@ -562,6 +596,7 @@ function CompanyDetails({ history }) {
               {errors[index].companyNameError}
             </p>
           )}
+          
         </td>
         <td className="slectCatgory">
           <Searchable
@@ -599,6 +634,11 @@ function CompanyDetails({ history }) {
               handelChange(e, index, "", "");
             }}
           />
+          {errors && errors[index] && errors[index].pinCodeError !== "" && (
+            <p className="input-error-message" style={{ position: "absolute" }}>
+              {errors[index].pinCodeError}
+            </p>
+          )}
         </td>
         <td className="dropList slectCatgory ddd">
           <Searchable
@@ -628,7 +668,10 @@ function CompanyDetails({ history }) {
                 fields[index].business_category === "" ||
                 (errors &&
                   errors[index] &&
-                  errors[index].companyNameError !== "")
+                  errors[index].companyNameError !== "") ||
+                  (errors &&
+                    errors[index] &&
+                    errors[index].pinCodeError !== "")
               }
             >
               add licenses
@@ -722,6 +765,9 @@ function CompanyDetails({ history }) {
         validateCompanyName(e, i);
         companyChecking(e.target.value,i);
         return "";
+      }
+      if(name === "company_pincode"){
+        pinCodeValidation(e.target.value,i);
       }
 
       values[i][name] = value;
@@ -817,7 +863,10 @@ function CompanyDetails({ history }) {
                     fields[index].business_category === "" ||
                     (errors &&
                       errors[index] &&
-                      errors[index].companyNameError !== "")
+                      errors[index].companyNameError !== "") ||
+                      (errors &&
+                        errors[index] &&
+                        errors[index].pinCodeError !== "")
                   }
                 >
                   add licenses
