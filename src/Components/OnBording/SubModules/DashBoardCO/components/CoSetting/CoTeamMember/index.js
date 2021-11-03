@@ -701,6 +701,7 @@ function CoManagment({ handleClose }) {
               }
             }
           } else {
+            setIsLoading(false);
             toast.error("Something went wrong !!!");
           }
         })
