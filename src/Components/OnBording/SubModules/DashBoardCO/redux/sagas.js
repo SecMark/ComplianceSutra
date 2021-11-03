@@ -4,6 +4,10 @@ import api from "../api";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 
+import {actions as CoIndustryAction} from "../../../../OnBording/redux/actions";
+
+
+
 const taskReportRequest = function* taskReportRequest() {
   try {
     const { data, status } = yield call(api.getTaskReport);
@@ -335,6 +339,7 @@ const getCOCompnayType = function* getCOCompnayType({ payload }) {
           CompanyInfo: message.company_details_list,
         })
       );
+      yield put(CoIndustryAction.companyTypeRequest());
     } else {
       yield put(actions.getCompanyTypeRequestFailed({ CompanyInfo: {} }));
     }
