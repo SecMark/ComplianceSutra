@@ -8,7 +8,6 @@ const NewRegulationDetail = ({
   newRegulationDetail,
 }) => {
   const detail = newRegulationDetail;
-  console.log(detail);
   return (
     <div
       className={`filter-popup detail-popup ${

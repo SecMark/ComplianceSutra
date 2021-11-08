@@ -13,8 +13,9 @@ import MobileLeftSidebar from "../../MobileLeftSidebar";
 import { actions as coActions } from "../../../redux/actions";
 import { isMobile } from "react-device-detect";
 import { useOuterClick } from "./outerClick.js";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { actions as adminMenuActions } from "../../../MenuRedux/actions";
+import { actions as taskReportActions } from "../../../redux/actions";
 import NoResultFound from "../../../../../../../CommonModules/sharedComponents/NoResultFound";
 import { setNotificationTaskId } from "../Redux/Action";
 import axios from "axios";
@@ -28,7 +29,7 @@ function NotificationGrid(props) {
 
   const [notificationList, setNotificationList] = useState([]);
   const [notificationsBackup, setNotificationBackup] = useState(null);
-
+  const history = useHistory();
   const dotsDropdown = () => {
     setShowMarkDrop(!showMarkDrop);
   };
@@ -48,39 +49,32 @@ function NotificationGrid(props) {
       state.taskReport &&
       state.taskReport.userNotifications &&
       state.taskReport.userNotifications.notifications;
-    // let tempArray = [];
-    // let tempFinalArray = [];
-    // if (tempNotification !== undefined && tempNotification.length > 0) {
-    //   tempNotification.map((element) => {
-    //     console.log(element);
-    //     tempArray = tempNotification.filter(
-    //       (e) =>
-    //         new Date(e.date).toLocaleDateString() ===
-    //         new Date(element.date).toLocaleDateString()
-    //     );
-    //     let dateObj = { date: element.date, notificationOfDay: tempArray };
-    //     let isObjPresent = tempFinalArray.some(
-    //       (e) =>
-    //         new Date(e.date).toLocaleDateString() ===
-    //         new Date(element.date).toLocaleDateString()
-    //     );
-    //     if (!isObjPresent) {
-    //       tempFinalArray.push(dateObj);
-    //     }
-    //   });
-    //   tempFinalArray = tempFinalArray.sort(
-    //     (a, b) => new Date(b.date) - new Date(a.date)
-    //   );
-    // }
-    let tempArray = [
-      {
-        date: new Date(),
-        notificationOfDay: tempNotification,
-      },
-    ];
-    setNotificationList(tempArray || []);
-    setNotification(tempArray || []);
-    setNotificationBackup(tempArray || []);
+    let tempArray = [];
+    let tempFinalArray = [];
+    if (tempNotification !== undefined && tempNotification.length > 0) {
+      tempNotification.map((element) => {
+        tempArray = tempNotification.filter(
+          (e) =>
+            new Date(e.date).toLocaleDateString() ===
+            new Date(element.date).toLocaleDateString()
+        );
+        let dateObj = { date: element.date, notificationOfDay: tempArray };
+        let isObjPresent = tempFinalArray.some(
+          (e) =>
+            new Date(e.date).toLocaleDateString() ===
+            new Date(element.date).toLocaleDateString()
+        );
+        if (!isObjPresent) {
+          tempFinalArray.push(dateObj);
+        }
+      });
+      tempFinalArray = tempFinalArray.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+    }
+    setNotificationList(tempFinalArray || []);
+    setNotification(tempFinalArray || []);
+    setNotificationBackup(tempFinalArray || []);
     setSelectedCategory({
       value: "All Notifications",
       label: "All Notifications",
@@ -253,12 +247,14 @@ function NotificationGrid(props) {
                           src={mobileDropDown}
                           onClick={filterDropDown}
                           style={{ height: "28px" }}
+                          alt="dropdown arrow"
                         />
                       ) : (
                         <img
                           src={filterIcon}
                           onClick={filterDropDown}
                           style={{ height: "18px", marginRight: "5px" }}
+                          alt="dropdown-arrow"
                         />
                       )}
                       {showFilter && (
@@ -300,29 +296,35 @@ function NotificationGrid(props) {
                                 {element.id !== null &&
                                 element.id !== undefined &&
                                 element.id !== "" ? (
-                                  <Link
-                                    to={
-                                      element.type === "Circular"
-                                        ? "/new-regulations"
-                                        : "/dashboard"
-                                    }
+                                  <div
                                     onClick={() => {
                                       if (
                                         loggedUser &&
                                         loggedUser.UserType !== 6
                                       ) {
-                                        // dispatch(
-                                        //   setNotificationTaskId(element.TaskId)
-                                        // );
                                         if (element.type === "Circular") {
+                                          // dispatch(
+                                          //   adminMenuActions.setCurrentMenu(
+                                          //     "new-regulations"
+                                          //   )
+                                          // );
+                                          history.push("/new-regulations", {
+                                            circular_id: element.id,
+                                            from: "notifications",
+                                          });
+                                        } else if (element.type === "Task") {
+                                          history.push("/dashboard");
                                           dispatch(
-                                            adminMenuActions.setCurrentMenu(
-                                              "new-regulations"
+                                            taskReportActions.taskReportByIdRequest(
+                                              {
+                                                task_name: element.id,
+                                              }
                                             )
                                           );
                                         }
                                       }
                                     }}
+                                    title={element?.type || ""}
                                     style={{
                                       pointerEvents: `${
                                         loggedUser && loggedUser.UserType === 6
@@ -330,6 +332,7 @@ function NotificationGrid(props) {
                                           : "auto"
                                       }`,
                                       textDecoration: "none",
+                                      cursor: "pointer",
                                     }}
                                   >
                                     <div className={"white-background"}>
@@ -379,7 +382,7 @@ function NotificationGrid(props) {
                                         </div> */}
                                       </div>
                                     </div>
-                                  </Link>
+                                  </div>
                                 ) : (
                                   <div className={"white-background"}>
                                     <div className="row">
