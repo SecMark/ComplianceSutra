@@ -101,6 +101,17 @@ const NewRegulations = (props) => {
     setIsShowMobileFilter(false);
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (
+      props.history?.location?.state?.from === "notifications" &&
+      props.history?.location?.state?.circular_id
+    ) {
+      fetchAndSetNewRegulationDetail(
+        props.history?.location?.state?.circular_id
+      );
+    }
+  }, []);
+
   const fetchAndSetUpdates = (filter) => {
     dispatch(getUpdates(filter));
   };
@@ -131,7 +142,7 @@ const NewRegulations = (props) => {
       }
     } catch (error) {
       setLoading(false);
-      toast.error("Failed to fetch circular details!Please try later");
+      toast.error("Failed to fetch circular details! Please try later");
     }
   };
 

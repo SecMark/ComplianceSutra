@@ -79,9 +79,10 @@ function Dashboard({ history }) {
   }, [state.adminMenu.currentMenu]);
 
   useEffect(() => {
-    setInterval(() => {
+    const refreshInterval = setInterval(() => {
       dispatch(taskReportActions.taskReportRequest());
     }, 30000);
+    return () => clearInterval(refreshInterval);
   }, []);
   useEffect(() => {
     if (
@@ -116,77 +117,6 @@ function Dashboard({ history }) {
       dispatch(adminMenuActions.setCurrentMenu("notfications"));
     }
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      try {
-        if (userID) {
-          notificationAPICall();
-        }
-      } catch (err) {}
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const notificationAPICall = () => {
-    try {
-      let notificationArr = [];
-      const payload = {
-        userID: userID,
-      };
-      api
-        .post("/api/Notifications", payload)
-        .then(function (response) {
-          console.log(response);
-          var date1 = new Date(); //current time
-          if (response && response.data && response.data.length > 0) {
-            let notification = response && response.data;
-            var notificationDateTime;
-            var date2;
-            var timeDiff;
-            notification &&
-              notification.length > 0 &&
-              notification.map((item, index) => {
-                notificationDateTime = item.date;
-                date2 = new Date(notificationDateTime);
-                timeDiff = Math.abs(date2.getTime() - date1.getTime()); // in miliseconds
-                if (timeDiff < 60000) {
-                  notificationArr.push(item);
-                }
-              });
-            if (notificationArr && notificationArr.length > 0) {
-              if (notificationArr.length === 1) {
-                toast.success(
-                  <SingleNotification
-                    id={toastId.current}
-                    toast={toast}
-                    notification={notificationArr[0]}
-                  />
-                );
-              } else {
-                toast.success(
-                  <MultipleNotification
-                    id={toastId.current}
-                    toast={toast}
-                    notificationCount={notificationArr.length}
-                  />
-                );
-              }
-            } else {
-            }
-          } else {
-          }
-        })
-        .catch(function (error) {
-          if (error) {
-            console.log(error);
-          }
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <div className="row co-dashboard fix-top">
