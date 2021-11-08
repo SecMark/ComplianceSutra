@@ -69,38 +69,70 @@ function CoManagment({ handleClose }) {
   const loggedUser =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
 
-  useEffect(() => {
-    let array = [];
-    let mobArray2 = [];
-    const companyType =
-      state &&
-      state?.complianceOfficer &&
-      state?.complianceOfficer?.companyInfo?.companyLicenseData;
+  // useEffect(() => {
+  //   let array = [];
+  //   let mobArray2 = [];
+  //   const companyType =
+  //     state &&
+  //     state?.complianceOfficer &&
+  //     state?.complianceOfficer?.companyInfo?.companyLicenseData;
 
-    companyType?.company_list.map((item) => {
-      array.push({ value: item, label: item });
-    });
+  //   companyType?.company_list.map((item) => {
+  //     array.push({ value: item, label: item });
+  //   });
 
-    companyType &&
-      companyType.Industry_list.map((item) => {
-        mobArray2.push({ value: item, label: item });
-      });
+  //   companyType &&
+  //     companyType.Industry_list.map((item) => {
+  //       mobArray2.push({ value: item, label: item });
+  //     });
 
-    setCategoryTypes(mobArray2);
-    setCompanyTypeoInfo(array);
-  }, []);
+  //   setCategoryTypes(mobArray2);
+  //   setCompanyTypeoInfo(array);
+  // }, []);
 
   useEffect(() => {
     initialDispatch();
-    dispatch(companyAction.companyTypeRequest());
+    fetchIndustryCompnayType();
+    // dispatch(companyAction.companyTypeRequest());
   }, []);
 
   const initialDispatch = () => {
     setSelectedIndex(undefined);
     setSelectedCompany(undefined);
     setCompanyDetails([]);
-
     dispatch(coActions.getCompanyTypeRequest());
+  };
+
+  const fetchIndustryCompnayType = () => {
+    api
+      .post("compliance.api.getIndustryCompanyDetails")
+      .then((response) => {
+        if (response.data.message.status === true) {
+          let array = [];
+          let mobArray2 = [];
+
+          response.data.message?.company_list.map(
+            (item) => {
+              array.push({ value: item, label: item });
+            }
+          );
+
+          response.data.message?.Industry_list.map(
+            (item) => {
+              mobArray2.push({ value: item, label: item });
+            }
+          );
+
+          setCategoryTypes(mobArray2);
+          setCompanyTypeoInfo(array);
+        }
+        else{
+          toast.error(response.data.message.status_response,"failed to load compnay list and industry list")
+        }
+      })
+      .catch((error) => {
+        toast.error(error,"failed to load compnay list and industry list")
+      });
   };
 
   useEffect(() => {
@@ -222,21 +254,18 @@ function CoManagment({ handleClose }) {
         .post("compliance.api.checkPincode", payload)
         .then((response) => {
           if (response.data.message.status === !true) {
-
-            console.log("Invalid pincode",response.data.message.status)
+            console.log("Invalid pincode", response.data.message.status);
             companyList[index].pinCodeError = "Invalid Pincode";
             let Button = document.getElementById("addLicense" + index);
             Button.className = "btn buttonprimarygray";
             Button.disabled = true;
-
-          } else if(response.data.message.status === true) {
-            
-            console.log("valid pincode",response.data.message.status)
+          } else if (response.data.message.status === true) {
+            console.log("valid pincode", response.data.message.status);
 
             companyList[index].pinCodeError = "";
             let Button = document.getElementById("addLicense" + index);
-              Button.className = "btn buttonprimary";
-              Button.disabled = false;
+            Button.className = "btn buttonprimary";
+            Button.disabled = false;
           }
           setCompanyDetails(companyList);
         })
@@ -306,7 +335,7 @@ function CoManagment({ handleClose }) {
       companyList[index].company_country = countryvalue;
     } else if (name === "company_pincode") {
       console.log("setshowad", showAdd);
-      let {value} = e.target
+      let { value } = e.target;
       pinCodeValidation(value, index);
       setEditShow(true);
       companyList[index].company_pincode = e.target.value;
@@ -854,11 +883,11 @@ function CoManagment({ handleClose }) {
                               : true
                           }
                         />
-                       {item.pinCodeError != "" && (
-                            <p className="input-error-message">
-                              {item.pinCodeError}
-                            </p>
-                          )}
+                        {item.pinCodeError != "" && (
+                          <p className="input-error-message">
+                            {item.pinCodeError}
+                          </p>
+                        )}
                       </div>
                     </td>
                     <td className="dropList">
@@ -1125,7 +1154,7 @@ function CoManagment({ handleClose }) {
                               item.company_name !== "" &&
                               item.company_type !== "" &&
                               item.licenses.length != 0 &&
-                              item.pinCodeError === ""&&
+                              item.pinCodeError === "" &&
                               editShow &&
                               validEmail
                                 ? greenCheck
@@ -1136,7 +1165,7 @@ function CoManagment({ handleClose }) {
                               item.company_name !== "" &&
                                 item.company_type !== "" &&
                                 item.licenses.length != 0 &&
-                                item.pinCodeError === ""&&
+                                item.pinCodeError === "" &&
                                 handleSaveChanges(index);
                             }}
                           />
