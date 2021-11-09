@@ -426,14 +426,17 @@ function PersonalDetails({ history }) {
                               className={
                                 "form-control " +
                                 (values.mobileNumber !== "" &&
-                                values.mobileNumber.length < 10
+                                values.mobileNumber.length < 10 && 
+                                values.mobileNumber.length > 10
                                   ? " mobile-input-invalid-control"
                                   : " ") +
                                 " dropdown-phone" +
                                 ((isValidate && values.mobileNumber === "") ||
                                 (isValidate &&
                                   values.mobileNumber !== "" &&
-                                  values.mobileNumber.length < 10)
+                                  values.mobileNumber.length < 10
+                                  && 
+                                values.mobileNumber.length > 10)
                                   ? " input-error"
                                   : "") +
                                 (values.mobileNumber.length == 10
@@ -446,6 +449,7 @@ function PersonalDetails({ history }) {
                               value={values.mobileNumber}
                               onChange={onChangeHandler("mobileNumber")}
                               onKeyPress={(e) => handleKeyDown(e)}
+                              maxLength="10"
                             />
                           </div>
 
@@ -470,6 +474,12 @@ function PersonalDetails({ history }) {
                             values.mobileNumber.length < 10 && (
                               <p className="input-error-message">
                                 Mobile number is invalid
+                              </p>
+                            )}
+                             {values.mobileNumber !== "" &&
+                            values.mobileNumber.length > 10 && (
+                              <p className="input-error-message">
+                                Mobile number can't be more then 10 digit
                               </p>
                             )}
                         </div>
@@ -734,6 +744,7 @@ function PersonalDetails({ history }) {
                         errors.confirmPasswordErr !== "" ||
                         errors.countryCodeErr === "true" ||
                         values.mobileNumber.length < 10 ||
+                        values.mobileNumber.length > 10 ||
                         isValidate ||
                         !isMobileValid
                       }
