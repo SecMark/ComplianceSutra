@@ -3,7 +3,9 @@ import api from "../../../apiServices";
 const getCountryCodeList = (payload) =>
   api.post("compliance.api.getRegulations", payload);
 
-const getTaskReport = (payload) => api.post("api/getTaskReport", payload);
+const getTaskReport = () => api.get("compliance.api.getCompanyDetails");
+const getHisotry = (payload) =>
+  api.post("compliance.api.getComplianceHistory", payload);
 
 const getUpdates = (payload) =>
   api.post("compliance.api.getRegulations", payload);
@@ -15,4 +17,5 @@ export default {
   getTaskReport,
   getUpdates,
   getPayments,
+  getHisotry,
 };

@@ -10,10 +10,9 @@ import { GET_COMPANY_LIST, GET_HISTORY_LIST, GET_LICENSE_LIST } from "./types";
 
 function* fetchCompanyList(action) {
   try {
-    const { data, status } = yield call(api.getTaskReport, action.payload);
-    if (status === 200) {
-      yield put(setSuccess(true));
-      yield put(setCompanyList(data));
+    const { data } = yield call(api.getTaskReport);
+    if (data.message.status) {
+      yield put(setCompanyList(data.message.company_details_list));
     } else {
     }
   } catch (error) {
@@ -23,9 +22,15 @@ function* fetchCompanyList(action) {
 
 function* fetchLicenseList(action) {
   try {
-    const { data, status } = yield call(api.getTaskReport, action.payload);
-    if (status === 200) {
-      yield put(setLicenseList(data));
+    if (action.payload) {
+      const list = action.payload.map((item, index) => {
+        return {
+          LicenseCode: item,
+          LicenseID: index,
+          selected: item.selected,
+        };
+      });
+      yield put(setLicenseList(list));
     } else {
     }
   } catch (error) {
@@ -35,12 +40,12 @@ function* fetchLicenseList(action) {
 
 function* fetchHistoryList(action) {
   try {
-    const { data, status } = yield call(api.getTaskReport, action.payload);
+    const { data } = yield call(api.getHisotry, action.payload);
 
-    if (status === 200) {
-      yield put(setHistoryList(data));
+    if (data.message.status) {
+      yield put(setHistoryList(data.message.compliance_history_details));
       yield put(setSuccess(true));
-    } 
+    }
   } catch (error) {
     yield put(setHistoryList([]));
     yield put(setSuccess(true));
