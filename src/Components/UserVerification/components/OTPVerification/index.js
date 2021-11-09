@@ -145,20 +145,7 @@ function VeryOTP({ history, currentStep }) {
     let payload = {
       cntryCode: str,
     };
-    api
-      .post("/api/CountryCodeCheck", payload)
-      .then(function (response) {
-        if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true);
-        } else {
-          setCountryCode(false);
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-          toast.error(error);
-        }
-      });
+    if (str) setCountryCode(true);
   };
 
   const handelChange = (e) => {
@@ -272,8 +259,17 @@ function VeryOTP({ history, currentStep }) {
         if (response && response.data && response.data.message.status) {
           localStorage.setItem("mobileNumber", mobileNumber);
           sendOTPRequest();
+        } else if (
+          response &&
+          response.data &&
+          response.data.message.status === false
+        ) {
+          toast.error(
+            response.data.message.status_response ||
+              "Mobile Number Already registered"
+          );
         } else {
-          toast.error("Mobile Number Already registered");
+          toast.error("Something went wrong! Please try again.");
         }
       })
       .catch(function (error) {

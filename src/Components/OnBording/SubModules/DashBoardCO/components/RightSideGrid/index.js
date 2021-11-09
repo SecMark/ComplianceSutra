@@ -45,7 +45,7 @@ import BoardView from "../BoardView/index";
 import { actions as notificationActions } from "../notification/Redux/actions.js";
 import { actions as adminMenuActions } from "../../MenuRedux/actions";
 import View from "../../../../../CalenderView/View";
-
+import BackDrop from "../../../../../../CommonModules/sharedComponents/Loader/BackDrop";
 import TextareaAutosize from "react-textarea-autosize";
 import ReAssignTasksModal from "../../../../../ReAssignTasks";
 import {
@@ -176,7 +176,7 @@ function RightSideGrid({
     state.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
-
+  const isLoading = state && state.taskReport && state.taskReport?.loader;
   const taskReferences = state && state.taskReport && state.taskReferences;
   const setCurrentTask = (task) => {
     dispatch(
@@ -2377,7 +2377,6 @@ function RightSideGrid({
   };
 
   const handleApproveTask = (e) => {
-    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         task_details: [
@@ -2392,7 +2391,7 @@ function RightSideGrid({
     setSelectedUser("");
   };
   const AssignTaskToMe = (e) => {
-    dispatch(taskReportActions.setLoader(true));
+    // dispatch(taskReportActions.setLoader(true));
     dispatch(
       taskReportActions.taskAssignByTaskID({
         task_details: [
@@ -2418,7 +2417,6 @@ function RightSideGrid({
   };
 
   const approvTaskToMe = (e) => {
-    let id = currentOpenedTask.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
         task_details: [
@@ -2996,6 +2994,7 @@ function RightSideGrid({
     <>
       {visibleRejectTaskModal && renderRejectTaskModal()}
       {isTaskModalOpen && TaskViewModal()}
+      <BackDrop isLoading={isLoading} />
       {!isMobile && (
         <div id="drawerParent" className="">
           <div id="drawerChild" className="sideBarFixed right-fix-width">
