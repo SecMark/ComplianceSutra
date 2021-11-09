@@ -6034,7 +6034,7 @@ function RightSideGrid({
                       currentOpenedTask?.status !== "Approval Pending" && (
                         <div className="comment-box">
                           <div className="name-box">
-                            {getInitials(user && user.full_name)}
+                            {user && getInitials(user.full_name || user.email)}
                           </div>
                           <div className="rigt-box-comment">
                             <div className="input-comment-box input-comment-boxLeft">
