@@ -12,6 +12,18 @@
   padding: 15px 11px;
   overflow: auto;
 }
+.display-task-list-in-scroll{
+  overflow-y: scroll;
+  height: 75%;
+  width: 100%;
+  
+}
+
+.display-task-list-in-scroll::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  height: 0;
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
 .license-count-selected {
   width: 32px;
   height: 32px;

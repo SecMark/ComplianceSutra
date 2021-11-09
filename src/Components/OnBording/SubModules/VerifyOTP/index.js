@@ -102,6 +102,39 @@ function VeryOTP({ history, currentStep }) {
       });
   };
 
+  const MobileValidate = (e) => {
+    let payload = {
+      mobile_no: e.target.value,
+    };
+    api
+      .post("compliance.api.avabilityCheck", payload)
+      .then(function (response) {
+        // handle success
+        
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
+          setPhoneNumberErr("mobile already exist");
+          setDisabled(true);
+          
+        } else {
+          if (e.target.value.length < 10 || e.target.value.length > 10) {
+            setPhoneNumberErr("Mobile number is invalid");
+            setDisabled(true);
+          } else {
+            setPhoneNumberErr("");
+            setDisabled(false);
+          }
+        }
+      })
+      .catch(function (error) {
+        if (error) {
+          
+        }
+      });
+  };
   const handelChange = (e) => {
     setDisabled(false);
     const { name, value } = e.target;
@@ -122,6 +155,7 @@ function VeryOTP({ history, currentStep }) {
       }
     }
     if (name === "phoneNumber") {
+      MobileValidate(e);
       if (!mobileNumberReg.test(value)) {
         return "";
       } else {

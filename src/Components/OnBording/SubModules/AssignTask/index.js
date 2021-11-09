@@ -518,7 +518,7 @@ function AssignTask({ history }) {
                 </div>
               </div>
             </div>
-
+          <div className="display-task-list-in-scroll">
             {taskListData &&
               taskListData[0]?.licenseAndTaskList.map((licenseItem, JIndex) => {
                 return (
@@ -619,6 +619,7 @@ function AssignTask({ history }) {
                   </div>
                 );
               })}
+              </div>
           </div>
           <div className="bottom-logo mt-5">
             <div className="row aligncenter px-5">
