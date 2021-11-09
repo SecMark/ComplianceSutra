@@ -6,7 +6,6 @@ import Cobg from "../../../../../../assets/Images/Onboarding/co-bg.png";
 import RighSideGrid from "../notification/SubModules/RightSideNotification";
 import { withRouter } from "react-router-dom";
 import { actions as adminMenuActions } from "../../MenuRedux/actions";
-
 function Notification({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);

@@ -83,25 +83,58 @@ function VeryOTP({ history, currentStep }) {
     let payload = {
       cntryCode: str,
     };
+    if (str) setCountryCode(true);
+    // api
+    //   .post("/api/CountryCodeCheck", payload)
+    //   .then(function (response) {
+    //     // handle success
 
+    //     if (response && response.data && response.data.Status === "True") {
+    //       setCountryCode(true);
+    //     } else {
+    //       setCountryCode(false);
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     if (error) {
+    //       toast.error(error);
+    //     }
+    //   });
+  };
+
+  const MobileValidate = (e) => {
+    let payload = {
+      mobile_no: e.target.value,
+    };
     api
-      .post("/api/CountryCodeCheck", payload)
+      .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
         // handle success
-
-        if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true);
+        
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
+          setPhoneNumberErr("mobile already exist");
+          setDisabled(true);
+          
         } else {
-          setCountryCode(false);
+          if (e.target.value.length < 10 || e.target.value.length > 10) {
+            setPhoneNumberErr("Mobile number is invalid");
+            setDisabled(true);
+          } else {
+            setPhoneNumberErr("");
+            setDisabled(false);
+          }
         }
       })
       .catch(function (error) {
         if (error) {
-          toast.error(error);
+          
         }
       });
   };
-
   const handelChange = (e) => {
     setDisabled(false);
     const { name, value } = e.target;
@@ -122,6 +155,7 @@ function VeryOTP({ history, currentStep }) {
       }
     }
     if (name === "phoneNumber") {
+      MobileValidate(e);
       if (!mobileNumberReg.test(value)) {
         return "";
       } else {

@@ -7,7 +7,7 @@ export default function Footer() {
     <footer class="bg-dark text-center footer-link">
       <div className="container">
         <div class="row">
-          <div class="col-lg-3 col-md-4 text-left">
+          <div class="col-lg-4 col-md-4 text-left">
             <a href="#">
               <img className="header-logo" src={headerLogo} alt="logoaa" />
               <span className="capmtech-text">COMPLIANCE SUTRA</span>
