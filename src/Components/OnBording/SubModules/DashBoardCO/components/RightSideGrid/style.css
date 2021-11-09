@@ -1995,11 +1995,14 @@ span.view-by__status-box {
     cursor: pointer;
     float: right;
   }
+  
   .all-companies-task-grid .take-action {
     margin-bottom: 24px;
     padding: 0px 20px 0px;
   }
-
+  .all-companies-task-grid .take-action:first-child {
+    padding: 0px 20px 0px;
+  }
   .all-companies-task-grid .task-details-file-grid {
     margin: 35px 20px 0px;
   }

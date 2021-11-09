@@ -4,9 +4,7 @@ import api from "../api";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 
-import {actions as CoIndustryAction} from "../../../../OnBording/redux/actions";
-
-
+import { actions as CoIndustryAction } from "../../../../OnBording/redux/actions";
 
 const taskReportRequest = function* taskReportRequest() {
   try {
@@ -203,11 +201,11 @@ const postUploadFileById = function* postUploadFileById({ payload }) {
 
 const postAssignTask = function* postAssignTask({ payload }) {
   try {
+    yield put(actions.setLoader(true));
     const { data, status } = yield call(api.postAssignTask, payload);
     if (status === 200 && data.message.status_response === "Success") {
       toast.success("Task Assigned Successfully!");
       yield put(actions.taskReportRequest());
-      yield put(actions.setLoader(false));
       yield put(
         actions.taskReportByIdRequest({
           task_name: payload.task_details[0].name,
@@ -215,6 +213,7 @@ const postAssignTask = function* postAssignTask({ payload }) {
       );
 
       yield put(actions.taskAssignByTaskIDSuccess({ postAssignTask: data }));
+      yield put(actions.setLoader(false));
     } else if (data && data.message && data.message) {
       toast.error(
         data.message.status_response ||
@@ -234,6 +233,7 @@ const postAssignTask = function* postAssignTask({ payload }) {
 
 const changeTaskStatus = function* changeTaskStatus({ payload }) {
   try {
+    yield put(actions.setLoader(true));
     const { data, status } = yield call(api.changeTaskStatus, payload);
     if (status === 200 && data.message.status === true) {
       if (payload.status === "Approval Pending") {
@@ -248,10 +248,13 @@ const changeTaskStatus = function* changeTaskStatus({ payload }) {
         })
       );
       yield put(actions.taskReportRequest());
+      yield put(actions.setLoader(false));
     } else {
+      yield put(actions.setLoader(false));
       yield put(actions.changeTaskStatusFailed({ changeTaskStatus: false }));
     }
   } catch (err) {
+    yield put(actions.setLoader(false));
     toast.error("Something went wrong. Please try again");
     yield put(actions.changeTaskStatusFailed({ changeTaskStatus: false }));
   }

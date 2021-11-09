@@ -83,23 +83,23 @@ function VeryOTP({ history, currentStep }) {
     let payload = {
       cntryCode: str,
     };
+    if (str) setCountryCode(true);
+    // api
+    //   .post("/api/CountryCodeCheck", payload)
+    //   .then(function (response) {
+    //     // handle success
 
-    api
-      .post("/api/CountryCodeCheck", payload)
-      .then(function (response) {
-        // handle success
-
-        if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true);
-        } else {
-          setCountryCode(false);
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-          toast.error(error);
-        }
-      });
+    //     if (response && response.data && response.data.Status === "True") {
+    //       setCountryCode(true);
+    //     } else {
+    //       setCountryCode(false);
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     if (error) {
+    //       toast.error(error);
+    //     }
+    //   });
   };
 
   const MobileValidate = (e) => {

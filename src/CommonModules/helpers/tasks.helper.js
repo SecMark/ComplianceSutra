@@ -39,7 +39,7 @@ const getAllTasks = (task_details) => {
       tasks = [...tasks, ...item.taskList];
     });
   });
-  return sortByDate(tasks);
+  return [...new Set(sortByDate(tasks))];
 };
 // get Data by Status
 const getDataByStatus = (task_details) => {

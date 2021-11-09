@@ -100,4 +100,43 @@ export default {
   list: "list",
   calender: "calender",
   board: "board",
+  notification_types: [
+    {
+      value: "All Notifications",
+      label: "All Notifications",
+    },
+    {
+      value: "accepted",
+      label: "Accepted",
+    },
+    {
+      value: "Approved",
+      label: "Approved",
+    },
+    {
+      value: "Assigned",
+      label: "Assigned",
+    },
+    {
+      value: "close-by-owner",
+      label: "Close By Owner",
+    },
+    {
+      value: "Approval Pending",
+      label: "Completed By User",
+    },
+    {
+      value: "migrated",
+      label: "Migrated",
+    },
+    {
+      value: "Rejected",
+      label: "Request Rejected",
+    },
+
+    {
+      value: "sent-to-expert-approval",
+      label: "Sent To SecMark For Approval",
+    },
+  ],
 };

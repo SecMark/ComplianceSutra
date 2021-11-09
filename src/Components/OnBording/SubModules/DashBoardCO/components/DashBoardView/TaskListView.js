@@ -829,7 +829,9 @@ function RightSideGrid({
                 style={{ cursor: "pointer", display: "flex" }}
               >
                 <div class="graybox-left">
-                  <span class="all-companies-nse-label">{task.license_display}</span>
+                  <span class="all-companies-nse-label">
+                    {task.license_display}
+                  </span>
                 </div>
                 <span className="pink-label-title-right">
                   <div className="overdue-title">{task.subject}</div>
@@ -869,7 +871,7 @@ function RightSideGrid({
                         color:
                           task && task.status
                             ? task.status === "Approval Pending"
-                              ? moment(task.ActualTaskEndDate).isBefore(today)
+                              ? moment(task.deadline_date).isBefore(today)
                                 ? "#7fba7a"
                                 : "#ff5f31"
                               : task.status === "Approved"
@@ -885,7 +887,7 @@ function RightSideGrid({
                       }}
                     >
                       {task.status && task.status === "Approval Pending"
-                        ? moment(task.ActualTaskEndDate).isBefore(today)
+                        ? moment(task.deadline_date).isBefore(today)
                           ? "NOT REVIEWED"
                           : "Approval Pending"
                         : task.status === "Not Assigned"
@@ -1080,7 +1082,7 @@ function RightSideGrid({
                           ? task.status === "Assign"
                             ? "#fcf3cd"
                             : task.status === "Approval Pending"
-                            ? moment(task.ActualTaskEndDate).isBefore(today)
+                            ? moment(task.deadline_date).isBefore(today)
                               ? "#cdfcd8"
                               : "#ffefea"
                             : task.status === "Approved"
@@ -1094,7 +1096,7 @@ function RightSideGrid({
                       color:
                         task && task.status
                           ? task.status === "Approval Pending"
-                            ? moment(task.ActualTaskEndDate).isBefore(today)
+                            ? moment(task.deadline_date).isBefore(today)
                               ? "#7fba7a"
                               : "#ff5f31"
                             : task.status === "Approved"
@@ -1110,7 +1112,7 @@ function RightSideGrid({
                     }}
                   >
                     {task.status && task.status === "Approval Pending"
-                      ? moment(task.ActualTaskEndDate).isBefore(today)
+                      ? moment(task.deadline_date).isBefore(today)
                         ? "NOT REVIEWED"
                         : "Approval Pending"
                       : task.status === "Assign"
