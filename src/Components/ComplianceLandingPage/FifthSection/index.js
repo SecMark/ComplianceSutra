@@ -10,7 +10,7 @@ function FifthSection() {
         <h1 className="fifth-section-heading1">
           And our customers are loving it!
         </h1>
-        <CustomersTestimonial />
+        {/* <CustomersTestimonial /> */}
         <div className="fifth-section-heading">
           <h2 className="fifth-section-heading1">Ready To get started?</h2>
           <h1 className="fifth-section-heading2">

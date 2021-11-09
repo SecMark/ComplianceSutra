@@ -7,6 +7,7 @@ import Banner22 from "../../../../assets/Images/CAPMLanding/banner22.png";
 import Banner23 from "../../../../assets/Images/CAPMLanding/banner23.png";
 import RectangleBottom1 from "../../../../assets/Images/CAPMLanding/RectangleBottom.png";
 import RectangleRight from "../../../../assets/Images/CAPMLanding/RectangleRight.png";
+import {Link} from "react-router-dom";
 
 function FirstSection() {
   return (
@@ -23,7 +24,7 @@ function FirstSection() {
           <img className="BannerImg" src={Banner1} alt="" />
         </div>
         <div className="center viewDemoOuter">
-          <button className="viewDemo btn common-button">View Demo</button>
+         <Link to="/compliance-landing"> <button className="viewDemo btn common-button">More Details</button></Link>
         </div>
         <div className="center">
           <img className="bannerImg1" src={Banner21} alt="" />
