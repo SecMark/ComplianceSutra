@@ -12,7 +12,11 @@ import apiServices from "../../../../apiServices";
 function ChangePassword({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  let email = "";
+  const email = new URLSearchParams(window.location.search)
+    .get("email")
+    .replace(" ", "+");
+  const key = new URLSearchParams(window.location.search).get("key");
+
   const [values, setValues] = useState({
     password: "",
     newpassword: "",
@@ -108,34 +112,33 @@ function ChangePassword({ history }) {
   };
 
   const onSubmit = () => {
-    const location = window.location.href.split("=");
-    email = location[1];
     setIsValidate(true);
     if (
       errors.passwordErr !== "" ||
       errors.newpasswordErr !== "" ||
       values.password === "" ||
-      values.newpassword === ""
+      values.newpassword === "" ||
+      !email ||
+      !key
     ) {
       return;
     }
     setIsValidate(false);
     dispatch(
       signInSignUpActions.updatePasswordRequest({
-        LoginId: email,
-        Pwd: values.newpassword,
-        rememberme: 0,
-        Loginty: "AdminEmail",
+        user: email,
+        key,
+        new_password: values.newpassword,
         history,
       })
     );
   };
-  useEffect(() => {
-    let email = "";
-    const location = window.location.href.split("=");
-    email = location[1];
-    validateLinkExpiration(email);
-  }, []);
+  // useEffect(() => {
+  //   let email = "";
+  //   const location = window.location.href.split("=");
+  //   email = location[1];
+  //   validateLinkExpiration(email);
+  // }, []);
 
   const validateLinkExpiration = (email) => {
     let obj = {
@@ -215,7 +218,7 @@ function ChangePassword({ history }) {
                           " input-error ") +
                         (values.password !== "" &&
                           errors &&
-                          errors.passwordErr == "" &&
+                          errors.passwordErr === "" &&
                           " password-success-input ")
                       }
                       placeholder="Enter your new password"
@@ -281,12 +284,12 @@ function ChangePassword({ history }) {
                         (values.password !== values.newpassword &&
                           values.newpassword !== "" &&
                           " input-error ") +
-                        (values.password == " " && " input-error") +
+                        (values.password === " " && " input-error") +
                         (isValidate &&
                           values.newpassword === "" &&
                           " input-error ") +
                         (values.newpassword !== "" &&
-                          values.password == values.newpassword &&
+                          values.password === values.newpassword &&
                           " password-success-input activeForm-control")
                       }
                       placeholder="Re-Enter your password"

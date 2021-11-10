@@ -69,24 +69,27 @@ const loginReq = function* loginReq({ payload }) {
 };
 const updatePasswordReq = function* updatePasswordReq({ payload }) {
   try {
-    const { data } = yield call(api.updatePassword, payload);
-    if (data && data.Status === "Sucess") {
+    const { status, data } = yield call(api.updatePassword, payload);
+    if (
+      status === 200 &&
+      data &&
+      data.message &&
+      data.message.status === true
+    ) {
       yield put(actions.updatePasswordRequestSuccess({ resetPassword: true }));
-      payload.history.push("/login");
       toast.success("Password changed successfully");
+      payload.history.push("/login");
     } else {
-      if (data && data.Status === "Fail") {
-        let message = "";
-        message = data.Message;
-        toast.error(message && message);
+      if (data && data.message && data.message.status === "Fail") {
+        toast.error(
+          data.message.status_response ||
+            "Something went wrong! Please try again"
+        );
       }
       yield put(actions.updatePasswordRequestFailed({ resetPassword: false }));
     }
   } catch (err) {
-    // toast.error(
-    //     (err && err.response && err.response.data && err.response.data.message) ||
-    //         'Something went to wrong, Please try after sometime',
-    // );
+    toast.error("Something went wrong. Please try again");
     yield put(actions.updatePasswordRequestFailed({ resetPassword: false }));
   }
 };

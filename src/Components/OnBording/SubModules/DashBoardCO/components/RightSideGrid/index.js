@@ -53,6 +53,7 @@ import {
   getAllTasks,
 } from "../../../../../../CommonModules/helpers/tasks.helper";
 import axiosInstance from "../../../../../../apiServices";
+import TaskStatusBox from "../../../../../../CommonModules/sharedComponents/TaskStatusBox";
 
 export const getUserLlistByUserType = (userList, userType) => {
   return [...userList].filter((element) => {
@@ -1866,7 +1867,8 @@ function RightSideGrid({
                         currentOpenedTask?.status !== "Approval Pending" && (
                           <div className="comment-box">
                             <div className="name-box">
-                              {getInitials(user && user.full_name)}
+                              {user &&
+                                getInitials(user.full_name || user.email)}
                             </div>
                             <div className="rigt-box-comment">
                               <div className="input-comment-box input-comment-boxLeft">
@@ -2591,7 +2593,7 @@ function RightSideGrid({
                   <div className="d-block d-md-none">
                     {getDayDate(task.due_date, 2)}
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    {task && task.status && task.status !== "Assigned" && (
+                    {/* {task && task.status && task.status !== "Assigned" && (
                       <span
                         className="pink-label-text "
                         style={{
@@ -2643,11 +2645,11 @@ function RightSideGrid({
                           ? "Task Rejected"
                           : ""}
                       </span>
-                    )}
+                    )} */}
                   </div>
                 </div>
 
-                {task.status && (
+                {/* {task.status && (
                   <p
                     className="pink-label-text d-none d-md-block"
                     style={{
@@ -2699,7 +2701,8 @@ function RightSideGrid({
                       ? "Task Rejected"
                       : ""}
                   </p>
-                )}
+                )} */}
+                <TaskStatusBox status={task.status} />
               </span>
             </div>
           </div>
