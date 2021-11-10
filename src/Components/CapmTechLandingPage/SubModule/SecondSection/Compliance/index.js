@@ -77,9 +77,9 @@ function Compliance() {
               </button></Link>
             </div>
             <div className="p-2">
-              <button className="compliance-View-detail-button">
+            <Link to="/compliance-demo">  <button className="compliance-View-detail-button">
                 VIEW DEMO
-              </button>
+              </button></Link>
             </div>
           </div>
         </div>

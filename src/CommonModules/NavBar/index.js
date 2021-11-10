@@ -78,16 +78,33 @@ function NavBar() {
                   Pricing
                 </a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link nav-link-fonts" href="#">
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link nav-link-fonts dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
                   Support
                 </a>
-              </li>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a className="dropdown-item" href="tel:+91-9869265949">
+                    +91 9869265949
+                  </a>
+                  <div className="dropdown-divider" />
+                  <a className="dropdown-item" href="mailto:info@secmark.in">
+                  info@secmark.in
+                  </a>
+                </div>
+              </li> 
             </ul>
             <div className="my-2 my-lg-0">
              <ul className="navbar-nav">
              <li className="nav-item">
-                <a className="nav-link nav-link-fonts" href="#">
+                <a className="nav-link nav-link-fonts" href="mailto:info@secmark.in">
                   Contact Sales
                 </a>
               </li>

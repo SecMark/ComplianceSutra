@@ -6,7 +6,8 @@ import ComplianceLanding from "../Components/ComplianceLandingPage";
 import TeamMember from "../Components/TeamMemberFlow/DashBoard";
 import DashBoardView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView";
 import OnBoarding from "../Components/OnBording/SubModules/GetStarted";
-import ComplianceDemo7 from "../Components/ComplianceModule/ComplianceDemo7";
+import ComplianceDemo from "../Components/ComplianceModule";
+import ComplianceDemoEnd from "../Components/ComplianceModule/ComplianceDemo7";
 import PersonalDetails from "../Components/OnBording/SubModules/PersonalDetails";
 import CoDashboard from "../Components/CoDashboard";
 import AssignTask from "../Components/OnBording/SubModules/AssignTask";
@@ -70,8 +71,13 @@ export default function AppRouter() {
           <Route exact path="/team-member" component={TeamMember} />
           <Route
             exact
+            path="/compliance-demo"
+            component={ComplianceDemo}
+          />
+          <Route
+            exact
             path="/compliance-demo-end"
-            component={ComplianceDemo7}
+            component={ComplianceDemoEnd}
           />
           <Route exact path="/you-are-done" component={YouAreDone} />
           <Route exact path="/co-dashboard" component={CoDashboard} />

@@ -63,13 +63,13 @@ export default function Footer() {
 
             <ul class="list-unstyled mb-0 text-left">
               <li>
-                <a href="#!" class="footer-link">
-                  +91 9876543210
+                <a href="tel:+91-9869265949" class="footer-link">
+                  +91 9869265949
                 </a>
               </li>
               <li>
-                <a href="#!" class="footer-link">
-                  help@capmtech.in
+                <a href="mailto:info@secmark.in" class="footer-link">
+                info@secmark.in
                 </a>
               </li>
             </ul>
@@ -80,8 +80,8 @@ export default function Footer() {
             <div className="copyright-grid">
               <div class="text-center p-3">
                 © 2020 Copyright:
-                <a class="footer-link" href="">
-                  MDBootstrap.com
+                <a class="footer-link" href="mailto:info@secmark.in">
+                info@secmark.in
                 </a>
               </div>
             </div>
