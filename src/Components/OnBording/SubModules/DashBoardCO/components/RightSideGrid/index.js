@@ -53,6 +53,7 @@ import {
   getAllTasks,
 } from "../../../../../../CommonModules/helpers/tasks.helper";
 import axiosInstance from "../../../../../../apiServices";
+import TaskStatusBox from "../../../../../../CommonModules/sharedComponents/TaskStatusBox";
 
 export const getUserLlistByUserType = (userList, userType) => {
   return [...userList].filter((element) => {
@@ -109,7 +110,6 @@ function RightSideGrid({
   const [approverDropDown, setApproverDropDown] = useState("");
   const [inputComment, setInputComment] = useState("");
   const [rejectTaskInput, setRejectTaskInputComment] = useState("");
-  const [uploadFile, setUploadFile] = useState();
   const [visibleRejectTaskModal, setVisibleRejectTaskModal] = useState(false);
 
   const [referenceSectionData, setReferenceSectionData] = useState([]);
@@ -126,10 +126,7 @@ function RightSideGrid({
   const [searchBoxShow, setsearchBoxShow] = useState(false);
 
   const [searchBoxShowMobile, setsearchBoxShowMobile] = useState(false);
-  const [navigationHideShow, setNavigationHideShow] = useState(false);
-  const [taskData, setTaskData] = useState([]);
   const [listTaskData, setListTaskData] = useState("");
-  const [taskDataBackup, setTaskDataBackup] = useState([]);
   const [expandedFlags, setExpandedFlags] = useState([0, 1, 2]);
   const [rowCount, setRowCount] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -317,13 +314,15 @@ function RightSideGrid({
   });
 
   useEffect(() => {
-    dispatch(
-      taskReportActions.getTaskFilesById({
-        doctype: "Task",
-        docname: currentOpenedTask.task_name,
-        is_references: 0,
-      })
-    );
+    if (currentOpenedTask && Object.keys(currentOpenedTask).length !== 0) {
+      dispatch(
+        taskReportActions.getTaskFilesById({
+          doctype: "Task",
+          docname: currentOpenedTask.task_name,
+          is_references: 0,
+        })
+      );
+    }
   }, [currentOpenedTask]);
 
   useEffect(() => {
@@ -1866,7 +1865,8 @@ function RightSideGrid({
                         currentOpenedTask?.status !== "Approval Pending" && (
                           <div className="comment-box">
                             <div className="name-box">
-                              {getInitials(user && user.full_name)}
+                              {user &&
+                                getInitials(user.full_name || user.email)}
                             </div>
                             <div className="rigt-box-comment">
                               <div className="input-comment-box input-comment-boxLeft">
@@ -2591,7 +2591,7 @@ function RightSideGrid({
                   <div className="d-block d-md-none">
                     {getDayDate(task.due_date, 2)}
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    {task && task.status && task.status !== "Assigned" && (
+                    {/* {task && task.status && task.status !== "Assigned" && (
                       <span
                         className="pink-label-text "
                         style={{
@@ -2643,11 +2643,11 @@ function RightSideGrid({
                           ? "Task Rejected"
                           : ""}
                       </span>
-                    )}
+                    )} */}
                   </div>
                 </div>
 
-                {task.status && (
+                {/* {task.status && (
                   <p
                     className="pink-label-text d-none d-md-block"
                     style={{
@@ -2699,7 +2699,8 @@ function RightSideGrid({
                       ? "Task Rejected"
                       : ""}
                   </p>
-                )}
+                )} */}
+                <TaskStatusBox status={task.status} />
               </span>
             </div>
           </div>

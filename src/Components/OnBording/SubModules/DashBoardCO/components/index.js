@@ -5,7 +5,6 @@ import SideBarInputControl from "../components/LeftSideBar";
 import RighSider from "../components/RightSideGrid";
 import Cobg from "../../../../../assets/Images/Onboarding/co-bg.png";
 import { actions as taskReportActions } from "../redux/actions";
-import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import ComplianceOfficerSetting from "../components/CoSetting";
 import Notifications from "../components/notification";
@@ -13,14 +12,10 @@ import { actions as adminMenuActions } from "../MenuRedux/actions";
 import NewRegulations from "../../../../NewRegulationModule/NewRegulations";
 import HistoryList from "../../../../HistoryModule/HistoryList";
 import HelpSection from "../../../../HelpSection/Help";
-import SingleNotification from "../../../../../CustomNotification/SingleNotification";
-import api from "../../../../../../src/apiServices";
-import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const toastId = React.useRef(null);
 
   const [isTaskListOpen, setIsTaskListOpen] = useState(false);
   const [isTaskApproved, setIsTaskApproved] = useState(false);
@@ -32,30 +27,11 @@ function Dashboard({ history }) {
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
 
-  const entityID =
+  const userEmail =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
-
-  const userData =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
-
-  const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state?.auth &&
+    state?.auth?.loginInfo &&
+    (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
 
   const userDetails = state && state.auth && state.auth.loginInfo;
 
@@ -75,14 +51,19 @@ function Dashboard({ history }) {
   }, []);
 
   useEffect(() => {
-    dispatch(taskReportActions.taskReportRequest());
-  }, [state.adminMenu.currentMenu]);
-
-  useEffect(() => {
-    const refreshInterval = setInterval(() => {
+    if (
+      userEmail &&
+      userDetails?.status_response === "Authentication success"
+    ) {
       dispatch(taskReportActions.taskReportRequest());
-    }, 30000);
-    return () => clearInterval(refreshInterval);
+
+      const refreshInterval = setInterval(() => {
+        dispatch(taskReportActions.taskReportRequest());
+      }, 30000);
+      return () => clearInterval(refreshInterval);
+    } else {
+      history.push("/login");
+    }
   }, []);
   useEffect(() => {
     if (

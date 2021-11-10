@@ -28,8 +28,12 @@ function DashBoardView({ history }) {
     state.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
-
-  const userDetails = state && state.auth && state.auth.loginInfo;
+  const userEmail =
+    state &&
+    state?.auth &&
+    state?.auth?.loginInfo &&
+    (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
+  const userDetails = state && state?.auth && state?.auth?.loginInfo;
 
   const companyName =
     state &&
@@ -46,17 +50,28 @@ function DashBoardView({ history }) {
     }
   }, []);
 
+  // useEffect(() => {
+  //   if (taskList && taskList.length === 0) {
+  //     dispatch(taskReportActions.taskReportRequest());
+  //   }
+  // }, [state.adminMenu.currentMenu]);
   useEffect(() => {
-    if (taskList && taskList.length === 0) {
-      dispatch(taskReportActions.taskReportRequest());
+    if (
+      userEmail &&
+      userDetails?.status_response === "Authentication success"
+    ) {
+      if (userDetails?.UserType === 3) {
+        dispatch(taskReportActions.taskReportRequest());
+        const refresh_taskList = setInterval(() => {
+          dispatch(taskReportActions.taskReportRequest());
+        }, 30000);
+        return () => clearInterval(refresh_taskList);
+      } else {
+        history.push("/dashboard");
+      }
+    } else {
+      history.push("/login");
     }
-  }, [state.adminMenu.currentMenu]);
-  useEffect(() => {
-    dispatch(taskReportActions.taskReportRequest());
-    const refresh_taskList = setInterval(() => {
-      dispatch(taskReportActions.taskReportRequest());
-    }, 30000);
-    return () => clearInterval(refresh_taskList);
   }, []);
   useEffect(() => {
     if (userDetails.UserType === 3) {

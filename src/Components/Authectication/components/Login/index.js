@@ -40,11 +40,12 @@ function Login({ history }) {
     passwordErr: "",
   });
   const [isValidate, setIsValidate] = useState(false);
-
-  const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
-
-  const userDetails = state && state.auth && state.auth.loginInfo;
+  const userEmail =
+    state &&
+    state?.auth &&
+    state?.auth?.loginInfo &&
+    (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
+  const userDetails = state && state?.auth && state?.auth?.loginInfo;
   const onChangeHandler = (name) => (event) => {
     let passwordReg =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
@@ -95,6 +96,16 @@ function Login({ history }) {
   const redirectToSignupScreen = () => {
     return history.push("/sign-up");
   };
+
+  useEffect(() => {
+    if (
+      userDetails?.status_response === "Authentication success" &&
+      (userDetails?.email || userDetails?.EmailID)
+    ) {
+      if (userDetails?.UserType === 3) history.push("/dashboard-view");
+      else history.push("/dashboard");
+    }
+  }, []);
   return (
     <div className="row get-login-mobile">
       <ToastContainer />
