@@ -7,7 +7,7 @@ import Mangment from "../../../../assets/Images/CAPMLanding/Managment.svg";
 import Services from "../../../../assets/Images/CAPMLanding/Service.svg";
 import techservice from "../../../../assets/Images/CAPMLanding/Tech&system.svg";
 import sms from "../../../../assets/Images/CAPMLanding/sms.svg";
-import multiplatform from "../../../../assets/Images/CAPMLanding/multiplatformsupport.svg";
+import multiplatform from "../../../../assets/Images/CAPMLanding/appnotification.svg";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
 function ThirdSection() {

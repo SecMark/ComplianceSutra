@@ -24,7 +24,7 @@ function FirstSection() {
           <img className="BannerImg" src={Banner1} alt="" />
         </div>
         <div className="center viewDemoOuter">
-         <Link to="/compliance-landing"> <button className="viewDemo btn common-button">More Details</button></Link>
+         <Link to="/compliance-demo"> <button className="viewDemo btn common-button">View Demo</button></Link>
         </div>
         <div className="center">
           <img className="bannerImg1" src={Banner21} alt="" />

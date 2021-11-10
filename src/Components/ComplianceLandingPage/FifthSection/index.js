@@ -26,7 +26,7 @@ function FifthSection() {
             </button></Link>
           </div>
           <div className="p-2">
-            <button className="fifth-section-viewdemo-button">View Demo</button>
+          <Link to="/compliance-demo">  <button className="fifth-section-viewdemo-button">View Demo</button></Link>
           </div>
         </div>
 
