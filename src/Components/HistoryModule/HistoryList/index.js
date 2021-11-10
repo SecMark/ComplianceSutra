@@ -58,6 +58,10 @@ const HistoryList = (props) => {
   };
 
   useEffect(() => {
+    dispatch(getCompanyList());
+  }, []);
+
+  useEffect(() => {
     setIsShowMobileFilter(false);
 
     dispatch(setSuccess(false));
@@ -281,7 +285,6 @@ const HistoryList = (props) => {
                   src={closeIcon}
                   alt="close-icon"
                   onClick={() => {
-                    dispatch(clearState());
                     setIsShowFilter(!isShowFilter);
                   }}
                   style={{
@@ -310,7 +313,6 @@ const HistoryList = (props) => {
                     alt="Filter"
                     className="history-filter"
                     onClick={() => {
-                      dispatch(getCompanyList());
                       setIsShowFilter(!isShowFilter);
                     }}
                   />
@@ -335,7 +337,7 @@ const HistoryList = (props) => {
                       {state.HistoryReducer.historyList.map((list) => (
                         <tr>
                           <td className="task-detail">
-                            {moment(list.Completed).format("DD MMMM YYYY")}
+                            {moment(list.status_date).format("DD MMMM YYYY")}
                           </td>
                           <td className="task-name">{list.subject}</td>
                           <td className="task-detail">{list.company_name}</td>

@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import api from "../../../CommonModules/GlobalData/api";
 import {
@@ -44,6 +45,10 @@ function* fetchHistoryList(action) {
 
     if (data.message.status) {
       yield put(setHistoryList(data.message.compliance_history_details));
+      yield put(setSuccess(true));
+    } else {
+      toast.error(data.message.status_response);
+      yield put(setHistoryList([]));
       yield put(setSuccess(true));
     }
   } catch (error) {

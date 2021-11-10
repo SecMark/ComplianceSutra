@@ -41,7 +41,7 @@ const HistoryFilterForm = (props) => {
   // }, [state.HistoryReducer.companyList]);
 
   useEffect(() => {
-    clearLincenseList();
+    //clearLincenseList();
   }, [props.isShowFilter]);
 
   useEffect(() => {
@@ -121,12 +121,6 @@ const HistoryFilterForm = (props) => {
     }
   }, [state.HistoryReducer]);
 
-  useEffect(() => {
-    if (state.HistoryReducer.numberOfSelectedCompanies === 0) {
-      actionDispatch(clearLincenseList());
-    }
-  }, [state.HistoryReducer.numberOfSelectedCompanies]);
-
   const setFilterAndNavigateToHistoryList = () => {
     let historyListPayload = {};
     if (
@@ -157,6 +151,7 @@ const HistoryFilterForm = (props) => {
     //   state.HistoryReducer.from.length !== 1 &&
     //   state.HistoryReducer.to.length !== 1
     // ) {
+
     const filters = {
       from_date:
         state.HistoryReducer.from &&
