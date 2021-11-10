@@ -12,6 +12,7 @@ import {
   SET_HISTORY_LIST,
   CLEAR_STATE,
   CLEAR_LICENSE_LIST,
+  UPDATED_LICENSE,
 } from "./types";
 
 const intialState = {
@@ -26,6 +27,7 @@ const intialState = {
   numberOfSelectedCompanies: 0,
   numberOfSelectedLicense: 0,
   historyList: [],
+  licenseOfList: [],
 };
 
 const reducer = (state = intialState, { type, payload }) => {
@@ -106,6 +108,9 @@ const reducer = (state = intialState, { type, payload }) => {
         numberOfSelectedLicense: state.licenseList.filter(
           (list) => list.selected === true
         ).length,
+        licenseOfList: state.licenseList
+          .filter((list) => list.selected === true)
+          .map((list) => list.LicenseCode),
       };
 
     case SELECT_FROM_DATE:
@@ -138,6 +143,12 @@ const reducer = (state = intialState, { type, payload }) => {
         isLoading: false,
         isSuccess: false,
         numberOfSelectedCompanies: 0,
+        numberOfSelectedLicense: 0,
+      };
+
+    case UPDATED_LICENSE:
+      return {
+        ...state,
         numberOfSelectedLicense: 0,
       };
 

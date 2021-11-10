@@ -6,6 +6,7 @@ import {
   getLicenseList,
   selectCompanyToggle,
   setLicenseList,
+  updateLicense,
 } from "../../../Components/HistoryModule/redux/actions";
 import constant from "../constants/constant";
 import "./style.css";
@@ -79,7 +80,7 @@ function MultiSelectCompanyDropdown({
                 <div
                   onClick={() => {
                     dispatch(selectCompanyToggle(option.id));
-
+                    dispatch(updateLicense());
                     setTimeout(() => {
                       const choosedCompanies =
                         sagaState.HistoryReducer.companyList.filter(

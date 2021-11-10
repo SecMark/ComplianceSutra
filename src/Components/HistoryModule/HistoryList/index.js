@@ -58,6 +58,7 @@ const HistoryList = (props) => {
   };
 
   useEffect(() => {
+    dispatch(clearState());
     dispatch(getCompanyList());
   }, []);
 
