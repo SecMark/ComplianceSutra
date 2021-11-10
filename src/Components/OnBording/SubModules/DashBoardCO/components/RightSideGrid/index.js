@@ -110,7 +110,6 @@ function RightSideGrid({
   const [approverDropDown, setApproverDropDown] = useState("");
   const [inputComment, setInputComment] = useState("");
   const [rejectTaskInput, setRejectTaskInputComment] = useState("");
-  const [uploadFile, setUploadFile] = useState();
   const [visibleRejectTaskModal, setVisibleRejectTaskModal] = useState(false);
 
   const [referenceSectionData, setReferenceSectionData] = useState([]);
@@ -127,10 +126,7 @@ function RightSideGrid({
   const [searchBoxShow, setsearchBoxShow] = useState(false);
 
   const [searchBoxShowMobile, setsearchBoxShowMobile] = useState(false);
-  const [navigationHideShow, setNavigationHideShow] = useState(false);
-  const [taskData, setTaskData] = useState([]);
   const [listTaskData, setListTaskData] = useState("");
-  const [taskDataBackup, setTaskDataBackup] = useState([]);
   const [expandedFlags, setExpandedFlags] = useState([0, 1, 2]);
   const [rowCount, setRowCount] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -318,13 +314,15 @@ function RightSideGrid({
   });
 
   useEffect(() => {
-    dispatch(
-      taskReportActions.getTaskFilesById({
-        doctype: "Task",
-        docname: currentOpenedTask.task_name,
-        is_references: 0,
-      })
-    );
+    if (currentOpenedTask && Object.keys(currentOpenedTask).length !== 0) {
+      dispatch(
+        taskReportActions.getTaskFilesById({
+          doctype: "Task",
+          docname: currentOpenedTask.task_name,
+          is_references: 0,
+        })
+      );
+    }
   }, [currentOpenedTask]);
 
   useEffect(() => {

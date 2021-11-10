@@ -117,8 +117,6 @@ function RightSideGrid({
         setRowCount(tempRowCount);
         setListTaskData(taskByStatus);
         setTaskDataBackup(taskByStatus);
-      } else {
-        dispatch(taskReportActions.taskReportRequest());
       }
     }
   }, [taskList, taskListDisplay]);
@@ -146,24 +144,24 @@ function RightSideGrid({
     }
   }, [state.taskReport.getUserByRole]);
 
-  useEffect(() => {
-    const getTaskId = getTaskById;
-    if (getTaskId) {
-      const taskId = getTaskById.TaskId;
+  // useEffect(() => {
+  //   const getTaskId = getTaskById;
+  //   if (getTaskId) {
+  //     const taskId = getTaskById.TaskId;
 
-      const payload = {
-        taskID: taskId,
-        actionFlag: 0,
-      };
-      axiosInstance
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          let fileData = response.data;
-          setFileList(fileData);
-        })
-        .catch((error) => {});
-    }
-  }, [getTaskById, uploadFile]);
+  //     const payload = {
+  //       taskID: taskId,
+  //       actionFlag: 0,
+  //     };
+  //     axiosInstance
+  //       .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
+  //       .then((response) => {
+  //         let fileData = response.data;
+  //         setFileList(fileData);
+  //       })
+  //       .catch((error) => {});
+  //   }
+  // }, [getTaskById, uploadFile]);
 
   const innerRefDrop = useDropdownOuterClick((e) => {
     if (openBoardDrD === true && !e.target.id.includes("dropDown")) {
