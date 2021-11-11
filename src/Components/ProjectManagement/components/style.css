@@ -9,7 +9,12 @@
 } */
 .project-management__main {
   overflow: auto;
+  padding: 0rem 2rem 0;
 }
+.project-management__main--calender {
+  margin-top: 1rem;
+}
+
 .project-management__page-display {
   font-style: normal;
   font-weight: normal;
@@ -101,11 +106,25 @@
     background: #e9e8ff;
     padding: 1.5rem;
     padding-bottom: 15vh;
+    width: 100%;
+  }
+  .project-management__main {
+    padding: 0;
+  }
+  .project-management__main--calender {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    box-sizing: border-box;
+    box-shadow: 0px 3px 20px rgba(44, 39, 56, 0.06);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 0;
   }
   .project-management__main-container {
     width: calc(100% - 3rem);
     margin: auto;
     margin-top: -12vh;
+    padding: 0;
   }
   .project-management__main-container--background-white {
     background-color: #fff;

@@ -15,6 +15,7 @@ p.project-data-container__item {
   line-height: 14px;
   font-style: normal;
   font-weight: normal;
+  color: #2c2738;
 }
 p.project-data-container__item.wide-flex-2 {
   flex: 0.2;
@@ -39,6 +40,8 @@ p.project-data-container__project-name {
   background: rgba(122, 115, 255, 0.16);
   padding: 0.75rem 0.5rem;
   border: none;
+  width: calc(100% - 4rem);
+  margin: auto;
 }
 .project-management__project-header p.project-data-container__item {
   color: #7a73ff;

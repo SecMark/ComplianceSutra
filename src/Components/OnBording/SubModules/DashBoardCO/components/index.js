@@ -72,11 +72,11 @@ function Dashboard({ history }) {
     setIsTaskListOpen(false);
   }, []);
 
-  useEffect(() => {
-    if (userID === undefined) {
-      history.push("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userID === undefined) {
+  //     history.push("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (state.adminMenu.currentMenu !== "taskList") setIsTaskListOpen(false);
@@ -123,8 +123,13 @@ function Dashboard({ history }) {
       state.adminMenu.currentMenu !== "notfications"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("notfications"));
+    } else if (
+      window.location.href.includes("project-management") &&
+      state.adminMenu.currentMenu !== "project-management"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("project-management"));
     }
-  }, []);
+  }, [window.location.href]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -243,7 +248,7 @@ function Dashboard({ history }) {
           <NewRegulations />
         )}
         {state && state.adminMenu.currentMenu === "help" && <HelpSection />}
-        {state && state.adminMenu.currentMenu === "project-task" && (
+        {state && state.adminMenu.currentMenu === "project-management" && (
           <ProjectManagement />
         )}
       </div>

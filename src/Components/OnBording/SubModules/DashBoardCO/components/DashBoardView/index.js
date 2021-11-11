@@ -70,11 +70,11 @@ function DashBoardView({ history }) {
       dispatch(notificationActions.setTaskID(null));
     }
   }, []);
-  useEffect(() => {
-    if (userID === undefined) {
-      history.push("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userID === undefined) {
+  //     history.push("/login");
+  //   }
+  // }, []);
   useEffect(() => {
     dispatch(
       taskReportActions.taskReportRequest({

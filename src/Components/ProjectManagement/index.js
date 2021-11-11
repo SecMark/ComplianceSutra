@@ -3,50 +3,34 @@ import React, { useState, useEffect } from "react";
 import { MdAdd, MdAddBox } from "react-icons/md";
 import "./style.css";
 import MobileLeftSideBar from "../../CommonModules/sharedComponents/MobileLeftSideBar";
-import {
-  ProjectManagementHeader,
-  ProjectManagementMain,
-  ProjectManagementMainContainer,
-} from "./components";
-
-import ProjectManagementNavigation from "./components/ProjectManagementNavigation";
-import {
-  DeleteIconButton,
-  EditIconButton,
-  SmallIconButton,
-} from "./components/Buttons";
-import Project, {
-  ProjectHeader,
-  ProjectMilestone,
-  ProjectSubTask,
-  ProjectTask,
-} from "./ProjectDesktop";
+import { useParams, useRouteMatch } from "react-router";
+import { Switch, Route } from "react-router-dom";
+import ProjectAndTask from "./Project&Task";
+import SubTasks from "./SubTasks";
+import Milestone from "./Milestone";
 const ProjectManagement = () => {
+  const { path, url } = useRouteMatch();
+  useEffect(() => {
+    console.log({ path, url });
+  }, []);
   return (
     <div className="project-management p-0 p-md-4">
       <div className="project-management__container">
         <MobileLeftSideBar />
-        <ProjectManagementHeader>
-          <div className="w-100 d-flex align-items-center justify-content-between">
-            <p className="project-management__header-title mb-0">
-              Project & Task
-            </p>
-          </div>
-          <ProjectManagementNavigation />
-        </ProjectManagementHeader>
-        <ProjectManagementMainContainer>
-          {/* Components over the main  */}
-          <ProjectHeader />
-          <ProjectManagementMain>
-            {/* Components of main */}
-            <Project />
-            <Project />
-            <Project />
-            <ProjectMilestone />
-            <ProjectSubTask />
-            <ProjectTask />
-          </ProjectManagementMain>
-        </ProjectManagementMainContainer>
+        <Switch>
+          <Route exact path={path}>
+            <ProjectAndTask />
+          </Route>
+          <Route exact path={`${path}/project-milestone`}>
+            <Milestone />
+          </Route>
+          <Route exact path={`${path}/project-tasks`}>
+            <h1>task list</h1>
+          </Route>
+          <Route exact path={`${path}/sub-tasks`}>
+            <SubTasks />
+          </Route>
+        </Switch>
       </div>
     </div>
   );

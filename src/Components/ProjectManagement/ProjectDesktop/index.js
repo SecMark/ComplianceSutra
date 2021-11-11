@@ -1,5 +1,5 @@
 import { Progress } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MdAdd,
   MdExpandMore,
@@ -20,8 +20,12 @@ import {
 } from "../components/Buttons";
 import { RiMessage2Fill } from "react-icons/ri";
 import "./style.css";
+import { useHistory, useRouteMatch } from "react-router";
+import { Link } from "react-router-dom";
 const Project = () => {
   const [expandMoreLevel, setExpandMoreLevel] = useState(0);
+  const history = useHistory();
+  const { url } = useRouteMatch();
   return (
     <>
       {/* Desktop Component */}
@@ -31,9 +35,7 @@ const Project = () => {
             Management
           </p>
           <p className="project-data-container__item">1</p>
-          <p className="project-data-container__item wide">
-            Rakesh Jhunjhunwala
-          </p>
+          <p className="project-data-container__item wide">Ramesh</p>
           <p className="project-data-container__item">3</p>
           <p className="project-data-container__item">4</p>
           <p className="project-data-container__item wide-2">2 Day</p>
@@ -78,7 +80,7 @@ const Project = () => {
                   </SmallIconButton>
                   <SmallIconButton
                     onClick={() =>
-                      setExpandMoreLevel(expandMoreLevel >= 2 ? 1 : 3)
+                      setExpandMoreLevel(expandMoreLevel >= 2 ? 1 : 2)
                     }
                   >
                     <MdExpandMore
@@ -102,12 +104,12 @@ const Project = () => {
                         </SmallIconButton>
                         <SmallIconButton
                           onClick={() =>
-                            setExpandMoreLevel(expandMoreLevel >= 3 ? 2 : 4)
+                            setExpandMoreLevel(expandMoreLevel >= 3 ? 2 : 3)
                           }
                         >
                           <MdExpandMore
                             className={`icon ${
-                              expandMoreLevel >= 4 && "icon__rotate--180"
+                              expandMoreLevel >= 3 && "icon__rotate--180"
                             }`}
                           />
                         </SmallIconButton>
@@ -116,6 +118,74 @@ const Project = () => {
                     {expandMoreLevel >= 3 && (
                       <div className="py-2 px-2 background__item-3">
                         {/* Last Component */}
+                        <div className="project-data-container__3 d-flex align-items-center justify-content-between">
+                          <p className="project-data-container__project-name project-data-container__item">
+                            Check the project
+                          </p>
+                          <p className="project-data-container__item">10%</p>
+                          <p className="project-data-container__item wide">
+                            Ajit
+                          </p>
+                          <p className="project-data-container__item wide-flex-2">
+                            Monthly
+                          </p>
+                          <p className="project-data-container__item wide-2">
+                            0 Days
+                          </p>
+                          <p className="project-data-container__item wide">
+                            16 Aug 2021
+                          </p>
+                          <p className="project-data-container__item wide">
+                            16 Aug 2021
+                          </p>
+                          <p className="project-data-container__item">Ajit</p>
+                          <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
+                            <SmallIconButton type="grey" className="p-2 mr-2">
+                              <MdTextsms className="icon__small" />
+                            </SmallIconButton>
+                            <EditIconButton className="mr-2" />
+                            <SmallIconButton type="grey" className="p-2 mr-2">
+                              <MdCheckCircle className="icon__small" />
+                            </SmallIconButton>
+                            <SmallIconButton type="grey" className="p-2">
+                              <MdRadioButtonChecked className="icon__small" />
+                            </SmallIconButton>
+                          </div>
+                        </div>
+                        <div className="project-data-container__3 d-flex align-items-center justify-content-between">
+                          <p className="project-data-container__project-name project-data-container__item">
+                            Check the project
+                          </p>
+                          <p className="project-data-container__item">10%</p>
+                          <p className="project-data-container__item wide">
+                            Ajit
+                          </p>
+                          <p className="project-data-container__item wide-flex-2">
+                            Monthly
+                          </p>
+                          <p className="project-data-container__item wide-2">
+                            0 Days
+                          </p>
+                          <p className="project-data-container__item wide">
+                            16 Aug 2021
+                          </p>
+                          <p className="project-data-container__item wide">
+                            16 Aug 2021
+                          </p>
+                          <p className="project-data-container__item">Ajit</p>
+                          <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
+                            <SmallIconButton type="grey" className="p-2 mr-2">
+                              <MdTextsms className="icon__small" />
+                            </SmallIconButton>
+                            <EditIconButton className="mr-2" />
+                            <SmallIconButton type="grey" className="p-2 mr-2">
+                              <MdCheckCircle className="icon__small" />
+                            </SmallIconButton>
+                            <SmallIconButton type="grey" className="p-2">
+                              <MdRadioButtonChecked className="icon__small" />
+                            </SmallIconButton>
+                          </div>
+                        </div>
                         <div className="project-data-container__3 d-flex align-items-center justify-content-between">
                           <p className="project-data-container__project-name project-data-container__item">
                             Check the project
@@ -184,18 +254,22 @@ const Project = () => {
                   </p>
                   <p className="project-data-container__item">Ashu</p>
                 </div>
-                <div className="project-container-mobile__data-item">
-                  <p className="project-data-container__item project-container-mobile__data-item-title">
-                    Task
-                  </p>
-                  <p className="project-data-container__item">2/2</p>
-                </div>
-                <div className="project-container-mobile__data-item">
-                  <p className="project-data-container__item project-container-mobile__data-item-title">
-                    Milestone
-                  </p>
-                  <p className="project-data-container__item">0/1</p>
-                </div>
+                <Link to={`${url}/project-tasks`}>
+                  <div className="project-container-mobile__data-item">
+                    <p className="project-data-container__item project-container-mobile__data-item-title">
+                      Task
+                    </p>
+                    <p className="project-data-container__item">2/2</p>
+                  </div>
+                </Link>
+                <Link to={`${url}/project-milestone`}>
+                  <div className="project-container-mobile__data-item">
+                    <p className="project-data-container__item project-container-mobile__data-item-title">
+                      Milestone
+                    </p>
+                    <p className="project-data-container__item">0/1</p>
+                  </div>
+                </Link>
                 <div className="project-container-mobile__data-item">
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Duration
@@ -388,7 +462,7 @@ export const ProjectSubTask = () => {
 };
 
 export const ProjectHeader = () => (
-  <div className="d-none d-md-flex mb-md-2 project-management__project-header project-management__project-data-container align-items-center w-100 justify-content-between">
+  <div className="d-none d-md-flex mt-md-3 mb-md-2 project-management__project-header project-management__project-data-container align-items-center justify-content-between">
     <p className="project-data-container__project-name project-data-container__item">
       Project Name
     </p>
@@ -405,17 +479,28 @@ export const ProjectHeader = () => (
 );
 
 export const ProjectTask = () => {
+  const { url } = useRouteMatch();
   return (
-    <div className="project-data-container__2 d-flex align-items-center justify-content-between">
-      <p className="project-data-container__project-name project-data-container__item flex-grow-1">
-        Project Discuss Meeting
-      </p>
-      <div className="project-data-container__buttons d-flex align-items-center justify-content-between">
-        <SmallIconButton type="outlined">
-          <MdMoreHoriz />
-        </SmallIconButton>
+    <Link
+      to={{
+        pathname: `${url}/sub-tasks`,
+        state: {
+          subtask_name: "Project Discuss Meeting",
+          from: url,
+        },
+      }}
+    >
+      <div className="project-data-container__2 d-flex align-items-center justify-content-between mb-3">
+        <p className="project-data-container__project-name project-data-container__item flex-grow-1">
+          Project Discuss Meeting
+        </p>
+        <div className="project-data-container__buttons d-flex align-items-center justify-content-between">
+          <SmallIconButton type="outlined">
+            <MdMoreHoriz />
+          </SmallIconButton>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 export default Project;

@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import "./style.css";
-const ProjectManagmentPages = [
+export const ProjectManagmentPages = [
   {
-    id: "project-and-task",
+    id: "project-management-project",
     value: "Project & Task",
     buttonName: "Project",
   },
   {
-    id: "project-mangament-task",
+    id: "project-management-task",
     value: "Task",
     buttonName: "Task",
   },
   {
-    id: "project-mangament-calender",
+    id: "project-management-calender",
     value: "Calender",
     buttonName: "Calender",
   },
 ];
 
-const ProjectManagementNavigation = ({ containerClass, buttonClass }) => {
-  const [currentPageView, setCurrentPageView] = useState(
-    ProjectManagmentPages[0]
-  );
+const ProjectManagementNavigation = ({
+  containerClass,
+  buttonClass,
+  currentPageView,
+  setCurrentPageView,
+}) => {
   return (
     <div className={`d-flex w-100 mt-3 align-items-start ${containerClass}`}>
       {ProjectManagmentPages.map((page) => (
