@@ -32,7 +32,6 @@ export const routes = [
     path: `${constant.ExpertReviewerBaseUrl}/profile`,
     component: ERProfile,
   },
-
   {
     path: `${constant.ExpertReviewerBaseUrl}/notifications`,
     component: ERNotifications,

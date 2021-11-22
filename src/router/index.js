@@ -46,12 +46,8 @@ import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
-// import UserRoutes from "../Components/UserTask/UserRoutes/index";
-import UserTask from "../Components/UserTask/index";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import ProjectManagement from "../Components/ProjectManagement";
-import AddProject from "../Components/ExpertReviewModule/AddandEditProject";
-
 export default function AppRouter() {
   return (
     <div>
@@ -187,11 +183,6 @@ export default function AppRouter() {
             component={ProjectManagement}
           /> */}
           <Route exact path="/settings" component={CoSetting} />
-          {/* Add edit project*/}
-          <Route exact path="/add-project" component={AddProject} />
-
-          {/* User */}
-          <Route path="/user-task" component={UserTask}></Route>
         </div>
       </>
     </div>
