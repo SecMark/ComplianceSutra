@@ -1,9 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Cobg from "../../assets/Images/Onboarding/co-bg.png";
 import ListView from "./ProjectView/ListView";
+import AddProject from "./AddandEditProject/AddProjectModal";
+import AddProjectMobile from "./AddandEditProject/AddProjectMobile";
 import "./style.css";
 
 const ProjectDesktop = (props) => {
+  const [show, setShow] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth);
+  const handleWindowSizeChange = () => {
+    setWidth(window.innerWidth);
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, []);
   return (
     <div className="row co-dashboard fix-top">
       <div className=" left-fixed ">
@@ -14,13 +27,11 @@ const ProjectDesktop = (props) => {
         <div className="project-management-container">
           <div className="project-mangement-header">
             <div className="project-mangement-title">Projects & Task</div>
-
             <div className="project-task-button">
-              <button>P +</button>
+              <button onClick={() => setShow(true)}>P +</button>
               <button>T +</button>
             </div>
           </div>
-
           <div className="project-view">
             <span className="active">Projects</span>
             <div className="view-progress"></div>
@@ -28,6 +39,7 @@ const ProjectDesktop = (props) => {
             <span className="inactive second-view">Calendar</span>
           </div>
           <ListView />
+          <AddProject onClose={() => setShow(false)} show={show} />
         </div>
       </div>
     </div>

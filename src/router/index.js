@@ -50,7 +50,7 @@ import ExperReview from "../Components/ExpertReviewModule";
 import UserTask from "../Components/UserTask/index";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import ProjectManagement from "../Components/ProjectManagement";
-import AddProject from "../Components/ExpertReviewModule/AddandEditProject";
+
 
 export default function AppRouter() {
   return (
@@ -187,8 +187,6 @@ export default function AppRouter() {
             component={ProjectManagement}
           /> */}
           <Route exact path="/settings" component={CoSetting} />
-          {/* Add edit project*/}
-          <Route exact path="/add-project" component={AddProject} />
 
           {/* User */}
           <Route path="/user-task" component={UserTask}></Route>

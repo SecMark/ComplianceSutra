@@ -37,8 +37,6 @@ function AddProjectMobile({ show, onClose }) {
             Project overview
           </label>
           <TextEditor />
-          <label className="add-edit-project-labels">Task Durention</label>
-          <input className="add-edit-project-inputs-task-duration-mobile" />
           <div className="d-flex mt-3 justify-content-center">
             <div className="p-2">
               <button className="add-edit-project-submit-btn" onClick={onClose}>

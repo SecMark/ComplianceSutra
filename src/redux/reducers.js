@@ -13,6 +13,7 @@ import HistoryReducer from "../Components/HistoryModule/redux/reducers";
 import UpdatesReducer from "../Components/NewRegulationModule/redux/reducers";
 import CalenderReducer from "../Components/CalenderView/redux/reducers";
 import PaymentReducer from "../Components/ExpertReviewModule/Redux/reducers";
+import projectReducer from "../Components/ProjectManagement/AddandEditProject/Redux/reducers";
 
 const createRootReducer = (history) =>
   combineReducers({
@@ -28,6 +29,7 @@ const createRootReducer = (history) =>
     UpdatesReducer,
     CalenderReducer,
     PaymentReducer,
+    projectReducer
   });
 
 export default createRootReducer;

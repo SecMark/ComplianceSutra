@@ -1,15 +1,49 @@
-import React from "react";
+import React, { useEffect ,useState} from "react";
 import "./style.css";
 import TextEditor from "../TextEditor";
 import { DatePicker, Space } from "antd";
+import { setProject } from "../Redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 import calanderIcon from "../../../../assets/Icons/calanderIcon.svg";
 
 function AddProject({ show, onClose }) {
-  if (!show) {
-    return null;
-  }
+  // useEffect(()=>{
+  //   if (!show) {
+  //     return null;
+  //   }
+  // },[])
+
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const [values, setValues] = useState({
+    project_name: "",
+    assign_user: "",
+    start_date: "",
+    end_date: "",
+    project_overview: "",
+  });
+  const payload = {
+    project_name: "abc",
+    assign_user: "amit@gmail",
+    start_date: "2021-11-23",
+    end_date: "2021-11-26",
+    project_overview: "lemon project",
+  };
+  useEffect(() => {
+    dispatch(setProject(payload));
+  }, []);
+
+  const onHandleChange = (evt) => {
+    const value = evt.target.value;
+    setValues({
+      ...values,
+      [evt.target.name]: value
+    });
+  };
+
   const calanderimg = <img src={calanderIcon} />;
-  return (
+
+  return !show ? null : (
     <div className="add-edit-modal" onClick={onClose}>
       <div
         className="add-edit-project-content"
@@ -17,11 +51,17 @@ function AddProject({ show, onClose }) {
       >
         <div className="add-edit-main-container">
           <label className="add-edit-project-labels">Project Name</label>
-          <input className="add-edit-project-inputs" />
+          <input className="add-edit-project-inputs" 
+           name="project_name"
+           onChange={onHandleChange}
+          />
           <div className="row mt-3">
             <div className="col-6">
               <label className="add-edit-project-labels">User</label>
-              <input className="add-edit-project-inputs" />
+              <input className="add-edit-project-inputs"
+              name="assign_user"
+              onChange={onHandleChange}
+              />
             </div>
             <div className="col-3">
               <label className="add-edit-project-labels">Start Date</label>
@@ -43,8 +83,6 @@ function AddProject({ show, onClose }) {
             Project overview
           </label>
           <TextEditor />
-          <label className="add-edit-project-labels">Task Durention</label>
-          <input className="add-edit-project-inputs-task-duretion" />
           <div className="d-flex mt-3 justify-content-center">
             <div className="p-2">
               <button className="add-edit-project-submit-btn" onClick={onClose}>
