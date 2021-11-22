@@ -52,6 +52,11 @@ function CoSetting({ history }) {
   //     history.push("/login");
   //   }
   // }, []);
+  useEffect(() => {
+    if (userID === undefined) {
+      // history.push("/login");
+    }
+  }, []);
   const handleTabChange = (key) => {
     if (selectedTabKey != key) {
       setSelectedTabKey(key);
@@ -120,9 +125,7 @@ function CoSetting({ history }) {
           {state.adminMenu.activeTab === "security" && (
             <CoSecurity activeTabKey={selectedTabKey} />
           )}
-          {/*<CoChangePassword /> */}
-          {/* <CoAccount />  */}
-          {/* <CoSecurity />  */}
+
           {state.adminMenu.activeTab === "team-member" && (
             <CoTeamMember activeTabKey={selectedTabKey} />
           )}

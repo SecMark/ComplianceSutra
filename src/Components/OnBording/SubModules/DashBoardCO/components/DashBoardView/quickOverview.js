@@ -14,6 +14,11 @@ import scheduledIcon from "../../../../../../assets/Icons/scheduledIcon.png";
 import siderBarbtnArrowTop from "../../../../../../assets/Icons/siderBarbtnArrowTop.png";
 import { useSelector } from "react-redux";
 import { isMobile } from "react-device-detect";
+import axiosInstance from "../../../../../../apiServices";
+import {
+  getDataByStatus,
+  getAllTasks,
+} from "../../../../../../CommonModules/helpers/tasks.helper";
 
 let percentage;
 function QuickOverView({ click, setClick, setListView, listView }) {
@@ -21,83 +26,109 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   const [collapse, setCollapse] = useState([]);
   const [thingOnTrack, setThingOnTrack] = useState({});
   const [companyViewData, setCompanyViewData] = useState([]);
-  const [teamPerformance, setTeamPerformanceData] = useState([]);
+  //const [teamStats, setteamStatsData] = useState([]);
   const [section3, setSection3] = useState([]);
   const userDetails = state && state.auth && state.auth.loginInfo;
   const [showMoreLess, setShowMoreLess] = useState(false);
   const [showMoreLessTM, setShowMoreLessTM] = useState(false);
+  const [dashboardStats, setDashboardStats] = useState([]);
+  const [teamStats, setTeamStats] = useState([]);
+  const [taskStatus, setTaskStatus] = useState({
+    completeTask: "",
+    schedulededTask: "",
+    takeAction: "",
+    pending: "",
+  });
+  const taskList =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
 
   useEffect(() => {
-    if (
-      userDetails &&
-      userDetails.UserID !== undefined &&
-      (userDetails.UserType === 3 ||
-        userDetails.UserType === 5 ||
-        userDetails.UserType === 6)
-    ) {
-      fetchQuickOverViewSectionData("type1");
-      fetchTeamPerformanceData();
+    if (taskList && taskList.length > 0) {
+      const taskDetail = getDataByStatus(taskList);
+      const completeTask = taskDetail.filter(
+        (task) => task.status === "Completed"
+      )[0];
+
+      const schedulededTask = getAllTasks(taskList).filter(
+        (task) => task.status !== "Approved"
+      ).length;
+
+      const takeAction = taskDetail.filter(
+        (task) => task.status === "Take Action"
+      )[0];
+
+      const pending = getAllTasks(taskList).filter(
+        (task) => task.status === "Approval Pending"
+      ).length;
+
+      setTaskStatus({
+        ...taskStatus,
+        completeTask: completeTask?.tasks?.length,
+        schedulededTask,
+        takeAction: takeAction?.tasks?.length,
+        pending,
+      });
     }
-  }, []);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      try {
-        if (userDetails && userDetails.UserID !== undefined) {
-          fetchQuickOverViewSectionData("type2");
-        }
-      } catch (err) {}
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
-
+  }, [taskList]);
   useEffect(() => {
     let temp = [];
-    if (companyViewData && companyViewData.length > 0) {
-      companyViewData.map((item, index) => {
+    if (dashboardStats && dashboardStats.length > 0) {
+      dashboardStats.map((item, index) => {
         temp.push({ open: false });
       });
       setCollapse(temp);
-      setSection3(companyViewData[0]);
+      setSection3(dashboardStats[0]);
     }
-  }, [companyViewData]);
+  }, [dashboardStats]);
 
-  const fetchQuickOverViewSectionData = (type) => {
-    const payload = {
-      entityid: "0",
-      userID: userDetails.UserID,
-      usertype: userDetails.UserType,
-    };
-    axios
-      .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
-      .then((response) => {
-        if (response && response.data && response.data.length > 0) {
-          if (type === "type1") {
-            setCompanyViewData(response.data);
-            let temp = response.data[0];
-            setThingOnTrack(temp);
-          } else if (type === "type2") {
-            let temp = response.data[0];
-            setThingOnTrack(temp);
-          }
-        }
-      })
-      .catch((error) => {});
-  };
-  const fetchTeamPerformanceData = () => {
-    const payload = {
-      entityid: "5",
-      userID: userDetails.UserID,
-      usertype: userDetails.UserType,
-    };
-    axios
-      .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
-      .then((response) => {
-        if (response && response.data && response.data.length > 0) {
-          setTeamPerformanceData(response.data);
-        }
-      })
-      .catch((error) => {});
+  useEffect(() => {
+    fetchDashboardAnalytics();
+  }, []);
+
+  const fetchDashboardAnalytics = async () => {
+    try {
+      const { data } = await axiosInstance.get(
+        `${BACKEND_BASE_URL}compliance.api.dashboardAnalytics`
+      );
+
+      if (data.message.status) {
+        const companyList = [];
+        const teamList = [];
+
+        const { compliant_data, team_performance_data } = data.message;
+
+        compliant_data.map((companyDetail) => {
+          let LicenseCodeList = [];
+          companyDetail.license.map((licenseDetail) => {
+            LicenseCodeList.push({
+              name: licenseDetail.name,
+              status: licenseDetail.status,
+            });
+          });
+          companyList.push({
+            companyName: companyDetail.company_name,
+            licenseCodeList: LicenseCodeList,
+            completed_task: companyDetail.completed_task,
+            total_task: companyDetail.total_task,
+          });
+        });
+
+        team_performance_data.map((teamDetail) => {
+          teamList.push({
+            user_name: teamDetail.user_name,
+            week_status: teamDetail.week_status,
+          });
+        });
+
+        setTeamStats(teamList);
+
+        setDashboardStats(companyList);
+      }
+    } catch (error) {}
   };
 
   const openCloseCollapsible = (index) => {
@@ -130,43 +161,40 @@ function QuickOverView({ click, setClick, setListView, listView }) {
     return (
       <>
         <div class="compliant-option">
-          <p className="compliant-title-left">{item && item.LicenseCode}</p>
+          <p className="compliant-title-left">{item.name}</p>
           <ul className="list-group list-group-horizontal">
-            <li className={item && item.m1 && calculateColorCode(item.m1)}></li>
-            <li className={item && item.m2 && calculateColorCode(item.m2)}></li>
-            <li className={item && item.m3 && calculateColorCode(item.m3)}></li>
-            <li className={item && item.m4 && calculateColorCode(item.m4)}></li>
-            <li className={item && item.m5 && calculateColorCode(item.m5)}></li>
-            <li className={item && item.m6 && calculateColorCode(item.m6)}></li>
-            <li className={item && item.m7 && calculateColorCode(item.m7)}></li>
-            <li className={item && item.m8 && calculateColorCode(item.m8)}></li>
-            <li className={item && item.m9 && calculateColorCode(item.m9)}></li>
-            <li
-              className={item && item.m10 && calculateColorCode(item.m10)}
-            ></li>
-            <li
-              className={item && item.m11 && calculateColorCode(item.m11)}
-            ></li>
-            <li
-              className={item && item.m12 && calculateColorCode(item.m12)}
-            ></li>
+            <li className={item && calculateColorCode(item.status.m1)}></li>
+            <li className={item && calculateColorCode(item.status.m2)}></li>
+            <li className={item && calculateColorCode(item.status.m3)}></li>
+            <li className={item && calculateColorCode(item.status.m4)}></li>
+            <li className={item && calculateColorCode(item.status.m5)}></li>
+            <li className={item && calculateColorCode(item.status.m6)}></li>
+            <li className={item && calculateColorCode(item.status.m7)}></li>
+            <li className={item && calculateColorCode(item.status.m8)}></li>
+            <li className={item && calculateColorCode(item.status.m9)}></li>
+            <li className={item && calculateColorCode(item.status.m10)}></li>
+            <li className={item && calculateColorCode(item.status.m11)}></li>
+            <li className={item && calculateColorCode(item.status.m12)}></li>
           </ul>
         </div>
       </>
     );
   };
   const renderCollapsibleMonthView = (data, index) => {
+    console.log("data", data);
     return (
       <div className="btn-data">
         {data &&
           data &&
           data.length > 0 &&
-          data.map((item, index) => monthlyBoxView(item, index))}
+          data.map((item, index) => {
+            return monthlyBoxView(item, index);
+          })}
       </div>
     );
   };
   const _renderCompanyView = (data, index, length) => {
-    percentage = (data.CompliedTask / data.TotalTask) * 100;
+    percentage = (data.completed_task / data.total_task) * 100;
     if (length <= 2) {
       let btnClass = classNames({
         "btn sidebar-btn-two-new-active  btnLattwo": index % 2 !== 0,
@@ -191,9 +219,10 @@ function QuickOverView({ click, setClick, setListView, listView }) {
               />{" "}
             </div>
             <div className="icon-right-text-arrow">
-              <div className="small-text"> {data && data.EntityName}</div>
+              <div className="small-text"> {data && data.companyName}</div>
               <div className="big-text">
-                Compliant ({data && data.CompliedTask}/{data && data.TotalTask}){" "}
+                Compliant ({data && data.completed_task}/
+                {data && data.total_task}){" "}
                 <img
                   className="float-right"
                   onClick={() => openCloseCollapsible(index)}
@@ -214,12 +243,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
             overflowWhenOpen="inherit"
             open={collapse && collapse[index] && collapse[index].open}
           >
-            <div>
-              {data &&
-                data.MonthlyAnalytics &&
-                data.MonthlyAnalytics.length > 0 &&
-                renderCollapsibleMonthView(data.MonthlyAnalytics)}
-            </div>
+            <div>{renderCollapsibleMonthView(data.licenseCodeList)}</div>
           </Collapsible>
         </button>
       );
@@ -330,12 +354,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
               overflowWhenOpen="inherit"
               open={collapse && collapse[index] && collapse[index].open}
             >
-              <div>
-                {data &&
-                  data.MonthlyAnalytics &&
-                  data.MonthlyAnalytics.length > 0 &&
-                  renderCollapsibleMonthView(data.MonthlyAnalytics)}
-              </div>
+              <div>{renderCollapsibleMonthView(dashboardStats)}</div>
             </Collapsible>
           </button>
         </>
@@ -365,43 +384,67 @@ function QuickOverView({ click, setClick, setListView, listView }) {
     return str;
   };
 
-  const calculateColorCode = (value) => {
+  const calculateColorCode = (item) => {
+    const value = item.completed_percentage;
+    console.log(value);
     let str = "";
     if (parseInt(value) === -1) {
       str = "gray-box";
-    } else if (parseInt(value) === 0) {
+    } else if (parseInt(value) === 100) {
       str = "green-box";
-    } else if (parseInt(value) >= 1) {
+    } else if (parseInt(value) > 0 && parseInt(value) !== 100) {
       str = "red-box";
+    } else {
+      str = "gray-box";
     }
     return str;
   };
-  const _renderTeamPerformance = (item, index) => {
+  const _renderteamStats = (item, index) => {
     return (
       <div class="compliant-option-new">
-        {item && item.AssignedTo && item.AssignedTo !== "Norec" && (
+        {item && item.user_name && (
           <>
             <p className="compliant-title-left-new">
               <p className="two-digin-circle">
-                {item && item.AssignedTo && getInitials(item.AssignedTo)}
+                {item && item.user_name && getInitials(item.user_name)}
               </p>
-              {item && item.AssignedTo && _getAssignedName(item.AssignedTo)}
+              {item && item.user_name && _getAssignedName(item.user_name)}
             </p>
             <ul className="list-group list-group-horizontal">
               <li
-                className={item && item.W1 && calculateColorCode(item.W1)}
+                className={
+                  item &&
+                  item.week_status.w1 &&
+                  calculateColorCode(item.week_status.w1)
+                }
               ></li>
               <li
-                className={item && item.W2 && calculateColorCode(item.W2)}
+                className={
+                  item &&
+                  item.week_status.w2 &&
+                  calculateColorCode(item.week_status.w2)
+                }
               ></li>
               <li
-                className={item && item.W3 && calculateColorCode(item.W3)}
+                className={
+                  item &&
+                  item.week_status.w3 &&
+                  calculateColorCode(item.week_status.w3)
+                }
               ></li>
               <li
-                className={item && item.W4 && calculateColorCode(item.W4)}
+                className={
+                  item &&
+                  item.week_status.w4 &&
+                  calculateColorCode(item.week_status.w4)
+                }
               ></li>
               <li
-                className={item && item.W5 && calculateColorCode(item.W5)}
+                className={
+                  item &&
+                  item.week_status.w5 &&
+                  calculateColorCode(item.week_status.w5)
+                }
               ></li>
             </ul>
           </>
@@ -424,7 +467,10 @@ function QuickOverView({ click, setClick, setListView, listView }) {
             >
               <div className="right-side">
                 <div className="user-title">
-                  Hi {userDetails && userDetails.UserName},
+                  Hi{" "}
+                  {userDetails &&
+                    (userDetails.full_name || userDetails.UserName)}
+                  ,
                 </div>
                 <div className="bold-title-sidebar">
                   Here is a quick
@@ -454,66 +500,49 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                     </span>
                   </div>
                 </>
-                {userDetails &&
-                  userDetails.UserID !== undefined &&
-                  (userDetails.UserType === 3 ||
-                    userDetails.UserType === 6) && (
-                    <div
-                      className={
-                        companyViewData &&
-                        companyViewData.length > 0 &&
-                        companyViewData.length === 2
-                          ? "two-btn mainBoxShado"
-                          : "two-btn"
-                      }
-                    >
-                      {companyViewData &&
-                        companyViewData.length > 0 &&
-                        companyViewData.length <= 5 &&
-                        companyViewData.map((item, index) =>
-                          _renderCompanyView(
-                            item,
-                            index,
-                            companyViewData.length
-                          )
-                        )}
-                      {!showMoreLess &&
-                        companyViewData &&
-                        companyViewData.length > 0 &&
-                        companyViewData.length > 5 &&
-                        companyViewData
-                          .slice(0, 5)
-                          .map((item, index) =>
-                            _renderCompanyView(
-                              item,
-                              index,
-                              companyViewData.length
-                            )
-                          )}
-                      {showMoreLess &&
-                        companyViewData &&
-                        companyViewData.length > 0 &&
-                        companyViewData.length > 5 &&
-                        companyViewData.map((item, index) =>
-                          _renderCompanyView(
-                            item,
-                            index,
-                            companyViewData.length
-                          )
-                        )}
-                    </div>
-                  )}
-                {!showMoreLess &&
-                  companyViewData &&
-                  companyViewData.length > 5 && (
-                    <div
-                      onClick={() => setShowMoreLess(!showMoreLess)}
-                      className="view-more-task"
-                    >
-                      view more
-                    </div>
-                  )}
-                {showMoreLess && companyViewData && companyViewData.length > 5 && (
+
+                <div
+                  className={
+                    companyViewData &&
+                    companyViewData.length > 0 &&
+                    companyViewData.length === 2
+                      ? "two-btn mainBoxShado"
+                      : "two-btn"
+                  }
+                >
+                  {dashboardStats &&
+                    dashboardStats.length > 0 &&
+                    dashboardStats.length <= 5 &&
+                    dashboardStats.map((item, index) =>
+                      _renderCompanyView(item, index, dashboardStats.length)
+                    )}
+                  {!showMoreLess &&
+                    dashboardStats &&
+                    dashboardStats.length > 0 &&
+                    dashboardStats.length > 5 &&
+                    dashboardStats
+                      .slice(0, 5)
+                      .map((item, index) =>
+                        _renderCompanyView(item, index, dashboardStats.length)
+                      )}
+                  {showMoreLess &&
+                    dashboardStats &&
+                    dashboardStats.length > 0 &&
+                    dashboardStats.length > 5 &&
+                    dashboardStats.map((item, index) =>
+                      _renderCompanyView(item, index, dashboardStats.length)
+                    )}
+                </div>
+
+                {!showMoreLess && dashboardStats && dashboardStats.length > 5 && (
+                  <div
+                    onClick={() => setShowMoreLess(!showMoreLess)}
+                    className="view-more-task"
+                  >
+                    view more
+                  </div>
+                )}
+                {showMoreLess && dashboardStats && dashboardStats.length > 5 && (
                   <div
                     onClick={() => setShowMoreLess(!showMoreLess)}
                     className="view-more-task"
@@ -522,51 +551,46 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                   </div>
                 )}
                 <div className="two-btn-new"></div>
-                {thingOnTrack &&
-                  Object.entries(thingOnTrack).length !== 0 &&
-                  thingOnTrack.RiskTask !== 0 &&
-                  thingOnTrack.PendingTask !== 0 && (
-                    <div className="take-action-grid-new shadow bg-white rounded">
-                      <div className="take-action-small-title-new">
-                        Immediately
-                      </div>
-                      <div className="take-action-title">Take Action</div>
-                      <div className="action-bottom-grid">
-                        <div className="left-grid-action">
-                          <span className="red-circle-new">
-                            {thingOnTrack && thingOnTrack.RiskTask}
-                          </span>
-                          <div
-                            className="take-action-left-new"
-                            onClick={() => setClick("riskAndDelays")}
-                          >
-                            Risk & Delays
-                            <img
-                              className="btn-icon-new"
-                              src={actionArrow}
-                              alt="btn-icon"
-                            />
-                          </div>
-                        </div>
-                        <div className="right-grid-action">
-                          <span className="blue-circle-new">
-                            {thingOnTrack && thingOnTrack.PendingTask}
-                          </span>
-                          <div
-                            className="take-action-right-new"
-                            onClick={() => setClick("pendingAction")}
-                          >
-                            Pending Action
-                            <img
-                              className="btn-icon-new"
-                              src={actionArrow}
-                              alt="btn-icon"
-                            />
-                          </div>
-                        </div>
+
+                <div className="take-action-grid-new shadow bg-white rounded">
+                  <div className="take-action-small-title-new">Immediately</div>
+                  <div className="take-action-title">Take Action</div>
+                  <div className="action-bottom-grid">
+                    <div className="left-grid-action">
+                      <span className="red-circle-new">
+                        {taskStatus?.takeAction}
+                      </span>
+                      <div
+                        className="take-action-left-new"
+                        onClick={() => setClick("riskAndDelays")}
+                      >
+                        Risk & Delays
+                        <img
+                          className="btn-icon-new"
+                          src={actionArrow}
+                          alt="btn-icon"
+                        />
                       </div>
                     </div>
-                  )}
+                    <div className="right-grid-action">
+                      <span className="blue-circle-new">
+                        {taskStatus.pending}
+                      </span>
+                      <div
+                        className="take-action-right-new"
+                        onClick={() => setClick("pendingAction")}
+                      >
+                        Pending Action
+                        <img
+                          className="btn-icon-new"
+                          src={actionArrow}
+                          alt="btn-icon"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="sidebar-month-grid-new shadow bg-white rounded">
                   <div className="take-action-small-title-new">This Month</div>
                   <div className="take-action-title">Things are on track!</div>
@@ -580,7 +604,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                       Completed Tasks{" "}
                       <span className="text-right">
                         {" "}
-                        {thingOnTrack && thingOnTrack.CompletedTask}
+                        {taskStatus.completeTask}
                       </span>
                     </div>
                     <div className="complte-task-title text-left">
@@ -591,82 +615,59 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                       />{" "}
                       Scheduled{" "}
                       <span className="text-right">
-                        {" "}
-                        {thingOnTrack && thingOnTrack.SchedulededTask}
+                        {taskStatus.schedulededTask}
                       </span>
                     </div>
                   </div>
                 </div>
-                {userDetails &&
-                  userDetails.UserType !== undefined &&
-                  (userDetails.UserType === 3 ||
-                    userDetails.UserType === 6) && (
-                    <div className="sidebar-overview-grid-new shadow bg-white rounded">
-                      <div className="take-action-small-title-new">
-                        Overview
-                      </div>
-                      <div className="take-action-title">Team Performance</div>
-                      <div className="btn-data-new">
-                        {teamPerformance &&
-                          teamPerformance.length > 0 &&
-                          teamPerformance.length <= 4 &&
-                          teamPerformance.map((item, index) =>
-                            _renderTeamPerformance(
-                              item,
-                              index,
-                              teamPerformance.length
-                            )
-                          )}
-                        {!showMoreLessTM &&
-                          teamPerformance &&
-                          teamPerformance.length > 0 &&
-                          teamPerformance.length > 4 &&
-                          teamPerformance
-                            .slice(0, 4)
-                            .map((item, index) =>
-                              _renderTeamPerformance(
-                                item,
-                                index,
-                                teamPerformance.length
-                              )
-                            )}
-                        {showMoreLessTM &&
-                          teamPerformance &&
-                          teamPerformance.length > 0 &&
-                          teamPerformance.length > 4 &&
-                          teamPerformance.map((item, index) =>
-                            _renderTeamPerformance(
-                              item,
-                              index,
-                              teamPerformance.length
-                            )
-                          )}
 
-                        {!showMoreLessTM &&
-                          teamPerformance &&
-                          teamPerformance.length > 4 && (
-                            <div
-                              style={{ textAlign: "left" }}
-                              onClick={() => setShowMoreLessTM(!showMoreLessTM)}
-                              className="view-more-task"
-                            >
-                              view all members
-                            </div>
-                          )}
-                        {showMoreLessTM &&
-                          teamPerformance &&
-                          teamPerformance.length > 4 && (
-                            <div
-                              style={{ textAlign: "left" }}
-                              onClick={() => setShowMoreLessTM(!showMoreLessTM)}
-                              className="view-more-task"
-                            >
-                              Show less
-                            </div>
-                          )}
+                <div className="sidebar-overview-grid-new shadow bg-white rounded">
+                  <div className="take-action-small-title-new">Overview</div>
+                  <div className="take-action-title">Team Performance</div>
+                  <div className="btn-data-new">
+                    {teamStats &&
+                      teamStats.length > 0 &&
+                      teamStats.length <= 4 &&
+                      teamStats.map((item, index) =>
+                        _renderteamStats(item, index, teamStats.length)
+                      )}
+                    {!showMoreLessTM &&
+                      teamStats &&
+                      teamStats.length > 0 &&
+                      teamStats.length > 4 &&
+                      teamStats
+                        .slice(0, 4)
+                        .map((item, index) =>
+                          _renderteamStats(item, index, teamStats.length)
+                        )}
+                    {showMoreLessTM &&
+                      teamStats &&
+                      teamStats.length > 0 &&
+                      teamStats.length > 4 &&
+                      teamStats.map((item, index) =>
+                        _renderteamStats(item, index, teamStats.length)
+                      )}
+
+                    {!showMoreLessTM && teamStats && teamStats.length > 4 && (
+                      <div
+                        style={{ textAlign: "left" }}
+                        onClick={() => setShowMoreLessTM(!showMoreLessTM)}
+                        className="view-more-task"
+                      >
+                        view all members
                       </div>
-                    </div>
-                  )}
+                    )}
+                    {showMoreLessTM && teamStats && teamStats.length > 4 && (
+                      <div
+                        style={{ textAlign: "left" }}
+                        onClick={() => setShowMoreLessTM(!showMoreLessTM)}
+                        className="view-more-task"
+                      >
+                        Show less
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -33,6 +33,19 @@ const actionHandler = {
     taskReportById: payload,
   }),
 
+  [types.GET_TASK_REFERENSES_BY_TASK_NAME]: (state) => ({
+    ...state,
+    taskReferences: [],
+  }),
+  [types.GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    taskReferences: payload,
+  }),
+  [types.GET_TASK_REFERENSES_BY_TASK_NAME_FAILED]: (state) => ({
+    ...state,
+    taskReferences: [],
+  }),
+
   [types.GET_USER_BY_ROLE]: (state) => ({
     ...state,
     getUserByRole: {},
@@ -109,6 +122,19 @@ const actionHandler = {
   [types.POST_ASSIGN_TASK_SUCCESS_BY_TASKID]: (state, { payload }) => ({
     ...state,
     postAssignTask: payload,
+  }),
+
+  [types.CHANGE_TASK_STATUS]: (state) => ({
+    ...state,
+    changeTaskStatus: null,
+  }),
+  [types.CHANGE_TASK_STATUS_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    changeTaskStatus: payload,
+  }),
+  [types.CHANGE_TASK_STATUS_FAILED]: (state, { payload }) => ({
+    ...state,
+    changeTaskStatus: payload,
   }),
 
   [types.GET_AVAILABILITY_CHECK]: (state) => ({
@@ -259,6 +285,10 @@ const actionHandler = {
     ...state,
     companyDeleteStatus: payload,
   }),
+  [types.CO_SET_LOADER]: (state, { payload }) => ({
+    ...state,
+    loader: payload,
+  }),
 };
 
 export default handleActions(actionHandler, {
@@ -281,4 +311,5 @@ export default handleActions(actionHandler, {
   coAccountUpdStatus: {},
   companyDeleteStatus: {},
   paymentDetail: {},
+  loader: false,
 });

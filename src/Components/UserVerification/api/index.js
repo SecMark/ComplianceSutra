@@ -1,8 +1,8 @@
 import api from "../../../apiServices";
 
 const insertUpdateUserRequets = (payload) =>
-    api.post("/api/ins_upd_del_User", payload);
+  api.post("compliance.api.signUp", payload);
 
 export default {
-    insertUpdateUserRequets,
+  insertUpdateUserRequets,
 };

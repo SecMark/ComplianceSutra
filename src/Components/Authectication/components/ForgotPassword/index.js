@@ -38,15 +38,10 @@ function ForgotPassword({ history }) {
       invitation: "F",
     };
     apiServices
-      .post("/api/getEmailbody", obj)
+      .post("compliance.api.getEmailBody", obj)
       .then(function (response) {
         // handle success
-        if (
-          response &&
-          response.data &&
-          response.data.Status &&
-          response.data.Status === true
-        ) {
+        if (response && response.data.message.status === true) {
           toast.success(
             "The reset password link has been sent to your email account successfully"
           );
@@ -65,18 +60,20 @@ function ForgotPassword({ history }) {
       return;
     }
     let payload = {
-      loginID: values.email,
-      pwd: "",
-      rememberme: 0,
-      loginty: "AdminEmail",
+      email: values.email,
     };
-    let body;
     api
-      .post("/api/availabilityCheck", payload)
+      .post("/compliance.api.sendResetPasswordEmail", payload)
       .then(function (response) {
-        // handle success
-        if (response && response.data && response.data.Status === "True") {
-          sendResetPasswordEmail(values.email);
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
+          toast.success(
+            "The reset password link has been sent to your email account successfully"
+          );
+          //sendResetPasswordEmail(values.email);
         } else {
           toast.error("Email is not available please register account");
         }
@@ -109,7 +106,7 @@ function ForgotPassword({ history }) {
       .then(function (error) {});
   };
   const redirectToSignupScreen = () => {
-    return history.push("/");
+    return history.push("/sign-up");
   };
   return (
     <div className="row forgot-pass-mobile">

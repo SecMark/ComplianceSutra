@@ -13,6 +13,7 @@ import {
   SET_HISTORY_LIST,
   CLEAR_STATE,
   CLEAR_LICENSE_LIST,
+  UPDATED_LICENSE,
 } from "./types";
 
 export const setFilter = (payload) => {
@@ -107,5 +108,12 @@ export const clearLincenseList = () => {
 export const clearState = () => {
   return {
     type: CLEAR_STATE,
+  };
+};
+
+export const updateLicense = (payload) => {
+  return {
+    type: UPDATED_LICENSE,
+    payload,
   };
 };

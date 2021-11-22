@@ -18,25 +18,66 @@ const HistoryFilterForm = (props) => {
   const [differenceInDays, setDifferenceInDays] = useState(0);
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
   const [priorDate, setPriorDate] = useState("");
+  const [list, setList] = useState([]);
+  const [listOfLicense, setListOfLicense] = useState([]);
 
   const state = useSelector((state) => state);
   const history = useHistory();
   const actionDispatch = useDispatch();
 
+  // useEffect(() => {
+  //   if (state.HistoryReducer.companyList.length !== 0) {
+  //     const priorDates = state.HistoryReducer.companyList.map((item) =>
+  //       moment(item.EndDate).format("YYYY-MM-DD")
+  //     );
+  //     const priorDate = priorDates.reduce((prev, curr) => {
+  //       if (moment(prev).isAfter(curr)) {
+  //         return curr;
+  //       }
+  //       return prev;
+  //     });
+  //     setPriorDate(priorDate);
+  //   }
+  // }, [state.HistoryReducer.companyList]);
+
+  useEffect(() => {
+    //clearLincenseList();
+  }, [props.isShowFilter]);
+
   useEffect(() => {
     if (state.HistoryReducer.companyList.length !== 0) {
-      const priorDates = state.HistoryReducer.companyList.map((item) =>
-        moment(item.EndDate).format("YYYY-MM-DD")
-      );
-      const priorDate = priorDates.reduce((prev, curr) => {
-        if (moment(prev).isAfter(curr)) {
-          return curr;
-        }
-        return prev;
-      });
-      setPriorDate(priorDate);
+      getListOfCompany();
+      setListOfLicense([]);
     }
   }, [state.HistoryReducer.companyList]);
+
+  const getListOfCompany = () => {
+    const list = state?.HistoryReducer?.companyList.map((item, index) => {
+      return {
+        company_name: item.company_name,
+        id: item.company_docname,
+        selected: item.selected,
+      };
+    });
+    setList(list);
+  };
+
+  useEffect(() => {
+    if (state.HistoryReducer.licenseList.length !== 0) {
+      getListOfLicense();
+    }
+  }, [state.HistoryReducer.licenseList]);
+
+  const getListOfLicense = () => {
+    const list = state?.HistoryReducer?.licenseList.map((item, index) => {
+      return {
+        LicenseCode: item.LicenseCode,
+        LicenseID: index,
+        selected: item.selected,
+      };
+    });
+    setListOfLicense(list);
+  };
 
   useEffect(() => {
     setDifferenceInDays(
@@ -80,12 +121,6 @@ const HistoryFilterForm = (props) => {
     }
   }, [state.HistoryReducer]);
 
-  useEffect(() => {
-    if (state.HistoryReducer.numberOfSelectedCompanies === 0) {
-      actionDispatch(clearLincenseList());
-    }
-  }, [state.HistoryReducer.numberOfSelectedCompanies]);
-
   const setFilterAndNavigateToHistoryList = () => {
     let historyListPayload = {};
     if (
@@ -97,52 +132,53 @@ const HistoryFilterForm = (props) => {
         userID: state.auth.loginInfo?.UserID,
         usertype: state.auth.loginInfo?.UserType,
         startDate:
-          state.HistoryReducer.from &&
-          moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
-            "YYYY-MM-DD"
-          ),
+          state.HistoryReducer.from && state.HistoryReducer.from.length > 0
+            ? moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
+                "YYYY-MM-DD"
+              )
+            : null,
         endDate:
-          state.HistoryReducer.to &&
-          moment(state.HistoryReducer?.to.join("-"), "DD-M-YYYY").format(
-            "YYYY-MM-DD"
-          ),
+          state.HistoryReducer.to && state.HistoryReducer.to.length > 0
+            ? moment(state.HistoryReducer?.to.join("-"), "DD-M-YYYY").format(
+                "YYYY-MM-DD"
+              )
+            : null,
       };
     }
-    if (
-      state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
-      state.HistoryReducer.numberOfSelectedLicense !== 0 &&
-      state.HistoryReducer.from.length !== 1 &&
-      state.HistoryReducer.to.length !== 1
-    ) {
-      historyListPayload = {
-        entityid: constant.historyEntityId,
-        userID: state.auth.loginInfo?.UserID,
-        usertype: state.auth.loginInfo?.UserType,
+    // if (
+    //   state.HistoryReducer.numberOfSelectedCompanies !== 0 &&
+    //   state.HistoryReducer.numberOfSelectedLicense !== 0 &&
+    //   state.HistoryReducer.from.length !== 1 &&
+    //   state.HistoryReducer.to.length !== 1
+    // ) {
 
-        entityList: state.HistoryReducer.companyList
-          .filter((company) => company.selected === true)
-          .map((company) => company.EntityGroupID)
-          .join(","),
-
-        licList: state.HistoryReducer.licenseList
-          .filter((list) => list.selected === true)
-          .map((list) => list.LicenseCode)
-          .join(","),
-
-        startDate:
-          state.HistoryReducer.from &&
-          moment(state.HistoryReducer?.from.join("-"), "DD-M-YYYY").format(
-            "YYYY-MM-DD"
-          ),
-        endDate:
-          state.HistoryReducer.to &&
-          moment(state.HistoryReducer?.to.join("-"), "DD-M-YYYY").format(
-            "YYYY-MM-DD"
-          ),
-      };
-    }
+    const filters = {
+      from_date:
+        state.HistoryReducer.from &&
+        state.HistoryReducer.from.length > 0 &&
+        state.HistoryReducer.from[0] !== null
+          ? moment(state.HistoryReducer.from.join("-"), "DD-M-YYYY").format(
+              "YYYY-MM-DD"
+            )
+          : null,
+      to_date:
+        state.HistoryReducer.to &&
+        state.HistoryReducer.to.length > 0 &&
+        state.HistoryReducer.to[0] !== null
+          ? moment(state.HistoryReducer.to.join("-"), "DD-M-YYYY").format(
+              "YYYY-MM-DD"
+            )
+          : null,
+      company: state.HistoryReducer.companyList
+        .filter((company) => company.selected === true)
+        .map((company) => company.company_docname),
+      license: state.HistoryReducer.licenseList
+        .filter((list) => list.selected === true)
+        .map((list) => list.LicenseCode),
+    };
+    // }
     actionDispatch(adminMenuActions.setCurrentMenu("history"));
-    actionDispatch(getHistoryList(historyListPayload));
+    actionDispatch(getHistoryList({ filters }));
     props.setIsShowFilter(!props.isShowFilter);
   };
   return (
@@ -236,28 +272,25 @@ const HistoryFilterForm = (props) => {
         {}
       </div>
       <MultiSelectCompanyDropdown
-        options={state.HistoryReducer.companyList}
+        options={list}
         lableTitle="Company"
         inputTitle="Select Company"
         dispatch={actionDispatch}
       />
       <MultiSelectLicenseDropdown
-        options={state.HistoryReducer.licenseList}
+        options={listOfLicense}
         lableTitle="License"
         inputTitle="Select License"
         dispatch={actionDispatch}
       />
-      {isAllInputFilled &&
-      differenceInDays <= 365 &&
-      moment(
-        moment(state.HistoryReducer?.from.join("-"), "DD-MM-YYYY").format(
-          "YYYY-MM-DD"
-        )
-      ).isSameOrBefore(
-        moment(state.HistoryReducer?.to.join("-"), "DD-MM-YYYY").format(
-          "YYYY-MM-DD"
-        )
-      ) ? (
+      {state.HistoryReducer.from ||
+      state.HistoryReducer.to ||
+      state.HistoryReducer.companyList
+        .filter((company) => company.selected === true)
+        .map((company) => company.company_docname).length > 0 ||
+      state.HistoryReducer.licenseList
+        .filter((license) => license.selected === true)
+        .map((license) => license.LicenseCode).length > 0 ? (
         <button
           onClick={setFilterAndNavigateToHistoryList}
           className="filter-button-active"

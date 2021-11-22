@@ -9,7 +9,12 @@ import {
 } from "../../../Components/HistoryModule/redux/actions";
 import "./style.css";
 
-function MultiSelectLicenseDropdown({ lableTitle, options, dispatch,cssstyle }) {
+function MultiSelectLicenseDropdown({
+  lableTitle,
+  options,
+  dispatch,
+  cssstyle,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const state = useSelector((state) => state);
 
@@ -20,7 +25,9 @@ function MultiSelectLicenseDropdown({ lableTitle, options, dispatch,cssstyle }) 
           {lableTitle}:
         </label>
         <div
-          className={`form-control ${cssstyle === "taskhistory" ? "taskhistory":"select-container"}`}
+          className={`form-control ${
+            cssstyle === "taskhistory" ? "taskhistory" : "select-container"
+          }`}
           id="lable-title"
           onClick={(e) => {
             if (options.length === 0) {
@@ -56,7 +63,7 @@ function MultiSelectLicenseDropdown({ lableTitle, options, dispatch,cssstyle }) 
         </div>
         {options.length !== 0 && (
           <div className="dropdown-container" onBlur={() => setIsOpen(false)}>
-            <div className={`dropdown ${isOpen && "dropdown--open"}`}>
+            <div className={`dropdown-multi ${isOpen && "dropdown--open"}`}>
               {options.map((option) => {
                 const id = option.LicenseID;
                 return (
@@ -64,7 +71,11 @@ function MultiSelectLicenseDropdown({ lableTitle, options, dispatch,cssstyle }) 
                     className="dropdown-item d-flex"
                     key={id}
                     onClick={() => {
-                      dispatch(selectLicenseToggle(id));
+                      if (
+                        state.HistoryReducer.numberOfSelectedCompanies !== 0
+                      ) {
+                        dispatch(selectLicenseToggle(id));
+                      }
                     }}
                   >
                     <span className="dropdown-item__title">

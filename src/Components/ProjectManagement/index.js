@@ -1,39 +1,37 @@
-import React, { useState, useEffect } from "react";
-// import { Link, Route } from "react-router-dom";
-import { MdAdd, MdAddBox } from "react-icons/md";
+import React, { useRef, useState } from "react";
+import Cobg from "../../assets/Images/Onboarding/co-bg.png";
+import ListView from "./ProjectView/ListView";
 import "./style.css";
-import MobileLeftSideBar from "../../CommonModules/sharedComponents/MobileLeftSideBar";
-import { useParams, useRouteMatch } from "react-router";
-import { Switch, Route } from "react-router-dom";
-import ProjectAndTask from "./Project&Task";
-import SubTasks from "./SubTasks";
-import Milestone from "./Milestone";
-const ProjectManagement = () => {
-  const { path, url } = useRouteMatch();
-  useEffect(() => {
-    console.log({ path, url });
-  }, []);
+
+const ProjectDesktop = (props) => {
   return (
-    <div className="project-management p-0 p-md-4">
-      <div className="project-management__container">
-        <MobileLeftSideBar />
-        <Switch>
-          <Route exact path={path}>
-            <ProjectAndTask />
-          </Route>
-          <Route exact path={`${path}/project-milestone`}>
-            <Milestone />
-          </Route>
-          <Route exact path={`${path}/project-tasks`}>
-            <h1>task list</h1>
-          </Route>
-          <Route exact path={`${path}/sub-tasks`}>
-            <SubTasks />
-          </Route>
-        </Switch>
+    <div className="row co-dashboard fix-top">
+      <div className=" left-fixed ">
+        <div className="on-boarding"></div>
+      </div>
+      <div className="col-12 ">
+        <img className="right-bg" src={Cobg} alt="" />
+        <div className="project-management-container">
+          <div className="project-mangement-header">
+            <div className="project-mangement-title">Projects & Task</div>
+
+            <div className="project-task-button">
+              <button>P +</button>
+              <button>T +</button>
+            </div>
+          </div>
+
+          <div className="project-view">
+            <span className="active">Projects</span>
+            <div className="view-progress"></div>
+            <span className="inactive second-view">Tasks</span>
+            <span className="inactive second-view">Calendar</span>
+          </div>
+          <ListView />
+        </div>
       </div>
     </div>
   );
 };
 
-export default ProjectManagement;
+export default ProjectDesktop;

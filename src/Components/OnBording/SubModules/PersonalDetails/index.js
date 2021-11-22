@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import comtech from "../../../../assets/Images/CapmTech.png";
@@ -14,28 +14,28 @@ import MobileStepper from "../mobileStepper";
 import render from "htmlparser2/node_modules/dom-serializer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
 function PersonalDetails({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
   const [visible, setVisibility] = useState(false);
-  const [visibal,setVisibiliti] = useState(false);
+  const [visibal, setVisibiliti] = useState(false);
 
-  const Icon = (<FontAwesomeIcon icon={  visible ? "eye-slash" : "eye" }
-  onClick={() => setVisibility(visiblity => !visiblity)}
-  />
-  )
+  const Icon = (
+    <FontAwesomeIcon
+      icon={visible ? "eye-slash" : "eye"}
+      onClick={() => setVisibility((visiblity) => !visiblity)}
+    />
+  );
   const InputType = visible ? "text" : "password";
 
-
-  const Iconic = (<FontAwesomeIcon icon={  visibal ? "eye-slash" : "eye" }
-  onClick={() => setVisibiliti(visiblity => !visiblity)}
-  />
-  )
+  const Iconic = (
+    <FontAwesomeIcon
+      icon={visibal ? "eye-slash" : "eye"}
+      onClick={() => setVisibiliti((visiblity) => !visiblity)}
+    />
+  );
   const ConfirmInputType = visibal ? "text" : "password";
-
-
 
   const quote_id = state && state.auth && state.auth.quote_id;
   const [isValidate, setIsValidate] = useState(false);
@@ -51,12 +51,14 @@ function PersonalDetails({ history }) {
   const [errors, setErrors] = useState({
     passwordErr: "",
     confirmPasswordErr: "",
+    companyErr: "",
     mobileNumErr: "",
     countryCodeErr: "",
     designationErr: "",
   });
   const [whatappFlag, setWhatappFlag] = useState(false);
   const [isCompanyNameValid, setIsCompanyNameValid] = useState(true);
+  const [isMobileValid, setIsMobileValid] = useState(true);
   const [passwordState, setPasswordState] = useState({
     minlength: false,
     uppercaseandlowercase: false,
@@ -64,7 +66,11 @@ function PersonalDetails({ history }) {
   });
 
   const [countryCode, setCountryCode] = useState("+91");
+
   const onChangeHandler = (name) => (event) => {
+    if (name === "companyName") {
+      validateCompanyName(event);
+    }
     if (name === "fullName" || name === "designation") {
       const re = /^[a-z|A-Z_ ]*$/;
       if (event.target.value && !re.test(event.target.value)) {
@@ -88,6 +94,14 @@ function PersonalDetails({ history }) {
     }
 
     if (name === "mobileNumber") {
+      // mobileNumber
+      setValues({
+        ...values,
+        mobileNumber: event.target.value,
+      });
+      if (event.target.value.length >= 10) {
+        MobileValidate(event);
+      }
       let inputKey = "mobileNumErr";
 
       if (event.target.value > 0 && event.target.value < 9) {
@@ -174,6 +188,7 @@ function PersonalDetails({ history }) {
         setErrors({ ...errors, [inputKey]: "" });
       }
     }
+    // MobileadnCompanyCheck("mobileNumber");
     setValues({ ...values, [name]: event.target.value });
   };
 
@@ -209,23 +224,20 @@ function PersonalDetails({ history }) {
       let strr = values.countryCode;
 
       countryCode = strr;
+      localStorage.setItem("mobileNumber", values.mobileNumber);
+      localStorage.setItem("companyName", values.companyName);
       dispatch(
         personalDetailsAction.insUpdateDeletAPIRequest({
-          entityName: values.companyName,
-          adminName: values.fullName,
-          adminEmail: email,
-          adminMobile: values.mobileNumber,
-          adminPWD: values.password,
-          isClientTypeUser: 0,
-          userType: 3,
-          actionFlag: 1,
+          email: email.replace(/ /g, "+"),
+          token: localStorage.getItem("accessToken"),
+          full_name: values.fullName,
+          company_name: values.companyName,
+          mobile_number: values.mobileNumber,
           designation: values.designation,
-          userID: "",
-          history,
-          from: "personal-details-co",
-          whatsupFlag: whatappFlag ? 1 : 0,
-          countrycode:
-            countryCode === "" || countryCode === "+" ? "+91" : countryCode,
+          password: values.password,
+          confirm_password: values.password,
+          countrycode: values.countryCode || "+91",
+          history: history,
         })
       );
     } else {
@@ -236,20 +248,47 @@ function PersonalDetails({ history }) {
 
   const validateCompanyName = (e) => {
     let payload = {
-      loginID: e.target.value,
-      pwd: "",
-      rememberme: 0,
-      loginty: "AdminCompany",
-      countrycode: values.countryCode,
+      company_name: e.target.value,
     };
     api
-      .post("/api/availabilityCheck", payload)
+      .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.Status === "True") {
+        console.log("got this response", response);
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
           setIsCompanyNameValid(false);
         } else {
           setIsCompanyNameValid(true);
+        }
+      })
+      .catch(function (error) {
+        if (error) {
+          setIsCompanyNameValid(false);
+        }
+      });
+  };
+
+  const MobileValidate = (e) => {
+    let payload = {
+      mobile_no: e.target.value,
+    };
+    api
+      .post("compliance.api.avabilityCheck", payload)
+      .then(function (response) {
+        // handle success
+        console.log("got this response", response.data.message.status);
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
+          setIsMobileValid(false);
+        } else {
+          setIsMobileValid(true);
         }
       })
       .catch(function (error) {
@@ -291,8 +330,8 @@ function PersonalDetails({ history }) {
         }
       });
   };
-    
-      return (
+
+  return (
     <div className="row get-mobile-personal-detail">
       <div className="col-3 col-sm-4 col-md-4 col-xl-3 left-fixed">
         <div className="on-boarding">
@@ -378,23 +417,26 @@ function PersonalDetails({ history }) {
                               name="countryCode"
                               maxLength="3"
                               value={values.countryCode}
-                              onChange={onChangeHandler("countryCode")}
-                              onBlur={(e) => validateCountryCode(e)}
+                              // onChange={onChangeHandler("countryCode")}
+                              // onBlur={(e) => validateCountryCode(e)}
                             />
 
                             <input
-                              type="text"
+                              type="Number"
                               className={
                                 "form-control " +
                                 (values.mobileNumber !== "" &&
-                                values.mobileNumber.length < 10
+                                values.mobileNumber.length < 10 && 
+                                values.mobileNumber.length > 10
                                   ? " mobile-input-invalid-control"
                                   : " ") +
                                 " dropdown-phone" +
                                 ((isValidate && values.mobileNumber === "") ||
                                 (isValidate &&
                                   values.mobileNumber !== "" &&
-                                  values.mobileNumber.length < 10)
+                                  values.mobileNumber.length < 10
+                                  && 
+                                values.mobileNumber.length > 10)
                                   ? " input-error"
                                   : "") +
                                 (values.mobileNumber.length == 10
@@ -403,9 +445,11 @@ function PersonalDetails({ history }) {
                               }
                               id="MobileNumber"
                               placeholder="Enter your mobile number"
+                              name="mobileNumber"
                               value={values.mobileNumber}
                               onChange={onChangeHandler("mobileNumber")}
                               onKeyPress={(e) => handleKeyDown(e)}
+                              maxLength="10"
                             />
                           </div>
 
@@ -420,10 +464,22 @@ function PersonalDetails({ history }) {
                               Mobile number is required
                             </p>
                           )}
+
+                          {!isMobileValid && (
+                            <p className="input-error-message">
+                              mobile no already exists
+                            </p>
+                          )}
                           {values.mobileNumber !== "" &&
                             values.mobileNumber.length < 10 && (
                               <p className="input-error-message">
                                 Mobile number is invalid
+                              </p>
+                            )}
+                             {values.mobileNumber !== "" &&
+                            values.mobileNumber.length > 10 && (
+                              <p className="input-error-message">
+                                Mobile number can't be more then 10 digit
                               </p>
                             )}
                         </div>
@@ -447,7 +503,6 @@ function PersonalDetails({ history }) {
                             }
                             id="CompanyName"
                             placeholder="Enter your company name"
-                            onBlur={(e) => validateCompanyName(e)}
                             value={values.companyName}
                             onChange={onChangeHandler("companyName")}
                             onKeyPress={(e) => handleKeyDown(e)}
@@ -522,9 +577,8 @@ function PersonalDetails({ history }) {
                             value={values.password}
                             onChange={onChangeHandler("password")}
                             onKeyPress={(e) => handleKeyDown(e)}
-                          />       
-                          <span className="password-toggle-icon">{Icon}</span> 
-                          
+                          />
+                          <span className="password-toggle-icon">{Icon}</span>
 
                           {isValidate && values.password === "" && (
                             <p className="input-error-message">
@@ -612,7 +666,9 @@ function PersonalDetails({ history }) {
                             onKeyPress={(e) => handleKeyDown(e)}
                           />
 
-                          <span className="password-toggle-iconic">{Iconic}</span> 
+                          <span className="password-toggle-iconic">
+                            {Iconic}
+                          </span>
 
                           {isValidate && values.confirmPassword === "" && (
                             <p className="input-error-message">
@@ -687,7 +743,10 @@ function PersonalDetails({ history }) {
                         errors.passwordErr !== "" ||
                         errors.confirmPasswordErr !== "" ||
                         errors.countryCodeErr === "true" ||
-                        values.mobileNumber.length < 10
+                        values.mobileNumber.length < 10 ||
+                        values.mobileNumber.length > 10 ||
+                        isValidate ||
+                        !isMobileValid
                       }
                       style={{ width: 134 }}
                     >
@@ -711,7 +770,6 @@ function PersonalDetails({ history }) {
       </div>
     </div>
   );
-                    
 }
 
 export default withRouter(PersonalDetails);

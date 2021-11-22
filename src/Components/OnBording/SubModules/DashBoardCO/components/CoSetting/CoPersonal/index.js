@@ -22,15 +22,15 @@ function CoSettingRightGrid({ handleClose, history }) {
   const [otp, setOtp] = useState("");
   const [showResendSection, setShowResendSection] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
-
+  const [isCompanyNameValid, setIsCompanyNameValid] = useState(true);
   const [email, setEmail] = useState(null);
   const [number, setNumber] = useState(null);
 
   const [values, setValues] = useState({
-    userName: "",
+    full_name: "",
     designation: "",
-    emailId: "",
-    mobileNo: "",
+    email: "",
+    mobile_no: "",
     countrycode: "",
   });
   const [isValidEmail, setIsValidEmail] = useState(null);
@@ -43,7 +43,7 @@ function CoSettingRightGrid({ handleClose, history }) {
   const [isEnableSecureOTP, setIsEnabledSecureOTP] = useState(false);
   const [showChangeMobileSection, setShowChangeMobileSection] = useState(false);
   const [disabled, setDisabled] = useState(false);
-
+  const [mobileErr, setMobileErr] = useState("");
   const [verifyPassword, setVerifyPassword] = useState({
     password: "",
     passwordError: "",
@@ -53,7 +53,7 @@ function CoSettingRightGrid({ handleClose, history }) {
   useEffect(() => {
     dispatch(
       coActions.availabilityCheckequest({
-        loginID: loggedUser.EmailID,
+        loginID: loggedUser.email,
         loginty: "AdminEmail",
       })
     );
@@ -82,7 +82,7 @@ function CoSettingRightGrid({ handleClose, history }) {
 
   const verfiyEmail = async (email) => {
     if (validator.isEmail(email)) {
-      if (email !== valuesBackup.emailId) {
+      if (email !== valuesBackup.email) {
         let payload = {
           loginID: email,
           pwd: "",
@@ -118,25 +118,25 @@ function CoSettingRightGrid({ handleClose, history }) {
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.UserName;
+      state.taskReport.userAvailability.availabilityInfo.full_name;
     const _designation =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.Designation;
-    const _emailId =
+      state.taskReport.userAvailability.availabilityInfo.designation;
+    const _email =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.EmailID;
+      state.taskReport.userAvailability.availabilityInfo.email;
     const _mobile =
       state &&
       state.taskReport &&
       state.taskReport.userAvailability &&
       state.taskReport.userAvailability.availabilityInfo &&
-      state.taskReport.userAvailability.availabilityInfo.Mobile;
+      state.taskReport.userAvailability.availabilityInfo.mobile_no;
     const _userInfo =
       state &&
       state.taskReport &&
@@ -144,11 +144,11 @@ function CoSettingRightGrid({ handleClose, history }) {
       state.taskReport.userAvailability.availabilityInfo;
 
     let userObj = {
-      userName: _name != "" && _name != undefined ? _name : "",
+      full_name: _name != "" && _name != undefined ? _name : "",
       designation:
         _designation != "" && _designation != undefined ? _designation : "",
-      emailId: _emailId != "" && _emailId != undefined ? _emailId : "",
-      mobileNo: _mobile != "" && _mobile != undefined ? Number(_mobile) : "",
+      email: _email != "" && _email != undefined ? _email : "",
+      mobile_no: _mobile != "" && _mobile != undefined ? Number(_mobile) : "",
       countrycode:
         _userInfo !== "" && _userInfo !== undefined
           ? _userInfo.countrycode
@@ -160,44 +160,47 @@ function CoSettingRightGrid({ handleClose, history }) {
     setUserInfoBackup(_userInfo);
   }, [state.taskReport.userAvailability]);
 
-  useEffect(() => {
-    const actionStatus =
-      state &&
-      state.taskReport &&
-      state.taskReport.coDetailsInsUpdDelInfo &&
-      state.taskReport.coDetailsInsUpdDelInfo.insUpdDelstatus;
-    if (actionStatus != undefined) {
-      if (actionStatus === "Success") {
-        let updEmail =
-          state &&
-          state.taskReport &&
-          state.taskReport.coDetailsInsUpdDelInfo &&
-          state.taskReport.coDetailsInsUpdDelInfo.data;
+  // useEffect(() => {
+  //   const actionStatus =
+  //     state &&
+  //     state.taskReport &&
+  //     state.taskReport.coDetailsInsUpdDelInfo &&
+  //     state.taskReport.coDetailsInsUpdDelInfo.insUpdDelstatus;
+  //   if (actionStatus != undefined) {
+  //     if (actionStatus === "Success") {
+  //       let updEmail =
+  //         state &&
+  //         state.taskReport &&
+  //         state.taskReport.coDetailsInsUpdDelInfo &&
+  //         state.taskReport.coDetailsInsUpdDelInfo.data;
 
-        let logInfo = { ...loggedUser };
-        logInfo.EmailID = updEmail[0][0].UserDetails[0].EmailID;
-        dispatch(logInfoActions.updateEmailInfo(logInfo));
-        setTimeout(() => {
-          const UpdatedLogInInfo = state && state.auth && state.auth.loginInfo;
-          dispatch(
-            coActions.availabilityCheckequest({
-              loginID: logInfo.EmailID,
-              loginty: "AdminEmail",
-            })
-          );
-        }, 1000);
-      }
-    }
-  }, [state.taskReport.coDetailsInsUpdDelInfo]);
+  //       let logInfo = { ...loggedUser };
+  //       logInfo.email = updEmail[0][0].UserDetails[0].email;
+  //       dispatch(logInfoActions.updateEmailInfo(logInfo));
+  //       setTimeout(() => {
+  //         const UpdatedLogInInfo = state && state.auth && state.auth.loginInfo;
+  //         dispatch(
+  //           coActions.availabilityCheckequest({
+  //             loginID: logInfo.email,
+  //             loginty: "AdminEmail",
+  //           })
+  //         );
+  //       }, 1000);
+  //     }
+  //   }
+  // }, [state.taskReport.coDetailsInsUpdDelInfo]);
 
   const onSubmit = () => {
     let isSubmit = false;
+    // if(values.mobile_no === valuesBackup.mobile_no){
+    //   console.log("previous and this mobile no",values.mobile_no,valuesBackup.mobile_no);
+    // }
     if (
-      values.userName === "" ||
-      values.mobileNo === "" ||
-      values.mobileNo.length < 10 ||
-      values.emailId === "" ||
-      !validator.isEmail(values.emailId) ||
+      values.full_name === "" ||
+      values.mobile_no === "" ||
+      values.mobile_no.length < 10 ||
+      values.email === "" ||
+      !validator.isEmail(values.email) ||
       (isValidEmail !== null && !isValidEmail) ||
       values.designation === "" ||
       values.countrycode === ""
@@ -206,21 +209,22 @@ function CoSettingRightGrid({ handleClose, history }) {
       isSubmit = false;
     } else {
       if (
-        values.emailId === valuesBackup.emailId &&
-        values.mobileNo === valuesBackup.mobileNo
+        values.email === valuesBackup.email &&
+        !values.mobile_no === valuesBackup.mobile_no
       ) {
         setIsValidate(false);
         handleFinalSubmit();
       } else {
-        if (email) setVerifyModalHideShow(true);
-        else {
-          if (!otpValid) {
-            setOtpModal(true);
-            setOtpInValid(false);
-            setSeconds(59);
-            setIsOtpVerfied(false);
-            sendOTPRequest();
-          }
+        //<--------------------------------- commenting this till i get login api ------------------------------->
+        // if (email)
+        // setVerifyModalHideShow(true);
+        // else {
+        if (!otpValid && mobileErr === "") {
+          setOtpModal(true);
+          setOtpInValid(false);
+          setSeconds(59);
+          setIsOtpVerfied(false);
+          sendOTPRequest();
         }
       }
     }
@@ -228,7 +232,7 @@ function CoSettingRightGrid({ handleClose, history }) {
   const handleVerifyModalAction = (flag) => {
     if (flag) {
       let payload = {
-        loginID: loggedUser.EmailID,
+        loginID: loggedUser.email,
         pwd: verifyPassword.password,
       };
       api
@@ -292,11 +296,10 @@ function CoSettingRightGrid({ handleClose, history }) {
   const resendOTP = () => {
     setShowResendSection(false);
     let payload = {
-      phn: "",
-      email: "email",
+      mobile_number: values.mobile_no,
     };
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
         if (response && response.data && response.data.statuscode === "200") {
@@ -313,33 +316,42 @@ function CoSettingRightGrid({ handleClose, history }) {
 
   const handleFinalSubmit = () => {
     let payload = {
-      adminName: values.userName,
-      adminMobile: values.mobileNo,
-      adminEmail: values.emailId,
-      userType: values.emailId !== valuesBackup.emailId ? 9 : 1,
+      full_name: values.full_name,
+      mobile_no: values.mobile_no,
+      adminEmail: values.email,
+      userType: values.email !== valuesBackup.email ? 9 : 1,
       actionFlag: 2,
       designation: values.designation,
       userID: userInfoBackup.UserID,
       countrycode: values.countrycode,
     };
+    console.log(payload);
     dispatch(coActions.coDetailsInsUpdDelRequest(payload));
     setValuesChanged(false);
   };
   const onChangeHandler = (name) => (event) => {
-    if (name === "userName" || name === "designation") {
+    if (name === "full_name" || name === "designation") {
       const re = /^[a-z|A-Z_ ]*$/;
       if (event.target.value && !re.test(event.target.value)) {
         return "";
       }
     }
-    if (name === "mobileNo") {
-      const mobileNumberReg = /^[0-9]{0,10}$/;
-      if (!mobileNumberReg.test(Number(event.target.value))) {
-        return "";
+    if (name === "mobile_no") {
+      if (event.target.value == valuesBackup.mobile_no) {
+        setMobileErr("the mobile no is same as before");
+        setIsValidate(true);
+        setValuesChanged(false);
+      } else {
+        setMobileErr("");
+        const mobileNumberReg = /^[0-9]{0,10}$/;
+        if (!mobileNumberReg.test(Number(event.target.value))) {
+          return "";
+        }
       }
+
       setNumber(event.target.value);
     }
-    if (name === "emailId") {
+    if (name === "email") {
       verfiyEmail(event.target.value);
       setEmail(event.target.value);
     }
@@ -352,17 +364,18 @@ function CoSettingRightGrid({ handleClose, history }) {
   const verifyOTP = () => {
     let payload = {};
     payload = {
-      phn: values.mobileNo,
-      email: values.emailId,
-      otp: otp,
+      input_otp: otp,
     };
     if (otp !== "") {
       api
-        .post("/api/GetOTP", payload)
+        .post("compliance.api.verifyOtp", payload)
         .then(function (response) {
           // handle success
-          if (response && response.data && response.data.Status != "False") {
-            setOtpInValid(true);
+          if (
+            (response && response.data && response.data.message.status) ||
+            response.data.message === true
+          ) {
+            setOtpInValid(false);
             setIsOtpVerfied(true);
             setOtpModal(false);
             handleFinalSubmit();
@@ -374,7 +387,7 @@ function CoSettingRightGrid({ handleClose, history }) {
         })
         .catch(function (error) {
           if (error) {
-            setOtpInValid(false);
+            setOtpInValid(true);
             toast.error("Invalid OTP");
           }
         });
@@ -385,17 +398,22 @@ function CoSettingRightGrid({ handleClose, history }) {
 
   const sendOTPRequest = (text) => {
     setDisabled(true);
-    let payload = {};
+    if(valuesBackup.mobile_no === values.mobile_no){
+      setMobileErr("the no you typed is already saved")
+      setValuesChanged(false);
+    }
+    else{
+      let payload = {};
     payload = {
-      phn: values.mobileNo,
-      email: values.emailId,
+      mobile_number: values.mobile_no,
     };
 
     api
-      .post("/api/sendmsgwithverificationcode", payload)
+      .post("compliance.api.generateOtp", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.statuscode === "200") {
+        console.log("got this response", response);
+        if (response && response.status === 200) {
           setIsEnabledSecureOTP(true);
           setShowChangeMobileSection(false);
           toast.success(
@@ -412,6 +430,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           setIsEnabledSecureOTP(false);
         }
       });
+    }
   };
 
   const renderVerifyDialog = () => {
@@ -502,7 +521,7 @@ function CoSettingRightGrid({ handleClose, history }) {
               Enter OTP to confirm changes
             </div>
             <div className="confirm-title-desc">
-              Sent to +91{values.mobileNo}
+              Sent to +91{values.mobile_no}
             </div>
             <div class="form-group">
               <input
@@ -511,6 +530,7 @@ function CoSettingRightGrid({ handleClose, history }) {
                 placeholder="Enter 6 digit OTP"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
+                maxLength="6"
               />
 
               {!showResendSection && (
@@ -597,14 +617,14 @@ function CoSettingRightGrid({ handleClose, history }) {
               type="text"
               className={
                 "form-control right-input-row " +
-                (isValidate && values.userName === "" ? "input-error" : "")
+                (isValidate && values.full_name === "" ? "input-error" : "")
               }
-              value={values.userName}
+              value={values.full_name}
               placeholder="Enter your name"
               id="name"
-              onChange={onChangeHandler("userName")}
+              onChange={onChangeHandler("full_name")}
             />
-            {isValidate && values.userName === "" && (
+            {isValidate && values.full_name === "" && (
               <p className="input-error-message absPosition">
                 Name is required
               </p>
@@ -641,38 +661,39 @@ function CoSettingRightGrid({ handleClose, history }) {
           <div>
             <input
               type="text"
+              disabled
               className={`form-control right-input-row ${
                 isValidate &&
-                (values.emailId === "" ||
-                  !validator.isEmail(values.emailId) ||
-                  (validator.isEmail(values.emailId) &&
+                (values.email === "" ||
+                  !validator.isEmail(values.email) ||
+                  (validator.isEmail(values.email) &&
                     isValidEmail !== null &&
                     !isValidEmail))
                   ? "input-error"
                   : ""
               }`}
-              value={values.emailId}
+              value={values.email}
               placeholder="Enter your email id"
               id="email"
-              onChange={onChangeHandler("emailId")}
+              onChange={onChangeHandler("email")}
             />
-            {isValidate && values.emailId === "" && (
+            {isValidate && values.email === "" && (
               <p className="input-error-message absPosition">
                 Email ID is required
               </p>
             )}
             {isValidate &&
-              values.emailId !== "" &&
-              !validator.isEmail(values.emailId) && (
+              values.email !== "" &&
+              !validator.isEmail(values.email) && (
                 <p className="input-error-message absPosition">
                   Enter Valid Email ID
                 </p>
               )}
             {isValidate &&
-              values.emailId !== "" &&
-              validator.isEmail(values.emailId) &&
+              values.email !== "" &&
+              validator.isEmail(values.email) &&
               !isValidEmail &&
-              values.emailId !== valuesBackup.emailId && (
+              values.email !== valuesBackup.email && (
                 <p className="input-error-message absPosition">
                   Email already exists.
                 </p>
@@ -714,28 +735,33 @@ function CoSettingRightGrid({ handleClose, history }) {
                 className={
                   "form-control right-input-row contact-input-box" +
                   (isValidate &&
-                  (values.mobileNo === "" || values.mobileNo.length < 10)
+                  (values.mobile_no === "" || values.mobile_no.length < 10)
                     ? "input-error"
                     : "")
                 }
-                value={values.mobileNo}
+                value={values.mobile_no}
                 placeholder="Enter your mobile no"
                 id="mobile"
-                onChange={onChangeHandler("mobileNo")}
+                onChange={onChangeHandler("mobile_no")}
                 maxLength="10"
               />
-              {isValidate && values.mobileNo === "" && (
+              {isValidate && values.mobile_no === "" && (
                 <p className="input-error-message absPosition">
                   Mobile number is required
                 </p>
               )}
               {isValidate &&
-                values.mobileNo !== "" &&
-                values.mobileNo.length < 10 && (
+                values.mobile_no !== "" &&
+                values.mobile_no.length < 10 && (
                   <p className="input-error-message absPosition">
                     Mobile number is invalid
                   </p>
                 )}
+                {/* {mobileErr !== "" && (
+                <p className="input-error-message absPosition">
+                  {mobileErr}
+                </p>
+              )} */}
             </div>
           </div>
         </div>
@@ -754,7 +780,7 @@ function CoSettingRightGrid({ handleClose, history }) {
           <div className="col-12 col-sm-12 col-md-12 col-xl-12 flex">
             <button
               className={
-                valuesChanged !== false
+                valuesChanged !== false && mobileErr ===""
                   ? "btn save-changes-blue-btn"
                   : "btn save-changes-btn"
               }
@@ -772,6 +798,7 @@ function CoSettingRightGrid({ handleClose, history }) {
                   setValues(valuesBackup);
                   setValuesChanged(false);
                   setIsValidate(false);
+                  setMobileErr("")
                 }}
               >
                 discard changes

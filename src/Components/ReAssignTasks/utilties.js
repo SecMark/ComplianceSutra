@@ -68,10 +68,10 @@ const searchUsers = (searchValue, data) => {
   if (searchValue !== "") {
     const searchResult = [
       ...data.filter((item) =>
-        item.UserName.toLowerCase().includes(searchValue.toLowerCase())
+        item.full_name.toLowerCase().includes(searchValue.toLowerCase())
       ),
       ...data.filter((item) =>
-        item.EmailID.toLowerCase().includes(searchValue.toLowerCase())
+        item.email.toLowerCase().includes(searchValue.toLowerCase())
       ),
     ];
     return [...new Set(searchResult)];

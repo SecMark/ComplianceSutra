@@ -5,7 +5,6 @@ import { actions as notificationActions } from "../Components/OnBording/SubModul
 import bellSelected from "../assets/Icons/bellSelected.png";
 
 function SingleNotification(props) {
-
   const dispatch = useDispatch();
   let text = "";
   let taskId = 0;
@@ -19,9 +18,9 @@ function SingleNotification(props) {
         </div>
         <div className="col-9">
           <div
-            dangerouslySetInnerHTML={{
-              __html: text,
-            }}
+            // dangerouslySetInnerHTML={{
+            //   __html: text,
+            // }}
             className="auto-toster-text"
           ></div>
 

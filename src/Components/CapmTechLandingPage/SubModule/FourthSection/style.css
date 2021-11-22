@@ -1,0 +1,83 @@
+.fourth-section-heading1 {
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.8;
+  letter-spacing: normal;
+  text-align: center;
+  color: #6c5dd3;
+  justify-content: center;
+}
+
+.fourth-section-heading2 {
+  font-family: Poppins;
+  font-size: 36px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: center;
+  color: #1b1d21;
+  justify-content: center;
+}
+
+.fourth-section-background {
+  background-image: url("../../../../assets/Images/CAPMLanding/customercounter.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.fourth-section-counters {
+  font-family: Poppins;
+  font-size: 32px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.69;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
+.fourth-section-counters-para {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.57;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
+.fourth-section-team-info-heading {
+  font-family: Poppins;
+  font-size: 28px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.07;
+  letter-spacing: normal;
+  text-align: center;
+  color: #333;
+  margin-top: -110px;
+}
+
+.fourth-section-team-info-heading-para {
+  opacity: 0.78;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.77;
+  letter-spacing: normal;
+  text-align: center;
+  color: #555;
+}

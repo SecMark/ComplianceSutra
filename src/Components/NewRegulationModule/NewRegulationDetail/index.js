@@ -7,8 +7,7 @@ const NewRegulationDetail = ({
   changeShowRegulationDetail,
   newRegulationDetail,
 }) => {
-  const detail =
-    newRegulationDetail && newRegulationDetail?.getNewRegulationDetailById;
+  const detail = newRegulationDetail;
   return (
     <div
       className={`filter-popup detail-popup ${
@@ -32,26 +31,43 @@ const NewRegulationDetail = ({
             cursor: "pointer",
           }}
         />
-        <h3>{detail?.Title}</h3>
+        <h3>{detail?.title}</h3>
         <div className="detail-popup-main-content">
           <div
             dangerouslySetInnerHTML={{
-              __html: detail?.Gist,
+              __html: detail?.description,
             }}
-          />
+          ></div>
+          <p>
+            For more information click this link{" "}
+            <a href={detail?.circular_link} target="blank">
+              {detail?.circular_link}
+            </a>
+          </p>
         </div>
+
         <div className="detail-popup-main-footer">
           <p>Tags:</p>
           <div className="detail-popup-main-footer-labels">
             <div className="tags">
               <div className="tag-buttons">
-                <buton className="tags-button">{detail?.Industry}</buton>
-                <buton className="tags-button">{detail?.Topic}</buton>
-                <buton className="tags-button">{detail?.Regbodies}</buton>
+                {detail?.tags &&
+                  detail?.tags.map((item) => (
+                    <button className="tags-button">{item}</button>
+                  ))}
               </div>
               <a
-                href={`${detail?.FileLOcation}${detail?.c_file}`}
+                href={`data:application/${
+                  detail?.file_details &&
+                  detail?.file_details[0].file_name.split(".").pop()
+                };base64,${
+                  detail?.file_details && detail?.file_details[0].encoded_string
+                }`}
                 className="download-file"
+                download={
+                  detail?.file_details && detail?.file_details[0].file_name
+                }
+                target="_blank"
               >
                 Download File
               </a>

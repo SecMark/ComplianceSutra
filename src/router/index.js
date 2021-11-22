@@ -2,10 +2,12 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import CapmTechLandingPage from "../Components/CapmTechLandingPage";
+import ComplianceLanding from "../Components/ComplianceLandingPage";
 import TeamMember from "../Components/TeamMemberFlow/DashBoard";
 import DashBoardView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView";
 import OnBoarding from "../Components/OnBording/SubModules/GetStarted";
-import ComplianceDemo7 from "../Components/ComplianceModule/ComplianceDemo7";
+import ComplianceDemo from "../Components/ComplianceModule";
+import ComplianceDemoEnd from "../Components/ComplianceModule/ComplianceDemo7";
 import PersonalDetails from "../Components/OnBording/SubModules/PersonalDetails";
 import CoDashboard from "../Components/CoDashboard";
 import AssignTask from "../Components/OnBording/SubModules/AssignTask";
@@ -51,20 +53,22 @@ export default function AppRouter() {
     <div>
       <>
         <div>
-          <Route exact path="/" component={OnBoarding} />
+          <Route exact path="/sign-up" component={OnBoarding} />
           <Route exact path="/assign-task" component={AssignTask} />
+          <Route exact path="/" component={CapmTechLandingPage} />
           <Route
             exact
-            path="/capm-tect-landing"
-            component={CapmTechLandingPage}
+            path="/compliance-landing"
+            component={ComplianceLanding}
           />
           <Route exact path="/on-boarding" component={OnBoarding} />
           <Route exact path="/board-view" component={BoardView} />
           <Route exact path="/team-member" component={TeamMember} />
+          <Route exact path="/compliance-demo" component={ComplianceDemo} />
           <Route
             exact
             path="/compliance-demo-end"
-            component={ComplianceDemo7}
+            component={ComplianceDemoEnd}
           />
           <Route exact path="/you-are-done" component={YouAreDone} />
           <Route exact path="/co-dashboard" component={CoDashboard} />
@@ -116,8 +120,6 @@ export default function AppRouter() {
           <Route exact path="/change-password" component={ChangePassword} />
 
           <Route exact path="/governance" component={Governance} />
-
-          <Route exact path="/settings" component={CoSetting} />
 
           <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
           <Route
@@ -180,6 +182,7 @@ export default function AppRouter() {
             path="/project-management"
             component={ProjectManagement}
           /> */}
+          <Route exact path="/settings" component={CoSetting} />
         </div>
       </>
     </div>

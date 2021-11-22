@@ -279,11 +279,17 @@
 }
 /* bottom logo */
 
+div.input-wrapper {
+  width: -moz-fit-content;
+  width: fit-content;
+  position: relative;
+}
+
 .password-toggle-ico {
   position: absolute;
-  top: 303px;
-  right: 44vw;
-
+  top: 50%;
+  transform: translate(0, -50%);
+  right: 1rem;
   cursor: pointer;
   color: #6c5dd3;
 }

@@ -213,6 +213,7 @@
   letter-spacing: 0px;
   text-align: left;
   color: #2c2738;
+  width: 100px;
 }
 .co-personal-grid .task-detail-data {
   /* margin: 20px 0px; */
@@ -241,6 +242,7 @@
   /* letter-spacing: 0.24px; */
   color: #2c2738;
   margin-bottom: 0px;
+  width: 170px;
 }
 .co-personal-grid .drop-Icon-personal{
     width: 8px;
@@ -416,9 +418,23 @@
   min-width: 80px;
   padding-left: 0px;
 }
-.co-personal-grid .table td.companyName {
-  min-width: 240px;
+/* .co-personal-grid .table td.companyName {
+  min-width: 140px;
+} */
+
+.dropbox-add-line {
+  object-fit: contain;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #6c5dd3;
 }
+
 .co-personal-grid .buttonprimarygray:focus:not(:focus-visible) {
   outline: 0;
   background-color: #000000 !important;
@@ -437,6 +453,22 @@
   text-align: left;
   text-transform: uppercase;
   color: #6c5dd3;
+  cursor: pointer;
+  width:20%;
+  white-space: nowrap;
+}
+.co-personal-grid .add-company-link-grey {
+  margin: 16px 0px 0 0;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  text-transform: uppercase;
+  color: grey;
   cursor: pointer;
   width:20%;
   white-space: nowrap;

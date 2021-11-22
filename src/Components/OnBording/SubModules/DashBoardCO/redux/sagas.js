@@ -2,58 +2,78 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { actions, types } from "./actions";
 import api from "../api";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
-const taskReportRequest = function* taskReportRequest({ payload }) {
+import { actions as CoIndustryAction } from "../../../../OnBording/redux/actions";
+
+const taskReportRequest = function* taskReportRequest() {
   try {
-    const { data, status } = yield call(api.getTaskReport, payload);
-    let statusData = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusData !== false) {
-      yield put(actions.taskReportRequestSuccess({ taskReport: data }));
-      toast.success(data && data.Message);
+    const { data, status } = yield call(api.getTaskReport);
+    const responseStatus = data.message.status_response;
+    if (status === 200 && responseStatus === "Success") {
+      yield put(
+        actions.taskReportRequestSuccess({
+          taskReport: data.message.task_details,
+        })
+      );
     } else {
-      toast.success(data && data.Message);
       yield put(actions.taskReportRequestFailed({ taskReport: [] }));
     }
   } catch (err) {
-    // toast.error(
-    //     (err && err.response && err.response.data && err.response.data.message) ||
-    //         'Something went to wrong, Please try after sometime',
-    // );
-    yield put(actions.taskReportRequestFailed({ taskReport: {} }));
+    yield put(actions.taskReportRequestFailed({ taskReport: [] }));
   }
 };
 
 const taskReportRequestById = function* taskReportRequestById({ payload }) {
   try {
     const { data, status } = yield call(api.getTaskReportByID, payload);
-    if (status === 200) {
-      // console.log("taskReport By Id => ",data , status);
-      yield put(actions.taskReportByIdRequestSuccess({ taskReportById: data }));
-      toast.success(data && data.Message);
+    if (
+      status === 200 &&
+      data.message &&
+      data.message.status_response === "Success"
+    ) {
+      yield put(
+        actions.taskReportByIdRequestSuccess({
+          taskReportById: data.message.task_details[0],
+        })
+      );
     } else {
-      toast.success(data && data.Message);
       yield put(actions.taskReportByIdRequestFailed({ taskReportById: {} }));
     }
   } catch (err) {
-    // toast.error(
-    //     (err && err.response && err.response.data && err.response.data.message) ||
-    //         'Something went to wrong, Please try after sometime',
-    // );
     yield put(actions.taskReportByIdRequestFailed({ taskReportById: {} }));
   }
 };
 
+const taskReferencesByName = function* taskReferencesByName({ payload }) {
+  console.log("taskReference Payload: ", payload);
+  try {
+    const { data, status } = yield call(api.getTaskReferencesByName, payload);
+    if (status === 200 && data.message && data.message.status === true) {
+      const { task_references } = data.message;
+      yield put(
+        actions.taskReferensesByNameSuccess({ taskReferences: task_references })
+      );
+    } else {
+      yield put(actions.taskReferensesByNameFailed({ taskReferences: [] }));
+    }
+  } catch (error) {
+    yield put(actions.taskReferensesByNameFailed({ taskReferences: [] }));
+  }
+};
 const userRequestByRole = function* userRequestByRole({ payload }) {
   try {
     const { data, status } = yield call(api.getUsersByRole, payload);
     // console.log(data);
-    let statusCode = data && data[0] && data[0].StatuCode;
-    if (status === 200 && statusCode != false && statusCode !== "norec") {
-      // console.log("getUsersByRole  => ",data , status);
-      yield put(actions.userByRoleRequestSuccess({ getUserByRole: data }));
-      toast.success(data && data.Message);
+
+    if (status === 200 && data && data.message && data.message.length !== 0) {
+      console.log({ userbyrole: data.message });
+      yield put(
+        actions.userByRoleRequestSuccess({
+          getUserByRole: data?.message,
+        })
+      );
     } else {
-      toast.success(data && data.Message);
       yield put(actions.userByRoleRequestFailed({ getUserByRole: {} }));
     }
   } catch (err) {
@@ -68,54 +88,64 @@ const userRequestByRole = function* userRequestByRole({ payload }) {
 const taskCommentBytaskID = function* taskCommentBytaskID({ payload }) {
   try {
     const { data, status } = yield call(api.getTaskComments, payload);
-    // console.log("payload ==> ",payload)
-    if (status === 200) {
-      if (payload.link === 1) {
-        yield put(
-          actions.taskCommentsByTaskIdSuccess({ getTaskLinksByRole: data })
-        );
-      }
-      if (payload.link === 0) {
-        yield put(
-          actions.taskCommentsByTaskIdSuccess({ getTaskCommentByRole: data })
-        );
-      }
-      toast.success(data && data.Message);
+    if (status === 200 && data.message && data.message.status === true) {
+      // if (payload.link === 1) {
+      //   yield put(
+      //     actions.taskCommentsByTaskIdSuccess({ getTaskLinksByRole: data })
+      //   );
+      // }
+      // if (payload.link === 0) {
+      //   yield put(
+      //     actions.taskCommentsByTaskIdSuccess({ getTaskCommentByRole: data })
+      //   );
+      // }
+      // toast.success(data && data.Message);
+      // const commentList = data.message.comment_list;
+      const { comment_list } = data.message;
+      yield put(
+        actions.taskCommentsByTaskIdSuccess({
+          getTaskCommentByRole: comment_list,
+        })
+      );
     } else {
       toast.success(data && data.Message);
       yield put(
-        actions.taskCommentsByTaskIdFailed({ getTaskCommentByRole: {} })
+        actions.taskCommentsByTaskIdFailed({ getTaskCommentByRole: [] })
       );
     }
   } catch (err) {
-    yield put(actions.taskCommentsByTaskIdFailed({ getTaskCommentByRole: {} }));
+    yield put(actions.taskCommentsByTaskIdFailed({ getTaskCommentByRole: [] }));
   }
 };
 
 const postCommentBytaskID = function* postCommentBytaskID({ payload }) {
   try {
     const { data, status } = yield call(api.postTaskComments, payload);
-    if (status === 200) {
+    if (status === 200 && data.message && data.message.status === true) {
       yield put(
-        actions.postTaskCommentByTaskIDSuccess({ postTaskCommentById: data })
+        actions.postTaskCommentByTaskIDSuccess({ postTaskCommentById: true })
       );
-      if (payload.link === 0) {
-        yield put(
-          actions.taskCommentsByTaskIdRequest({
-            taskid: payload.taskID,
-            link: 0,
-          })
-        );
-      }
-      if (payload.link === 1) {
-        yield put(
-          actions.taskCommentsByTaskIdRequest({
-            taskid: payload.taskID,
-            link: 1,
-          })
-        );
-      }
-      toast.success(data && data.Message);
+      yield put(
+        actions.taskCommentsByTaskIdRequest({
+          task_name: payload.task_name,
+        })
+      );
+      // if (payload.link === 0) {
+      //   yield put(
+      //     actions.taskCommentsByTaskIdRequest({
+      //       taskid: payload.taskID,
+      //       link: 0,
+      //     })
+      //   );
+      // }
+      // if (payload.link === 1) {
+      //   yield put(
+      //     actions.taskCommentsByTaskIdRequest({
+      //       taskid: payload.taskID,
+      //       link: 1,
+      //     })
+      //   );
+      // }
     } else {
       toast.success(data && data.Message);
       yield put(
@@ -136,12 +166,13 @@ const postCommentBytaskID = function* postCommentBytaskID({ payload }) {
 const getTaskFilesById = function* getTaskFilesById({ payload }) {
   try {
     const { data, status } = yield call(api.getTaskFiles, payload);
-    if (status === 200) {
-      if (payload.ftype === 0) {
-        yield put(actions.getTaskFilesByIdSucess({ taskFiles: data }));
-      }
-      if (payload.ftype === 1) {
-        yield put(actions.getTaskFilesByIdSucess({ taskFilesReference: data }));
+    if (status === 200 && data.message && data.message.status === true) {
+      if (payload.is_references === 0) {
+        yield put(
+          actions.getTaskFilesByIdSucess({
+            taskFiles: data.message.file_details,
+          })
+        );
       }
     } else {
       yield put(actions.getTaskFilesByIdFailed());
@@ -169,72 +200,76 @@ const postUploadFileById = function* postUploadFileById({ payload }) {
 };
 
 const postAssignTask = function* postAssignTask({ payload }) {
-  const actualPayload = {
-    taskID: payload.taskID,
-    isApproved: payload.isApproved,
-    userType: payload.userType,
-    email: payload.email,
-    invitee: payload.invitee,
-    loginID: payload.loginID,
-    userDetails: payload.userDetails,
-  };
-  // debugger
   try {
-    const { data, status } = yield call(api.postAssignTask, actualPayload);
-    // console.log(status);
-    if (status === 200) {
-      if (
-        payload.isApproved === 1 &&
-        payload.userDetails.IscreateBySecmark === 1
-      ) {
-        toast.dark(
-          `${payload.LicenseCode} task for ${payload.EntityName} is approved successfully!`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-      }
-      if (
-        payload.isApproved === 3 &&
-        payload.userDetails.IscreateBySecmark === 1
-      ) {
-        toast.dark(
-          `${payload.LicenseCode} task for ${payload.EntityName} is rejected successfully!`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-      }
-      yield put(actions.taskAssignByTaskIDSuccess({ postAssignTask: data }));
+    yield put(actions.setLoader(true));
+    const { data, status } = yield call(api.postAssignTask, payload);
+    if (status === 200 && data.message.status_response === "Success") {
+      toast.success("Task Assigned Successfully!");
+      yield put(actions.taskReportRequest());
       yield put(
         actions.taskReportByIdRequest({
-          taskid: payload.taskID,
+          task_name: payload.task_details[0].name,
         })
       );
-      yield put(
-        actions.taskReportRequest({
-          entityid: "",
-          userID: payload.userDetails.UserID,
-          usertype: payload.userDetails.UserType,
-        })
+
+      yield put(actions.taskAssignByTaskIDSuccess({ postAssignTask: data }));
+      yield put(actions.setLoader(false));
+    } else if (data && data.message && data.message) {
+      toast.error(
+        data.message.status_response ||
+          "Something went worng. Please try again."
       );
-      toast.success(data && data.Message);
-    } else {
-      toast.success(data && data.Message);
+      yield put(actions.setLoader(false));
       yield put(actions.taskAssignByTaskIDFailed({ postAssignTask: {} }));
+    } else {
+      toast.error("Something went wrong. Please try again.");
     }
   } catch (err) {
+    toast.error("Something went wrong. Please try again.");
+    yield put(actions.setLoader(false));
     yield put(actions.taskAssignByTaskIDFailed({ postAssignTask: {} }));
+  }
+};
+
+const changeTaskStatus = function* changeTaskStatus({ payload }) {
+  try {
+    yield put(actions.setLoader(true));
+    const { data, status } = yield call(api.changeTaskStatus, payload);
+    if (status === 200 && data.message.status === true) {
+      if (payload.status === "Approval Pending") {
+        toast.success(`Task completed successfully!`);
+      } else {
+        toast.success(`Task ${payload.status} successfully!`);
+      }
+      yield put(actions.changeTaskStatusSuccess({ changeTaskStatus: true }));
+      yield put(
+        actions.taskReportByIdRequest({
+          task_name: payload.task_name,
+        })
+      );
+      yield put(actions.taskReportRequest());
+      yield put(actions.setLoader(false));
+    } else {
+      yield put(actions.setLoader(false));
+      yield put(actions.changeTaskStatusFailed({ changeTaskStatus: false }));
+    }
+  } catch (err) {
+    yield put(actions.setLoader(false));
+    toast.error("Something went wrong. Please try again");
+    yield put(actions.changeTaskStatusFailed({ changeTaskStatus: false }));
   }
 };
 
 const userAvailabilityCheck = function* userAvailabilityCheck({ payload }) {
   try {
     const { data, status } = yield call(api.getAvailabilityCheck, payload);
+    console.log(data.message.user_details);
     let statusCode = data && data[0] && data[0].StatusCode;
     if (status === 200 && statusCode != false) {
       yield put(
-        actions.availabilityCheckRequestSuccess({ availabilityInfo: data })
+        actions.availabilityCheckRequestSuccess({
+          availabilityInfo: data.message.user_details,
+        })
       );
     } else {
       yield put(
@@ -299,10 +334,15 @@ const getCoEntityLicenseTask = function* getCoEntityLicenseTask({ payload }) {
 
 const getCOCompnayType = function* getCOCompnayType({ payload }) {
   try {
-    const { data, status } = yield call(api.GetCOCompanyType, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
-      yield put(actions.getCompanyTypeRequestSuccess({ CompanyInfo: data }));
+    const { data } = yield call(api.GetCOCompanyType, payload);
+    const { message } = data;
+    if (message.status) {
+      yield put(
+        actions.getCompanyTypeRequestSuccess({
+          CompanyInfo: message.company_details_list,
+        })
+      );
+      yield put(CoIndustryAction.companyTypeRequest());
     } else {
       yield put(actions.getCompanyTypeRequestFailed({ CompanyInfo: {} }));
     }
@@ -319,16 +359,20 @@ const insertCerificateDetailsRequest =
         payload
       );
       let statusCode = data && data[0] && data[0].StatusCode;
-      if (status === 200 && statusCode != false) {
+      if (data.message.status) {
+        toast.success("Company added Successfully");
         yield put(
           actions.insCertificateDetailsRequestSuccess({ Status: "Success" })
         );
+        yield put(actions.getCompanyTypeRequest());
       } else {
+        toast.error(data.message.status_response);
         yield put(
           actions.insCertificateDetailsRequestFailed({ Status: "Failed" })
         );
       }
     } catch (err) {
+      // toast.error("Something went wrong.");
       yield put(
         actions.insCertificateDetailsRequestFailed({ Status: "Failed" })
       );
@@ -337,11 +381,12 @@ const insertCerificateDetailsRequest =
 
 const getCoNotifications = function* getCoNotifications({ payload }) {
   try {
-    const { data, status } = yield call(api.getAllNotifications, payload);
-    let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
+    const { data, status } = yield call(api.getAllNotifications);
+    if (status === 200 && data.message && data.message?.length !== 0) {
       yield put(
-        actions.getCoNotificationsRequestSuccess({ notifications: data })
+        actions.getCoNotificationsRequestSuccess({
+          notifications: data.message,
+        })
       );
     } else {
       yield put(actions.getCoNotificationsRequestFailed({ notifications: {} }));
@@ -416,11 +461,13 @@ const CompanyDeleteRequest = function* CompanyDeleteRequest({ payload }) {
   try {
     const { data, status } = yield call(api.coSettingCommonApi, payload);
     let statusCode = data && data[0] && data[0].StatusCode;
-    if (status === 200 && statusCode != false) {
+    if (data.message.status) {
       toast.success("Company deleted successfully.");
+
       yield put(actions.deleteCompanyRequestSuccess({ Status: "Success" }));
+      yield put(actions.getCompanyTypeRequest());
     } else {
-      toast.error("Something went wrong.");
+      toast.error(data.message.status_response);
       yield put(actions.deleteCompanyRequestFailed({ Status: "Failed" }));
     }
   } catch (err) {
@@ -432,12 +479,17 @@ const CompanyDeleteRequest = function* CompanyDeleteRequest({ payload }) {
 export default function* sagas() {
   yield takeLatest(types.TASK_REPORT_REQUEST, taskReportRequest);
   yield takeLatest(types.GET_TASK_REPORT_BY_ID, taskReportRequestById);
+  yield takeLatest(
+    types.GET_TASK_REFERENSES_BY_TASK_NAME,
+    taskReferencesByName
+  );
   yield takeLatest(types.GET_USER_BY_ROLE, userRequestByRole);
   yield takeLatest(types.GET_TASK_COMMENTS_BY_TASK_ID, taskCommentBytaskID);
   yield takeLatest(types.POST_TASK_COMMENT_BY_TASK_ID, postCommentBytaskID);
   yield takeLatest(types.GET_TASK_FILES_BY_TASK_ID, getTaskFilesById);
   yield takeLatest(types.POST_UPLOAD_FILE_BY_TASK_ID, postUploadFileById);
   yield takeLatest(types.POST_ASSIGN_TASK_BY_TASKID, postAssignTask);
+  yield takeLatest(types.CHANGE_TASK_STATUS, changeTaskStatus);
   yield takeLatest(types.GET_AVAILABILITY_CHECK, userAvailabilityCheck);
   yield takeLatest(
     types.CO_PERSONAL_DETAILS_INS_UPD_DEL_REQUEST,

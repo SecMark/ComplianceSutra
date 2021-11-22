@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 import "../../style.css";
-import comtech from "../../../../assets/Images/CapmTech.png";
-import secmark from "../../../../assets/Images/secmark.png";
 import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../SideBar";
@@ -12,6 +10,10 @@ import { actions as emailActions } from "../../../OnBording/redux/actions";
 import { toast } from "react-toastify";
 import Modal from "../../../Terms&Conditions/Modal";
 import Terms from "../../../Terms&Conditions/Terms";
+import comtech from "../../../../assets/Images/CapmTech.png";
+import secmark from "../../../../assets/Images/secmark.png";
+import BackDrop from "../../../../CommonModules/sharedComponents/Loader/BackDrop";
+import axiosInstance from "../../../../apiServices";
 
 function GetStart({ history }) {
   const dispatch = useDispatch();
@@ -23,25 +25,76 @@ function GetStart({ history }) {
     state.complianceOfficer &&
     state.complianceOfficer.emailAlreadExist;
 
-  useEffect(() => {
-    if (emailAlreadExist === false && emailAlreadExist !== "") {
-      setIsEmailExist(false);
-    } else if (emailAlreadExist === true && emailAlreadExist !== "") {
-      setIsEmailExist(true);
-    }
-  }, [emailAlreadExist]);
-
+  let isLoading =
+    state && state?.complianceOfficer && state?.complianceOfficer.loader;
   const [values, setValues] = useState({
     loginID: "",
     pwd: "",
     rememberme: 0,
     loginty: "AdminEmail",
   });
+  useEffect(() => {
+    dispatch(emailActions.setLoader(false));
+  }, []);
+
+  useEffect(() => {
+    console.log({ emailAlreadExist, isEmail: isEmail(values.loginID) });
+    if (isEmail(values.loginID))
+      if (
+        emailAlreadExist === false &&
+        emailAlreadExist !== "" &&
+        isEmail(values.loginID)
+      ) {
+        setIsEmailExist(false);
+      } else if (
+        emailAlreadExist === true &&
+        emailAlreadExist !== "" &&
+        isEmail(values.loginID)
+      ) {
+        setIsEmailExist(true);
+      }
+  }, [emailAlreadExist, values.loginID]);
+
   const [inputBorder, setInputBorder] = useState(false);
   const [isValidate, setIsValidate] = useState(false);
   const [isEmailExist, setIsEmailExist] = useState(false);
   const [show, setShow] = useState(false);
   const onChangeHandler = (name) => (event) => {
+    if (name === "loginID" && isEmail(event.target.value)) {
+      axiosInstance
+        .post("compliance.api.avabilityCheck", { email: event.target.value })
+        .then((response) => {
+          if (
+            response &&
+            response.data &&
+            response.data.message &&
+            response.data.message.status === true
+          ) {
+            dispatch(
+              emailActions.verifyEmailRequestFailed({
+                verifyEmail: false,
+                emailAlreadyExistMessage: true,
+                email: event.target.value,
+              })
+            );
+          } else if (
+            response &&
+            response.data &&
+            response.data.message &&
+            response.data.message.status === false
+          ) {
+            dispatch(
+              emailActions.verifyEmailRequestFailed({
+                verifyEmail: false,
+                emailAlreadyExistMessage: false,
+                email: event.target.value,
+              })
+            );
+          }
+        });
+    } else if (name === "loginID" && !isEmail(event.target.value)) {
+      setIsEmailExist(false);
+    }
     setValues({ ...values, [name]: event.target.value });
   };
   const redirectToLogin = () => {
@@ -66,13 +119,10 @@ function GetStart({ history }) {
     if (checkBoxState === true) {
       dispatch(
         emailActions.verifyEmailRequest({
-          LoginID: values.loginID,
-          Pwd: "",
-          rememberme: "0",
-          Loginty: values.loginty,
-          history,
+          email: values.loginID,
         })
       );
+      dispatch(emailActions.setLoader(true));
       setTimeout(() => {
         let status = state.complianceOfficer.isVerifiedEmail;
       }, [100]);
@@ -104,6 +154,7 @@ function GetStart({ history }) {
         />
         <div className="get-main-get-start">
           <div className="container">
+            <BackDrop isLoading={isLoading} />
             <div className="">
               <div className="get-started-header">
                 <div className="row">
@@ -181,6 +232,14 @@ function GetStart({ history }) {
                     type="submit"
                     onClick={() => onSubmit()}
                     className="btn verify-email common-button"
+                    disabled={
+                      isEmailExist || isValidate || !isEmail(values.loginID)
+                    }
+                    style={{
+                      ...((isEmailExist ||
+                        isValidate ||
+                        !isEmail(values.loginID)) && { opacity: "0.4" }),
+                    }}
                   >
                     Verify Email
                   </button>

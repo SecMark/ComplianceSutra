@@ -12,6 +12,7 @@ import {
   SET_HISTORY_LIST,
   CLEAR_STATE,
   CLEAR_LICENSE_LIST,
+  UPDATED_LICENSE,
 } from "./types";
 
 const intialState = {
@@ -26,6 +27,7 @@ const intialState = {
   numberOfSelectedCompanies: 0,
   numberOfSelectedLicense: 0,
   historyList: [],
+  licenseOfList: [],
 };
 
 const reducer = (state = intialState, { type, payload }) => {
@@ -79,11 +81,11 @@ const reducer = (state = intialState, { type, payload }) => {
       return {
         ...state,
         companyList: [
-          ...state.companyList.filter((company) => {
-            if (company.EntityGroupID === companyId) {
-              company.selected = !company.selected;
+          ...state.companyList.filter((list) => {
+            if (list.company_docname === companyId) {
+              list.selected = !list.selected;
             }
-            return company;
+            return list;
           }),
         ],
         numberOfSelectedCompanies: state.companyList.filter(
@@ -95,7 +97,7 @@ const reducer = (state = intialState, { type, payload }) => {
       const licenseId = payload;
       return {
         ...state,
-        licenses: [
+        licenseList: [
           ...state.licenseList.filter((license) => {
             if (license.LicenseID === licenseId) {
               license.selected = !license.selected;
@@ -106,6 +108,9 @@ const reducer = (state = intialState, { type, payload }) => {
         numberOfSelectedLicense: state.licenseList.filter(
           (list) => list.selected === true
         ).length,
+        licenseOfList: state.licenseList
+          .filter((list) => list.selected === true)
+          .map((list) => list.LicenseCode),
       };
 
     case SELECT_FROM_DATE:
@@ -121,7 +126,13 @@ const reducer = (state = intialState, { type, payload }) => {
       };
 
     case CLEAR_LICENSE_LIST:
-      return { ...state, licenseList: [], numberOfSelectedLicense: 0 };
+      return {
+        ...state,
+        licenseList: [],
+        numberOfSelectedLicense: 0,
+        companyList: [],
+        numberOfSelectedCompanies: 0,
+      };
 
     case CLEAR_STATE:
       return {
@@ -132,6 +143,12 @@ const reducer = (state = intialState, { type, payload }) => {
         isLoading: false,
         isSuccess: false,
         numberOfSelectedCompanies: 0,
+        numberOfSelectedLicense: 0,
+      };
+
+    case UPDATED_LICENSE:
+      return {
+        ...state,
         numberOfSelectedLicense: 0,
       };
 

@@ -28,33 +28,12 @@ function DashBoardView({ history }) {
     state.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
-
-  const entityID =
+  const userEmail =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
-
-  const userData =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
-
-  const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
-
-  const userDetails = state && state.auth && state.auth.loginInfo;
+    state?.auth &&
+    state?.auth?.loginInfo &&
+    (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
+  const userDetails = state && state?.auth && state?.auth?.loginInfo;
 
   const companyName =
     state &&
@@ -75,30 +54,45 @@ function DashBoardView({ history }) {
   //     history.push("/login");
   //   }
   // }, []);
-  useEffect(() => {
-    dispatch(
-      taskReportActions.taskReportRequest({
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
-      })
-    );
-  }, [state.adminMenu.currentMenu]);
 
-  useEffect(() => {
-    if (userDetails.UserType === 3) {
-      if (window.location.href.includes("dashboard-view")) {
-        dispatch(adminMenuActions.setCurrentMenu("dashboard"));
-      }
-    }
-    if (userDetails.UserType === 4) {
-      if (window.location.href.includes("dashboard")) {
-        dispatch(adminMenuActions.setCurrentMenu("taskList"));
-      }
-      if (window.location.href.includes("dashboard-view")) {
-        dispatch(adminMenuActions.setCurrentMenu("dashboard"));
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (taskList && taskList.length === 0) {
+  //     dispatch(taskReportActions.taskReportRequest());
+  //   }
+  // }, [state.adminMenu.currentMenu]);
+  // useEffect(() => {
+  //   if (
+  //     userEmail &&
+  //     userDetails?.status_response === "Authentication success"
+  //   ) {
+  //     if (userDetails?.UserType === 3) {
+  //       dispatch(taskReportActions.taskReportRequest());
+  //       const refresh_taskList = setInterval(() => {
+  //         dispatch(taskReportActions.taskReportRequest());
+  //       }, 30000);
+  //       return () => clearInterval(refresh_taskList);
+  //     } else {
+  //       history.push("/dashboard");
+  //     }
+  //   } else {
+  //     history.push("/login");
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   if (userDetails.UserType === 3) {
+  //     if (window.location.href.includes("dashboard-view")) {
+  //       dispatch(adminMenuActions.setCurrentMenu("dashboard"));
+  //     }
+  //   }
+  //   if (userDetails.UserType === 4) {
+  //     if (window.location.href.includes("dashboard")) {
+  //       dispatch(adminMenuActions.setCurrentMenu("taskList"));
+  //     }
+  //     if (window.location.href.includes("dashboard-view")) {
+  //       dispatch(adminMenuActions.setCurrentMenu("dashboard"));
+  //     }
+  //   }
+  // }, []);
 
   const onHBMenu = () => {
     const drawerParent = document.getElementById("sideBarParent");

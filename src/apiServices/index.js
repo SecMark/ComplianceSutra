@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_BASE_URL } from "./baseurl"
+import { BACKEND_BASE_URL } from "./baseurl";
 const BACKEND_URL = BACKEND_BASE_URL;
 const axiosInstance = axios.create({
   baseURL: BACKEND_URL,
@@ -7,6 +7,12 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    const auth = localStorage.getItem("basicToken");
+    if (auth) {
+      config.headers = {
+        Authorization: `Basic ${auth}`,
+      };
+    }
     return config;
   },
   (error) => {

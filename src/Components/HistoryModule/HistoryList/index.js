@@ -58,6 +58,11 @@ const HistoryList = (props) => {
   };
 
   useEffect(() => {
+    dispatch(clearState());
+    dispatch(getCompanyList());
+  }, []);
+
+  useEffect(() => {
     setIsShowMobileFilter(false);
 
     dispatch(setSuccess(false));
@@ -207,7 +212,7 @@ const HistoryList = (props) => {
                     {state.HistoryReducer.historyList.map((list) => (
                       <tr>
                         <td className="task-name td-mobile">
-                          {list.TaskName}
+                          {list.subject}
                           <br />
                           <span className="task-detail">
                             {moment(list.Completed).format("DD MMMM YYYY")}
@@ -275,13 +280,12 @@ const HistoryList = (props) => {
                 : "none",
             }}
           >
-            <div className="container" style={{ width: "300px" }}>
+            <div className="container" style={{ width: "364px" }}>
               <div className="popup-header d-flex align-items-center my-5">
                 <img
                   src={closeIcon}
                   alt="close-icon"
                   onClick={() => {
-                    dispatch(clearState());
                     setIsShowFilter(!isShowFilter);
                   }}
                   style={{
@@ -310,19 +314,6 @@ const HistoryList = (props) => {
                     alt="Filter"
                     className="history-filter"
                     onClick={() => {
-                      const licenseRequestPayload = {
-                        userID: state.auth.loginInfo?.UserID,
-                        entityid: constant.licenseEntityId,
-                        usertype: state.auth.loginInfo?.UserType,
-                      };
-                      dispatch(getLicenseList(licenseRequestPayload));
-                      const companyRequestPayload = {
-                        userID: state.auth.loginInfo?.UserID,
-                        entityid: constant.companyEntityId,
-                        usertype: state.auth.loginInfo?.UserType,
-                      };
-
-                      dispatch(getCompanyList(companyRequestPayload));
                       setIsShowFilter(!isShowFilter);
                     }}
                   />
@@ -347,18 +338,18 @@ const HistoryList = (props) => {
                       {state.HistoryReducer.historyList.map((list) => (
                         <tr>
                           <td className="task-detail">
-                            {moment(list.Completed).format("DD MMMM YYYY")}
+                            {moment(list.status_date).format("DD MMMM YYYY")}
                           </td>
-                          <td className="task-name">{list.TaskName}</td>
-                          <td className="task-detail">{list.EntityName}</td>
+                          <td className="task-name">{list.subject}</td>
+                          <td className="task-detail">{list.company_name}</td>
                           <td>
                             {" "}
                             <div className="holding-list-bold-title-background">
                               <span className="circle-dp">
-                                {getNameInitials(list.AprovalAssignedTo)}
+                                {getNameInitials(list.approver_name)}
                               </span>{" "}
                               <div className="nameCirle">
-                                {list.AprovalAssignedTo}{" "}
+                                {list.approver_name}{" "}
                               </div>
                             </div>
                           </td>
@@ -366,37 +357,49 @@ const HistoryList = (props) => {
                             {" "}
                             <div className="holding-list-bold-title-background">
                               <span className="circle-dp">
-                                {getNameInitials(list.AssignedTo)}
+                                {getNameInitials(list.assign_to_name)}
                               </span>{" "}
                               <div className="nameCirle">
                                 {" "}
-                                {list.AssignedTo}{" "}
+                                {list.assign_to_name}{" "}
                               </div>
                             </div>
                           </td>
                           <td className="task-detail">
-                            {moment(list.EndDate).format("DD MMMM YYYY")}
+                            {moment(list.deadline_date).format("DD MMMM YYYY")}
                           </td>
                           <td>
                             <button
                               className={
-                                list.Status === "PENDING"
+                                list.status === "PENDING"
                                   ? "pending"
-                                  : list.Status === "ON TIME"
+                                  : list.status === "ON TIME"
                                   ? "on-time"
                                   : "delayed"
                               }
                             >
-                              {list.Status}
+                              {list.status}
                             </button>
                           </td>
                           <td style={{ textAlign: "center" }}>
-                            {list?.GEN_TaskFile &&
-                            Object.keys(list?.GEN_TaskFile[0]).length !== 0 ? (
+                            {list?.file_details &&
+                            list?.file_details.length > 0 ? (
                               <a
-                                href={`${BACKEND_BASE_URL}//viewfiles.ashx?id=${list?.TaskId}&flag=downloadtaskfiles&file=${list?.GEN_TaskFile[0].c_file}`}
+                                href={`data:application/${
+                                  list?.file_details &&
+                                  list?.file_details[0].file_name
+                                    .split(".")
+                                    .pop()
+                                };base64,${
+                                  list?.file_details &&
+                                  list?.file_details[0].encoded_string
+                                }`}
+                                download={
+                                  list?.file_details &&
+                                  list?.file_details[0].file_name
+                                }
+                                target="_blank"
                               >
-                                {" "}
                                 <img src={download} />{" "}
                               </a>
                             ) : (

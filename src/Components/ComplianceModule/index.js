@@ -19,6 +19,7 @@ import CalenderIcon from '../../assets/Icons/Icon.png';
 import TaskCompletionIcon from '../../assets/Icons/timer-24px.png';
 import CompletingTasks from '../../assets/Icons/mode_edit-24px.png';
 import AnticipateRisks from '../../assets/Icons/Path 75.png';
+import DemoNav from "./DemoNav";
 import "./style.css";
 
 const stepperContentArray = [
@@ -110,8 +111,11 @@ function ComplianceMainModule({ history }) {
    // }, [])
 
    return (
+      <div>
+         <DemoNav/>
       <div className="compliance-main">
          {/* <img src={BackgroundImage}/> */}
+         
          <div className="container custom-container">
          <p className="compliance compliance-mobile">Compliance Module Demo</p>
             <div className="row mobile-row-reverse">
@@ -183,7 +187,7 @@ function ComplianceMainModule({ history }) {
       onClick={activeStep === steps.length ? null : handleOnClickNext}/>
       {activeStep ===1 ? '' : <input type="button" value="Back" onClick={handleOnClickBack} /> } */}
                {/* {activeStep ===1 ? '' : <p type="button" value="Back" onClick={handleOnClickBack}><img className="backIcon" src={NextButton} alt="NextButton" /></p> } */}
-               <button class="btn next-button"onClick={handleOnClickNext}><img src={NextButton} alt="NextButton" /></button>
+               <button class="btn next-button" onClick={handleOnClickNext}><img src={NextButton} alt="NextButton" /></button>
               
 
             </div>
@@ -191,6 +195,7 @@ function ComplianceMainModule({ history }) {
          <div className="progressbar-main">
             <ProgressBar completed={activeStep} />
          </div>
+      </div>
       </div>
    )
 }

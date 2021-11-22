@@ -20,11 +20,22 @@ const GET_TASK_COMMENTS_SUCCESS_BY_TASK_ID =
 const GET_TASK_COMMENTS_FAILED_BY_TASK_ID =
   "CAPMTECH/GET_TASK_COMMENTS_FAILED_BY_TASK_ID";
 
+const GET_TASK_REFERENSES_BY_TASK_NAME =
+  "CAPMTECH/GET_TASK_REFERENSES_BY_TASK_NAME";
+const GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS =
+  "CAPMTECH/GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS";
+const GET_TASK_REFERENSES_BY_TASK_NAME_FAILED =
+  "CAPMTECH/GET_TASK_REFERENSES_BY_TASK_NAME_FAILED";
+
 const POST_TASK_COMMENT_BY_TASK_ID = "CAPMTECH/POST_TASK_COMMENT_BY_TASK_ID";
 const POST_TASK_COMMENT_SUCCESS_BY_TASK_ID =
   "CAPMTECH/POST_TASK_COMMENT_SUCCESS_BY_TASK_ID";
 const POST_TASK_COMMENTS_FAILED_BY_TASK_ID =
   "CAPMTECH/POST_TASK_COMMENTS_FAILED_BY_TASK_ID";
+
+const CHANGE_TASK_STATUS = "CAPMTECH/CHANGE_TASK_STATUS";
+const CHANGE_TASK_STATUS_SUCCESS = "CAPMTECH/CHANGE_TASK_STATUS_SUCCESS";
+const CHANGE_TASK_STATUS_FAILED = "CAPMTECH/CHANGE_TASK_STATUS_FAILED";
 
 const GET_TASK_FILES_BY_TASK_ID = "CAPMTECH/GET_TASK_FILES_BY_TASK_ID";
 const GET_TASK_FILES_SUCESS_BY_TASK_ID =
@@ -101,6 +112,7 @@ const CO_ACCOUNT_UPDATE_REQUEST_FAILED = "CO_ACCOUNT_UPDATE_REQUEST_FAILED";
 const CO_COMPANY_DELETE_REQUEST = "CO_COMPANY_DELETE_REQUEST";
 const CO_COMPANY_DELETE_REQUEST_SUCCESS = "CO_COMPANY_DELETE_REQUEST_SUCCESS";
 const CO_COMPANY_DELETE_REQUEST_FAILED = "CO_COMPANY_DELETE_REQUEST_FAILED";
+const CO_SET_LOADER = "CO_SET_LOADER";
 
 // Action method
 
@@ -113,6 +125,16 @@ const taskReportByIdRequestSuccess = createAction(
   GET_TASK_REPORT_SUCCESS_BY_ID
 );
 const taskReportByIdRequestFailed = createAction(GET_TASK_REPORT_FAILED_BY_ID);
+
+const taskReferensesByNameRequest = createAction(
+  GET_TASK_REFERENSES_BY_TASK_NAME
+);
+const taskReferensesByNameSuccess = createAction(
+  GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS
+);
+const taskReferensesByNameFailed = createAction(
+  GET_TASK_REFERENSES_BY_TASK_NAME_FAILED
+);
 
 const userByRoleRequest = createAction(GET_USER_BY_ROLE);
 const userByRoleRequestSuccess = createAction(GET_USER_SUCCESS_BY_ROLE);
@@ -133,6 +155,10 @@ const postTaskCommentByTaskIDSuccess = createAction(
 const postTaskCommentByTaskIDFailed = createAction(
   POST_TASK_COMMENTS_FAILED_BY_TASK_ID
 );
+
+const changeTaskStatusRequest = createAction(CHANGE_TASK_STATUS);
+const changeTaskStatusSuccess = createAction(CHANGE_TASK_STATUS_SUCCESS);
+const changeTaskStatusFailed = createAction(CHANGE_TASK_STATUS_FAILED);
 
 const getTaskFilesById = createAction(GET_TASK_FILES_BY_TASK_ID);
 const getTaskFilesByIdSucess = createAction(GET_TASK_FILES_SUCESS_BY_TASK_ID);
@@ -244,6 +270,8 @@ const deleteCompanyRequestFailed = createAction(
   CO_COMPANY_DELETE_REQUEST_FAILED
 );
 
+const setLoader = createAction(CO_SET_LOADER);
+
 export const actions = {
   setActiveMenu,
   taskReportRequest,
@@ -253,6 +281,10 @@ export const actions = {
   taskReportByIdRequest,
   taskReportByIdRequestSuccess,
   taskReportByIdRequestFailed,
+
+  taskReferensesByNameRequest,
+  taskReferensesByNameSuccess,
+  taskReferensesByNameFailed,
 
   userByRoleRequest,
   userByRoleRequestSuccess,
@@ -265,6 +297,10 @@ export const actions = {
   postTaskCommentByTaskID,
   postTaskCommentByTaskIDSuccess,
   postTaskCommentByTaskIDFailed,
+
+  changeTaskStatusRequest,
+  changeTaskStatusSuccess,
+  changeTaskStatusFailed,
 
   getTaskFilesById,
   getTaskFilesByIdSucess,
@@ -321,6 +357,7 @@ export const actions = {
   deleteCompanyRequest,
   deleteCompanyRequestSuccess,
   deleteCompanyRequestFailed,
+  setLoader,
 };
 
 export const types = {
@@ -333,6 +370,10 @@ export const types = {
   GET_TASK_REPORT_BY_ID,
   GET_TASK_REPORT_SUCCESS_BY_ID,
   GET_TASK_REPORT_FAILED_BY_ID,
+
+  GET_TASK_REFERENSES_BY_TASK_NAME,
+  GET_TASK_REFERENSES_BY_TASK_NAME_SUCCESS,
+  GET_TASK_REFERENSES_BY_TASK_NAME_FAILED,
 
   GET_USER_BY_ROLE,
   GET_USER_SUCCESS_BY_ROLE,
@@ -357,6 +398,10 @@ export const types = {
   POST_ASSIGN_TASK_BY_TASKID,
   POST_ASSIGN_TASK_SUCCESS_BY_TASKID,
   POST_ASSIGN_TASK_FAILED_BY_TASKID,
+
+  CHANGE_TASK_STATUS,
+  CHANGE_TASK_STATUS_SUCCESS,
+  CHANGE_TASK_STATUS_FAILED,
 
   GET_AVAILABILITY_CHECK,
   GET_AVAILABILITY_CHECK_SUCCESS,
@@ -401,4 +446,6 @@ export const types = {
   CO_COMPANY_DELETE_REQUEST,
   CO_COMPANY_DELETE_REQUEST_SUCCESS,
   CO_COMPANY_DELETE_REQUEST_FAILED,
+
+  CO_SET_LOADER,
 };

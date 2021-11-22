@@ -1,5 +1,7 @@
+import moment from "moment";
 import { call, put, takeLatest } from "redux-saga/effects";
 import api from "../../../CommonModules/GlobalData/api";
+import { getAllTasks } from "../../../CommonModules/helpers/tasks.helper";
 import {
   setDayData,
   setLoading,
@@ -12,11 +14,15 @@ import { GET_DAY, GET_MONTH, GET_WEEK } from "./types";
 function* fetchCalenderDayData(action) {
   try {
     yield put(setLoading(true));
-    const { data, status } = yield call(api.getTaskReport, action.payload);
-    if (status === 200) {
+    const { taskList, StartDate } = action.payload;
+    if (taskList && taskList.length > 0) {
+      let dayData = getAllTasks([...taskList]).filter((task) => {
+        return moment(task.due_date).format("YYYY-MM-DD") === StartDate;
+      });
+
+      yield put(setDayData(dayData));
       yield put(setSuccess(true));
       yield put(setLoading(false));
-      yield put(setDayData(data));
     } else {
       yield put(setSuccess(false));
       yield put(setLoading(false));
@@ -29,11 +35,18 @@ function* fetchCalenderDayData(action) {
 function* fetchCalenderWeekData(action) {
   try {
     yield put(setLoading(true));
-    const { data, status } = yield call(api.getTaskReport, action.payload);
-    if (status === 200) {
+    const { taskList, StartDate, EndDate } = action.payload;
+    if (taskList && taskList.length > 0) {
+      let weekData = getAllTasks([...taskList]).filter((task) => {
+        return (
+          moment(task.due_date).format("YYYY-MM-DD") >= StartDate &&
+          moment(task.due_date).format("YYYY-MM-DD") <= EndDate
+        );
+      });
+
+      yield put(setWeekData(weekData));
       yield put(setSuccess(true));
       yield put(setLoading(false));
-      yield put(setWeekData(data));
     } else {
       yield put(setSuccess(false));
       yield put(setLoading(false));
@@ -45,13 +58,19 @@ function* fetchCalenderWeekData(action) {
 
 function* fetchCalenderMonthData(action) {
   try {
-    yield put(setLoading(true));
-    const { data, status } = yield call(api.getTaskReport, action.payload);
-    if (status === 200) {
+    const { taskList, StartDate, EndDate } = action.payload;
+    if (taskList && taskList.length > 0) {
+      let monthData = getAllTasks([...taskList]).filter((task) => {
+        return (
+          moment(task.due_date).format("YYYY-MM-DD") >= StartDate &&
+          moment(task.due_date).format("YYYY-MM-DD") <= EndDate
+        );
+      });
+      yield put(setMonthData(monthData));
       yield put(setSuccess(true));
       yield put(setLoading(false));
-      yield put(setMonthData(data));
     } else {
+      yield put(setMonthData([]));
       yield put(setSuccess(false));
       yield put(setLoading(false));
     }

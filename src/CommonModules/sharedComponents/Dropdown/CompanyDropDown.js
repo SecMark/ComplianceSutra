@@ -5,6 +5,8 @@ import uncheck from "../../../assets/Icons/uncheck.png";
 import {
   getLicenseList,
   selectCompanyToggle,
+  setLicenseList,
+  updateLicense,
 } from "../../../Components/HistoryModule/redux/actions";
 import constant from "../constants/constant";
 import "./style.css";
@@ -14,7 +16,7 @@ function MultiSelectCompanyDropdown({
   options,
   inputTitle,
   dispatch,
-  cssstyle
+  cssstyle,
 }) {
   const [selectTitle, setSelectTitle] = useState({
     selected: false,
@@ -38,8 +40,10 @@ function MultiSelectCompanyDropdown({
         <label htmlFor="lable-title" className="mb-2">
           {lableTitle}
         </label>
-        <div 
-          className={`form-control ${cssstyle === "taskhistory" ? "taskhistory":"select-container"}`}
+        <div
+          className={`form-control ${
+            cssstyle === "taskhistory" ? "taskhistory" : "select-container"
+          }`}
           id="lable-title"
           onClick={(e) => {
             setIsOpen(!isOpen);
@@ -70,35 +74,34 @@ function MultiSelectCompanyDropdown({
           ></span>
         </div>
         <div className="dropdown-container" onBlur={() => setIsOpen(true)}>
-          <div className={`dropdown ${isOpen && "dropdown--open"}`}>
+          <div className={`dropdown-multi ${isOpen && "dropdown--open"}`}>
             {options.map((option) => {
-              const id = option.EntityGroupID;
               return (
                 <div
-                  className="dropdown-item d-flex"
-                  key={id}
                   onClick={() => {
-                    dispatch(selectCompanyToggle(id));
+                    dispatch(selectCompanyToggle(option.id));
+                    dispatch(updateLicense());
+                    setTimeout(() => {
+                      const choosedCompanies =
+                        sagaState.HistoryReducer.companyList.filter(
+                          (list) => list.selected === true
+                        );
+                      const selectedCompanies = choosedCompanies
+                        .map((list) => list.company_docname)
+                        .join(",");
 
-                    const selectedCompanies = options
-                      .filter((list) => list.selected === true)
-                      .map((list) => list.EntityGroupID)
-                      .join(",");
-
-                    const licenseRequestPayload = {
-                      userID: sagaState.auth.loginInfo?.UserID,
-                      entityid: constant.licenseEntityId,
-                      usertype: sagaState.auth.loginInfo?.UserType,
-                      entityList: selectedCompanies,
-                    };
-
-                    if (selectedCompanies !== "") {
-                      dispatch(getLicenseList(licenseRequestPayload));
-                    }
+                      if (selectedCompanies) {
+                        const array = [];
+                        choosedCompanies.map((item) => {
+                          array.push(...item.license);
+                        });
+                        dispatch(getLicenseList(array));
+                      }
+                    }, 1000);
                   }}
                 >
                   <span className="dropdown-item__title">
-                    {option.EntityName}
+                    {option.company_name}
                   </span>
                   <span className="dropdown-item--selected">
                     {option.selected ? (

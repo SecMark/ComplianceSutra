@@ -60,6 +60,10 @@ const GOVERNANCEDATA_REQUEST_SUCCESS =
 
 const STORE_ENTITYID = "CAPMTECH/STORE_ENTITYID";
 const CLEAR_EMAIL_ALREADY_CACHE = "CAPMTECH/CLEAR_EMAIL_ALREADY_CACHE";
+const GET_LICENSE_LIST = "CAPMTECH/GET_LICENSE_LIST";
+const SET_LICENSE_LIST = "CAPMTECH/SET_LICENSE_LIST";
+
+const SET_LOADER = "CAPMTECH/SET_LOADER";
 
 const createTaskMailRequest = createAction(SEND_MAIL_TASK_REQUEST);
 const clearEmailAlreadyCache = createAction(CLEAR_EMAIL_ALREADY_CACHE);
@@ -138,6 +142,11 @@ const governanceAPIRequestSuccess = createAction(
 );
 const governanceAPIRequestFailed = createAction(GOVERNANCEDATA_REQUEST_FAILED);
 
+const getLicenseList = createAction(GET_LICENSE_LIST);
+const setLicenseList = createAction(SET_LICENSE_LIST);
+
+const setLoader = createAction(SET_LOADER);
+
 export const actions = {
   storeEnityIDwithCompaName,
   governanceAPIRequest,
@@ -183,6 +192,9 @@ export const actions = {
   insertTaskListRequestSuccess,
   insertTaskListRequestFailed,
   clearEmailAlreadyCache,
+  getLicenseList,
+  setLicenseList,
+  setLoader,
 };
 
 export const types = {
@@ -233,4 +245,7 @@ export const types = {
   SEND_MAIL_TASK_REQUEST_SUCCESS,
 
   CLEAR_EMAIL_ALREADY_CACHE,
+  GET_LICENSE_LIST,
+  SET_LICENSE_LIST,
+  SET_LOADER,
 };

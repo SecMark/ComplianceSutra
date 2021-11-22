@@ -42,6 +42,11 @@ const actionHandler = {
     ...state,
     updatePasswordInfo: payload,
   }),
+  [types.UPDATE_USER_TYPE]: (state, { payload }) => ({
+    ...state,
+    ...state.loginInfo,
+    userType: payload,
+  }),
 };
 
 export default handleActions(actionHandler, {

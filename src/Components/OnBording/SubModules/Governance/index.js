@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import axios from "axios";
-import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
 import reviewClose from "../../../../assets/Icons/reviewClose.png";
@@ -19,6 +17,8 @@ import MobileStepper from "../mobileStepper";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import AssignDrawerMobile from "../AssignDrawerMobile";
+import axiosInstance from "../../../../apiServices";
+import { toast } from "react-toastify";
 
 function Governance({ history }) {
   const state = useSelector((state) => state);
@@ -57,136 +57,9 @@ function Governance({ history }) {
     state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
 
   const companyInfo =
-    state && state.complianceOfficer && state.complianceOfficer.goveranceData;
-
-  const checkEmailAlreadyExistsOrNot = async (email, index, role) => {
-    let alreadyAssignToAnother = null;
-    if (role === "approval" && isEmail(email)) {
-      let coEmails = assignTaskEmail.find((item) => item.email === email);
-      if (coEmails === undefined) {
-        let stausEmails = statusReportEmail.find(
-          (item) => item.email === email
-        );
-        if (stausEmails === undefined) {
-          alreadyAssignToAnother = null;
-          setemailApproveRole(false);
-        } else {
-          alreadyAssignToAnother = 1;
-          setemailApproveRole(true);
-        }
-      } else {
-        alreadyAssignToAnother = 1;
-        setemailApproveRole(true);
-      }
-    } else if (role === "statusreport" && isEmail(email)) {
-      let coEmails = assignTaskEmail.find((item) => item.email === email);
-      let approvalTask = approvalTaskEmail.find((item) => item.email === email);
-      if (coEmails === undefined) {
-        if (approvalTask === undefined) {
-          alreadyAssignToAnother = null;
-          setemailApproveReport(false);
-        } else {
-          alreadyAssignToAnother = 1;
-          setemailApproveReport(true);
-        }
-      } else {
-        alreadyAssignToAnother = 1;
-        setemailApproveReport(true);
-      }
-    } else if (role === "co" && isEmail(email)) {
-      let approvalTask = approvalTaskEmail.find(
-        (item) => item.email === assignTaskEmail[index].email
-      );
-      let stausEmails = statusReportEmail.find(
-        (item) => item.email === assignTaskEmail[index].email
-      );
-      if (approvalTask === undefined) {
-        if (stausEmails === undefined) {
-          alreadyAssignToAnother = null;
-          setEmailAlreadyAssign(false);
-        } else {
-          alreadyAssignToAnother = 1;
-          setEmailAlreadyAssign(true);
-        }
-      } else {
-        alreadyAssignToAnother = 1;
-        setEmailAlreadyAssign(true);
-      }
-    } else {
-      alreadyAssignToAnother = null;
-      setemailApproveRole(false);
-      setemailApproveReport(false);
-    }
-
-    if (isEmail(email) && alreadyAssignToAnother === null) {
-      await axios
-        .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-          loginID: email.trim(),
-          pwd: "",
-          rememberme: 0,
-          loginty: "AdminEmail",
-        })
-        .then(
-          (response) => {
-            if (response && response.data && response.data.Status === "True") {
-              if (role === "co") {
-                let obj = {
-                  email: "",
-                  companyName: "",
-                  categoryName: "",
-                  emailAvail: "yes",
-                };
-                let tempobj = [...assignTaskEmail];
-                tempobj[index] = obj;
-                setAssignTaskEmail(tempobj);
-              }
-              if (role === "approval") {
-                setApprovalEmail("");
-                setApprovalEmailErr("yes");
-              }
-              if (role === "statusreport") {
-                setTaskReportEmailErr("yes");
-                setStatusEmail("");
-              }
-            } else {
-              if (role === "approval") {
-                let list = approvalTaskEmail;
-                if (approvalTaskEmail.length > 0) {
-                  if (emailExist(email)) {
-                    setApprovalEmail("");
-                  } else {
-                    list.push({ email: email });
-                    setApprovalTaskEmail(list);
-                    setApprovalEmail("");
-                  }
-                } else {
-                  list.push({ email: email });
-                  setApprovalTaskEmail(list);
-                  setApprovalEmail("");
-                }
-              }
-              if (role === "statusreport") {
-                let list = statusReportEmail;
-                if (statusReportEmail.length > 0) {
-                  if (emailExistStatus(email)) {
-                    setStatusEmail("");
-                  } else {
-                    list.push({ email: email });
-                    setStatusReportEmail(list);
-                    setStatusEmail("");
-                  }
-                } else {
-                  list.push({ email: email });
-                  setStatusReportEmail(list);
-                  setStatusEmail("");
-                }
-              }
-            }
-          },
-          (error) => {}
-        );
-    }
-  };
+    state &&
+    state?.complianceOfficer &&
+    state?.complianceOfficer?.goveranceData;
 
   const handleKeyDown1 = (e) => {
     if (e.key === "Enter") {
@@ -277,100 +150,32 @@ function Governance({ history }) {
     setAssignTaskEmail(tempobj);
   };
 
-  const onDoneButtonClick = () => {
-    let complianceOfficerMailList = [];
-    let approverMailList = [];
-    let statusReportMailList = [];
-    assignTaskEmail &&
-      assignTaskEmail.length > 0 &&
-      assignTaskEmail.map((item, index) => {
-        let compObj = [];
-        if (item.companyName !== "") {
-          compObj.push(item.companyName);
-        }
-        if (item.email !== "") {
-          compObj.push(item.email);
-        }
-        complianceOfficerMailList.push(compObj.join(";"));
-      });
-    approvalTaskEmail &&
-      approvalTaskEmail.length > 0 &&
-      approvalTaskEmail.map((item, index) => {
-        if (item.email !== "") {
-          approverMailList.push(item.email);
-        }
-      });
-    statusReportEmail &&
-      statusReportEmail.length > 0 &&
-      statusReportEmail.map((item, index) => {
-        if (item.email !== "") {
-          statusReportMailList.push(item.email);
-        }
-      });
-
-    const payload = {
-      coUserId: userID,
-      coList: complianceOfficerMailList && complianceOfficerMailList.join(","),
-      aproverList: approverMailList && approverMailList.join(","),
-      mgmtList: statusReportMailList && statusReportMailList.join(","),
-      mgmtUserType:
-        statusReportMailList && statusReportMailList.length > 0 ? 6 : "",
-      aproverUserType: approverMailList && approverMailList.length > 0 ? 5 : "",
-      coUserType:
-        complianceOfficerMailList && complianceOfficerMailList.length > 0
-          ? 3
-          : "",
-      emailSubject: 1,
-      emailTemplate: 1,
-    };
-    let assignCoEmail = [];
-    let mgmtList = payload.mgmtList.split(",");
-    let aproverList = payload.aproverList.split(",");
-    var i = 0;
-    for (i = 0; i < payload.coList.split(",").length; i++) {
-      let compantData = payload.coList.split(",")[i].split(";");
-
-      assignCoEmail = [...assignCoEmail, compantData[1]];
-    }
-    let finalArr = assignCoEmail.concat(mgmtList).concat(aproverList);
-    sessionStorage.setItem("emails", JSON.stringify(finalArr));
-
-    dispatch(governanceActions.governanceAPIRequest(payload));
-    history.push("/assign-task");
+  const assignComplainceOffice = (event, index) => {
+    const { value } = event.target;
+    let temp = [...companyData];
+    temp[index].compliance_officer = value;
+    setCompanyData(temp);
   };
 
-  useEffect(() => {
-    dispatch(
-      governanceActions.governanceAPIRequest({
-        coUserId: userID,
-        coList: "",
-        aproverList: "",
-        mgmtList: "",
-        mgmtUserType: 0,
-        aproverUserType: 0,
-        coUserType: 0,
-        emailSubject: 0,
-        emailTemplate: 0,
-      })
-    );
-  }, []);
+  const onDoneButtonClick = async () => {
+    try {
+      const { data } = await axiosInstance.post(
+        "compliance.api.setGovernanceOfficerCompany",
+        {
+          details: companyData,
+          expert_review: enableSecmarkReview,
+          status_report: [emailApproval, statusEmail],
+        }
+      );
 
-  useEffect(() => {
-    let tempArr = [];
-    if (companyInfo != undefined && Object.keys(companyInfo).length != 0) {
-      companyInfo.map((item, index) => {
-        let obj = {
-          email: "",
-          companyName: "",
-          categoryName: "",
-          emailAvail: "",
-        };
-        tempArr.push(obj);
-      });
-      setCompanyData(companyInfo);
-      setAssignTaskEmail(tempArr);
+      if (data.message.success) {
+        localStorage.setItem("expertReview", enableSecmarkReview);
+        history.push("/assign-task");
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
-  }, [companyInfo]);
+  };
 
   const handleApprovalTaskEmail = (e) => {
     setemailApproveRole(false);
@@ -378,6 +183,7 @@ function Governance({ history }) {
     const { value, name } = e.target;
     const email = e.target.value;
     setApprovalEmail(e.target.value);
+    handleOnBlurEmailApproval(e);
   };
   const handleStatusReportEmail = (e) => {
     setemailApproveReport(false);
@@ -385,23 +191,12 @@ function Governance({ history }) {
     const { value, name } = e.target;
     const email = e.target.value;
     setStatusEmail(e.target.value);
-  };
-
-  const emailExist = (email) => {
-    return approvalTaskEmail.some(function (e) {
-      return e.email === email;
-    });
-  };
-
-  const emailExistStatus = (email) => {
-    return statusReportEmail.some(function (e) {
-      return e.email === email;
-    });
+    handleOnBlurEmailStatusReport(e);
   };
 
   const handleOnBlurEmailApproval = (e) => {
     if (e.target.value !== "" && isEmail(e.target.value)) {
-      checkEmailAlreadyExistsOrNot(e.target.value, 0, "approval");
+      //checkEmailAlreadyExistsOrNot(e.target.value, 0, "approval");
     }
     handleappprovalEmail();
   };
@@ -417,7 +212,7 @@ function Governance({ history }) {
     let list = statusReportEmail;
     if (e.target.value !== "") {
       if (isEmail(e.target.value)) {
-        checkEmailAlreadyExistsOrNot(e.target.value, 0, "statusreport");
+        // checkEmailAlreadyExistsOrNot(e.target.value, 0, "statusreport");
       }
     } else {
     }
@@ -444,43 +239,36 @@ function Governance({ history }) {
     setStatusReportEmail(list);
   };
 
-  const skipPage = () => {
-    history.push("/assign-task");
-  };
+  const skipPage = async () => {
+    try {
+      // localStorage.setItem("expertReview", false);
+      // const temp = companyData.map((companyList) => {
+      //   return {
+      //     company_name: companyList.company_name,
+      //     industry: companyList.company_name,
+      //     name: companyList.name,
+      //     compliance_officer: localStorage
+      //       .getItem("coemail")
+      //       .replace(/ /g, "+"),
+      //   };
+      // });
+      history.push("/assign-task");
+      // const { data } = await axiosInstance.post(
+      //   "compliance.api.setGovernanceOfficerCompany",
+      //   {
+      //     details: temp,
+      //     expert_review: enableSecmarkReview,
+      //     status_report: [],
+      //   }
+      // );
 
-  const checkEmailAvailorNot = (e, index) => {
-    if (e.target.value !== "") {
-      if (isEmail(e.target.value)) {
-        checkEmailAlreadyExistsOrNot(e.target.value, index, "co");
-      }
+      // if (data.message.success) {
+      //   localStorage.setItem("expertReview", enableSecmarkReview);
+      //   history.push("/assign-task");
+      // }
+    } catch (error) {
+      toast.error(error);
     }
-
-    constCompanyAssignEmail(index);
-  };
-  const constCompanyAssignEmail = (index) => {
-    if (
-      assignTaskEmail &&
-      assignTaskEmail[index] &&
-      assignTaskEmail[index].email !== "" &&
-      isEmail(assignTaskEmail[index].email) === true
-    ) {
-      setdisabled(true);
-    } else if (
-      assignTaskEmail &&
-      assignTaskEmail[index] &&
-      assignTaskEmail[index].email === ""
-    ) {
-      setdisabled(true);
-    }
-  };
-  const companyExists = (entityName) => {
-    const found = assignButtonIndex.some(
-      (item) => item.EntityName === entityName
-    );
-    if (found) {
-      return true;
-    }
-    return false;
   };
 
   const handleMobileAssignClick = (item, index) => {
@@ -521,13 +309,13 @@ function Governance({ history }) {
     return (
       <div key={index} className="col-12 row">
         <div className="col-8 col-md-3 col-sm-3 col-xl-3 pl-0">
-          <div className="goverance-desc-input">{item.EntityName}</div>
+          <div className="goverance-desc-input">{item.company_name}</div>
           <div className="goverance-desc-input-after d-block d-sm-none">
-            {item.Category}
+            {item.company_name}
           </div>
         </div>
         <div className="col-3 col-md-5 col-sm-5 col-xl-5 d-none d-sm-block">
-          <div className="goverance-desc-input-after">{item.Category}</div>
+          <div className="goverance-desc-input-after">{item.industry[0]}</div>
         </div>
         <div className="col-4 col-md-4 col-sm-4 col-xl-4">
           <div className="input-grid-right">
@@ -540,11 +328,11 @@ function Governance({ history }) {
                   name="assigntaskemail"
                   autoComplete="off"
                   onFocus={() => setdisabled(false)}
-                  onBlur={(e) => checkEmailAvailorNot(e, index)}
+                  // onBlur={(e) => checkEmailAvailorNot(e, index)}
                   onChange={(e) => {
-                    handleAssignTaskEmail(e, index, item);
+                    assignComplainceOffice(e, index);
                   }}
-                  value={item && item[index] && item[index].email}
+                  value={item && item[index] && item[index].compliance_officer}
                 />
                 {assignTaskEmail &&
                   assignTaskEmail[index] &&
@@ -620,6 +408,18 @@ function Governance({ history }) {
       </div>
     );
   };
+
+  useEffect(() => {
+    localStorage.setItem("expertReview", false);
+    dispatch(governanceActions.governanceAPIRequest());
+  }, []);
+
+  useEffect(() => {
+    let tempArr = [];
+    console.log(state?.complianceOfficer);
+    setCompanyData(companyInfo);
+    setAssignTaskEmail(tempArr);
+  }, [companyInfo]);
 
   return (
     <div className="row">
@@ -770,7 +570,7 @@ function Governance({ history }) {
                             placeholder="Add emails to invite"
                             value={emailApproval || ""}
                             onFocus={() => setdisabled(false)}
-                            onBlur={(e) => handleOnBlurEmailApproval(e)}
+                            //onBlur={(e) => handleOnBlurEmailApproval(e)}
                             name="approvaltaskemail"
                             onChange={(e) => handleApprovalTaskEmail(e)}
                             onKeyPress={(e) => handleKeyDown1(e)}
@@ -868,7 +668,7 @@ function Governance({ history }) {
                             value={statusEmail}
                             name="statusEmail"
                             onFocus={() => setdisabled(false)}
-                            onBlur={(e) => handleOnBlurEmailStatusReport(e)}
+                            //  onBlur={(e) => handleOnBlurEmailStatusReport(e)}
                             onChange={(e) => handleStatusReportEmail(e)}
                             onKeyPress={(e) => handleKeyDown2(e)}
                           />
@@ -905,32 +705,12 @@ function Governance({ history }) {
               <div className="bottom-logo-strip">
                 <div className="row aligncenter">
                   <div className="col-md-6 col-xs-12">
-                    {disabled === true ? (
-                      <button
-                        onClick={() => onDoneButtonClick()}
-                        className="btn save-details common-button  mb-2"
-                        disabled={
-                          assignTaskEmail.find(
-                            (item) => isEmail(item.email) === true
-                          ) !== undefined
-                            ? false
-                            : approvalTaskEmail.length === 0
-                            ? statusReportEmail.length !== 0
-                              ? false
-                              : true
-                            : false
-                        }
-                      >
-                        Done
-                      </button>
-                    ) : (
-                      <button
-                        className="btn save-details common-button  mb-2"
-                        disabled={true}
-                      >
-                        Done
-                      </button>
-                    )}
+                    <button
+                      onClick={() => onDoneButtonClick()}
+                      className="btn save-details common-button  mb-2"
+                    >
+                      Done
+                    </button>
                   </div>
                   <div className="col-md-6 col-xs-12 d-none d-sm-block text-right">
                     <a href="#" style={{ cursor: "auto" }}>

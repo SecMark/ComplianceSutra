@@ -40,7 +40,7 @@ function SendOTP({ currentStep }) {
               <div className="wrapper_login">
                 <p className="login_title">
                   <img className="right-back-arrow" src={leftArrow} alt="" />{" "}
-                  Let's secure your account
+                  Let's secure your accountss
                   <br />
                   with verified mobile
                 </p>

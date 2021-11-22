@@ -8,18 +8,19 @@ import { actions as personalDetailsAction } from "../../redux/actions";
 import { withRouter } from "react-router-dom";
 import SideBarInputControl from "../WebStepper.js";
 import api from "../../../../apiServices";
-import { toast } from "react-toastify";
-import Dropdown from "./Dropdown/Dropdown";
 import "./style.css";
 import MobileStepper from "../MobileStepper.js";
-import Constants from "../../../../CommonModules/sharedComponents/constants/constant";
+import { useLocation } from "react-router-dom";
 
 function PersonalDetails({ history, location }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
-  const params = new URLSearchParams(location.search);
-  const userType = params.get("type");
+  const search = useLocation().search;
+  const email = new URLSearchParams(search).get("email").replace(" ", "+");
+  const key = new URLSearchParams(search).get("key");
+  localStorage.setItem("coemail", email);
+  localStorage.setItem("accessToken", key);
 
   const [isValidate, setIsValidate] = useState(false);
   const [values, setValues] = useState({
@@ -57,23 +58,30 @@ function PersonalDetails({ history, location }) {
 
   const checkNumberAvailable = () => {
     let payload = {
-      countrycode: values.countryCode.replace("+", ""),
-      loginID: values.mobileNumber,
-      loginty: "AdminMobile",
+      mobile_no: values.mobileNumber,
     };
     api
-      .post("/api/availabilityCheck", payload)
+      .post("compliance.api.avabilityCheck", payload)
       .then((result) => {
-        setMobileNumberValid(result.data.Status);
+        if (
+          result &&
+          result.data &&
+          result.data.message &&
+          result.data.message.status === true
+        ) {
+          setMobileNumberValid(true);
+        } else {
+          setMobileNumberValid(false);
+        }
       })
       .catch((error) => {});
   };
 
-  useEffect(() => {
-    if (values.mobileNumber.length >= 10) {
-      checkNumberAvailable();
-    }
-  }, [values.mobileNumber]);
+  // useEffect(() => {
+  //   if (values.mobileNumber.length >= 10) {
+  //     checkNumberAvailable();
+  //   }
+  // }, [values.mobileNumber]);
 
   const onChangeHandler = (name) => (event) => {
     if (
@@ -192,63 +200,36 @@ function PersonalDetails({ history, location }) {
   };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onSubmit();
+      // onSubmit();
     }
   };
-  const errorMessage =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.message;
 
   const onSubmit = () => {
-    if (mobileNumberValid == "true") {
-      toast.error("Mobile number already registered.");
-      return;
-    }
-    let location = window.location.href;
-    let data = location.split("=");
-    let splitEmailAndType = data && data[1].split("&");
-    let emailFromLink = splitEmailAndType[0];
-    let typeFromLink = data[2];
-    setIsValidate(true);
-    if (checkPersonalDetailsForm(values)) {
-      return;
-    }
+    console.log({ onSubmit: "clicked" });
     if (
-      errors.passwordErr !== "" ||
-      errors.confirmPasswordErr !== "" ||
-      errors.countryCodeErr === "true"
+      values.fullName !== "" &&
+      values.mobileNumber !== "" &&
+      values.mobileNumber !== "" &&
+      values.designation !== "" &&
+      values.password !== "" &&
+      values.confirmPassword !== "" &&
+      values.countryCode !== ""
     ) {
-      return "";
-    }
-    setIsValidate(false);
-    if (emailFromLink !== "" && typeFromLink !== "") {
-      let countryCode;
-      let strr = values.countryCode;
-
-      countryCode = strr;
       dispatch(
         personalDetailsAction.userDataSaveRequest({
-          adminName: values.fullName,
-          adminEmail: emailFromLink,
-          adminMobile: values.mobileNumber,
-          adminPWD: values.password,
-          isClientTypeUser: 0,
-          userType: parseInt(typeFromLink),
-          actionFlag: 2,
+          email: email,
+          token: key,
+          full_name: values.fullName,
+          mobile_number: values.mobileNumber,
           designation: values.designation,
-          userID: "",
+          password: values.password,
+          confirm_password: values.confirmPassword,
+          countrycode: values.countryCode || "+91",
           history,
-          from: "personal-details-co",
-          countrycode:
-            countryCode === "" || countryCode === "+" ? "+91" : countryCode,
-          whatsupFlag: whatappFlag ? 1 : 0,
         })
       );
     } else {
-      toast.error("Please verify your email");
-      return "";
+      setIsValidate(true);
     }
   };
 
@@ -256,31 +237,9 @@ function PersonalDetails({ history, location }) {
     let strr = e.target.value;
     let str = strr.replace(/\D/g, "");
     if (str === "") {
-      str = "91";
+      str = "+91";
     }
-    //
-    let payload = {
-      cntryCode: str,
-    };
-    api
-      .post("/api/CountryCodeCheck", payload)
-      .then(function (response) {
-        // handle success
-        if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true);
-          let inputKey = "countryCodeErr";
-          setErrors({ ...errors, [inputKey]: "" });
-        } else {
-          setCountryCode(false);
-          // setErrors(errors);
-          let inputKey = "countryCodeErr";
-          setErrors({ ...errors, [inputKey]: "true" });
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-        }
-      });
+    setCountryCode(true);
   };
   return (
     <div className="row">
@@ -397,12 +356,6 @@ function PersonalDetails({ history, location }) {
                             />
                           </div>
 
-                          {values.countryCode !== "" &&
-                            errors.countryCodeErr === "true" && (
-                              <p className="input-error-message">
-                                Country code is invalid
-                              </p>
-                            )}
                           {isValidate && values.mobileNumber === "" && (
                             <p className="input-error-message">
                               Mobile number is required
@@ -414,65 +367,39 @@ function PersonalDetails({ history, location }) {
                                 Mobile number is invalid
                               </p>
                             )}
-                          {values.mobileNumber.length >= 10 &&
-                            mobileNumberValid == "true" && (
-                              <p className="input-error-message">
-                                Mobile number already registered.
-                              </p>
-                            )}
                         </div>
                       </div>
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Designation</label>
-                          {(userType == Constants.ExpertUser && (
-                            <div>
-                              <input
-                                type="text"
-                                placeholder="Expert Reviewer"
-                                value="Expert Reviewer"
-                                disabled="true"
-                                className="success-input-form-control"
-                              />
-                            </div>
-                          )) || (
-                            <div>
-                              <input
-                                type="text"
-                                className={
-                                  "form-control " +
-                                  (isValidate && values.designation === ""
-                                    ? "input-error"
-                                    : "") +
-                                  (values.designation === ""
-                                    ? " "
-                                    : " success-input-form-control")
-                                }
-                                id="Designation"
-                                placeholder="Eg. Compliance Officer, Team Leader"
-                                value={values.designation}
-                                onChange={onChangeHandler("designation")}
-                                onKeyPress={(e) => handleKeyDown(e)}
-                              />
-                              {isValidate && values.designation === "" && (
-                                <p className="input-error-message">
-                                  Designation is required
-                                </p>
-                              )}
-                            </div>
-                          )}
+
+                          <div>
+                            <input
+                              type="text"
+                              className={
+                                "form-control " +
+                                (isValidate && values.designation === ""
+                                  ? "input-error"
+                                  : "") +
+                                (values.designation === ""
+                                  ? " "
+                                  : " success-input-form-control")
+                              }
+                              id="Designation"
+                              placeholder="Eg. Compliance Officer, Team Leader"
+                              value={values.designation}
+                              onChange={onChangeHandler("designation")}
+                              onKeyPress={(e) => handleKeyDown(e)}
+                            />
+                            {isValidate && values.designation === "" && (
+                              <p className="input-error-message">
+                                Designation is required
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
 
-                      <div className="col-md-6 col-xs-12">
-                        {(userType == Constants.ExpertUser && (
-                          <Dropdown
-                            options={options}
-                            className="form-control"
-                          />
-                        )) ||
-                          ""}
-                      </div>
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Password</label>
@@ -482,7 +409,7 @@ function PersonalDetails({ history, location }) {
                               "form-control " +
                               ((isValidate && values.password === "") ||
                               (values.password !== "" &&
-                                  errors.passwordErr !== "")
+                                errors.passwordErr !== "")
                                 ? "input-error"
                                 : "") +
                               (values.password !== ""

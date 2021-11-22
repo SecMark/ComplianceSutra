@@ -1837,6 +1837,13 @@ textarea.form-control.textAreaHeight::placeholder {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+span.view-by__status-box {
+  z-index: 1;
+}
+span.view-by__status-box {
+  background-color: #fff;
+}
 @media screen and (min-width: 1650px) {
   .new-side-bar {
     left: 3.5%;
@@ -1988,11 +1995,14 @@ textarea.form-control.textAreaHeight::placeholder {
     cursor: pointer;
     float: right;
   }
+  
   .all-companies-task-grid .take-action {
     margin-bottom: 24px;
     padding: 0px 20px 0px;
   }
-
+  .all-companies-task-grid .take-action:first-child {
+    padding: 0px 20px 0px;
+  }
   .all-companies-task-grid .task-details-file-grid {
     margin: 35px 20px 0px;
   }

@@ -30,6 +30,10 @@ import NewRegulationSearchResult from "../NewRegulationSearchResult";
 import "./style.css";
 import NewRegulationSearchBadge from "../NewRegulationSearchBadge";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
+import axiosInstance from "../../../apiServices";
+import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
+import { toast } from "react-toastify";
+import BackDrop from "../../../CommonModules/sharedComponents/Loader/BackDrop";
 
 const NewRegulations = (props) => {
   const [isShowFilter, setIsShowFilter] = useState(false);
@@ -45,24 +49,22 @@ const NewRegulations = (props) => {
   const [isShowRegulationDetailMobile, setIsShowRegulationDetailMobile] =
     useState(false);
 
-  const [listOfIndustries, setListOfIndustry] = useState([]);
-  const [listOfIssuers, setListOfIssuers] = useState([]);
-  const [listOfTopic, setListOfTopic] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [filters, setFilters] = useState({
+    issuer: [],
+    industry: [],
+    topic: [],
+    from_date: "",
+    to_date: "",
+  });
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
   //deconstruct updates reducer state values.
-  const {
-    isSuccess,
-    isLoading,
-    updateList,
-    isFilterApplied,
-    isSearch,
-    industryList,
-    issuerList,
-    topicList,
-  } = state.UpdatesReducer;
+  const { isSuccess, isLoading, updateList, isFilterApplied, isSearch } =
+    state.UpdatesReducer;
 
   const onHBMenu = () => {
     setNavigationHideShow(true);
@@ -87,49 +89,67 @@ const NewRegulations = (props) => {
   // clear filter
   useEffect(() => {
     dispatch(clearFilter());
-  }, [false]);
+  }, []);
 
   useEffect(() => {
-    fetchAndSetUpdates();
-  }, [false]);
+    const filter = filters;
+    fetchAndSetUpdates({ filters: filter });
+  }, []);
 
   useEffect(() => {
     setIsShowFilter(false);
     setIsShowMobileFilter(false);
   }, [isSuccess]);
 
-  const fetchAndSetUpdates = () => {
-    const payload = { UserID: state.auth.loginInfo?.UserID };
-    dispatch(getUpdates(payload));
+  useEffect(() => {
+    if (
+      props.history?.location?.state?.from === "notifications" &&
+      props.history?.location?.state?.circular_id
+    ) {
+      fetchAndSetNewRegulationDetail(
+        props.history?.location?.state?.circular_id
+      );
+    }
+  }, []);
+
+  const fetchAndSetUpdates = (filter) => {
+    dispatch(getUpdates(filter));
   };
   const changeShowRegulationDetail = () => {
     setIsShowRegulationDetail(!isShowRegulationDetail);
   };
 
-  const fetchAndSetNewRegulationDetail = (updatesId) => {
-    setNewRegulationDetail({});
+  const fetchAndSetNewRegulationDetail = async (updatesId) => {
+    try {
+      setNewRegulationDetail({});
+      setLoading(true);
 
-    if (updateList.length > 0) {
-      const getNewRegulationDetailById = updateList.find(
-        ({ id }) => id === updatesId
-      );
-      setNewRegulationDetail({
-        ...newRegulationDetail,
-        getNewRegulationDetailById,
-      });
+      if (updateList.length > 0) {
+        const { data } = await axiosInstance.post(
+          `${BACKEND_BASE_URL}compliance.api.getRegulationDetails`,
+          {
+            name: updatesId,
+          }
+        );
+
+        if (data.message.status) {
+          const { circular_details } = data.message;
+          setNewRegulationDetail(circular_details);
+          setLoading(false);
+          setIsShowRegulationDetail(!isShowRegulationDetail);
+        }
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error("Failed to fetch circular details! Please try later");
     }
-    setIsShowRegulationDetail(!isShowRegulationDetail);
   };
 
   const setSeachTextAndFetchIndustryList = (event) => {
     const { value } = event.target;
     if (value !== "") {
-      const searchPayload = {
-        //UserID: state.auth.loginInfo?.UserID,
-        flag: value,
-      };
       setSearchValue(value);
-      dispatch(setSearchText(searchPayload));
       dispatch(setIsSearch(true));
     } else {
       setSearchValue("");
@@ -197,6 +217,7 @@ const NewRegulations = (props) => {
   return (
     <>
       <div className="new-regulation-side-bar">
+        <BackDrop isLoading={loading} />
         {isMobile && (
           <div id="sideBarParent" className="" ref={sideBarParent}>
             <div
@@ -380,12 +401,12 @@ const NewRegulations = (props) => {
                   {updateList?.length === 0 ? (
                     <NoResultFound text="No detail found" />
                   ) : (
-                    updateList?.map((updates) => {
+                    updateList?.map((updates, index) => {
                       return (
                         <div
                           className="list"
                           onClick={() =>
-                            fetchAndSetNewRegulationDetail(updates.id)
+                            fetchAndSetNewRegulationDetail(updates?.name)
                           }
                         >
                           <h2
@@ -395,8 +416,8 @@ const NewRegulations = (props) => {
                                 : "new-regulation-title"
                             }
                           >
-                            {updates?.Title &&
-                              getHighlightedText(updates.Title, searchValue)}
+                            {updates?.topic &&
+                              getHighlightedText(updates.topic, searchValue)}
                           </h2>
                           <div className="description">
                             <p
@@ -407,10 +428,7 @@ const NewRegulations = (props) => {
                               }
                             >
                               {updates?.GistText &&
-                                getHighlightedText(
-                                  updates.GistText,
-                                  searchValue
-                                )}
+                                getHighlightedText(updates.title, searchValue)}
                             </p>
                             <span
                               className={
@@ -419,9 +437,9 @@ const NewRegulations = (props) => {
                                   : "date"
                               }
                             >
-                              {updates?.Submissiondate &&
+                              {updates?.date_issued &&
                                 getHighlightedText(
-                                  moment(updates.Submissiondate).format(
+                                  moment(updates.date_issued).format(
                                     "Do MMM YYYY"
                                   ),
                                   searchValue
@@ -429,7 +447,7 @@ const NewRegulations = (props) => {
                             </span>
                           </div>
                           <button className="license-code">
-                            {updates.Regbodies}
+                            {updates.issuer}
                           </button>
                           <span
                             className={
@@ -438,9 +456,9 @@ const NewRegulations = (props) => {
                                 : "license-number"
                             }
                           >
-                            {updates?.CircularNo &&
+                            {updates?.circular_number &&
                               getHighlightedText(
-                                updates.CircularNo,
+                                updates.circular_number,
                                 searchValue
                               )}
                           </span>
@@ -536,12 +554,12 @@ const NewRegulations = (props) => {
                   {updateList.length === 0 ? (
                     <NoResultFound text="No detail found" />
                   ) : (
-                    updateList?.map((updates) => {
+                    updateList?.map((updates, index) => {
                       return (
                         <div
                           className="list"
                           onClick={() => {
-                            fetchAndSetNewRegulationDetail(updates.id);
+                            fetchAndSetNewRegulationDetail(updates?.name);
                             setIsShowRegulationDetailMobile(
                               !isShowRegulationDetailMobile
                             );
@@ -554,8 +572,8 @@ const NewRegulations = (props) => {
                                 : "new-regulation-title"
                             }
                           >
-                            {updates?.Title &&
-                              getHighlightedText(updates.Title, searchValue)}
+                            {updates?.topic &&
+                              getHighlightedText(updates.topic, searchValue)}
                           </h2>
                           <div className="description">
                             <p
@@ -566,17 +584,14 @@ const NewRegulations = (props) => {
                               }
                             >
                               {" "}
-                              {updates?.GistText &&
-                                getHighlightedText(
-                                  updates?.GistText,
-                                  searchValue
-                                )}
+                              {updates?.title &&
+                                getHighlightedText(updates?.title, searchValue)}
                             </p>
                           </div>
                           <div className="description-details">
                             <div className="license-details">
                               <button className="license-code">
-                                {updates?.Regbodies && updates.Regbodies}
+                                {updates?.issuer && updates.issuer}
                               </button>
                               <span
                                 className={
@@ -585,9 +600,9 @@ const NewRegulations = (props) => {
                                     : "license-number"
                                 }
                               >
-                                {updates?.CircularNo &&
+                                {updates?.circular_number &&
                                   getHighlightedText(
-                                    updates.CircularNo,
+                                    updates.circular_number,
                                     searchValue
                                   )}
                               </span>
@@ -599,8 +614,8 @@ const NewRegulations = (props) => {
                                   : "date"
                               }
                             >
-                              {updates?.Submissiondate &&
-                                moment(updates.Submissiondate).format("Do MMM")}
+                              {updates?.date_issued &&
+                                moment(updates.date_issued).format("Do MMM")}
                             </span>
                           </div>
                         </div>

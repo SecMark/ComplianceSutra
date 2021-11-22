@@ -1,53 +1,45 @@
-import React, { useState, useEffect } from "react";
-import mobileSteperIcon from "../../../../../../../assets/Icons/mobileSteperIcon.png";
+import React from "react";
+import moment from "moment";
 import "../style.css";
 import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
-import { withRouter, Link } from "react-router-dom";
-import { useSelector, useDispatch, connect } from "react-redux";
-import { actions as notificationActions } from "../../notification/Redux/actions";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { actions as taskDetailsModalOpen } from "../../../MenuRedux/actions";
-import moment from "moment";
+
 function CustomCard(props) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const currentItem = props.currentItem;
+  const { currentItem, isRedirect } = props;
   const userDetails = state && state.auth && state.auth.loginInfo;
+  const history = useHistory();
   const defineStyle = (props) => {
     let obj = {};
-    if (
-      props &&
-      props.currentItem &&
-      props.currentItem.Statusorg === "overdue"
-    ) {
+    if (props && currentItem && currentItem.status === "Overdue") {
       obj = {
         backgroundColor: "#fff9f9",
       };
-    } else if (
-      props &&
-      props.currentItem &&
-      props.currentItem.Statusorg === "Upcoming"
-    ) {
+    } else if (props && currentItem && currentItem.status === "Upcoming") {
       obj = {
         backgroundColor: "#fff",
       };
     } else if (
       props &&
-      props.currentItem &&
-      props.currentItem.Statusorg === "Completed"
+      currentItem &&
+      currentItem.status === "Approval Pending"
     ) {
       obj = {
         backgroundColor: "#f9fffa",
       };
     } else {
-      if (props && props.Statusorg === "overdue") {
+      if (props && props.status === "Overdue") {
         obj = {
           backgroundColor: "#fff9f9",
         };
-      } else if (props && props.Statusorg === "Upcoming") {
+      } else if (props && props.status === "Upcoming") {
         obj = {
           backgroundColor: "#fff",
         };
-      } else if (props && props.Statusorg === "Completed") {
+      } else if (props && props.status === "Approval Pending") {
         obj = {
           backgroundColor: "#f9fffa",
         };
@@ -62,40 +54,32 @@ function CustomCard(props) {
 
   const defineStyleForDate = (props) => {
     let obj = {};
-    if (
-      props &&
-      props.currentItem &&
-      props.currentItem.Statusorg === "overdue"
-    ) {
+    if (props && currentItem && currentItem.status === "Overdue") {
       obj = {
         color: "red",
       };
-    } else if (
-      props &&
-      props.currentItem &&
-      props.currentItem.Statusorg === "Upcoming"
-    ) {
+    } else if (props && currentItem && currentItem.status === "Upcoming") {
       obj = {
         color: "rgb(27, 29, 33)",
       };
     } else if (
       props &&
-      props.currentItem &&
-      props.currentItem.Statusorg === "Completed"
+      currentItem &&
+      currentItem.status === "Approval Pending"
     ) {
       obj = {
         color: "rgb(27, 29, 33)",
       };
     } else {
-      if (props && props.Statusorg === "overdue") {
+      if (props && props.status === "Overdue") {
         obj = {
           color: "red",
         };
-      } else if (props && props.Statusorg === "Upcoming") {
+      } else if (props && props.status === "Upcoming") {
         obj = {
           color: "rgb(27, 29, 33)",
         };
-      } else if (props && props.Statusorg === "Completed") {
+      } else if (props && props.status === "Approval Pending") {
         obj = {
           color: "rgb(27, 29, 33)",
         };
@@ -123,9 +107,11 @@ function CustomCard(props) {
     var dateObj = new Date(date);
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (dateObj.toLocaleDateString() == today.toLocaleDateString()) {
+    if (dateObj.toLocaleDateString() === today.toLocaleDateString()) {
       return "Today";
-    } else if (dateObj.toLocaleDateString() == yesterday.toLocaleDateString()) {
+    } else if (
+      dateObj.toLocaleDateString() === yesterday.toLocaleDateString()
+    ) {
       return "Yesterday";
     } else {
       return flag === 1
@@ -144,6 +130,9 @@ function CustomCard(props) {
   };
 
   const redirectToTaskListView = (TaskId) => {
+    if (isRedirect) {
+      history.push("/dashboard");
+    }
     dispatch(taskDetailsModalOpen.setCurrentBoardViewTaskId(TaskId));
     dispatch(taskDetailsModalOpen.setIsModalOpen("board"));
     dispatch(
@@ -159,52 +148,45 @@ function CustomCard(props) {
           style={{
             maxWidth: "100%",
             pointerEvents: `${userDetails.UserType === 6 ? "none" : "auto"}`,
+            cursor: "pointer",
           }}
           className="board-tab-design"
         >
-          <Link
-            to={"/dashboard"}
-            onClick={() =>
-              redirectToTaskListView(currentItem && currentItem.TaskId)
-            }
+          <div
+            onClick={() => {
+              redirectToTaskListView(currentItem);
+            }}
           >
             <div style={defineStyle(props)} className="risk-pink-grid">
               <div className="nse-label">
-                {currentItem && currentItem.LicenseCode}
+                {currentItem && currentItem.license}
               </div>
               <div className="w-100 d-flex pb-20">
-                {/* <div className="checkIcon">
-                                <img
-                                    className="three-dot three-dot-small"
-                                    src={mobileSteperIcon}
-                                    alt="three Dots Icon"
-                                />
-                            </div> */}
                 <div className="checkIconText">
-                  {currentItem && currentItem.TaskName}
+                  {currentItem && currentItem.subject}
                 </div>
               </div>
               <div className="card-company-title">
-                {currentItem && currentItem.EntityName}
+                {currentItem && currentItem.customer_name}
               </div>
 
               <div className="w-100 d-flex">
-                {currentItem && currentItem.AssignedName !== "Assign" && (
+                {currentItem && currentItem.assign_to_name !== null && (
                   <div className="d-flex w-50">
                     <div className="pjCircle">
                       <span className="pjText">
                         {" "}
-                        {currentItem && getInitials(currentItem.AssignedName)}
+                        {currentItem && getInitials(currentItem.assign_to_name)}
                       </span>
                     </div>
                     <div className="circle-flex-text">
                       {currentItem &&
-                        currentItem.AssignedName &&
-                        _getAssignedName(currentItem.AssignedName)}
+                        currentItem.assign_to_name &&
+                        _getAssignedName(currentItem.assign_to_name)}
                     </div>
                   </div>
                 )}
-                {currentItem && currentItem.AssignedName === "Assign" && (
+                {currentItem && currentItem.assign_to_name === null && (
                   <div className="d-flex w-50">
                     <div
                       className="circle-front-text NoStatus"
@@ -218,12 +200,16 @@ function CustomCard(props) {
 
                 <div className="w-50">
                   <span style={defineStyleForDate(props)} className="red-day">
-                    {currentItem && getDayDate(currentItem.EndDate, 2)}
+                    {currentItem &&
+                      getDayDate(
+                        currentItem.due_date || currentItem.deadline_date,
+                        2
+                      )}
                   </span>
                 </div>
               </div>
             </div>
-          </Link>
+          </div>
         </div>
       ) : (
         <div className="board-tab-design">
