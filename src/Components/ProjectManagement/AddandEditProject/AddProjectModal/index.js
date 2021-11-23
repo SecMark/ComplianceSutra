@@ -2,7 +2,7 @@ import React, { useEffect ,useState} from "react";
 import "./style.css";
 import TextEditor from "../TextEditor";
 import { DatePicker, Space } from "antd";
-import { setProject } from "../Redux/actions";
+import { setProject ,getRegisteredUser} from "../Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import calanderIcon from "../../../../assets/Icons/calanderIcon.svg";
 
@@ -17,7 +17,7 @@ function AddProject({ show, onClose }) {
   const dispatch = useDispatch();
   const [values, setValues] = useState({
     project_name: "",
-    assign_user: "",
+    assign_user: [],
     start_date: "",
     end_date: "",
     project_overview: "",
@@ -32,8 +32,10 @@ function AddProject({ show, onClose }) {
     project_overview: "lemon project",
   };
   useEffect(() => {
-    dispatch(setProject(payload));
-  }, []);
+    //  dispatch(getRegisteredUser())
+    // dispatch(setProject(payload));
+
+  }, [state.projectReducer]);
 
   const onHandleChange = (evt) => {
     const value = evt.target.value;
@@ -44,6 +46,9 @@ function AddProject({ show, onClose }) {
     });
   };
 
+  const onAssignUser = (etv)=>{
+
+  }
   
   const calanderimg = <img src={calanderIcon} />;
 
@@ -64,7 +69,7 @@ function AddProject({ show, onClose }) {
               <label className="add-edit-project-labels">User</label>
               <input className="add-edit-project-inputs"
               name="assign_user"
-              onChange={onHandleChange}
+              onChange={onAssignUser}
               />
             </div>
             <div className="col-3">
@@ -99,7 +104,7 @@ function AddProject({ show, onClose }) {
           <label className="add-edit-project-labels mt-3">
             Project overview
           </label>
-          <TextEditor />
+          <TextEditor values={values} setValues={setValues} />
           <div className="d-flex mt-3 justify-content-center">
             <div className="p-2">
               <button className="add-edit-project-submit-btn" onClick={onClose}>

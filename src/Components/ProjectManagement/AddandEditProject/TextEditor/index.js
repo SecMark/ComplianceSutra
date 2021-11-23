@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-// import * as Icons from "../../../../assets/Icons/EditorIcons";
 import bold from "../../../../assets/Icons/EditorIcons/bold.png";
 import underline from "../../../../assets/Icons/EditorIcons/underline.png";
 import overline from "../../../../assets/Icons/EditorIcons/overline.png";
@@ -15,28 +14,39 @@ import left from "../../../../assets/Icons/EditorIcons/leftalign.png";
 import right from "../../../../assets/Icons/EditorIcons/rightalign.png";
 import center from "../../../../assets/Icons/EditorIcons/center.png";
 import justify from "../../../../assets/Icons/EditorIcons/justifycontet.png";
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
 import "./style.css";
-function TextEditor() {
-  const [editorState, setEditorState] = React.useState(
-    () => EditorState.createEmpty(),
+function TextEditor({ values, setValues }) {
+  const [editorState, setEditorState] = React.useState(() =>
+    EditorState.createEmpty()
   );
-  console.log(editorState)
-
-  const onEditor = (val)=>{ 
-    setEditorState({
-      ...editorState,
-      val
-    })
-  }
+  const [description, setDescription] = useState("");
+  console.log(description);
+  const handleChange = (rawDraftContentState) => {
+    const data = draftToHtml(
+      convertToRaw(rawDraftContentState.getCurrentContent())
+    );
+    setDescription(data);
+    setValues({
+      ...values,
+      project_overview:data,
+    });
+  };
   return (
     <div>
       <Editor
         editorClassName="add-project-editor-box"
         toolbarClassName="add-project-text-editor"
         wrapperClassName="add-project-tex-editor-wrapper"
-        editorState={editorState} 
-        onChange={setEditorState}
+        // editorState={editorState}
+        //  onChange={setEditorState}
+        defaultEditorState={editorState}
+        onEditorStateChange={(editorState) => {
+          setEditorState(editorState);
+          handleChange(editorState);
+        }}
         toolbar={{
           options: ["inline", "list", "textAlign", "remove"],
           inline: {

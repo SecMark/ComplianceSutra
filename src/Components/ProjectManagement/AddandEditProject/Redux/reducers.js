@@ -1,6 +1,7 @@
 import {
     GET_PROJECT_DETAIL,
-    SET_PROJECT_DETAIL
+    SET_PROJECT_DETAIL,
+    GET_REGISTERED_USER_LIST
 } from "./types";
 
 
@@ -11,7 +12,9 @@ const initialState = {
         start_date:"",
         end_date:"",
         project_overview:""
-    }   
+    }   ,
+    Registered_user :[]
+    
 };
 
 
@@ -25,6 +28,11 @@ const reducer = (state =initialState, {type,payload})=>{
                 projectDetails:{
                     ...payload
                 }
+            }
+        case GET_REGISTERED_USER_LIST:
+            return{
+                ...state,
+                Registered_user :payload
             }
         default: 
         return state;
