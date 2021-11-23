@@ -15,14 +15,28 @@ import left from "../../../../assets/Icons/EditorIcons/leftalign.png";
 import right from "../../../../assets/Icons/EditorIcons/rightalign.png";
 import center from "../../../../assets/Icons/EditorIcons/center.png";
 import justify from "../../../../assets/Icons/EditorIcons/justifycontet.png";
+import { EditorState } from "draft-js";
 import "./style.css";
 function TextEditor() {
+  const [editorState, setEditorState] = React.useState(
+    () => EditorState.createEmpty(),
+  );
+  console.log(editorState)
+
+  const onEditor = (val)=>{ 
+    setEditorState({
+      ...editorState,
+      val
+    })
+  }
   return (
     <div>
       <Editor
         editorClassName="add-project-editor-box"
         toolbarClassName="add-project-text-editor"
         wrapperClassName="add-project-tex-editor-wrapper"
+        editorState={editorState} 
+        onChange={setEditorState}
         toolbar={{
           options: ["inline", "list", "textAlign", "remove"],
           inline: {

@@ -7,7 +7,7 @@ import {
 const initialState = {
     projectDetails : {
         project_name : "",
-        assign_user:"",
+        assign_user:[],
         start_date:"",
         end_date:"",
         project_overview:""

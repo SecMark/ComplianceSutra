@@ -22,9 +22,11 @@ function AddProject({ show, onClose }) {
     end_date: "",
     project_overview: "",
   });
+  console.log("got this values",values)
   const payload = {
+    project_id: null,
     project_name: "abc",
-    assign_user: "amit@gmail",
+    assign_user: ["ashuk@trakiot.in"],
     start_date: "2021-11-23",
     end_date: "2021-11-26",
     project_overview: "lemon project",
@@ -35,12 +37,14 @@ function AddProject({ show, onClose }) {
 
   const onHandleChange = (evt) => {
     const value = evt.target.value;
+    console.log(evt)
     setValues({
       ...values,
       [evt.target.name]: value
     });
   };
 
+  
   const calanderimg = <img src={calanderIcon} />;
 
   return !show ? null : (
@@ -68,7 +72,14 @@ function AddProject({ show, onClose }) {
 
               <DatePicker
                 className="add-edit-project-inputs"
+                name="start_date"
                 suffixIcon={calanderimg}
+                onChange={(date,dateString)=>{
+                  setValues({
+                    ...values,
+                    start_date:dateString
+                  })
+                }}
               />
             </div>
             <div className="col-3">
@@ -76,6 +87,12 @@ function AddProject({ show, onClose }) {
               <DatePicker
                 className="add-edit-project-inputs"
                 suffixIcon={calanderimg}
+                onChange={(date,dateString)=>{
+                  setValues({
+                    ...values,
+                    end_date:dateString
+                  })
+                }}
               />
             </div>
           </div>
