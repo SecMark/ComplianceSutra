@@ -1,5 +1,6 @@
 .capm-tech-landing-page {
   background: #f6f8fb;
+  /* padding-top: 70px; */
 }
 
 /* first-section CSS */
@@ -57,6 +58,7 @@
   letter-spacing: normal;
   text-align: center;
   color: #1b1d21;
+  padding-top: 50px;
 }
 
 .capm-tech-landing-page .first-section .viewDemo {
