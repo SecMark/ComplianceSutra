@@ -3,7 +3,6 @@ import Cobg from "../../assets/Images/Onboarding/co-bg.png";
 import ListView from "./ProjectView/ListView";
 import AddProject from "./AddandEditProject/AddProjectModal";
 import AddNewTask from "./AddNewTask/TaskModel";
-import AddProjectMobile from "./AddandEditProject/AddProjectMobile";
 import "./style.css";
 
 const ProjectDesktop = (props) => {
