@@ -14,6 +14,9 @@ import Tasks from "./Tasks";
 import DateFilters from "./Calender/components/DateFilters";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import DateButtons from "./Calender/components/DateButtons";
+import { MdAdd } from "react-icons/md";
+import AddProject from "../components/AddandEditProject/AddProjectModal";
+import NewTaskModel from "../components/AddNewTask/TaskModel";
 const ProjectAndTask = () => {
   const calenderRef = useRef();
   const [currentPageView, setCurrentPageView] = useState(
@@ -29,8 +32,18 @@ const ProjectAndTask = () => {
     }
   }, [currentPageView, calenderRef, dayDate, weekStartDate, monthDate]);
   const [activeDays, setActiveDays] = useState(constant.month);
+  const [isShowAddProject, setIsShowAddProject] = useState(false);
+  const [isShowAddTask, setIsShowAddTask] = useState(false);
   return (
     <>
+      <AddProject
+        show={isShowAddProject}
+        onClose={() => setIsShowAddProject(false)}
+      />
+      <NewTaskModel
+        showTask={isShowAddTask}
+        onClose={() => setIsShowAddTask(false)}
+      />
       <ProjectManagementHeader>
         <div className="w-100 d-flex align-items-center justify-content-between">
           <p className="project-management__header-title mb-0">
@@ -39,8 +52,24 @@ const ProjectAndTask = () => {
               : "Project & Task"}
           </p>
           {/* {calenderFunctions && Object.keys(calenderFunctions).length > 0 && (
-            
+          
           )} */}
+          {currentPageView.id !== "project-management-calender" && (
+            <div className="d-flex align-items-center">
+              <button
+                onClick={() => setIsShowAddProject(true)}
+                className="mr-2 project-management__button project-management__button--primary"
+              >
+                P <MdAdd />
+              </button>
+              <button
+                onClick={() => setIsShowAddTask(true)}
+                className="project-management__button project-management__button--primary"
+              >
+                T <MdAdd />
+              </button>
+            </div>
+          )}
           {currentPageView.id === "project-management-calender" &&
             calenderFunctions &&
             Object.keys(calenderFunctions).length > 0 && (
