@@ -37,7 +37,7 @@ function SecondSection() {
                 <FaCheckCircle
                   style={{ color: "#7fba7a", width: "20px", height: "20px" }}
                 />{" "}
-                50+ Compliance and Audits to choose from
+                50+ Compliance to choose from
               </li>
               <li>
                 <FaCheckCircle
@@ -56,10 +56,10 @@ function SecondSection() {
             Task Management
           </h1>
           <h1 className="Compliance-second-section-heading2">
-            Automated Compliance &
+            Automated Compliance 
           </h1>
           <h1 className="Compliance-second-section-heading2">
-            Audit Management
+             Management
           </h1>
         </div>
         <div className="row">

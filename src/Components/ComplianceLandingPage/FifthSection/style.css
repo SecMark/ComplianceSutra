@@ -123,4 +123,12 @@
   letter-spacing: normal;
   text-align: left;
   color: #6c5dd3;
+  cursor: pointer;
+}
+
+.fifth-section-contact-and-pricing .fifth-section-hover-popup{
+  display: none;
+}
+.fifth-section-contact-and-pricing:hover .fifth-section-hover-popup{
+  display: block;
 }

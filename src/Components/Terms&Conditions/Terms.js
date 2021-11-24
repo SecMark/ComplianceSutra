@@ -18,7 +18,7 @@ const Terms = ({ show, setShow, onAgreeAndContinue, onDisagree }) => {
               <div id="Line"></div>
               <p className="Desc">
                 This page contains important information regarding the terms and
-                conditions which apply to your subscription of CAPMTech
+                conditions which apply to your subscription of Compliance
                 Services. The website is owned, operated and maintained by
                 Secmark Consultancy Limited hereinafter referred to as
                 “SecMark”, a Company incorporated under the Companies Act, 2013

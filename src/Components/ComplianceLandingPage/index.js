@@ -8,14 +8,17 @@ import "./style.css";
 import SecondSection from "./SecondSection";
 function ComplianceLandingPage() {
   return (
-    <div className="Compliance-landing-page">
+    <>
+      
+      <div className="Compliance-landing-page">
       <Navbar />
-      <FirstSection />
-      <SecondSection />
-      <ThirdSection />
-      <FifthSection />
-      <Footer />
-    </div>
+        <FirstSection />
+        <SecondSection />
+        <ThirdSection />
+        <FifthSection />
+        <Footer />
+      </div>
+    </>
   );
 }
 

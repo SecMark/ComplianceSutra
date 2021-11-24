@@ -12,7 +12,7 @@ function CapmTechLandingPage() {
   return (
     <div className="capm-tech-landing-page">
       <NavBar />
-      <FirstSection />
+      <FirstSection className="mt-5"/>
       <SecondSection />
       <FourthSection />
       <ThirdSection />

@@ -1,6 +1,12 @@
 .navbar {
   padding-top: 32px;
 }
+.navbar-position{
+  position: fixed;
+    z-index: 9999;
+    background: white;
+    width: 100%;
+}
 .navbar-getstarted-button {
   width: 112px;
   height: 32px;

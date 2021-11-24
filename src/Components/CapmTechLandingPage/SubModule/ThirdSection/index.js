@@ -56,14 +56,14 @@ function ThirdSection() {
           </div>
         </div>
       </div>
-      <div className="third-section-clients-background justify-content-center">
+      {/* <div className="third-section-clients-background justify-content-center">
         <img
           className="third-section-backcolor"
           src={clienticons}
           alt="clienticons"
         />
-      </div>
-      <div className="third-section-demo-sections">
+      </div> */}
+      <div className="third-section-demo-sections mt-5">
         <h2 className="third-section-main-heading1">
           BUILT FOR FINANCIAL SERVICES
         </h2>
@@ -115,7 +115,7 @@ function ThirdSection() {
             <div className="col col-xl-4 mb-5">
               <div className="third-section-cards">
                 <img src={Mangment} alt="exteam" />
-                <h1 className="third-section-cards-heading">Brokrage Firms</h1>
+                <h1 className="third-section-cards-heading">Brokerage Firms</h1>
                 <p className="third-section-cards-para">
                   Dealing with multiple compliances at once, need a smart
                   solution
@@ -126,10 +126,10 @@ function ThirdSection() {
               <div className="third-section-cards">
                 <img src={exteam} alt="exteam" />
                 <h1 className="third-section-cards-heading">
-                  Portfolio Management Services
+                   Portfolio Management Services
                 </h1>
                 <p className="third-section-cards-para">
-                  Have 100+ individual clients to manage, need a better way to
+                  Have 100+ Individual clients to manage, need a better way to
                   handle compliances
                 </p>
               </div>
@@ -138,7 +138,7 @@ function ThirdSection() {
               <div className="third-section-cards">
                 <img src={Services} alt="exteam" />
                 <h1 className="third-section-cards-heading">
-                  Investment Advisors
+                   Investment Advisers
                 </h1>
                 <p className="third-section-cards-para">
                   Have 50+ individual clients to manage, need a better way to
@@ -149,14 +149,14 @@ function ThirdSection() {
             <div className="col col-xl-4 mb-5">
               <div className="third-section-cards">
                 <img src={techservice} alt="exteam" />
-                <h1 className="third-section-cards-heading">insurence</h1>
+                <h1 className="third-section-cards-heading">Insurance</h1>
                 <p className="third-section-cards-para">
                   Have large number of clients and want to make compliance
                   management easier
                 </p>
               </div>
             </div>
-            <div className="col-12 col-sm-8 mb-5">
+            {/* <div className="col-12 col-sm-8 mb-5">
               <div className="third-section-cards-last">
                 <img
                   src={sms}
@@ -176,7 +176,7 @@ function ThirdSection() {
                   <AiOutlineArrowRight />
                 </span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="container">

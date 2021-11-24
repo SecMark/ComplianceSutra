@@ -99,7 +99,6 @@ function ComplianceDemo7() {
     }
     setIsValidate(false);
     setIsEmailExist(false);
-    if (checkBoxState === true) {
       dispatch(
         emailActions.verifyEmailRequest({
           email: values.loginID,
@@ -109,9 +108,6 @@ function ComplianceDemo7() {
       setTimeout(() => {
         let status = state.complianceOfficer.isVerifiedEmail;
       }, [100]);
-    } else if (!checkBoxState) {
-      toast.error("Please accept the terms and conditions to go ahead");
-    }
   };
   const onCheckboxChange = (e) => {
     setCheckBoxState(e.target.checked);
@@ -199,7 +195,7 @@ function ComplianceDemo7() {
                         Email already exists please login
                       </p>
                     )}
-                    <div className="custom-control custom-checkbox">
+                    {/* <div className="custom-control custom-checkbox">
                       <input
                         id="magicBtn"
                         type="checkbox"
@@ -215,7 +211,7 @@ function ComplianceDemo7() {
                       <button className="Terms" onClick={() => setShow(true)}>
                         Terms & Conditions
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
