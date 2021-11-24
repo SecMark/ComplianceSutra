@@ -1,20 +1,20 @@
-import React, { useEffect ,useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import TextEditor from "../TextEditor";
 import { DatePicker, Space } from "antd";
-import { setProject ,getRegisteredUser} from "../Redux/actions";
+import { setProject, getRegisteredUser } from "../Redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import calanderIcon from "../../../../assets/Icons/calanderIcon.svg";
+import api from "../../../../apiServices";
+import axiosInstance from "../../../../apiServices";
+import CreatableSelect from "react-select/creatable";
+
 
 function AddProject({ show, onClose }) {
-  // useEffect(()=>{
-  //   if (!show) {
-  //     return null;
-  //   }
-  // },[])
-
+  
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const [userLilst, setUserList] = useState([]);
   const [values, setValues] = useState({
     project_name: "",
     assign_user: [],
@@ -22,34 +22,69 @@ function AddProject({ show, onClose }) {
     end_date: "",
     project_overview: "",
   });
-  console.log("got this values",values)
-  const payload = {
-    project_id: null,
-    project_name: "abc",
-    assign_user: ["ashuk@trakiot.in"],
-    start_date: "2021-11-23",
-    end_date: "2021-11-26",
-    project_overview: "lemon project",
-  };
+  console.log("got this values", values);
+  console.log("userList", userLilst);
   useEffect(() => {
-    //  dispatch(getRegisteredUser())
-    // dispatch(setProject(payload));
+    getRegisteredUSerList();
+  }, []);
 
-  }, [state.projectReducer]);
+// custom style for dropdown
+  const customStyle ={
+    control: (styles) => ({
+      ...styles,
+      width: "100%",
+      height: "50px",
+      borderRadius: "10px"
+    }),
+  }
 
-  const onHandleChange = (evt) => {
-    const value = evt.target.value;
-    console.log(evt)
-    setValues({
-      ...values,
-      [evt.target.name]: value
+
+  // function to get the registered user list
+  const getRegisteredUSerList = () => {
+    axiosInstance.get("compliance.api.getAllUsersList").then((response) => {
+      const arr1 = [];
+      response.data.message.user_list.map((el)=>{
+        arr1.push({
+          label:el.name,
+          value:el.full_name
+        })
+      })
+      setUserList(arr1);
     });
   };
 
-  const onAssignUser = (etv)=>{
+  const onHandleChange = (evt) => {
+    const value = evt.target.value;
+    console.log(evt);
+    setValues({
+      ...values,
+      [evt.target.name]: value,
+    });
+  };
+
+
+  // function to change dropdownvalue
+ 
+  const handleDropDownChange = (val)=>{
+      const arr2 = []
+      val.map((label)=>{
+          arr2.push(label.label)
+      })
+      setValues({
+        ...values,
+        assign_user:arr2
+      })
+
 
   }
-  
+
+  // submiting form values
+  const onSubmitValue = () =>{
+    const payload = values;
+    dispatch(setProject(payload));
+    onClose()
+  }
+
   const calanderimg = <img src={calanderIcon} />;
 
   return !show ? null : (
@@ -60,43 +95,46 @@ function AddProject({ show, onClose }) {
       >
         <div className="add-edit-main-container">
           <label className="add-edit-project-labels">Project Name</label>
-          <input className="add-edit-project-inputs" 
-           name="project_name"
-           onChange={onHandleChange}
+          <input
+            className="add-edit-project-inputs"
+            name="project_name"
+            onChange={onHandleChange}
           />
           <div className="row mt-3">
-            <div className="col-6">
+            <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels">User</label>
-              <input className="add-edit-project-inputs"
-              name="assign_user"
-              onChange={onAssignUser}
+              <CreatableSelect
+                isMulti
+                styles={customStyle}
+                onChange={handleDropDownChange}
+                options={userLilst}
               />
             </div>
-            <div className="col-3">
+            <div className="col-sm-6 col-lg-3">
               <label className="add-edit-project-labels">Start Date</label>
 
               <DatePicker
                 className="add-edit-project-inputs"
                 name="start_date"
                 suffixIcon={calanderimg}
-                onChange={(date,dateString)=>{
+                onChange={(date, dateString) => {
                   setValues({
                     ...values,
-                    start_date:dateString
-                  })
+                    start_date: dateString,
+                  });
                 }}
               />
             </div>
-            <div className="col-3">
+            <div className="col-sm-6 col-lg-3">
               <label className="add-edit-project-labels">End Date</label>
               <DatePicker
                 className="add-edit-project-inputs"
                 suffixIcon={calanderimg}
-                onChange={(date,dateString)=>{
+                onChange={(date, dateString) => {
                   setValues({
                     ...values,
-                    end_date:dateString
-                  })
+                    end_date: dateString,
+                  });
                 }}
               />
             </div>
@@ -107,7 +145,7 @@ function AddProject({ show, onClose }) {
           <TextEditor values={values} setValues={setValues} />
           <div className="d-flex mt-3 justify-content-center">
             <div className="p-2">
-              <button className="add-edit-project-submit-btn" onClick={onClose}>
+              <button className="add-edit-project-submit-btn" onClick={onSubmitValue}>
                 Submit
               </button>
             </div>

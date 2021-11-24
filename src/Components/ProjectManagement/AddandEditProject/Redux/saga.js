@@ -12,11 +12,18 @@ import {
     GET_REGISTERED_USER_LIST,
     SET_PROJECT_DETAIL
 } from "./types";
+import { toast } from "react-toastify";
 
 
 function* createProject(action){
     try{
         const { data } = yield call(api.getPostProject,action.payload);
+        if(data.message.status ===true ){
+            toast.success("Project added updatead successfuly")
+        }
+        else{
+            toast.warning("Somthing went Wrong")
+        }
 
     }catch(error) {
 
