@@ -12,6 +12,7 @@ import { actions as adminMenuActions } from "../MenuRedux/actions";
 import NewRegulations from "../../../../NewRegulationModule/NewRegulations";
 import HistoryList from "../../../../HistoryModule/HistoryList";
 import HelpSection from "../../../../HelpSection/Help";
+import NewRegulationsQuiz from "../../../../NewRegulationsQuiz";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
@@ -50,21 +51,21 @@ function Dashboard({ history }) {
     if (state.adminMenu.currentMenu !== "taskList") setIsTaskListOpen(false);
   }, []);
 
-  useEffect(() => {
-    if (
-      userEmail &&
-      userDetails?.status_response === "Authentication success"
-    ) {
-      dispatch(taskReportActions.taskReportRequest());
+  // useEffect(() => {
+  //   if (
+  //     userEmail &&
+  //     userDetails?.status_response === "Authentication success"
+  //   ) {
+  //     dispatch(taskReportActions.taskReportRequest());
 
-      const refreshInterval = setInterval(() => {
-        dispatch(taskReportActions.taskReportRequest());
-      }, 30000);
-      return () => clearInterval(refreshInterval);
-    } else {
-      history.push("/login");
-    }
-  }, []);
+  //     const refreshInterval = setInterval(() => {
+  //       dispatch(taskReportActions.taskReportRequest());
+  //     }, 30000);
+  //     return () => clearInterval(refreshInterval);
+  //   } else {
+  //     history.push("/login");
+  //   }
+  // }, []);
   useEffect(() => {
     if (
       window.location.href.includes("dashboard") &&
@@ -82,10 +83,17 @@ function Dashboard({ history }) {
       dispatch(adminMenuActions.setCurrentMenu("history"));
       return;
     } else if (
+      window.location.href.includes("new-regulation-quiz") &&
+      state.adminMenu.currentMenu !== "new-regulation-quiz"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("new-regulation-quiz"));
+      return;
+    } else if (
       window.location.href.includes("new-regulations") &&
       state.adminMenu.currentMenu !== "new-regulations"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("new-regulations"));
+      return;
     } else if (
       window.location.href.includes("help") &&
       state.adminMenu.currentMenu !== "help"
@@ -143,6 +151,9 @@ function Dashboard({ history }) {
         )} */}
         {state && state.adminMenu.currentMenu === "new-regulations" && (
           <NewRegulations />
+        )}
+        {state && state.adminMenu.currentMenu === "new-regulation-quiz" && (
+          <NewRegulationsQuiz />
         )}
         {state && state.adminMenu.currentMenu === "help" && <HelpSection />}
       </div>

@@ -47,6 +47,7 @@ import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/compon
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
+import NewRegulationsQuiz from "../Components/NewRegulationsQuiz";
 
 export default function AppRouter() {
   return (
@@ -55,25 +56,16 @@ export default function AppRouter() {
         <div>
           <Route exact path="/sign-up" component={OnBoarding} />
           <Route exact path="/assign-task" component={AssignTask} />
+          <Route exact path="/" component={CapmTechLandingPage} />
           <Route
             exact
-            path="/"
-            component={CapmTechLandingPage}
-          />
-          <Route
-          exact
-          path="/compliance-landing"
-          component={ComplianceLanding}
-
+            path="/compliance-landing"
+            component={ComplianceLanding}
           />
           <Route exact path="/on-boarding" component={OnBoarding} />
           <Route exact path="/board-view" component={BoardView} />
           <Route exact path="/team-member" component={TeamMember} />
-          <Route
-            exact
-            path="/compliance-demo"
-            component={ComplianceDemo}
-          />
+          <Route exact path="/compliance-demo" component={ComplianceDemo} />
           <Route
             exact
             path="/compliance-demo-end"
@@ -130,8 +122,6 @@ export default function AppRouter() {
 
           <Route exact path="/governance" component={Governance} />
 
-          
-
           <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
           <Route
             exact
@@ -183,12 +173,12 @@ export default function AppRouter() {
           <Route exact path="/help" component={DashBoardCO} />
 
           {/* Expert Review */}
-      
-            <Route path="/expert-review" component={ExperReview}></Route>
-        
+
+          <Route path="/expert-review" component={ExperReview}></Route>
 
           <Route exact path="/thankyou" component={Thankyou} />
           <Route exact path="/settings" component={CoSetting} />
+          <Route exact path="/new-regulation-quiz" component={DashBoardCO} />
         </div>
       </>
     </div>
