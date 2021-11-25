@@ -22,7 +22,7 @@ function ThirdSection() {
         <div className="container">
           <div className="row d-flex justify-content-center third-section-breakline-border-top">
             <div className="col p-3">
-              <h1 className="third-section-services">BROKRAGE HOUSES</h1>
+              <h1 className="third-section-services">Brokerage HOUSES</h1>
             </div>
             <div className="col p-3">
               <h1 className="third-section-services"> NBFCs </h1>
