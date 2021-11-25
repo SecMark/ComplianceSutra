@@ -16,7 +16,7 @@ import "./style.css";
 const NewRegulationSearchBadge = (props) => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const { industry, issuer, topic, fromDate, toDate } =
+  const { industry, issuer, topic, from_date, to_date } =
     state.UpdatesReducer?.badges;
 
   const clearFilterPayload = () => {
@@ -58,14 +58,16 @@ const NewRegulationSearchBadge = (props) => {
 
     dispatch(setFilterPayload(filterRequestPayload));
   };
-
+  useEffect(() => {
+    console.log({ industry, issuer, topic, from_date, to_date });
+  }, [industry, issuer, topic, from_date, to_date]);
   useEffect(() => {
     if (
       issuer === "" &&
       industry === "" &&
       topic === "" &&
-      fromDate === "" &&
-      toDate === ""
+      from_date === "" &&
+      to_date === ""
     ) {
       const payload = { UserID: state.auth.loginInfo?.UserID };
       dispatch(getUpdates(payload));
@@ -110,9 +112,9 @@ const NewRegulationSearchBadge = (props) => {
         </div>
       )}
 
-      {fromDate !== "" && toDate !== "" && (
+      {from_date !== "" && to_date !== "" && (
         <div className="BadgesDiv">
-          <span>{`${fromDate} to ${toDate}`}</span>
+          <span>{`${from_date} to ${to_date}`}</span>
           <div
             className="CloseBadge"
             onClick={() => removeBadgeAndFetchIndustryList("fromAndToDate")}
@@ -124,7 +126,7 @@ const NewRegulationSearchBadge = (props) => {
       {(issuer !== "" ||
         industry !== "" ||
         topic !== "" ||
-        (fromDate !== "" && toDate !== "")) && (
+        (from_date !== "" && to_date !== "")) && (
         <div className="BadgesDiv">
           <span onClick={clearFilterPayload}>Reset all</span>
           <div className="CloseBadge">
