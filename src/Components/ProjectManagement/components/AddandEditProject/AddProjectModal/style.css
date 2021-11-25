@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 999;
 }
 
 .add-edit-project-content {
@@ -16,11 +17,12 @@
   background-color: #ffffff;
   box-shadow: 0px 3px 36px rgba(67, 0, 255, 0.05);
   border-radius: 20px;
+  z-index: 1000;
 }
 .add-edit-main-container {
   padding: 20px 20px 20px 20px;
   overflow-y: auto;
-    height: 644px;
+  height: 644px;
 }
 
 .add-edit-project-labels {

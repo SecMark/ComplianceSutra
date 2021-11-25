@@ -1,6 +1,5 @@
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import api from "../api";
-import { useDispatch, useSelector } from "react-redux";
 import {
   GET_PROJECT_DETAIL,
   GET_REGISTERED_USER_LIST,
@@ -8,6 +7,9 @@ import {
   getProject,
   setProject,
   getRegisteredUser,
+  getProjectDataSuccess,
+  getProjectDataFailed,
+  GET_PROJECT_MANAGEMENT_DATA_REQUEST,
 } from "./actions";
 import { toast } from "react-toastify";
 
@@ -33,9 +35,24 @@ function* getRegisteredUSer(action) {
   } catch (error) {}
 }
 
+function* getProjectData(action) {
+  try {
+    const { status, data } = yield call(api.getProjectData);
+    if (status && status === 200 && data && data.message) {
+      yield put(getProjectDataSuccess(data.message));
+    } else {
+      yield put(getProjectDataFailed());
+    }
+  } catch (error) {
+    console.log(error.message);
+    yield put(getProjectDataFailed());
+  }
+}
+
 function* projectSaga() {
   yield takeLatest(SET_PROJECT_DETAIL, createProject);
   yield takeLatest(GET_REGISTERED_USER_LIST, getRegisteredUSer);
+  yield takeLatest(GET_PROJECT_MANAGEMENT_DATA_REQUEST, getProjectData);
 }
 
 export default projectSaga;

@@ -86,6 +86,10 @@
   border-radius: 4px;
   padding: 4px 5px;
 }
+.project-management__button--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
 .project-management__button--primary {
   background-color: #7a73ff;
   color: #fff;

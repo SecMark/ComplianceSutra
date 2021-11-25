@@ -6,7 +6,10 @@ const getPostProject = (payload) =>
 const getRegisteredUserList = (payload) =>
   api.get("compliance.api.getAllUsersList", payload);
 
+const getProjectData = () => api.get("compliance.api.getProjectMilestoneTask");
+
 export default {
   getPostProject,
   getRegisteredUserList,
+  getProjectData,
 };

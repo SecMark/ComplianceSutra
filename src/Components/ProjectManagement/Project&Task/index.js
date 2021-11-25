@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   ProjectManagementHeader,
   ProjectManagementMain,
@@ -17,7 +18,9 @@ import DateButtons from "./Calender/components/DateButtons";
 import { MdAdd } from "react-icons/md";
 import AddProject from "../components/AddandEditProject/AddProjectModal";
 import NewTaskModel from "../components/AddNewTask/TaskModel";
+import { getProjectDataRequest } from "../redux/actions";
 const ProjectAndTask = () => {
+  const dispatch = useDispatch();
   const calenderRef = useRef();
   const [currentPageView, setCurrentPageView] = useState(
     ProjectManagmentPages[0]
@@ -26,14 +29,18 @@ const ProjectAndTask = () => {
   const [dayDate, setDayDate] = useState(new Date());
   const [monthDate, setMonthDate] = useState(new Date());
   const [weekStartDate, setWeekStartDate] = useState(new Date());
+  const [activeDays, setActiveDays] = useState(constant.month);
+  const [isShowAddProject, setIsShowAddProject] = useState(false);
+  const [isShowAddTask, setIsShowAddTask] = useState(false);
+
   useEffect(() => {
     if (calenderRef.current) {
       setCalenderFunctions(calenderRef.current);
     }
   }, [currentPageView, calenderRef, dayDate, weekStartDate, monthDate]);
-  const [activeDays, setActiveDays] = useState(constant.month);
-  const [isShowAddProject, setIsShowAddProject] = useState(false);
-  const [isShowAddTask, setIsShowAddTask] = useState(false);
+  useEffect(() => {
+    dispatch(getProjectDataRequest());
+  }, []);
   return (
     <>
       <AddProject
