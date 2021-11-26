@@ -58,7 +58,7 @@ function ThirdSection() {
                 </p>
               </div>
             </div>
-            <div className="col-12 col-sm-8 mb-5">
+            {/* <div className="col-12 col-sm-8 mb-5">
               <div className="compliance-third-section-cards-last">
                 <img
                   src={sms}
@@ -78,7 +78,7 @@ function ThirdSection() {
                   <AiOutlineArrowRight />
                 </span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
     </div>

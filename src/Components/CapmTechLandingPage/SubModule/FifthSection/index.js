@@ -35,12 +35,13 @@ function FifthSection() {
                 Connect with our sales team
               </h1>
               <p className="fith-section-para">
-                We will be happy to ans your sales queries and we will be in
+                We will be happy to answer your sales queries and we will be in
                 touch as soon as possible
               </p>
-              <h3 className="fifth-section-contact-and-pricing">
-                CONTACT <AiOutlineArrowRight />
-              </h3>
+              <a href="tel:+91-9869265949">  <h3 className="fifth-section-contact-and-pricing" href="tel:+91-9869265949">
+               CONTACT <AiOutlineArrowRight />
+               <div className="fifth-section-hover-popup">+91-9869265949</div>
+              </h3></a>
             </div>
             <div className="col">
               <h1 className="fifth-section-Connectwith">checkout our prices</h1>

@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GrFormClose } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
@@ -16,13 +16,21 @@ import "./style.css";
 const NewRegulationSearchBadge = (props) => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const { industry, issuer, topic, fromDate, toDate } =
-    state.UpdatesReducer?.badges;
+
+  const [filters, setFilters] = useState({
+    issuer: [],
+    industry: [],
+    topic: [],
+    from_date: "",
+    to_date: "",
+  });
+
+  const { industry, issuer, topic, from, to } = state.UpdatesReducer?.badges;
 
   const clearFilterPayload = () => {
     dispatch(setIsFilter(false));
-    const payload = { UserID: state.auth.loginInfo?.UserID };
-    dispatch(getUpdates(payload));
+
+    dispatch(getUpdates(filters));
   };
 
   const removeBadgeAndFetchIndustryList = (badgeName) => {
@@ -30,42 +38,67 @@ const NewRegulationSearchBadge = (props) => {
       key: badgeName,
       value: "",
     };
+    console.log(badgeName);
+    if (badgeName === "fromAndToDate") {
+      removeBadgePayload = {
+        key: "from",
+        value: "",
+      };
+
+      dispatch(removeBadge(removeBadgePayload));
+
+      removeBadgePayload = {
+        key: "to",
+        value: "",
+      };
+    }
+
     dispatch(removeBadge(removeBadgePayload));
-
     dispatch(updateFilter(removeBadgePayload));
+  };
 
+  useEffect(() => {
     const filterRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      industry: state.UpdatesReducer.industry,
-      topic: state.UpdatesReducer.topic,
-      regbodies: state.UpdatesReducer.issuer,
-      submissionfrom:
-        state.UpdatesReducer.from !== "" &&
-        state.UpdatesReducer.from.length !== 0 &&
-        state.UpdatesReducer.from.length === 3 &&
-        moment(state.UpdatesReducer.from.join("-"), "DD-M-YYYY").format(
-          "YYYY-MM-DD"
-        ),
-      submissionto:
-        state.UpdatesReducer.to !== "" &&
-        state.UpdatesReducer.to.length !== 0 &&
-        state.UpdatesReducer.to.length === 3 &&
-        moment(state.UpdatesReducer.to.join("-"), "DD-M-YYYY").format(
-          "YYYY-MM-DD"
-        ),
-      flag: constant.filterFlag,
+      industry:
+        state.UpdatesReducer.industry.length > 0
+          ? [...state.UpdatesReducer.industry.split(",")]
+          : [],
+      topic:
+        state.UpdatesReducer.topic.length > 0
+          ? [...state.UpdatesReducer.topic.split(",")]
+          : [],
+      issuer:
+        state.UpdatesReducer.issuer.length > 0
+          ? [...state.UpdatesReducer.issuer.split(",")]
+          : [],
+      from_date:
+        (state.UpdatesReducer.from !== "" &&
+          state.UpdatesReducer.from.length !== 0 &&
+          state.UpdatesReducer.from.length === 3 &&
+          moment(state.UpdatesReducer.from.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          )) ||
+        "",
+      to_date:
+        (state.UpdatesReducer.to !== "" &&
+          state.UpdatesReducer.to.length !== 0 &&
+          state.UpdatesReducer.to.length === 3 &&
+          moment(state.UpdatesReducer.to.join("-"), "DD-M-YYYY").format(
+            "YYYY-MM-DD"
+          )) ||
+        "",
     };
 
-    dispatch(setFilterPayload(filterRequestPayload));
-  };
+    dispatch(setFilterPayload({ filter: filterRequestPayload }));
+  }, [industry, issuer, topic, from, to]);
 
   useEffect(() => {
     if (
       issuer === "" &&
       industry === "" &&
       topic === "" &&
-      fromDate === "" &&
-      toDate === ""
+      from === "" &&
+      to === ""
     ) {
       const payload = { UserID: state.auth.loginInfo?.UserID };
       dispatch(getUpdates(payload));
@@ -110,9 +143,9 @@ const NewRegulationSearchBadge = (props) => {
         </div>
       )}
 
-      {fromDate !== "" && toDate !== "" && (
+      {from !== "" && to !== "" && (
         <div className="BadgesDiv">
-          <span>{`${fromDate} to ${toDate}`}</span>
+          <span>{`${from} to ${to}`}</span>
           <div
             className="CloseBadge"
             onClick={() => removeBadgeAndFetchIndustryList("fromAndToDate")}
@@ -124,7 +157,7 @@ const NewRegulationSearchBadge = (props) => {
       {(issuer !== "" ||
         industry !== "" ||
         topic !== "" ||
-        (fromDate !== "" && toDate !== "")) && (
+        (from !== "" && to !== "")) && (
         <div className="BadgesDiv">
           <span onClick={clearFilterPayload}>Reset all</span>
           <div className="CloseBadge">

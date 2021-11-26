@@ -18,7 +18,7 @@ function FirstSection() {
                 </div> */}
         <p className="title">
           On-time, worry-free and transparent <br />
-          compliance & auditing system
+          compliance system
         </p>
         <div className="center">
           <img className="BannerImg" src={Banner1} alt="" />

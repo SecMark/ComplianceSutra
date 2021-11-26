@@ -4,7 +4,7 @@
 .bg-dark {
   background-color: #1d293f;
   padding-top: 104px;
-  padding-bottom: 108px;
+  padding-bottom: 70px;
   font-family: "Poppins", sans-serif;
 }
 .capmtech-text {
@@ -22,10 +22,10 @@
   text-align: left;
   margin-bottom: 0px;
 }
-.links-grid a:hover {
+/* .links-grid a:hover {
   color: #fff;
   text-decoration: none;
-}
+} */
 .get-started {
   width: 148px;
   height: 43px;
@@ -65,8 +65,42 @@
   text-align: left;
   color: #e9f7fe;
 }
+
+
+.footer-link:hover{
+  color: blue;
+  text-decoration: none;
+}
 .copyright-grid {
   height: 0;
   border-top: solid 1px #313d55;
   margin-top: 40px;
+}
+
+
+.footer-model-box{
+  /* width:1000px; */
+overflow-y: auto;
+height: 300px;
+}
+
+.footer-disclaimer{
+  color: white !important;
+}
+
+.footer-disclaimer:hover{
+  color: blue !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+@media (max-width: 767.98px) { 
+
+  .bg-dark {
+    background-color: #1d293f;
+    padding-top: 104px;
+    padding-bottom: 150px;
+    font-family: "Poppins", sans-serif;
+  }
 }
