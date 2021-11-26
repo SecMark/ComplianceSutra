@@ -62,10 +62,10 @@ function DashBoardView({ history }) {
     ) {
       if (userDetails?.UserType === 3) {
         dispatch(taskReportActions.taskReportRequest());
-        const refresh_taskList = setInterval(() => {
-          dispatch(taskReportActions.taskReportRequest());
-        }, 30000);
-        return () => clearInterval(refresh_taskList);
+        // const refresh_taskList = setInterval(() => {
+        //   dispatch(taskReportActions.taskReportRequest());
+        // }, 30000);
+        // return () => clearInterval(refresh_taskList);
       } else {
         history.push("/dashboard");
       }

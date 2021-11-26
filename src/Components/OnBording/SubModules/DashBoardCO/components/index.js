@@ -57,10 +57,10 @@ function Dashboard({ history }) {
     ) {
       dispatch(taskReportActions.taskReportRequest());
 
-      const refreshInterval = setInterval(() => {
-        dispatch(taskReportActions.taskReportRequest());
-      }, 30000);
-      return () => clearInterval(refreshInterval);
+      // const refreshInterval = setInterval(() => {
+      //   dispatch(taskReportActions.taskReportRequest());
+      // }, 30000);
+      // return () => clearInterval(refreshInterval);
     } else {
       history.push("/login");
     }

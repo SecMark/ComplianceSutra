@@ -9,6 +9,7 @@ const getHisotry = (payload) =>
 
 const getUpdates = (payload) =>
   api.post("compliance.api.getRegulations", payload);
+const getFilters = () => api.get("compliance.api.getRegulationFilters");
 
 const getPayments = (payload) => api.post("api/PaymentDetails", payload);
 
@@ -18,4 +19,5 @@ export default {
   getUpdates,
   getPayments,
   getHisotry,
+  getFilters,
 };

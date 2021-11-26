@@ -98,6 +98,7 @@ function Login({ history }) {
   };
 
   useEffect(() => {
+    localStorage.setItem("basicToken", "");
     if (
       userDetails?.status_response === "Authentication success" &&
       (userDetails?.email || userDetails?.EmailID)

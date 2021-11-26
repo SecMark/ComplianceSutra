@@ -34,19 +34,19 @@ const NewRegulationFilter = (props) => {
   useEffect(() => {
     //set industry list for searchable dropdown.
     var setArrayOfObjectInList = industryList?.map((item) => {
-      return { value: item.Industry, label: item.Industry };
+      return { value: item, label: item };
     });
     setListOfIndustry([...setArrayOfObjectInList]);
 
     //set issuer list for searchable dropdown.
     var setArrayOfObjectInList = issuerList.map((item) => {
-      return { value: item.Regbodies, label: item.Regbodies };
+      return { value: item, label: item };
     });
     setListOfIssuers([...setArrayOfObjectInList]);
 
     //set topic list for searchable dropdown.
     var setArrayOfObjectInList = topicList.map((item) => {
-      return { value: item.Topic, label: item.Topic };
+      return { value: item, label: item };
     });
 
     setListOfTopic([...setArrayOfObjectInList]);
@@ -93,9 +93,18 @@ const NewRegulationFilter = (props) => {
 
   const getResultByFilter = () => {
     const filterRequestPayload = {
-      industry: state.UpdatesReducer.industry,
-      topic: state.UpdatesReducer.topic,
-      issuer: state.UpdatesReducer.issuer,
+      industry:
+        state.UpdatesReducer.industry.length > 0
+          ? [...state.UpdatesReducer.industry.split(",")]
+          : [],
+      topic:
+        state.UpdatesReducer.topic.length > 0
+          ? [...state.UpdatesReducer.topic.split(",")]
+          : [],
+      issuer:
+        state.UpdatesReducer.issuer.length > 0
+          ? [...state.UpdatesReducer.issuer.split(",")]
+          : [],
       from_date:
         (state.UpdatesReducer.from !== "" &&
           state.UpdatesReducer.from.length !== 0 &&
@@ -118,7 +127,7 @@ const NewRegulationFilter = (props) => {
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
       issuer: state.UpdatesReducer.issuer,
-      from_date:
+      from:
         (state.UpdatesReducer.to !== "" &&
           state.UpdatesReducer.to.length !== 0 &&
           state.UpdatesReducer.to.length === 3 &&
@@ -126,7 +135,7 @@ const NewRegulationFilter = (props) => {
             "MMM Do YYYY"
           )) ||
         "",
-      to_date:
+      to:
         (state.UpdatesReducer.to !== "" &&
           state.UpdatesReducer.to.length !== 0 &&
           state.UpdatesReducer.to.length === 3 &&
