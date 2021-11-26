@@ -28,7 +28,6 @@ export const ProjectManagementMain = ({ children, className }) => {
       .querySelector(".project-management__header")
       .getClientRects()[0].height;
     setHeaderHight(Math.trunc(headerRef));
-    console.log({ isMobile, headerHeight });
   }, [children]);
   return (
     <div

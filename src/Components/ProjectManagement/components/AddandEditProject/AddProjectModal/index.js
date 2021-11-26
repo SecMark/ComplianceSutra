@@ -2,27 +2,54 @@ import React, { useEffect, useState } from "react";
 import "./style.css";
 import TextEditor from "../TextEditor";
 import { DatePicker, Space } from "antd";
-import { setProject, getRegisteredUser } from "../../../redux/actions";
+import { setProject, getUsersListRequest } from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import calanderIcon from "../../../../../assets/Icons/calanderIcon.svg";
 import axiosInstance from "../../../../../apiServices";
 import CreatableSelect from "react-select/creatable";
+import moment from "moment";
 
-function AddProject({ show, onClose }) {
+// Initial state
+const initailState = {
+  project_id: null,
+  project_name: "",
+  start_date: "",
+  end_date: "",
+  project_overview: "",
+  assign_user: [],
+};
+function AddProject({ show, onClose, editData }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [userLilst, setUserList] = useState([]);
-  const [values, setValues] = useState({
-    project_name: "",
-    assign_user: [],
-    start_date: "",
-    end_date: "",
-    project_overview: "",
-  });
-  console.log("got this values", values);
-  console.log("userList", userLilst);
+  const [userList, setUserList] = useState([]);
+  const [values, setValues] = useState(editData || initailState);
+  const allUsersList = useSelector(
+    (state) => state?.ProjectManagementReducer?.usersList
+  );
   useEffect(() => {
-    getRegisteredUSerList();
+    // Get all users list
+    if (allUsersList && allUsersList.length > 0) {
+      console.log({ allUsersList });
+      setUserList(
+        [...allUsersList].map((item) => ({
+          label: item.full_name,
+          value: item.name,
+        }))
+      );
+    }
+  }, [allUsersList]);
+  useEffect(() => {
+    console.log(values);
+    console.log(values?.start_date, values?.end_date);
+  }, [values]);
+
+  useEffect(() => {
+    setValues({
+      ...editData,
+    });
+  }, [editData]);
+  useEffect(() => {
+    dispatch(getUsersListRequest());
   }, []);
 
   // custom style for dropdown
@@ -35,23 +62,8 @@ function AddProject({ show, onClose }) {
     }),
   };
 
-  // function to get the registered user list
-  const getRegisteredUSerList = () => {
-    axiosInstance.get("compliance.api.getAllUsersList").then((response) => {
-      const arr1 = [];
-      response?.data?.message?.user_list?.map((el) => {
-        arr1.push({
-          label: el.name,
-          value: el.full_name,
-        });
-      });
-      setUserList(arr1);
-    });
-  };
-
   const onHandleChange = (evt) => {
     const value = evt.target.value;
-    console.log(evt);
     setValues({
       ...values,
       [evt.target.name]: value,
@@ -59,11 +71,11 @@ function AddProject({ show, onClose }) {
   };
 
   // function to change dropdownvalue
-
   const handleDropDownChange = (val) => {
+    // console.log({ val });
     const arr2 = [];
     val.map((label) => {
-      arr2.push(label.label);
+      arr2.push(label.value);
     });
     setValues({
       ...values,
@@ -78,7 +90,7 @@ function AddProject({ show, onClose }) {
     onClose();
   };
 
-  const calanderimg = <img src={calanderIcon} />;
+  const calanderimg = <img src={calanderIcon} alt="calender" />;
 
   return !show ? null : (
     <div className="add-edit-modal" onClick={onClose}>
@@ -92,6 +104,7 @@ function AddProject({ show, onClose }) {
             className="add-edit-project-inputs"
             name="project_name"
             onChange={onHandleChange}
+            value={values.project_name}
           />
           <div className="row mt-3">
             <div className="col-sm-12 col-lg-6">
@@ -100,7 +113,16 @@ function AddProject({ show, onClose }) {
                 isMulti
                 styles={customStyle}
                 onChange={handleDropDownChange}
-                options={userLilst}
+                options={userList}
+                defaultValue={
+                  editData?.assign_user?.map((user) => {
+                    return [...userList]?.filter((item) => {
+                      if (item?.value === user) {
+                        return item;
+                      }
+                    })[0];
+                  }) || []
+                }
               />
             </div>
             <div className="col-sm-6 col-lg-3">
@@ -113,9 +135,19 @@ function AddProject({ show, onClose }) {
                 onChange={(date, dateString) => {
                   setValues({
                     ...values,
-                    start_date: dateString,
+                    start_date: date?.format("YYYY-MM-DD") || "",
                   });
                 }}
+                // defaultValue={
+                //   (values?.start_date &&
+                //     moment(values?.start_date, "YYYY-MM-DD")) ||
+                //   null
+                // }
+                value={
+                  values?.start_date &&
+                  moment(values?.start_date, "DD MMM YYYY")
+                }
+                format="DD MMM YYYY"
               />
             </div>
             <div className="col-sm-6 col-lg-3">
@@ -126,9 +158,15 @@ function AddProject({ show, onClose }) {
                 onChange={(date, dateString) => {
                   setValues({
                     ...values,
-                    end_date: dateString,
+                    end_date: date?.format("YYYY-MM-DD") || "",
                   });
                 }}
+                value={
+                  (values?.end_date &&
+                    moment(values?.end_date, "DD MMM YYYY")) ||
+                  null
+                }
+                format="DD MMM YYYY"
               />
             </div>
           </div>

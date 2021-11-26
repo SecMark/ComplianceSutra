@@ -116,7 +116,7 @@
   min-width: 300px;
   min-height: 200px;
   margin: auto;
-  z-index: 99999;
+  z-index: 1000;
 }
 .project-management__modal-wrapper {
   position: absolute;
@@ -129,7 +129,7 @@
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.486);
   box-shadow: 0px 3px 36px rgba(67, 0, 255, 0.05);
-  z-index: 9999;
+  z-index: 999;
   transition: all 0.3s ease-in-out;
 }
 .project-management__modal-close-btn {
@@ -142,6 +142,36 @@
 }
 .project-management__small-modal-wrapper {
   border-radius: 8px;
+}
+.milestone-modal__heading {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 36px;
+  color: #7a73ff;
+}
+.modal-input {
+  border-radius: 6px;
+  width: 100%;
+  line-height: 1.5;
+  font-size: 1rem;
+  display: block;
+  padding: 0.5rem;
+  border: 2px solid #e2e2e2;
+  outline: none;
+  transition: all 0.3s ease;
+}
+.modal-input:focus {
+  border: 2px solid #7a73ff;
+  width: 100% !important;
+}
+.milestone-modal__date-inputs .from-group {
+  flex: 0.48;
+}
+.modal-button {
+  font-size: 1rem;
+  border-radius: 6px;
 }
 
 /* ================= */

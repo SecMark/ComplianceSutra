@@ -23,46 +23,59 @@ import "./style.css";
 import { useHistory, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import { useOuterClick } from "../../OnBording/SubModules/DashBoardCO/components/RightSideGrid/outerClick";
-import ProjectManagementModal from "../components/ProjectManagementModal";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { setProjectContextMenu } from "../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setMilestoneModalState,
+  setProjectModalState,
+  setTaskListModalState,
+} from "../redux/actions";
 const Project = ({ data }) => {
   const [expandMoreLevel, setExpandMoreLevel] = useState(0);
+  const [milestoneExpandMoreIds, setMilestoneExpandMoreIds] = useState([]);
   const [isShowProjectContextMenu, setIsShowProjectContextMenu] =
     useState(false);
-  const [isShowTaskContextMenu, setIsShowTaskContextMenu] = useState(false);
-  const [isShowModal, setIsShowModal] = useState(true);
-  const { projectIds, taskListIds } = useSelector(
-    (state) => state?.ProjectManagementReducer?.contextMenu
-  );
-  const dispatch = useDispatch();
-  const taskContextMenuRef = useOuterClick(() =>
-    setIsShowTaskContextMenu(!isShowTaskContextMenu)
-  );
   const projectContextMenuRef = useOuterClick(() =>
     setIsShowProjectContextMenu(!isShowProjectContextMenu)
   );
-  const handleProjectContextMenuClick = (projectId) => {
-    if (projectId) {
-      if (projectIds && projectIds.includes(projectIds)) {
-        dispatch(
-          setProjectContextMenu(projectIds.filter((id) => id !== projectId))
-        );
-      } else if (projectIds && !projectIds.includes(projectIds)) {
-        dispatch(setProjectContextMenu([...projectIds, projectId]));
-      }
+  const modalsStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.modalsStatus
+  );
+  const projectData = useSelector(
+    (state) => state?.ProjectManagementReducer?.projectManagementData?.projects
+  );
+  const dispatch = useDispatch();
+  const handleMilestoneExpandMoreClick = (id) => {
+    if (id && milestoneExpandMoreIds.includes(id)) {
+      setMilestoneExpandMoreIds(
+        [...milestoneExpandMoreIds].filter((m_id) => m_id !== id)
+      );
+    } else if (id && !milestoneExpandMoreIds.includes(id)) {
+      setMilestoneExpandMoreIds([...milestoneExpandMoreIds, id]);
     }
   };
+  const addMilestoneHandler = () =>
+    dispatch(
+      setMilestoneModalState({
+        ...modalsStatus?.milestoneModal,
+        isVisible: !modalsStatus?.milestoneModal?.isVisible,
+        projectId: project_id,
+      })
+    );
   const {
     project_id,
     project_name,
     project_owner,
     project_start_date,
     project_end_date,
+    project_assign_users,
+    project_overview,
   } = data;
   const history = useHistory();
   const { url } = useRouteMatch();
+
+  useEffect(() => {
+    console.log(expandMoreLevel);
+  }, [expandMoreLevel]);
   return (
     <>
       {/* <Modal visible={true}>hi</Modal> */}
@@ -72,7 +85,28 @@ const Project = ({ data }) => {
         className="d-none d-md-block project-management__project-item my-md-2 position-relative"
       >
         {isShowProjectContextMenu && (
-          <ProjectAndTaskContextMenu containerRef={projectContextMenuRef} />
+          <ProjectAndTaskContextMenu
+            containerRef={projectContextMenuRef}
+            onAddClick={addMilestoneHandler}
+            onEditClick={() => {
+              dispatch(
+                setProjectModalState({
+                  ...modalsStatus?.projectModal,
+                  isVisible: true,
+                  isEdit: true,
+                  editData: {
+                    project_id,
+                    project_name,
+                    start_date: project_start_date,
+                    end_date: project_end_date,
+                    project_overview,
+                    assign_user: project_assign_users,
+                  },
+                  projectId: project_id,
+                })
+              );
+            }}
+          />
         )}
         <div className="project-management__project-data-container d-flex align-items-center w-100 justify-content-between">
           <p className="project-data-container__project-name project-data-container__item">
@@ -103,7 +137,10 @@ const Project = ({ data }) => {
               <MdMoreHoriz />
             </SmallIconButton>
             <SmallIconButton
-              onClick={() => setExpandMoreLevel(expandMoreLevel >= 1 ? 0 : 1)}
+              onClick={() => {
+                setExpandMoreLevel(expandMoreLevel >= 1 ? 0 : 1);
+                setMilestoneExpandMoreIds([]);
+              }}
               className={
                 data &&
                 (data?.milestone_data?.length <= 0 || !data?.milestone_data) &&
@@ -130,6 +167,7 @@ const Project = ({ data }) => {
                   milestone_owner,
                   milestone_start_date,
                   milestone_title,
+                  milestone_assign_users,
                 } = milestone;
                 return (
                   <div
@@ -157,14 +195,61 @@ const Project = ({ data }) => {
                       </p>
                       <p className="project-data-container__item">Ajit Shah</p>
                       <div className="project-data-container__buttons d-flex align-items-center justify-content-end">
-                        <EditIconButton className="mr-2" />
+                        <EditIconButton
+                          className="mr-2"
+                          onClickHandler={() => {
+                            dispatch(
+                              setMilestoneModalState({
+                                ...modalsStatus?.milestoneModal,
+                                isVisible: true,
+                                isEdit: true,
+                                editData: {
+                                  milestone_id,
+                                  project: project_id,
+                                  title: milestone_title,
+                                  start_date: milestone_start_date,
+                                  end_date: milestone_end_date,
+                                  assign_user: milestone_assign_users,
+                                },
+                              })
+                            );
+                          }}
+                        />
                         <DeleteIconButton className="mr-2" />
-                        <SmallIconButton type="primary" className="mr-2">
+                        <SmallIconButton
+                          type="primary"
+                          className="mr-2"
+                          onClick={() => {
+                            const _project = [...projectData].filter(
+                              (item) => item.project_id === project_id
+                            );
+                            const _project_milestones =
+                              _project &&
+                              _project.length > 0 &&
+                              _project[0].milestone_data?.map((milestone) => ({
+                                value: {
+                                  milestone_id: milestone?.milestone_id,
+                                  project_id: milestone?.project,
+                                },
+                                label: milestone.milestone_title,
+                              }));
+                            dispatch(
+                              setTaskListModalState({
+                                ...modalsStatus?.taskListModal,
+                                isVisible: true,
+                                milestonesList: _project_milestones || [],
+                              })
+                            );
+                          }}
+                        >
                           <MdAdd />
                         </SmallIconButton>
                         <SmallIconButton
+                          // onClick={() =>
+                          //   setExpandMoreLevel(expandMoreLevel >= 2 ? 1 : 2)
+                          // }
                           onClick={() =>
-                            setExpandMoreLevel(expandMoreLevel >= 2 ? 1 : 2)
+                            handleMilestoneExpandMoreClick(milestone_id)
                           }
                           className={
                             milestone &&
@@ -175,13 +260,14 @@ const Project = ({ data }) => {
                         >
                           <MdExpandMore
                             className={`icon ${
-                              expandMoreLevel >= 2 && "icon__rotate--180"
+                              milestoneExpandMoreIds.includes(milestone_id) &&
+                              "icon__rotate--180"
                             }`}
                           />
                         </SmallIconButton>
                       </div>
                     </div>
-                    {expandMoreLevel >= 2 && (
+                    {milestoneExpandMoreIds.includes(milestone_id) && (
                       <div className="py-2 pl-2 background--white">
                         {milestone?.task_list_data &&
                           milestone?.task_list_data?.length > 0 &&
@@ -317,13 +403,51 @@ const DesktopTaskListComponent = ({ data }) => {
     setIsShowTaskListContextMenu(!isShowTaskListContextMenu)
   );
   const [isExpandMore, setIsExpandMore] = useState(false);
+  const projectData = useSelector(
+    (state) => state?.ProjectManagementReducer?.projectManagementData?.projects
+  );
+  const modalsStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.modalsStatus
+  );
+  const dispatch = useDispatch();
   return (
     <div
       key={taskListData?.task_list_id}
       className="position-relative project-management__project-item project-management__project-item-2 mb-md-2"
     >
       {isShowTaskListContextMenu && (
-        <ProjectAndTaskContextMenu containerRef={taskListContextMenuRef} />
+        <ProjectAndTaskContextMenu
+          containerRef={taskListContextMenuRef}
+          onEditClick={() => {
+            const _project = [...projectData].filter(
+              (item) => item.project_id === taskListData?.project
+            );
+            const _project_milestones =
+              _project &&
+              _project.length > 0 &&
+              _project[0].milestone_data?.map((milestone) => ({
+                value: {
+                  milestone_id: milestone?.milestone_id,
+                  project_id: milestone?.project,
+                },
+                label: milestone.milestone_title,
+              }));
+            dispatch(
+              setTaskListModalState({
+                ...modalsStatus?.taskListModal,
+                isVisible: true,
+                isEdit: true,
+                milestonesList: _project_milestones || [],
+                editData: {
+                  milestone_id: taskListData?.project_milestone,
+                  project_id: taskListData?.project,
+                  title: taskListData?.task_list_title,
+                  task_list_id: taskListData?.task_list_id,
+                },
+              })
+            );
+          }}
+        />
       )}
       <div className="project-data-container__2 d-flex align-items-center justify-content-between">
         <p className="project-data-container__project-name project-data-container__item">
@@ -566,13 +690,18 @@ export const ProjectTask = () => {
   );
 };
 
-export const ProjectAndTaskContextMenu = ({ containerRef }) => {
+export const ProjectAndTaskContextMenu = ({
+  containerRef,
+  onEditClick,
+  onDeleteClick,
+  onAddClick,
+}) => {
   return (
     <div className="project-three-dot-popup" ref={containerRef}>
       <div className="d-flex align-items-center justify-content-between">
-        <EditIconButton className="mr-2" />
-        <DeleteIconButton className="mr-2" />
-        <SmallIconButton type="primary">
+        <EditIconButton className="mr-2" onClickHandler={onEditClick} />
+        <DeleteIconButton className="mr-2" onClickHandler={onDeleteClick} />
+        <SmallIconButton type="primary" onClick={onAddClick}>
           <MdAdd />
         </SmallIconButton>
       </div>

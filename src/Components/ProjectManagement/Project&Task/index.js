@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ProjectManagementHeader,
   ProjectManagementMain,
@@ -18,7 +18,20 @@ import DateButtons from "./Calender/components/DateButtons";
 import { MdAdd } from "react-icons/md";
 import AddProject from "../components/AddandEditProject/AddProjectModal";
 import NewTaskModel from "../components/AddNewTask/TaskModel";
-import { getProjectDataRequest } from "../redux/actions";
+import {
+  getProjectDataRequest,
+  setMilestoneModalState,
+  setProject,
+  setProjectModalState,
+  setTaskListModalState,
+  setTaskModalState,
+  clearTaskListModalState,
+  clearMilestoneModalState,
+  clearProjectModalState,
+  clearTaskModalState,
+} from "../redux/actions";
+import AddEditMilestone from "../components/PopPupModules/AddEditMilestone";
+import AddEditTaskList from "../components/PopPupModules/AddEditTaskList";
 const ProjectAndTask = () => {
   const dispatch = useDispatch();
   const calenderRef = useRef();
@@ -30,9 +43,32 @@ const ProjectAndTask = () => {
   const [monthDate, setMonthDate] = useState(new Date());
   const [weekStartDate, setWeekStartDate] = useState(new Date());
   const [activeDays, setActiveDays] = useState(constant.month);
-  const [isShowAddProject, setIsShowAddProject] = useState(false);
-  const [isShowAddTask, setIsShowAddTask] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
 
+  const modalsStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.modalsStatus
+  );
+
+  const addProjectHandler = (flag) =>
+    dispatch(
+      setProjectModalState({
+        ...modalsStatus?.projectModal,
+        isVisible: flag,
+      })
+    );
+  const addTaskHandler = (flag) =>
+    dispatch(
+      setTaskModalState({
+        ...modalsStatus?.taskModal,
+        isVisible: flag,
+      })
+    );
+  const closeMilestoneModal = () => {
+    dispatch(clearMilestoneModalState());
+  };
+  const closeTaskListModal = () => {
+    dispatch(clearTaskListModalState());
+  };
   useEffect(() => {
     if (calenderRef.current) {
       setCalenderFunctions(calenderRef.current);
@@ -44,12 +80,28 @@ const ProjectAndTask = () => {
   return (
     <>
       <AddProject
-        show={isShowAddProject}
-        onClose={() => setIsShowAddProject(false)}
+        show={modalsStatus?.projectModal?.isVisible}
+        onClose={() => dispatch(clearProjectModalState())}
+        isEdit={modalsStatus?.projectModal?.isEdit}
+        editData={modalsStatus?.projectModal?.editData}
       />
       <NewTaskModel
-        showTask={isShowAddTask}
-        onClose={() => setIsShowAddTask(false)}
+        showTask={modalsStatus?.taskModal?.isVisible}
+        onClose={() => dispatch(clearTaskModalState())}
+        isEdit={modalsStatus?.taskModal?.isEdit}
+        editData={modalsStatus?.taskModal?.editData}
+      />
+      <AddEditMilestone
+        visible={modalsStatus?.milestoneModal?.isVisible}
+        onClose={closeMilestoneModal}
+        isEdit={modalsStatus?.milestoneModal?.isEdit}
+        editData={modalsStatus?.milestoneModal?.editData}
+      />
+      <AddEditTaskList
+        visible={modalsStatus?.taskListModal?.isVisible}
+        onClose={closeTaskListModal}
+        isEdit={modalsStatus?.taskListModal?.isEdit}
+        editData={modalsStatus?.taskListModal?.editData}
       />
       <ProjectManagementHeader>
         <div className="w-100 d-flex align-items-center justify-content-between">
@@ -64,17 +116,23 @@ const ProjectAndTask = () => {
           {currentPageView.id !== "project-management-calender" && (
             <div className="d-flex align-items-center">
               <button
-                onClick={() => setIsShowAddProject(true)}
+                onClick={() => addProjectHandler(true)}
                 className="mr-2 project-management__button project-management__button--primary"
               >
                 P <MdAdd />
               </button>
               <button
-                onClick={() => setIsShowAddTask(true)}
+                onClick={() => addTaskHandler(true)}
                 className="project-management__button project-management__button--primary"
               >
                 T <MdAdd />
               </button>
+              {/* <button
+                onClick={() => setIsShowModal(true)}
+                className="project-management__button project-management__button--primary"
+              >
+                M <MdAdd />
+              </button> */}
             </div>
           )}
           {currentPageView.id === "project-management-calender" &&

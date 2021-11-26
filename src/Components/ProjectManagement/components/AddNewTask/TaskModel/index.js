@@ -10,6 +10,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import { toast } from "react-toastify";
 
 // custom style for dropdown
 const customStyle = {
@@ -23,13 +24,41 @@ const customStyle = {
 
 function NewTaskModel({ showTask, onClose }) {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const [fileList, setFileList] = useState([]);
   const calanderimg = <img src={calanderIcon} />;
-
   const files = acceptedFiles.map((file) => (
     <li key={file.path}>
       {file.path} - {file.size} bytes
     </li>
   ));
+
+  const handleSelectUploadFile = () => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      const _fileList = (fileList && fileList.length > 0 && fileList) || [];
+      let isPresent = false;
+      let fileArray = [];
+      acceptedFiles.forEach((file) => {
+        isPresent = _fileList.some((element) => element?.name === file?.name);
+        if (!isPresent) {
+          fileArray.push(file);
+        } else {
+          toast.error(
+            `File ${file.name} is already uploaded. Please rename it and upload again.`
+          );
+          return "";
+        }
+      });
+      if (fileArray && fileArray.length > 0) {
+        setFileList([..._fileList, ...fileArray]);
+      }
+    }
+  };
+  useEffect(() => {
+    handleSelectUploadFile();
+  }, [acceptedFiles]);
+  useEffect(() => {
+    console.log(fileList);
+  }, [fileList]);
 
   return !showTask ? null : (
     <div className="add-edit-modal" onClick={onClose}>
@@ -101,6 +130,11 @@ function NewTaskModel({ showTask, onClose }) {
                     Dropo Your Files Here
                   </p>
                 </div>
+                {fileList &&
+                  fileList.length > 0 &&
+                  fileList.map((file) => {
+                    return <p>{file.name}</p>;
+                  })}
               </div>
             </div>
           </div>

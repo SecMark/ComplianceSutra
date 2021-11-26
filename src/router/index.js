@@ -51,9 +51,6 @@ import UserTask from "../Components/UserTask/index";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import ProjectManagement from "../Components/ProjectManagement";
 import AddProject from "../Components/ExpertReviewModule/AddandEditProject";
-import Newmilestone from "../Components/ProjectManagement/components/PopPupModules/NewMilestone";
-import Tasklist from "../Components/ProjectManagement/components/PopPupModules/TaskList";
-import Commentbox from "../Components/ProjectManagement/components/commentBox";
 export default function AppRouter() {
   return (
     <div>
@@ -194,9 +191,9 @@ export default function AppRouter() {
 
           {/* User */}
           <Route path="/user-task" component={UserTask}></Route>
-          <Route path="/new-milestone" component={Newmilestone}></Route>
+          {/* <Route path="/new-milestone" component={Newmilestone}></Route>
           <Route path="/new-tasklist" component={Tasklist}></Route>
-          <Route path="/new-comment" component={Commentbox}></Route>
+          <Route path="/new-comment" component={Commentbox}></Route> */}
         </div>
       </>
     </div>
