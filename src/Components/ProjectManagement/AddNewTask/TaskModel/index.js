@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import { DatePicker, Space } from "antd";
+import { DatePicker } from "antd";
 import calanderIcon from "../../../../assets/Icons/calanderIcon.svg";
 import CreatableSelect from "react-select/creatable";
 import { useDropzone } from "react-dropzone";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import axiosInstance from "../../../../apiServices";
+import moment from "moment";
+import { toast } from "react-toastify";
+
+
 // custom style for dropdown
 const customStyle = {
   control: (styles) => ({
@@ -23,9 +25,21 @@ const customStyle = {
 function NewTaskModel({ showTask, onClose }) {
   const [frequency, setFrequency] = useState("None");
   const [userLilst, setUserList] = useState([]);
-  const [values,setValues] =useState({
-    assign_user:[]
-  })
+  const [values, setValues] = useState({
+    subject: "",
+    start_date: "",
+    end_date: "",
+    project_overview: "",
+    comments: "",
+    assign_user: [],
+  });
+  const [errors, setErrors] = useState({
+    project_Err: "",
+    assign_Err: "",
+    start_date_Err: "",
+    end_date_Err: "",
+    project_overview_Err: "",
+  });
   const [weeklyDay, setWeeklyDay] = useState("Monday");
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
@@ -34,15 +48,16 @@ function NewTaskModel({ showTask, onClose }) {
   console.log(weeklyDay);
   const calanderimg = <img src={calanderIcon} />;
 
-  const files = acceptedFiles.map((file) => (
+
+  const files = acceptedFiles.map((file,index) => (
     <li key={file.path}>
-      {file.path} - {file.size} bytes
+      {file.path}
     </li>
   ));
 
- useEffect(()=>{
-  getRegisteredUSerList();
- },[])
+  useEffect(() => {
+    getRegisteredUSerList();
+  }, []);
 
   // function to get the registered user list
   const getRegisteredUSerList = () => {
@@ -70,18 +85,99 @@ function NewTaskModel({ showTask, onClose }) {
       assign_user: arr2,
     });
   };
-  
+
+
+
+  // to change the frequency
   const FrequencyChange = (e) => {
     setFrequency(e.target.value);
   };
+
+  //to change day of weekly
   const onDayChange = (val) => {
     setWeeklyDay(val);
   };
 
 
+  // setState for start date nad end date 
   const onDateChange = (date, dateString, name) => {
+    const todayDate = moment().format("YYYY-MM-DD");
+    if (name === "start_date") {
+      setValues({
+        ...values,
+        start_date: dateString,
+      });
+      if (moment(todayDate).isAfter(dateString)) {
+        setErrors({
+          ...errors,
+          start_date_Err: `please select ${todayDate} or after ${todayDate}`,
+        });
+      } else {
+        setErrors({
+          ...errors,
+          start_date_Err: "",
+        });
+      }
+    } else if (name === "end_date") {
+      setValues({
+        ...values,
+        end_date: dateString,
+      });
+      if (moment(todayDate).isAfter(dateString)) {
+        setErrors({
+          ...errors,
+          end_date_Err: `please select ${todayDate} or after ${todayDate}`,
+        });
+      } else {
+        setErrors({
+          ...errors,
+          end_date_Err: "",
+        });
+      }
+    }
+  };
 
-  }
+
+  // changes the state  for project name , over View, comment,
+  const onHandleChange = (evt) => {
+    const value = evt.target.value;
+    setValues({
+      ...values,
+      [evt.target.name]: value,
+    });
+  };
+
+
+// api request to Submit data
+
+  const onSubmitData = () => {
+    var formData = [];
+    const val =Object.keys(values);
+    formData = new FormData();
+    acceptedFiles.forEach((file) => {
+      formData.append("file_details", file);
+    });
+    val.forEach((key,index)=>{
+      formData.append(key,values[key])
+    })
+    formData.append("frequency",frequency);
+    formData.append("weekly_repeat_day",weeklyDay);
+   axiosInstance
+      .post("compliance.api.updateProjectTask", formData)
+      .then((response) => {
+        if(response.data.message.status === true){
+            toast.success("Task Added successfully")
+            onClose();
+        }
+        else{
+          toast.warning(response.data.message.status_response);
+        }
+      })
+      .catch((err) => {});
+  };
+
+
+
   return !showTask ? null : (
     <div className="add-edit-modal" onClick={onClose}>
       <div
@@ -92,46 +188,34 @@ function NewTaskModel({ showTask, onClose }) {
           <label className="add-edit-project-labels">Project Name</label>
           <input
             className="add-edit-project-inputs"
-            name="project_name"
-            // onChange={onHandleChange}
+            name="subject"
+            onChange={onHandleChange}
           />
           <div className="row mt-3">
-            <div className="col-sm-12 col-lg-6">
-              <label className="add-edit-project-labels">Task List</label>
-              <CreatableSelect
-                isMulti
-                styles={customStyle}
-                onChange={handleDropDownChange}
-                options={userLilst}
-              />
-            </div>
-            <div className="col-sm-6 col-lg-3">
+            <div className="col-sm-6 col-lg-6">
               <label className="add-edit-project-labels">Start Date</label>
 
               <DatePicker
                 className="add-edit-project-inputs"
                 name="start_date"
                 suffixIcon={calanderimg}
-                // onChange={(date, dateString) => {
-                //   setValues({
-                //     ...values,
-                //     start_date: dateString,
-                //   });
-                // }}
+                onChange={(date, dateString) => {
+                  onDateChange(date, dateString, "start_date");
+                }}
               />
+              <p className="add-project-err-msg">{errors.start_date_Err}</p>
             </div>
-            <div className="col-sm-6 col-lg-3">
+            <div className="col-sm-6 col-lg-6">
               <label className="add-edit-project-labels">End Date</label>
               <DatePicker
                 className="add-edit-project-inputs"
+                name="end_date"
                 suffixIcon={calanderimg}
-                // onChange={(date, dateString) => {
-                //   setValues({
-                //     ...values,
-                //     end_date: dateString,
-                //   });
-                // }}
+                onChange={(date, dateString) => {
+                  onDateChange(date, dateString, "end_date");
+                }}
               />
+              <p className="add-project-err-msg">{errors.start_date_Err}</p>
             </div>
           </div>
           <div className="row">
@@ -139,7 +223,11 @@ function NewTaskModel({ showTask, onClose }) {
               <label className="add-edit-project-labels mt-3">
                 Project overview
               </label>
-              <input className="add-edit-project-inputs" />
+              <input
+                className="add-edit-project-inputs"
+                name="project_overview"
+                onChange={onHandleChange}
+              />
             </div>
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">
@@ -148,9 +236,12 @@ function NewTaskModel({ showTask, onClose }) {
               <div className="add-new-subtask-fileDropZone">
                 <div {...getRootProps({ className: "dropzone" })}>
                   <input {...getInputProps()} />
-                  <p className="add-new-subtask-fileDropZone-text">
-                    Dropo Your Files Here
-                  </p>
+                  {acceptedFiles.length === 0 ?
+                    <p className="add-new-subtask-fileDropZone-text">
+                    Please Drop Your files here
+                   </p> : files
+                  }
+                    
                 </div>
               </div>
             </div>
@@ -161,13 +252,17 @@ function NewTaskModel({ showTask, onClose }) {
               <CreatableSelect
                 isMulti
                 styles={customStyle}
-                // onChange={handleDropDownChange}
-                // options={userLilst}
+                onChange={handleDropDownChange}
+                options={userLilst}
               />
             </div>
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">comments</label>
-              <input className="add-edit-project-inputs" />
+              <input
+                className="add-edit-project-inputs"
+                name="comments"
+                onChange={onHandleChange}
+              />
             </div>
           </div>
           <div className="row">
@@ -302,27 +397,23 @@ function NewTaskModel({ showTask, onClose }) {
               </div>
             </div>
           )}
-          {
-            frequency==="Monthly" &&
+          {frequency === "Monthly" && (
             <div className="row mt-3">
-                <div className="col justify-content-center">
-                <DatePicker
-                className="add-edit-project-inputs"
-                suffixIcon={calanderimg}
-                // onChange={(date, dateString) => {
-                //   setValues({
-                //     ...values,
-                //     end_date: dateString,
-                //   });
-                // }}
-              />
-                </div>
+              <div className="col justify-content-center">
+              <label className="add-edit-project-labels">Please enter every month day</label>
+              <input
+            className="add-edit-project-inputs"
+            onChange={(event)=>setWeeklyDay(event.target.value)}
+          />
+              </div>
             </div>
-            
-          }
+          )}
           <div className="d-flex mt-3 justify-content-center">
             <div className="p-2">
-              <button className="add-edit-project-submit-btn" onClick={onClose}>
+              <button
+                className="add-edit-project-submit-btn"
+                onClick={onSubmitData}
+              >
                 Submit
               </button>
             </div>
