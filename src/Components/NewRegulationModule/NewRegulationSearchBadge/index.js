@@ -89,7 +89,7 @@ const NewRegulationSearchBadge = (props) => {
         "",
     };
 
-    dispatch(setFilterPayload({ filter: filterRequestPayload }));
+    dispatch(setFilterPayload({ filters: filterRequestPayload }));
   }, [industry, issuer, topic, from, to]);
 
   useEffect(() => {

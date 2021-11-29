@@ -10,6 +10,7 @@ import {
   setIsFilter,
   setIssuer,
   setTopic,
+  getUpdates,
 } from "../redux/actions";
 import moment from "moment";
 import {
@@ -39,18 +40,18 @@ const NewRegulationFilter = (props) => {
     setListOfIndustry([...setArrayOfObjectInList]);
 
     //set issuer list for searchable dropdown.
-    var setArrayOfObjectInList = issuerList.map((item) => {
+    var setArrayOfObjectInList = issuerList?.map((item) => {
       return { value: item, label: item };
     });
     setListOfIssuers([...setArrayOfObjectInList]);
 
     //set topic list for searchable dropdown.
-    var setArrayOfObjectInList = topicList.map((item) => {
+    var setArrayOfObjectInList = topicList?.map((item) => {
       return { value: item, label: item };
     });
 
     setListOfTopic([...setArrayOfObjectInList]);
-  }, []);
+  }, [state.UpdatesReducer.industryList]);
 
   useEffect(() => {
     if (
@@ -146,7 +147,7 @@ const NewRegulationFilter = (props) => {
     };
 
     dispatch(setBadges(setBagdesPayload));
-    dispatch(setFilterPayload({ filters: filterRequestPayload }));
+    //dispatch(getUpdates({ filters: filterRequestPayload }));
     dispatch(setIsFilter(true));
     props.setIsShowFilter(!props.isShowFilter);
     props.setIsShowMobileFilter(!props.isShowMobileFilter);

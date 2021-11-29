@@ -181,7 +181,9 @@ const NewRegulations = (props) => {
 
   const getNewRegulationFilterList = async () => {
     getAndSetIndustryList();
-    setIsShowFilter(!isShowFilter);
+    setTimeout(() => {
+      setIsShowFilter(!isShowFilter);
+    }, 2000);
   };
 
   const getAndSetIndustryList = () => {
