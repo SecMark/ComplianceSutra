@@ -38,6 +38,8 @@ import MultipleNotification from "../../../../../CustomNotification/MultipleNoti
 import { toast } from "react-toastify";
 import axiosInstance from "../../../../../apiServices";
 import { BACKEND_BASE_URL } from "../../../../../apiServices/baseurl";
+import trashIcon from "../../../../../assets/Icons/trashIcon.svg";
+import trashIconActive from "../../../../../assets/Icons/trashIconActive.svg";
 
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
@@ -169,6 +171,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/help");
     } else if (currentActiveMenu === "project-management") {
       history.push("/project-management");
+    } else if (currentActiveMenu === "project-trash") {
+      history.push("/project-trash");
     }
   };
 
@@ -294,7 +298,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             }
           >
             <img
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", width: "18px" }}
               title="Project Task"
               onClick={() => onMenuClick("project-management")}
               src={
@@ -327,6 +331,29 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                 state.adminMenu.currentMenu === "new-regulations"
                   ? updateActive
                   : updateActive
+              }
+              alt="sidebar Bell"
+            />
+          </div>
+          <div
+            className={
+              !openProfile &&
+              state &&
+              state.adminMenu.currentMenu === "project-trash"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer", width: "18px" }}
+              title="Project Trash"
+              onClick={() => onMenuClick("project-trash")}
+              src={
+                !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "project-trash"
+                  ? trashIconActive
+                  : trashIcon
               }
               alt="sidebar Bell"
             />

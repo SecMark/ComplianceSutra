@@ -143,7 +143,7 @@
 .project-management__small-modal-wrapper {
   border-radius: 8px;
 }
-.milestone-modal__heading {
+.modal__heading {
   font-family: Poppins;
   font-style: normal;
   font-weight: 500;

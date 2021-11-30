@@ -22,7 +22,7 @@
 .add-edit-main-container {
   padding: 20px 20px 20px 20px;
   overflow-y: auto;
-  height: 644px;
+  height: 100%;
 }
 
 .add-edit-project-labels {

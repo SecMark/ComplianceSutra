@@ -32,9 +32,9 @@ function AddEditTaskList({ visible, onClose, isEdit, editData }) {
       }}
     >
       <div className="milestone-modal__container d-flex align-items-center flex-column justify-content-center">
-        <p className="milestone-modal__heading">Task List</p>
+        <p className="modal__heading">Task List</p>
         <div className="form-group">
-          <label className="milestone-modal__label">Task List</label>
+          <label className="modal__label">Task List</label>
           <input
             type="text"
             className="modal-input"
@@ -45,7 +45,7 @@ function AddEditTaskList({ visible, onClose, isEdit, editData }) {
           />
         </div>
         <div className="form-group w-100">
-          <label className="milestone-modal__label">Milestone</label>
+          <label className="modal__label">Milestone</label>
           <Select
             options={milestone_list || []}
             defaultValue={

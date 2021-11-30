@@ -15,7 +15,7 @@ import Tasks from "./Tasks";
 import DateFilters from "./Calender/components/DateFilters";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import DateButtons from "./Calender/components/DateButtons";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdBlock } from "react-icons/md";
 import AddProject from "../components/AddandEditProject/AddProjectModal";
 import NewTaskModel from "../components/AddNewTask/TaskModel";
 import {
@@ -29,9 +29,15 @@ import {
   clearMilestoneModalState,
   clearProjectModalState,
   clearTaskModalState,
+  clearDeleteModalSatate,
+  deactivateRequest,
 } from "../redux/actions";
 import AddEditMilestone from "../components/PopPupModules/AddEditMilestone";
 import AddEditTaskList from "../components/PopPupModules/AddEditTaskList";
+import DeactivateAndDeleteModal from "../components/Modals/DeactivateAndDeleteModal";
+import projectDeleteIcon from "../../../assets/ERIcons/projectDeleteIcon.svg";
+import BackDrop from "../../../CommonModules/sharedComponents/Loader/BackDrop";
+
 const ProjectAndTask = () => {
   const dispatch = useDispatch();
   const calenderRef = useRef();
@@ -48,7 +54,13 @@ const ProjectAndTask = () => {
   const modalsStatus = useSelector(
     (state) => state?.ProjectManagementReducer?.modalsStatus
   );
-
+  const deactivateModalAndStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.deactivateModalAndStatus
+  );
+  const isDeactivateRequestInProgress = useSelector(
+    (state) =>
+      state?.ProjectManagementReducer?.deactivateRequestStatus?.isLoading
+  );
   const addProjectHandler = (flag) =>
     dispatch(
       setProjectModalState({
@@ -77,8 +89,34 @@ const ProjectAndTask = () => {
   useEffect(() => {
     dispatch(getProjectDataRequest());
   }, []);
+  useEffect(() => {
+    console.log({ isDeactivateRequestInProgress });
+  }, [isDeactivateRequestInProgress]);
   return (
     <>
+      <BackDrop isLoading={isDeactivateRequestInProgress} />
+      <DeactivateAndDeleteModal
+        visible={deactivateModalAndStatus?.isVisible}
+        onClose={() => dispatch(clearDeleteModalSatate())}
+        Text={`Are you sure ${
+          deactivateModalAndStatus?.modalName !== "Task"
+            ? "to delete this " + deactivateModalAndStatus?.modalName
+            : "you want to De-activate this Task"
+        }?`}
+        iconSrc={
+          deactivateModalAndStatus?.modalName !== "Task" && projectDeleteIcon
+        }
+        Icon={deactivateModalAndStatus?.modalName === "Task" && MdBlock}
+        id={deactivateModalAndStatus?.id}
+        onSubmit={() => {
+          dispatch(
+            deactivateRequest({
+              ...deactivateModalAndStatus,
+            })
+          );
+          dispatch(clearDeleteModalSatate());
+        }}
+      />
       <AddProject
         show={modalsStatus?.projectModal?.isVisible}
         onClose={() => dispatch(clearProjectModalState())}
@@ -161,12 +199,16 @@ const ProjectAndTask = () => {
         <ProjectManagementNavigation
           currentPageView={currentPageView}
           setCurrentPageView={setCurrentPageView}
+          pages={ProjectManagmentPages}
         />
       </ProjectManagementHeader>
       <ProjectManagementMainContainer>
         {/* Components over the main  */}
-        {currentPageView.id === "project-management-project" && (
-          <ProjectHeader />
+        {(currentPageView.id === "project-management-project" ||
+          currentPageView.id === "project-management-task") && (
+          <ProjectHeader
+            isTasksHeader={currentPageView.id === "project-management-task"}
+          />
         )}
         {currentPageView.id === "project-management-calender" && (
           <DateFilters

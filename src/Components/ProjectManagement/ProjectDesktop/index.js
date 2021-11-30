@@ -7,6 +7,8 @@ import {
   MdTextsms,
   MdCheckCircle,
   MdRadioButtonChecked,
+  MdHistory,
+  MdBlock,
 } from "react-icons/md";
 import {
   IoBanOutline,
@@ -25,10 +27,13 @@ import { Link } from "react-router-dom";
 import { useOuterClick } from "../../OnBording/SubModules/DashBoardCO/components/RightSideGrid/outerClick";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setDeleteModalState,
   setMilestoneModalState,
   setProjectModalState,
   setTaskListModalState,
+  setTaskModalState,
 } from "../redux/actions";
+import moment from "moment";
 const Project = ({ data }) => {
   const [expandMoreLevel, setExpandMoreLevel] = useState(0);
   const [milestoneExpandMoreIds, setMilestoneExpandMoreIds] = useState([]);
@@ -42,6 +47,12 @@ const Project = ({ data }) => {
   );
   const projectData = useSelector(
     (state) => state?.ProjectManagementReducer?.projectManagementData?.projects
+  );
+  const deactivateModalAndStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.deactivateModalAndStatus
+  );
+  const usersList = useSelector(
+    (state) => state?.ProjectManagementReducer?.usersList
   );
   const dispatch = useDispatch();
   const handleMilestoneExpandMoreClick = (id) => {
@@ -106,6 +117,16 @@ const Project = ({ data }) => {
                 })
               );
             }}
+            onDeleteClick={() => {
+              dispatch(
+                setDeleteModalState({
+                  ...deactivateModalAndStatus,
+                  modalName: "Project",
+                  id: project_id,
+                  isVisible: true,
+                })
+              );
+            }}
           />
         )}
         <div className="project-management__project-data-container d-flex align-items-center w-100 justify-content-between">
@@ -114,7 +135,10 @@ const Project = ({ data }) => {
           </p>
           <p className="project-data-container__item">1</p>
           <p className="project-data-container__item wide">
-            {project_owner || "Ashu Kumar"}
+            {(usersList?.length > 0 &&
+              project_owner &&
+              getUserName(usersList, project_owner)) ||
+              project_owner}
           </p>
           <p className="project-data-container__item">3</p>
           <p className="project-data-container__item">4</p>
@@ -215,7 +239,19 @@ const Project = ({ data }) => {
                             );
                           }}
                         />
-                        <DeleteIconButton className="mr-2" />
+                        <DeleteIconButton
+                          className="mr-2"
+                          onClickHandler={() =>
+                            dispatch(
+                              setDeleteModalState({
+                                ...deactivateModalAndStatus,
+                                modalName: "Milestone",
+                                id: milestone_id,
+                                isVisible: true,
+                              })
+                            )
+                          }
+                        />
                         <SmallIconButton
                           type="primary"
                           className="mr-2"
@@ -288,7 +324,7 @@ const Project = ({ data }) => {
           {/* Title */}
           <div className="d-flex align-items-center justify-content-between mb-3">
             <p className="project-container-mobile__data-title flex-grow-1 mb-0">
-              Management Design
+              {project_name}
             </p>
             {/* <SmallIconButton type="grey" className="mx-2">
               <IoCheckmarkCircleOutline />
@@ -305,7 +341,12 @@ const Project = ({ data }) => {
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Owner
                   </p>
-                  <p className="project-data-container__item">Ashu</p>
+                  <p className="project-data-container__item">
+                    {(usersList?.length > 0 &&
+                      project_owner &&
+                      getUserName(usersList, project_owner)) ||
+                      project_owner}
+                  </p>
                 </div>
                 <Link to={`${url}/project-tasks`}>
                   <div className="project-container-mobile__data-item">
@@ -320,14 +361,21 @@ const Project = ({ data }) => {
                     <p className="project-data-container__item project-container-mobile__data-item-title">
                       Milestone
                     </p>
-                    <p className="project-data-container__item">0/1</p>
+                    <p className="project-data-container__item">
+                      0/{data?.milestone_data?.length || 0}
+                    </p>
                   </div>
                 </Link>
                 <div className="project-container-mobile__data-item">
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Duration
                   </p>
-                  <p className="project-data-container__item">2 Days</p>
+                  <p className="project-data-container__item">
+                    {moment(project_end_date).diff(
+                      moment(project_start_date),
+                      "days"
+                    )}
+                  </p>
                 </div>
               </div>
             </div>
@@ -347,7 +395,11 @@ const Project = ({ data }) => {
           <div className="d-flex justify-content-between align-items-center mt-3">
             {/* Start Date and End Date */}
             <p className="project-data-container__item flex-grow-1 text-left">
-              <IoCalendarOutline /> 14 Aug, 2021 To 21 Aug, 2021
+              <IoCalendarOutline />
+              &nbsp;
+              {moment(project_start_date).format("D MMM YYYY") +
+                " To " +
+                moment(project_end_date).format("D MMM YYYY")}
             </p>
             <EditIconButton className="mx-2" />
             <DeleteIconButton />
@@ -359,18 +411,24 @@ const Project = ({ data }) => {
   );
 };
 
-const DesktopTask = ({ data }) => {
+export const DesktopTask = ({ data }) => {
   const [taskData, setTaskData] = useState(data || {});
-
+  const dispatch = useDispatch();
+  const modalsStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.modalsStatus
+  );
+  const deactivateModalAndStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.deactivateModalAndStatus
+  );
   return (
-    <div className="project-data-container__3 d-flex align-items-center justify-content-between">
+    <div className="project-data-container__3 d-none d-md-flex align-items-center justify-content-between">
       <p className="project-data-container__project-name project-data-container__item">
         {taskData?.task_subject}
       </p>
       <p className="project-data-container__item">10%</p>
       <p className="project-data-container__item wide">Ajit</p>
       <p className="project-data-container__item wide-flex-2">
-        {taskData?.task_frequency}
+        {taskData?.task_frequency || "-"}
       </p>
       <p className="project-data-container__item wide-2">0 Days</p>
       <p className="project-data-container__item wide">
@@ -379,16 +437,56 @@ const DesktopTask = ({ data }) => {
       <p className="project-data-container__item wide">
         {taskData?.task_end_date}
       </p>
-      <p className="project-data-container__item">Ajit</p>
+      <p className="project-data-container__item">
+        {taskData?.assign_to || "-"}
+      </p>
       <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
         <SmallIconButton type="grey" className="p-2 mr-2">
           <MdTextsms className="icon__small" />
         </SmallIconButton>
-        <EditIconButton className="mr-2" />
+        <EditIconButton
+          className="mr-2"
+          onClickHandler={() => {
+            dispatch(
+              setTaskModalState({
+                ...modalsStatus?.taskModal,
+                isVisible: true,
+                isEdit: true,
+                editData: {
+                  ...modalsStatus?.taskModal?.editData,
+                  task_id: taskData?.task_id,
+                  milestone_id: taskData?.task_project_milestone,
+                  project_id: taskData?.task_project,
+                  subject: taskData?.task_subject,
+                  task_list_id: taskData?.task_project_task_list,
+                  start_date: taskData?.task_start_date,
+                  end_date: taskData?.task_end_date,
+                  frequency: taskData?.task_frequency,
+                  assign_to: taskData?.assign_to,
+                  description: taskData?.task_description || "",
+                  comments: taskData?.task_comments || "",
+                },
+              })
+            );
+          }}
+        />
         <SmallIconButton type="grey" className="p-2 mr-2">
           <MdCheckCircle className="icon__small" />
         </SmallIconButton>
-        <SmallIconButton type="grey" className="p-2">
+        <SmallIconButton
+          type="grey"
+          className="p-2"
+          onClick={() =>
+            dispatch(
+              setDeleteModalState({
+                ...deactivateModalAndStatus,
+                modalName: "Task",
+                id: taskData?.task_id,
+                isVisible: true,
+              })
+            )
+          }
+        >
           <MdRadioButtonChecked className="icon__small" />
         </SmallIconButton>
       </div>
@@ -408,6 +506,9 @@ const DesktopTaskListComponent = ({ data }) => {
   );
   const modalsStatus = useSelector(
     (state) => state?.ProjectManagementReducer?.modalsStatus
+  );
+  const deactivateModalAndStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.deactivateModalAndStatus
   );
   const dispatch = useDispatch();
   return (
@@ -439,6 +540,7 @@ const DesktopTaskListComponent = ({ data }) => {
                 isEdit: true,
                 milestonesList: _project_milestones || [],
                 editData: {
+                  ...modalsStatus?.taskListModal?.editData,
                   milestone_id: taskListData?.project_milestone,
                   project_id: taskListData?.project,
                   title: taskListData?.task_list_title,
@@ -447,6 +549,31 @@ const DesktopTaskListComponent = ({ data }) => {
               })
             );
           }}
+          onAddClick={() => {
+            dispatch(
+              setTaskModalState({
+                ...modalsStatus?.taskModal,
+                isVisible: true,
+                isEdit: false,
+                editData: {
+                  ...modalsStatus?.taskModal?.editData,
+                  milestone_id: taskListData?.project_milestone,
+                  project_id: taskListData?.project,
+                  task_list_id: taskListData?.task_list_id,
+                },
+              })
+            );
+          }}
+          onDeleteClick={() =>
+            dispatch(
+              setDeleteModalState({
+                ...deactivateModalAndStatus,
+                modalName: "TaskList",
+                id: taskListData?.task_list_id,
+                isVisible: true,
+              })
+            )
+          }
         />
       )}
       <div className="project-data-container__2 d-flex align-items-center justify-content-between">
@@ -559,14 +686,24 @@ export const ProjectMilestone = () => {
   );
 };
 
-export const ProjectSubTask = () => {
+export const ProjectSubTask = ({ data }) => {
+  const usersList = useSelector(
+    (state) => state?.ProjectManagementReducer?.usersList
+  );
+  const modalsStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.modalsStatus
+  );
+  const dispatch = useDispatch();
   return (
-    <div className="d-flex d-md-none project-management__project-container-mobile mb-3 p-2 py-3">
+    <div
+      key={data?.task_id}
+      className="d-flex d-md-none project-management__project-container-mobile mb-3 p-2 py-3"
+    >
       <div className="w-100">
         {/* Title */}
         <div className="d-flex align-items-center justify-content-between mb-3">
           <p className="project-container-mobile__data-title flex-grow-1 mb-0">
-            Discussion with Client (Milestone)
+            {data?.task_subject}
           </p>
           <SmallIconButton type="grey" className="mx-2">
             <IoCheckmarkCircleOutline />
@@ -589,7 +726,13 @@ export const ProjectSubTask = () => {
                 <p className="project-data-container__item project-container-mobile__data-item-title">
                   Assign to
                 </p>
-                <p className="project-data-container__item">Ashu Kumar</p>
+                <p className="project-data-container__item">
+                  {usersList &&
+                    usersList?.length > 0 &&
+                    usersList.filter(
+                      (user) => user.value === data?.assign_to
+                    )[0]?.label}
+                </p>
               </div>
             </div>
             {/* Data (Row) */}
@@ -606,7 +749,9 @@ export const ProjectSubTask = () => {
                 Schedule Date
               </p>
               <p className="project-container-mobile__sub-task-text project-data-container__item mb-0">
-                : 2 Aug, 2021
+                :{" "}
+                {data?.task_start_date &&
+                  moment(data?.task_start_date).format("D MMM YYYY")}
               </p>
             </div>
             <div className="d-flex mb-3">
@@ -614,7 +759,9 @@ export const ProjectSubTask = () => {
                 Actual End Date
               </p>
               <p className="project-container-mobile__sub-task-text project-data-container__item mb-0">
-                : 21 Aug, 2021
+                :{" "}
+                {data?.task_end_date &&
+                  moment(data?.task_end_date).format("D MMM YYYY")}
               </p>
             </div>
           </div>
@@ -640,22 +787,53 @@ export const ProjectSubTask = () => {
           <SmallIconButton type="grey" className="mx-2 icon__small p-1">
             <RiMessage2Fill />
           </SmallIconButton>
-          <EditIconButton />
+          <EditIconButton
+            onClickHandler={() => {
+              dispatch(
+                setTaskModalState({
+                  ...modalsStatus?.taskModal,
+                  isVisible: true,
+                  isEdit: true,
+                  editData: {
+                    ...modalsStatus?.taskModal?.editData,
+                    task_id: data?.task_id,
+                    milestone_id: data?.task_project_milestone,
+                    project_id: data?.task_project,
+                    subject: data?.task_subject,
+                    task_list_id: data?.task_project_task_list,
+                    start_date: data?.task_start_date,
+                    end_date: data?.task_end_date,
+                    frequency: data?.task_frequency,
+                    assign_to: data?.assign_to,
+                    description: data?.task_description || "",
+                    comments: data?.task_comments || "",
+                  },
+                })
+              );
+            }}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export const ProjectHeader = () => (
+export const ProjectHeader = ({ isTasksHeader }) => (
   <div className="d-none d-md-flex mt-md-3 mb-md-2 project-management__project-header project-management__project-data-container align-items-center justify-content-between">
     <p className="project-data-container__project-name project-data-container__item">
       Project Name
     </p>
     <p className="project-data-container__item">Completed</p>
     <p className="project-data-container__item wide">Owner</p>
-    <p className="project-data-container__item">Task</p>
-    <p className="project-data-container__item">Milestone</p>
+    {!isTasksHeader && (
+      <>
+        <p className="project-data-container__item">Task</p>
+        <p className="project-data-container__item">Milestone</p>
+      </>
+    )}
+    {isTasksHeader && (
+      <p className="project-data-container__item wide-flex-2">Frequency</p>
+    )}
     <p className="project-data-container__item wide-2">Duration</p>
     <p className="project-data-container__item wide">Start Date</p>
     <p className="project-data-container__item wide">End Date</p>
@@ -712,4 +890,350 @@ export const ProjectAndTaskContextMenu = ({
   );
 };
 
+export const TrashProject = ({ data }) => {
+  const { url } = useRouteMatch();
+  return (
+    <>
+      <div
+        key={data?.project_id}
+        className="project-management__trash-project-data-container d-none d-md-flex align-items-center w-100 justify-content-between"
+      >
+        <p className="project-data-container__project-name project-data-container__item">
+          {data?.project_name || "Management"}
+        </p>
+        <p className="project-data-container__item">1</p>
+        <p className="project-data-container__item wide">
+          {data?.project_owner || "Ashu Kumar"}
+        </p>
+        <p className="project-data-container__item">3</p>
+        <p className="project-data-container__item">4</p>
+        <p className="project-data-container__item wide-2">2 Day</p>
+        <p className="project-data-container__item wide">
+          {data?.project_start_date || "-"}
+        </p>
+        <p className="project-data-container__item wide">
+          {data?.project_end_date || "-"}
+        </p>
+        <p className="project-data-container__item">8</p>
+        <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
+          <SmallIconButton type="primary" className="mr-3">
+            <MdHistory />
+          </SmallIconButton>
+          <DeleteIconButton />
+        </div>
+      </div>
+      {/* Mobile Component */}
+      <div className="d-flex d-md-none project-management__project-container-mobile mb-3 p-2 py-3">
+        <div className="w-100">
+          {/* Title */}
+          <div className="d-flex align-items-center justify-content-between mb-3">
+            <p className="project-container-mobile__data-title flex-grow-1 mb-0">
+              Management Design
+            </p>
+            {/* <SmallIconButton type="grey" className="mx-2">
+              <IoCheckmarkCircleOutline />
+            </SmallIconButton>
+            <SmallIconButton type="grey">
+              <IoBanOutline />
+            </SmallIconButton> */}
+          </div>
+          <div className="d-flex justify-content-between w-100 align-items-center">
+            <div className="project-container-mobile__data">
+              {/* Data */}
+              <div className="d-grid project-container-mobile__data-container">
+                <div className="project-container-mobile__data-item">
+                  <p className="project-data-container__item project-container-mobile__data-item-title">
+                    Owner
+                  </p>
+                  <p className="project-data-container__item">Ashu</p>
+                </div>
+                {/* <div className="project-container-mobile__data-item">
+                    <p className="project-data-container__item project-container-mobile__data-item-title">
+                      Assign To
+                    </p>
+                    <p className="project-data-container__item">{data?.assign_to}</p>
+                  </div> */}
+                {/* <div className="project-container-mobile__data-item">
+                  <p className="project-data-container__item project-container-mobile__data-item-title">
+                    Milestone
+                  </p>
+                  <p className="project-data-container__item">0/1</p>
+                </div> */}
+                <div className="project-container-mobile__data-item">
+                  <p className="project-data-container__item project-container-mobile__data-item-title">
+                    Duration
+                  </p>
+                  <p className="project-data-container__item">2 Days</p>
+                </div>
+              </div>
+            </div>
+            <div className="project-container-mobile__progress px-3">
+              {/* Progress Bar */}
+              <Progress
+                trailColor="tranparent"
+                type="circle"
+                percent={66}
+                width={70}
+                strokeColor="#7A73FF"
+                strokeWidth={11}
+              />
+            </div>
+          </div>
+          {/* Bottom Data */}
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            {/* Start Date and End Date */}
+            <p className="project-data-container__item flex-grow-1 text-left">
+              <IoCalendarOutline /> 14 Aug, 2021 To 21 Aug, 2021
+            </p>
+            <SmallIconButton type="primary" className="mr-3">
+              <MdHistory />
+            </SmallIconButton>
+            <DeleteIconButton />
+            {/* Edit and Delete Button */}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export const TrashMilestone = ({ data }) => {
+  return (
+    <>
+      <div
+        key={data?.milestone_id}
+        className="d-none d-md-block project-management__project-item mb-md-2"
+      >
+        <div className="project-management__trash-project-data-container d-flex align-items-center justify-content-between">
+          <p className="project-data-container__item project-data-container__project-name text-black">
+            {data?.milestone_title}
+          </p>
+          <p className="project-data-container__item">40%</p>
+          <p className="project-data-container__item wide">
+            {data?.milestone_owner}
+          </p>
+          <p className="project-data-container__item">-</p>
+          <p className="project-data-container__item">-</p>
+          <p className="project-data-container__item wide-2">3 Day</p>
+          <p className="project-data-container__item wide">
+            {data?.milestone_start_date || "-"}
+          </p>
+          <p className="project-data-container__item wide">
+            {data?.milestone_end_date || "-"}
+          </p>
+          <p className="project-data-container__item">Ajit Shah</p>
+          <div className="project-data-container__buttons d-flex align-items-center justify-content-end">
+            <SmallIconButton type="primary" className="mr-3">
+              <MdHistory />
+            </SmallIconButton>
+            <DeleteIconButton />
+          </div>
+        </div>
+      </div>
+      {/* Mobile Component */}
+      <div className="d-flex d-md-none project-management__project-container-mobile mb-3 p-2 py-3">
+        <div className="w-100">
+          {/* Title */}
+          <div className="d-flex align-items-center justify-content-between mb-3">
+            <p className="project-container-mobile__data-title flex-grow-1 mb-0">
+              {data?.milestone_title}
+            </p>
+          </div>
+          <div className="d-flex justify-content-between w-100 align-items-center">
+            <div className="project-container-mobile__data">
+              {/* Data */}
+              <div className="d-grid project-container-mobile__data-container mb-3">
+                <div className="project-container-mobile__data-item">
+                  <p className="project-data-container__item project-container-mobile__data-item-title">
+                    Owner
+                  </p>
+                  <p className="project-data-container__item">
+                    {data?.milestone_owner}
+                  </p>
+                </div>
+                <div className="project-container-mobile__data-item">
+                  <p className="project-data-container__item project-container-mobile__data-item-title">
+                    Assign to
+                  </p>
+                  <p className="project-data-container__item">Ashu Kumar</p>
+                </div>
+              </div>
+              {/* <div className="d-flex mb-3">
+                <p className="project-data-container__item project-container-mobile__data-item-title mr-4 mb-0">
+                  Owner
+                </p>
+                <p className="project-data-container__item mb-0">
+                  {data?.milestone_owner}
+                </p>
+              </div> */}
+            </div>
+            <div className="project-container-mobile__progress px-3">
+              {/* Progress Bar */}
+              <Progress
+                trailColor="tranparent"
+                type="circle"
+                percent={66}
+                width={70}
+                strokeColor="#7A73FF"
+                strokeWidth={11}
+              />
+            </div>
+          </div>
+          {/* Bottom Data */}
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            {/* Start Date and End Date */}
+            <p className="project-data-container__item flex-grow-1 text-left">
+              <IoCalendarOutline />
+              &nbsp;
+              {data?.milestone_start_date &&
+                data?.milestone_start_date &&
+                moment(data?.milestone_start_date).format("D MMM YYYY") +
+                  " To " +
+                  moment(data?.milestone_end_date).format("D MMM YYYY")}
+            </p>
+            <SmallIconButton type="primary" className="mr-3">
+              <MdHistory />
+            </SmallIconButton>
+            <DeleteIconButton />
+            {/* Edit and Delete Button */}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export const TrashTask = ({ data }) => {
+  return (
+    <>
+      <div className="project-data-container__3 d-none d-md-flex align-items-center justify-content-between">
+        <p className="project-data-container__project-name project-data-container__item">
+          {data?.task_subject}
+        </p>
+        <p className="project-data-container__item">10%</p>
+        <p className="project-data-container__item wide">Ajit</p>
+        <p className="project-data-container__item wide-flex-2">
+          {data?.task_frequency || "-"}
+        </p>
+        <p className="project-data-container__item wide-2">0 Days</p>
+        <p className="project-data-container__item wide">
+          {data?.task_start_date}
+        </p>
+        <p className="project-data-container__item wide">
+          {data?.task_end_date}
+        </p>
+        <p className="project-data-container__item">{data?.assign_to || "-"}</p>
+        <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
+          <SmallIconButton type="grey" className="p-2 mr-2">
+            <MdTextsms className="icon__small" />
+          </SmallIconButton>
+          <SmallIconButton type="grey" className="p-2 mr-2">
+            <MdCheckCircle className="icon__small" />
+          </SmallIconButton>
+          <SmallIconButton type="primary" className="mr-2 p-2">
+            <MdHistory className="icon__small" />
+          </SmallIconButton>
+          <SmallIconButton type="grey" className="p-2">
+            <MdBlock className="icon__small" />
+          </SmallIconButton>
+        </div>
+      </div>
+      {/* Mobile Component */}
+      <div className="d-flex d-md-none project-management__project-container-mobile mb-3 p-2 py-3">
+        <div className="w-100">
+          {/* Title */}
+          <div className="d-flex align-items-center justify-content-between mb-3">
+            <p className="project-container-mobile__data-title flex-grow-1 mb-0">
+              {data?.task_subject}
+            </p>
+          </div>
+          <div className="d-flex justify-content-between w-100 align-items-center">
+            <div className="project-container-mobile__data">
+              {/* Data */}
+              <div className="d-grid project-container-mobile__data-container mb-3">
+                <div className="project-container-mobile__data-item">
+                  <p className="project-data-container__item project-container-mobile__data-item-title">
+                    Owner
+                  </p>
+                  <p className="project-data-container__item">
+                    {data?.task_owner || "-"}
+                  </p>
+                </div>
+                <div className="project-container-mobile__data-item">
+                  <p className="project-data-container__item project-container-mobile__data-item-title">
+                    Assign to
+                  </p>
+                  <p className="project-data-container__item">
+                    {data?.assign_to || "-"}
+                  </p>
+                </div>
+              </div>
+              <div className="d-flex mb-3 trash-task">
+                <p className="text-left project-data-container__item project-container-mobile__data-item-title mr-4 mb-0">
+                  Duration
+                </p>
+                <p className="text-left project-data-container__item mb-0">
+                  {data?.duration || "-"}
+                </p>
+              </div>
+              <div className="d-flex mb-3 trash-task">
+                <p className="text-left project-data-container__item project-container-mobile__data-item-title mr-4 mb-0">
+                  Schedule Date
+                </p>
+                <p className="text-left project-data-container__item mb-0">
+                  {data?.schedule_date || "-"}
+                </p>
+              </div>
+              <div className="d-flex mb-3 trash-task">
+                <p className="text-left project-data-container__item project-container-mobile__data-item-title mr-4 mb-0">
+                  Actual End Date
+                </p>
+                <p className="text-left project-data-container__item mb-0">
+                  {data?.task_end_date || "-"}
+                </p>
+              </div>
+            </div>
+            <div className="project-container-mobile__progress px-3">
+              {/* Progress Bar */}
+              <Progress
+                trailColor="tranparent"
+                type="circle"
+                percent={66}
+                width={70}
+                strokeColor="#7A73FF"
+                strokeWidth={11}
+              />
+            </div>
+          </div>
+          {/* Bottom Data */}
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            {/* Start Date and End Date */}
+            <p className="project-data-container__item flex-grow-1 text-left">
+              <IoCalendarOutline />
+              &nbsp;
+              {data?.task_start_date &&
+                data?.task_start_date &&
+                moment(data?.task_start_date).format("D MMM YYYY") +
+                  " To " +
+                  moment(data?.task_end_date).format("D MMM YYYY")}
+            </p>
+            <SmallIconButton type="primary" className="mr-3">
+              <MdHistory />
+            </SmallIconButton>
+            <DeleteIconButton />
+            {/* Edit and Delete Button */}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const getUserName = (userList, email) => {
+  if (userList && userList?.length > 0) {
+    const user = [...userList].filter((element) => element.value === email)[0];
+    return (user && Object.keys(user)?.length > 0 && user?.label) || email;
+  }
+  return email;
+};
 export default Project;

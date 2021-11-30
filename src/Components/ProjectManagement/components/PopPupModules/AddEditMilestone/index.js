@@ -30,14 +30,14 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
     (state) => state?.ProjectManagementReducer?.usersList
   );
   // custom style for dropdown
-  const customStyle = {
-    control: (styles) => ({
-      ...styles,
-      width: "100%",
-      height: "50px",
-      borderRadius: "8px",
-    }),
-  };
+  // const customStyle = {
+  //   control: (styles) => ({
+  //     ...styles,
+  //     width: "100%",
+  //     minHeight: "50px",
+  //     borderRadius: "8px",
+  //   }),
+  // };
   const handleDropDownChange = (option) => {
     setFieldValues({
       ...fieldValues,
@@ -46,12 +46,7 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
   };
   useEffect(() => {
     if (allUsersList && allUsersList.length > 0) {
-      setUserList(
-        [...allUsersList].map((item) => ({
-          label: item.full_name,
-          value: item.name,
-        }))
-      );
+      setUserList(allUsersList);
     }
   }, [allUsersList]);
   useEffect(() => {
@@ -80,7 +75,7 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
       }}
     >
       <div className="milestone-modal__container d-flex align-items-center flex-column justify-content-center">
-        <p className="modal__heading">New Milesone</p>
+        <p className="modal__heading">New Milestone</p>
         <div className="form-group">
           <label htmlFor="milestone-title" className="modal__label">
             Milestone
@@ -102,7 +97,6 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
             <DatePicker
               className="modal-input"
               format="DD MMMM Y"
-              // defaultValue={fieldValues?.start_date || null}
               value={
                 (fieldValues?.start_date &&
                   moment(fieldValues?.start_date, "YYYY-MM-DD")) ||
@@ -141,7 +135,7 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
           </label>
           <CreatableSelect
             isMulti
-            styles={customStyle}
+            // styles={customStyle}
             onChange={handleDropDownChange}
             options={userList}
             defaultValue={

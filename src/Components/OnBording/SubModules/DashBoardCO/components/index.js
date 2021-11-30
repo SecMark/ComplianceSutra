@@ -16,6 +16,7 @@ import SingleNotification from "../../../../../CustomNotification/SingleNotifica
 import api from "../../../../../../src/apiServices";
 import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
 import ProjectManagement from "../../../../ProjectManagement";
+import ProjectTrash from "../../../../ProjectManagement/Trash";
 // import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
 
 function Dashboard({ history }) {
@@ -112,6 +113,11 @@ function Dashboard({ history }) {
       state.adminMenu.currentMenu !== "project-management"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("project-management"));
+    } else if (
+      window.location.href.includes("project-trash") &&
+      state?.adminMenu.currentMenu !== "project-trash"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("project-trash"));
     }
   }, [window.location.href]);
 
@@ -163,6 +169,9 @@ function Dashboard({ history }) {
         {state && state.adminMenu.currentMenu === "help" && <HelpSection />}
         {state && state.adminMenu.currentMenu === "project-management" && (
           <ProjectManagement />
+        )}
+        {state && state.adminMenu.currentMenu === "project-trash" && (
+          <ProjectTrash />
         )}
       </div>
     </div>

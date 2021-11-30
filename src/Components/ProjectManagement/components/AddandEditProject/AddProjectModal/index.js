@@ -5,7 +5,6 @@ import { DatePicker, Space } from "antd";
 import { setProject, getUsersListRequest } from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import calanderIcon from "../../../../../assets/Icons/calanderIcon.svg";
-import axiosInstance from "../../../../../apiServices";
 import CreatableSelect from "react-select/creatable";
 import moment from "moment";
 
@@ -29,19 +28,9 @@ function AddProject({ show, onClose, editData }) {
   useEffect(() => {
     // Get all users list
     if (allUsersList && allUsersList.length > 0) {
-      console.log({ allUsersList });
-      setUserList(
-        [...allUsersList].map((item) => ({
-          label: item.full_name,
-          value: item.name,
-        }))
-      );
+      setUserList(allUsersList);
     }
   }, [allUsersList]);
-  useEffect(() => {
-    console.log(values);
-    console.log(values?.start_date, values?.end_date);
-  }, [values]);
 
   useEffect(() => {
     setValues({
@@ -72,7 +61,6 @@ function AddProject({ show, onClose, editData }) {
 
   // function to change dropdownvalue
   const handleDropDownChange = (val) => {
-    // console.log({ val });
     const arr2 = [];
     val.map((label) => {
       arr2.push(label.value);
@@ -138,14 +126,8 @@ function AddProject({ show, onClose, editData }) {
                     start_date: date?.format("YYYY-MM-DD") || "",
                   });
                 }}
-                // defaultValue={
-                //   (values?.start_date &&
-                //     moment(values?.start_date, "YYYY-MM-DD")) ||
-                //   null
-                // }
                 value={
-                  values?.start_date &&
-                  moment(values?.start_date, "DD MMM YYYY")
+                  values?.start_date && moment(values?.start_date, "YYYY-MM-DD")
                 }
                 format="DD MMM YYYY"
               />
@@ -163,7 +145,7 @@ function AddProject({ show, onClose, editData }) {
                 }}
                 value={
                   (values?.end_date &&
-                    moment(values?.end_date, "DD MMM YYYY")) ||
+                    moment(values?.end_date, "YYYY-MM-DD")) ||
                   null
                 }
                 format="DD MMM YYYY"

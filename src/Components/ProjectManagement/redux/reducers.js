@@ -17,6 +17,23 @@ import {
   GET_USERS_LIST_SUCCESS,
   GET_USERS_LIST_REQUEST,
   GET_USERS_LIST_FAILED,
+  GET_INDIVIDUAL_TASKS_REQUEST,
+  GET_INDIVIDUAL_TASKS_SUCCESS,
+  GET_INDIVIDUAL_TASKS_FAILED,
+  SET_DELETE_MODAL_STATE,
+  CLEAR_DELETE_MODAL_STATE,
+  DEACTIVATE_REQUEST,
+  DEACTIVATE_SUCCESS,
+  DEACTIVATE_FAILED,
+  GET_TRASH_PROJECTS_REQUEST,
+  GET_TRASH_PROJECTS_SUCCESS,
+  GET_TRASH_MILESTONE_REQUEST,
+  GET_TRASH_MILESTONE_SUCCESS,
+  GET_TRASH_MILESTONE_FAILED,
+  GET_TRASH_TASKS_REQUEST,
+  GET_TRASH_TASKS_SUCCESS,
+  GET_TRASH_TASKS_FAILED,
+  GET_TRASH_PROJECTS_FAILED,
 } from "./actions";
 
 export const addAndEditProjectReducer = (
@@ -66,7 +83,7 @@ const actionHandlers = {
     projectManagementData: {
       ...state.projectManagementData,
       isLoading: true,
-      projects: [],
+      projects: [...state?.projectManagementData?.projects],
       isError: false,
     },
   }),
@@ -85,6 +102,34 @@ const actionHandlers = {
       ...state.projectManagementData,
       isLoading: false,
       projects: [],
+      isError: true,
+    },
+  }),
+
+  [GET_INDIVIDUAL_TASKS_REQUEST]: (state) => ({
+    ...state,
+    projectManagementData: {
+      ...state?.projectManagementData,
+      isLoading: true,
+      individualTasks: [],
+      isError: false,
+    },
+  }),
+  [GET_INDIVIDUAL_TASKS_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    projectManagementData: {
+      ...state?.projectManagementData,
+      isLoading: false,
+      individualTasks: [...payload],
+      isError: false,
+    },
+  }),
+  [GET_INDIVIDUAL_TASKS_FAILED]: (state) => ({
+    ...state,
+    projectManagementData: {
+      ...state?.projectManagementData,
+      isLoading: false,
+      individualTasks: [],
       isError: true,
     },
   }),
@@ -127,6 +172,7 @@ const actionHandlers = {
       taskModal: {
         ...state.modalsStatus.taskModal,
         ...payload,
+        editData: { ...payload.editData },
         // projectList: [...state?.projectManagementData?.projects]?.map(
         //   (project) => {
         //     return {
@@ -205,8 +251,22 @@ const actionHandlers = {
       taskModal: {
         isVisible: false,
         isEdit: false,
-        editData: {},
-        projects_list: [],
+        editData: {
+          task_id: null,
+          project_id: null,
+          milestone_id: null,
+          task_list_id: null,
+          subject: "",
+          start_date: "",
+          end_date: "",
+          assign_to: "",
+          comments: "",
+          frequency: "",
+          weekly_repeat_day: "",
+          repeat_on_day: "",
+          file_details: [],
+          description: "",
+        },
         task_list: [],
       },
     },
@@ -224,6 +284,135 @@ const actionHandlers = {
     ...state,
     usersList: [],
   }),
+
+  [SET_DELETE_MODAL_STATE]: (state, { payload }) => ({
+    ...state,
+    deactivateModalAndStatus: {
+      ...state.deactiveModalAndStatus,
+      ...payload,
+    },
+  }),
+  [CLEAR_DELETE_MODAL_STATE]: (state) => ({
+    ...state,
+    deactivateModalAndStatus: {
+      ...state.deactiveModalAndStatus,
+      modalName: "",
+      isVisible: false,
+      id: null,
+    },
+  }),
+
+  [DEACTIVATE_REQUEST]: (state, { payload }) => ({
+    ...state,
+    deactivateRequestStatus: {
+      ...state?.deactivateRequestStatus,
+      isLoading: true,
+      isError: false,
+      errorMessage: "",
+    },
+  }),
+  [DEACTIVATE_SUCCESS]: (state) => ({
+    ...state,
+    deactivateRequestStatus: {
+      ...state?.deactivateRequestStatus,
+      isLoading: false,
+      isError: false,
+      errorMessage: "",
+    },
+  }),
+  [DEACTIVATE_FAILED]: (state, payload) => ({
+    ...state,
+    deactivateRequestStatus: {
+      ...state?.deactivateRequestStatus,
+      isLoading: false,
+      isError: true,
+      errorMessage: payload,
+    },
+  }),
+
+  [GET_TRASH_PROJECTS_REQUEST]: (state) => ({
+    ...state,
+    projectManagementTrash: {
+      ...state?.projectManagementTrash,
+      isLoading: true,
+      isError: false,
+      trashProjects: [...state?.projectManagementTrash?.trashProjects],
+    },
+  }),
+  [GET_TRASH_PROJECTS_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    projectManagementTrash: {
+      ...state?.projectManagementTrash,
+      isLoading: false,
+      isError: false,
+      trashProjects: [...payload],
+    },
+  }),
+  [GET_TRASH_PROJECTS_FAILED]: (state) => ({
+    ...state,
+    projectManagementTrash: {
+      ...state?.projectManagementTrash,
+      isLoading: false,
+      isError: true,
+      trashProjects: [],
+    },
+  }),
+
+  [GET_TRASH_MILESTONE_REQUEST]: (state) => ({
+    ...state,
+    projectManagementTrash: {
+      ...state?.projectManagementTrash,
+      isLoading: true,
+      isError: false,
+      trashMilestones: [...state?.projectManagementTrash?.trashMilestones],
+    },
+  }),
+  [GET_TRASH_MILESTONE_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    projectManagementTrash: {
+      ...state?.projectManagementTrash,
+      isLoading: false,
+      isError: false,
+      trashMilestones: [...payload],
+    },
+  }),
+  [GET_TRASH_MILESTONE_FAILED]: (state) => ({
+    ...state,
+    projectManagementTrash: {
+      ...state?.projectManagementTrash,
+      isLoading: false,
+      isError: true,
+      trashMilestones: [],
+    },
+  }),
+
+  [GET_TRASH_TASKS_REQUEST]: (state) => ({
+    ...state,
+    projectManagementTrash: {
+      ...state?.projectManagementTrash,
+      isLoading: true,
+      isError: false,
+      trashTasks: [...state?.projectManagementTrash?.trashTasks],
+    },
+  }),
+  [GET_TRASH_TASKS_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    projectManagementTrash: {
+      ...state?.projectManagementTrash,
+      isLoading: false,
+      isError: false,
+      trashTasks: [...payload],
+    },
+  }),
+  [GET_TRASH_TASKS_FAILED]: (state) => ({
+    ...state,
+    projectManagementTrash: {
+      ...state?.projectManagementTrash,
+      isLoading: false,
+      isError: true,
+      trashTasks: [],
+    },
+  }),
 };
 
 export default handleActions(actionHandlers, {
@@ -231,6 +420,7 @@ export default handleActions(actionHandlers, {
     isLoading: false,
     projects: [],
     isError: false,
+    individualTasks: [],
   },
   usersList: [],
   modalsStatus: {
@@ -290,9 +480,26 @@ export default handleActions(actionHandlers, {
         weekly_repeat_day: "",
         repeat_on_day: "",
         file_details: [],
+        description: "",
       },
-      projects_list: [],
       task_list: [],
     },
+  },
+  deactivateModalAndStatus: {
+    modalName: "",
+    isVisible: false,
+    id: null,
+  },
+  deactivateRequestStatus: {
+    isLoading: false,
+    isError: false,
+    errorMessage: "",
+  },
+  projectManagementTrash: {
+    isLoading: false,
+    isError: false,
+    trashProjects: [],
+    trashMilestones: [],
+    trashTasks: [],
   },
 });

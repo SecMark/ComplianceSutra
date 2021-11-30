@@ -173,6 +173,7 @@ export default function AppRouter() {
           <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route exact path="/new-regulations" component={DashBoardCO} />
           <Route path="/project-management" component={DashBoardCO} />
+          <Route path="/project-trash" component={DashBoardCO} />
           <Route exact path="/help" component={DashBoardCO} />
 
           {/* Expert Review */}

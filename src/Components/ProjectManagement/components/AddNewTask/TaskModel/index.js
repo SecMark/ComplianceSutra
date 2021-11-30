@@ -11,7 +11,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { toast } from "react-toastify";
-
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import { MdError } from "react-icons/md";
+import { addAndUpdateTaskRequest } from "../../../redux/actions";
 // custom style for dropdown
 const customStyle = {
   control: (styles) => ({
@@ -22,16 +25,52 @@ const customStyle = {
   }),
 };
 
-function NewTaskModel({ showTask, onClose }) {
+const initialState = {
+  task_id: null,
+  project_id: null,
+  milestone_id: null,
+  task_list_id: null,
+  subject: "",
+  start_date: "",
+  end_date: "",
+  assign_to: "",
+  comments: "",
+  frequency: "",
+  weekly_repeat_day: "",
+  repeat_on_day: "",
+  file_details: [],
+};
+
+function NewTaskModel({ showTask, onClose, editData, isEdit }) {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const [fileList, setFileList] = useState([]);
-  const calanderimg = <img src={calanderIcon} />;
-  const files = acceptedFiles.map((file) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
+  const [fieldInputs, setFieldInputs] = useState(editData || initialState);
+  const [fieldErrors, setFieldErrors] = useState({
+    isValidate: false,
+    start_date: "",
+    end_date: "",
+  });
+  const [weeklyDay, setWeeklyDay] = useState("Monday");
+  const dispatch = useDispatch();
+  // to change the frequency
+  const FrequencyChange = (e) => {
+    // setFrequency(e.target.value);
+    setFieldInputs({ ...fieldInputs, frequency: e.target.value });
+  };
 
+  //to change day of weekly
+  const onDayChange = (val) => {
+    setWeeklyDay(val);
+    setFieldInputs({
+      ...fieldInputs,
+      weekly_repeat_day: fieldInputs?.frequency === "Weekly" ? val : null,
+    });
+  };
+
+  const calanderimg = <img src={calanderIcon} />;
+  const usersList = useSelector(
+    (state) => state?.ProjectManagementReducer?.usersList
+  );
   const handleSelectUploadFile = () => {
     if (acceptedFiles && acceptedFiles.length > 0) {
       const _fileList = (fileList && fileList.length > 0 && fileList) || [];
@@ -53,71 +92,146 @@ function NewTaskModel({ showTask, onClose }) {
       }
     }
   };
+  const onSubmit = () => {
+    let formData = new FormData();
+    const allInputs = Object.keys(fieldInputs);
+    fileList.forEach((file) => {
+      formData.append("file_details", file);
+    });
+    allInputs.forEach((key) => {
+      if (
+        fieldInputs[key] !== null &&
+        fieldInputs[key] !== "" &&
+        fieldInputs[key] !== [] &&
+        fieldInputs[key] !== undefined
+      ) {
+        formData.append(key, fieldInputs[key]);
+      }
+    });
+    dispatch(addAndUpdateTaskRequest(formData));
+    setFieldErrors({});
+    setFieldInputs({});
+    setFileList([]);
+    onClose();
+  };
   useEffect(() => {
     handleSelectUploadFile();
   }, [acceptedFiles]);
   useEffect(() => {
     console.log(fileList);
   }, [fileList]);
-
+  useEffect(() => {
+    setFieldInputs({ ...editData });
+  }, [editData]);
+  useEffect(() => {
+    console.log(fieldInputs);
+  }, [fieldInputs, fieldErrors]);
+  useEffect(() => {
+    if (fieldInputs?.start_date !== "" || fieldInputs?.end_date !== "") {
+      setFieldErrors({
+        ...fieldErrors,
+        isValidate:
+          isBeforeToday(fieldInputs?.start_date) ||
+          isBeforeToday(fieldInputs?.end_date)
+            ? true
+            : false,
+        start_date: isBeforeToday(fieldInputs?.start_date)
+          ? "Please select today date or after " +
+            moment(fieldInputs?.start_date).format("DD MMMM Y")
+          : "",
+        end_date: isBeforeToday(fieldInputs?.end_date)
+          ? "Please select today date or after " +
+            moment(fieldInputs?.end_date).format("DD MMMM Y")
+          : "",
+      });
+    }
+  }, [fieldInputs.end_date, fieldInputs.start_date]);
   return !showTask ? null : (
-    <div className="add-edit-modal" onClick={onClose}>
+    <div className="add-edit-modal">
       <div
         className="add-edit-project-content"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="add-edit-main-container">
-          <label className="add-edit-project-labels">Project Name</label>
+          <label className="add-edit-project-labels">Task Name</label>
           <input
             className="add-edit-project-inputs"
             name="project_name"
-            // onChange={onHandleChange}
+            value={fieldInputs?.subject}
+            onChange={(e) =>
+              setFieldInputs({ ...fieldInputs, subject: e.target.value })
+            }
           />
           <div className="row mt-3">
-            <div className="col-sm-12 col-lg-6">
-              <label className="add-edit-project-labels">Task List</label>
-              <CreatableSelect
-                isMulti
-                styles={customStyle}
-                // onChange={handleDropDownChange}
-                // options={userLilst}
-              />
-            </div>
-            <div className="col-sm-6 col-lg-3">
+            <div className="col-md-6 col-lg-6 col-sm-6">
               <label className="add-edit-project-labels">Start Date</label>
 
               <DatePicker
                 className="add-edit-project-inputs"
                 name="start_date"
+                format="DD MMMM Y"
                 suffixIcon={calanderimg}
-                // onChange={(date, dateString) => {
-                //   setValues({
-                //     ...values,
-                //     start_date: dateString,
-                //   });
-                // }}
+                value={
+                  (fieldInputs?.start_date &&
+                    moment(fieldInputs?.start_date, "YYYY-MM-DD")) ||
+                  null
+                }
+                onChange={(value) =>
+                  setFieldInputs({
+                    ...fieldInputs,
+                    start_date: value?.format("YYYY-MM-DD") || "",
+                  })
+                }
               />
+              {fieldErrors?.start_date !== "" && (
+                <p className="add-project-err-msg">
+                  <MdError />
+                  &nbsp;
+                  {fieldErrors?.start_date}
+                </p>
+              )}
             </div>
-            <div className="col-sm-6 col-lg-3">
+            <div className="col-md-6 col-lg-6 col-sm-6">
               <label className="add-edit-project-labels">End Date</label>
               <DatePicker
                 className="add-edit-project-inputs"
                 suffixIcon={calanderimg}
-                // onChange={(date, dateString) => {
-                //   setValues({
-                //     ...values,
-                //     end_date: dateString,
-                //   });
-                // }}
+                format="DD MMMM Y"
+                value={
+                  (fieldInputs?.end_date &&
+                    moment(fieldInputs?.end_date, "YYYY-MM-DD")) ||
+                  null
+                }
+                onChange={(value) =>
+                  setFieldInputs({
+                    ...fieldInputs,
+                    end_date: value?.format("YYYY-MM-DD") || "",
+                  })
+                }
               />
+              {fieldErrors?.end_date !== "" && (
+                <p className="add-project-err-msg">
+                  <MdError />
+                  &nbsp;
+                  {fieldErrors?.end_date}
+                </p>
+              )}
             </div>
           </div>
           <div className="row">
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">
-                Project overview
+                Task Description
               </label>
-              <input className="add-edit-project-inputs" />
+              <input
+                className="add-edit-project-inputs"
+                onChange={(e) =>
+                  setFieldInputs({
+                    ...fieldInputs,
+                    description: e.target.value,
+                  })
+                }
+              />
             </div>
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">
@@ -130,58 +244,86 @@ function NewTaskModel({ showTask, onClose }) {
                     Dropo Your Files Here
                   </p>
                 </div>
-                {fileList &&
-                  fileList.length > 0 &&
-                  fileList.map((file) => {
-                    return <p>{file.name}</p>;
-                  })}
               </div>
+              {fileList &&
+                fileList.length > 0 &&
+                fileList.map((file) => {
+                  return (
+                    <p
+                      style={{
+                        fontWeight: "normal",
+                        fontSize: "14px",
+                      }}
+                      className="mb-0"
+                    >
+                      {file.name}
+                    </p>
+                  );
+                })}
             </div>
           </div>
           <div className="row">
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">Assign To</label>
               <CreatableSelect
-                isMulti
+                // isMulti
                 styles={customStyle}
-                // onChange={handleDropDownChange}
+                onChange={(option) => {
+                  setFieldInputs({ ...fieldInputs, assign_to: option?.value });
+                }}
                 // options={userLilst}
+                options={usersList || []}
+                defaultValue={
+                  (usersList &&
+                    usersList.length > 0 &&
+                    usersList.filter(
+                      (user) => user.value === editData?.assign_to
+                    )[0]) ||
+                  null
+                }
               />
             </div>
             <div className="col-sm-12 col-lg-6">
-              <label className="add-edit-project-labels mt-3">comments</label>
-              <input className="add-edit-project-inputs" />
+              <label className="add-edit-project-labels mt-3">Comments</label>
+              <input
+                className="add-edit-project-inputs"
+                onChange={(e) =>
+                  setFieldInputs({ ...fieldInputs, comments: e.target.value })
+                }
+              />
             </div>
           </div>
           <div className="row">
             <div className="col">
               <label className="add-edit-project-labels mt-3">Frequency</label>
-              <div className="add-new-task-radio-btn">
+              <div className="add-new-task-radio-btn pl-0 d-flex align-items-center justify-content-center">
                 <RadioGroup
                   row
                   aria-label="frequency"
                   name="row-radio-buttons-group"
+                  value={fieldInputs?.frequency || "None"}
+                  onChange={FrequencyChange}
                 >
                   <FormControlLabel
-                    value="none"
+                    value="None"
                     control={<Radio />}
-                    label="none"
+                    label="None"
                   />
                   <FormControlLabel
-                    value="daily"
+                    value="Daily"
                     control={<Radio />}
-                    label="daily"
+                    label="Daily"
                   />
                   <FormControlLabel
+                    value="Weekly"
+                    control={<Radio />}
+                    label="Weekly"
+                  />
+                  {/* <FormControlLabel
                     value="weekly"
                     control={<Radio />}
                     label="weekly"
-                  />
-                  <FormControlLabel
-                    value="weekly"
-                    control={<Radio />}
-                    label="weekly"
-                  />
+                  /> */}
                   <FormControlLabel
                     value="Monthly"
                     control={<Radio />}
@@ -206,14 +348,125 @@ function NewTaskModel({ showTask, onClose }) {
               </div>
             </div>
           </div>
+          {fieldInputs?.frequency === "Weekly" && (
+            <div className="row mt-3">
+              <div className="col">
+                <div className="add-new-task-radio-weekly-btn d-flex flex-wrap justify-content-center">
+                  <h1
+                    className={`${
+                      weeklyDay === "Monday" && "add-task-weekly-day-selection"
+                    }`}
+                    onClick={() => {
+                      onDayChange("Monday");
+                    }}
+                  >
+                    Monday
+                  </h1>
+                  <h1
+                    className={`${
+                      weeklyDay === "Tuesday" && "add-task-weekly-day-selection"
+                    }`}
+                    onClick={() => {
+                      onDayChange("Tuesday");
+                    }}
+                  >
+                    Tuesday
+                  </h1>
+                  <h1
+                    className={`${
+                      weeklyDay === "Wednesday" &&
+                      "add-task-weekly-day-selection"
+                    }`}
+                    onClick={() => {
+                      onDayChange("Wednesday");
+                    }}
+                  >
+                    Wednesday
+                  </h1>
+                  <h1
+                    className={`${
+                      weeklyDay === "Thursday" &&
+                      "add-task-weekly-day-selection"
+                    }`}
+                    onClick={() => {
+                      onDayChange("Thursday");
+                    }}
+                  >
+                    Thursday
+                  </h1>
+                  <h1
+                    className={`${
+                      weeklyDay === "Friday" && "add-task-weekly-day-selection"
+                    }`}
+                    onClick={() => {
+                      onDayChange("Friday");
+                    }}
+                  >
+                    Friday
+                  </h1>
+                  <h1
+                    className={`${
+                      weeklyDay === "Saturday" &&
+                      "add-task-weekly-day-selection"
+                    }`}
+                    onClick={() => {
+                      onDayChange("Saturday");
+                    }}
+                  >
+                    Saturday
+                  </h1>
+                  <h1
+                    className={`${
+                      weeklyDay === "Sunday" && "add-task-weekly-day-selection"
+                    }`}
+                    onClick={() => {
+                      onDayChange("Sunday");
+                    }}
+                  >
+                    Sunday
+                  </h1>
+                </div>
+              </div>
+            </div>
+          )}
+          {fieldInputs?.frequency === "Monthly" && (
+            <div className="row mt-3">
+              <div className="col justify-content-center">
+                <label className="add-edit-project-labels">
+                  Please enter every month day
+                </label>
+                <input
+                  className="add-edit-project-inputs"
+                  value={fieldInputs?.repeat_on_day || ""}
+                  onChange={(event) =>
+                    setFieldInputs({
+                      ...fieldInputs,
+                      repeat_on_day: event.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
+          )}
           <div className="d-flex mt-3 justify-content-center">
             <div className="p-2">
-              <button className="add-edit-project-submit-btn" onClick={onClose}>
-                Submit
+              <button
+                className="add-edit-project-submit-btn"
+                onClick={onSubmit}
+              >
+                {!isEdit ? "Submit" : "Update"}
               </button>
             </div>
             <div className="p-2">
-              <button className="add-edit-project-cancel-btn" onClick={onClose}>
+              <button
+                className="add-edit-project-cancel-btn"
+                onClick={() => {
+                  setFieldErrors({});
+                  setFieldInputs({});
+                  setFileList([]);
+                  onClose();
+                }}
+              >
                 Cancel
               </button>
             </div>
@@ -223,5 +476,10 @@ function NewTaskModel({ showTask, onClose }) {
     </div>
   );
 }
+
+const isBeforeToday = (date) => {
+  const todayDate = moment().format("YYYY-MM-DD");
+  return moment(todayDate).isAfter(date);
+};
 
 export default NewTaskModel;

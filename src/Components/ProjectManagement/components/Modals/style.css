@@ -23,3 +23,6 @@
 
   color: #2c2738;
 }
+.modal-image--red-background {
+  background: rgba(255, 88, 88, 0.2);
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import { MdClose } from "react-icons/md";
 import { SmallIconButton } from "./Buttons";
-import { useOuterClick } from "../../OnBording/SubModules/DashBoardCO/components/RightSideGrid/outerClick";
+// import { useOuterClick } from "../../OnBording/SubModules/DashBoardCO/components/RightSideGrid/outerClick";
 const ProjectManagementModal = ({
   visible,
   onClose,

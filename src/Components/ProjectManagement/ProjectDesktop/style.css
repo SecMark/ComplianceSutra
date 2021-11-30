@@ -6,6 +6,12 @@
   border-radius: 6px;
   padding: 0.4rem 0.5rem;
 }
+.project-management__trash-project-data-container {
+  padding: 0.8rem 0.5rem;
+  background: #ffffff;
+  box-sizing: border-box;
+  border-bottom: 1px solid #e2e2e2;
+}
 p.project-data-container__item {
   margin-bottom: 0;
   flex: 0.1;
@@ -16,6 +22,10 @@ p.project-data-container__item {
   font-style: normal;
   font-weight: normal;
   color: #2c2738;
+}
+.trash-task p.project-data-container__item {
+  flex: 0.4;
+  text-align: left;
 }
 p.project-data-container__item.wide-flex-2 {
   flex: 0.2;
