@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import AppRouter from "./router";
 import { ToastContainer } from "react-toastify";
@@ -27,8 +26,6 @@ function MainApp() {
   useEffect(() => {
     setShow(false);
   }, []);
-
-  const dispatch = useDispatch();
 
   onMessageListener()
     .then((payload) => {
