@@ -22,6 +22,7 @@ p.project-data-container__item {
   font-style: normal;
   font-weight: normal;
   color: #2c2738;
+  cursor: pointer;
 }
 .trash-task p.project-data-container__item {
   flex: 0.4;

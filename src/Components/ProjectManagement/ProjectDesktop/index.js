@@ -85,12 +85,12 @@ const Project = ({ data }) => {
     project_start_date,
     project_end_date
   );
+  const formatted_project_start_date = getProjectDateFormat(project_start_date);
+  const formatted_project_end_date = getProjectDateFormat(project_end_date);
+  const project_owner_name =
+    project_owner && getUserName(usersList, project_owner);
   const history = useHistory();
   const { url } = useRouteMatch();
-
-  useEffect(() => {
-    console.log(expandMoreLevel);
-  }, [expandMoreLevel]);
   return (
     <>
       {/* <Modal visible={true}>hi</Modal> */}
@@ -134,7 +134,10 @@ const Project = ({ data }) => {
           />
         )}
         <div className="project-management__project-data-container d-flex align-items-center w-100 justify-content-between">
-          <p className="project-data-container__project-name project-data-container__item">
+          <p
+            className="project-data-container__project-name project-data-container__item"
+            title={project_name}
+          >
             {project_name || "Management"}
           </p>
           {/* <p className="project-data-container__item">1</p> */}
@@ -145,10 +148,7 @@ const Project = ({ data }) => {
               cursor: "pointer",
             }}
           >
-            {(usersList?.length > 0 &&
-              project_owner &&
-              getUserName(usersList, project_owner)) ||
-              project_owner}
+            {project_owner_name}
           </p>
           <p className="project-data-container__item">3</p>
           <p className="project-data-container__item">4</p>
@@ -156,20 +156,16 @@ const Project = ({ data }) => {
             {project_duration}
           </p>
           <p className="project-data-container__item wide">
-            {project_start_date || "-"}
+            {formatted_project_start_date}
           </p>
           <p className="project-data-container__item wide">
-            {project_end_date || "-"}
+            {formatted_project_end_date}
           </p>
           <p
             className="project-data-container__item"
-            title={project_assign_users && project_assign_users[0]}
+            title={project_assign_users?.join(", ")}
           >
-            {(project_assign_users &&
-              project_assign_users?.length > 0 &&
-              usersList?.length > 0 &&
-              getUserName(usersList, project_assign_users[0])) ||
-              "-"}
+            {getUsers(usersList, project_assign_users) || "-"}
           </p>
           <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
             <SmallIconButton
@@ -214,18 +210,30 @@ const Project = ({ data }) => {
                   milestone_title,
                   milestone_assign_users,
                 } = milestone;
+                const formatted_milestone_start_date =
+                  getProjectDateFormat(milestone_start_date);
+                const formatted_milestone_end_date =
+                  getProjectDateFormat(milestone_end_date);
+                const milestone_owner_name =
+                  getUserName(usersList, milestone_owner) || "-";
                 return (
                   <div
                     id={milestone_id}
                     className="project-management__project-item mb-md-2"
                   >
                     <div className="project-management__project-data-container project-data-container__1 d-flex align-items-center justify-content-between">
-                      <p className="project-data-container__item project-data-container__project-name text-black">
+                      <p
+                        className="project-data-container__item project-data-container__project-name text-black"
+                        title={milestone_title}
+                      >
                         {milestone_title}
                       </p>
                       {/* <p className="project-data-container__item">40%</p> */}
-                      <p className="project-data-container__item wide">
-                        {getUserName(usersList, milestone_owner) || "-"}
+                      <p
+                        className="project-data-container__item wide"
+                        title={milestone_owner}
+                      >
+                        {milestone_owner_name}
                       </p>
                       <p className="project-data-container__item">-</p>
                       <p className="project-data-container__item">-</p>
@@ -236,21 +244,25 @@ const Project = ({ data }) => {
                         )}
                       </p>
                       <p className="project-data-container__item wide">
-                        {milestone_start_date || "-"}
+                        {formatted_milestone_start_date}
                       </p>
                       <p className="project-data-container__item wide">
-                        {milestone_end_date || "-"}
+                        {formatted_milestone_end_date}
                       </p>
                       <p
                         className="project-data-container__item"
-                        title={milestone_assign_users?.toString()}
+                        title={milestone_assign_users?.join(", ")}
                       >
                         {/* {(milestone_assign_users &&
                           milestone_assign_users?.length > 0 &&
                           usersList?.length > 0 &&
                           getUserName(usersList, milestone_assign_users[0])) ||
                           "-"} */}
-                        {getUsers(usersList, milestone_assign_users)}
+                        {/* {getUsers(usersList, milestone_assign_users)} */}
+                        {(milestone_assign_users &&
+                          milestone_assign_users?.length > 0 &&
+                          getUsers(usersList, milestone_assign_users)) ||
+                          "-"}
                       </p>
                       <div className="project-data-container__buttons d-flex align-items-center justify-content-end">
                         <EditIconButton
@@ -376,10 +388,7 @@ const Project = ({ data }) => {
                     Owner
                   </p>
                   <p className="project-data-container__item">
-                    {(usersList?.length > 0 &&
-                      project_owner &&
-                      getUserName(usersList, project_owner)) ||
-                      project_owner}
+                    {project_owner_name}
                   </p>
                 </div>
                 <Link to={`${url}/project-tasks`}>
@@ -428,9 +437,9 @@ const Project = ({ data }) => {
             <p className="project-data-container__item flex-grow-1 text-left">
               <IoCalendarOutline />
               &nbsp;
-              {moment(project_start_date).format("D MMM YYYY") +
+              {formatted_project_start_date +
                 " To " +
-                moment(project_end_date).format("D MMM YYYY")}
+                formatted_project_end_date}
             </p>
             <EditIconButton className="mx-2" />
             <DeleteIconButton />
@@ -454,27 +463,27 @@ export const DesktopTask = ({ data }) => {
   const usersList = useSelector(
     (state) => state?.ProjectManagementReducer?.usersList
   );
+  const task_owner = getUserName(usersList, taskData?.task_owner) || "-";
+  const task_duration =
+    differenceInDays(taskData?.task_start_date, taskData?.task_end_date) || "-";
+  const task_start_date = getProjectDateFormat(taskData?.task_start_date);
+  const task_end_date = getProjectDateFormat(taskData?.task_end_date);
+  const task_assign_to = getUserName(usersList, taskData?.assign_to) || "-";
   return (
     <div className="project-data-container__3 d-none d-md-flex align-items-center justify-content-between">
       <p className="project-data-container__project-name project-data-container__item">
         {taskData?.task_subject}
       </p>
       {/* <p className="project-data-container__item">10%</p> */}
-      <p className="project-data-container__item wide">Ajit</p>
+      <p className="project-data-container__item wide">{task_owner}</p>
       <p className="project-data-container__item wide-flex-2">
         {taskData?.task_frequency || "-"}
       </p>
-      <p className="project-data-container__item wide-2">
-        {differenceInDays(taskData?.task_start_date, taskData?.task_end_date)}
-      </p>
-      <p className="project-data-container__item wide">
-        {taskData?.task_start_date}
-      </p>
-      <p className="project-data-container__item wide">
-        {taskData?.task_end_date}
-      </p>
-      <p className="project-data-container__item">
-        {getUserName(usersList, taskData?.assign_to) || "-"}
+      <p className="project-data-container__item wide-2">{task_duration}</p>
+      <p className="project-data-container__item wide">{task_start_date}</p>
+      <p className="project-data-container__item wide">{task_end_date}</p>
+      <p className="project-data-container__item" title={taskData?.assign_to}>
+        {trimString(task_assign_to, 10)}
       </p>
       <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
         <SmallIconButton type="grey" className="p-2 mr-2">
@@ -854,29 +863,31 @@ export const ProjectSubTask = ({ data }) => {
   );
 };
 
-export const ProjectHeader = ({ isTasksHeader }) => (
-  <div className="d-none d-md-flex mt-md-3 mb-md-2 project-management__project-header project-management__project-data-container align-items-center justify-content-between">
-    <p className="project-data-container__project-name project-data-container__item">
-      Project Name
-    </p>
-    {/* <p className="project-data-container__item">Completed</p> */}
-    <p className="project-data-container__item wide">Owner</p>
-    {!isTasksHeader && (
-      <>
-        <p className="project-data-container__item">Task</p>
-        <p className="project-data-container__item">Milestone</p>
-      </>
-    )}
-    {isTasksHeader && (
-      <p className="project-data-container__item wide-flex-2">Frequency</p>
-    )}
-    <p className="project-data-container__item wide-2">Duration</p>
-    <p className="project-data-container__item wide">Start Date</p>
-    <p className="project-data-container__item wide">End Date</p>
-    <p className="project-data-container__item">Assign</p>
-    <div className="project-data-container__buttons"></div>
-  </div>
-);
+export const ProjectHeader = ({ isTasksHeader }) => {
+  return (
+    <div className="d-none d-md-flex mt-md-3 mb-md-2 project-management__project-header project-management__project-data-container align-items-center justify-content-between">
+      <p className="project-data-container__project-name project-data-container__item">
+        Project Name
+      </p>
+      {/* <p className="project-data-container__item">Completed</p> */}
+      <p className="project-data-container__item wide">Owner</p>
+      {!isTasksHeader && (
+        <>
+          <p className="project-data-container__item">Task</p>
+          <p className="project-data-container__item">Milestone</p>
+        </>
+      )}
+      {isTasksHeader && (
+        <p className="project-data-container__item wide-flex-2">Frequency</p>
+      )}
+      <p className="project-data-container__item wide-2">Duration</p>
+      <p className="project-data-container__item wide">Start Date</p>
+      <p className="project-data-container__item wide">End Date</p>
+      <p className="project-data-container__item">Assign</p>
+      <div className="project-data-container__buttons"></div>
+    </div>
+  );
+};
 
 export const ProjectTask = () => {
   const { url } = useRouteMatch();
@@ -927,7 +938,20 @@ export const ProjectAndTaskContextMenu = ({
 };
 
 export const TrashProject = ({ data }) => {
-  const { url } = useRouteMatch();
+  // const { url } = useRouteMatch();
+  const usersList = useSelector(
+    (state) => state?.ProjectManagementReducer?.usersList
+  );
+  const project_assign_users =
+    (data?.project_assign_users &&
+      getUsers(usersList, data?.project_assign_users)) ||
+    "-";
+  const project_start_date = getProjectDateFormat(data?.project_start_date);
+  const project_end_date = getProjectDateFormat(data?.project_end_date);
+  const project_duration =
+    differenceInDays(data?.project_start_date, data?.project_end_date) || "-";
+  const project_owner =
+    (data?.project_owner && getUserName(usersList, data?.project_owner)) || "-";
   return (
     <>
       <div
@@ -937,20 +961,28 @@ export const TrashProject = ({ data }) => {
         <p className="project-data-container__project-name project-data-container__item">
           {data?.project_name || "Management"}
         </p>
-        <p className="project-data-container__item">1</p>
-        <p className="project-data-container__item wide">
-          {data?.project_owner || "Ashu Kumar"}
+        {/* <p className="project-data-container__item">1</p> */}
+        <p
+          className="project-data-container__item wide"
+          title={data?.project_owner}
+        >
+          {project_owner}
         </p>
         <p className="project-data-container__item">3</p>
         <p className="project-data-container__item">4</p>
-        <p className="project-data-container__item wide-2">2 Day</p>
-        <p className="project-data-container__item wide">
-          {data?.project_start_date || "-"}
+        <p className="project-data-container__item wide-2">
+          {project_duration}
         </p>
         <p className="project-data-container__item wide">
-          {data?.project_end_date || "-"}
+          {project_start_date}
         </p>
-        <p className="project-data-container__item">8</p>
+        <p className="project-data-container__item wide">{project_end_date}</p>
+        <p
+          className="project-data-container__item"
+          title={data?.project_assign_users.join(", ")}
+        >
+          {project_assign_users}
+        </p>
         <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
           <SmallIconButton type="primary" className="mr-3">
             <MdHistory />
@@ -981,7 +1013,9 @@ export const TrashProject = ({ data }) => {
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Owner
                   </p>
-                  <p className="project-data-container__item">Ashu</p>
+                  <p className="project-data-container__item">
+                    {project_owner}
+                  </p>
                 </div>
                 {/* <div className="project-container-mobile__data-item">
                     <p className="project-data-container__item project-container-mobile__data-item-title">
@@ -999,7 +1033,9 @@ export const TrashProject = ({ data }) => {
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Duration
                   </p>
-                  <p className="project-data-container__item">2 Days</p>
+                  <p className="project-data-container__item">
+                    {project_duration}
+                  </p>
                 </div>
               </div>
             </div>
@@ -1019,7 +1055,9 @@ export const TrashProject = ({ data }) => {
           <div className="d-flex justify-content-between align-items-center mt-3">
             {/* Start Date and End Date */}
             <p className="project-data-container__item flex-grow-1 text-left">
-              <IoCalendarOutline /> 14 Aug, 2021 To 21 Aug, 2021
+              <IoCalendarOutline />
+              &nbsp;
+              {project_start_date + " To " + project_end_date}
             </p>
             <SmallIconButton type="primary" className="mr-3">
               <MdHistory />
@@ -1034,6 +1072,19 @@ export const TrashProject = ({ data }) => {
 };
 
 export const TrashMilestone = ({ data }) => {
+  const usersList = useSelector(
+    (state) => state?.ProjectManagementReducer?.usersList
+  );
+  const milestone_owner = getUserName(usersList, data?.milestone_owner) || "-";
+  const milestone_duration =
+    differenceInDays(data?.milestone_start_date, data?.milestone_end_date) ||
+    "-";
+  const milestone_assign_users =
+    (data?.milestone_assign_users &&
+      getUsers(usersList, data?.milestone_assign_users)) ||
+    "-";
+  const milestone_start_date = getProjectDateFormat(data?.milestone_start_date);
+  const milestone_end_date = getProjectDateFormat(data?.milestone_end_date);
   return (
     <>
       <div
@@ -1041,23 +1092,36 @@ export const TrashMilestone = ({ data }) => {
         className="d-none d-md-block project-management__project-item mb-md-2"
       >
         <div className="project-management__trash-project-data-container d-flex align-items-center justify-content-between">
-          <p className="project-data-container__item project-data-container__project-name text-black">
+          <p
+            className="project-data-container__item project-data-container__project-name text-black"
+            title={data?.milestone_title}
+          >
             {data?.milestone_title}
           </p>
-          <p className="project-data-container__item">40%</p>
-          <p className="project-data-container__item wide">
-            {data?.milestone_owner}
+          {/* <p className="project-data-container__item">40%</p> */}
+          <p
+            className="project-data-container__item wide"
+            title={data?.milestone_owner}
+          >
+            {milestone_owner}
           </p>
           <p className="project-data-container__item">-</p>
           <p className="project-data-container__item">-</p>
-          <p className="project-data-container__item wide-2">3 Day</p>
-          <p className="project-data-container__item wide">
-            {data?.milestone_start_date || "-"}
+          <p className="project-data-container__item wide-2">
+            {milestone_duration}
           </p>
           <p className="project-data-container__item wide">
-            {data?.milestone_end_date || "-"}
+            {milestone_start_date}
           </p>
-          <p className="project-data-container__item">Ajit Shah</p>
+          <p className="project-data-container__item wide">
+            {milestone_end_date}
+          </p>
+          <p
+            className="project-data-container__item"
+            title={data?.milestone_assign_users?.join(", ")}
+          >
+            {milestone_assign_users}
+          </p>
           <div className="project-data-container__buttons d-flex align-items-center justify-content-end">
             <SmallIconButton type="primary" className="mr-3">
               <MdHistory />
@@ -1071,7 +1135,10 @@ export const TrashMilestone = ({ data }) => {
         <div className="w-100">
           {/* Title */}
           <div className="d-flex align-items-center justify-content-between mb-3">
-            <p className="project-container-mobile__data-title flex-grow-1 mb-0">
+            <p
+              className="project-container-mobile__data-title flex-grow-1 mb-0"
+              title={data?.milestone_title}
+            >
               {data?.milestone_title}
             </p>
           </div>
@@ -1084,14 +1151,19 @@ export const TrashMilestone = ({ data }) => {
                     Owner
                   </p>
                   <p className="project-data-container__item">
-                    {data?.milestone_owner}
+                    {milestone_owner}
                   </p>
                 </div>
                 <div className="project-container-mobile__data-item">
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Assign to
                   </p>
-                  <p className="project-data-container__item">Ashu Kumar</p>
+                  <p
+                    className="project-data-container__item"
+                    title={data?.milestone_assign_users?.join(", ")}
+                  >
+                    {milestone_assign_users}
+                  </p>
                 </div>
               </div>
               {/* <div className="d-flex mb-3">
@@ -1123,9 +1195,7 @@ export const TrashMilestone = ({ data }) => {
               &nbsp;
               {data?.milestone_start_date &&
                 data?.milestone_start_date &&
-                moment(data?.milestone_start_date).format("D MMM YYYY") +
-                  " To " +
-                  moment(data?.milestone_end_date).format("D MMM YYYY")}
+                milestone_start_date + " To " + milestone_end_date}
             </p>
             <SmallIconButton type="primary" className="mr-3">
               <MdHistory />
@@ -1140,25 +1210,34 @@ export const TrashMilestone = ({ data }) => {
 };
 
 export const TrashTask = ({ data }) => {
+  const usersList = useSelector(
+    (state) => state?.ProjectManagementReducer?.usersList
+  );
+  const task_owner = getUserName(usersList, data?.task_owner) || "-";
+  const assign_to = getUserName(usersList, data?.assign_to) || "-";
+  const task_duration =
+    differenceInDays(data?.task_start_date, data?.task_end_date) || "-";
   return (
     <>
       <div className="project-data-container__3 d-none d-md-flex align-items-center justify-content-between">
         <p className="project-data-container__project-name project-data-container__item">
           {data?.task_subject}
         </p>
-        <p className="project-data-container__item">10%</p>
-        <p className="project-data-container__item wide">Ajit</p>
+        {/* <p className="project-data-container__item">10%</p> */}
+        <p className="project-data-container__item wide">{task_owner}</p>
         <p className="project-data-container__item wide-flex-2">
           {data?.task_frequency || "-"}
         </p>
-        <p className="project-data-container__item wide-2">0 Days</p>
+        <p className="project-data-container__item wide-2">{task_duration}</p>
         <p className="project-data-container__item wide">
-          {data?.task_start_date}
+          {getProjectDateFormat(data?.task_start_date)}
         </p>
         <p className="project-data-container__item wide">
-          {data?.task_end_date}
+          {getProjectDateFormat(data?.task_end_date)}
         </p>
-        <p className="project-data-container__item">{data?.assign_to || "-"}</p>
+        <p className="project-data-container__item" title={data?.assign_to}>
+          {assign_to}
+        </p>
         <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
           <SmallIconButton type="grey" className="p-2 mr-2">
             <MdTextsms className="icon__small" />
@@ -1179,7 +1258,10 @@ export const TrashTask = ({ data }) => {
         <div className="w-100">
           {/* Title */}
           <div className="d-flex align-items-center justify-content-between mb-3">
-            <p className="project-container-mobile__data-title flex-grow-1 mb-0">
+            <p
+              className="project-container-mobile__data-title flex-grow-1 mb-0"
+              title={data?.task_subject}
+            >
               {data?.task_subject}
             </p>
           </div>
@@ -1191,17 +1273,13 @@ export const TrashTask = ({ data }) => {
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Owner
                   </p>
-                  <p className="project-data-container__item">
-                    {data?.task_owner || "-"}
-                  </p>
+                  <p className="project-data-container__item">{task_owner}</p>
                 </div>
                 <div className="project-container-mobile__data-item">
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Assign to
                   </p>
-                  <p className="project-data-container__item">
-                    {data?.assign_to || "-"}
-                  </p>
+                  <p className="project-data-container__item">{assign_to}</p>
                 </div>
               </div>
               <div className="d-flex mb-3 trash-task">
@@ -1209,7 +1287,7 @@ export const TrashTask = ({ data }) => {
                   Duration
                 </p>
                 <p className="text-left project-data-container__item mb-0">
-                  {data?.duration || "-"}
+                  {task_duration}
                 </p>
               </div>
               <div className="d-flex mb-3 trash-task">
@@ -1217,7 +1295,7 @@ export const TrashTask = ({ data }) => {
                   Schedule Date
                 </p>
                 <p className="text-left project-data-container__item mb-0">
-                  {data?.schedule_date || "-"}
+                  {getProjectDateFormat(data?.schedule_date)}
                 </p>
               </div>
               <div className="d-flex mb-3 trash-task">
@@ -1225,7 +1303,7 @@ export const TrashTask = ({ data }) => {
                   Actual End Date
                 </p>
                 <p className="text-left project-data-container__item mb-0">
-                  {data?.task_end_date || "-"}
+                  {getProjectDateFormat(data?.task_end_date)}
                 </p>
               </div>
             </div>
@@ -1249,9 +1327,9 @@ export const TrashTask = ({ data }) => {
               &nbsp;
               {data?.task_start_date &&
                 data?.task_start_date &&
-                moment(data?.task_start_date).format("D MMM YYYY") +
+                getProjectDateFormat(data?.task_start_date) +
                   " To " +
-                  moment(data?.task_end_date).format("D MMM YYYY")}
+                  getProjectDateFormat(data?.task_end_date)}
             </p>
             <SmallIconButton type="primary" className="mr-3">
               <MdHistory />
@@ -1268,21 +1346,20 @@ export const TrashTask = ({ data }) => {
 const getUserName = (userList, email) => {
   if (userList && userList?.length > 0) {
     const user = [...userList].filter((element) => element.value === email)[0];
-    return (
-      (user && Object.keys(user)?.length > 0 && user?.label) ||
-      trimString(email)
-    );
+    const user_name = trimString(email);
+    console.log({ user, name: trimString(email) });
+    return (user && Object.keys(user)?.length > 0 && user?.label) || user_name;
   }
   return email;
 };
-const getUsers = (usersList, assign_users) => {
+const getUsers = (usersList, assign_users, n = 8) => {
   const userName =
     (assign_users &&
       assign_users?.length > 0 &&
       getUserName(usersList, assign_users[0])) ||
     "";
   return (
-    trimString(userName) +
+    trimString(userName, n) +
     (assign_users?.length > 1 ? " +" + (assign_users?.length - 1) : "")
   );
 };
@@ -1296,5 +1373,8 @@ const differenceInDays = (start_date, end_date) => {
       moment(end_date)?.diff(moment(start_date), "days") + 1) ||
     0;
   return difference + (difference > 1 ? " days" : " day");
+};
+const getProjectDateFormat = (date, format = "D MMM YYYY") => {
+  return (date && moment(date).format(format)) || "-";
 };
 export default Project;

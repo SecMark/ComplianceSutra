@@ -23,6 +23,7 @@ import {
   getTrashMilestoneRequest,
   getTrashProjectRequest,
   getTrashTasksRequest,
+  getUsersListRequest,
 } from "../redux/actions";
 import "../style.css";
 import SubTasks from "../SubTasks";
@@ -35,7 +36,10 @@ const Trash = () => {
   const isLoading = trashData?.isLoading;
 
   useEffect(() => {
-    console.log(currentPageView.id);
+    console.log(
+      currentPageView.id,
+      currentPageView.id === "project-trash-tasks"
+    );
     if (currentPageView.id === "project-trash-project") {
       dispatch(getTrashProjectRequest());
     } else if (currentPageView.id === "project-trash-milestone") {
@@ -44,6 +48,9 @@ const Trash = () => {
       dispatch(getTrashTasksRequest());
     }
   }, [currentPageView]);
+  useEffect(() => {
+    dispatch(getUsersListRequest());
+  }, []);
   return (
     <>
       <BackDrop isLoading={isLoading} />
