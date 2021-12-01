@@ -56,11 +56,6 @@ function Dashboard({ history }) {
       userDetails?.status_response === "Authentication success"
     ) {
       dispatch(taskReportActions.taskReportRequest());
-
-      const refreshInterval = setInterval(() => {
-        dispatch(taskReportActions.taskReportRequest());
-      }, 30000);
-      return () => clearInterval(refreshInterval);
     } else {
       history.push("/login");
     }
