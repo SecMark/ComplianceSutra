@@ -1,7 +1,7 @@
 import React from "react";
-import MobileLeftSidebar from "../../../OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
-import togglemobile from "../../../../assets/Icons/togglemobile.png";
-import sideBarlogo from "../../../../assets/Icons/sideBarlogo.png";
+import MobileLeftSidebar from "../../../Components/OnBording/SubModules/DashBoardCO/components/MobileLeftSidebar";
+import togglemobile from "../../../assets/Icons/togglemobile.png";
+import sideBarlogo from "../../../assets/Icons/sideBarlogo.png";
 function MobileHeader() {
   const onHBMenu = () => {
     const drawerParent = document.getElementById("sideBarParent");

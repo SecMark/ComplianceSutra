@@ -47,6 +47,11 @@ function CoSetting({ history }) {
       dispatch(adminMenuActions.setCurrentMenu("settings"));
     }
   }, []);
+  // useEffect(() => {
+  //   if (userID === undefined) {
+  //     history.push("/login");
+  //   }
+  // }, []);
   useEffect(() => {
     if (userID === undefined) {
       // history.push("/login");

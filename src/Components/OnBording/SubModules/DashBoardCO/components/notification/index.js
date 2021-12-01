@@ -22,11 +22,11 @@ function Notification({ history }) {
       dispatch(adminMenuActions.setCurrentMenu("notfications"));
     }
   }, []);
-  useEffect(() => {
-    if (userID === undefined) {
-      history.push("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userID === undefined) {
+  //     history.push("/login");
+  //   }
+  // }, []);
 
   return (
     <div className="row co-dashboard">

@@ -1,0 +1,15 @@
+.project-tasks-list__container {
+  width: 100%;
+  background: #ffffff;
+
+  /* display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  row-gap: 0rem;
+  column-gap: 1rem; */
+}
+
+@media screen and (max-width: 767.99px) {
+  .project-tasks-list__container {
+    background-color: transparent;
+  }
+}

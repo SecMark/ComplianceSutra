@@ -46,11 +46,11 @@ function RiskAndDelayTaskList({ history }) {
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.formDataPersonalData &&
     state.complianceOfficer.personalInfo.formDataPersonalData.entityName;
-  useEffect(() => {
-    if (userID === undefined) {
-      history.push("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userID === undefined) {
+  //     history.push("/login");
+  //   }
+  // }, []);
   useEffect(() => {
     dispatch(
       taskReportActions.taskReportRequest({
