@@ -5,8 +5,8 @@ import banner1 from "../../../assets/Images/CAPMLanding/banner1.png";
 function FirstSection() {
     return (
         <div className="compliance-first-section">
-        <div className="container mt-3">
-            <div className="d-flex">
+        <div className="container">
+            {/* <div className="d-flex">
                 <div className="mr-auto p-2">
                     <h1 className="compliance-first-section-heading1">
                         COMPLIANCE
@@ -33,7 +33,7 @@ function FirstSection() {
                     </h1>
                 </div>
 
-            </div>
+            </div> */}
             <div className="first-section-main-heading">
                 <h1>
                     Hassle free Compliance

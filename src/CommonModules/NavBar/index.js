@@ -4,10 +4,10 @@ import Logo from "../../assets/Images/CAPMLanding/NavLogo.svg";
 import {Link} from "react-router-dom";
 function NavBar() {
   return (
-    <div>
+    <div className="navbar-position">
       <div className="container navbar-bottom-border">
         <nav className="navbar navbar-expand-lg navbar-light">
-          <a className="navbar-brand navbar-heading" href="fake_page">
+          <a className="navbar-brand navbar-heading" href="#!">
            <img src={Logo} alt="Logo"/> COMPLIANCE SUTRA
           </a>
           <button
@@ -78,7 +78,16 @@ function NavBar() {
                   Pricing
                 </a>
               </li>
-              <li className="nav-item dropdown">
+              <li className="nav-item">
+                <a className="nav-link nav-link-fonts" href="mailto:info@secmark.in">
+                Support
+                </a>
+              </li>
+              
+            </ul>
+            <div className="my-2 my-lg-0">
+             <ul className="navbar-nav">
+             <li className="nav-item dropdown">
                 <a
                   className="nav-link nav-link-fonts dropdown-toggle"
                   href="#"
@@ -87,8 +96,8 @@ function NavBar() {
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
-                >
-                  Support
+                > 
+                  Contact Sales
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a className="dropdown-item" href="tel:+91-9869265949">
@@ -100,14 +109,6 @@ function NavBar() {
                   </a>
                 </div>
               </li> 
-            </ul>
-            <div className="my-2 my-lg-0">
-             <ul className="navbar-nav">
-             <li className="nav-item">
-                <a className="nav-link nav-link-fonts" href="mailto:info@secmark.in">
-                  Contact Sales
-                </a>
-              </li>
               <li className="nav-item">
                 <Link className="nav-link nav-link-fonts" to="/login">
                   Login

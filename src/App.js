@@ -9,8 +9,8 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import DisplayNotification from "./CommonModules/Notification/Display";
 import Notifications from "./CommonModules/Notification";
 import { onMessageListener } from "./firebaseConfig/firebaseInit";
-import { actions as taskReportActions } from "./Components/OnBording/SubModules/DashBoardCO/redux/actions";
-
+import { useSelector, useDispatch } from "react-redux";
+import { actions as taskReportActions } from "../src/Components/OnBording/SubModules/DashBoardCO/redux/actions";
 function App() {
   return <MainApp />;
 }
@@ -27,6 +27,8 @@ function MainApp() {
   useEffect(() => {
     setShow(false);
   }, []);
+
+  const dispatch = useDispatch();
 
   onMessageListener()
     .then((payload) => {

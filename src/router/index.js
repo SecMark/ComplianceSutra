@@ -46,8 +46,11 @@ import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
+// import UserRoutes from "../Components/UserTask/UserRoutes/index";
+import UserTask from "../Components/UserTask/index";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
-
+import ProjectManagement from "../Components/ProjectManagement";
+import AddProject from "../Components/ExpertReviewModule/AddandEditProject";
 export default function AppRouter() {
   return (
     <div>
@@ -55,25 +58,16 @@ export default function AppRouter() {
         <div>
           <Route exact path="/sign-up" component={OnBoarding} />
           <Route exact path="/assign-task" component={AssignTask} />
+          <Route exact path="/" component={CapmTechLandingPage} />
           <Route
             exact
-            path="/"
-            component={CapmTechLandingPage}
-          />
-          <Route
-          exact
-          path="/compliance-landing"
-          component={ComplianceLanding}
-
+            path="/compliance-landing"
+            component={ComplianceLanding}
           />
           <Route exact path="/on-boarding" component={OnBoarding} />
           <Route exact path="/board-view" component={BoardView} />
           <Route exact path="/team-member" component={TeamMember} />
-          <Route
-            exact
-            path="/compliance-demo"
-            component={ComplianceDemo}
-          />
+          <Route exact path="/compliance-demo" component={ComplianceDemo} />
           <Route
             exact
             path="/compliance-demo-end"
@@ -130,8 +124,6 @@ export default function AppRouter() {
 
           <Route exact path="/governance" component={Governance} />
 
-          
-
           <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
           <Route
             exact
@@ -180,15 +172,29 @@ export default function AppRouter() {
 
           <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route exact path="/new-regulations" component={DashBoardCO} />
+          <Route path="/project-management" component={DashBoardCO} />
+          <Route path="/project-trash" component={DashBoardCO} />
           <Route exact path="/help" component={DashBoardCO} />
 
           {/* Expert Review */}
-      
-            <Route path="/expert-review" component={ExperReview}></Route>
-        
+
+          <Route path="/expert-review" component={ExperReview}></Route>
 
           <Route exact path="/thankyou" component={Thankyou} />
+          {/* <Route
+            exact
+            path="/project-management"
+            component={ProjectManagement}
+          /> */}
           <Route exact path="/settings" component={CoSetting} />
+          {/* Add edit project*/}
+          <Route exact path="/add-project" component={AddProject} />
+
+          {/* User */}
+          <Route path="/user-task" component={UserTask}></Route>
+          {/* <Route path="/new-milestone" component={Newmilestone}></Route>
+          <Route path="/new-tasklist" component={Tasklist}></Route>
+          <Route path="/new-comment" component={Commentbox}></Route> */}
         </div>
       </>
     </div>
