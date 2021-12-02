@@ -399,7 +399,9 @@ const Project = ({ data }) => {
                     <p className="project-data-container__item">2/2</p>
                   </div>
                 </Link>
-                <Link to={`${url}/project-milestone`}>
+                <Link
+                  to={{ pathname: `${url}/project-milestone`, state: data }}
+                >
                   <div className="project-container-mobile__data-item">
                     <p className="project-data-container__item project-container-mobile__data-item-title">
                       Milestone
@@ -441,9 +443,39 @@ const Project = ({ data }) => {
                 " To " +
                 formatted_project_end_date}
             </p>
-            <EditIconButton className="mx-2" />
-            <DeleteIconButton />
-            {/* Edit and Delete Button */}
+            <EditIconButton
+              className="mx-2"
+              onClickHandler={() => {
+                dispatch(
+                  setProjectModalState({
+                    ...modalsStatus?.projectModal,
+                    isVisible: true,
+                    isEdit: true,
+                    editData: {
+                      project_id,
+                      project_name,
+                      start_date: project_start_date,
+                      end_date: project_end_date,
+                      project_overview,
+                      assign_user: project_assign_users,
+                    },
+                    projectId: project_id,
+                  })
+                );
+              }}
+            />
+            <DeleteIconButton
+              onClickHandler={() => {
+                dispatch(
+                  setDeleteModalState({
+                    ...deactivateModalAndStatus,
+                    modalName: "Project",
+                    id: project_id,
+                    isVisible: true,
+                  })
+                );
+              }}
+            />
           </div>
         </div>
       </div>
@@ -475,7 +507,12 @@ export const DesktopTask = ({ data }) => {
         {taskData?.task_subject}
       </p>
       {/* <p className="project-data-container__item">10%</p> */}
-      <p className="project-data-container__item wide">{task_owner}</p>
+      <p
+        className="project-data-container__item wide"
+        title={taskData?.task_owner}
+      >
+        {task_owner}
+      </p>
       <p className="project-data-container__item wide-flex-2">
         {taskData?.task_frequency || "-"}
       </p>
@@ -483,7 +520,7 @@ export const DesktopTask = ({ data }) => {
       <p className="project-data-container__item wide">{task_start_date}</p>
       <p className="project-data-container__item wide">{task_end_date}</p>
       <p className="project-data-container__item" title={taskData?.assign_to}>
-        {trimString(task_assign_to, 10)}
+        {trimString(task_assign_to)}
       </p>
       <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
         <SmallIconButton type="grey" className="p-2 mr-2">
@@ -664,14 +701,43 @@ const DesktopTaskListComponent = ({ data }) => {
     </div>
   );
 };
-export const ProjectMilestone = () => {
+export const ProjectMilestone = ({ data }) => {
+  // const {
+  //   milestone_end_date,
+  //   milestone_id,
+  //   milestone_owner,
+  //   milestone_start_date,
+  //   milestone_title,
+  //   milestone_assign_users,
+  // } = milestone;
+  const usersList = useSelector(
+    (state) => state?.ProjectManagementReducer?.usersList
+  );
+  const deactivateModalAndStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.deactivateModalAndStatus
+  );
+  const modalsStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.modalsStatus
+  );
+  const dispatch = useDispatch();
+  const milestone_owner = getUserName(usersList, data?.milestone_owner) || "-";
+  const milestone_start_date = getProjectDateFormat(data?.milestone_start_date);
+  const milestone_end_date = getProjectDateFormat(data?.milestone_end_date);
+  const milestone_assign_users =
+    getUsers(usersList, data?.milestone_assign_users) || "-";
+  const milestone_duration =
+    differenceInDays(data?.milestone_start_date, data?.milestone_end_date) ||
+    "-";
   return (
-    <div className="d-flex d-md-none project-management__project-container-mobile mb-3 p-2 py-3">
+    <div
+      key={data?.milestone_id}
+      className="d-flex d-md-none project-management__project-container-mobile mb-3 p-2 py-3"
+    >
       <div className="w-100">
         {/* Title */}
         <div className="d-flex align-items-center justify-content-between mb-3">
           <p className="project-container-mobile__data-title flex-grow-1 mb-0">
-            Discussion with Client (Milestone)
+            {data?.milestone_title}
           </p>
           {/* <SmallIconButton type="grey" className="mx-2">
           <IoCheckmarkCircleOutline />
@@ -688,20 +754,26 @@ export const ProjectMilestone = () => {
                 <p className="project-data-container__item project-container-mobile__data-item-title">
                   Owner
                 </p>
-                <p className="project-data-container__item">Ashu</p>
+                <p className="project-data-container__item">
+                  {milestone_owner}
+                </p>
               </div>
               <div className="project-container-mobile__data-item">
                 <p className="project-data-container__item project-container-mobile__data-item-title">
                   Assign to
                 </p>
-                <p className="project-data-container__item">Ashu Kumar</p>
+                <p className="project-data-container__item">
+                  {milestone_assign_users}
+                </p>
               </div>
             </div>
-            <div className="d-flex mb-3">
+            <div className="d-flex mb-3 trash-task">
               <p className="project-data-container__item project-container-mobile__data-item-title mr-4 mb-0">
-                Owner
+                Duration
               </p>
-              <p className="project-data-container__item mb-0">Ashu</p>
+              <p className="project-data-container__item mb-0">
+                {milestone_duration}
+              </p>
             </div>
           </div>
           <div className="project-container-mobile__progress px-3">
@@ -720,10 +792,42 @@ export const ProjectMilestone = () => {
         <div className="d-flex justify-content-between align-items-center mt-3">
           {/* Start Date and End Date */}
           <p className="project-data-container__item flex-grow-1 text-left">
-            <IoCalendarOutline /> 14 Aug, 2021 To 21 Aug, 2021
+            <IoCalendarOutline />
+            &nbsp;
+            {milestone_start_date + " To " + milestone_end_date}
           </p>
-          <EditIconButton className="mx-2" />
-          <DeleteIconButton />
+          <EditIconButton
+            className="mx-2"
+            onClickHandler={() => {
+              dispatch(
+                setMilestoneModalState({
+                  ...modalsStatus?.milestoneModal,
+                  isVisible: true,
+                  isEdit: true,
+                  editData: {
+                    milestone_id: data?.milestone_id,
+                    project: data?.project,
+                    title: data?.milestone_title,
+                    start_date: data?.milestone_start_date,
+                    end_date: data?.milestone_end_date,
+                    assign_user: data?.milestone_assign_users,
+                  },
+                })
+              );
+            }}
+          />
+          <DeleteIconButton
+            onClickHandler={() =>
+              dispatch(
+                setDeleteModalState({
+                  ...deactivateModalAndStatus,
+                  modalName: "Milestone",
+                  id: data?.milestone_id,
+                  isVisible: true,
+                })
+              )
+            }
+          />
           {/* Edit and Delete Button */}
         </div>
       </div>
@@ -738,7 +842,16 @@ export const ProjectSubTask = ({ data }) => {
   const modalsStatus = useSelector(
     (state) => state?.ProjectManagementReducer?.modalsStatus
   );
+  const deactivateModalAndStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.deactivateModalAndStatus
+  );
   const dispatch = useDispatch();
+  const task_assign_to = getUserName(usersList, data?.assign_to) || "-";
+  const task_duration =
+    differenceInDays(data?.task_start_date, data?.task_end_date) || "-";
+  const task_start_date = getProjectDateFormat(data?.task_start_date);
+  const task_end_date = getProjectDateFormat(data?.task_end_date);
+  const task_owner = getUserName(usersList, data?.task_owner);
   return (
     <div
       key={data?.task_id}
@@ -753,8 +866,20 @@ export const ProjectSubTask = ({ data }) => {
           <SmallIconButton type="grey" className="mx-2">
             <IoCheckmarkCircleOutline />
           </SmallIconButton>
-          <SmallIconButton type="grey">
-            <IoBanOutline />
+          <SmallIconButton
+            type="grey"
+            onClick={() =>
+              dispatch(
+                setDeleteModalState({
+                  ...deactivateModalAndStatus,
+                  modalName: "Task",
+                  id: data?.task_id,
+                  isVisible: true,
+                })
+              )
+            }
+          >
+            <MdRadioButtonChecked />
           </SmallIconButton>
         </div>
         <div className="d-flex justify-content-between w-100 align-items-center">
@@ -765,19 +890,13 @@ export const ProjectSubTask = ({ data }) => {
                 <p className="project-data-container__item project-container-mobile__data-item-title">
                   Owner
                 </p>
-                <p className="project-data-container__item">Ashu</p>
+                <p className="project-data-container__item">{task_owner}</p>
               </div>
               <div className="project-container-mobile__data-item">
                 <p className="project-data-container__item project-container-mobile__data-item-title">
                   Assign to
                 </p>
-                <p className="project-data-container__item">
-                  {usersList &&
-                    usersList?.length > 0 &&
-                    usersList.filter(
-                      (user) => user.value === data?.assign_to
-                    )[0]?.label}
-                </p>
+                <p className="project-data-container__item">{task_assign_to}</p>
               </div>
             </div>
             {/* Data (Row) */}
@@ -786,7 +905,7 @@ export const ProjectSubTask = ({ data }) => {
                 Duration
               </p>
               <p className="project-data-container__item project-container-mobile__sub-task-text mb-0">
-                : 3 days
+                : {task_duration}
               </p>
             </div>
             <div className="d-flex mb-3">
@@ -794,9 +913,7 @@ export const ProjectSubTask = ({ data }) => {
                 Schedule Date
               </p>
               <p className="project-container-mobile__sub-task-text project-data-container__item mb-0">
-                :{" "}
-                {data?.task_start_date &&
-                  moment(data?.task_start_date).format("D MMM YYYY")}
+                : {task_start_date}
               </p>
             </div>
             <div className="d-flex mb-3">
@@ -804,9 +921,7 @@ export const ProjectSubTask = ({ data }) => {
                 Actual End Date
               </p>
               <p className="project-container-mobile__sub-task-text project-data-container__item mb-0">
-                :{" "}
-                {data?.task_end_date &&
-                  moment(data?.task_end_date).format("D MMM YYYY")}
+                : {task_end_date}
               </p>
             </div>
           </div>
@@ -826,7 +941,8 @@ export const ProjectSubTask = ({ data }) => {
         <div className="d-flex justify-content-between align-items-center mt-3">
           {/* Start Date and End Date */}
           <p className="project-data-container__item flex-grow-1 text-left">
-            <IoCalendarOutline /> 14 Aug, 2021 To 21 Aug, 2021
+            <IoCalendarOutline />
+            &nbsp;{task_start_date + " To " + task_end_date}
           </p>
           {/* Message and Edit Button */}
           <SmallIconButton type="grey" className="mx-2 icon__small p-1">
@@ -1347,8 +1463,10 @@ const getUserName = (userList, email) => {
   if (userList && userList?.length > 0) {
     const user = [...userList].filter((element) => element.value === email)[0];
     const user_name = trimString(email);
-    console.log({ user, name: trimString(email) });
-    return (user && Object.keys(user)?.length > 0 && user?.label) || user_name;
+    return (
+      (user && Object.keys(user)?.length > 0 && trimString(user?.label)) ||
+      user_name
+    );
   }
   return email;
 };

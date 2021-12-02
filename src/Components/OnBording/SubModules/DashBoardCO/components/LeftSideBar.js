@@ -20,6 +20,7 @@ import sidebarSettingIcon from "../../../../../assets/Icons/sidebarSettingIcon.p
 import editpen from "../../../../../assets/Icons/editpen.png";
 import LogoutIcon from "../../../../../assets/Icons/LogoutIcon.png";
 import VectorIcon from "../../../../../assets/Icons/Vector.png";
+import projectManagementInactiveIcon from "../../../../../assets/Icons/projectManagementInactiveIcon.svg";
 
 import { useOuterClick } from "../components/RightSideGrid/outerClick";
 import { useSelector, useDispatch } from "react-redux";
@@ -306,7 +307,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                 state &&
                 state.adminMenu.currentMenu === "project-management"
                   ? VectorIcon
-                  : VectorIcon
+                  : projectManagementInactiveIcon
               }
               alt="sidebar Bell"
             />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { SmallIconButton } from "./Buttons";
 // import { useOuterClick } from "../../OnBording/SubModules/DashBoardCO/components/RightSideGrid/outerClick";
@@ -9,6 +9,13 @@ const ProjectManagementModal = ({
   isNotCloseable,
 }) => {
   // const modalRef = useOuterClick(onClose);
+  useEffect(() => {
+    if (visible) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+  }, [visible]);
   return (
     visible && (
       <div

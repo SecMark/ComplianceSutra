@@ -24,7 +24,10 @@ import circleClockActive from "../../../../../../assets/Icons/history_active.png
 import listIcon from "../../../../../../assets/Icons/listIcon.png";
 import questionIcon from "../../../../../../assets/Icons/questionIcon.png";
 import questionIconActive from "../../../../../../assets/Icons/HelpBlackActive.png";
-
+import projectManagementInactiveIcon from "../../../../../../assets/Icons/projectManagementInactiveIcon.svg";
+import projectManagementIcon from "../../../../../../assets/Icons/Vector.png";
+import trashIcon from "../../../../../../assets/Icons/trashIcon.svg";
+import trashIconActive from "../../../../../../assets/Icons/trashIconActive.svg";
 import dashBoardActiveIcon from "../../../../../../assets/Icons/dashBoardActiveIcon.png";
 
 import { actions as notificationActions } from "../notification/Redux/actions";
@@ -194,27 +197,33 @@ function MobileLeftSidebar({ history, close }) {
             />{" "}
             Compliance History
           </div>
-          {userDetails.UserType != 4 && (
+          {userDetails.UserType !== 4 && (
             <div
-              onClick={() => onMenuClick("project-task")}
+              onClick={() => onMenuClick("project-management")}
               style={{ cursor: "pointer" }}
               className={
                 !openProfile &&
                 state &&
-                state.adminMenu.currentMenu === "project-task"
+                state.adminMenu.currentMenu === "project-management"
                   ? "taskList-mobile"
                   : "inactiveMobile"
               }
             >
               <img
-                src={listIcon}
+                src={
+                  !openProfile &&
+                  state &&
+                  state.adminMenu.currentMenu === "project-management"
+                    ? projectManagementIcon
+                    : projectManagementInactiveIcon
+                }
                 alt="sideBarlogo"
                 style={{ cursor: "pointer", width: "18px" }}
               />{" "}
-              <span>Project Task</span>
+              <span>Projects</span>
             </div>
           )}
-          {userDetails.UserType != 4 && (
+          {userDetails.UserType !== 4 && (
             <div
               onClick={() => onMenuClick("new-regulations")}
               style={{ cursor: "pointer" }}
@@ -232,6 +241,32 @@ function MobileLeftSidebar({ history, close }) {
                 style={{ cursor: "pointer", width: "18px" }}
               />{" "}
               <span>New Regulations</span>
+            </div>
+          )}
+          {userDetails.UserType !== 4 && (
+            <div
+              onClick={() => onMenuClick("project-trash")}
+              style={{ cursor: "pointer" }}
+              className={
+                !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "project-trash"
+                  ? "taskList-mobile"
+                  : "inactiveMobile"
+              }
+            >
+              <img
+                src={
+                  !openProfile &&
+                  state &&
+                  state.adminMenu.currentMenu === "project-trash"
+                    ? trashIconActive
+                    : trashIcon
+                }
+                alt="sideBarlogo"
+                style={{ cursor: "pointer", width: "18px" }}
+              />{" "}
+              <span>Trash</span>
             </div>
           )}
         </div>
