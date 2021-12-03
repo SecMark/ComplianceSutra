@@ -89,9 +89,6 @@ const ProjectAndTask = () => {
   useEffect(() => {
     dispatch(getProjectDataRequest());
   }, []);
-  useEffect(() => {
-    console.log({ isDeactivateRequestInProgress });
-  }, [isDeactivateRequestInProgress]);
   return (
     <>
       <BackDrop isLoading={isDeactivateRequestInProgress} />
@@ -241,9 +238,6 @@ const ProjectAndTask = () => {
               setWeekStartDate={setWeekStartDate}
             />
           )}
-          {/* <ProjectMilestone />
-            <ProjectSubTask /> */}
-          {/* <ProjectTask /> */}
         </ProjectManagementMain>
       </ProjectManagementMainContainer>
     </>

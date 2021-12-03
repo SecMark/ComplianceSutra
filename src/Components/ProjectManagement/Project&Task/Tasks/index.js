@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BackDrop from "../../../../CommonModules/sharedComponents/Loader/BackDrop";
-import { DesktopTask, ProjectSubTask, ProjectTask } from "../../ProjectDesktop";
+import { DesktopTask, ProjectSubTask } from "../../ProjectDesktop";
 import { getIndividualTasksRequest } from "../../redux/actions";
 import "./style.css";
 const Tasks = () => {
   const isLoading = useSelector(
     (state) => state?.ProjectManagementReducer?.projectManagementData?.isLoading
   );
-  const isError = useSelector(
-    (state) => state?.ProjectManagementReducer?.projectManagementData?.isError
-  );
+  // const isError = useSelector(
+  //   (state) => state?.ProjectManagementReducer?.projectManagementData?.isError
+  // );
   const individualTasksList = useSelector(
     (state) =>
       state?.ProjectManagementReducer?.projectManagementData?.individualTasks
@@ -35,15 +35,6 @@ const Tasks = () => {
               </>
             );
           })}
-        {/* <ProjectTask />
-        <ProjectTask />
-        <ProjectTask />
-        <ProjectTask />
-        <ProjectTask />
-        <ProjectTask />
-        <ProjectTask />
-        <ProjectTask />
-        <ProjectTask /> */}
       </div>
     </>
   );

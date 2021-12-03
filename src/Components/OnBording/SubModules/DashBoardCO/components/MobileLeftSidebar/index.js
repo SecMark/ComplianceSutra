@@ -72,8 +72,10 @@ function MobileLeftSidebar({ history, close }) {
       history.push("/new-regulations");
     } else if (currentActiveMenu === "help") {
       history.push("/help");
-    } else if (currentActiveMenu === "project-task") {
-      history.push("/project-task");
+    } else if (currentActiveMenu === "project-management") {
+      history.push("/project-management");
+    } else if (currentActiveMenu === "project-trash") {
+      history.push("/project-trash");
     }
   };
 

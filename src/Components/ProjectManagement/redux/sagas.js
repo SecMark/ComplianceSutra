@@ -32,6 +32,15 @@ import {
   getTrashProjectFailed,
   getTrashTasksSuccess,
   getTrashTasksFailed,
+  getTrashProjectRequest,
+  getTrashMilestoneRequest,
+  getTrashTasksRequest,
+  deleteFromTrashSuccess,
+  deleteFromTrashFailed,
+  DELETE_FROM_TRASH_REQUEST,
+  RESTORE_FROM_TRASH_REQUEST,
+  restoreFromTrashFailed,
+  restoreFromTrashSuccess,
 } from "./actions";
 import { toast } from "react-toastify";
 
@@ -254,6 +263,92 @@ function* getTashTasks({ payload }) {
   }
 }
 
+function* deleteFromTrash({ payload }) {
+  let apiEndpoint;
+  switch (payload?.type) {
+    case "project":
+      apiEndpoint = api.deleteProject;
+      break;
+    case "milestone":
+      apiEndpoint = api.deleteMilestone;
+      break;
+    case "tasklist":
+      apiEndpoint = api.deleteTaskList;
+      break;
+    case "task":
+      apiEndpoint = api.deleteTask;
+      break;
+    default:
+      apiEndpoint = api.deleteProject;
+      break;
+  }
+  let type = payload?.type;
+  delete payload.type;
+  try {
+    const { status, data } = yield call(apiEndpoint, payload);
+    if (status === 200 && data && data.message && data.message.status) {
+      toast.success(data?.message?.status_response);
+      yield put(deleteFromTrashSuccess());
+      if (type === "project") {
+        yield put(getTrashProjectRequest());
+      } else if (type === "milestone") {
+        yield put(getTrashMilestoneRequest());
+      } else if (type === "task") {
+        yield put(getTrashTasksRequest());
+      }
+    } else {
+      toast.error(data?.message?.status_response);
+      yield put(deleteFromTrashFailed());
+    }
+  } catch (error) {
+    toast.error("Something went wrong. Please try again.");
+    yield put(deleteFromTrashFailed());
+  }
+}
+
+function* restoreFromTrash({ payload }) {
+  let apiEndpoint;
+  switch (payload?.type) {
+    case "project":
+      apiEndpoint = api.restoreProject;
+      break;
+    case "milestone":
+      apiEndpoint = api.restoreMilestone;
+      break;
+    case "tasklist":
+      apiEndpoint = api.restoreTaskList;
+      break;
+    case "task":
+      apiEndpoint = api.restoreTask;
+      break;
+    default:
+      apiEndpoint = api.restoreProject;
+      break;
+  }
+  let type = payload?.type;
+  delete payload.type;
+  try {
+    const { status, data } = yield call(apiEndpoint, payload);
+    if (status === 200 && data && data.message && data.message.status) {
+      toast.success(data?.message?.status_response);
+      yield put(restoreFromTrashSuccess());
+      if (type === "project") {
+        yield put(getTrashProjectRequest());
+      } else if (type === "milestone") {
+        yield put(getTrashMilestoneRequest());
+      } else if (type === "task") {
+        yield put(getTrashTasksRequest());
+      }
+    } else {
+      toast.error(data?.message?.status_response);
+      yield put(restoreFromTrashFailed());
+    }
+  } catch (error) {
+    toast.error("Something went wrong. Please try again.");
+    yield put(restoreFromTrashFailed());
+  }
+}
+
 function* projectSaga() {
   yield takeLatest(SET_PROJECT_DETAIL, createProject);
   yield takeLatest(GET_PROJECT_MANAGEMENT_DATA_REQUEST, getProjectData);
@@ -266,6 +361,8 @@ function* projectSaga() {
   yield takeLatest(GET_TRASH_PROJECTS_REQUEST, getTashProjects);
   yield takeLatest(GET_TRASH_MILESTONE_REQUEST, getTashMilestone);
   yield takeLatest(GET_TRASH_TASKS_REQUEST, getTashTasks);
+  yield takeLatest(DELETE_FROM_TRASH_REQUEST, deleteFromTrash);
+  yield takeLatest(RESTORE_FROM_TRASH_REQUEST, restoreFromTrash);
 }
 
 export default projectSaga;

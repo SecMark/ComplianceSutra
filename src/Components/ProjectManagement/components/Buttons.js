@@ -48,9 +48,9 @@ export const DeleteIconButton = ({ onClickHandler, className }) => (
     <img
       src={projectDeleteIcon}
       alt="edit-icon"
-      width="24px"
-      height="24px"
-      className="p-1"
+      width="26px"
+      height="26px"
+      style={{ padding: "4px" }}
     />
   </SmallIconButton>
 );
