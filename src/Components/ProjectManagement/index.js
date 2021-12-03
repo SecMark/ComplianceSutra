@@ -6,13 +6,11 @@ import MobileLeftSideBar from "../../CommonModules/sharedComponents/MobileLeftSi
 import { useParams, useRouteMatch } from "react-router";
 import { Switch, Route } from "react-router-dom";
 import ProjectAndTask from "./Project&Task";
-import SubTasks from "./SubTasks";
 import Milestone from "./Milestone";
+import TaskList from "./TaskList";
+import Tasks from "./Tasks";
 const ProjectManagement = () => {
   const { path, url } = useRouteMatch();
-  useEffect(() => {
-    console.log({ path, url });
-  }, []);
   return (
     <>
       <div className="project-management p-0 p-md-4">
@@ -25,11 +23,20 @@ const ProjectManagement = () => {
             <Route exact path={`${path}/project-milestone`}>
               <Milestone />
             </Route>
-            <Route exact path={`${path}/project-tasks`}>
-              <h1>task list</h1>
+            <Route exact path={`${path}/project-tasklist`}>
+              <TaskList />
             </Route>
-            <Route exact path={`${path}/sub-tasks`}>
-              <SubTasks />
+            <Route exact path={`${path}/project-milestone/project-tasklist`}>
+              <TaskList />
+            </Route>
+            <Route exact path={`${path}/project-tasklist/tasklist-tasks`}>
+              <Tasks />
+            </Route>
+            <Route
+              exact
+              path={`${path}/project-milestone/project-tasklist/tasklist-tasks`}
+            >
+              <Tasks />
             </Route>
           </Switch>
         </div>

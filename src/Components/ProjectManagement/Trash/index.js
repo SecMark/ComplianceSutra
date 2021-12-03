@@ -26,7 +26,6 @@ import {
   getUsersListRequest,
 } from "../redux/actions";
 import "../style.css";
-import SubTasks from "../SubTasks";
 const Trash = () => {
   const [currentPageView, setCurrentPageView] = useState(ProjectTrashPages[0]);
   const trashData = useSelector(
@@ -34,12 +33,16 @@ const Trash = () => {
   );
   const dispatch = useDispatch();
   const isLoading = trashData?.isLoading;
+  const isDeleteRequestInProgress = useSelector(
+    (state) =>
+      state?.ProjectManagementReducer?.deleteFromTrashRequestStatus?.isLoading
+  );
+  const isRestoreRequestInProgress = useSelector(
+    (state) =>
+      state?.ProjectManagementReducer?.restoreFromTrashRequestStatus?.isLoading
+  );
 
   useEffect(() => {
-    console.log(
-      currentPageView.id,
-      currentPageView.id === "project-trash-tasks"
-    );
     if (currentPageView.id === "project-trash-project") {
       dispatch(getTrashProjectRequest());
     } else if (currentPageView.id === "project-trash-milestone") {
@@ -53,11 +56,14 @@ const Trash = () => {
   }, []);
   return (
     <>
-      <BackDrop isLoading={isLoading} />
+      <BackDrop
+        isLoading={
+          isLoading || isDeleteRequestInProgress || isRestoreRequestInProgress
+        }
+      />
       <div className="project-management p-0 p-md-4">
         <div className="project-management__container">
           <MobileLeftSideBar />
-          {/* <h1>Hi</h1> */}
           <ProjectManagementHeader>
             <div className="w-100 d-flex align-items-center justify-content-between">
               <p className="project-management__header-title mb-0">Trash</p>

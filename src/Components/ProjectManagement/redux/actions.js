@@ -58,6 +58,16 @@ export const GET_TRASH_TASKS_REQUEST = "GET_TRASH_TASKS_REQUEST";
 export const GET_TRASH_TASKS_SUCCESS = "GET_TRASH_TASKS_SUCCESS";
 export const GET_TRASH_TASKS_FAILED = "GET_TRASH_TASKS_FAILED";
 
+// Delete Project, Milestone, Task List, Task
+export const DELETE_FROM_TRASH_REQUEST = "DELETE_FROM_TRASH_REQUEST";
+export const DELETE_FROM_TRASH_SUCCESS = "DELETE_FROM_TRASH_SUCCESS";
+export const DELETE_FROM_TRASH_FAILED = "DELETE_FROM_TRASH_FAILED";
+
+// Restore Project, Milestone, Task List, Task
+export const RESTORE_FROM_TRASH_REQUEST = "RESTORE_FROM_TRASH_REQUEST";
+export const RESTORE_FROM_TRASH_SUCCESS = "RESTORE_FROM_TRASH_SUCCESS";
+export const RESTORE_FROM_TRASH_FAILED = "RESTORE_FROM_TRASH_FAILED";
+
 // ACTIONS
 export const getProject = (payload) => {
   return {
@@ -161,3 +171,27 @@ export const getTrashMilestoneFailed = createAction(GET_TRASH_MILESTONE_FAILED);
 export const getTrashTasksRequest = createAction(GET_TRASH_TASKS_REQUEST);
 export const getTrashTasksSuccess = createAction(GET_TRASH_TASKS_SUCCESS);
 export const getTrashTasksFailed = createAction(GET_TRASH_TASKS_FAILED);
+
+// export const deleteProjectFromTrash = createAction(DELETE_PROJECT_FROM_TRASH);
+// export const deleteMilestoneFromTrash = createAction(
+//   DELETE_MILESTONE_FROM_TRASH
+// );
+// export const deleteTaskListFromTrash = createAction(DELETE_TASKLIST_FROM_TRASH);
+// export const deleteTaskFromTrash = createAction(DELETE_TASK_FROM_TRASH);
+
+// export const restoreProjectFromTrash = createAction(RESTORE_PROJECT_FROM_TRASH);
+// export const restoreMilestoneFromTrash = createAction(
+//   RESTORE_MILESTONE_FROM_TRASH
+// );
+// export const restoreTaskListFromTrash = createAction(
+//   RESTORE_TASKLIST_FROM_TRASH
+// );
+// export const restoreTaskFromTrash = createAction(RESTORE_TASK_FROM_TRASH);
+
+export const deleteFromTrashRequest = createAction(DELETE_FROM_TRASH_REQUEST);
+export const deleteFromTrashSuccess = createAction(DELETE_FROM_TRASH_SUCCESS);
+export const deleteFromTrashFailed = createAction(DELETE_FROM_TRASH_FAILED);
+
+export const restoreFromTrashRequest = createAction(RESTORE_FROM_TRASH_REQUEST);
+export const restoreFromTrashSuccess = createAction(RESTORE_FROM_TRASH_SUCCESS);
+export const restoreFromTrashFailed = createAction(RESTORE_FROM_TRASH_FAILED);

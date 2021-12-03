@@ -58,7 +58,7 @@ function AddEditTaskList({ visible, onClose, isEdit, editData }) {
               setFieldValues({
                 ...fieldValues,
                 milestone_id: value?.milestone_id,
-                project_id: value?.project_id,
+                ...(!value?.project_id && { project_id: value?.project_id }),
               });
             }}
           />

@@ -34,6 +34,12 @@ import {
   GET_TRASH_TASKS_SUCCESS,
   GET_TRASH_TASKS_FAILED,
   GET_TRASH_PROJECTS_FAILED,
+  DELETE_FROM_TRASH_REQUEST,
+  DELETE_FROM_TRASH_SUCCESS,
+  DELETE_FROM_TRASH_FAILED,
+  RESTORE_FROM_TRASH_REQUEST,
+  RESTORE_FROM_TRASH_SUCCESS,
+  RESTORE_FROM_TRASH_FAILED,
 } from "./actions";
 
 export const addAndEditProjectReducer = (
@@ -173,22 +179,6 @@ const actionHandlers = {
         ...state.modalsStatus.taskModal,
         ...payload,
         editData: { ...payload.editData },
-        // projectList: [...state?.projectManagementData?.projects]?.map(
-        //   (project) => {
-        //     return {
-        //       value: {
-        //         project_id: project?.project_id,
-        //         project_milestone_data: [
-        //           ...project?.project_milestone_data,
-        //         ]?.map((milestone) => ({
-        //           value: milestone?.milestone_id,
-        //           label: milestone?.milestone_title,
-        //         })),
-        //       },
-        //       label: project?.project_name,
-        //     };
-        //   }
-        // ),
       },
     },
   }),
@@ -413,6 +403,62 @@ const actionHandlers = {
       trashTasks: [],
     },
   }),
+
+  [DELETE_FROM_TRASH_REQUEST]: (state) => ({
+    ...state,
+    deleteFromTrashRequestStatus: {
+      ...state?.deleteFromTrashRequestStatus,
+      isLoading: true,
+      isError: false,
+      errorMessage: "",
+    },
+  }),
+  [DELETE_FROM_TRASH_SUCCESS]: (state) => ({
+    ...state,
+    deleteFromTrashRequestStatus: {
+      ...state?.deleteFromTrashRequestStatus,
+      isLoading: false,
+      isError: false,
+      errorMessage: "",
+    },
+  }),
+  [DELETE_FROM_TRASH_FAILED]: (state) => ({
+    ...state,
+    deleteFromTrashRequestStatus: {
+      ...state?.deleteFromTrashRequestStatus,
+      isLoading: false,
+      isError: true,
+      errorMessage: "",
+    },
+  }),
+
+  [RESTORE_FROM_TRASH_REQUEST]: (state) => ({
+    ...state,
+    restoreFromTrashRequestStatus: {
+      ...state?.restoreFromTrashRequestStatus,
+      isLoading: true,
+      isError: false,
+      errorMessage: "",
+    },
+  }),
+  [RESTORE_FROM_TRASH_SUCCESS]: (state) => ({
+    ...state,
+    restoreFromTrashRequestStatus: {
+      ...state?.restoreFromTrashRequestStatus,
+      isLoading: false,
+      isError: false,
+      errorMessage: "",
+    },
+  }),
+  [RESTORE_FROM_TRASH_FAILED]: (state) => ({
+    ...state,
+    restoreFromTrashRequestStatus: {
+      ...state?.restoreFromTrashRequestStatus,
+      isLoading: false,
+      isError: true,
+      errorMessage: "",
+    },
+  }),
 };
 
 export default handleActions(actionHandlers, {
@@ -501,5 +547,15 @@ export default handleActions(actionHandlers, {
     trashProjects: [],
     trashMilestones: [],
     trashTasks: [],
+  },
+  deleteFromTrashRequestStatus: {
+    isLoading: false,
+    isError: false,
+    errorMessage: "",
+  },
+  restoreFromTrashRequestStatus: {
+    isLoading: false,
+    isError: false,
+    errorMessage: "",
   },
 });

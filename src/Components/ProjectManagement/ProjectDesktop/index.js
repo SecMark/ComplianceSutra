@@ -20,6 +20,7 @@ import {
   EditIconButton,
   SmallIconButton,
 } from "../components/Buttons";
+import projectDeleteIcon from "../../../assets/ERIcons/projectDeleteIcon.svg";
 import { RiMessage2Fill } from "react-icons/ri";
 import "./style.css";
 import { useHistory, useRouteMatch } from "react-router";
@@ -27,6 +28,8 @@ import { Link } from "react-router-dom";
 import { useOuterClick } from "../../OnBording/SubModules/DashBoardCO/components/RightSideGrid/outerClick";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteFromTrashRequest,
+  restoreFromTrashRequest,
   setDeleteModalState,
   setMilestoneModalState,
   setProjectModalState,
@@ -80,6 +83,7 @@ const Project = ({ data }) => {
     project_end_date,
     project_assign_users,
     project_overview,
+    task_list_data,
   } = data;
   const project_duration = differenceInDays(
     project_start_date,
@@ -102,7 +106,35 @@ const Project = ({ data }) => {
         {isShowProjectContextMenu && (
           <ProjectAndTaskContextMenu
             containerRef={projectContextMenuRef}
-            onAddClick={addMilestoneHandler}
+            // onAddClick={addMilestoneHandler}
+            isProjectContextMenu
+            onAddMilestoneClick={addMilestoneHandler}
+            onAddTaskListClick={() => {
+              const _project = [...projectData].filter(
+                (item) => item.project_id === project_id
+              );
+              const _project_milestones =
+                _project &&
+                _project.length > 0 &&
+                _project[0].milestone_data?.map((milestone) => ({
+                  value: {
+                    milestone_id: milestone?.milestone_id,
+                    project_id: milestone?.project,
+                  },
+                  label: milestone.milestone_title,
+                }));
+              dispatch(
+                setTaskListModalState({
+                  ...modalsStatus?.taskListModal,
+                  isVisible: true,
+                  editData: {
+                    ...modalsStatus?.taskListModal?.editData,
+                    project_id,
+                  },
+                  milestonesList: _project_milestones || [],
+                })
+              );
+            }}
             onEditClick={() => {
               dispatch(
                 setProjectModalState({
@@ -319,6 +351,10 @@ const Project = ({ data }) => {
                               setTaskListModalState({
                                 ...modalsStatus?.taskListModal,
                                 isVisible: true,
+                                editData: {
+                                  ...modalsStatus?.taskListModal?.editData,
+                                  project_id,
+                                },
                                 milestonesList: _project_milestones || [],
                               })
                             );
@@ -361,6 +397,17 @@ const Project = ({ data }) => {
                   </div>
                 );
               })}
+            {expandMoreLevel >= 1 &&
+              task_list_data &&
+              task_list_data.length > 0 && (
+                <div className="py-2 pl-2 background--white">
+                  {task_list_data &&
+                    task_list_data?.length > 0 &&
+                    task_list_data?.map((tasklist) => {
+                      return <DesktopTaskListComponent data={tasklist} />;
+                    })}
+                </div>
+              )}
           </div>
         )}
       </div>
@@ -391,14 +438,27 @@ const Project = ({ data }) => {
                     {project_owner_name}
                   </p>
                 </div>
-                <Link to={`${url}/project-tasks`}>
-                  <div className="project-container-mobile__data-item">
-                    <p className="project-data-container__item project-container-mobile__data-item-title">
-                      Task
-                    </p>
-                    <p className="project-data-container__item">2/2</p>
-                  </div>
-                </Link>
+                {data?.task_data && data?.task_data?.length > 0 && (
+                  <Link
+                    to={{
+                      pathname: `${url}/project-tasks`,
+                      state: {
+                        task_list_title: null,
+                        task_list_id: null,
+                        task_data: data?.task_data || [],
+                        project_id,
+                        milestone_id: null,
+                      },
+                    }}
+                  >
+                    <div className="project-container-mobile__data-item">
+                      <p className="project-data-container__item project-container-mobile__data-item-title">
+                        Task
+                      </p>
+                      <p className="project-data-container__item">2/2</p>
+                    </div>
+                  </Link>
+                )}
                 <Link
                   to={{ pathname: `${url}/project-milestone`, state: data }}
                 >
@@ -411,6 +471,27 @@ const Project = ({ data }) => {
                     </p>
                   </div>
                 </Link>
+                {task_list_data && task_list_data.length > 0 && (
+                  <Link
+                    to={{
+                      pathname: `${url}/project-tasklist`,
+                      state: {
+                        project_id,
+                        project_name,
+                        task_list_data,
+                      },
+                    }}
+                  >
+                    <div className="project-container-mobile__data-item">
+                      <p className="project-data-container__item project-container-mobile__data-item-title">
+                        Tasklist
+                      </p>
+                      <p className="project-data-container__item">
+                        0/{task_list_data?.length || 0}
+                      </p>
+                    </div>
+                  </Link>
+                )}
                 <div className="project-container-mobile__data-item">
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Duration
@@ -701,7 +782,7 @@ const DesktopTaskListComponent = ({ data }) => {
     </div>
   );
 };
-export const ProjectMilestone = ({ data }) => {
+export const ProjectMilestone = ({ data, projectName }) => {
   // const {
   //   milestone_end_date,
   //   milestone_id,
@@ -710,6 +791,7 @@ export const ProjectMilestone = ({ data }) => {
   //   milestone_title,
   //   milestone_assign_users,
   // } = milestone;
+  const { url, path } = useRouteMatch();
   const usersList = useSelector(
     (state) => state?.ProjectManagementReducer?.usersList
   );
@@ -720,6 +802,7 @@ export const ProjectMilestone = ({ data }) => {
     (state) => state?.ProjectManagementReducer?.modalsStatus
   );
   const dispatch = useDispatch();
+  const task_list_data = data?.task_list_data || [];
   const milestone_owner = getUserName(usersList, data?.milestone_owner) || "-";
   const milestone_start_date = getProjectDateFormat(data?.milestone_start_date);
   const milestone_end_date = getProjectDateFormat(data?.milestone_end_date);
@@ -766,6 +849,29 @@ export const ProjectMilestone = ({ data }) => {
                   {milestone_assign_users}
                 </p>
               </div>
+              {task_list_data && task_list_data.length > 0 && (
+                <Link
+                  to={{
+                    pathname: `${url}/project-tasklist`,
+                    state: {
+                      project_id: data?.project,
+                      project_name: projectName,
+                      task_list_data,
+                      milestone_id: data?.milestone_id,
+                      milestone_title: data?.milestone_title,
+                    },
+                  }}
+                >
+                  <div className="project-container-mobile__data-item">
+                    <p className="project-data-container__item project-container-mobile__data-item-title">
+                      Tasklist
+                    </p>
+                    <p className="project-data-container__item">
+                      0/{(task_list_data && task_list_data.length) || 0}
+                    </p>
+                  </div>
+                </Link>
+              )}
             </div>
             <div className="d-flex mb-3 trash-task">
               <p className="project-data-container__item project-container-mobile__data-item-title mr-4 mb-0">
@@ -1005,29 +1111,32 @@ export const ProjectHeader = ({ isTasksHeader }) => {
   );
 };
 
-export const ProjectTask = () => {
+export const ProjectTaskList = ({ data }) => {
   const { url } = useRouteMatch();
   return (
-    <Link
-      to={{
-        pathname: `${url}/sub-tasks`,
-        state: {
-          subtask_name: "Project Discuss Meeting",
-          from: url,
-        },
-      }}
-    >
-      <div className="project-data-container__2 d-flex align-items-center justify-content-between mb-3">
+    <div className="project-data-container__2 d-flex align-items-center justify-content-between mb-3">
+      <Link
+        to={{
+          pathname: `${url}/tasklist-tasks`,
+          state: {
+            task_list_title: data?.task_list_title,
+            task_list_id: data?.task_list_id,
+            task_data: data?.task_data,
+            project_id: data?.project,
+            milestone_id: data?.project_milestone,
+          },
+        }}
+      >
         <p className="project-data-container__project-name project-data-container__item flex-grow-1">
-          Project Discuss Meeting
+          {data?.task_list_title}
         </p>
-        <div className="project-data-container__buttons d-flex align-items-center justify-content-between">
-          <SmallIconButton type="outlined">
-            <MdMoreHoriz />
-          </SmallIconButton>
-        </div>
+      </Link>
+      <div className="project-data-container__buttons d-flex align-items-center justify-content-between">
+        <SmallIconButton type="outlined">
+          <MdMoreHoriz />
+        </SmallIconButton>
       </div>
-    </Link>
+    </div>
   );
 };
 
@@ -1036,19 +1145,44 @@ export const ProjectAndTaskContextMenu = ({
   onEditClick,
   onDeleteClick,
   onAddClick,
+  isProjectContextMenu,
+  onAddMilestoneClick,
+  onAddTaskListClick,
 }) => {
   return (
     <div className="project-three-dot-popup" ref={containerRef}>
       <div className="d-flex align-items-center justify-content-between">
         <EditIconButton className="mr-2" onClickHandler={onEditClick} />
         <DeleteIconButton className="mr-2" onClickHandler={onDeleteClick} />
-        <SmallIconButton type="primary" onClick={onAddClick}>
-          <MdAdd />
-        </SmallIconButton>
+        {!isProjectContextMenu && onAddClick && (
+          <SmallIconButton type="primary" onClick={onAddClick}>
+            <MdAdd />
+          </SmallIconButton>
+        )}
+        {isProjectContextMenu && onAddMilestoneClick && onAddTaskListClick && (
+          <>
+            <SmallIconButton
+              type="primary"
+              onClick={onAddMilestoneClick}
+              className="mr-2 d-flex align-items-center justify-content-center project-context-menu__plus-button"
+            >
+              M<MdAdd />
+            </SmallIconButton>
+            <SmallIconButton
+              type="primary"
+              onClick={onAddTaskListClick}
+              className="d-flex align-items-center justify-content-center project-context-menu__plus-button"
+            >
+              T<MdAdd />
+            </SmallIconButton>
+          </>
+        )}
       </div>
-      <button className="mt-3 project-management__button project-management__button--outlined">
-        set as template
-      </button>
+      <div className="d-flex align-items-center justify-content-center w-100">
+        <button className="mt-3 project-management__button project-management__button--outlined">
+          Set as template
+        </button>
+      </div>
     </div>
   );
 };
@@ -1062,6 +1196,7 @@ export const TrashProject = ({ data }) => {
     (data?.project_assign_users &&
       getUsers(usersList, data?.project_assign_users)) ||
     "-";
+  const dispatch = useDispatch();
   const project_start_date = getProjectDateFormat(data?.project_start_date);
   const project_end_date = getProjectDateFormat(data?.project_end_date);
   const project_duration =
@@ -1100,10 +1235,30 @@ export const TrashProject = ({ data }) => {
           {project_assign_users}
         </p>
         <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
-          <SmallIconButton type="primary" className="mr-3">
+          <SmallIconButton
+            type="primary"
+            className="mr-3"
+            onClick={() =>
+              dispatch(
+                restoreFromTrashRequest({
+                  project_id: data?.project_id,
+                  type: "project",
+                })
+              )
+            }
+          >
             <MdHistory />
           </SmallIconButton>
-          <DeleteIconButton />
+          <DeleteIconButton
+            onClickHandler={() =>
+              dispatch(
+                deleteFromTrashRequest({
+                  project_id: data?.project_id,
+                  type: "project",
+                })
+              )
+            }
+          />
         </div>
       </div>
       {/* Mobile Component */}
@@ -1175,10 +1330,30 @@ export const TrashProject = ({ data }) => {
               &nbsp;
               {project_start_date + " To " + project_end_date}
             </p>
-            <SmallIconButton type="primary" className="mr-3">
+            <SmallIconButton
+              type="primary"
+              className="mr-3"
+              onClick={() =>
+                dispatch(
+                  restoreFromTrashRequest({
+                    project_id: data?.project_id,
+                    type: "project",
+                  })
+                )
+              }
+            >
               <MdHistory />
             </SmallIconButton>
-            <DeleteIconButton />
+            <DeleteIconButton
+              onClickHandler={() =>
+                dispatch(
+                  deleteFromTrashRequest({
+                    project_id: data?.project_id,
+                    type: "project",
+                  })
+                )
+              }
+            />
             {/* Edit and Delete Button */}
           </div>
         </div>
@@ -1191,6 +1366,7 @@ export const TrashMilestone = ({ data }) => {
   const usersList = useSelector(
     (state) => state?.ProjectManagementReducer?.usersList
   );
+  const dispatch = useDispatch();
   const milestone_owner = getUserName(usersList, data?.milestone_owner) || "-";
   const milestone_duration =
     differenceInDays(data?.milestone_start_date, data?.milestone_end_date) ||
@@ -1239,10 +1415,30 @@ export const TrashMilestone = ({ data }) => {
             {milestone_assign_users}
           </p>
           <div className="project-data-container__buttons d-flex align-items-center justify-content-end">
-            <SmallIconButton type="primary" className="mr-3">
+            <SmallIconButton
+              type="primary"
+              className="mr-3"
+              onClick={() =>
+                dispatch(
+                  restoreFromTrashRequest({
+                    milestone_id: data?.milestone_id,
+                    type: "milestone",
+                  })
+                )
+              }
+            >
               <MdHistory />
             </SmallIconButton>
-            <DeleteIconButton />
+            <DeleteIconButton
+              onClickHandler={() =>
+                dispatch(
+                  deleteFromTrashRequest({
+                    milestone_id: data?.milestone_id,
+                    type: "milestone",
+                  })
+                )
+              }
+            />
           </div>
         </div>
       </div>
@@ -1313,11 +1509,30 @@ export const TrashMilestone = ({ data }) => {
                 data?.milestone_start_date &&
                 milestone_start_date + " To " + milestone_end_date}
             </p>
-            <SmallIconButton type="primary" className="mr-3">
+            <SmallIconButton
+              type="primary"
+              className="mr-3"
+              onClick={() =>
+                dispatch(
+                  restoreFromTrashRequest({
+                    milestone_id: data?.milestone_id,
+                    type: "milestone",
+                  })
+                )
+              }
+            >
               <MdHistory />
             </SmallIconButton>
-            <DeleteIconButton />
-            {/* Edit and Delete Button */}
+            <DeleteIconButton
+              onClickHandler={() =>
+                dispatch(
+                  deleteFromTrashRequest({
+                    milestone_id: data?.milestone_id,
+                    type: "milestone",
+                  })
+                )
+              }
+            />
           </div>
         </div>
       </div>
@@ -1329,6 +1544,7 @@ export const TrashTask = ({ data }) => {
   const usersList = useSelector(
     (state) => state?.ProjectManagementReducer?.usersList
   );
+  const dispatch = useDispatch();
   const task_owner = getUserName(usersList, data?.task_owner) || "-";
   const assign_to = getUserName(usersList, data?.assign_to) || "-";
   const task_duration =
@@ -1361,11 +1577,41 @@ export const TrashTask = ({ data }) => {
           <SmallIconButton type="grey" className="p-2 mr-2">
             <MdCheckCircle className="icon__small" />
           </SmallIconButton>
-          <SmallIconButton type="primary" className="mr-2 p-2">
+          <SmallIconButton
+            type="primary"
+            className="mr-2 p-2"
+            title="Restore Task"
+            onClick={() => {
+              dispatch(
+                restoreFromTrashRequest({
+                  task_id: data?.task_id,
+                  type: "task",
+                })
+              );
+            }}
+          >
             <MdHistory className="icon__small" />
           </SmallIconButton>
-          <SmallIconButton type="grey" className="p-2">
-            <MdBlock className="icon__small" />
+          <SmallIconButton
+            type="danger"
+            className="p-2"
+            title="Delete Task"
+            onClick={() =>
+              dispatch(
+                deleteFromTrashRequest({
+                  task_id: data?.task_id,
+                  type: "task",
+                })
+              )
+            }
+          >
+            <img
+              src={projectDeleteIcon}
+              alt="edit-icon"
+              width="20px"
+              height="20px"
+              style={{ padding: "2px" }}
+            />
           </SmallIconButton>
         </div>
       </div>
@@ -1447,10 +1693,30 @@ export const TrashTask = ({ data }) => {
                   " To " +
                   getProjectDateFormat(data?.task_end_date)}
             </p>
-            <SmallIconButton type="primary" className="mr-3">
+            <SmallIconButton
+              type="primary"
+              className="mr-3"
+              onClick={() =>
+                dispatch(
+                  restoreFromTrashRequest({
+                    task_id: data?.task_id,
+                    type: "task",
+                  })
+                )
+              }
+            >
               <MdHistory />
             </SmallIconButton>
-            <DeleteIconButton />
+            <DeleteIconButton
+              onClickHandler={() =>
+                dispatch(
+                  deleteFromTrashRequest({
+                    task_id: data?.task_id,
+                    type: "task",
+                  })
+                )
+              }
+            />
             {/* Edit and Delete Button */}
           </div>
         </div>

@@ -2,68 +2,82 @@ import React, { useEffect, useState } from "react";
 import { MdAdd, MdBlock, MdChevronLeft } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import BackDrop from "../../../CommonModules/sharedComponents/Loader/BackDrop";
 import {
   ProjectManagementHeader,
   ProjectManagementMain,
   ProjectManagementMainContainer,
 } from "../components";
+import NewTaskModel from "../components/AddNewTask/TaskModel";
 import { SmallIconButton } from "../components/Buttons";
 import DeactivateAndDeleteModal from "../components/Modals/DeactivateAndDeleteModal";
-import AddEditMilestone from "../components/PopPupModules/AddEditMilestone";
-import { ProjectMilestone } from "../ProjectDesktop";
+import { ProjectSubTask } from "../ProjectDesktop";
 import {
   clearDeleteModalSatate,
-  clearMilestoneModalState,
+  clearTaskModalState,
   deactivateRequest,
   getProjectDataRequest,
-  setMilestoneModalState,
+  setTaskModalState,
 } from "../redux/actions";
 import projectDeleteIcon from "../../../assets/ERIcons/projectDeleteIcon.svg";
-import BackDrop from "../../../CommonModules/sharedComponents/Loader/BackDrop";
-const Milestone = () => {
-  const [milestones, setMilestones] = useState([]);
-  const history = useHistory();
+const Tasks = () => {
+  const [taskData, setCurrentTaskData] = useState([]);
   const modalsStatus = useSelector(
     (state) => state?.ProjectManagementReducer?.modalsStatus
   );
-  const deactivateModalAndStatus = useSelector(
-    (state) => state?.ProjectManagementReducer?.deactivateModalAndStatus
-  );
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { task_list_title, task_list_id, project_id, milestone_id } =
+    history?.location?.state;
   const projectData = useSelector(
     (state) => state?.ProjectManagementReducer?.projectManagementData?.projects
   );
   const isProjectDataLoading = useSelector(
     (state) => state?.ProjectManagementReducer?.projectManagementData?.isLoading
   );
+  const deactivateModalAndStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.deactivateModalAndStatus
+  );
   const isDeactivateRequestInProgress = useSelector(
     (state) =>
       state?.ProjectManagementReducer?.deactivateRequestStatus?.isLoading
   );
-  const dispatch = useDispatch();
+
   useEffect(() => {
-    const { location } = history;
-    if (location?.state && Object?.keys(location?.state)?.length > 0) {
-      setMilestones(
-        (location?.state?.milestone_data && [
-          ...location?.state?.milestone_data,
-        ]) ||
-          []
-      );
-    }
-  }, [history]);
-  useEffect(() => {
-    if (projectData && projectData.length > 0) {
-      let currentProject =
-        projectData.filter(
-          (item) => item.project_id === history?.location?.state?.project_id
-        ) || [];
-      if (currentProject && currentProject.length > 0) {
-        const milestones = currentProject[0]?.milestone_data;
-        if (milestones && milestones.length > 0) {
-          setMilestones(milestones);
-        } else {
-          setMilestones([]);
+    let currentProject;
+    currentProject = projectData?.find(
+      (element) => element?.project_id === project_id
+    );
+    if (project_id && milestone_id && task_list_id) {
+      if (currentProject) {
+        const currentMilestone = currentProject?.milestone_data?.find(
+          (element) => element?.milestone_id === milestone_id
+        );
+        if (
+          currentMilestone &&
+          currentMilestone?.task_list_data &&
+          currentMilestone?.task_list_data?.length > 0
+        ) {
+          const currentTaskList = currentMilestone?.task_list_data?.find(
+            (element) => element?.task_list_id === task_list_id
+          );
+          const currentTaskData = currentTaskList?.task_data;
+          if (currentTaskData && currentTaskData.length > 0) {
+            setCurrentTaskData(currentTaskData);
+          } else {
+            setCurrentTaskData([]);
+          }
         }
+      }
+    } else if (project_id && task_list_id) {
+      const currentTaskList = currentProject?.task_list_data?.find(
+        (element) => element?.task_list_id === task_list_id
+      );
+      const currentTaskData = currentTaskList?.task_data;
+      if (currentTaskData && currentTaskData?.length > 0) {
+        setCurrentTaskData(currentTaskData);
+      } else {
+        setCurrentTaskData([]);
       }
     }
   }, [projectData]);
@@ -75,7 +89,13 @@ const Milestone = () => {
   return (
     <>
       <BackDrop
-        isLoading={isDeactivateRequestInProgress || isProjectDataLoading}
+        isLoading={isProjectDataLoading || isDeactivateRequestInProgress}
+      />
+      <NewTaskModel
+        showTask={modalsStatus?.taskModal?.isVisible}
+        onClose={() => dispatch(clearTaskModalState())}
+        isEdit={modalsStatus?.taskModal?.isEdit}
+        editData={modalsStatus?.taskModal?.editData}
       />
       <DeactivateAndDeleteModal
         visible={deactivateModalAndStatus?.isVisible}
@@ -99,12 +119,6 @@ const Milestone = () => {
           dispatch(clearDeleteModalSatate());
         }}
       />
-      <AddEditMilestone
-        visible={modalsStatus?.milestoneModal?.isVisible}
-        onClose={() => dispatch(clearMilestoneModalState())}
-        isEdit={modalsStatus?.milestoneModal?.isEdit}
-        editData={modalsStatus?.milestoneModal?.editData}
-      />
       <ProjectManagementHeader isNoBorder>
         <div className="mb-3 w-100 d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center">
@@ -112,52 +126,46 @@ const Milestone = () => {
               <MdChevronLeft />
             </SmallIconButton>
             <p className="project-management__header-title mb-0 d-inline-block">
-              Milestone
+              {task_list_title || "Tasks"}
             </p>
           </div>
           <SmallIconButton
             type="primary"
             className="mr-2"
-            onClick={() =>
+            onClick={() => {
               dispatch(
-                setMilestoneModalState({
-                  ...modalsStatus?.milestoneModal,
-                  isVisible: !modalsStatus?.milestoneModal?.isVisible,
-                  projectId: history?.location?.state?.project_id,
+                setTaskModalState({
+                  ...modalsStatus?.taskModal,
+                  isVisible: true,
+                  editData: {
+                    ...modalsStatus?.taskModal?.editData,
+                    project_id,
+                    milestone_id,
+                    task_list_id,
+                  },
                 })
-              )
-            }
+              );
+            }}
           >
             <MdAdd />
           </SmallIconButton>
         </div>
-        <p
-          style={{
-            color: "#7a73ff",
-          }}
-          className="project-management__header-title mt-4 mb-1 text-center"
-        >
-          {history?.location?.state?.project_name}
-        </p>
       </ProjectManagementHeader>
       <ProjectManagementMainContainer>
         <ProjectManagementMain className="project-management__main--calender">
-          {milestones &&
-            milestones.length > 0 &&
-            milestones.map((milestone) => (
-              <ProjectMilestone
-                data={milestone}
-                projectName={history?.location?.state?.project_name}
-              />
-            ))}
-          {milestones && milestones.length === 0 && (
+          {taskData &&
+            taskData.length > 0 &&
+            taskData.map((task) => {
+              return <ProjectSubTask data={task} />;
+            })}
+          {(!taskData || (taskData && taskData?.length === 0)) && (
             <p
               style={{
                 opacity: "0.8",
               }}
               className="project-management__header-title mt-5 text-center"
             >
-              No milestones found for this project
+              No tasks found for this project
             </p>
           )}
         </ProjectManagementMain>
@@ -166,4 +174,4 @@ const Milestone = () => {
   );
 };
 
-export default Milestone;
+export default Tasks;
