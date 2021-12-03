@@ -51,6 +51,7 @@ function CoManagment({ handleClose }) {
   const [assignPromptIndex, setAssignPromptIndex] = useState(undefined);
   const [selectedIndex, setSelectedIndex] = useState(undefined);
   const [selectedCompany, setSelectedCompany] = useState(undefined);
+  const [undoSelectedCompany,setUndoSelectedCompany] = useState(undefined);
   const [toastType, setToastType] = useState(undefined);
   const [deleteBoxHideShow, setDeleteBoxHideShow] = useState(false);
   const [userSearchText, setUserSearchText] = useState("");
@@ -111,27 +112,25 @@ function CoManagment({ handleClose }) {
           let array = [];
           let mobArray2 = [];
 
-          response.data.message?.company_list.map(
-            (item) => {
-              array.push({ value: item, label: item });
-            }
-          );
+          response.data.message?.company_list.map((item) => {
+            array.push({ value: item, label: item });
+          });
 
-          response.data.message?.Industry_list.map(
-            (item) => {
-              mobArray2.push({ value: item, label: item });
-            }
-          );
+          response.data.message?.Industry_list.map((item) => {
+            mobArray2.push({ value: item, label: item });
+          });
 
           setCategoryTypes(mobArray2);
           setCompanyTypeoInfo(array);
-        }
-        else{
-          toast.error(response.data.message.status_response,"failed to load compnay list and industry list")
+        } else {
+          toast.error(
+            response.data.message.status_response,
+            "failed to load compnay list and industry list"
+          );
         }
       })
       .catch((error) => {
-        toast.error(error,"failed to load compnay list and industry list")
+        toast.error(error, "failed to load compnay list and industry list");
       });
   };
 
@@ -207,6 +206,7 @@ function CoManagment({ handleClose }) {
     });
 
     setCompanyDetails(updateCompanyDetails);
+    setCompanyDetailsBackup(updateCompanyDetails);
   }, [state.taskReport.companyTypeInfo.CompanyInfo]);
 
   const getNameInitials = (name) => {
@@ -254,14 +254,11 @@ function CoManagment({ handleClose }) {
         .post("compliance.api.checkPincode", payload)
         .then((response) => {
           if (response.data.message.status === !true) {
-            console.log("Invalid pincode", response.data.message.status);
             companyList[index].pinCodeError = "Invalid Pincode";
             let Button = document.getElementById("addLicense" + index);
             Button.className = "btn buttonprimarygray";
             Button.disabled = true;
           } else if (response.data.message.status === true) {
-            console.log("valid pincode", response.data.message.status);
-
             companyList[index].pinCodeError = "";
             let Button = document.getElementById("addLicense" + index);
             Button.className = "btn buttonprimary";
@@ -333,15 +330,14 @@ function CoManagment({ handleClose }) {
       let countryvalue = countryList().getLabel(e);
       setEditShow(true);
       companyList[index].company_country = countryvalue;
+      companyList[index].licenses = "";
     } else if (name === "company_pincode") {
-      console.log("setshowad", showAdd);
       let { value } = e.target;
       pinCodeValidation(value, index);
       setEditShow(true);
       companyList[index].company_pincode = e.target.value;
     } else if (name == "compliance_officer") {
       setEditShow(true);
-      console.log("Gadsfasdfsdfsdf", e);
       companyList[index].compliance_officer = [
         {
           email: e.userEmail,
@@ -376,7 +372,6 @@ function CoManagment({ handleClose }) {
     }
     setSelectedIndex(itemIndex);
     setCompanyDetails(companyList);
-    console.log(companyList);
   };
 
   const validateExistingName = (e, index) => {
@@ -483,7 +478,7 @@ function CoManagment({ handleClose }) {
       setLicenseModalHideShow(false);
     }
     setSelectedIndex(fieldData);
-    setSelectedCompany(undefined);
+    // setSelectedCompany(undefined);
     // let tempCoCompany = [...companyDetails];
     // const isSameLicenses = checkWithPreviousLicenses(
     //   selectedCompany.selectedLicenseArray,
@@ -508,7 +503,6 @@ function CoManagment({ handleClose }) {
   };
   const addLicense = (index, licenseList) => {
     setEditShow(true);
-    console.log("have to set this fields", fields, index, licenseList);
     setFields({
       ...fields,
       selectedLiecenseIdArray: licenseList,
@@ -586,10 +580,22 @@ function CoManagment({ handleClose }) {
   };
   const handleUndoChanges = (index, item) => {
     setSelectedCompany({ ...item });
+    setUndoSelectedCompany({...item})
     let tempCoCompany = [...companyDetails];
+    console.log("on handle undo", companyDetails);
     if (tempCoCompany[index].isExist) {
       console.log("selected this company", selectedCompany);
-      tempCoCompany[index].selectedCompany = selectedCompany;
+      // tempCoCompany[index].selectedCompany = selectedCompany;
+      tempCoCompany[index].company_name = selectedCompany.company_name;
+      tempCoCompany[index].company_type = selectedCompany.company_type;
+      tempCoCompany[index].company_country = selectedCompany.company_country;
+      tempCoCompany[index].company_pincode = selectedCompany.company_pincode;
+      tempCoCompany[index].business_category =
+        selectedCompany.business_category;
+      tempCoCompany[index].compliance_officer =
+        selectedCompany.compliance_officer;
+      tempCoCompany[index].licenses = selectedCompany.licenses;
+      tempCoCompany[index].pinCodeError = "";
       tempCoCompany[index].isEdited = false;
     } else {
       tempCoCompany.splice(index, 1);
@@ -599,6 +605,7 @@ function CoManagment({ handleClose }) {
     setSelectedCompany(undefined);
     setSelectedIndex(undefined);
     setShowAdd(false);
+    console.log("undo done", tempCoCompany);
     setCompanyDetails(tempCoCompany);
   };
   const handleSaveChanges = (index) => {
@@ -657,7 +664,6 @@ function CoManagment({ handleClose }) {
           item.userEmail.toLowerCase().includes(e.target.value.toLowerCase())
         ) {
           tempArray.push(item);
-          console.log("search result", item);
         }
       });
       setUserData(tempArray);
@@ -703,6 +709,28 @@ function CoManagment({ handleClose }) {
     }
   };
 
+  const companyTypeDropDown = (item, index) => {
+    console.log("dropdown values",item)
+    return (
+      <div className="holding-list-bold-title">
+        <Searchable
+          value={item.company_type}
+          className="form-control border-0"
+          placeholder={item.company_type ? item.company_type : "Select Type"}
+          notFoundText="No result found" // by default "No result found hj"
+          options={companyTypeInfo}
+          onSelect={(e) =>
+            selectedIndex === undefined || selectedIndex === index
+              ? handelChange(e, "company_type", index, item)
+              : true
+          }
+          listMaxHeight={200}
+        />
+      </div>
+    );
+  };
+  const countryDropDown = () => {};
+  const businessCategoryDropDown = () => {};
   return (
     <div className="co-personal-grid">
       {!isMobile && (
@@ -777,7 +805,6 @@ function CoManagment({ handleClose }) {
           </thead>
           <tbody>
             {companyDetails?.map((item, index) => {
-              console.log("got this items", item);
               return (
                 <>
                   <tr className="focusRemove">
@@ -827,26 +854,7 @@ function CoManagment({ handleClose }) {
                       )}
                     </td>
                     <td className="dropList">
-                      <div className="holding-list-bold-title">
-                        <Searchable
-                          value={item.company_type}
-                          className="form-control border-0"
-                          placeholder={
-                            item.company_type
-                              ? item.company_type
-                              : "Select Type"
-                          }
-                          notFoundText="No result found" // by default "No result found hj"
-                          options={companyTypeInfo}
-                          onSelect={(e) =>
-                            selectedIndex === undefined ||
-                            selectedIndex === index
-                              ? handelChange(e, "company_type", index, item)
-                              : true
-                          }
-                          listMaxHeight={200}
-                        />
-                      </div>
+                      {companyTypeDropDown(item, index)}
                     </td>
                     <td className="dropList">
                       <div className="holding-list-bold-title">
@@ -957,7 +965,6 @@ function CoManagment({ handleClose }) {
                             )}
                           </span>{" "}
                           {item?.compliance_officer[0]?.full_name}
-                          {"  Hre"}
                         </div>
                       )}
 
@@ -1005,7 +1012,6 @@ function CoManagment({ handleClose }) {
                                     <button
                                       className="btn save-details assign-me"
                                       onClick={() => {
-                                        console.log("user Login", loggedUser);
                                         handelChange(
                                           {
                                             userEmail: loggedUser.email,
@@ -1028,7 +1034,6 @@ function CoManagment({ handleClose }) {
                                   {userData &&
                                     userData.length > 0 &&
                                     userData.map((user) => {
-                                      console.log("user", user);
                                       return (
                                         <>
                                           <div
@@ -1058,7 +1063,7 @@ function CoManagment({ handleClose }) {
                                   {userSearchText !== "" && (
                                     <a
                                       className="dropbox-add-line"
-                                      href="#"
+                                      href="#!"
                                       onClick={(e) => {
                                         e.preventDefault();
                                         handelChange(
