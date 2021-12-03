@@ -46,9 +46,7 @@ import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
-import UserTask from "../Components/UserTask/index";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
-import AddProject from "../Components/ExpertReviewModule/AddandEditProject";
 export default function AppRouter() {
   return (
     <div>

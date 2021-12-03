@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import calanderIcon from "../../../../../assets/Icons/calanderIcon.svg";
 import CreatableSelect from "react-select/creatable";
 import moment from "moment";
+import { isBefore, isBeforeToday } from "../../date.helpers";
+import { MdError } from "react-icons/md";
 
 // Initial state
 const initailState = {
@@ -25,13 +27,17 @@ function AddProject({ show, onClose, editData }) {
   const allUsersList = useSelector(
     (state) => state?.ProjectManagementReducer?.usersList
   );
+  const [fieldErrors, setFieldErrors] = useState({
+    isValidate: true,
+    start_date: "",
+    end_date: "",
+  });
   useEffect(() => {
     // Get all users list
     if (allUsersList && allUsersList.length > 0) {
       setUserList(allUsersList);
     }
   }, [allUsersList]);
-
   useEffect(() => {
     setValues({
       ...editData,
@@ -40,7 +46,45 @@ function AddProject({ show, onClose, editData }) {
   useEffect(() => {
     dispatch(getUsersListRequest());
   }, []);
-
+  useEffect(() => {
+    const start_date = values?.start_date;
+    const end_date = values?.end_date;
+    if (start_date !== "" || end_date !== "") {
+      setFieldErrors({
+        ...fieldErrors,
+        isValidate:
+          isBeforeToday(start_date) || isBeforeToday(end_date) ? true : false,
+        start_date: isBeforeToday(start_date)
+          ? "Please select today date or after " +
+            moment(start_date).format("DD MMM Y")
+          : "",
+        end_date: isBeforeToday(end_date)
+          ? "Please select today date or after " +
+            moment(end_date).format("DD MMM Y")
+          : "",
+      });
+      if (
+        start_date !== "" &&
+        end_date !== "" &&
+        isBefore(start_date, end_date)
+      ) {
+        setFieldErrors({
+          ...fieldErrors,
+          isValidate: true,
+          end_date:
+            "End Date should be after Start Date (" +
+            moment(start_date).format("DD MMM Y") +
+            ")",
+        });
+      }
+    } else {
+      setFieldErrors({
+        isValidate: true,
+        start_date: "",
+        end_date: "",
+      });
+    }
+  }, [values?.start_date, values?.end_date]);
   // custom style for dropdown
   const customStyle = {
     control: (styles) => ({
@@ -93,6 +137,7 @@ function AddProject({ show, onClose, editData }) {
             name="project_name"
             onChange={onHandleChange}
             value={values.project_name}
+            required
           />
           <div className="row mt-3">
             <div className="col-sm-12 col-lg-6">
@@ -131,6 +176,13 @@ function AddProject({ show, onClose, editData }) {
                 }
                 format="DD MMM YYYY"
               />
+              {fieldErrors?.start_date !== "" && (
+                <p className="add-project-err-msg">
+                  <MdError />
+                  &nbsp;
+                  {fieldErrors?.start_date}
+                </p>
+              )}
             </div>
             <div className="col-sm-6 col-lg-3">
               <label className="add-edit-project-labels">End Date</label>
@@ -150,6 +202,13 @@ function AddProject({ show, onClose, editData }) {
                 }
                 format="DD MMM YYYY"
               />
+              {fieldErrors?.end_date !== "" && (
+                <p className="add-project-err-msg">
+                  <MdError />
+                  &nbsp;
+                  {fieldErrors?.end_date}
+                </p>
+              )}
             </div>
           </div>
           <label className="add-edit-project-labels mt-3">
@@ -161,6 +220,10 @@ function AddProject({ show, onClose, editData }) {
               <button
                 className="add-edit-project-submit-btn"
                 onClick={onSubmitValue}
+                disabled={fieldErrors?.isValidate}
+                style={{
+                  ...(fieldErrors?.isValidate && { opacity: "0.7" }),
+                }}
               >
                 Submit
               </button>

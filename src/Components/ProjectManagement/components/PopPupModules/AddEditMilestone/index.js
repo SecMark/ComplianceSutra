@@ -63,9 +63,6 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
       });
     }
   }, [modalsStatus]);
-  useEffect(() => {
-    console.log(fieldValues);
-  }, [fieldValues]);
   return (
     <ProjectManagementModal
       visible={visible}

@@ -10,6 +10,7 @@ import {
   MdHistory,
   MdBlock,
 } from "react-icons/md";
+import { FaUserCheck } from "react-icons/fa";
 import {
   IoBanOutline,
   IoCalendarOutline,
@@ -93,11 +94,9 @@ const Project = ({ data }) => {
   const formatted_project_end_date = getProjectDateFormat(project_end_date);
   const project_owner_name =
     project_owner && getUserName(usersList, project_owner);
-  const history = useHistory();
   const { url } = useRouteMatch();
   return (
     <>
-      {/* <Modal visible={true}>hi</Modal> */}
       {/* Desktop Component */}
       <div
         key={project_id || new Date().getTime()}
@@ -106,7 +105,6 @@ const Project = ({ data }) => {
         {isShowProjectContextMenu && (
           <ProjectAndTaskContextMenu
             containerRef={projectContextMenuRef}
-            // onAddClick={addMilestoneHandler}
             isProjectContextMenu
             onAddMilestoneClick={addMilestoneHandler}
             onAddTaskListClick={() => {
@@ -182,8 +180,18 @@ const Project = ({ data }) => {
           >
             {project_owner_name}
           </p>
-          <p className="project-data-container__item">3</p>
-          <p className="project-data-container__item">4</p>
+          <p className="project-data-container__item">
+            {(data?.task_data &&
+              data?.task_data?.length > 0 &&
+              data?.task_data?.length) ||
+              0}
+          </p>
+          <p className="project-data-container__item">
+            {(data?.milestone_data &&
+              data?.milestone_data?.length > 0 &&
+              data?.milestone_data?.length) ||
+              0}
+          </p>
           <p className="project-data-container__item wide-2">
             {project_duration}
           </p>
@@ -608,7 +616,7 @@ export const DesktopTask = ({ data }) => {
           <MdTextsms className="icon__small" />
         </SmallIconButton>
         <EditIconButton
-          className="mr-2"
+          className="mr-2 p-1"
           onClickHandler={() => {
             dispatch(
               setTaskModalState({
@@ -633,8 +641,22 @@ export const DesktopTask = ({ data }) => {
             );
           }}
         />
-        <SmallIconButton type="grey" className="p-2 mr-2">
-          <MdCheckCircle className="icon__small" />
+        <SmallIconButton
+          type={taskData?.task_status === "Approved" ? "primary" : "grey"}
+          className="p-2 mr-2"
+        >
+          {/* <MdCheckCircle className="icon__small" /> */}
+          {/* <IoCheckmarkCircleOutline className="icon__small" /> */}
+
+          {taskData?.task_status === "Not Assigned" && !taskData?.assign_to && (
+            <IoCheckmarkCircleOutline className="icon__small" />
+          )}
+          {taskData?.task_status === "Assigned" && taskData?.assign_to && (
+            <MdCheckCircle className="icon__small" />
+          )}
+          {taskData?.task_status === "Approved" && taskData?.assign_to && (
+            <FaUserCheck className="icon__small" />
+          )}
         </SmallIconButton>
         <SmallIconButton
           type="grey"

@@ -28,13 +28,13 @@ function DashBoardView({ history }) {
     state.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
-  const userEmail =
-    state &&
-    state?.auth &&
-    state?.auth?.loginInfo &&
-    (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
+  // const userEmail =
+  //   state &&
+  //   state?.auth &&
+  //   state?.auth?.loginInfo &&
+  //   (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
   const userDetails = state && state?.auth && state?.auth?.loginInfo;
-
+  const userEmail = userDetails?.email || userDetails?.EmailID;
   const companyName =
     state &&
     state.complianceOfficer &&
@@ -49,50 +49,45 @@ function DashBoardView({ history }) {
       dispatch(notificationActions.setTaskID(null));
     }
   }, []);
-  // useEffect(() => {
-  //   if (userID === undefined) {
-  //     history.push("/login");
-  //   }
-  // }, []);
 
-  // useEffect(() => {
-  //   if (taskList && taskList.length === 0) {
-  //     dispatch(taskReportActions.taskReportRequest());
-  //   }
-  // }, [state.adminMenu.currentMenu]);
-  // useEffect(() => {
-  //   if (
-  //     userEmail &&
-  //     userDetails?.status_response === "Authentication success"
-  //   ) {
-  //     if (userDetails?.UserType === 3) {
-  //       dispatch(taskReportActions.taskReportRequest());
-  //       const refresh_taskList = setInterval(() => {
-  //         dispatch(taskReportActions.taskReportRequest());
-  //       }, 30000);
-  //       return () => clearInterval(refresh_taskList);
-  //     } else {
-  //       history.push("/dashboard");
-  //     }
-  //   } else {
-  //     history.push("/login");
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   if (userDetails.UserType === 3) {
-  //     if (window.location.href.includes("dashboard-view")) {
-  //       dispatch(adminMenuActions.setCurrentMenu("dashboard"));
-  //     }
-  //   }
-  //   if (userDetails.UserType === 4) {
-  //     if (window.location.href.includes("dashboard")) {
-  //       dispatch(adminMenuActions.setCurrentMenu("taskList"));
-  //     }
-  //     if (window.location.href.includes("dashboard-view")) {
-  //       dispatch(adminMenuActions.setCurrentMenu("dashboard"));
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (taskList && taskList.length === 0) {
+      dispatch(taskReportActions.taskReportRequest());
+    }
+  }, [state.adminMenu.currentMenu]);
+  useEffect(() => {
+    if (
+      userEmail &&
+      userDetails?.status_response === "Authentication success"
+    ) {
+      if (userDetails?.UserType === 3) {
+        dispatch(taskReportActions.taskReportRequest());
+        const refresh_taskList = setInterval(() => {
+          dispatch(taskReportActions.taskReportRequest());
+        }, 30000);
+        return () => clearInterval(refresh_taskList);
+      } else {
+        history.push("/dashboard");
+      }
+    } else {
+      history.push("/login");
+    }
+  }, []);
+  useEffect(() => {
+    if (userDetails.UserType === 3) {
+      if (window.location.href.includes("dashboard-view")) {
+        dispatch(adminMenuActions.setCurrentMenu("dashboard"));
+      }
+    }
+    if (userDetails.UserType === 4) {
+      if (window.location.href.includes("dashboard")) {
+        dispatch(adminMenuActions.setCurrentMenu("taskList"));
+      }
+      if (window.location.href.includes("dashboard-view")) {
+        dispatch(adminMenuActions.setCurrentMenu("dashboard"));
+      }
+    }
+  }, []);
 
   const onHBMenu = () => {
     const drawerParent = document.getElementById("sideBarParent");
