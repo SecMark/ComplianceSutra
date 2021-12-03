@@ -181,7 +181,6 @@ function QuickOverView({ click, setClick, setListView, listView }) {
     );
   };
   const renderCollapsibleMonthView = (data, index) => {
-    console.log("data", data);
     return (
       <div className="btn-data">
         {data &&
@@ -386,7 +385,6 @@ function QuickOverView({ click, setClick, setListView, listView }) {
 
   const calculateColorCode = (item) => {
     const value = item.completed_percentage;
-    console.log(value);
     let str = "";
     if (parseInt(value) === -1) {
       str = "gray-box";

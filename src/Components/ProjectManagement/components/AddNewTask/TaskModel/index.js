@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import { DatePicker, Space } from "antd";
-// import calanderIcon from "../../../../../assets/Icons/calanderIcon.svg";
+import { DatePicker } from "antd";
 import calanderIcon from "../../../../../assets/Icons/calanderIcon.svg";
 import CreatableSelect from "react-select/creatable";
 import { useDropzone } from "react-dropzone";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -118,14 +115,8 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
     handleSelectUploadFile();
   }, [acceptedFiles]);
   useEffect(() => {
-    console.log(fileList);
-  }, [fileList]);
-  useEffect(() => {
     setFieldInputs({ ...editData });
   }, [editData]);
-  useEffect(() => {
-    console.log(fieldInputs);
-  }, [fieldInputs, fieldErrors]);
   useEffect(() => {
     if (fieldInputs?.start_date !== "" || fieldInputs?.end_date !== "") {
       setFieldErrors({
