@@ -151,12 +151,14 @@ const ProjectAndTask = () => {
           {currentPageView.id !== "project-management-calender" && (
             <div className="d-flex align-items-center">
               <button
+                title="Add New Project"
                 onClick={() => addProjectHandler(true)}
                 className="mr-2 project-management__button project-management__button--primary"
               >
                 P <MdAdd />
               </button>
               <button
+                title="Add New Task"
                 onClick={() => addTaskHandler(true)}
                 className="project-management__button project-management__button--primary"
               >

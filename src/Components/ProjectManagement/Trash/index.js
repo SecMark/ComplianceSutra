@@ -26,6 +26,7 @@ import {
   getUsersListRequest,
 } from "../redux/actions";
 import "../style.css";
+import "./style.css";
 const Trash = () => {
   const [currentPageView, setCurrentPageView] = useState(ProjectTrashPages[0]);
   const trashData = useSelector(
@@ -85,6 +86,12 @@ const Trash = () => {
                     trashData?.trashProjects.map((project) => {
                       return <TrashProject data={project} />;
                     })}
+                  {trashData?.trashProjects &&
+                    trashData?.trashProjects?.length === 0 && (
+                      <p className="project-trash__not-found">
+                        No Projects in Trash
+                      </p>
+                    )}
                 </>
               )}
               {currentPageView.id === "project-trash-milestone" && (
@@ -93,6 +100,12 @@ const Trash = () => {
                     trashData?.trashMilestones.map((milestone) => {
                       return <TrashMilestone data={milestone} />;
                     })}
+                  {trashData?.trashMilestones &&
+                    trashData?.trashMilestones?.length === 0 && (
+                      <p className="project-trash__not-found">
+                        No Milestones in Trash
+                      </p>
+                    )}
                 </>
               )}
               {currentPageView.id === "project-trash-tasks" && (
@@ -101,6 +114,12 @@ const Trash = () => {
                     trashData?.trashTasks.map((task) => {
                       return <TrashTask data={task} />;
                     })}
+                  {trashData?.trashTasks &&
+                    trashData?.trashTasks?.length === 0 && (
+                      <p className="project-trash__not-found">
+                        No Tasks in Trash
+                      </p>
+                    )}
                 </>
               )}
             </ProjectManagementMain>

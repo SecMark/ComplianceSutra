@@ -68,14 +68,6 @@ const Project = ({ data }) => {
       setMilestoneExpandMoreIds([...milestoneExpandMoreIds, id]);
     }
   };
-  const addMilestoneHandler = () =>
-    dispatch(
-      setMilestoneModalState({
-        ...modalsStatus?.milestoneModal,
-        isVisible: !modalsStatus?.milestoneModal?.isVisible,
-        projectId: project_id,
-      })
-    );
   const {
     project_id,
     project_name,
@@ -86,6 +78,19 @@ const Project = ({ data }) => {
     project_overview,
     task_list_data,
   } = data;
+  const addMilestoneHandler = () =>
+    dispatch(
+      setMilestoneModalState({
+        ...modalsStatus?.milestoneModal,
+        isVisible: !modalsStatus?.milestoneModal?.isVisible,
+        projectId: project_id,
+        dateValidations: {
+          start_date: project_start_date || "",
+          end_date: project_end_date || "",
+        },
+      })
+    );
+
   const project_duration = differenceInDays(
     project_start_date,
     project_end_date
@@ -224,7 +229,8 @@ const Project = ({ data }) => {
               }}
               className={
                 data &&
-                (data?.milestone_data?.length <= 0 || !data?.milestone_data) &&
+                (!data?.milestone_data || data?.milestone_data?.length <= 0) &&
+                (!task_list_data || task_list_data?.length <= 0) &&
                 "project-management__button--disabled"
               }
             >
@@ -268,7 +274,6 @@ const Project = ({ data }) => {
                       >
                         {milestone_title}
                       </p>
-                      {/* <p className="project-data-container__item">40%</p> */}
                       <p
                         className="project-data-container__item wide"
                         title={milestone_owner}
@@ -293,12 +298,6 @@ const Project = ({ data }) => {
                         className="project-data-container__item"
                         title={milestone_assign_users?.join(", ")}
                       >
-                        {/* {(milestone_assign_users &&
-                          milestone_assign_users?.length > 0 &&
-                          usersList?.length > 0 &&
-                          getUserName(usersList, milestone_assign_users[0])) ||
-                          "-"} */}
-                        {/* {getUsers(usersList, milestone_assign_users)} */}
                         {(milestone_assign_users &&
                           milestone_assign_users?.length > 0 &&
                           getUsers(usersList, milestone_assign_users)) ||
@@ -320,6 +319,10 @@ const Project = ({ data }) => {
                                   start_date: milestone_start_date,
                                   end_date: milestone_end_date,
                                   assign_user: milestone_assign_users,
+                                },
+                                dateValidations: {
+                                  start_date: project_start_date,
+                                  end_date: project_end_date,
                                 },
                               })
                             );
@@ -371,9 +374,6 @@ const Project = ({ data }) => {
                           <MdAdd />
                         </SmallIconButton>
                         <SmallIconButton
-                          // onClick={() =>
-                          //   setExpandMoreLevel(expandMoreLevel >= 2 ? 1 : 2)
-                          // }
                           onClick={() =>
                             handleMilestoneExpandMoreClick(milestone_id)
                           }
@@ -427,12 +427,6 @@ const Project = ({ data }) => {
             <p className="project-container-mobile__data-title flex-grow-1 mb-0">
               {project_name}
             </p>
-            {/* <SmallIconButton type="grey" className="mx-2">
-              <IoCheckmarkCircleOutline />
-            </SmallIconButton>
-            <SmallIconButton type="grey">
-              <IoBanOutline />
-            </SmallIconButton> */}
           </div>
           <div className="d-flex justify-content-between w-100 align-items-center">
             <div className="project-container-mobile__data">
@@ -612,7 +606,7 @@ export const DesktopTask = ({ data }) => {
         {trimString(task_assign_to)}
       </p>
       <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
-        <SmallIconButton type="grey" className="p-2 mr-2">
+        <SmallIconButton title="Comments" type="grey" className="p-2 mr-2">
           <MdTextsms className="icon__small" />
         </SmallIconButton>
         <EditIconButton
@@ -644,10 +638,8 @@ export const DesktopTask = ({ data }) => {
         <SmallIconButton
           type={taskData?.task_status === "Approved" ? "primary" : "grey"}
           className="p-2 mr-2"
+          title={taskData?.task_status}
         >
-          {/* <MdCheckCircle className="icon__small" /> */}
-          {/* <IoCheckmarkCircleOutline className="icon__small" /> */}
-
           {taskData?.task_status === "Not Assigned" && !taskData?.assign_to && (
             <IoCheckmarkCircleOutline className="icon__small" />
           )}
@@ -659,8 +651,12 @@ export const DesktopTask = ({ data }) => {
           )}
         </SmallIconButton>
         <SmallIconButton
+          title="Deactivate Task"
           type="grey"
-          className="p-2"
+          className={`p-2 ${
+            taskData?.task_status === "Approved" &&
+            "project-management__button--disabled"
+          }`}
           onClick={() =>
             dispatch(
               setDeleteModalState({
@@ -1177,13 +1173,14 @@ export const ProjectAndTaskContextMenu = ({
         <EditIconButton className="mr-2" onClickHandler={onEditClick} />
         <DeleteIconButton className="mr-2" onClickHandler={onDeleteClick} />
         {!isProjectContextMenu && onAddClick && (
-          <SmallIconButton type="primary" onClick={onAddClick}>
+          <SmallIconButton title="Add Task" type="primary" onClick={onAddClick}>
             <MdAdd />
           </SmallIconButton>
         )}
         {isProjectContextMenu && onAddMilestoneClick && onAddTaskListClick && (
           <>
             <SmallIconButton
+              title="Add Milestone"
               type="primary"
               onClick={onAddMilestoneClick}
               className="mr-2 d-flex align-items-center justify-content-center project-context-menu__plus-button"
@@ -1191,6 +1188,7 @@ export const ProjectAndTaskContextMenu = ({
               M<MdAdd />
             </SmallIconButton>
             <SmallIconButton
+              title="Add Task List"
               type="primary"
               onClick={onAddTaskListClick}
               className="d-flex align-items-center justify-content-center project-context-menu__plus-button"
@@ -1258,6 +1256,7 @@ export const TrashProject = ({ data }) => {
         </p>
         <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
           <SmallIconButton
+            title="Restore Project"
             type="primary"
             className="mr-3"
             onClick={() =>
@@ -1291,12 +1290,6 @@ export const TrashProject = ({ data }) => {
             <p className="project-container-mobile__data-title flex-grow-1 mb-0">
               Management Design
             </p>
-            {/* <SmallIconButton type="grey" className="mx-2">
-              <IoCheckmarkCircleOutline />
-            </SmallIconButton>
-            <SmallIconButton type="grey">
-              <IoBanOutline />
-            </SmallIconButton> */}
           </div>
           <div className="d-flex justify-content-between w-100 align-items-center">
             <div className="project-container-mobile__data">
@@ -1310,18 +1303,6 @@ export const TrashProject = ({ data }) => {
                     {project_owner}
                   </p>
                 </div>
-                {/* <div className="project-container-mobile__data-item">
-                    <p className="project-data-container__item project-container-mobile__data-item-title">
-                      Assign To
-                    </p>
-                    <p className="project-data-container__item">{data?.assign_to}</p>
-                  </div> */}
-                {/* <div className="project-container-mobile__data-item">
-                  <p className="project-data-container__item project-container-mobile__data-item-title">
-                    Milestone
-                  </p>
-                  <p className="project-data-container__item">0/1</p>
-                </div> */}
                 <div className="project-container-mobile__data-item">
                   <p className="project-data-container__item project-container-mobile__data-item-title">
                     Duration
@@ -1353,6 +1334,7 @@ export const TrashProject = ({ data }) => {
               {project_start_date + " To " + project_end_date}
             </p>
             <SmallIconButton
+              title="Restore Project"
               type="primary"
               className="mr-3"
               onClick={() =>
@@ -1438,6 +1420,7 @@ export const TrashMilestone = ({ data }) => {
           </p>
           <div className="project-data-container__buttons d-flex align-items-center justify-content-end">
             <SmallIconButton
+              title="Restore Milestone"
               type="primary"
               className="mr-3"
               onClick={() =>
@@ -1716,6 +1699,7 @@ export const TrashTask = ({ data }) => {
                   getProjectDateFormat(data?.task_end_date)}
             </p>
             <SmallIconButton
+              title="Restore Task"
               type="primary"
               className="mr-3"
               onClick={() =>

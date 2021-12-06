@@ -1711,7 +1711,26 @@ function RightSideGrid({
                                           </a>
                                         )}
                                     </div>
-                                    <div className="pr-3">
+                                    {currentOpenedTask &&
+                                      currentOpenedTask.status !==
+                                        "Approved" && (
+                                        <div className="pr-3">
+                                          <div
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() =>
+                                              deleteUploadedFile(files.file_id)
+                                            }
+                                            className="file-download-title pointer d-flex"
+                                          >
+                                            <img
+                                              className="delete-icon"
+                                              src={deleteBlack}
+                                              alt="delete Icon"
+                                            />
+                                          </div>
+                                        </div>
+                                      )}
+                                    {/* <div className="pr-3">
                                       <div
                                         style={{ cursor: "pointer" }}
                                         onClick={() =>
@@ -1725,7 +1744,7 @@ function RightSideGrid({
                                           alt="delete Icon"
                                         />
                                       </div>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 ))
                               : "No Files To View here"}
@@ -2158,21 +2177,29 @@ function RightSideGrid({
       }
     });
     if (fileArray && fileArray.length !== 0) {
-      getUpload(fileArray).then((response) => {
-        const { data, status } = response;
-        if (status === 200 && data.message && data.message.status === true) {
-          toast.success("File Uploaded Successfully");
-          if (currentOpenedTask && currentOpenedTask.task_name !== "") {
-            dispatch(
-              taskReportActions.getTaskFilesById({
-                doctype: "Task",
-                docname: currentOpenedTask.task_name,
-                is_references: 0,
-              })
-            );
+      try {
+        getUpload(fileArray).then((response) => {
+          const { data, status } = response;
+          if (
+            status === 200 &&
+            data?.message &&
+            data?.message?.status === true
+          ) {
+            toast.success("File Uploaded Successfully");
+            if (currentOpenedTask && currentOpenedTask.task_name !== "") {
+              dispatch(
+                taskReportActions.getTaskFilesById({
+                  doctype: "Task",
+                  docname: currentOpenedTask.task_name,
+                  is_references: 0,
+                })
+              );
+            }
           }
-        }
-      });
+        });
+      } catch (error) {
+        toast.error("Something went wrong! Please try again.");
+      }
     }
   };
 
@@ -5903,10 +5930,10 @@ function RightSideGrid({
                         </div>
                       </>
                     ) : fileList && fileList.length > 0 ? (
-                      fileList.map((file, index) => (
+                      fileList.map((file) => (
                         <div className="no-files">
                           {file && file.Files && file.Files.length > 0
-                            ? file.Files.map((files, index) => (
+                            ? file.Files.map((files) => (
                                 <div className="row" key={files.file_id}>
                                   <div className="col-8 col-sm-4 col-md-4 col-xl-4">
                                     <div className="file-upload-title file-img-width">

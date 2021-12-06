@@ -48,24 +48,15 @@ function* createProject(action) {
   try {
     const { data } = yield call(api.getPostProject, action.payload);
     if (data.message.status === true) {
-      toast.success("Project added updatead successfuly");
+      toast.success("Project added updatead successfuly", {
+        toastId: new Date().getTime(),
+      });
       yield put(getProjectDataRequest());
     } else {
-      toast.warning("Somthing went Wrong");
+      toast.warning("Somthing went wrong. Please try again.");
     }
   } catch (error) {}
 }
-
-// function* getRegisteredUSer(action) {
-//   try {
-//     const { data } = yield call(api.getRegisteredUserList, action.payload);
-//     console.log(data.message.user_list);
-//     if (data.message.status === true) {
-//       yield put(getRegisteredUser(data.message.user_list));
-//     } else {
-//     }
-//   } catch (error) {}
-// }
 
 function* getProjectData(action) {
   try {
@@ -76,7 +67,6 @@ function* getProjectData(action) {
       yield put(getProjectDataFailed());
     }
   } catch (error) {
-    console.log(error.message);
     yield put(getProjectDataFailed());
   }
 }
@@ -89,7 +79,9 @@ function* addAndUpdateTaskListData({ payload }) {
       yield put(addUpdateTaskListSuccess());
       yield put(getProjectDataRequest());
     } else {
-      toast.success(data?.message?.status_response);
+      toast.success(data?.message?.status_response, {
+        toastId: new Date().getTime(),
+      });
       yield put(addUpdateTaskListFailed());
     }
   } catch (error) {
@@ -140,7 +132,9 @@ function* addAndUpdateTask({ payload }) {
   try {
     const { status, data } = yield call(api.addAndUpdateTaskData, payload);
     if (status === 200 && data && data.message && data.message.status) {
-      toast.success(data?.message?.status_response);
+      toast.success(data?.message?.status_response, {
+        toastId: new Date().getTime(),
+      });
       yield put(getProjectDataRequest());
       yield put(getIndividualTasksRequest());
     } else {

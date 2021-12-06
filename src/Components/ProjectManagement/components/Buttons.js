@@ -7,9 +7,11 @@ export const SmallIconButton = ({
   type = "primary" | "danger" | "outlined",
   onClick,
   className,
+  title,
 }) => {
   return (
     <button
+      title={title}
       onClick={onClick}
       className={`${className} project-management__small-icon-button project-management__small-icon-button--${
         type === "primary"
@@ -33,6 +35,7 @@ export const EditIconButton = ({ onClickHandler, className }) => (
     onClick={onClickHandler}
     type="primary"
     className={className}
+    title="Edit"
   >
     <img
       src={editProjecticon}
@@ -44,7 +47,12 @@ export const EditIconButton = ({ onClickHandler, className }) => (
   </SmallIconButton>
 );
 export const DeleteIconButton = ({ onClickHandler, className }) => (
-  <SmallIconButton onClick={onClickHandler} type="danger" className={className}>
+  <SmallIconButton
+    title="Delete"
+    onClick={onClickHandler}
+    type="danger"
+    className={className}
+  >
     <img
       src={projectDeleteIcon}
       alt="edit-icon"

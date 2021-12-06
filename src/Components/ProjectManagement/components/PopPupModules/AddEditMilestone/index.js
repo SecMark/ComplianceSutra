@@ -9,6 +9,13 @@ import {
 } from "../../../redux/actions";
 import CreatableSelect from "react-select/creatable";
 import moment from "moment";
+import {
+  getProjectDateFormat,
+  isAfter,
+  isAfterToday,
+  isBefore,
+  isBeforeToday,
+} from "../../date.helpers";
 // Initial State
 const initialState = {
   milestone_id: null,
@@ -22,6 +29,12 @@ const initialState = {
 function AddEditMilestone({ visible, onClose, isEdit, editData }) {
   const [fieldValues, setFieldValues] = useState(editData || initialState);
   const [userList, setUserList] = useState([]);
+  const [fieldErrors, setFieldErrors] = useState({
+    isValidate: true,
+    start_date: "",
+    end_date: "",
+    title: "",
+  });
   const dispatch = useDispatch();
   const modalsStatus = useSelector(
     (state) => state?.ProjectManagementReducer?.modalsStatus
@@ -29,15 +42,7 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
   const allUsersList = useSelector(
     (state) => state?.ProjectManagementReducer?.usersList
   );
-  // custom style for dropdown
-  // const customStyle = {
-  //   control: (styles) => ({
-  //     ...styles,
-  //     width: "100%",
-  //     minHeight: "50px",
-  //     borderRadius: "8px",
-  //   }),
-  // };
+  const dateValiations = modalsStatus?.milestoneModal?.dateValidations;
   const handleDropDownChange = (option) => {
     setFieldValues({
       ...fieldValues,
@@ -63,6 +68,56 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
       });
     }
   }, [modalsStatus]);
+
+  useEffect(() => {
+    const { title, start_date, end_date } = fieldValues;
+    // if (title !== "" || start_date !== "" || end_date !== "") {
+    setFieldErrors({
+      isValidate:
+        title === "" ||
+        // Start Date Validation
+        start_date === "" ||
+        isBefore(dateValiations?.start_date, start_date) ||
+        isAfter(dateValiations?.end_date, start_date) ||
+        isBeforeToday(start_date) ||
+        (end_date !== "" && isAfter(end_date, start_date)) ||
+        // End Date Validation
+        end_date === "" ||
+        isAfter(dateValiations?.end_date, end_date) ||
+        isBefore(dateValiations?.start_date, end_date) ||
+        isBeforeToday(end_date) ||
+        (start_date !== "" && isBefore(start_date, end_date)),
+      start_date:
+        start_date !== ""
+          ? isBeforeToday(start_date)
+            ? "Start date should not be prior to today date."
+            : isBefore(dateValiations?.start_date, start_date) ||
+              isAfter(dateValiations?.end_date, start_date)
+            ? "Start Date should be between " +
+              getProjectDateFormat(dateValiations?.start_date) +
+              " to " +
+              getProjectDateFormat(dateValiations?.end_date)
+            : end_date !== "" && isAfter(end_date, start_date)
+            ? "Start date should not be later to end date"
+            : ""
+          : "",
+      end_date:
+        end_date !== ""
+          ? isBeforeToday(end_date)
+            ? "End date should not be prior to today date."
+            : isAfter(dateValiations?.end_date, end_date) ||
+              isBefore(dateValiations?.start_date, end_date)
+            ? "End Date should be between " +
+              getProjectDateFormat(dateValiations?.start_date) +
+              " to " +
+              getProjectDateFormat(dateValiations?.end_date)
+            : start_date !== "" && isBefore(start_date, end_date)
+            ? "End date should not be prior to start date"
+            : ""
+          : "",
+    });
+    // }
+  }, [fieldValues]);
   return (
     <ProjectManagementModal
       visible={visible}
@@ -78,6 +133,7 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
             Milestone
           </label>
           <input
+            required
             id="milestone-title"
             type="text"
             className="modal-input"
@@ -86,9 +142,12 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
               setFieldValues({ ...fieldValues, title: e.target.value })
             }
           />
+          {fieldErrors?.title !== "" && (
+            <p className="add-project-err-msg">{fieldErrors?.title}</p>
+          )}
         </div>
 
-        <div className="w-100 milestone-modal__date-inputs d-flex align-items-center justify-content-between">
+        <div className="w-100 milestone-modal__date-inputs d-flex align-items-start justify-content-between">
           <div className="from-group">
             <label className="modal__label">Start Date</label>
             <DatePicker
@@ -106,10 +165,14 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
                 })
               }
             />
+            {fieldErrors?.start_date !== "" && (
+              <p className="add-project-err-msg">{fieldErrors?.start_date}</p>
+            )}
           </div>
           <div className="from-group">
             <label className="modal__label">End Date</label>
             <DatePicker
+              // disabled={isEdit && isBeforeToday(dateValiations?.end_date)}
               className="modal-input"
               format="DD MMMM Y"
               value={
@@ -124,6 +187,9 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
                 })
               }
             />
+            {fieldErrors?.end_date !== "" && (
+              <p className="add-project-err-msg">{fieldErrors?.end_date}</p>
+            )}
           </div>
         </div>
         <div className="mt-3 w-100 form-group">
@@ -153,7 +219,10 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
               setFieldValues(initialState);
               onClose();
             }}
-            className="mx-2 px-4 py-2 project-management__button project-management__button--primary modal-button"
+            disabled={fieldErrors?.isValidate}
+            className={`mx-2 px-4 py-2 project-management__button project-management__button--primary modal-button ${
+              fieldErrors?.isValidate && "project-management__button--disabled"
+            }`}
           >
             Submit
           </button>

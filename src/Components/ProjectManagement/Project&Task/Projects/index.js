@@ -19,7 +19,6 @@ const Projects = () => {
   );
 
   useEffect(() => {
-    console.log({ projectsData, isLoading });
     if (projectsData && projectsData?.length > 0) {
       setProjects(projectsData);
     }

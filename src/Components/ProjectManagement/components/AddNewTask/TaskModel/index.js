@@ -232,7 +232,7 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
                 <div {...getRootProps({ className: "dropzone" })}>
                   <input {...getInputProps()} />
                   <p className="add-new-subtask-fileDropZone-text">
-                    Dropo Your Files Here
+                    Drop your files here
                   </p>
                 </div>
               </div>
@@ -310,17 +310,12 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
                     control={<Radio />}
                     label="Weekly"
                   />
-                  {/* <FormControlLabel
-                    value="weekly"
-                    control={<Radio />}
-                    label="weekly"
-                  /> */}
                   <FormControlLabel
                     value="Monthly"
                     control={<Radio />}
                     label="Monthly"
                   />
-                  <FormControlLabel
+                  {/* <FormControlLabel
                     value="Quarterly"
                     control={<Radio />}
                     label="Quarterly"
@@ -334,7 +329,7 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
                     value="Yearly"
                     control={<Radio />}
                     label="Yearly"
-                  />
+                  /> */}
                 </RadioGroup>
               </div>
             </div>
@@ -420,11 +415,13 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
               </div>
             </div>
           )}
-          {fieldInputs?.frequency === "Monthly" && (
+          {["Monthly", "Quarterly", "Half Yearly", "Yearly"].includes(
+            fieldInputs?.frequency
+          ) && (
             <div className="row mt-3">
               <div className="col justify-content-center">
                 <label className="add-edit-project-labels">
-                  Please enter every month day
+                  Please enter month day
                 </label>
                 <input
                   className="add-edit-project-inputs"

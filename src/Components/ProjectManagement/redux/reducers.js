@@ -213,6 +213,10 @@ const actionHandlers = {
         },
         milestoneId: null,
         projectId: null,
+        dateValidations: {
+          start_date: "",
+          end_date: "",
+        },
       },
     },
   }),
@@ -496,6 +500,10 @@ export default handleActions(actionHandlers, {
       },
       milestoneId: null,
       projectId: null,
+      dateValidations: {
+        start_date: "",
+        end_date: "",
+      },
     },
     taskListModal: {
       isVisible: false,
