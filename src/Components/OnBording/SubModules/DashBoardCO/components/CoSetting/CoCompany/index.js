@@ -1,24 +1,17 @@
 import React, { useEffect, useState, useMemo } from "react";
 import "./style.css";
-import companyDropArrow from "../../../../../../../assets/Icons/companyDropArrow.png";
 import blackDeleteIcon from "../../../../../../../assets/Icons/blackDeleteIcon.png";
 import redCheck from "../../../../../../../assets/Icons/redCheck.png";
-import plusIcon2 from "../../../../../../../assets/Icons/plusIcon3.png";
 import grayCheck from "../../../../../../../assets/Icons/grayCheck.png";
 import greenCheck from "../../../../../../../assets/Icons/greenCheck.png";
 import assignIconCircle from "../../../../../../../assets/Icons/assignIconCircle.png";
-import whiteDeleteIcon from "../../../../../../../assets/Icons/whiteDeleteIcon.png";
 import smallClose from "../../../../../../../assets/Icons/smallClose.png";
-import grayPlusIcon from "../../../../../../../assets/Icons/grayPlusIcon.png";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
-import mobileAssignIconSmall from "../../../../../../../assets/Icons/mobileAssignIconSmall.png";
 import { actions as companyAction } from "../../../../../../OnBording/redux/actions";
 import { toast } from "react-toastify";
-import Dropdown from "react-dropdown";
 import { actions as coActions } from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import LicenseDrawer from "../ChooseLicenses";
 import api from "../../../../../../../apiServices";
 import { useOuterClick } from "./utils";
 import { Modal } from "react-responsive-modal";
@@ -27,9 +20,9 @@ import { isMobile } from "react-device-detect";
 import plusIcon from "../../../../../../../assets/Icons/plusIcon3.png";
 import License from "../ChooseLicenses/License";
 import countryList from "react-select-country-list";
-import axios from "axios";
 import axiosInstance from "../../../../../../../apiServices";
-import { data } from "jquery";
+import Select from "react-select";
+
 function CoManagment({ handleClose }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -51,7 +44,7 @@ function CoManagment({ handleClose }) {
   const [assignPromptIndex, setAssignPromptIndex] = useState(undefined);
   const [selectedIndex, setSelectedIndex] = useState(undefined);
   const [selectedCompany, setSelectedCompany] = useState(undefined);
-  const [undoSelectedCompany,setUndoSelectedCompany] = useState(undefined);
+  const [undoSelectedCompany, setUndoSelectedCompany] = useState(undefined);
   const [toastType, setToastType] = useState(undefined);
   const [deleteBoxHideShow, setDeleteBoxHideShow] = useState(false);
   const [userSearchText, setUserSearchText] = useState("");
@@ -104,6 +97,14 @@ function CoManagment({ handleClose }) {
     dispatch(coActions.getCompanyTypeRequest());
   };
 
+  const selectStyle = {
+    control: (styles) => ({
+      ...styles,
+      backgroundColor: "rgb(228 228 228/30%)",
+      border: "0px",
+      borderRadius: "5px",
+    }),
+  };
   const fetchIndustryCompnayType = () => {
     api
       .post("compliance.api.getIndustryCompanyDetails")
@@ -327,7 +328,7 @@ function CoManagment({ handleClose }) {
       setEditShow(true);
       companyList[index].company_type = e;
     } else if (name === "company_country") {
-      let countryvalue = countryList().getLabel(e);
+      let countryvalue = countryList().getLabel(e.value);
       setEditShow(true);
       companyList[index].company_country = countryvalue;
       companyList[index].licenses = "";
@@ -348,27 +349,31 @@ function CoManagment({ handleClose }) {
       hideBlock();
     } else {
       companyList[index].business_category = e;
-      if (item.isExist) {
-        if (
-          selectedCompany != undefined &&
-          companyList[index].Category === selectedCompany.Category
-        ) {
-          companyList[index].selectedLicenseArray =
-            selectedCompany.selectedLicenseArray;
-          if (
-            companyList[index].EntityTypeID === selectedCompany.EntityTypeID &&
-            companyList[index].Category === selectedCompany.Category &&
-            companyList[index].coUserID === selectedCompany.coUserID
-          ) {
-            setSelectedIndex(undefined);
-            itemIndex = undefined;
-          }
-        } else {
-          companyList[index].selectedLicenseArray = [];
-        }
-      } else {
-        companyList[index].selectedLicenseArray = [];
-      }
+      companyList[index].licenses = "";
+      setSelectedIndex(index);
+      setEditShow(true);
+      setShowAdd(true);
+      // if (item.isExist) {
+      //   if (
+      //     selectedCompany != undefined &&
+      //     companyList[index].Category === selectedCompany.Category
+      //   ) {
+      //     companyList[index].selectedLicenseArray =
+      //       selectedCompany.selectedLicenseArray;
+      //     if (
+      //       companyList[index].EntityTypeID === selectedCompany.EntityTypeID &&
+      //       companyList[index].Category === selectedCompany.Category &&
+      //       companyList[index].coUserID === selectedCompany.coUserID
+      //     ) {
+      //       setSelectedIndex(undefined);
+      //       itemIndex = undefined;
+      //     }
+      //   } else {
+      //     companyList[index].selectedLicenseArray = [];
+      //   }
+      // } else {
+      //   companyList[index].selectedLicenseArray = [];
+      // }
     }
     setSelectedIndex(itemIndex);
     setCompanyDetails(companyList);
@@ -580,7 +585,7 @@ function CoManagment({ handleClose }) {
   };
   const handleUndoChanges = (index, item) => {
     setSelectedCompany({ ...item });
-    setUndoSelectedCompany({...item})
+    setUndoSelectedCompany({ ...item });
     let tempCoCompany = [...companyDetails];
     console.log("on handle undo", companyDetails);
     if (tempCoCompany[index].isExist) {
@@ -710,14 +715,15 @@ function CoManagment({ handleClose }) {
   };
 
   const companyTypeDropDown = (item, index) => {
-    console.log("dropdown values",item)
+    console.log("dropdown values", item);
     return (
       <div className="holding-list-bold-title">
-        <Searchable
-          value={item.company_type}
+        {/* <Searchable
+          value={{value : item.company_type
+      }}
           className="form-control border-0"
           placeholder={item.company_type ? item.company_type : "Select Type"}
-          notFoundText="No result found" // by default "No result found hj"
+           // by default "No result found hj"
           options={companyTypeInfo}
           onSelect={(e) =>
             selectedIndex === undefined || selectedIndex === index
@@ -725,6 +731,16 @@ function CoManagment({ handleClose }) {
               : true
           }
           listMaxHeight={200}
+        /> */}
+        <Select
+          value={{ value: item.company_type, label: item.company_type }}
+          styles={selectStyle}
+          options={companyTypeInfo}
+          onChange={(e) =>
+            selectedIndex === undefined || selectedIndex === index
+              ? handelChange(e.value, "company_type", index, item)
+              : true
+          }
         />
       </div>
     );
@@ -858,16 +874,14 @@ function CoManagment({ handleClose }) {
                     </td>
                     <td className="dropList">
                       <div className="holding-list-bold-title">
-                        <Searchable
+                        <Select
                           options={options}
-                          placeholder={
-                            item.company_country
-                              ? item.company_country
-                              : "Select Type"
-                          }
-                          className="form-control border-0"
-                          value={item.company_country}
-                          onSelect={(e) =>
+                          value={{
+                            value: item.company_country,
+                            label: item.company_country,
+                          }}
+                          styles={selectStyle}
+                          onChange={(e) =>
                             selectedIndex === undefined ||
                             selectedIndex === index
                               ? handelChange(e, "company_country", index, item)
@@ -900,23 +914,24 @@ function CoManagment({ handleClose }) {
                     </td>
                     <td className="dropList">
                       <div className="holding-list-bold-title">
-                        <Searchable
-                          //value={item.selectedCategory}
-                          className="form-control border-0"
-                          placeholder={
-                            item.business_category
-                              ? item.business_category
-                              : "Select Category"
-                          } // by default "Search"
-                          notFoundText="No result found" // by default "No result found"
+                        <Select
+                          value={{
+                            value: item.business_category,
+                            label: item.business_category,
+                          }}
+                          styles={selectStyle}
                           options={categoryTypes}
-                          onSelect={(e) =>
+                          onChange={(e) =>
                             selectedIndex === undefined ||
                             selectedIndex === index
-                              ? handelChange(e, "companyCategory", index, item)
+                              ? handelChange(
+                                  e.value,
+                                  "companyCategory",
+                                  index,
+                                  item
+                                )
                               : true
                           }
-                          listMaxHeight={200} //by default 140
                         />
                       </div>
                     </td>
