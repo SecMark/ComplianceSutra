@@ -38,8 +38,8 @@ const initailState = {
     industry: "",
     issuer: "",
     topic: "",
-    fromDate: "",
-    toDate: "",
+    from: "",
+    to: "",
   },
 };
 

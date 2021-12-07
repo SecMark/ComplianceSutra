@@ -38,7 +38,7 @@ function PersonalDetails({ history, location }) {
     { value: "CDS", label: "CDS" },
   ];
 
-  const [mobileNumberValid, setMobileNumberValid] = useState("true");
+  const [mobileNumberValid, setMobileNumberValid] = useState(true);
 
   const [errors, setErrors] = useState({
     passwordErr: "",
@@ -48,7 +48,9 @@ function PersonalDetails({ history, location }) {
     designationErr: "",
   });
   const [whatappFlag, setWhatappFlag] = useState(false);
-
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   const [passwordState, setPasswordState] = useState({
     minlength: false,
     uppercaseandlowercase: false,
@@ -69,19 +71,21 @@ function PersonalDetails({ history, location }) {
           result.data.message &&
           result.data.message.status === true
         ) {
-          setMobileNumberValid(true);
-        } else {
           setMobileNumberValid(false);
+        } else {
+          setMobileNumberValid(true);
         }
       })
       .catch((error) => {});
   };
 
-  // useEffect(() => {
-  //   if (values.mobileNumber.length >= 10) {
-  //     checkNumberAvailable();
-  //   }
-  // }, [values.mobileNumber]);
+  useEffect(() => {
+    if (values.mobileNumber.length >= 10) {
+      checkNumberAvailable();
+    } else {
+      setMobileNumberValid(true);
+    }
+  }, [values.mobileNumber]);
 
   const onChangeHandler = (name) => (event) => {
     if (
@@ -125,6 +129,15 @@ function PersonalDetails({ history, location }) {
       if (!passwordRE.test(event.target.value)) {
         setErrors({ ...errors, [inputKey]: "Password is invalid" });
       } else {
+        if (
+          event.target.value !== "" &&
+          values?.confirmPassword === event.target.value
+        ) {
+          setErrors({
+            ...errors,
+            confirmPasswordErr: "Confirm Password should be same as Password",
+          });
+        }
         setErrors({ ...errors, [inputKey]: "" });
       }
       if (event.target.value.length < 8) {
@@ -189,7 +202,14 @@ function PersonalDetails({ history, location }) {
       if (!passwordRE.test(event.target.value)) {
         setErrors({ ...errors, [inputKey]: "Confirm password is invalid" });
       } else {
-        setErrors({ ...errors, [inputKey]: "" });
+        if (values?.password !== event.target.value) {
+          setErrors({
+            ...errors,
+            [inputKey]: "Confirm Password should be same as Password",
+          });
+        } else {
+          setErrors({ ...errors, [inputKey]: "" });
+        }
       }
     }
     setValues({ ...values, [name]: event.target.value });
@@ -205,7 +225,6 @@ function PersonalDetails({ history, location }) {
   };
 
   const onSubmit = () => {
-    console.log({ onSubmit: "clicked" });
     if (
       values.fullName !== "" &&
       values.mobileNumber !== "" &&
@@ -359,6 +378,11 @@ function PersonalDetails({ history, location }) {
                           {isValidate && values.mobileNumber === "" && (
                             <p className="input-error-message">
                               Mobile number is required
+                            </p>
+                          )}
+                          {!mobileNumberValid && (
+                            <p className="input-error-message mb-3">
+                              Mobile number already exists
                             </p>
                           )}
                           {values.mobileNumber !== "" &&
@@ -546,6 +570,35 @@ function PersonalDetails({ history, location }) {
                     <button
                       onClick={() => onSubmit()}
                       className="btn save-details common-button btn-width"
+                      // disabled={
+                      // values?.fullName === "" ||
+                      // values?.designation === "" ||
+                      // values?.countryCode === "" ||
+                      // values?.companyName === "" ||
+                      // values.password === "" ||
+                      // values.confirmPassword === ""
+                      // errors.passwordErr !== "" ||
+                      // errors.confirmPasswordErr !== "" ||
+                      // errors.countryCodeErr === "true" ||
+                      // values.mobileNumber.length < 10 ||
+                      // values.mobileNumber.length > 10
+                      // }
+                      disabled={
+                        values?.fullName === "" ||
+                        values?.designation === "" ||
+                        values?.countryCode === "" ||
+                        values?.password === "" ||
+                        values?.confirmPassword === "" ||
+                        values?.mobileNumber === "" ||
+                        values?.mobileNumber?.length < 10 ||
+                        values?.mobileNumber?.length > 10 ||
+                        !mobileNumberValid ||
+                        errors?.passwordErr !== "" ||
+                        errors?.confirmPasswordErr !== "" ||
+                        errors?.designationErr !== "" ||
+                        errors?.countryCodeErr !== "" ||
+                        errors?.mobileNumErr !== ""
+                      }
                     >
                       SAVE DETAILS
                     </button>

@@ -110,7 +110,7 @@ function VeryOTP({ history, currentStep }) {
       .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
         // handle success
-        
+
         if (
           response &&
           response.data &&
@@ -118,7 +118,6 @@ function VeryOTP({ history, currentStep }) {
         ) {
           setPhoneNumberErr("mobile already exist");
           setDisabled(true);
-          
         } else {
           if (e.target.value.length < 10 || e.target.value.length > 10) {
             setPhoneNumberErr("Mobile number is invalid");
@@ -131,7 +130,6 @@ function VeryOTP({ history, currentStep }) {
       })
       .catch(function (error) {
         if (error) {
-          
         }
       });
   };
@@ -307,14 +305,6 @@ function VeryOTP({ history, currentStep }) {
       setIsEnabledSecureOTP(true);
     }
   }, []);
-  useEffect(() => {
-    console.log({
-      phoneNumber,
-      cntryCode,
-      mobileNumber,
-      historyMobile: history.location?.state?.mobile_number,
-    });
-  }, [phoneNumber, cntryCode, mobileNumber]);
   const verifyOTP = () => {
     let payload = {};
     payload = {

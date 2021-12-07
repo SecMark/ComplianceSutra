@@ -30,8 +30,9 @@
 }
 
 .first-section-main-heading {
-  margin-top: 130px;
+  /* margin-top: 130px; */
   padding-bottom: 342px;
+  padding-top: 170px;
 }
 
 .first-section-main-heading > h1 {

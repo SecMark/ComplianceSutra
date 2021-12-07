@@ -280,7 +280,6 @@ function PersonalDetails({ history }) {
       .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
         // handle success
-        console.log("got this response", response.data.message.status);
         if (
           response &&
           response.data &&
@@ -426,7 +425,7 @@ function PersonalDetails({ history }) {
                               className={
                                 "form-control " +
                                 (values.mobileNumber !== "" &&
-                                values.mobileNumber.length < 10 && 
+                                values.mobileNumber.length < 10 &&
                                 values.mobileNumber.length > 10
                                   ? " mobile-input-invalid-control"
                                   : " ") +
@@ -434,9 +433,8 @@ function PersonalDetails({ history }) {
                                 ((isValidate && values.mobileNumber === "") ||
                                 (isValidate &&
                                   values.mobileNumber !== "" &&
-                                  values.mobileNumber.length < 10
-                                  && 
-                                values.mobileNumber.length > 10)
+                                  values.mobileNumber.length < 10 &&
+                                  values.mobileNumber.length > 10)
                                   ? " input-error"
                                   : "") +
                                 (values.mobileNumber.length == 10
@@ -467,7 +465,7 @@ function PersonalDetails({ history }) {
 
                           {!isMobileValid && (
                             <p className="input-error-message">
-                              mobile no already exists
+                              mobile number already exists
                             </p>
                           )}
                           {values.mobileNumber !== "" &&
@@ -476,7 +474,7 @@ function PersonalDetails({ history }) {
                                 Mobile number is invalid
                               </p>
                             )}
-                             {values.mobileNumber !== "" &&
+                          {values.mobileNumber !== "" &&
                             values.mobileNumber.length > 10 && (
                               <p className="input-error-message">
                                 Mobile number can't be more then 10 digit

@@ -28,13 +28,13 @@ function DashBoardView({ history }) {
     state.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
-  const userEmail =
-    state &&
-    state?.auth &&
-    state?.auth?.loginInfo &&
-    (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
+  // const userEmail =
+  //   state &&
+  //   state?.auth &&
+  //   state?.auth?.loginInfo &&
+  //   (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
   const userDetails = state && state?.auth && state?.auth?.loginInfo;
-
+  const userEmail = userDetails?.email || userDetails?.EmailID;
   const companyName =
     state &&
     state.complianceOfficer &&
@@ -50,11 +50,11 @@ function DashBoardView({ history }) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (taskList && taskList.length === 0) {
-  //     dispatch(taskReportActions.taskReportRequest());
-  //   }
-  // }, [state.adminMenu.currentMenu]);
+  useEffect(() => {
+    if (taskList && taskList.length === 0) {
+      dispatch(taskReportActions.taskReportRequest());
+    }
+  }, [state.adminMenu.currentMenu]);
   useEffect(() => {
     if (
       userEmail &&

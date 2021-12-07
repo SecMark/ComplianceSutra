@@ -159,11 +159,10 @@ function CoManagment({ handleClose }) {
   }, []);
 
   const getSettingData = async () => {
-    const { data } = await axiosInstance.post(
+    const response = await axiosInstance.post(
       `${BACKEND_BASE_URL}compliance.api.getUserList`
     );
-    const { message } = data;
-    setMemberData(message);
+    setMemberData(response?.data?.message);
     setIsLoading(false);
   };
   const onChangeRoleClick = (type, item, index) => {

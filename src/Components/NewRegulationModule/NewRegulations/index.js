@@ -180,38 +180,15 @@ const NewRegulations = (props) => {
   };
 
   const getNewRegulationFilterList = async () => {
-    await getAndSetIndustryList();
-    await getAndSetIssuerList();
-    await getAndSetTopicList();
-    setIsShowFilter(!isShowFilter);
+    getAndSetIndustryList();
+    setTimeout(() => {
+      setIsShowFilter(!isShowFilter);
+    }, 2000);
   };
 
   const getAndSetIndustryList = () => {
-    const industryListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      industry: constant.flag,
-    };
     //get issuer list.
-    dispatch(getIndustryList(industryListRequestPayload));
-  };
-
-  const getAndSetIssuerList = () => {
-    const issuerListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      regbodies: constant.flag,
-    };
-
-    //get issuer list.
-    dispatch(getIssuerList(issuerListRequestPayload));
-  };
-
-  const getAndSetTopicList = () => {
-    const topicListRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      topic: constant.flag,
-    };
-    //get topic list.
-    dispatch(getTopicList(topicListRequestPayload));
+    dispatch(getIndustryList());
   };
 
   return (

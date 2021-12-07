@@ -8,11 +8,14 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import DisplayNotification from "./CommonModules/Notification/Display";
 import Notifications from "./CommonModules/Notification";
 import { onMessageListener } from "./firebaseConfig/firebaseInit";
+import { useSelector, useDispatch } from "react-redux";
+import { actions as taskReportActions } from "../src/Components/OnBording/SubModules/DashBoardCO/redux/actions";
 function App() {
   return <MainApp />;
 }
 
 function MainApp() {
+  const dispatch = useDispatch();
   library.add(faEye, faEyeSlash);
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({
@@ -32,6 +35,7 @@ function MainApp() {
         body: payload.notification.body,
         data: payload.data,
       });
+      dispatch(taskReportActions.taskReportRequest());
     })
     .catch((err) => console.log("failed: ", err));
 

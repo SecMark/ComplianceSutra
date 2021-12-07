@@ -98,10 +98,13 @@ function Login({ history }) {
   };
 
   useEffect(() => {
+    localStorage.setItem("basicToken", "");
     if (
       userDetails?.status_response === "Authentication success" &&
-      (userDetails?.email || userDetails?.EmailID)
+      (userDetails?.email || userDetails?.EmailID) &&
+      userDetails?.token
     ) {
+      localStorage.setItem("basicToken", userDetails?.token);
       if (userDetails?.UserType === 3) history.push("/dashboard-view");
       else history.push("/dashboard");
     }

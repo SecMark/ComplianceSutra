@@ -251,18 +251,23 @@ function VeryOTP({ history, currentStep }) {
 
   const availabilityCheck = (phoneNumber) => {
     let payload = {
-      mobile_number: mobileNumber,
+      mobile_no: mobileNumber,
     };
     api
       .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
-        if (response && response.data && response.data.message.status) {
+        if (
+          response &&
+          response.data &&
+          response?.data?.message &&
+          !response.data.message.status
+        ) {
           localStorage.setItem("mobileNumber", mobileNumber);
           sendOTPRequest();
         } else if (
           response &&
           response.data &&
-          response.data.message.status === false
+          response.data.message.status === true
         ) {
           toast.error(
             response.data.message.status_response ||

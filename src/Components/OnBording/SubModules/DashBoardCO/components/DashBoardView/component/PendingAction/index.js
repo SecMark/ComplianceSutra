@@ -9,7 +9,11 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { actions as notificationActions } from "../../../notification/Redux/actions.js";
-
+import { actions as taskReportActions } from "../../../../redux/actions";
+import {
+  getAllTasks,
+  getDataByStatus,
+} from "../../../../../../../../CommonModules/helpers/tasks.helper";
 function PendingActionTaskList({ history, click, setClick }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -32,48 +36,34 @@ function PendingActionTaskList({ history, click, setClick }) {
     }
     return initials;
   };
-
+  const taskList =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
+  const getSelectTaskDetails = (task) => {
+    dispatch(
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
+      })
+    );
+  };
   useEffect(() => {
-    const payload = {
-      entityid: "P",
-      userID: userID,
-      usertype: "3",
-      entityList: "",
-      licList: "",
-      startDate: "",
-      endDate: "",
-    };
-    if (userID !== undefined)
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskReport`, payload)
-        .then((response) => {
-          let riskData = response.data;
-          let rowCount = [];
-          riskData.map((item) => {
-            let EntityName = item.EntityName;
-            item.EntityDetails.forEach((task) => {
-              task.Licdetails.forEach((task1) => {
-                let data = task1;
-                let newObjData = Object.assign(data, {
-                  licCode: task.liccode,
-                  EntityCode: EntityName,
-                });
-                rowCount.push(newObjData);
-              });
-            });
-          });
-          setPendingArr(rowCount);
-        })
-        .catch((error) => {
-          console.log("error => ", error);
-        });
+    if (taskList && taskList.length > 0) {
+      const pending =
+        getAllTasks(taskList)?.filter(
+          (task) => task.status === "Approval Pending"
+        ) || [];
+      setPendingArr([...pending]);
+    }
   }, []);
 
   return (
     <>
       <div className="task-grid-scroll customScrollSecond scroll-btm">
         <div className="mobile-dashboard-view">
-          <div className="take-action">
+          <div className="take-action" style={{ height: "90vh" }}>
             <div className="task-list-grid">
               <div className="upcoming-btn-pending">
                 <div className="pink-circle-closing">
@@ -94,13 +84,8 @@ function PendingActionTaskList({ history, click, setClick }) {
                     <>
                       <Link
                         to="/dashboard"
-                        style={{ textDecoration: "none" }}
                         onClick={() => {
-                          if (userDetails && userDetails.UserType !== 6) {
-                            dispatch(
-                              notificationActions.setTaskID(task.TaskId)
-                            );
-                          }
+                          getSelectTaskDetails(task);
                         }}
                         style={{
                           pointerEvents: `${
@@ -108,6 +93,7 @@ function PendingActionTaskList({ history, click, setClick }) {
                               ? "none"
                               : "auto"
                           }`,
+                          textDecoration: "none",
                         }}
                       >
                         <div className="row mb-16">
@@ -116,52 +102,61 @@ function PendingActionTaskList({ history, click, setClick }) {
                               <div className="pending-list-mobile">
                                 <div className="graybox-left">
                                   <span className="all-companies-nse-label">
-                                    {task.licCode && task.licCode}
+                                    {task?.license_display}
                                   </span>
                                 </div>
                                 <span className="pink-label-title-right">
                                   <div className="overdue-title">
-                                    {task.TaskName && task.TaskName}
+                                    {task?.subject}
                                   </div>
                                   <div className="black-week d-block d-sm-none">
                                     <div className="d-block d-sm-none">
                                       Today
                                     </div>
                                   </div>
-                                  <p className="pink-label-text">
-                                    {task.Status}
-                                  </p>
+                                  {task?.status !== "Assigned" && (
+                                    <p
+                                      className="pink-label-text"
+                                      style={{
+                                        color:
+                                          task && task?.status
+                                            ? task?.status ===
+                                              "Approval Pending"
+                                              ? "#7fba7a"
+                                              : task?.status === "Approved"
+                                              ? "#7fba7a"
+                                              : task?.status === "Assigned"
+                                              ? "#f8c102"
+                                              : task?.status === "Not Assigned"
+                                              ? "#f8c102"
+                                              : task?.status === "Rejected"
+                                              ? "#ff5f31"
+                                              : ""
+                                            : "#fcf3cd",
+                                      }}
+                                    >
+                                      {task?.status}
+                                    </p>
+                                  )}
                                 </span>
                               </div>
                             </div>
                           </div>
                           <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
                             <div className="circle-front-text" value="717149">
-                              {task.EntityCode}
+                              {task.customer_name}
                             </div>
                           </div>
                           <div className="col-2 col-md-3 col-sm-3 col-xl-3 d-none d-sm-block">
-                            {task &&
-                            task.AssignedTo &&
-                            task.AssignedTo !== "Assign" ? (
+                            {task && task.assign_to && (
                               <div className="d-flex new-task-list">
                                 <div className="circle-name d-none d-sm-block">
                                   <div className="circle-text">
-                                    {getInitials(task && task.AssignedTo)}
+                                    {getInitials(task && task.assign_to)}
                                   </div>
                                 </div>
                                 <div className="circle-front-text d-none d-sm-block mail">
-                                  {task.AssignedTo}
-                                </div>
-                              </div>
-                            ) : (
-                              <div>
-                                <div
-                                  className="circle-front-text NoStatus"
-                                  style={{ color: "#6c5dd3" }}
-                                >
-                                  {" "}
-                                  <img src={assignIconCircle} alt="" /> ASSIGN
+                                  {task.assign_to}
                                 </div>
                               </div>
                             )}
@@ -170,7 +165,7 @@ function PendingActionTaskList({ history, click, setClick }) {
                             <div className="align-right task-list-new">
                               <div className="d-flex">
                                 <div className="black-week d-none d-sm-block">
-                                  {moment(task && task.EndDate).format(
+                                  {moment(task && task.deadline_date).format(
                                     "DD MMM"
                                   )}
                                 </div>

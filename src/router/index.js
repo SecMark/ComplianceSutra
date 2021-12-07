@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 import CapmTechLandingPage from "../Components/CapmTechLandingPage";
 import ComplianceLanding from "../Components/ComplianceLandingPage";
@@ -47,8 +47,6 @@ import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/compon
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
-import NewRegulationsQuiz from "../Components/NewRegulationsQuiz";
-
 export default function AppRouter() {
   return (
     <div>
@@ -170,15 +168,17 @@ export default function AppRouter() {
 
           <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route exact path="/new-regulations" component={DashBoardCO} />
+          <Route path="/project-management" component={DashBoardCO} />
+          <Route path="/project-trash" component={DashBoardCO} />
           <Route exact path="/help" component={DashBoardCO} />
 
           {/* Expert Review */}
 
           <Route path="/expert-review" component={ExperReview}></Route>
-
           <Route exact path="/thankyou" component={Thankyou} />
           <Route exact path="/settings" component={CoSetting} />
-          <Route exact path="/new-regulation-quiz" component={DashBoardCO} />
+          {/* User */}
+          {/* <Route path="/user-task" component={UserTask}></Route> */}
         </div>
       </>
     </div>
