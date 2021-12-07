@@ -587,10 +587,7 @@ function CoManagment({ handleClose }) {
     setSelectedCompany({ ...item });
     setUndoSelectedCompany({ ...item });
     let tempCoCompany = [...companyDetails];
-    console.log("on handle undo", companyDetails);
     if (tempCoCompany[index].isExist) {
-      console.log("selected this company", selectedCompany);
-      // tempCoCompany[index].selectedCompany = selectedCompany;
       tempCoCompany[index].company_name = selectedCompany.company_name;
       tempCoCompany[index].company_type = selectedCompany.company_type;
       tempCoCompany[index].company_country = selectedCompany.company_country;
@@ -610,7 +607,6 @@ function CoManagment({ handleClose }) {
     setSelectedCompany(undefined);
     setSelectedIndex(undefined);
     setShowAdd(false);
-    console.log("undo done", tempCoCompany);
     setCompanyDetails(tempCoCompany);
   };
   const handleSaveChanges = (index) => {
@@ -715,7 +711,6 @@ function CoManagment({ handleClose }) {
   };
 
   const companyTypeDropDown = (item, index) => {
-    console.log("dropdown values", item);
     return (
       <div className="holding-list-bold-title">
         {/* <Searchable
