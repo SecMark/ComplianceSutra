@@ -44,8 +44,8 @@ function* fetchIndustryList(action) {
 
     if (data.message.status) {
       yield put(setLoading(false));
-      yield put(setIndustryList(data.message.industry_list));
       yield put(setIssuerList(data.message.issuer_list));
+      yield put(setIndustryList(data.message.industry_list));
       yield put(setTopicList(data.message.topic_list));
     } else {
       yield put(setLoading(false));

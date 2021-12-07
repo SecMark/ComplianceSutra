@@ -51,7 +51,11 @@ const NewRegulationFilter = (props) => {
     });
 
     setListOfTopic([...setArrayOfObjectInList]);
-  }, [state.UpdatesReducer.industryList]);
+  }, [
+    state.UpdatesReducer.industryList,
+    state?.UpdatesReducer?.issuerList,
+    state?.UpdatesReducer?.topicList,
+  ]);
 
   useEffect(() => {
     if (
