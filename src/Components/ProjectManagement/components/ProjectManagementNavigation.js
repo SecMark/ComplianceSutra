@@ -11,11 +11,11 @@ export const ProjectManagmentPages = [
     value: "Task",
     buttonName: "Task",
   },
-  {
-    id: "project-management-calender",
-    value: "Calender",
-    buttonName: "Calender",
-  },
+  // {
+  //   id: "project-management-calender",
+  //   value: "Calender",
+  //   buttonName: "Calender",
+  // },
 ];
 
 export const ProjectTrashPages = [

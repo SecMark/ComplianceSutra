@@ -1131,8 +1131,69 @@ export const ProjectHeader = ({ isTasksHeader }) => {
 
 export const ProjectTaskList = ({ data }) => {
   const { url } = useRouteMatch();
+  const [isShowTaskListContextMenu, setIsShowTaskListContextMenu] =
+    useState(false);
+  const modalsStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.modalsStatus
+  );
+  const dispatch = useDispatch();
+  const deactivateModalAndStatus = useSelector(
+    (state) => state?.ProjectManagementReducer?.deactivateModalAndStatus
+  );
+  const taskListContextMenuRef = useOuterClick(() =>
+    setIsShowTaskListContextMenu(!isShowTaskListContextMenu)
+  );
+  const projectData = useSelector(
+    (state) => state?.ProjectManagementReducer?.projectManagementData?.projects
+  );
   return (
-    <div className="project-data-container__2 d-flex align-items-center justify-content-between mb-3">
+    <div className="position-relative project-data-container__2 d-flex align-items-center justify-content-between mb-3">
+      {isShowTaskListContextMenu && (
+        <ProjectAndTaskContextMenu
+          containerRef={taskListContextMenuRef}
+          isMobileTaskListContextMenu
+          onDeleteClick={() =>
+            dispatch(
+              setDeleteModalState({
+                ...deactivateModalAndStatus,
+                modalName: "TaskList",
+                id: data?.task_list_id,
+                isVisible: true,
+              })
+            )
+          }
+          onEditClick={() => {
+            const _project = [...projectData].filter(
+              (item) => item.project_id === data?.project
+            );
+            const _project_milestones =
+              _project &&
+              _project.length > 0 &&
+              _project[0].milestone_data?.map((milestone) => ({
+                value: {
+                  milestone_id: milestone?.milestone_id,
+                  project_id: milestone?.project,
+                },
+                label: milestone?.milestone_title,
+              }));
+            dispatch(
+              setTaskListModalState({
+                ...modalsStatus?.taskListModal,
+                isVisible: true,
+                isEdit: true,
+                milestonesList: _project_milestones || [],
+                editData: {
+                  ...modalsStatus?.taskListModal?.editData,
+                  milestone_id: data?.project_milestone,
+                  project_id: data?.project,
+                  title: data?.task_list_title,
+                  task_list_id: data?.task_list_id,
+                },
+              })
+            );
+          }}
+        />
+      )}
       <Link
         to={{
           pathname: `${url}/tasklist-tasks`,
@@ -1150,7 +1211,12 @@ export const ProjectTaskList = ({ data }) => {
         </p>
       </Link>
       <div className="project-data-container__buttons d-flex align-items-center justify-content-between">
-        <SmallIconButton type="outlined">
+        <SmallIconButton
+          type="outlined"
+          onClick={() =>
+            setIsShowTaskListContextMenu(!isShowTaskListContextMenu)
+          }
+        >
           <MdMoreHoriz />
         </SmallIconButton>
       </div>
@@ -1166,13 +1232,14 @@ export const ProjectAndTaskContextMenu = ({
   isProjectContextMenu,
   onAddMilestoneClick,
   onAddTaskListClick,
+  isMobileTaskListContextMenu,
 }) => {
   return (
     <div className="project-three-dot-popup" ref={containerRef}>
       <div className="d-flex align-items-center justify-content-between">
         <EditIconButton className="mr-2" onClickHandler={onEditClick} />
         <DeleteIconButton className="mr-2" onClickHandler={onDeleteClick} />
-        {!isProjectContextMenu && onAddClick && (
+        {(!isProjectContextMenu || !isMobileTaskListContextMenu) && onAddClick && (
           <SmallIconButton title="Add Task" type="primary" onClick={onAddClick}>
             <MdAdd />
           </SmallIconButton>

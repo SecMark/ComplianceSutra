@@ -22,6 +22,7 @@ const Projects = () => {
     if (projectsData && projectsData?.length > 0) {
       setProjects(projectsData);
     }
+    console.log({ projectsData, isLoading, isError });
   }, [projectsData, isLoading, isError]);
   return (
     <>
@@ -38,6 +39,9 @@ const Projects = () => {
         projects.map((project) => {
           return <Project data={project} />;
         })}
+      {!isLoading && projects?.length === 0 && (
+        <p className="project-trash__not-found">No Projects found</p>
+      )}
     </>
   );
 };

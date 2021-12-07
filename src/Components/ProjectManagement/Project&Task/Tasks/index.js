@@ -8,9 +8,9 @@ const Tasks = () => {
   const isLoading = useSelector(
     (state) => state?.ProjectManagementReducer?.projectManagementData?.isLoading
   );
-  // const isError = useSelector(
-  //   (state) => state?.ProjectManagementReducer?.projectManagementData?.isError
-  // );
+  const isError = useSelector(
+    (state) => state?.ProjectManagementReducer?.projectManagementData?.isError
+  );
   const individualTasksList = useSelector(
     (state) =>
       state?.ProjectManagementReducer?.projectManagementData?.individualTasks
@@ -25,7 +25,9 @@ const Tasks = () => {
       <BackDrop isLoading={isLoading} />
       {/* <div className="project-tasks-list__container p-3 mt-md-3"> */}
       <div className="project-tasks-list__container mt-md-2 p-0 pl-md-2">
-        {individualTasksList &&
+        {!isLoading &&
+          !isError &&
+          individualTasksList &&
           individualTasksList.length > 0 &&
           individualTasksList.map((task) => {
             return (
@@ -35,6 +37,9 @@ const Tasks = () => {
               </>
             );
           })}
+        {!isLoading && individualTasksList?.length === 0 && (
+          <p className="project-trash__not-found">No Tasks found</p>
+        )}
       </div>
     </>
   );
