@@ -3,8 +3,8 @@
 }
 .bg-dark {
   background-color: #1d293f;
-  padding-top: 104px;
-  padding-bottom: 70px;
+  padding-top: 15px;
+  padding-bottom: 65px;
   font-family: "Poppins", sans-serif;
 }
 .capmtech-text {
@@ -17,6 +17,7 @@
   letter-spacing: normal;
   text-align: left;
   color: #ffffff;
+  padding: 12px;
 }
 .links-grid p {
   text-align: left;
@@ -99,8 +100,26 @@ height: 300px;
 
   .bg-dark {
     background-color: #1d293f;
-    padding-top: 104px;
+    padding-top: 40px;
     padding-bottom: 150px;
     font-family: "Poppins", sans-serif;
   }
+}
+
+
+@media (max-width: 1199.98px) { 
+  .capmtech-text {
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.04;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffffff;
+    padding: 12px;
+}
+
+
 }

@@ -70,6 +70,7 @@
   color: #fff;
   padding: 70px;
   margin-bottom: -65px;
+  margin-top: -162px;
 }
 
 .third-section-financial-image {
@@ -155,9 +156,23 @@
     object-fit: cover;
   }
   .third-section-financial-image {
-    width: 360px;
-    height: 279px;
-    margin-top: 456px;
+    width: 508px;
+    height: 460px;
+    margin-top: -22px !important;
+  }
+
+  .third-section-add-on-service {
+    font-family: Poppins;
+    font-size: 22px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.56;
+    letter-spacing: 0.72px;
+    text-align: center;
+    color: #fff;
+    padding: 104px;
+    margin-bottom: -65px;
   }
 }
 
@@ -166,5 +181,28 @@
     width: 342px;
     height: 342px;
     object-fit: cover;
+  }
+  .third-section-finincial-services {
+    margin-top: 115px;
+    background-image: url("../../../../assets//Images//CAPMLanding//purplebackground.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+  .third-section-add-on-service {
+    font-family: Poppins;
+    font-size: 22px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.56;
+    letter-spacing: 0.72px;
+    text-align: center;
+    color: #fff;
+    padding: 104px;
+    margin-bottom: -65px;
   }
 }
