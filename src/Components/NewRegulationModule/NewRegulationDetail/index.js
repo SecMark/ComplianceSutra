@@ -1,13 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import closeIcon from "../../../assets/Icons/closeIcon.png";
-
+import { useRouteMatch } from "react-router";
 const NewRegulationDetail = ({
   isShowRegulationDetail,
   changeShowRegulationDetail,
   newRegulationDetail,
 }) => {
   const detail = newRegulationDetail;
+  const { path } = useRouteMatch();
   return (
     <div
       className={`filter-popup detail-popup ${
@@ -26,8 +28,8 @@ const NewRegulationDetail = ({
           onClick={changeShowRegulationDetail}
           style={{
             position: "absolute",
-            top: "0",
-            left: "0",
+            top: "21px",
+            left: "-21px",
             cursor: "pointer",
           }}
         />
@@ -68,9 +70,21 @@ const NewRegulationDetail = ({
                   detail?.file_details && detail?.file_details[0].file_name
                 }
                 target="_blank"
+                rel="noreferrer"
               >
                 Download File
               </a>
+              <Link
+                to={{
+                  pathname: path + "/quiz",
+                  state: {
+                    circular_no: detail?.name,
+                  },
+                }}
+                className="download-file"
+              >
+                Quiz
+              </Link>
             </div>
           </div>
         </div>
