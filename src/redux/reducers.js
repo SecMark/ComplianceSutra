@@ -15,6 +15,7 @@ import CalenderReducer from "../Components/CalenderView/redux/reducers";
 import PaymentReducer from "../Components/ExpertReviewModule/Redux/reducers";
 import { addAndEditProjectReducer } from "../Components/ProjectManagement/redux/reducers";
 import ProjectManagementReducer from "../Components/ProjectManagement/redux/reducers";
+import NewRegulationsQuizReducer from "../Components/NewRegulationsQuiz/redux/reducers";
 const createRootReducer = (history) =>
   combineReducers({
     auth,
@@ -31,6 +32,7 @@ const createRootReducer = (history) =>
     PaymentReducer,
     addAndEditProjectReducer,
     ProjectManagementReducer,
+    NewRegulationsQuizReducer,
   });
 
 export default createRootReducer;
