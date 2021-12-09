@@ -6,17 +6,8 @@ import TaskListView from "./TaskListView";
 import Cobg from "../../../../../../assets/Images/Onboarding/co-bg.png";
 import sideBarlogo from "../../../../../../assets/Icons/sideBarlogo.png";
 import togglemobile from "../../../../../../assets/Icons/togglemobile.png";
-import btnicon from "../../../../../../assets/Icons/btn-icon.png";
-import siderBarbtnArrow from "../../../../../../assets/Icons/siderBarbtnArrow.png";
-import actionArrow from "../../../../../../assets/Icons/actionArrow.png";
-import complteTaskIcon from "../../../../../../assets/Icons/complteTaskIcon.png";
-import inprogressicon from "../../../../../../assets/Icons/inprogressicon.png";
-import scheduledIcon from "../../../../../../assets/Icons/scheduledIcon.png";
-import siderBarbtnArrowTop from "../../../../../../assets/Icons/siderBarbtnArrowTop.png";
 import { actions as taskReportActions } from "../../redux/actions";
 import { isMobile } from "react-device-detect";
-import CustomCard from "./BoardCard";
-import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import QuickOverViewSection from "./quickOverview";
 import { actions as adminMenuActions } from "../../MenuRedux/actions";
@@ -30,7 +21,6 @@ function DashBoardView({ history }) {
   const [isTaskApproved, setIsTaskApproved] = useState(false);
   const [click, setClick] = useState("");
   const [listView, setListView] = useState("0");
-  console.log("listView DV=> ", listView);
 
   const taskList =
     state &&
@@ -38,34 +28,13 @@ function DashBoardView({ history }) {
     state.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
-
-  const entityID =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
-
-  const userData =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
-
-  const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
-
-  const userDetails = state && state.auth && state.auth.loginInfo;
-
+  // const userEmail =
+  //   state &&
+  //   state?.auth &&
+  //   state?.auth?.loginInfo &&
+  //   (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
+  const userDetails = state && state?.auth && state?.auth?.loginInfo;
+  const userEmail = userDetails?.email || userDetails?.EmailID;
   const companyName =
     state &&
     state.complianceOfficer &&
@@ -80,20 +49,30 @@ function DashBoardView({ history }) {
       dispatch(notificationActions.setTaskID(null));
     }
   }, []);
+
   useEffect(() => {
-    if (userID === undefined) {
+    if (taskList && taskList.length === 0) {
+      dispatch(taskReportActions.taskReportRequest());
+    }
+  }, [state.adminMenu.currentMenu]);
+  useEffect(() => {
+    if (
+      userEmail &&
+      userDetails?.status_response === "Authentication success"
+    ) {
+      if (userDetails?.UserType === 3) {
+        dispatch(taskReportActions.taskReportRequest());
+        const refresh_taskList = setInterval(() => {
+          dispatch(taskReportActions.taskReportRequest());
+        }, 30000);
+        return () => clearInterval(refresh_taskList);
+      } else {
+        history.push("/dashboard");
+      }
+    } else {
       history.push("/login");
     }
   }, []);
-  useEffect(() => {
-    dispatch(
-      taskReportActions.taskReportRequest({
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
-      })
-    );
-  }, [state.adminMenu.currentMenu]);
-
   useEffect(() => {
     if (userDetails.UserType === 3) {
       if (window.location.href.includes("dashboard-view")) {
@@ -122,7 +101,7 @@ function DashBoardView({ history }) {
   return (
     <div>
       <div className="row dashboard-view-mobile-top">
-        <div className="mobile-head d-block d-sm-none">
+        <div className="mobile-head d-block d-md-none">
           <div className="d-flex">
             <div
               className="w-25"
@@ -149,9 +128,8 @@ function DashBoardView({ history }) {
         style={{ height: "auto" }}
       >
         {!isMobile && (
-          <div className="left-fixed d-none d-sm-block">
+          <div className="left-fixed d-none d-md-block">
             <div className="on-boarding">
-              {/* <SideBar /> */}
               <SideBarInputControl
                 isTaskListOpen={isTaskListOpen}
                 setIsTaskListOpen={setIsTaskListOpen}

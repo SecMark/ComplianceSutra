@@ -10,6 +10,7 @@ import {
   setIsFilter,
   setIssuer,
   setTopic,
+  getUpdates,
 } from "../redux/actions";
 import moment from "moment";
 import {
@@ -20,7 +21,7 @@ import {
 } from "../../ReAssignTasks/utilties";
 import "./style.css";
 
-const NewRegulationFilter = () => {
+const NewRegulationFilter = (props) => {
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
   const [listOfIndustries, setListOfIndustry] = useState([]);
   const [listOfIssuers, setListOfIssuers] = useState([]);
@@ -34,23 +35,27 @@ const NewRegulationFilter = () => {
   useEffect(() => {
     //set industry list for searchable dropdown.
     var setArrayOfObjectInList = industryList?.map((item) => {
-      return { value: item.Industry, label: item.Industry };
+      return { value: item, label: item };
     });
     setListOfIndustry([...setArrayOfObjectInList]);
 
     //set issuer list for searchable dropdown.
-    var setArrayOfObjectInList = issuerList.map((item) => {
-      return { value: item.Regbodies, label: item.Regbodies };
+    var setArrayOfObjectInList = issuerList?.map((item) => {
+      return { value: item, label: item };
     });
     setListOfIssuers([...setArrayOfObjectInList]);
 
     //set topic list for searchable dropdown.
-    var setArrayOfObjectInList = topicList.map((item) => {
-      return { value: item.Topic, label: item.Topic };
+    var setArrayOfObjectInList = topicList?.map((item) => {
+      return { value: item, label: item };
     });
 
     setListOfTopic([...setArrayOfObjectInList]);
-  }, []);
+  }, [
+    state.UpdatesReducer.industryList,
+    state?.UpdatesReducer?.issuerList,
+    state?.UpdatesReducer?.topicList,
+  ]);
 
   useEffect(() => {
     if (
@@ -93,11 +98,19 @@ const NewRegulationFilter = () => {
 
   const getResultByFilter = () => {
     const filterRequestPayload = {
-      userID: state.auth.loginInfo?.UserID,
-      industry: state.UpdatesReducer.industry,
-      topic: state.UpdatesReducer.topic,
-      regbodies: state.UpdatesReducer.issuer,
-      submissionfrom:
+      industry:
+        state.UpdatesReducer.industry.length > 0
+          ? [...state.UpdatesReducer.industry.split(",")]
+          : [],
+      topic:
+        state.UpdatesReducer.topic.length > 0
+          ? [...state.UpdatesReducer.topic.split(",")]
+          : [],
+      issuer:
+        state.UpdatesReducer.issuer.length > 0
+          ? [...state.UpdatesReducer.issuer.split(",")]
+          : [],
+      from_date:
         (state.UpdatesReducer.from !== "" &&
           state.UpdatesReducer.from.length !== 0 &&
           state.UpdatesReducer.from.length === 3 &&
@@ -105,7 +118,7 @@ const NewRegulationFilter = () => {
             "YYYY-MM-DD"
           )) ||
         "",
-      submissionto:
+      to_date:
         (state.UpdatesReducer.to !== "" &&
           state.UpdatesReducer.to.length !== 0 &&
           state.UpdatesReducer.to.length === 3 &&
@@ -113,22 +126,21 @@ const NewRegulationFilter = () => {
             "YYYY-MM-DD"
           )) ||
         "",
-      flag: constant.filterFlag,
     };
 
     const setBagdesPayload = {
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
       issuer: state.UpdatesReducer.issuer,
-      fromDate:
+      from:
         (state.UpdatesReducer.to !== "" &&
           state.UpdatesReducer.to.length !== 0 &&
           state.UpdatesReducer.to.length === 3 &&
-          moment(state.UpdatesReducer.from.join("-"), "DD-M-YYYY").format(
+          moment(state.UpdatesReducer?.from.join("-"), "DD-M-YYYY").format(
             "MMM Do YYYY"
           )) ||
         "",
-      toDate:
+      to:
         (state.UpdatesReducer.to !== "" &&
           state.UpdatesReducer.to.length !== 0 &&
           state.UpdatesReducer.to.length === 3 &&
@@ -139,8 +151,10 @@ const NewRegulationFilter = () => {
     };
 
     dispatch(setBadges(setBagdesPayload));
-    dispatch(setFilterPayload(filterRequestPayload));
+    //dispatch(getUpdates({ filters: filterRequestPayload }));
     dispatch(setIsFilter(true));
+    props.setIsShowFilter(!props.isShowFilter);
+    props.setIsShowMobileFilter(!props.isShowMobileFilter);
   };
 
   return (
@@ -198,16 +212,6 @@ const NewRegulationFilter = () => {
                 {"* " + constant.errorMessage.errorDueToGreaterDate}
               </small>
             )}
-          {/* {state.UpdatesReducer.from !== "" &&
-            state.UpdatesReducer.from.length === 3 &&
-            isMoreThanOneYearFromToday(state.UpdatesReducer.from) !==
-              undefined &&
-            isMoreThanOneYearFromToday(state.UpdatesReducer.from) && (
-              <small className="d-block">
-                {"* " +
-                  constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
-              </small>
-            )} */}
         </p>
       </div>
       <div>
@@ -227,15 +231,7 @@ const NewRegulationFilter = () => {
                 {"* " + constant.errorMessage.errorDueToGreaterDate}
               </small>
             )}
-          {/* {state.UpdatesReducer.to !== "" &&
-            state.UpdatesReducer.to.length === 3 &&
-            isMoreThanOneYearFromToday(state.UpdatesReducer.to) !== undefined &&
-            isMoreThanOneYearFromToday(state.UpdatesReducer.to) && (
-              <small className="d-block">
-                {"* " +
-                  constant.errorMessage.errorDueToMoreThanOneYearDateFromToday}
-              </small>
-            )} */}
+
           {state.UpdatesReducer.to !== "" &&
             state.UpdatesReducer.to.length === 3 &&
             state.UpdatesReducer.from !== "" &&

@@ -79,11 +79,11 @@ function ComplianceHistory({ history }) {
                 notificationActions.setTaskID(null))
         }
     }, [])
-    useEffect(() => {
-        if (userID === undefined) {
-            history.push("/login")
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (userID === undefined) {
+    //         history.push("/login")
+    //     }
+    // }, [])
 
     useEffect(() => {
         dispatch(

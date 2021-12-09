@@ -1,0 +1,61 @@
+.pm-task {
+  max-width: 230px;
+  border-radius: 8px;
+  padding: 0.5rem;
+  height: 85px;
+  width: 100%;
+}
+.pm-task__title {
+  color: #2c2738;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 22px;
+  max-width: 194px;
+  overflow: hidden;
+  text-align: left;
+}
+.pm-task__deadlines > div > p {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 21px;
+  margin-bottom: 0;
+}
+.pm-task__deadlines--key {
+  text-transform: capitalize;
+  opacity: 0.6;
+}
+.pm-task__progress {
+  padding: 3px 4px;
+  border-radius: 4px;
+}
+.pm-task__progress-value {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  color: #ffffff;
+  text-transform: capitalize;
+}
+@media screen and (max-width: 767.99px) {
+  .pm-calender-view__mobile-task-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 1rem;
+  }
+  .pm-task {
+    width: 100%;
+    min-width: 210px;
+    max-width: 360px;
+  }
+  .vertical-line {
+    width: 1px;
+    height: 20px;
+    background-color: #00000043;
+  }
+  /* .pm-task__progress {
+    width: 30%;
+    height: 90%;
+  } */
+}

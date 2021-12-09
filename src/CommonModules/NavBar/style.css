@@ -1,0 +1,56 @@
+.navbar {
+  padding-top: 32px;
+}
+.navbar-position{
+  position: fixed;
+    z-index: 9999;
+    background: white;
+    width: 100%;
+}
+.navbar-getstarted-button {
+  width: 112px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: #6c5dd3;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+  border: 0;
+  text-align: center;
+}
+
+.navbar-heading {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.39;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1b1d21;
+}
+
+
+.nav-link-fonts{
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    text-align: left;
+    color: #1b1d21 !important;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.navbar-bottom-border{
+    border-bottom: 1px solid #e4e4e4;
+}

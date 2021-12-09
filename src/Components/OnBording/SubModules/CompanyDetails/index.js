@@ -1,54 +1,50 @@
-import React, { useState, useEffect } from "react"
-import "./style.css"
-import { toast } from "react-toastify"
-import { withRouter } from "react-router-dom"
-import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png"
-import comtech from "../../../../assets/Images/CapmTech.png"
-import secmark from "../../../../assets/Images/secmark.png"
-import leftArrow from "../../../../assets/Icons/leftArrow.png"
-import india from "../../../../assets/Icons/india.png"
-import plusIcon from "../../../../assets/Icons/plusIcon2.png"
-import plusIcon2 from "../../../../assets/Icons/plusIcon3.png"
-import grayPlusIcon from "../../../../assets/Icons/grayPlusIcon.png"
-import deleteIcon from "../../../../assets/Icons/deleteIcon.png"
-import deleteBlack from "../../../../assets/Icons/deleteBlack.png"
-import dropdownUser from "../../../../assets/Icons/dropdownUser.png"
-import whiteDeleteIcon from "../../../../assets/Icons/whiteDeleteIcon.png"
-import LicenseDrawer from "../ChooseLicenses"
-import { Modal } from "react-responsive-modal"
-import { isMobile } from "react-device-detect"
-import { useDispatch, useSelector } from "react-redux"
-import { actions as companyActions } from "../../redux/actions"
-import SideBarInputControl from "../SideBarInputControl"
-import api from "../../../../apiServices"
-import MobileStepper from "../mobileStepper"
-import Searchable from "react-searchable-dropdown"
+import React, { useState, useEffect, useMemo } from "react";
+import countryList from "react-select-country-list";
+import "./style.css";
+import { withRouter } from "react-router-dom";
+import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadign.png";
+import comtech from "../../../../assets/Images/CapmTech.png";
+import secmark from "../../../../assets/Images/secmark.png";
+import plusIcon from "../../../../assets/Icons/plusIcon2.png";
+import plusIcon2 from "../../../../assets/Icons/plusIcon3.png";
+import grayPlusIcon from "../../../../assets/Icons/grayPlusIcon.png";
+import deleteIcon from "../../../../assets/Icons/deleteIcon.png";
+import deleteBlack from "../../../../assets/Icons/deleteBlack.png";
+import whiteDeleteIcon from "../../../../assets/Icons/whiteDeleteIcon.png";
+import LicenseDrawer from "../ChooseLicenses";
+import { Modal } from "react-responsive-modal";
+import { isMobile } from "react-device-detect";
+import { useDispatch, useSelector } from "react-redux";
+import { actions as companyActions } from "../../redux/actions";
+import SideBarInputControl from "../SideBarInputControl";
+import api from "../../../../apiServices";
+import MobileStepper from "../mobileStepper";
+import Searchable from "react-searchable-dropdown";
+import License from "../ChooseLicenses/License";
+import axiosInstance from "../../../../apiServices";
+import { toast } from "react-toastify";
 
 function CompanyDetails({ history }) {
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
-  const [open, setOpen] = useState(false)
-  const [companyInfo, setCompanyInfo] = useState([])
-  const [showEdit, setshowEdit] = useState(true)
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [companyInfo, setCompanyInfo] = useState([]);
+  const [showEdit, setshowEdit] = useState(true);
   const [fields, setFields] = useState([
     {
-      companyName: "",
-      entityID: "",
-      EntityTypeID: "",
-      companyType: "",
-      category: "",
+      company_name: localStorage.getItem("companyName"),
+      company_country: "",
+      company_pincode: "",
+      company_type: "",
+      business_category: "",
       countShow: false,
-      liecenseCount: null,
-      currentIndex: null,
-      liecenseData: [],
-      licenseIDgrp: "",
-      selectedLiecenseIdArray: [],
-      parentLicense: [],
+      licenses: [],
     },
-  ])
+  ]);
   const [errors, setErrors] = useState([
     {
       companyNameError: "",
+      pinCodeError:"",
       companyTypeError: "",
       categoryErr: "",
       countShow: false,
@@ -56,254 +52,232 @@ function CompanyDetails({ history }) {
       currentIndex: null,
       liecenseData: [],
     },
-  ])
-  const [visible, setVisible] = useState(false)
-  const [liecenseData, setLiecenseData] = useState([])
-  const [category, setCategory] = useState([])
-  const [categoryo, setCategoryo] = useState([])
-  const [mobCategoryo, setMobCategoryo] = useState([])
-  const [companyTypeInfo, setCompanyTypeInfo] = useState([])
-  const [companyTypeoInfo, setCompanyTypeoInfo] = useState([])
-  const [curentRowInfo, setCurrntRowInfo] = useState([])
-  const [currentSelectedIndex, setCurrentSelectedIndex] = useState(0)
-  const [entityId, setEntityId] = useState([])
-  const [isEditIndex, setIsEditIndex] = useState(undefined)
-  const [companyData, setCompanyData] = useState("")
-  const [categoryData, setCategoryData] = useState("")
-
-  const certificateInfo =
-    state && state.complianceOfficer && state.complianceOfficer.certificateInfo
+  ]);
+  const [visible, setVisible] = useState(false);
+  const [liecenseData, setLiecenseData] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [categoryo, setCategoryo] = useState([]);
+  const [mobCategoryo, setMobCategoryo] = useState([]);
+  const [companyTypeInfo, setCompanyTypeInfo] = useState([]);
+  const [companyTypeoInfo, setCompanyTypeoInfo] = useState([]);
+  const [curentRowInfo, setCurrntRowInfo] = useState([]);
+  const [currentSelectedIndex, setCurrentSelectedIndex] = useState(0);
+  const [entityId, setEntityId] = useState([]);
+  const [isEditIndex, setIsEditIndex] = useState(undefined);
+  const [companyData, setCompanyData] = useState("");
+  const [value, setValue] = useState("");
+  const [currentIndex, setCurrentIndex] = useState();
+  const options = useMemo(() => countryList().getData(), []);
+  
+  const changeHandler = (value) => {
+    setValue(value);
+  };
 
   const companyType =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.companyInfo.companyLicenseData &&
-    state.complianceOfficer.companyInfo.companyLicenseData[0] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[0][0] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[0][0].CompanyType
-
-  const Licenses =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.companyInfo.companyLicenseData &&
-    state.complianceOfficer.companyInfo.companyLicenseData[1] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[1][0] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[1][0].Licenses
+    state?.complianceOfficer &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData;
 
   const Categories =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.companyInfo.companyLicenseData &&
-    state.complianceOfficer.companyInfo.companyLicenseData[2] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[2][0] &&
-    state.complianceOfficer.companyInfo.companyLicenseData[2][0].Categories
+    state?.complianceOfficer &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData[2] &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData[2][0] &&
+    state.complianceOfficer?.companyInfo?.companyLicenseData[2][0].Categories;
 
   const userID =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID
-
-  const EntityID =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID
+    state?.complianceOfficer &&
+    state.complianceOfficer?.personalInfo &&
+    state.complianceOfficer?.personalInfo.data &&
+    state.complianceOfficer?.personalInfo.data[0][0] &&
+    state.complianceOfficer?.personalInfo.data[0][0] &&
+    state.complianceOfficer?.personalInfo.data[0][0].UserDetails &&
+    state.complianceOfficer?.personalInfo.data[0][0].UserDetails[0] &&
+    state.complianceOfficer?.personalInfo.data[0][0].UserDetails[0].UserID;
 
   const companyName =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.companyName
+    state?.complianceOfficer &&
+    state.complianceOfficer?.personalInfo &&
+    state.complianceOfficer?.personalInfo.companyName;
 
   const _entityID =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.cerificateInfo &&
-    state.complianceOfficer.cerificateInfo.table &&
-    state.complianceOfficer.cerificateInfo.table &&
-    state.complianceOfficer.cerificateInfo.table[0] &&
-    state.complianceOfficer.cerificateInfo.table[0].entityID
+    state?.complianceOfficer &&
+    state.complianceOfficer?.cerificateInfo &&
+    state.complianceOfficer?.cerificateInfo.table &&
+    state.complianceOfficer?.cerificateInfo.table &&
+    state.complianceOfficer?.cerificateInfo.table[0] &&
+    state.complianceOfficer?.cerificateInfo.table[0].entityID;
 
   const entityID =
-    state && state.complianceOfficer && state.complianceOfficer.entityInfo
+    state && state.complianceOfficer && state.complianceOfficer?.entityInfo;
   useEffect(() => {
-    dispatch(companyActions.storeEnityIDwithCompaName([]))
     dispatch(
       companyActions.companyTypeRequest({
         country: "INDIA",
         category: "",
         eid: "",
       })
-    )
-    let list = [...fields]
-    list[0].companyName = companyName
-  }, [])
+    );
+    let list = [...fields];
+    list[0].companyName = companyName;
+  }, []);
 
-  const updateEnityName = (entityId, entityName, index) => {
+  const updateEnityName = ( entityName, index) => {
     const payload = {
-      entityID: entityId,
-      entityName: entityName,
-    }
+      
+      company_name: entityName,
+    };
     api
-      .post("/api/UpdateEntityName", payload)
+      .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.Status === "True") {
-          let list = [...errors]
-          list[index].companyNameError = "Company name already exists"
-          setErrors(list)
+        if (response && response.data && response.data.message.status === true) {
+          let list = [...errors];
+          list[index].companyNameError = "Company name already exists";
+          setErrors(list);
         } else {
-          let list = [...errors]
-          list[index].companyNameError = ""
-          setErrors(list)
+          let list = [...errors];
+          list[index].companyNameError = "";
+          setErrors(list);
         }
       })
       .catch(function (error) {
         if (error) {
         }
-      })
-  }
+      });
+  };
 
   useEffect(() => {
     if (checkCountShowTrue()) {
-      const list = [...fields]
+      const list = [...fields];
       let currentEntityID =
         entityID &&
         entityID[currentSelectedIndex] &&
-        entityID[currentSelectedIndex].entityID
+        entityID[currentSelectedIndex].entityID;
       if (currentEntityID !== undefined && currentEntityID !== "") {
         if (
           list &&
           list[currentSelectedIndex] &&
           list[currentSelectedIndex].category !== ""
         ) {
-          list[currentSelectedIndex].entityID = currentEntityID
-          setFields(list)
+          list[currentSelectedIndex].entityID = currentEntityID;
+          setFields(list);
         }
       }
     }
-  }, [_entityID, currentSelectedIndex])
+  }, [_entityID, currentSelectedIndex]);
 
   useEffect(() => {
-    setCategory(Categories)
-    setCompanyTypeInfo(companyType)
-    var array = []
+    var array = [];
     companyType &&
-      companyType.map((item) => {
-        array.push({ value: item, label: item.EntityTypeDesc })
-      })
-    setCompanyTypeoInfo(array)
+      companyType.company_list.map((item) => {
+        array.push({ value: item, label: item });
+      });
+    setCompanyTypeoInfo(array);
 
-    var array2 = []
-    var mobArray2 = []
+    var array2 = [];
+    var mobArray2 = [];
 
-    Categories &&
-      Categories.map((item) => {
-        array2.push({ value: item.Category, label: item.Category })
+    companyType &&
+      companyType.Industry_list.map((item) => {
+        array2.push({ value: item, label: item });
         if (item.Category !== "" || item.Category) {
-          mobArray2.push({ value: item.Category, label: item.Category })          
+          mobArray2.push({ value: item.Category, label: item.Category });
         }
-      })
-    setMobCategoryo(mobArray2)
-    setCategoryo(array2)
-  }, [Categories, companyType])
+      });
+    setMobCategoryo(mobArray2);
+    setCategoryo(array2);
+  }, [Categories, companyType]);
 
   const checkCountShowTrue = () => {
     return fields.some(function (e) {
-      return e.countShow === true
-    })
-  }
+      return e.countShow === true;
+    });
+  };
+
+  const pinCodeValidation = async (pincode, index) => {
+    if (pincode !== "") {
+      let payload = {
+        pincode: pincode,
+      };
+      await api
+        .post("compliance.api.checkPincode", payload)
+        .then((response) => {
+          if (response.data.message.status === !true) {
+
+            console.log("Invalid pincode",response.data.message.status)
+            let list = [...errors];
+          list[index].pinCodeError = "Invalid Pincode";
+          setErrors(list);
+
+          } else if(response.data.message.status === true) {
+            
+            console.log("valid pincode",response.data.message.status)
+
+            let list = [...errors];
+            list[index].pinCodeError = "";
+            setErrors(list);
+          }
+          // setCompanyDetails(companyList);
+        })
+        .catch(function (error) {});
+    }
+  };
+
   const validateCompanyName = (e, index) => {
     let payload = {
-      loginID: e.target.value.trim(),
-      pwd: "",
-      rememberme: 0,
-      loginty: "AdminCompany",
+       company_name: e.target.value.trim(),
     }
     if (e.target.value != "") {
-      // api
-      //    .post("/api/availabilityCheck", payload)
-      //    .then(function (response) {
-      //       // handle success
-      //       if (response && response.data && response.data.Status === "True") {
-      //          let list = [...errors];
-      //          list[index].companyNameError = "Company name alreday exists"
-      //          setErrors(list);
-      //       } else {
-      //          let list = [...errors];
-      //          list[index].companyNameError = ""
-      //          setErrors(list);
-      //          const info = [...fields];
-      //          if (checkCountShowTrue()) {
-      //             const info = [...fields];
-      //             info && info.length > 0 && info.map((data, key) => {
-      //                if (key === index && data.countShow === true) {
-      //                   updateEnityName(fields && fields[currentSelectedIndex].entityID, fields && fields[currentSelectedIndex].companyName, key);
-      //                }
-      //             })
-      //          }
-      //       }
-      //    })
-      //    .catch(function (error) {
-      //       if (error) {
-
-      //       }
-      //    });
-
       const companyNameErr = () => {
-        let list = [...errors]
-        list[index].companyNameError = ""
-        setErrors(list)
-        const info = [...fields]
+        let list = [...errors];
+        list[index].companyNameError = "";
+        setErrors(list);
+        const info = [...fields];
         if (checkCountShowTrue()) {
-          const info = [...fields]
+          const info = [...fields];
           info &&
             info.length > 0 &&
             info.map((data, key) => {
               if (key === index && data.countShow === true) {
                 updateEnityName(
-                  fields && fields[currentSelectedIndex].entityID,
-                  fields && fields[currentSelectedIndex].companyName,
+                 fields && fields[currentSelectedIndex].company_name,
                   key
-                )
+                );
               }
-            })
+            });
         }
-      }
+      };
 
-      if (companyName !== payload.loginID) {
+      if (companyName !== payload.company_name) {
         api
-          .post("/api/availabilityCheck", payload)
+          .post("compliance.api.avabilityCheck", {
+            company_name: e.target.value,
+          })
           .then(function (response) {
             // handle success
-            if (response && response.data && response.data.Status === "True") {
-              let list = [...errors]
-              list[index].companyNameError = "Company name already exists"
-              setErrors(list)
+            console.log(response);
+            if (response.data.message.status) {
+              let list = [...errors];
+              list[index].companyNameError = "Company name already exists";
+              setErrors(list);
             } else {
-              companyNameErr()
+              companyNameErr();
             }
           })
           .catch(function (error) {
             if (error) {
             }
-          })
+          });
       } else {
-        companyNameErr()
+        companyNameErr();
       }
     }
-  }
+  };
 
   const onDeletePress = (index) => {
     const licenseIDgrpStr =
@@ -311,7 +285,7 @@ function CompanyDetails({ history }) {
       fields[index] &&
       fields[index].liecenseData &&
       fields[index] &&
-      fields[index].liecenseData.join(",")
+      fields[index].liecenseData.join(",");
     dispatch(
       companyActions.insertCerificateDetailsRequest({
         licenseSubID: 0,
@@ -322,16 +296,16 @@ function CompanyDetails({ history }) {
         licenseIDgrp: licenseIDgrpStr,
         from: "delete",
       })
-    )
+    );
 
-    let list = [...fields]
-    list.splice(index, 1)
-    setFields(list)
-    setVisible(false)
-  }
+    let list = [...fields];
+    list.splice(index, 1);
+    setFields(list);
+    setVisible(false);
+  };
 
   const renderDialogBox = (index) => {
-    let currentCompanyName = fields && fields[currentSelectedIndex].companyName
+    let currentCompanyName = fields && fields[currentSelectedIndex].companyName;
     return (
       <Modal
         blockScroll={false}
@@ -346,7 +320,6 @@ function CompanyDetails({ history }) {
         center={true}
         showCloseIcon={false}
         onClose={() => setVisible(false)}
-        //modalId="governance"
         styles={{ width: 373, height: 210, overflow: "hidden" }}
         onOverlayClick={() => setVisible(false)}
       >
@@ -372,118 +345,152 @@ function CompanyDetails({ history }) {
           </div>
         </div>
       </Modal>
-    )
-  }
+    );
+  };
 
   const checkButtonDisabled = () => {
-    const list = [...fields]
-    let isNext = true
-    const errorsObj = [...errors]
+    const list = [...fields];
+    let isNext = true;
+    const errorsObj = [...errors];
     list &&
       list.map((item, index) => {
         errorsObj &&
           errorsObj.map((error, key) => {
             if (
-              item.companyName === "" ||
-              item.companyType === "" ||
-              item.category === "" ||
-              item.selectedLiecenseIdArray.length === 0 ||
-              error.categoryErr !== "" ||
-              error.companyNameError !== ""
+              item.company_name === "" ||
+              item.company_type === "" ||
+              item.business_category === "" ||
+              error.companyNameError !== "" ||
+              error.pinCodeError !==""
             ) {
-              isNext = false
-              return isNext
+              isNext = false;
+              return isNext;
             }
-          })
-      })
-    return isNext
-  }
+          });
+      });
+    return isNext;
+  };
 
   const checkButtonDisabledColor = (key) => {
-    const list = [...fields]
-    let isNext = true
+    const list = [...fields];
+    let isNext = true;
     list &&
       list.map((item, index) => {
         if (index === key) {
           if (
-            item.companyName === "" ||
-            item.companyType === "" ||
-            item.category === "" ||
-            (errors && errors[index] && errors[index].companyNameError != "")
+            item.company_name === "" ||
+            item.company_type === "" ||
+            item.business_category === "" ||
+            item.company_country === "" ||
+            item.company_pincode === "" ||
+            (errors && errors[index] && errors[index].companyNameError != "") || (errors && errors[index] && errors[index].pinCodeError != "")
+            
           ) {
-            isNext = false
-            return isNext
+            isNext = false;
+            return isNext;
           }
         }
-      })
-    return isNext
-  }
+      });
+    return isNext;
+  };
 
   const onAddLiceseClick = (index) => {
     if (!isMobile) {
-      setCurrentSelectedIndex(index)
-      setOpen(true)
-      const drawerParent = document.getElementById("drawerParent")
-      const drawerChild = document.getElementById("drawerChild")
+      setCurrentIndex(index);
+      setCurrentSelectedIndex(index);
+      dispatch(
+        companyActions.getLicenseList({
+          industry_type: fields[index].business_category,
+          country: fields[index].company_country,
+        })
+      );
+      setOpen(true);
+      const drawerParent = document.getElementById("drawerParent");
+      const drawerChild = document.getElementById("drawerChild");
       if (drawerParent) {
-        drawerParent.classList.add("overlay")
-        drawerChild.style.right = "0px"
+        drawerParent.classList.add("overlay");
+        drawerChild.style.right = "0px";
       }
-      showHideDropDown("companyName", index)
+      showHideDropDown("companyName", index);
     } else {
-      setCurrentSelectedIndex(index)
-      setOpen(true)
-      const drawerParent = document.getElementById("drawerParentMobile")
-      const drawerChild = document.getElementById("drawerChildMobile")
+      setCurrentSelectedIndex(index);
+      setOpen(true);
+      const drawerParent = document.getElementById("drawerParentMobile");
+      const drawerChild = document.getElementById("drawerChildMobile");
       if (drawerParent) {
-        drawerParent.classList.add("overlayAccount")
-        drawerChild.style.bottom = "0%"
+        drawerParent.classList.add("overlayAccount");
+        drawerChild.style.bottom = "0%";
       }
-      showHideDropDown("companyName", index)
+      showHideDropDown("companyName", index);
     }
-  }
+  };
+
+  const addLicense = (index, licenseList) => {
+    
+    var temp = [...fields];
+    temp[index].licenses = licenseList;
+    setFields(temp);
+  };
   const close = () => {
     if (!isMobile) {
-      setCompanyInfo([])
-      const drawerParent = document.getElementById("drawerParent")
-      const drawerChild = document.getElementById("drawerChild")
+      setCompanyInfo([]);
+      const drawerParent = document.getElementById("drawerParent");
+      const drawerChild = document.getElementById("drawerChild");
       if (drawerParent) {
-        drawerParent.classList.remove("overlay")
-        drawerChild.style.right = "-100%"
+        drawerParent.classList.remove("overlay");
+        drawerChild.style.right = "-100%";
       }
-      setIsEditIndex(undefined)
+      setIsEditIndex(undefined);
     } else {
-      setCompanyInfo([])
-      const drawerParent = document.getElementById("drawerParentMobile")
-      const drawerChild = document.getElementById("drawerChildMobile")
+      setCompanyInfo([]);
+      const drawerParent = document.getElementById("drawerParentMobile");
+      const drawerChild = document.getElementById("drawerChildMobile");
       if (drawerParent) {
-        drawerParent.classList.remove("overlayAccount")
-        drawerChild.style.transition = "1.5s linear;"
-        drawerChild.style.bottom = "-100%"
+        drawerParent.classList.remove("overlayAccount");
+        drawerChild.style.transition = "1.5s linear;";
+        drawerChild.style.bottom = "-100%";
       }
-      setIsEditIndex(undefined)
+      setIsEditIndex(undefined);
     }
-  }
+  };
 
   const handleCompanyTypeChange = (value, index, type) => {
-    var temp = fields
+    var temp = fields;
 
     if (type == "companyType") {
-      temp[index].EntityTypeID = value.EntityTypeID
-      temp[index].companyType = value.EntityTypeDesc
+      temp[index].company_type = value;
+    }
+    if (type == "country") {
+      console.log({ company_country: value });
+      temp[index].company_country = value;
     }
 
     if (type == "categoryType") {
-      temp[index].category = value
-      temp[index].countShow = false
-      temp[index].selectedLiecenseIdArray = []
-      temp[index].liecenseCount = 0
-      temp[index].liecenseData = []
-      temp[index].parentLicense = []
-      temp[index].liecenseCount = 0
+      temp[index].business_category = value;
     }
-    setFields(temp)
-    handelChange("", index, "", "")
+    setFields(temp);
+    handelChange("", index, "", "");
+  };
+
+  // to Add Another Company 
+  const AddAnotherCompany = () =>{
+    const values = [...fields];
+    values.push({
+      company_name: "",
+      company_country: "",
+      company_pincode: "",
+      company_type: "",
+      business_category: "",
+      countShow: false,
+    });
+    setFields(values);
+    const errorInfo = [...errors];
+    errorInfo.push({
+      companyNameError: "",
+      companyTypeError: "",
+      categoryErr: "",
+    });
+    setErrors(errorInfo);
   }
 
   const generateDropdown = (
@@ -496,92 +503,57 @@ function CompanyDetails({ history }) {
     return (
       data &&
       data.map((item, index) => (
-        <div
-          key={index}
-          className="user-list-row"
-          // onClick={(e) => {
-          //    const list = [...fields];
-          //    if (list[i].category === "" || list[i].companyType === "") {
-          //       if (e.target.classList.contains("user-list-row")) {
-          //          const inputValue = e.target.querySelector(".dropdown-email")
-          //             .innerHTML;
-          //          const values = [...fields];
-          //          values[i][dropDownType] = inputValue;
-          //          let companyId = "EntityTypeID"
-          //          if (dropDownType === "companyType") {
-          //             values[i][companyId] = item.EntityTypeID;
-          //          }
-          //          setFields(values);
-          //          document
-          //             .querySelector(`#${dropDownId}`)
-          //             .classList.remove("display-none");
-          //       }
-          //    }
-          //    else {
-          //       list[i].countShow = false;
-          //       list[i].selectedLiecenseIdArray = [];
-          //       list[i].liecenseCount = 0;
-          //       list[i].liecenseData = [];
-          //       list[i].parentLicense = [];
-          //       list[i].liecenseCount = 0;
-          //       setFields(list);
-          //       document
-          //          .querySelector(`#${dropDownId}`)
-          //          .classList.remove("display-none");
-
-          // }
-          // }}
-        >
+        <div key={index} className="user-list-row">
           <div
             className="dropdown-email"
             onClick={(e) => {
-              const list = [...fields]
-              if (list[i].category === "") {
+              const list = [...fields];
+              if (list[i].business_category === "") {
                 if (e.target.classList.contains("dropdown-email")) {
-                  const values = [...fields]
+                  const values = [...fields];
 
-                  values[i][dropDownType] = e.target.innerHTML
-                  let companyId = "EntityTypeID"
+                  values[i][dropDownType] = e.target.innerHTML;
+                  let companyId = "EntityTypeID";
                   if (dropDownType === "companyType") {
-                    values[i][companyId] = item.EntityTypeID
+                    values[i][companyId] = item.EntityTypeID;
                   }
 
-                  setFields(values)
+                  setFields(values);
                   document
                     .querySelector(`#${dropDownId}`)
-                    .classList.add("display-none")
+                    .classList.add("display-none");
                 }
               } else {
                 if (list[i].category !== e.target.innerHTML) {
-                  const values = [...fields]
-                  values[i][dropDownType] = e.target.innerHTML
-                  let companyId = "EntityTypeID"
+                  const values = [...fields];
+                  values[i][dropDownType] = e.target.innerHTML;
+                  let companyId = "EntityTypeID";
                   if (dropDownType === "companyType") {
-                    values[i][companyId] = item.EntityTypeID
+                    values[i][companyId] = item.EntityTypeID;
                   }
                   document
                     .querySelector(`#${dropDownId}`)
-                    .classList.add("display-none")
+                    .classList.add("display-none");
                   if (dropDownType !== "companyType") {
-                    values[i].countShow = false
-                    values[i].selectedLiecenseIdArray = []
-                    values[i].liecenseCount = 0
-                    values[i].liecenseData = []
-                    values[i].parentLicense = []
-                    values[i].liecenseCount = 0
+                    values[i].countShow = false;
+                    values[i].selectedLiecenseIdArray = [];
+                    values[i].liecenseCount = 0;
+                    values[i].liecenseData = [];
+                    values[i].parentLicense = [];
+                    values[i].liecenseCount = 0;
                   }
-                  setFields(values)
+                  setFields(values);
                 } else {
-                  const values = [...fields]
-                  values[i][dropDownType] = e.target.innerHTML
-                  let companyId = "EntityTypeID"
+                  const values = [...fields];
+                  values[i][dropDownType] = e.target.innerHTML;
+                  let companyId = "EntityTypeID";
                   if (dropDownType === "companyType") {
-                    values[i][companyId] = item.EntityTypeID
+                    values[i][companyId] = item.EntityTypeID;
                   }
-                  setFields(values)
+                  setFields(values);
                   document
                     .querySelector(`#${dropDownId}`)
-                    .classList.add("display-none")
+                    .classList.add("display-none");
                 }
               }
             }}
@@ -591,37 +563,13 @@ function CompanyDetails({ history }) {
           <div className="border-dropdown"></div>
         </div>
       ))
-    )
-  }
+    );
+  };
 
-  const showHideDropDown = (type, indexDrop, data) => {
-    //  fields.map((ele, index) => {
-    //    if (type === "companyType" || type === "companyName") {
-    //      document
-    //        .querySelector(`#Category-${index}`)
-    //        .classList.add("display-none")
-    //      setCategoryData(data)
-    //      if (index != indexDrop) {
-    //        document
-    //          .querySelector(`#CompanyType-${index}`)
-    //          .classList.add("display-none")
-    //      }
-    //    }
-    //    if (type === "Category" || type === "companyName") {
-    //      document
-    //        .querySelector(`#CompanyType-${index}`)
-    //        .classList.add("display-none")
-    //      setCompanyData(data)
-    //      if (index != indexDrop) {
-    //        document
-    //          .querySelector(`#Category-${index}`)
-    //          .classList.add("display-none")
-    //      }
-    //    }
-    //  })
-  }
+  const showHideDropDown = (type, indexDrop, data) => {};
 
   const addNewCompany = (item, index) => {
+    item.license = [];
     return (
       <tr className="focusRemove" key={index}>
         {/* <td className="" style={{ height: "85px" }}> */}
@@ -629,17 +577,17 @@ function CompanyDetails({ history }) {
           <input
             type="text"
             className="form-control border-0 back-color"
-            placeholder="Enter Name"
+            placeholder="Name"
             // defaultValue={index === 0 ? companyName : item.companyName}
-            value={item.companyName}
+            value={item.company_name}
             autoComplete="off"
-            name="companyName"
+            name="company_name"
             onFocus={() => {
-              showHideDropDown("companyName", index)
+              showHideDropDown("companyName", index);
             }}
             onBlur={(e) => validateCompanyName(e, index)}
             onChange={(e) => {
-              handelChange(e, index, "", "")
+              handelChange(e, index, "", "");
             }}
           />
           {errors && errors[index] && errors[index].companyNameError !== "" && (
@@ -647,6 +595,7 @@ function CompanyDetails({ history }) {
               {errors[index].companyNameError}
             </p>
           )}
+          
         </td>
         <td className="slectCatgory">
           <Searchable
@@ -656,50 +605,39 @@ function CompanyDetails({ history }) {
             notFoundText="No result found" // by default "No result found"
             options={companyTypeoInfo}
             onSelect={(value) => {
-              handleCompanyTypeChange(value, index, "companyType")
+              handleCompanyTypeChange(value, index, "companyType");
             }}
             listMaxHeight={200} //by default 140
           />
-          {/* <input
-            type="text"
-            className="form-control border-0"
-            placeholder="Select Type"
-            name="companyType"
-            autoComplete="off"
-            value={item.companyType}
-            onChange={(e) => {
-              handelChange(e, index, item, `CompanyType-${index}`)
-            }}
-            onFocus={() => {
-              document
-                .querySelector(`#CompanyType-${index}`)
-                .classList.remove("display-none")
-              showHideDropDown("companyType", index)
-            }}
-            onBlur={(e) => {
-              // if (
-              //    !e.target.classList.contains("user-list-row") ||
-              //    !e.target.classList.contains("dropdown-email")
-              // ) {
-
-              if (item.companyType && item.companyType != companyData) {
-                showHideDropDown("Category", index, item.companyType)
-              }
+        </td>
+        <td>
+          <Searchable
+            options={options}
+            value={value}
+            onSelect={(value) => {
+              handleCompanyTypeChange(
+                options.find((item) => item.value === value).label,
+                index,
+                "country"
+              );
             }}
           />
-          <div
-            className="dropdown-user-list display-none"
-            id={`CompanyType-${index}`}
-          >
-            {companyTypeInfo &&
-              generateDropdown(
-                companyTypeInfo,
-                "EntityTypeDesc",
-                `CompanyType-${index}`,
-                "companyType",
-                index
-              )}
-          </div> */}
+        </td>
+        <td>
+          <input
+            type="text"
+            className="form-control border-0 back-color"
+            placeholder="Pincode"
+            name="company_pincode"
+            onChange={(e) => {
+              handelChange(e, index, "", "");
+            }}
+          />
+          {errors && errors[index] && errors[index].pinCodeError !== "" && (
+            <p className="input-error-message" style={{ position: "absolute" }}>
+              {errors[index].pinCodeError}
+            </p>
+          )}
         </td>
         <td className="dropList slectCatgory ddd">
           <Searchable
@@ -709,48 +647,10 @@ function CompanyDetails({ history }) {
             notFoundText="No result found" // by default "No result found"
             options={categoryo}
             onSelect={(value) => {
-              handleCompanyTypeChange(value, index, "categoryType")
+              handleCompanyTypeChange(value, index, "categoryType");
             }}
             listMaxHeight={200} //by default 140
           />
-          {/* <input
-            type="text"
-            autoComplete="off"
-            className="form-control border-0"
-            placeholder="Select Category"
-            name="category"
-            value={item.category}
-            onChange={(e) => {
-              handelChange(e, index, "", `Category-${index}`)
-            }}
-            onFocus={() => {
-              document
-                .querySelector(`#Category-${index}`)
-                .classList.remove("display-none")
-              showHideDropDown("Category", index)
-            }}
-            onBlur={() => {
-              // document
-              //    .querySelector(`#Category-${index}`)
-              //    .classList.add("display-none");
-              if (item.category && item.category != categoryData) {
-                showHideDropDown("companyType", index, item.category)
-              }
-            }}
-          />
-          <div
-            className="dropdown-user-list display-none"
-            id={`Category-${index}`}
-          >
-            {category &&
-              generateDropdown(
-                category,
-                "Category",
-                `Category-${index}`,
-                "category",
-                index
-              )}
-          </div> */}
         </td>
         <td>
           {item.countShow === false && (
@@ -762,12 +662,15 @@ function CompanyDetails({ history }) {
                   : "btn add-license-disabled"
               }
               disabled={
-                fields[index].companyName === "" ||
-                fields[index].companyType === "" ||
-                fields[index].category === "" ||
+                fields[index].company_name === "" ||
+                fields[index].company_type === "" ||
+                fields[index].business_category === "" ||
                 (errors &&
                   errors[index] &&
-                  errors[index].companyNameError !== "")
+                  errors[index].companyNameError !== "") ||
+                  (errors &&
+                    errors[index] &&
+                    errors[index].pinCodeError !== "")
               }
             >
               add licenses
@@ -791,8 +694,8 @@ function CompanyDetails({ history }) {
               onClick={() => {
                 Object.values(item).find((item) => item !== "") === false
                   ? onDeletePress(index)
-                  : setVisible(true)
-                setCurrentSelectedIndex(index)
+                  : setVisible(true);
+                setCurrentSelectedIndex(index);
               }}
               className="delete-icon"
             >
@@ -801,70 +704,75 @@ function CompanyDetails({ history }) {
           </td>
         )}
       </tr>
-    )
-  }
+    );
+  };
 
-  const redirectToAssignTaskScreen = () => {
-    if (checkButtonDisabled()) {
-      history.push("/governance")
+  const redirectToAssignTaskScreen = async () => {
+    try {
+      const { data } = await axiosInstance.post(
+        "compliance.api.setCompanyDetails",
+        {
+          details: fields,
+        }
+      );
+      if (data.message.status) {
+        history.push("/governance");
+      } else if(!data.message.status){
+         toast.error(data.message.status_response)
+      }
+    } catch (error) {
+      toast.error(error.message || "Something wrong");
     }
-  }
+  };
 
+  const companyChecking = (e,i) =>{
+    
+    let err = [...errors]
+      fields.map((item,index)=>{
+        if(item.company_name == e){
+          console.log("company Checking",item,i)
+          
+          // let list = [...errors]
+          // list[i].companyNameError = "Company name already existssssssssss";
+          // setErrors(list)
+          err[i].companyNameError ="Company name already existssssssssss";
+        }
+        else{
+        
+        }
+      })
+      setErrors(err)
+  }
   const handelChange = (e, i, item, dropDownId) => {
-    const values = [...fields]
+    const values = [...fields];
+    const check = [...fields];
     if (e == "") {
-      setFields(values)
+      setFields(values);
     }
     if (e != "") {
-      const { value, name } = e.target
+      const { value, name } = e.target;
+      validateCompanyName(e, i);
+     // companyChecking(value,i);
+      // validateCompanyName(e, i);
 
-      //  if (value !== "" && (name === "companyType" || name === "category")) {
-      //    document.querySelector(`#${dropDownId}`).classList.remove("display-none")
-      //  } else if (
-      //    value === "" &&
-      //    (name === "companyType" || name === "category")
-      //  ) {
-      //    document.querySelector(`#${dropDownId}`).classList.add("display-none")
-      //  }
-      const re = /^(?=.*\S).+$/
+      const re = /^(?=.*\S).+$/;
       if (
         e.target.value !== "" &&
         !re.test(e.target.value) &&
-        name === "companyName"
+        name === "company_name"
       ) {
-        return ""
+        validateCompanyName(e, i);
+        companyChecking(e.target.value,i);
+        return "";
       }
-      //  if (name === "companyType" && e.target.value !== "") {
-      //    let temp = []
-      //    companyType &&
-      //      companyType.length > 0 &&
-      //      companyType.filter((item, index) => {
-      //        if (item.EntityTypeDesc.toLowerCase().includes(e.target.value)) {
-      //          temp.push(item)
-      //        }
-      //      })
-      //    setCompanyTypeInfo(temp)
-      //  } else if (e.target.value === "" && name === "companyType") {
-      //    setCompanyInfo(companyType)
-      //  }
-      //  if (name === "category" && e.target.value !== "") {
-      //    let temp = []
-      //    Categories &&
-      //      Categories.length > 0 &&
-      //      Categories.filter((item, index) => {
-      //        if (item.Category.toLowerCase().includes(e.target.value)) {
-      //          temp.push(item)
-      //        }
-      //      })
-      //    setCategory(temp)
-      //  } else if (e.target.value === "" && name === "category") {
-      //    setCategory(companyType)
-      //  }
+      if(name === "company_pincode"){
+        pinCodeValidation(e.target.value,i);
+      }
 
-      values[i][name] = value
+      values[i][name] = value;
     }
-    setFields(values)
-  }
+    setFields(values);
+  };
 
   const addEditMobileModel = (item, index) => {
     return (
@@ -876,12 +784,12 @@ function CompanyDetails({ history }) {
                 type="text"
                 className="form-control border-0"
                 placeholder="Enter Name"
-                value={item.companyName}
+                value={item.company_name}
                 autoComplete="off"
                 name="companyName"
                 onBlur={(e) => validateCompanyName(e, index)}
                 onChange={(e) => {
-                  handelChange(e, index, "", "")
+                  handelChange(e, index, "", "");
                 }}
               />
               {errors &&
@@ -897,91 +805,32 @@ function CompanyDetails({ history }) {
             </div>
             <div className="input-box-mobile">
               <Searchable
-                value={item.companyType}
+                value={item.company_type}
                 className="form-control border-0"
                 placeholder={
-                  item.companyType ? item.companyType : "Select Company"
+                  item.company_type ? item.company_type : "Select Company"
                 } // by default "Search"
                 notFoundText="No result found" // by default "No result found"
                 options={companyTypeoInfo}
                 onSelect={(value) => {
-                  handleCompanyTypeChange(value, index, "companyType")
+                  handleCompanyTypeChange(value, index, "companyType");
                 }}
                 listMaxHeight={200} //by default 140
               />
-              {/* <input
-              type="text"
-              className="form-control border-0"
-              placeholder="Select Type"
-              name="companyType"
-              autoComplete="off"
-              value={item.companyType}
-              onChange={(e) => {
-                handelChange(e, index, item, `CompanyTypeMobile-${index}`)
-              }}
-              onFocus={() => {
-                document
-                  .querySelector(`#CompanyTypeMobile-${index}`)
-                  .classList.remove("display-none")
-              }}
-            />
-
-            <div
-              className="dropdown-user-list display-none"
-              id={`CompanyTypeMobile-${index}`}
-            >
-              {companyTypeInfo &&
-                generateDropdown(
-                  companyTypeInfo,
-                  "EntityTypeDesc",
-                  `CompanyTypeMobile-${index}`,
-                  "companyType",
-                  index
-                )}
-            </div> */}
             </div>
             <div className="input-box-mobile">
               <Searchable
-                value={item.category}
+                value={item.business_category}
                 className="form-control border-0"
-                placeholder={item.category ? item.category : "Select Category"} // by default "Search"
+                placeholder={item.business_category ? item.business_category : "Select Category"} // by default "Search"
                 notFoundText="No result found" // by default "No result found"
                 // options={categoryo}
                 options={mobCategoryo}
                 onSelect={(value) => {
-                  handleCompanyTypeChange(value, index, "categoryType")
+                  handleCompanyTypeChange(value, index, "categoryType");
                 }}
                 listMaxHeight={200} //by default 140
               />
-              {/* <input
-              type="text"
-              autoComplete="off"
-              className="form-control border-0"
-              placeholder="Select Category"
-              name="category"
-              value={item.category}
-              onChange={(e) => {
-                handelChange(e, index, "", `CategoryMobile-${index}`)
-              }}
-              onFocus={() => {
-                document
-                  .querySelector(`#CategoryMobile-${index}`)
-                  .classList.remove("display-none")
-              }}
-            />
-            <div
-              className="dropdown-user-list display-none"
-              id={`CategoryMobile-${index}`}
-            >
-              {category &&
-                generateDropdown(
-                  category,
-                  "Category",
-                  `CategoryMobile-${index}`,
-                  "category",
-                  index
-                )}
-            </div> */}
             </div>
             <div className="input-box-mobile">
               {item.countShow ? (
@@ -1008,18 +857,21 @@ function CompanyDetails({ history }) {
                       : "btn add-license-mobile-disabled"
                   }
                   disabled={
-                    fields[index].companyName === "" ||
-                    fields[index].companyType === "" ||
-                    fields[index].category === "" ||
+                    fields[index].company_name === "" ||
+                    fields[index].company_type === "" ||
+                    fields[index].business_category === "" ||
                     (errors &&
                       errors[index] &&
-                      errors[index].companyNameError !== "")
+                      errors[index].companyNameError !== "") ||
+                      (errors &&
+                        errors[index] &&
+                        errors[index].pinCodeError !== "")
                   }
                 >
                   add licenses
-                  {fields[index].companyName === "" ||
-                  fields[index].companyType === "" ||
-                  fields[index].category === "" ||
+                  {fields[index].company_name === "" ||
+                  fields[index].company_type === "" ||
+                  fields[index].business_category === "" ||
                   (errors &&
                     errors[index] &&
                     errors[index].companyNameError !== "") ? (
@@ -1059,8 +911,8 @@ function CompanyDetails({ history }) {
                   <div
                     className="delete-icon"
                     onClick={() => {
-                      setVisible(true)
-                      setCurrentSelectedIndex(index)
+                      setVisible(true);
+                      setCurrentSelectedIndex(index);
                     }}
                   >
                     <img
@@ -1075,16 +927,16 @@ function CompanyDetails({ history }) {
           </div>
         )}
       </div>
-    )
-  }
+    );
+  };
   const addNewCompanymobile = (item, index) => {
     if (
-      item.companyType === "" ||
-      item.category == "" ||
+      item.company_type === "" ||
+      item.business_category == "" ||
       item.liecenseCount === null ||
       item.countShow === false
     ) {
-      return <>{addEditMobileModel(item, index)}</>
+      return <>{addEditMobileModel(item, index)}</>;
     } else {
       return (
         <>
@@ -1092,7 +944,7 @@ function CompanyDetails({ history }) {
             <div className="company-details-filled-mobile">
               <div className="d-flex">
                 <div className="col-10 pl-0">
-                  <div className="bk-seq-title">{item.companyName}</div>
+                  <div className="bk-seq-title">{item.company_name}</div>
                 </div>
                 <div className="col-2 pr-0">
                   <div className="license-count-selected-mobile">
@@ -1102,8 +954,8 @@ function CompanyDetails({ history }) {
               </div>
               <div className="d-flex">
                 <div className="col-10 pl-0">
-                  <div className="firm-name-mobile">{item.category}</div>
-                  <div className="firm-name-mobile">{item.companyType}</div>
+                  <div className="firm-name-mobile">{item.business_category}</div>
+                  <div className="firm-name-mobile">{item.company_type}</div>
                 </div>
                 <div className="col-2 pr-0">
                   <div className="edit-delete">
@@ -1125,8 +977,8 @@ function CompanyDetails({ history }) {
                         <div
                           className="delete-icon"
                           onClick={() => {
-                            setVisible(true)
-                            setCurrentSelectedIndex(index)
+                            setVisible(true);
+                            setCurrentSelectedIndex(index);
                           }}
                         >
                           <img
@@ -1144,9 +996,9 @@ function CompanyDetails({ history }) {
           </div>
           {isEditIndex === index && addEditMobileModel(item, index)}
         </>
-      )
+      );
     }
-  }
+  };
 
   return (
     <div className="row get-mobile-company-detail">
@@ -1168,19 +1020,13 @@ function CompanyDetails({ history }) {
             <div id="drawerParent" className="">
               <div id="drawerChild" className="sideBarFixed">
                 {open && (
-                  <LicenseDrawer
-                    currentSelectedIndex={currentSelectedIndex}
-                    setCurrentSelectedIndex={setCurrentSelectedIndex}
-                    fields={fields}
-                    setFields={setFields}
-                    setLiecenseData={setLiecenseData}
-                    liecenseData={liecenseData}
-                    category={category}
-                    companyInfo={companyInfo}
-                    setCategory={setCategory}
-                    close={close}
-                    setCompanyInfo={setCompanyInfo}
-                  />
+                  <>
+                    <License
+                      addLicense={addLicense}
+                      index={currentIndex}
+                      closeDrawer={close}
+                    />
+                  </>
                 )}
               </div>
             </div>
@@ -1189,19 +1035,9 @@ function CompanyDetails({ history }) {
             <div id="drawerParentMobile" className="">
               <div id="drawerChildMobile" className="sideBarFixedAccount">
                 {open && (
-                  <LicenseDrawer
-                    currentSelectedIndex={currentSelectedIndex}
-                    setCurrentSelectedIndex={setCurrentSelectedIndex}
-                    fields={fields}
-                    setFields={setFields}
-                    setLiecenseData={setLiecenseData}
-                    liecenseData={liecenseData}
-                    category={category}
-                    companyInfo={companyInfo}
-                    setCategory={setCategory}
-                    close={close}
-                    setCompanyInfo={setCompanyInfo}
-                  />
+                  <>
+                    <License />
+                  </>
                 )}
               </div>
             </div>
@@ -1212,7 +1048,11 @@ function CompanyDetails({ history }) {
                 <div className="col-lg-12">
                   <div className="header_logo">
                     {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                    <img src={comtech} alt="COMPLIANCE SUTRA" title="COMPLIANCE SUTRA" />
+                    <img
+                      src={comtech}
+                      alt="COMPLIANCE SUTRA"
+                      title="COMPLIANCE SUTRA"
+                    />
                     <span className="camp">COMPLIANCE SUTRA</span>
                     {/* </a> */}
                   </div>
@@ -1233,120 +1073,6 @@ function CompanyDetails({ history }) {
             <div className="bottom-logo-strip-parent-grid d-block d-sm-none">
               {fields &&
                 fields.map((item, index) => addNewCompanymobile(item, index))}
-              {/* <div className="d-block d-sm-none">
-                        <div className="company-details-filled-mobile">
-                           <div className="d-flex">
-                              <div className="col-10 pl-0">
-                                 <div className="bk-seq-title">B&K Securities</div>
-                              </div>
-                              <div className="col-2 pr-0">
-                                 <div className="license-count-selected-mobile">5</div>
-                              </div>
-                           </div>
-                           <div className="d-flex">
-                              <div className="col-10 pl-0">
-                                 <div className="firm-name-mobile">Partnership Firm</div>
-                                 <div className="firm-name-mobile">Insurance</div>
-                              </div>
-                              <div className="col-2 pr-0">
-                                 <div className="mobile-edit">edit</div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="d-block d-sm-none">
-                        <div className="company-details-filled-mobile">
-                           <div className="d-flex">
-                              <div className="col-10 pl-0">
-                                 <div className="bk-seq-title">B&K Securities</div>
-                              </div>
-                              <div className="col-2 pr-0">
-                                 <div className="license-count-selected-mobile">4</div>
-                              </div>
-                           </div>
-                           <div className="d-flex">
-                              <div className="col-10 pl-0">
-                                 <div className="firm-name-mobile">Partnership Firm</div>
-                                 <div className="firm-name-mobile">Insurance</div>
-                              </div>
-                              <div className="col-2 pr-0">
-                                 <div className="edit-delete">
-                                    <div className="col-6 pl-0">
-                                       <div className="mobile-edit">edit</div>
-                                    </div>
-                                    <div className="col-6 ml-1">
-                                       <div className="delete-icon">
-                                          <img className="delete-icon" src={deleteIcon} alt="delete Icon" />
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="d-block d-sm-none">
-                        <div className="company-details-mobile">
-                           <div className="input-box-mobile">
-                              <input
-                                 type="text"
-                                 className="form-control border-0"
-                                 placeholder="Company Name"
-                                 value="" name="companyName" />
-                           </div>
-                           <div className="input-box-mobile">
-                              <input
-                                 type="text"
-                                 className="form-control border-0"
-                                 placeholder="Company Type"
-                                 name="companyType"
-                                 value="" />
-                           </div>
-                           <div className="input-box-mobile">
-                              <input type="text"
-                                 className="form-control border-0"
-                                 placeholder="Category"
-                                 name="category"
-                                 value="" />
-                              <div className="dropdown-user-list display-none">
-                              </div>
-                           </div>
-                           <div className="input-box-mobile">
-                              <button className="btn add-license-mobile">
-                                 add licenses <img src={grayPlusIcon} alt="Plus Icon" />
-                              </button>
-                           </div>
-
-                        </div>
-                     </div> */}
-              <div className="d-block d-sm-none">
-                <div className="container">
-                  <div className="add-company-mobile">
-                    <caption
-                      onClick={() => {
-                        const values = [...fields]
-                        values.push({
-                          companyName: "",
-                          companyType: "",
-                          category: "",
-                          countShow: false,
-                          selectedLiecenseIdArray: [],
-                        })
-                        setFields(values)
-                        const errorInfo = [...errors]
-                        errorInfo.push({
-                          companyNameError: "",
-                          companyTypeError: "",
-                          categoryErr: "",
-                        })
-                        setErrors(errorInfo)
-                      }}
-                      className="add-company-link"
-                    >
-                      Add another company
-                    </caption>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div className="bottom-logo-strip-parent-grid table-responsive">
@@ -1354,24 +1080,7 @@ function CompanyDetails({ history }) {
                 <caption
                   style={{ width: "fit-content" }}
                   onClick={() => {
-                    const values = [...fields]
-                    values.push({
-                      companyName: "",
-                      companyType: "",
-                      entityID: "",
-                      EntityTypeID: "",
-                      category: "",
-                      countShow: false,
-                      selectedLiecenseIdArray: [],
-                    })
-                    setFields(values)
-                    const errorInfo = [...errors]
-                    errorInfo.push({
-                      companyNameError: "",
-                      companyTypeError: "",
-                      categoryErr: "",
-                    })
-                    setErrors(errorInfo)
+                    AddAnotherCompany();
                   }}
                   className="add-company-link"
                 >
@@ -1381,6 +1090,8 @@ function CompanyDetails({ history }) {
                   <tr>
                     <th scope="col">Company Name</th>
                     <th scope="col">Company Type</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">Pin Code</th>
                     <th scope="col">Business category</th>
                     <th scope="col">Licenses</th>
                     <th scope="col">&nbsp;</th>
@@ -1414,33 +1125,19 @@ function CompanyDetails({ history }) {
                   </button>
                 </div>
                 <div className="col-6">
-                <div className="col-md-12 col-xs-12 d-none d-sm-block text-right">
-                  {/* <a href="#" style={{'cursor': 'auto'}}> */}
-                  <span className="powerBy">Powered by</span>
-                  <img
-                    className="header_logo footer-logo-secmark"
-                    src={secmark}
-                    alt="SECMARK"
-                    title="SECMARK"
-                  />
-                  {/* </a> */}
-                </div>
+                  <div className="col-md-12 col-xs-12 d-none d-sm-block text-right">
+                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
+                    <span className="powerBy">Powered by</span>
+                    <img
+                      className="header_logo footer-logo-secmark"
+                      src={secmark}
+                      alt="SECMARK"
+                      title="SECMARK"
+                    />
+                    {/* </a> */}
+                  </div>
                 </div>
               </div>
-              {/* <div className="row aligncenter">
-               
-                <div className="col-md-12 col-xs-12 d-none d-sm-block text-right">
-               
-                  <span className="powerBy">Powered by</span>
-                  <img
-                    className="header_logo footer-logo-secmark"
-                    src={secmark}
-                    alt="SECMARK"
-                    title="SECMARK"
-                  />
-                 
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
@@ -1448,7 +1145,7 @@ function CompanyDetails({ history }) {
         <div></div>
       </div>
     </div>
-  )
+  );
 }
 
-export default withRouter(CompanyDetails)
+export default withRouter(CompanyDetails);

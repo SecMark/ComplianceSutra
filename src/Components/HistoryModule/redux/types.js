@@ -14,4 +14,5 @@ export const SELECT_FROM_DATE = "SELECT_FROM_DATE";
 export const SELECT_TO_DATE = "SELECT_TO_DATE";
 export const CLEAR_LICENSE_LIST = "CLEAR_LICENSE_LIST";
 export const CLEAR_STATE = "CLEAR_STATE";
+export const UPDATED_LICENSE = "UPDATED_LICENSE";
 export const API_ERROR = "API_ERROR";

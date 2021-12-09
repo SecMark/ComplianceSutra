@@ -1,19 +1,20 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import Header from "../CommonModules/Header";
-import Compliance from "../Components/ComplianceModule";
+
 import CapmTechLandingPage from "../Components/CapmTechLandingPage";
+import ComplianceLanding from "../Components/ComplianceLandingPage";
 import TeamMember from "../Components/TeamMemberFlow/DashBoard";
 import DashBoardView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView";
 import OnBoarding from "../Components/OnBording/SubModules/GetStarted";
-import ComplianceDemo7 from "../Components/ComplianceModule/ComplianceDemo7";
+import ComplianceDemo from "../Components/ComplianceModule";
+import ComplianceDemoEnd from "../Components/ComplianceModule/ComplianceDemo7";
 import PersonalDetails from "../Components/OnBording/SubModules/PersonalDetails";
 import CoDashboard from "../Components/CoDashboard";
 import AssignTask from "../Components/OnBording/SubModules/AssignTask";
 import VerifyEmailErrorPage from "../Components/OnBording/SubModules/VerifyEmail";
 import EmailVerifiedPage from "../Components/OnBording/SubModules/EmailVerify";
 import NewEmailVerification from "../Components/OnBording/SubModules/NewEmailVerification";
-import TeamMemberFlow from "../Components/TeamMemberFlow/VerificationFlow/";
+
 import TeamMemberFlowPersonalDetails from "../Components/TeamMemberFlow/VerificationFlow/components/PersonalDetails";
 import TeamMemberFlowOTP from "../Components/TeamMemberFlow/VerificationFlow/components/OTPVerification";
 import OTPVerificationCO from "../Components/OnBording/SubModules/VerifyOTP";
@@ -22,9 +23,7 @@ import SIGNUPPOP from "../Components/TeamMemberFlow/index";
 import CompanyDetails from "../Components/OnBording/SubModules/CompanyDetails";
 import VerifyOTPCO from "../Components/OnBording/SubModules/VerifyOTP";
 import YouAreDone from "../Components/OnBording/SubModules/YourAreDone";
-// import loginComtech from "../Components/LoginComtech";
-// import ForgotPasswordComtech from "../Components/ForgotPasswordComtech";
-// import NewPasswordComtech from "../Components/NewPasswordComtech";
+
 import Governance from "../Components/OnBording/SubModules/Governance";
 
 import CoPersonal from "../Components/OnBording/SubModules/DashBoardCO/components/CoSetting/CoPersonal/index";
@@ -33,9 +32,9 @@ import Login from "../Components/Authectication/components/Login";
 import ForgotPassword from "../Components/Authectication/components/ForgotPassword";
 import ChangePassword from "../Components/Authectication/components/ChangePassword";
 import RedirectToDashboard from "../Components/OnBording/SubModules/redirectToLogin";
-import InvitationMemberFlow from "../Components/OnBording/SubModules/IniviteFlowMember";
+
 import Notification from "../Components/OnBording/SubModules/DashBoardCO/components/notification";
-//import CoManagment from "../Components/OnBording/SubModules/DashBoardCO/components/HeadCOManagement";
+
 import CoSetting from "../Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
 import UserProfileVerifcation from "../Components/UserVerification/components/PersonalDetails";
 import UserOTPVerifcation from "../Components/UserVerification/components/OTPVerification";
@@ -46,43 +45,29 @@ import MultiCompanyQuickOverView from "../Components/OnBording/SubModules/DashBo
 import MultiTeamMemberView from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/MultiTeamMemberView/index";
 import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/PendingAction/index";
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
-// import ComplianceHistory from "../Components/OnBording/SubModules/DashBoardCO/components/ComplianceHistory";
-
-// import HistoryList from "../Components/HistoryModule/HistoryList";
-// import NewRegulations from "../Components/NewRegulationModule/NewRegulations";
-
+import ExperReview from "../Components/ExpertReviewModule";
+import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 export default function AppRouter() {
-  const checkHeader = () => {
-    if (
-      window.location.includes === '/compliance-demo-end"' ||
-      window.location.includes === "/"
-    ) {
-      document.body.style.backgroundColor = "white";
-      return true;
-    }
-    return false;
-  };
-
   return (
     <div>
       <>
-        {/* {checkHeader() && <Header />} */}
         <div>
-          {/** Home */}
-          <Route exact path="/" component={OnBoarding} />
+          <Route exact path="/sign-up" component={OnBoarding} />
           <Route exact path="/assign-task" component={AssignTask} />
+          <Route exact path="/" component={CapmTechLandingPage} />
           <Route
             exact
-            path="/capm-tect-landing"
-            component={CapmTechLandingPage}
+            path="/compliance-landing"
+            component={ComplianceLanding}
           />
           <Route exact path="/on-boarding" component={OnBoarding} />
           <Route exact path="/board-view" component={BoardView} />
           <Route exact path="/team-member" component={TeamMember} />
+          <Route exact path="/compliance-demo" component={ComplianceDemo} />
           <Route
             exact
             path="/compliance-demo-end"
-            component={ComplianceDemo7}
+            component={ComplianceDemoEnd}
           />
           <Route exact path="/you-are-done" component={YouAreDone} />
           <Route exact path="/co-dashboard" component={CoDashboard} />
@@ -135,38 +120,6 @@ export default function AppRouter() {
 
           <Route exact path="/governance" component={Governance} />
 
-          {/* <Route exact path="/redirect-user-dashboard" component={YouAreDone} /> */}
-          {/* <Route
-            exact
-            path="/redirect-dashboard"
-            component={RedirectToDashboard}
-          /> */}
-
-          {/* <Route
-            exact
-            path="/invitation-member"
-            component={InvitationMemberFlow}
-          /> */}
-
-          {/* <Route exact path="/co-managment" component={CoManagment}/> */}
-          <Route exact path="/settings" component={CoSetting} />
-
-          {/* <Route
-            exact
-            path="/user-details-verification"
-            component={UserProfileVerifcation}
-          /> */}
-          {/* <Route
-            exact
-            path="/otp-verification"
-            component={UserOTPVerifcation}
-          /> */}
-          {/* <Route
-            exact
-            path="/user-verification-process"
-            component={UserVerificationProcess}
-          /> */}
-
           <Route exact path="/redirect-user-dashboard" component={YouAreDone} />
           <Route
             exact
@@ -174,14 +127,8 @@ export default function AppRouter() {
             component={RedirectToDashboard}
           />
 
-          <Route
-            exact
-            path="/invitation-member"
-            component={InvitationMemberFlow}
-          />
           <Route exact path="/notifications" component={Notification} />
-          {/* <Route exact path="/co-managment" component={CoManagment}/> */}
-          {/* <Route exact path="/settings" component={CoSetting} /> */}
+
           <Route exact path="/calendar-view" component={CalendarView} />
           <Route
             exact
@@ -220,8 +167,18 @@ export default function AppRouter() {
           />
 
           <Route exact path="/compliance-history" component={DashBoardCO} />
-          <Route exact path="/new-regulations" component={DashBoardCO} />
+          <Route path="/new-regulations" component={DashBoardCO} />
+          <Route path="/project-management" component={DashBoardCO} />
+          <Route path="/project-trash" component={DashBoardCO} />
           <Route exact path="/help" component={DashBoardCO} />
+
+          {/* Expert Review */}
+
+          <Route path="/expert-review" component={ExperReview}></Route>
+          <Route exact path="/thankyou" component={Thankyou} />
+          <Route exact path="/settings" component={CoSetting} />
+          {/* User */}
+          {/* <Route path="/user-task" component={UserTask}></Route> */}
         </div>
       </>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
 import { Modal } from "react-responsive-modal";
 import closeBlack from "../../../../../../assets/Icons/closeBlack.png";
@@ -14,13 +14,6 @@ import complteTaskIcon from "../../../../../../assets/Icons/complteTaskIcon.png"
 import scheduledIcon from "../../../../../../assets/Icons/scheduledIcon.png";
 import dropdownBottomArrow from "../../../../../../assets/Icons/dropdownBottomArrow.png";
 import dropdownCheckIcon from "../../../../../../assets/Icons/dropdownCheckIcon.png";
-import sidebarSettingIcon from "../../../../../../assets/Icons/sidebarSettingIcon.png";
-import editpen from "../../../../../../assets/Icons/editpen.png";
-import mobileTopArrow from "../../../../../../assets/Icons/mobileTopArrow.png";
-import LogoutIcon from "../../../../../../assets/Icons/LogoutIcon.png";
-import sidebarAccountCircle from "../../../../../../assets/Icons/sidebarAccountCircle.png";
-import taskIcon from "../../../../../../assets/Icons/taskIcon.png";
-import sidebarBell from "../../../../../../assets/Icons/sidebarBell.png";
 import upArrow from "../../../../../../assets/Icons/topArrowAccordian.png";
 import RedLine from "../../../../../../assets/Icons/RedLine.png";
 import { isMobile } from "react-device-detect";
@@ -29,11 +22,9 @@ import plusIcon from "../../../../../../assets/Icons/plusIcon3.png";
 import redCircle from "../../../../../../assets/Icons/redCircle.png";
 import viewAllArow from "../../../../../../assets/Icons/viewAllArow.png";
 import viewAllArowTop from "../../../../../../assets/Icons/viewAllArowTop.png";
-import sidebarCheckIcon from "../../../../../../assets/Icons/sidebarCheckIcon.png";
 import closeIconGray from "../../../../../../assets/Icons/closeIconGray.png";
 import searchIcon from "../../../../../../assets/Icons/searchIcon.png";
 import fileUploadIcon from "../../../../../../assets/Icons/fileUploadIcon.png";
-import completeTaskIcon from "../../../../../../assets/Icons/emailVerify.png";
 import { toast } from "react-toastify";
 import moment from "moment";
 import Dropzone from "react-dropzone";
@@ -41,13 +32,12 @@ import { useOuterClick } from "./outerClick.js";
 import { useDropdownOuterClick } from "./dropdownOuterClick.js";
 import TaskDetailsView from "./TaskDetailView";
 import { BACKEND_BASE_URL } from "../../../../../../apiServices/baseurl";
-import { useSelector, useDispatch, connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { actions as taskReportActions } from "../../redux/actions";
 import MobileLeftSidebar from "../MobileLeftSidebar";
 import axios, { post } from "axios";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import deleteBlack from "../../../../../../assets/Icons/deleteBlack.png";
-import CalendarView from "../CalendarView/components/index";
 import CompanyTaskList from "../DashBoardView/component/companyList";
 import LicenseTaskList from "../DashBoardView/component/LicenseTaskList.js";
 import AssigneList from "../DashBoardView/component/AssignedView.js";
@@ -55,15 +45,31 @@ import BoardView from "../BoardView/index";
 import { actions as notificationActions } from "../notification/Redux/actions.js";
 import { actions as adminMenuActions } from "../../MenuRedux/actions";
 import View from "../../../../../CalenderView/View";
-
+import BackDrop from "../../../../../../CommonModules/sharedComponents/Loader/BackDrop";
 import TextareaAutosize from "react-textarea-autosize";
 import ReAssignTasksModal from "../../../../../ReAssignTasks";
+import {
+  getDataByStatus,
+  getAllTasks,
+} from "../../../../../../CommonModules/helpers/tasks.helper";
+import axiosInstance from "../../../../../../apiServices";
+import TaskStatusBox from "../../../../../../CommonModules/sharedComponents/TaskStatusBox";
+
+export const getUserLlistByUserType = (userList, userType) => {
+  return [...userList].filter((element) => {
+    if (element.user_type.length > 0) {
+      const isTeamMember = element.user_type.find(
+        (type) => type.user_type_no === userType
+      );
+      return isTeamMember && element;
+    }
+  });
+};
 function RightSideGrid({
   isTaskListOpen,
   setIsTaskListOpen,
   isTaskApproved,
   setIsTaskApproved,
-  taskList,
   companyName,
   user,
   history,
@@ -88,7 +94,7 @@ function RightSideGrid({
     },
   ];
   const searchInput = useRef(null);
-
+  const [currentOpenedTask, setCurrentOpenedTask] = useState({});
   const [openBoardDrD, setOpenBoardDrp] = useState(false);
   const [currentBoardViewBy, setCurrentBoardViewBy] = useState("status");
   const state = useSelector((state) => state);
@@ -104,7 +110,6 @@ function RightSideGrid({
   const [approverDropDown, setApproverDropDown] = useState("");
   const [inputComment, setInputComment] = useState("");
   const [rejectTaskInput, setRejectTaskInputComment] = useState("");
-  const [uploadFile, setUploadFile] = useState();
   const [visibleRejectTaskModal, setVisibleRejectTaskModal] = useState(false);
 
   const [referenceSectionData, setReferenceSectionData] = useState([]);
@@ -115,17 +120,14 @@ function RightSideGrid({
 
   const [selectedUser, setSelectedUser] = useState("");
 
-  const [currentTaskData, setCurrentTaskData] = useState([]);
+  const [allTaskList, setAllTaskList] = useState([]);
   const [currentDropDown, setCurrentDropDown] = useState("");
   const [fileList, setFileList] = useState([]);
   const [searchBoxShow, setsearchBoxShow] = useState(false);
 
   const [searchBoxShowMobile, setsearchBoxShowMobile] = useState(false);
-  const [navigationHideShow, setNavigationHideShow] = useState(false);
-  const [taskData, setTaskData] = useState([]);
   const [listTaskData, setListTaskData] = useState("");
-  const [taskDataBackup, setTaskDataBackup] = useState([]);
-  const [expandedFlags, setExpandedFlags] = useState([]);
+  const [expandedFlags, setExpandedFlags] = useState([0, 1, 2]);
   const [rowCount, setRowCount] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [searchData, setSearchData] = useState([]);
@@ -139,6 +141,12 @@ function RightSideGrid({
   const [completedTask, setCompletedTask] = useState("0");
   const [scheduledTask, setScheduledTask] = useState("0");
   const [noRecords, setNoRecords] = useState(false);
+  const [
+    isShowReAssignModalForTeamMember,
+    setIsShowReAssignModalForTeamMember,
+  ] = useState(false);
+  const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
+    useState(false);
   const taskModalOpenStatus =
     state &&
     state.adminMenu &&
@@ -147,37 +155,69 @@ function RightSideGrid({
 
   const currentFilterViewByRedux =
     state && state.adminMenu && state.adminMenu.currentFilterViewBy;
-  const [
-    isShowReAssignModalForTeamMember,
-    setIsShowReAssignModalForTeamMember,
-  ] = useState(false);
-  const [isShowReAssignModalForApprover, setIsShowReAssignModalForApprover] =
-    useState(false);
+
+  const taskFilesById =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskFilesById &&
+    state.taskReport.taskFilesById.taskFiles;
+
   const getTaskById =
     state &&
     state.taskReport &&
     state.taskReport.taskReportById &&
     state.taskReport.taskReportById.taskReportById;
-
+  const taskList =
+    state &&
+    state.taskReport &&
+    state.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport &&
+    state.taskReport.taskReport.taskReport;
+  const isLoading = state && state.taskReport && state.taskReport?.loader;
+  const taskReferences = state && state.taskReport && state.taskReferences;
+  const setCurrentTask = (task) => {
+    dispatch(
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
+      })
+    );
+  };
+  useEffect(() => {
+    if (taskList && taskList.length !== 0) {
+      const allTasks = getAllTasks(taskList);
+      setAllTaskList(allTasks);
+    }
+  }, [taskList]);
+  useEffect(() => {
+    if (taskReferences) {
+      setReferenceSectionData(taskReferences);
+    }
+  }, [taskReferences]);
+  useEffect(() => {
+    if (getTaskById && Object.keys(getTaskById).length !== 0) {
+      setCurrentOpenedTask(getTaskById);
+      setIsTaskListOpen(true);
+      setDisplayTask("1");
+      setTaskListDisplay("1");
+    }
+  }, [getTaskById]);
   useEffect(() => {
     if (user && user.UserID !== undefined && userDetails.UserType === 4) {
       fetchMothTaskOnTrack();
     }
   }, []);
-
   useEffect(() => {
     if (taskModalOpenStatus === "board") {
       setDisplayTask("2");
       setTaskListDisplay("0");
+      setIsTaskModalOpen(true);
     }
   }, [taskModalOpenStatus]);
 
   useEffect(() => {
     let task_id =
       state && state.NotificationRedu && state.NotificationRedu.taskID;
-    console.log(state.NotificationRedu);
     if (task_id) {
-      console.log(state.NotificationRedu?.taskID);
       getSelectTaskDetails();
     }
   }, [state.NotificationRedu?.taskID]);
@@ -204,9 +244,14 @@ function RightSideGrid({
   }, [state.adminMenu.taskIDByCalendarView]);
 
   useEffect(() => {
-    let task_id = state && state.adminMenu && state.adminMenu.taskID;
-    if (task_id !== null && taskModalOpenStatus !== "") {
-      getSelectTaskDetails();
+    let task = state && state.adminMenu && state.adminMenu.taskID;
+    if (
+      task !== null &&
+      task &&
+      Object.keys(task).length !== 0 &&
+      taskModalOpenStatus !== ""
+    ) {
+      setCurrentOpenedTask(task);
     }
   }, [state.adminMenu.taskID]);
 
@@ -216,28 +261,18 @@ function RightSideGrid({
     }
   }, [currentFilterViewByRedux]);
 
+  // Fetch Tasks List and Sort Data by Status
   useEffect(() => {
-    if (taskList != undefined && taskList.length > 0) {
-      let tempArr = [];
-      let tempRowCount = {};
-      taskList.map((item) => {
-        if (item.Details.length >= 1 && item.Details[0].TaskId != 0) {
-          tempArr.push({ ...item });
-          tempRowCount[item.Status.trim()] = 3;
+    if (taskList && taskList.length > 0) {
+      const tempRowCount = {};
+      const taskByStatus = getDataByStatus(taskList);
+      [...taskByStatus].forEach((item) => {
+        if (item.tasks.length > 0) {
+          tempRowCount[item.status.trim()] = 3;
         }
       });
-      let sortedArray = tempArr.sort((a, b) => a.ORD - b.ORD);
-      let task_id =
-        state && state.NotificationRedu && state.NotificationRedu.taskID;
-      if (task_id !== null && localStorage.allRowCount) {
-        let getItemAllrow = localStorage.getItem("allRowCount");
-        var personObject = JSON.parse(getItemAllrow);
-        setRowCount(personObject);
-      } else {
-        setRowCount(tempRowCount);
-      }
-      setTaskData(sortedArray);
-      setTaskDataBackup(sortedArray);
+      setRowCount(tempRowCount);
+      setListTaskData(taskByStatus);
     }
   }, [taskList]);
 
@@ -249,19 +284,9 @@ function RightSideGrid({
       state.taskReport.getUserByRole &&
       state.taskReport.getUserByRole.getUserByRole;
 
-    if (ApproverUsers != undefined) {
-      let temp = [];
-      ApproverUsers &&
-        ApproverUsers.length > 0 &&
-        ApproverUsers.forEach((obj1) => {
-          obj1 &&
-            obj1.GEN_Users &&
-            obj1.GEN_Users.forEach((obj2) => {
-              temp.push(obj2);
-            });
-        });
-      setAllUser(temp);
-      setAllUserBackup(temp);
+    if (ApproverUsers !== undefined && ApproverUsers.length !== 0) {
+      setAllUser(ApproverUsers);
+      setAllUserBackup(ApproverUsers);
     }
   }, [state.taskReport.getUserByRole]);
 
@@ -289,23 +314,24 @@ function RightSideGrid({
   });
 
   useEffect(() => {
-    const getTaskId = getTaskById;
-    if (getTaskId) {
-      const taskId = getTaskById.TaskId;
-
-      const payload = {
-        taskID: taskId,
-        actionFlag: 0,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          let fileData = response.data;
-          setFileList(fileData);
+    if (currentOpenedTask && Object.keys(currentOpenedTask).length !== 0) {
+      dispatch(
+        taskReportActions.getTaskFilesById({
+          doctype: "Task",
+          docname: currentOpenedTask.task_name,
+          is_references: 0,
         })
-        .catch((error) => {});
+      );
     }
-  }, [getTaskById, uploadFile]);
+  }, [currentOpenedTask]);
+
+  useEffect(() => {
+    if (taskFilesById && taskFilesById.length !== 0) {
+      setFileList(taskFilesById);
+    } else {
+      setFileList([]);
+    }
+  }, [taskFilesById]);
 
   useEffect(() => {
     var today = new Date();
@@ -329,10 +355,10 @@ function RightSideGrid({
     var yyyy = today.getFullYear();
     today = dd + " " + mm + " " + yyyy;
     setToday(today);
-  }, [getTaskById]);
+  }, [currentOpenedTask]);
 
   const innerSearch = useOuterClick((e) => {
-    if (searchBoxShow) {
+    if (searchBoxShow && searchData.length === 0) {
       setsearchBoxShow(false);
       setSearchValue("");
     }
@@ -353,37 +379,8 @@ function RightSideGrid({
     return str;
   };
 
-  useEffect(() => {
-    if (taskListDisplay === "1") {
-      const payload = {
-        entityid: "",
-        userID: user.UserID,
-        usertype: user.UserType,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskReport`, payload)
-        .then((response) => {
-          let fileData = response.data;
-          let tempArr = [];
-          let tempRowCount = {};
-          fileData.map((item) => {
-            if (item.Details.length >= 1 && item.Details[0].TaskId != 0) {
-              tempArr.push({ ...item });
-              tempRowCount[item.Status.trim()] = 3;
-            }
-          });
-          let sortedArray = tempArr.sort((a, b) => a.ORD - b.ORD);
-          setRowCount(tempRowCount);
-          setListTaskData(sortedArray);
-        })
-        .catch((error) => {
-          console.log("error => ", error);
-        });
-    }
-  }, [taskListDisplay]);
-
   const innerSearchMobile = useOuterClick((e) => {
-    if (searchBoxShowMobile) {
+    if (searchBoxShowMobile && searchData.length !== 0) {
       setsearchBoxShowMobile(false);
       setSearchValue("");
     }
@@ -392,17 +389,11 @@ function RightSideGrid({
   const innerRef = useOuterClick((e) => {
     if (
       (currentDropDown !== "open" && !e.target.id.includes("assignBtn")) ||
-      (currentDropDown === "open" && e.target.id == "")
+      (currentDropDown === "open" && e.target.id === "")
     ) {
       setCurrentDropDown("");
       setSelectedUser("");
     }
-    // if (mobileViewBy) {
-    //   console.log(mobileViewBy);
-    //   setMobileViewBy(false)
-    // }else{
-    //   setMobileViewBy(true)
-    // }
   });
   const innerRefDrop = useDropdownOuterClick((e) => {
     if (mobileViewBy) {
@@ -416,6 +407,7 @@ function RightSideGrid({
       setSelectedUser("");
     }
   });
+
   const userDetails = state && state.auth && state.auth.loginInfo;
 
   const getCommentsbyId =
@@ -426,14 +418,13 @@ function RightSideGrid({
 
   const getInitials = (str) => {
     var initials = " ";
-    if (str != "" && str) {
+    if (str !== "" && str) {
       var names = str.split(" "),
         initials = names[0].substring(0, 1).toUpperCase();
       if (names.length > 1) {
         initials += names[names.length - 1].substring(0, 1).toUpperCase();
-      } else if (names.length == 1) {
+      } else if (names.length === 1) {
         initials = names[0].substring(0, 2).toUpperCase();
-        // initials += names[names.length - 1].substring(0, 1).toUpperCase()
       }
     }
     return initials;
@@ -449,7 +440,7 @@ function RightSideGrid({
     }
   };
 
-  const _renderTaskViewModal = () => {
+  const TaskViewModal = () => {
     return (
       <Modal
         blockScroll={false}
@@ -468,1320 +459,1498 @@ function RightSideGrid({
         styles={{ width: "500px", height: "100%" }}
         onOverlayClick={() => closeTaskModalOpen(false)}
       >
-        <div className="">
-          <div className="task-details-modal sddsdsdsd">
-            <div className="task-details-header">
-              <div className="closing-icon">
-                <div className="task-details-title">
-                  {getTaskById && getTaskById.EntityName}
-                </div>
-                <div
-                  className="task-close-icon"
-                  onClick={() => {
-                    setIsTaskListOpen(false);
-                    setExpandedFlags([]);
-                    setShowFiles(true);
-                    setShowComments(false);
-                    setShowHtoDoIt(false);
-                    setShowReference(false);
-                    setIsTaskModalOpen(false);
-                    dispatch(adminMenuActions.setCurrentBoardViewTaskId(null));
-                    dispatch(
-                      adminMenuActions.setCurrentCalendarViewTaskId(null)
-                    );
-                    dispatch(adminMenuActions.setIsModalOpen(""));
-                  }}
-                >
-                  <img src={closeBlack} alt="Arrow close" />
-                </div>
-              </div>
-              <div className="task-details-sub-title">
-                {getTaskById && getTaskById.TaskName}{" "}
-                <span className="nse-label d-none d-sm-block">
-                  {getTaskById && getTaskById.LicenseCode}
-                </span>
-              </div>
+        <div>
+          {currentOpenedTask && currentOpenedTask.status !== "Approved" && (
+            <>
+              <ReAssignTasksModal
+                openModal={isShowReAssignModalForTeamMember}
+                setShowModal={setIsShowReAssignModalForTeamMember}
+                userId={currentOpenedTask && currentOpenedTask.assign_to}
+                taskId={currentOpenedTask && currentOpenedTask.task_name}
+                company={currentOpenedTask && currentOpenedTask.customer}
+                isSingleTask
+                isTeamMember
+              />
+              <ReAssignTasksModal
+                openModal={isShowReAssignModalForApprover}
+                setShowModal={setIsShowReAssignModalForApprover}
+                userId={currentOpenedTask && currentOpenedTask.approver}
+                taskId={currentOpenedTask && currentOpenedTask.task_name}
+                company={currentOpenedTask && currentOpenedTask.customer}
+                isSingleTask
+              />
+            </>
+          )}
+          <div className="col-12">
+            <div className="">
+              <div
+                className="task-details-veiw scroll-remove-file"
+                style={{
+                  animation: "none",
+                }}
+              >
+                <div className="task-details-header">
+                  <div className="closing-icon">
+                    <div className="task-details-title">
+                      {currentOpenedTask && currentOpenedTask.customer_name}
+                    </div>
+                    <div
+                      className="task-close-icon"
+                      onClick={() => {
+                        setIsTaskListOpen(false);
+                        // setExpandedFlags([]);
+                        setShowFiles(true);
+                        setShowComments(false);
+                        setShowHtoDoIt(false);
+                        setShowReference(false);
+                        setIsTaskModalOpen(false);
+                        dispatch(
+                          adminMenuActions.setCurrentBoardViewTaskId(null)
+                        );
+                        dispatch(
+                          adminMenuActions.setCurrentCalendarViewTaskId(null)
+                        );
+                        dispatch(adminMenuActions.setIsModalOpen(""));
+                      }}
+                    >
+                      <img src={closeBlack} alt="Arrow close" />
+                    </div>
+                  </div>
+                  <div className="task-details-sub-title">
+                    {currentOpenedTask && currentOpenedTask.subject}{" "}
+                    <span className="nse-label d-none d-md-block">
+                      {currentOpenedTask && currentOpenedTask.license_display}
+                    </span>
+                  </div>
 
-              <div className="d-flex d-block d-sm-none">
-                <span className="nse-label ml-0">
-                  {getTaskById && getTaskById.LicenseCode}
-                </span>
-                <div
-                  className="pink-label-mobile ml-0"
-                  style={{
-                    backgroundColor:
-                      getTaskById && getTaskById.Status
-                        ? getTaskById.Status === "Assign"
-                          ? "#fcf3cd"
-                          : // getTaskById.Status === "Completed By User" ? "#cdfcd8 " :
-                          getTaskById.Status === "Completed By User"
-                          ? moment(
-                              getTaskById && getTaskById.ActualTaskEndDate
-                            ).isBefore(today)
-                            ? "#cdfcd8"
-                            : "#ffefea"
-                          : getTaskById.Status === "Approved"
-                          ? "#cdfcd8"
-                          : getTaskById.Status === "Assigned"
-                          ? "#ffefea"
-                          : getTaskById.Status === "Request Rejected"
-                          ? "#ffefea"
-                          : "#d2fccd"
-                        : "#d2fccd",
-                  }}
-                >
-                  <div
-                    className="approved-text"
-                    style={{
-                      color:
-                        getTaskById && getTaskById.Status
-                          ? getTaskById.Status === "Completed By User"
-                            ? moment(
-                                getTaskById && getTaskById.ActualTaskEndDate
-                              ).isBefore(today)
-                              ? "#7fba7a"
-                              : "#ff5f31"
-                            : // task.Status === "Completed By User" ? "#7fba7a" :
-                            getTaskById.Status === "Approved"
-                            ? "#7fba7a"
-                            : getTaskById.Status === "Assigned"
-                            ? "#f8c102"
-                            : getTaskById.Status === "Assign"
-                            ? "#f8c102"
-                            : getTaskById.Status === "Request Rejected"
-                            ? "#ff5f31"
-                            : ""
-                          : "#fcf3cd",
-                    }}
-                  >
-                    {getTaskById && getTaskById.Status && (
-                      <div style={{ textTransform: "uppercase" }}>
-                        {
-                          // getTaskById.Status === "Completed By User" ? "Task Completed" :
-                          getTaskById.Status === "Completed By User"
-                            ? moment(
-                                getTaskById && getTaskById.ActualTaskEndDate
-                              ).isBefore(today)
-                              ? "Not reviewed"
-                              : "Approval Pending"
-                            : getTaskById.Status === "Assign"
-                            ? "Assign Task"
-                            : getTaskById.Status === "Assigned"
-                            ? "Task Assigned"
-                            : getTaskById.Status === "Approved"
-                            ? "Task Approved"
-                            : getTaskById.Status === "Request Rejected"
-                            ? "Task Rejected"
-                            : null
-                        }
+                  <div className="d-flex d-block d-md-none">
+                    <span className="nse-label ml-0">
+                      {currentOpenedTask && currentOpenedTask.license_display}
+                    </span>
+                    <div
+                      className="pink-label-mobile ml-0"
+                      style={{
+                        backgroundColor:
+                          currentOpenedTask && currentOpenedTask.status
+                            ? currentOpenedTask.status === "Not Assigned"
+                              ? "#fcf3cd"
+                              : currentOpenedTask.status === "Approval Pending"
+                              ? moment(
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
+                                ).isBefore(today)
+                                ? "#cdfcd8"
+                                : "#ffefea"
+                              : currentOpenedTask.status === "Approved"
+                              ? "#cdfcd8"
+                              : currentOpenedTask.status === "Assigned"
+                              ? "#ffefea"
+                              : currentOpenedTask.status === "Rejected"
+                              ? "#ffefea"
+                              : "#d2fccd"
+                            : "#d2fccd",
+                      }}
+                    >
+                      <div
+                        className="approved-text"
+                        style={{
+                          color:
+                            currentOpenedTask && currentOpenedTask.status
+                              ? currentOpenedTask.status === "Approval Pending"
+                                ? moment(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
+                                  ).isBefore(today)
+                                  ? "#7fba7a"
+                                  : "#ff5f31"
+                                : currentOpenedTask.status === "Approved"
+                                ? "#7fba7a"
+                                : currentOpenedTask.status === "Assigned"
+                                ? "#f8c102"
+                                : currentOpenedTask.status === "Not Assigned"
+                                ? "#f8c102"
+                                : currentOpenedTask.status === "Rejected"
+                                ? "#ff5f31"
+                                : ""
+                              : "#fcf3cd",
+                        }}
+                      >
+                        {currentOpenedTask && currentOpenedTask.status && (
+                          <div style={{ textTransform: "uppercase" }}>
+                            {currentOpenedTask.status === "Approval Pending"
+                              ? moment(
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
+                                ).isBefore(today)
+                                ? "Not reviewed"
+                                : "Approval Pending"
+                              : currentOpenedTask.status === "Not Assigned"
+                              ? "Assign Task"
+                              : currentOpenedTask.status === "Assigned"
+                              ? "Task Assigned"
+                              : currentOpenedTask.status === "Approved"
+                              ? "Task Approved"
+                              : currentOpenedTask.status === "Rejected"
+                              ? "Task Rejected"
+                              : null}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-header d-none d-md-block">
+                    {currentOpenedTask && currentOpenedTask.status !== "" && (
+                      <div
+                        className="approved-label"
+                        style={{
+                          backgroundColor:
+                            currentOpenedTask && currentOpenedTask.status
+                              ? currentOpenedTask.status === "Not Assigned"
+                                ? "#fcf3cd"
+                                : currentOpenedTask.status ===
+                                  "Approval Pending"
+                                ? moment(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
+                                  ).isBefore(today)
+                                  ? "#cdfcd8"
+                                  : "#ffefea"
+                                : currentOpenedTask.status === "Approved"
+                                ? "#cdfcd8"
+                                : currentOpenedTask.status === "Assigned"
+                                ? "#ffefea"
+                                : currentOpenedTask.status === "Rejected"
+                                ? "#ffefea"
+                                : "#d2fccd"
+                              : "#d2fccd",
+                        }}
+                      >
+                        <div
+                          className="approved-text"
+                          style={{
+                            color:
+                              currentOpenedTask && currentOpenedTask.status
+                                ? currentOpenedTask.status ===
+                                  "Approval Pending"
+                                  ? moment(
+                                      currentOpenedTask &&
+                                        currentOpenedTask.due_date
+                                    ).isBefore(today)
+                                    ? "#7fba7a"
+                                    : "#ff5f31"
+                                  : currentOpenedTask.status === "Approved"
+                                  ? "#7fba7a"
+                                  : currentOpenedTask.status === "Assigned"
+                                  ? "#f8c102"
+                                  : currentOpenedTask.status === "Not Assigned"
+                                  ? "#f8c102"
+                                  : currentOpenedTask.status === "Rejected"
+                                  ? "#ff5f31"
+                                  : ""
+                                : "#fcf3cd",
+                          }}
+                        >
+                          {currentOpenedTask && currentOpenedTask.status && (
+                            <div style={{ textTransform: "uppercase" }}>
+                              {currentOpenedTask.status === "Approval Pending"
+                                ? moment(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
+                                  ).isBefore(today)
+                                  ? "Not reviewed"
+                                  : "Approval Pending"
+                                : currentOpenedTask.status === "Not Assigned"
+                                ? "Assign Task"
+                                : currentOpenedTask.status === "Assigned"
+                                ? "Task Assigned"
+                                : currentOpenedTask.status === "Approved"
+                                ? "Task Approved"
+                                : currentOpenedTask.status === "Rejected"
+                                ? "Task Rejected"
+                                : null}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {currentOpenedTask && currentOpenedTask.ExReview === 1 && (
+                      <div className="d-flex align-items-center labels-container">
+                        {/* Approver Status */}
+                        {currentOpenedTask && currentOpenedTask.AprStatus && (
+                          <div
+                            className="er-approved-label mr-3"
+                            style={{
+                              backgroundColor:
+                                currentOpenedTask && currentOpenedTask.AprStatus
+                                  ? currentOpenedTask.AprStatus ===
+                                    "Not Assigned"
+                                    ? "#ffefea"
+                                    : currentOpenedTask.AprStatus ===
+                                      "Approved by Approver"
+                                    ? "#cdfcd8"
+                                    : currentOpenedTask.AprStatus ===
+                                      "Rejected by Approver"
+                                    ? "#ffefea"
+                                    : "#d2fccd"
+                                  : "#d2fccd",
+                            }}
+                          >
+                            <div
+                              className="approved-text"
+                              style={{
+                                color:
+                                  currentOpenedTask &&
+                                  currentOpenedTask.AprStatus
+                                    ? currentOpenedTask.AprStatus ===
+                                      "Not Assigned"
+                                      ? "#f8c102"
+                                      : currentOpenedTask.AprStatus ===
+                                        "Approved by Approver"
+                                      ? "#7fba7a"
+                                      : currentOpenedTask.AprStatus ===
+                                        "Reject by Approver"
+                                      ? "#ff5f31"
+                                      : "#fcf3cd"
+                                    : "#fcf3cd",
+                              }}
+                            >
+                              {currentOpenedTask &&
+                                currentOpenedTask.AprStatus && (
+                                  <div style={{ textTransform: "uppercase" }}>
+                                    {currentOpenedTask &&
+                                    currentOpenedTask.AprStatus
+                                      ? currentOpenedTask.AprStatus ===
+                                        "Not Assigned"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Not Started"
+                                              : "Approver Not Started Task"
+                                          }`
+                                        : currentOpenedTask.AprStatus ===
+                                          "Approved by Approver"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Task Approved"
+                                              : "Approved By Approver"
+                                          }`
+                                        : currentOpenedTask.AprStatus ===
+                                          "Rejected by Approver"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Task Rejected"
+                                              : "Rejected By Approver"
+                                          }`
+                                        : null
+                                      : null}
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        )}
+                        {/* Expert Reviewer Status */}
+                        {currentOpenedTask && currentOpenedTask.ExStatus && (
+                          <div
+                            className="er-approved-label"
+                            style={{
+                              backgroundColor:
+                                currentOpenedTask && currentOpenedTask.ExStatus
+                                  ? currentOpenedTask.ExStatus === "Not Started"
+                                    ? "#ffefea"
+                                    : currentOpenedTask.ExStatus ===
+                                      "Approved by Expert"
+                                    ? "#cdfcd8"
+                                    : currentOpenedTask.ExStatus ===
+                                      "Rejected by Expert"
+                                    ? "#ffefea"
+                                    : "#d2fccd"
+                                  : "#d2fccd",
+                            }}
+                          >
+                            <div
+                              className="approved-text"
+                              style={{
+                                color:
+                                  currentOpenedTask &&
+                                  currentOpenedTask.ExStatus
+                                    ? currentOpenedTask.ExStatus ===
+                                      "Not Started"
+                                      ? "#f8c102"
+                                      : currentOpenedTask.ExStatus ===
+                                        "Approved by Expert"
+                                      ? "#7fba7a"
+                                      : currentOpenedTask.ExStatus ===
+                                        "Rejected by Expert"
+                                      ? "#ff5f31"
+                                      : "#fcf3cd"
+                                    : "#fcf3cd",
+                              }}
+                            >
+                              {currentOpenedTask &&
+                                currentOpenedTask.ExStatus && (
+                                  <div style={{ textTransform: "uppercase" }}>
+                                    {currentOpenedTask &&
+                                    currentOpenedTask.ExStatus
+                                      ? currentOpenedTask.ExStatus ===
+                                        "Not Started"
+                                        ? "Expert Not Started Task"
+                                        : currentOpenedTask.ExStatus ===
+                                          "Approved by Expert"
+                                        ? "Approved By Expert"
+                                        : currentOpenedTask.ExStatus ===
+                                          "Rejected by Expert"
+                                        ? "Rejected By Expert"
+                                        : null
+                                      : null}
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
-                </div>
-              </div>
-
-              <div className="border-header d-none d-sm-block">
-                {getTaskById && getTaskById.Status !== "Assigned" && (
-                  <div
-                    className="approved-label"
-                    style={{
-                      backgroundColor:
-                        getTaskById && getTaskById.Status
-                          ? getTaskById.Status === "Assign"
-                            ? "#fcf3cd"
-                            : getTaskById.Status === "Completed By User"
-                            ? moment(
-                                getTaskById && getTaskById.ActualTaskEndDate
-                              ).isBefore(today)
-                              ? "#cdfcd8"
-                              : "#ffefea"
-                            : // getTaskById.Status === "Completed By User"  ? "#cdfcd8 " :
-                            getTaskById.Status === "Approved"
-                            ? "#cdfcd8"
-                            : getTaskById.Status === "Assigned"
-                            ? "#ffefea"
-                            : getTaskById.Status === "Request Rejected"
-                            ? "#ffefea"
-                            : "#d2fccd"
-                          : "#d2fccd",
-                    }}
-                  >
-                    <div
-                      className="approved-text"
-                      style={{
-                        color:
-                          getTaskById && getTaskById.Status
-                            ? getTaskById.Status === "Completed By User"
-                              ? moment(
-                                  getTaskById && getTaskById.ActualTaskEndDate
-                                ).isBefore(today)
-                                ? "#7fba7a"
-                                : "#ff5f31"
-                              : // task.Status === "Completed By User" ? "#7fba7a" :
-                              getTaskById.Status === "Approved"
-                              ? "#7fba7a"
-                              : getTaskById.Status === "Assigned"
-                              ? "#f8c102"
-                              : getTaskById.Status === "Assign"
-                              ? "#f8c102"
-                              : getTaskById.Status === "Request Rejected"
-                              ? "#ff5f31"
-                              : ""
-                            : "#fcf3cd",
-                      }}
-                    >
-                      {getTaskById && getTaskById.Status && (
-                        <div style={{ textTransform: "uppercase" }}>
-                          {
-                            // getTaskById.Status === "Completed By User" ? "Task Completed" :
-                            getTaskById.Status === "Completed By User"
-                              ? moment(
-                                  getTaskById && getTaskById.ActualTaskEndDate
-                                ).isBefore(today)
-                                ? "Not reviewed"
-                                : "Approval Pending"
-                              : getTaskById.Status === "Assign"
-                              ? "Assign Task"
-                              : getTaskById.Status === "Assigned"
-                              ? "Task Assigned"
-                              : getTaskById.Status === "Approved"
-                              ? "Task Approved"
-                              : getTaskById.Status === "Request Rejected"
-                              ? "Task Rejected"
-                              : null
-                          }
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-              {getTaskById && getTaskById.RegulatoryUpdates === 1 && (
-                // {getTaskById && getTaskById.RegulatoryUpdates === 0 && (
-                <div className="row">
-                  <div className="col-12">
-                    <div className="regulation-changes">
-                      <div className="float-left">
-                        <img src={redCircle} alt="account Circle Purple" />
-                        <div className="recent-title-circle">
-                          Recent Regulation Changes
-                        </div>
-                      </div>
-                      <div className="float-right">
-                        <div
-                          style={{ cursor: "pointer" }}
-                          onClick={() => onRCViewDetailClick()}
-                          className="red-circle-detail"
-                        >
-                          View details
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div className="task-detail-data">
-                {userDetails.UserType != 4 && (
-                  <div className="row">
-                    <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                      <div className="holding-list-normal-title">
-                        Assigned to
-                      </div>
-                    </div>
-                    <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                      {getTaskById && getTaskById.AssignedTo != 0 ? (
-                        <div className="holding-list-bold-title">
-                          {getTaskById &&
-                          getTaskById.AssignedToUserName == "" ? null : (
-                            <span className="cicrcle-name">
-                              {getInitials(
-                                getTaskById && getTaskById.AssignedToUserName
-                              )}
-                            </span>
-                          )}
-                          {getTaskById && getTaskById.AssignedToUserName}
-                        </div>
-                      ) : (
-                        <div
-                          className="holding-list-bold-title AssinTo"
-                          // onClick={getUserDetail}
-                        >
-                          <div className="col-9 pl-0">
-                            <div
-                              className="dashboard-assign"
-                              id="assignBtn"
-                              style={{
-                                cursor: "pointer",
-                                width: "fit-content",
-                              }}
-                              onClick={(e) => AssignDisplay(e)}
-                            >
-                              <img
-                                src={assignIconCircle}
-                                alt="account Circle Purple"
-                              />{" "}
-                              Assign
-                            </div>
-                            {currentDropDown === "open" && (
-                              <div
-                                ref={innerRef}
-                                className="bottom-tool-tip"
-                                style={{ display: "block" }}
-                              >
-                                <div
-                                  className="shadow-tooltip"
-                                  style={{
-                                    minHeight: "113px",
-                                    maxHeight: "auto",
-                                    height: "auto",
-                                  }}
-                                >
-                                  <div className="">
-                                    <div className="tool-tip-head">
-                                      <div className="add-Email border-bottom">
-                                        <div class="form-group">
-                                          <input
-                                            // style={{ width: "100%" }}
-                                            type="text"
-                                            class="form-control"
-                                            placeholder="Enter name or email"
-                                            value={selectedUser}
-                                            onKeyPress={(e) =>
-                                              handleAssignKeyDown(e)
-                                            }
-                                            onChange={(e) =>
-                                              handleAppSearch(e.target.value)
-                                            }
-                                          />
-                                          {!validEmail && (
-                                            <div
-                                              className=""
-                                              style={{
-                                                color: "#ef5d5d",
-                                                paddingLeft: "7px",
-                                                position: "absolute",
-                                              }}
-                                            >
-                                              Please Enter valid Email
-                                            </div>
-                                          )}
-                                          {emailAvaliableCheck &&
-                                            selectedUser != "" && (
-                                              <div
-                                                className=""
-                                                style={{
-                                                  color: "#ef5d5d",
-                                                  paddingLeft: "7px",
-                                                  position: "absolute",
-                                                }}
-                                              >
-                                                Email already exists
-                                              </div>
-                                            )}
-                                        </div>
-                                        <span className="or-devider">or </span>
-                                        <button
-                                          class="btn save-details assign-me"
-                                          value="4"
-                                          onClick={(e) => AssignTaskToMe(e)}
-                                        >
-                                          Assign to me
-                                        </button>
-                                      </div>
-                                    </div>
-                                    <div
-                                      className="email-list-box"
-                                      style={{
-                                        paddingBottom: "15px",
-                                        maxHeight: "115px",
-                                        height: "auto",
-                                      }}
-                                    >
-                                      {allUser && allUser.length > 0 ? (
-                                        allUser.map((user, index) => (
-                                          <div
-                                            className="email-list-row"
-                                            key={index}
-                                            style={{ cursor: "pointer" }}
-                                            onClick={() =>
-                                              onAssignTaskClick(user)
-                                            }
-                                          >
-                                            <span class="name-circle">
-                                              {getInitials(
-                                                user.UserName
-                                                  ? user.UserName
-                                                  : user.EmailID
-                                                  ? user.EmailID
-                                                  : null
-                                              )}
-                                            </span>
-                                            <span className="name-of-emailer">
-                                              {user.UserName
-                                                ? user.UserName
-                                                : ""}
-                                            </span>
-                                            <span className="last-email-box">
-                                              {user.EmailID}
-                                            </span>
-                                          </div>
-                                        ))
-                                      ) : (
-                                        <span
-                                          className="last-email-box email-list-row"
-                                          style={{ textAlign: "center" }}
-                                        >
-                                          No records Available
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-                {userDetails.UserType != 3 && (
-                  <div className="row">
-                    <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                      <div className="holding-list-normal-title">
-                        Assigned by
-                      </div>
-                    </div>
-                    <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                      <div className="holding-list-bold-title">
-                        {getTaskById &&
-                        getTaskById.AssignedFromUserName == "" ? null : (
-                          <span className="cicrcle-name">
-                            {getInitials(
-                              getTaskById && getTaskById.AssignedFromUserName
-                            )}
-                          </span>
-                        )}
-                        {getTaskById && getTaskById.AssignedFromUserName}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {userDetails.UserType != 5 && (
-                  <div className="row">
-                    <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                      <div className="holding-list-normal-title">Approver</div>
-                    </div>
-                    <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                      {getTaskById && getTaskById.ApproverName != "Assign" ? (
-                        <div className="holding-list-bold-title">
-                          {getTaskById &&
-                          getTaskById.ApproverName == "" ? null : (
-                            <span className="cicrcle-name">
-                              {getInitials(
-                                getTaskById && getTaskById.ApproverName
-                              )}
-                            </span>
-                          )}
-                          {getTaskById && getTaskById.ApproverName}
-                        </div>
-                      ) : (
-                        <div
-                          className="holding-list-bold-title"
-                          // onClick={getApproveUsers}
-                        >
-                          <div className="col-9 pl-0">
-                            {user && user.UserType === 4 ? (
-                              <div className="holding-list-bold-title">
-                                Not Assigned
-                              </div>
-                            ) : (
-                              <div
-                                className="dashboard-assign"
-                                style={{
-                                  cursor: "pointer",
-                                  width: "fit-content",
-                                }}
-                                onClick={(e) => ApprovDisplay(e)}
-                              >
+                  <div className="task-detail-data">
+                    {currentOpenedTask &&
+                      currentOpenedTask.RegulatoryUpdates === 1 && (
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="regulation-changes">
+                              <div className="float-left">
                                 <img
-                                  src={assignIconCircle}
+                                  src={redCircle}
                                   alt="account Circle Purple"
-                                />{" "}
-                                Assign
-                              </div>
-                            )}
-                            {approverDropDown === "openapproverdropdown" && (
-                              <div
-                                ref={approverDropDownRef}
-                                className="bottom-tool-tip"
-                                style={{ display: "block" }}
-                              >
-                                <div
-                                  className="shadow-tooltip"
-                                  style={{
-                                    minHeight: "113px",
-                                    maxHeight: "auto",
-                                    height: "auto",
-                                  }}
-                                >
-                                  <div className="">
-                                    <div className="tool-tip-head">
-                                      <div className="add-Email border-bottom">
-                                        <div class="form-group">
-                                          <input
-                                            // style={{ width: "100%" }}
-                                            type="text"
-                                            class="form-control"
-                                            placeholder="Enter name or email"
-                                            value={selectedUser}
-                                            onKeyPress={(e) => handleKeyDown(e)}
-                                            onChange={(e) =>
-                                              handleAppSearch(e.target.value)
-                                            }
-                                          />
-                                          {emailAvaliableCheck &&
-                                            selectedUser != "" && (
-                                              <div
-                                                className=""
-                                                style={{
-                                                  color: "#ef5d5d",
-                                                  paddingLeft: "7px",
-                                                  position: "absolute",
-                                                }}
-                                              >
-                                                Email already exists
-                                              </div>
-                                            )}
-                                          {!validEmail && (
-                                            <div
-                                              className=""
-                                              style={{
-                                                color: "#ef5d5d",
-                                                paddingLeft: "7px",
-                                                position: "absolute",
-                                              }}
-                                            >
-                                              Please Enter valid Email
-                                            </div>
-                                          )}
-                                        </div>
-                                        <span className="or-devider"> or</span>
-                                        <button
-                                          class="btn save-details assign-me"
-                                          value="5"
-                                          onClick={(e) => approvTaskToMe(e)}
-                                        >
-                                          Assign to me
-                                        </button>
-                                      </div>
-                                    </div>
-                                    <div
-                                      className="email-list-box"
-                                      style={{
-                                        paddingBottom: "15px",
-                                        maxHeight: "115px",
-                                        height: "auto",
-                                      }}
-                                    >
-                                      {allUser && allUser.length > 0 ? (
-                                        allUser.map((user, index) => (
-                                          <div
-                                            className="email-list-row"
-                                            key={index}
-                                            style={{ cursor: "pointer" }}
-                                            onClick={() =>
-                                              handleChooseApprove(user)
-                                            }
-                                          >
-                                            <span class="name-circle">
-                                              {getInitials(
-                                                user.UserName
-                                                  ? user.UserName
-                                                  : user.EmailID
-                                                  ? user.EmailID
-                                                  : null
-                                              )}
-                                            </span>
-                                            <span className="name-of-emailer">
-                                              {user.UserName
-                                                ? user.UserName
-                                                : ""}
-                                            </span>
-                                            <span className="last-email-box">
-                                              {user.EmailID}
-                                            </span>
-                                          </div>
-                                        ))
-                                      ) : (
-                                        <span
-                                          className="last-email-box email-list-row"
-                                          style={{ textAlign: "center" }}
-                                        >
-                                          No records Available
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
+                                />
+                                <div className="recent-title-circle">
+                                  Recent Regulation Changes
                                 </div>
                               </div>
-                            )}
+                              <div className="float-right">
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => onRCViewDetailClick()}
+                                  className="red-circle-detail"
+                                >
+                                  View details
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       )}
-                    </div>
-                  </div>
-                )}
-                <div className="row">
-                  <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                    <div className="holding-list-normal-title">Due Date</div>
-                  </div>
-                  <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                    <div className="holding-list-bold-title">
-                      {moment(getTaskById && getTaskById.EndDate).format(
-                        "DD MMM"
-                      )}
-                    </div>
-                  </div>
-                </div>
-                {userDetails.UserType != 4 && (
-                  <div className="row">
-                    <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                      <div className="holding-list-normal-title">Deadline</div>
-                    </div>
-                    <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                      <div className="holding-list-bold-title">
-                        {moment(
-                          getTaskById && getTaskById.ActualTaskEndDate
-                        ).format("DD MMM")}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {userDetails.UserType != 4 &&
-                  getTaskById &&
-                  getTaskById.Status !== "Assigned" && (
-                    // {userDetails.UserType != 4 && (
-                    <div className="row">
-                      <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                        <div className="holding-list-normal-title">Status</div>
-                      </div>
-                      <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                        <div className="holding-list-bold-title">
-                          {getTaskById && getTaskById.Status
-                            ? getTaskById.Status === "Completed By User"
-                              ? moment(
-                                  getTaskById && getTaskById.ActualTaskEndDate
-                                ).isBefore(today)
-                                ? "Not reviewed"
-                                : "Approval Pending"
-                              : getTaskById.Status === "Assign"
-                              ? "Assign Task"
-                              : getTaskById.Status === "Assigned"
-                              ? "Task Assigned"
-                              : getTaskById.Status === "Approved"
-                              ? "Task Approved"
-                              : getTaskById.Status === "Request Rejected"
-                              ? "Task Rejected"
-                              : null
-                            : ""}
+                    {userDetails.UserType !== 4 && (
+                      <div className="row">
+                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                          <div className="holding-list-normal-title">
+                            Assigned to
+                          </div>
+                        </div>
+                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                          {currentOpenedTask &&
+                          currentOpenedTask.assign_to !== null ? (
+                            <div
+                              className="holding-list-bold-title"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                if (
+                                  currentOpenedTask &&
+                                  currentOpenedTask.status !== "Approved"
+                                ) {
+                                  setIsShowReAssignModalForTeamMember(true);
+                                }
+                              }}
+                            >
+                              {currentOpenedTask &&
+                                currentOpenedTask.assign_to_name !== null && (
+                                  <span className="cicrcle-name">
+                                    {getInitials(
+                                      currentOpenedTask &&
+                                        currentOpenedTask.assign_to_name
+                                    )}
+                                  </span>
+                                )}
+                              {currentOpenedTask.assign_to_name ||
+                                "Not Assigned"}
+                            </div>
+                          ) : (
+                            <div className="holding-list-bold-title AssinTo">
+                              <div className="col-9 pl-0">
+                                <div
+                                  className="dashboard-assign"
+                                  id="assignBtn"
+                                  style={{
+                                    cursor: "pointer",
+                                    width: "fit-content",
+                                  }}
+                                  onClick={(e) => AssignDisplay(e)}
+                                >
+                                  <img
+                                    src={assignIconCircle}
+                                    alt="account Circle Purple"
+                                  />{" "}
+                                  Assign
+                                </div>
+                                {currentDropDown === "open" && (
+                                  <div
+                                    ref={innerRef}
+                                    className="bottom-tool-tip"
+                                    style={{ display: "block" }}
+                                  >
+                                    <div
+                                      className="shadow-tooltip"
+                                      style={{
+                                        minHeight: "113px",
+                                        maxHeight: "auto",
+                                        height: "auto",
+                                      }}
+                                    >
+                                      <div className="">
+                                        <div className="tool-tip-head">
+                                          <div className="add-Email border-bottom">
+                                            <div class="form-group">
+                                              <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Enter name or email"
+                                                value={selectedUser}
+                                                onKeyPress={(e) =>
+                                                  handleAssignKeyDown(e)
+                                                }
+                                                onChange={(e) =>
+                                                  handleAppSearch(
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                              {!validEmail && (
+                                                <div
+                                                  className=""
+                                                  style={{
+                                                    color: "#ef5d5d",
+                                                    paddingLeft: "7px",
+                                                    position: "absolute",
+                                                  }}
+                                                >
+                                                  Please Enter valid Email
+                                                </div>
+                                              )}
+                                              {emailAvaliableCheck &&
+                                                selectedUser !== "" && (
+                                                  <div
+                                                    className=""
+                                                    style={{
+                                                      color: "#ef5d5d",
+                                                      paddingLeft: "7px",
+                                                      position: "absolute",
+                                                    }}
+                                                  >
+                                                    Email already exists
+                                                  </div>
+                                                )}
+                                            </div>
+                                            <span className="or-devider">
+                                              or{" "}
+                                            </span>
+                                            <button
+                                              class="btn save-details assign-me"
+                                              value="4"
+                                              onClick={(e) => AssignTaskToMe(e)}
+                                            >
+                                              Assign to me
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div
+                                          className="email-list-box"
+                                          style={{
+                                            paddingBottom: "15px",
+                                            maxHeight: "115px",
+                                            height: "auto",
+                                          }}
+                                        >
+                                          {allUser && allUser.length > 0 ? (
+                                            getUserLlistByUserType(
+                                              allUser,
+                                              4
+                                            ).map((user, index) => (
+                                              <div
+                                                className="email-list-row"
+                                                key={index}
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() =>
+                                                  onAssignTaskClick(user)
+                                                }
+                                              >
+                                                <span class="name-circle">
+                                                  {(user.full_name ||
+                                                    user.email) &&
+                                                    getInitials(
+                                                      user.full_name
+                                                        ? user.full_name
+                                                        : user.email
+                                                    )}
+                                                </span>
+                                                <span className="name-of-emailer">
+                                                  {user.full_name
+                                                    ? user.full_name
+                                                    : ""}
+                                                </span>
+                                                <span className="last-email-box">
+                                                  {user.email}
+                                                </span>
+                                              </div>
+                                            ))
+                                          ) : (
+                                            <span
+                                              className="last-email-box email-list-row"
+                                              style={{
+                                                textAlign: "center",
+                                                opacity: "inherit",
+                                              }}
+                                              onClick={() =>
+                                                handleOnClickAssignBtn()
+                                              }
+                                            >
+                                              {/* No records Available */}
+                                              {selectedUser !== "" && (
+                                                <div className="dropbox-add-line">
+                                                  <img
+                                                    src={plusIcon}
+                                                    alt="account Circle Purple"
+                                                  />
+                                                  {selectedUser !== "" &&
+                                                    `Invite '${selectedUser}' via email`}
+                                                </div>
+                                              )}
+
+                                              {noRecords === true &&
+                                                selectedUser === "" &&
+                                                "No records Available"}
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
-                    </div>
-                  )}
-                {completedDate && isTaskApproved && userDetails.UserType != 4 && (
-                  <div className="row">
-                    <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                      <div className="holding-list-normal-title">
-                        Completed on
+                    )}
+                    {userDetails.UserType !== 3 &&
+                      currentOpenedTask?.assigned_by && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Assigned by
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {currentOpenedTask &&
+                              currentOpenedTask?.assigned_by_name ===
+                                null ? null : (
+                                <span className="cicrcle-name">
+                                  {getInitials(
+                                    currentOpenedTask &&
+                                      currentOpenedTask?.assigned_by_name
+                                  )}
+                                </span>
+                              )}
+                              {currentOpenedTask &&
+                                currentOpenedTask?.assigned_by_name}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    {userDetails.UserType !== 5 && (
+                      <div className="row">
+                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                          <div className="holding-list-normal-title">
+                            Approver
+                          </div>
+                        </div>
+                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                          {currentOpenedTask &&
+                          currentOpenedTask.approver_name !== null ? (
+                            <div
+                              className="holding-list-bold-title"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                if (
+                                  currentOpenedTask &&
+                                  currentOpenedTask.status !== "Approved"
+                                ) {
+                                  setIsShowReAssignModalForApprover(true);
+                                }
+                              }}
+                            >
+                              {currentOpenedTask &&
+                              currentOpenedTask.approver_name === "" ? null : (
+                                <span className="cicrcle-name">
+                                  {getInitials(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.approver_name
+                                  )}
+                                </span>
+                              )}
+                              {currentOpenedTask &&
+                                currentOpenedTask.approver_name}
+                            </div>
+                          ) : (
+                            <div className="holding-list-bold-title">
+                              <div className="col-9 pl-0">
+                                {user && user.UserType === 4 ? (
+                                  <div className="holding-list-bold-title">
+                                    Not Assigned
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="dashboard-assign"
+                                    style={{
+                                      cursor: "pointer",
+                                      width: "fit-content",
+                                    }}
+                                    onClick={(e) => ApprovDisplay(e)}
+                                  >
+                                    <img
+                                      src={assignIconCircle}
+                                      alt="account Circle Purple"
+                                    />{" "}
+                                    Assign
+                                  </div>
+                                )}
+                                {approverDropDown ===
+                                  "openapproverdropdown" && (
+                                  <div
+                                    ref={approverDropDownRef}
+                                    className="bottom-tool-tip"
+                                    style={{ display: "block" }}
+                                  >
+                                    <div
+                                      className="shadow-tooltip"
+                                      style={{
+                                        minHeight: "113px",
+                                        maxHeight: "auto",
+                                        height: "auto",
+                                      }}
+                                    >
+                                      <div className="">
+                                        <div className="tool-tip-head">
+                                          <div className="add-Email border-bottom">
+                                            <div class="form-group">
+                                              <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Enter name or email"
+                                                value={selectedUser}
+                                                onKeyPress={(e) =>
+                                                  handleKeyDown(e)
+                                                }
+                                                onChange={(e) =>
+                                                  handleAppSearch(
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                              {emailAvaliableCheck &&
+                                                selectedUser !== "" && (
+                                                  <div
+                                                    className=""
+                                                    style={{
+                                                      color: "#ef5d5d",
+                                                      paddingLeft: "7px",
+                                                      position: "absolute",
+                                                    }}
+                                                  >
+                                                    Email already exists
+                                                  </div>
+                                                )}
+                                              {!validEmail && (
+                                                <div
+                                                  className=""
+                                                  style={{
+                                                    color: "#ef5d5d",
+                                                    paddingLeft: "7px",
+                                                    position: "absolute",
+                                                  }}
+                                                >
+                                                  Please Enter valid Email
+                                                </div>
+                                              )}
+                                            </div>
+                                            <span className="or-devider">
+                                              {" "}
+                                              or
+                                            </span>
+                                            <button
+                                              class="btn save-details assign-me"
+                                              value="5"
+                                              onClick={(e) => approvTaskToMe(e)}
+                                            >
+                                              Assign to me
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div
+                                          className="email-list-box"
+                                          style={{
+                                            paddingBottom: "15px",
+                                            maxHeight: "115px",
+                                            height: "auto",
+                                          }}
+                                        >
+                                          {allUser && allUser.length > 0 ? (
+                                            getUserLlistByUserType(
+                                              allUser,
+                                              5
+                                            ).map((user, index) => (
+                                              <div
+                                                className="email-list-row"
+                                                key={index}
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() =>
+                                                  handleChooseApprove(user)
+                                                }
+                                              >
+                                                <span class="name-circle">
+                                                  {(user.full_name ||
+                                                    user.email) &&
+                                                    getInitials(
+                                                      user.full_name
+                                                        ? user.full_name
+                                                        : user.email
+                                                    )}
+                                                </span>
+                                                <span className="name-of-emailer">
+                                                  {user.full_name
+                                                    ? user.full_name
+                                                    : ""}
+                                                </span>
+                                                <span className="last-email-box">
+                                                  {user.email}
+                                                </span>
+                                              </div>
+                                            ))
+                                          ) : (
+                                            <span
+                                              className="last-email-box email-list-row"
+                                              style={{
+                                                textAlign: "center",
+                                                opacity: "inherit",
+                                              }}
+                                              onClick={() =>
+                                                handleOnClickApproverBtn()
+                                              }
+                                            >
+                                              {/* No records Available */}
+                                              {selectedUser !== "" && (
+                                                <div className="dropbox-add-line">
+                                                  <img
+                                                    src={plusIcon}
+                                                    alt="account Circle Purple"
+                                                  />
+                                                  {selectedUser !== "" &&
+                                                    `Invite '${selectedUser}' via email`}
+                                                </div>
+                                              )}
+
+                                              {noRecords === true &&
+                                                selectedUser === "" &&
+                                                "No records Available"}
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                      <div className="holding-list-bold-title">
-                        {moment(completedDate).format("DD MMM  h:mm a")}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {/* <div className="row">
-                  <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                    <div className="holding-list-normal-title">License</div>
-                  </div>
-                  <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                    <div className="holding-list-bold-title">
-                      {getTaskById && getTaskById.LicenseCode}
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                    <div className="holding-list-normal-title">Company</div>
-                  </div>
-                  <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                    <div className="holding-list-bold-title">
-                      {getTaskById && getTaskById.EntityName}
-                    </div>
-                  </div>
-                </div> */}
-                {userDetails.UserType != 4 &&
-                  getTaskById &&
-                  getTaskById.ExStatus == 1 && (
+                    )}
                     <div className="row">
                       <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                         <div className="holding-list-normal-title">
-                          Expert Review
+                          Due Date
                         </div>
                       </div>
                       <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                        <div className="holding-list-bold-title">Pending</div>
+                        <div className="holding-list-bold-title">
+                          {moment(
+                            currentOpenedTask && currentOpenedTask.due_date
+                          ).format("DD MMM")}
+                        </div>
                       </div>
                     </div>
-                  )}
-              </div>
-            </div>
-            <div className="task-details-file-grid1">
-              <div className="d-flex">
-                <div className="tab-list-space">
-                  {showFiles ? (
-                    <div
-                      className="file-title pointer"
-                      onClick={() => {
-                        setShowFiles(true);
-                        setShowComments(false);
-                        setShowHtoDoIt(false);
-                        setShowReference(false);
-                      }}
-                    >
-                      Files
+                    <div className="row">
+                      <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                        <div className="holding-list-normal-title">
+                          Deadline
+                        </div>
+                      </div>
+                      <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                        <div className="holding-list-bold-title">
+                          {moment(
+                            currentOpenedTask && currentOpenedTask.deadline_date
+                          ).format("DD MMM")}
+                        </div>
+                      </div>
                     </div>
-                  ) : (
-                    <div
-                      className="file-title unActiveText-color pointer"
-                      onClick={() => {
-                        setShowFiles(true);
-                        setShowComments(false);
-                        setShowHtoDoIt(false);
-                        setShowReference(false);
-                      }}
-                    >
-                      Files
+                    {currentOpenedTask &&
+                      currentOpenedTask.date_of_approval &&
+                      currentOpenedTask.status === "Approved" &&
+                      userDetails.UserType !== 4 && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Approval Pending on
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {moment(currentOpenedTask.DateOfApproval).format(
+                                "DD MMM  h:mm a"
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    {userDetails.UserType !== 4 && (
+                      <div className="row">
+                        {currentOpenedTask &&
+                        currentOpenedTask.status !== "Assigned" ? (
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Status
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        {currentOpenedTask &&
+                        currentOpenedTask.status !== "Assigned" ? (
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {currentOpenedTask && currentOpenedTask.status
+                                ? currentOpenedTask.status ===
+                                  "Approval Pending"
+                                  ? moment(
+                                      currentOpenedTask &&
+                                        currentOpenedTask.deadline_date
+                                    ).isBefore(today)
+                                    ? "Not reviewed"
+                                    : "Approval Pending"
+                                  : currentOpenedTask.status === "Not Assigned"
+                                  ? currentOpenedTask.status
+                                  : currentOpenedTask.status === "Assigned"
+                                  ? "Task Assigned"
+                                  : currentOpenedTask.status === "Approved"
+                                  ? "Task Approved"
+                                  : currentOpenedTask.status === "Rejected"
+                                  ? "Task Rejected"
+                                  : null
+                                : ""}
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    )}
+                    {/* {userDetails.UserType !== 4 &&
+                      currentOpenedTask &&
+                      currentOpenedTask.ExReview === 1 && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Expert Review Status
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {currentOpenedTask.ExStatus}
+                            </div>
+                          </div>
+                        </div>
+                      )} */}
+
+                    {/* {completedDate &&
+                      isTaskApproved &&
+                      userDetails.UserType !== 4 && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Approval Pending on
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {moment(completedDate).format("DD MMM  h:mm a")}
+                            </div>
+                          </div>
+                        </div>
+                      )} */}
+                    {userDetails.UserType !== 4 &&
+                      currentOpenedTask &&
+                      currentOpenedTask.ExReview === 1 &&
+                      currentOpenedTask.ReviewerEmailID !== "" &&
+                      currentOpenedTask.ReviewerName !== "" &&
+                      currentOpenedTask.ReviewerMobile && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Contact Details
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {`${currentOpenedTask.ReviewerMobile} | ${currentOpenedTask.ReviewerEmailID}`}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                  </div>
+                </div>
+                <div>
+                  <div className="task-details-file-grid1">
+                    <div className="d-flex">
+                      <div className="tab-list-space">
+                        {showFiles ? (
+                          <div
+                            className="file-title pointer"
+                            onClick={() => {
+                              setShowFiles(true);
+                              setShowComments(false);
+                              setShowHtoDoIt(false);
+                              setShowReference(false);
+                            }}
+                          >
+                            Files
+                          </div>
+                        ) : (
+                          <div
+                            className="file-title unActiveText-color pointer"
+                            onClick={() => {
+                              setShowFiles(true);
+                              setShowComments(false);
+                              setShowHtoDoIt(false);
+                              setShowReference(false);
+                            }}
+                          >
+                            Files
+                          </div>
+                        )}
+                        {showFiles && (
+                          <div className="file-title-progress col-5"></div>
+                        )}
+                      </div>
+                      <div className="tab-list-space">
+                        {showComments ? (
+                          <div
+                            className="file-title  pointer"
+                            style={{ color: "#2c2738" }}
+                            onClick={() => getComments()}
+                          >
+                            Comments
+                          </div>
+                        ) : (
+                          <div
+                            className="file-title unActiveText-color"
+                            onClick={() => getComments()}
+                          >
+                            Comments
+                          </div>
+                        )}
+                        {showComments && (
+                          <div className="file-title-progress comments-progress-width"></div>
+                        )}
+                      </div>
+                      <div className="tab-list-space">
+                        {referenceShow ? (
+                          <div
+                            className="file-title  pointer"
+                            style={{ color: "#2c2738" }}
+                            onClick={() => {
+                              _fetchReferenceSectionData("2");
+                              setShowFiles(false);
+                              setShowComments(false);
+                              setShowReference(true);
+                            }}
+                          >
+                            References
+                          </div>
+                        ) : (
+                          <div
+                            className="file-title unActiveText-color"
+                            onClick={() => {
+                              _fetchReferenceSectionData("2");
+                              setShowFiles(false);
+                              setShowComments(false);
+                              setShowReference(true);
+                            }}
+                          >
+                            References
+                          </div>
+                        )}
+                        {referenceShow && (
+                          <div className="file-title-progress comments-progress-width"></div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {referenceShow && (
+                    <div className="11">
+                      {referenceSectionData &&
+                      referenceSectionData.length > 0 ? (
+                        <div className="auto-scroll">
+                          {referenceSectionData &&
+                          referenceSectionData[0] &&
+                          referenceSectionData[0].Linktype === "F" ? (
+                            <div className="d-flex ">
+                              <div className="pr-5 w-38">
+                                <div className="file-upload-title file-img-width">
+                                  <img
+                                    src={fileIcon}
+                                    alt="file Icon"
+                                    className="file-icon-box"
+                                    value="aaaa"
+                                  />{" "}
+                                  {referenceSectionData &&
+                                    referenceSectionData[0] &&
+                                    referenceSectionData[0].Filename}
+                                </div>
+                              </div>
+                              <div className="pr-5 w-62">
+                                <a
+                                  target="_blank"
+                                  href={`${
+                                    referenceSectionData[0] &&
+                                    referenceSectionData[0].Fileloc /
+                                      referenceSectionData[0] &&
+                                    referenceSectionData[0].Filename
+                                  }`}
+                                  style={{ textDecoration: "none" }}
+                                  className="file-download-title pointer d-flex"
+                                >
+                                  download
+                                  <span className="d-none d-md-block">
+                                    &nbsp;file
+                                  </span>
+                                </a>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="d-flex">
+                              <div className="pr-5 w-38">
+                                <div
+                                  className="file-upload-title file-img-width"
+                                  style={{ color: "#6c5dd3" }}
+                                >
+                                  <img
+                                    src={fileIcon}
+                                    alt="file Icon"
+                                    className="file-icon-box"
+                                    value="aaaa"
+                                  />{" "}
+                                  {referenceSectionData &&
+                                    referenceSectionData[0] &&
+                                    referenceSectionData[0].Fileloc /
+                                      referenceSectionData[0] &&
+                                    referenceSectionData[0].Fileloc}
+                                </div>
+                              </div>
+                              <div className="pr-5 w-62">
+                                <a
+                                  href={`${
+                                    referenceSectionData &&
+                                    referenceSectionData[0] &&
+                                    referenceSectionData[0].Fileloc /
+                                      referenceSectionData[0] &&
+                                    referenceSectionData[0].Filename
+                                  }`}
+                                  target="_blank"
+                                  style={{ textDecoration: "none" }}
+                                  className="file-download-title pointer d-flex"
+                                >
+                                  view
+                                </a>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="no-files">No Files To View here</div>
+                      )}
                     </div>
                   )}
                   {showFiles && (
-                    <div
-                      className="file-title-progress col-5"
-                      style={{ position: "inherit" }}
-                    ></div>
-                  )}
-                </div>
-                <div className="tab-list-space">
-                  {showComments ? (
-                    <div
-                      className="file-title  pointer"
-                      style={{ color: "#2c2738" }}
-                      onClick={() => getComments()}
-                    >
-                      Comments
-                    </div>
-                  ) : (
-                    <div
-                      className="file-title unActiveText-color"
-                      onClick={() => getComments()}
-                    >
-                      Comments
-                    </div>
-                  )}
-                  {showComments && (
-                    <div className="file-title-progress comments-progress-width"></div>
-                  )}
-                </div>
-
-                <div className="tab-list-space">
-                  {referenceShow ? (
-                    <div
-                      className="file-title  pointer"
-                      style={{ color: "#2c2738" }}
-                      onClick={() => {
-                        _fetchReferenceSectionData("2");
-                        setShowFiles(false);
-                        setShowComments(false);
-                        setShowReference(true);
-                      }}
-                    >
-                      References
-                    </div>
-                  ) : (
-                    <div
-                      className="file-title unActiveText-color"
-                      onClick={() => {
-                        _fetchReferenceSectionData("2");
-                        setShowFiles(false);
-                        setShowComments(false);
-                        setShowReference(true);
-                      }}
-                    >
-                      References
-                    </div>
-                  )}
-                  {referenceShow && (
-                    <div className="file-title-progress comments-progress-width"></div>
-                  )}
-                </div>
-              </div>
-            </div>
-            {referenceShow && (
-              <div>
-                {referenceSectionData && referenceSectionData.length > 0 ? (
-                  <div>
-                    {referenceSectionData &&
-                    referenceSectionData[0] &&
-                    referenceSectionData[0].Linktype === "F" ? (
-                      <div className="d-flex">
-                        <div className="pr-5 w-38">
-                          <div className="file-upload-title file-img-width">
-                            <img
-                              src={fileIcon}
-                              alt="file Icon"
-                              className="file-icon-box"
-                              value="aaaa"
-                            />{" "}
-                            {referenceSectionData &&
-                              referenceSectionData[0] &&
-                              referenceSectionData[0].Filename}
-                          </div>
-                        </div>
-                        <div className="pr-5 w-62">
-                          <a
-                            target="_blank"
-                            href={`${
-                              referenceSectionData &&
-                              referenceSectionData[0] &&
-                              referenceSectionData[0].Fileloc /
-                                referenceSectionData &&
-                              referenceSectionData[0] &&
-                              referenceSectionData[0].Filename
-                            }`}
-                            style={{ textDecoration: "none" }}
-                            className="file-download-title pointer d-flex"
-                          >
-                            download
-                            <span className="d-none d-sm-block">
-                              &nbsp;file
-                            </span>
-                          </a>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="d-flex">
-                        <div className="pr-5 w-38">
-                          <div
-                            className="file-upload-title file-img-width"
-                            style={{ color: "#6c5dd3" }}
-                          >
-                            <img
-                              src={fileIcon}
-                              alt="file Icon"
-                              className="file-icon-box"
-                              value="aaaa"
-                            />{" "}
-                            {referenceSectionData &&
-                              referenceSectionData[0] &&
-                              referenceSectionData[0].Fileloc}
-                          </div>
-                        </div>
-                        <div className="pr-5 w-62">
-                          <a
-                            href={`${
-                              referenceSectionData &&
-                              referenceSectionData[0] &&
-                              referenceSectionData[0].Fileloc /
-                                referenceSectionData &&
-                              referenceSectionData[0] &&
-                              referenceSectionData[0].Filename
-                            }`}
-                            target="_blank"
-                            style={{ textDecoration: "none" }}
-                            className="file-download-title pointer d-flex"
-                          >
-                            view
-                          </a>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="no-files"> No Files To View here </div>
-                )}
-              </div>
-            )}
-            {showFiles && (
-              <div className="file-grid-data">
-                {(user && user.UserType && user.UserType === 4) ||
-                (user &&
-                  user.UserType &&
-                  (userDetails.UserType === 3 ||
-                    userDetails.UserType === 5)) ? (
-                  <>
-                    {getTaskById &&
-                    getTaskById.Status &&
-                    getTaskById.Status === "Assigned" &&
-                    getTaskById &&
-                    getTaskById.Status &&
-                    getTaskById.TaskStatus === 0
-                      ? (user && user.UserType && user.UserType === 4) ||
-                        ((user && user.UserType && user.UserType === 3) ||
-                        user.UserType == 5 ? (
-                          <>
-                            {" "}
-                            <div className="row">
-                              <div className="col-12 col-sm-4 col-md-4 col-xl-4">
-                                <div className="file-upload-title file-img-width">
-                                  <div className="">
-                                    <div className="file-upload-box">
-                                      <div className="image-display">
-                                        <Dropzone
-                                          multiple={true}
-                                          maxSize={26214400}
-                                          accept=".png,.jpg,
+                    <div className="file-grid-data">
+                      {(user && user.UserType && user.UserType === 4) ||
+                      (user && user.UserType && userDetails.UserType === 3) ||
+                      (user && user.UserType && userDetails.UserType === 5) ? (
+                        <>
+                          {/* check here */}
+                          {currentOpenedTask &&
+                          currentOpenedTask.status &&
+                          currentOpenedTask.status !== "Approved" &&
+                          currentOpenedTask.status !== "Not Assigned" &&
+                          currentOpenedTask.status !== "Approval Pending" &&
+                          (currentOpenedTask.assign_to === null ||
+                            currentOpenedTask.assign_to ===
+                              (userDetails.EmailID || userDetails.email)) ? (
+                            (user &&
+                              user.UserType &&
+                              user.UserType &&
+                              userDetails.UserType === 4) ||
+                            (user &&
+                              user.UserType &&
+                              userDetails.UserType === 3) ||
+                            (user &&
+                              user.UserType &&
+                              userDetails.UserType === 5) ? (
+                              <>
+                                {" "}
+                                <div className="row">
+                                  <div className="col-12 col-sm-4 col-md-4 col-xl-4">
+                                    <div className="file-upload-title file-img-width">
+                                      <div className="">
+                                        <div className="file-upload-box">
+                                          <div className="image-display">
+                                            <Dropzone
+                                              multiple={true}
+                                              maxSize={26214400}
+                                              accept=".png,.jpg,
                                         application/pdf,application/rtf,application/msword,image/bmp,
                                         application/vnd.ms-excel,image/tiff,image/tif,image/jpeg,
                                         application/ms-excel,
                                         .tiff,.pdf,.doc,.docx,
                                         .XLS,.xlsx,.CSV,.zip,.rar,.txt"
-                                          onDrop={(acceptedFiles) =>
-                                            handleSelectUploadFile(
-                                              acceptedFiles
-                                            )
-                                          }
-                                        >
-                                          {({
-                                            getRootProps,
-                                            getInputProps,
-                                          }) => (
-                                            <div
-                                              {...getRootProps({
-                                                className: "dropzone",
-                                              })}
+                                              onDrop={(acceptedFiles) =>
+                                                handleSelectUploadFile(
+                                                  acceptedFiles
+                                                )
+                                              }
                                             >
-                                              <div>
-                                                <input {...getInputProps()} />
-                                              </div>
-                                              <img
-                                                src={fileUploadIcon}
-                                                className="cloudImg"
-                                                alt="File Upload icon"
-                                              />
-                                              <div className="drag-drop-title text-center">
-                                                Drag and drop your files here
-                                              </div>
-                                              <div className="text-center">
-                                                Upload files
-                                              </div>
-                                            </div>
-                                          )}
-                                        </Dropzone>
+                                              {({
+                                                getRootProps,
+                                                getInputProps,
+                                              }) => (
+                                                <div
+                                                  {...getRootProps({
+                                                    className: "dropzone",
+                                                  })}
+                                                >
+                                                  <div>
+                                                    <input
+                                                      {...getInputProps()}
+                                                    />
+                                                  </div>
+                                                  <img
+                                                    src={fileUploadIcon}
+                                                    className="cloudImg"
+                                                    alt="File Upload icon"
+                                                  />
+                                                  <div className="drag-drop-title text-center">
+                                                    Drag and drop your files
+                                                    here
+                                                  </div>
+                                                  <div className="text-center">
+                                                    Upload files
+                                                  </div>
+                                                </div>
+                                              )}
+                                            </Dropzone>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                          </>
-                        ) : null)
-                      : null}
+                              </>
+                            ) : null
+                          ) : null}
 
-                    {fileList && fileList.length > 0 ? (
-                      fileList.map((file, index) => (
-                        <div className="no-files">
-                          {file && file.Files && file.Files.length > 0
-                            ? file.Files.map((files, index) => (
-                                <div className="d-flex">
-                                  <div className="pr-3">
-                                    <div className="file-upload-title file-img-width">
-                                      <img
-                                        src={fileIcon}
-                                        alt="file Icon"
-                                        className="file-icon-box"
-                                        value={files.TaskFileId}
-                                      />{" "}
-                                      {files.FileName}
+                          <div className="no-files">
+                            {fileList && fileList.length > 0
+                              ? fileList.map((files, index) => (
+                                  <div className="d-flex">
+                                    <div className="pr-3">
+                                      <div className="file-upload-title file-img-width">
+                                        <img
+                                          src={fileIcon}
+                                          alt="file Icon"
+                                          className="file-icon-box"
+                                          value={files.file_name}
+                                        />{" "}
+                                        {files.file_name}
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div className="pr-3">
-                                    {getTaskById &&
-                                      getTaskById.TaskId !== undefined && (
-                                        <a
-                                          target="_blank"
-                                          href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
-                                          style={{ textDecoration: "none" }}
-                                          className="file-download-title pointer d-flex"
-                                        >
-                                          download{" "}
-                                          <span className="d-none d-sm-block">
-                                            &nbsp;file
-                                          </span>
-                                        </a>
+                                    <div className="pr-3">
+                                      {currentOpenedTask &&
+                                        currentOpenedTask.task_name !==
+                                          undefined && (
+                                          <a
+                                            href={`data:application/${files.file_name
+                                              .split(".")
+                                              .pop()};base64,${
+                                              files.encoded_string
+                                            }`}
+                                            style={{ textDecoration: "none" }}
+                                            className="file-download-title pointer d-flex"
+                                            download={files.file_name}
+                                          >
+                                            download{" "}
+                                            <span className="d-none d-md-block">
+                                              &nbsp;file
+                                            </span>
+                                          </a>
+                                        )}
+                                    </div>
+                                    {currentOpenedTask &&
+                                      currentOpenedTask.status !==
+                                        "Approved" && (
+                                        <div className="pr-3">
+                                          <div
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() =>
+                                              deleteUploadedFile(files.file_id)
+                                            }
+                                            className="file-download-title pointer d-flex"
+                                          >
+                                            <img
+                                              className="delete-icon"
+                                              src={deleteBlack}
+                                              alt="delete Icon"
+                                            />
+                                          </div>
+                                        </div>
                                       )}
+                                    {/* <div className="pr-3">
+                                      <div
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() =>
+                                          deleteUploadedFile(files.file_id)
+                                        }
+                                        className="file-download-title pointer d-flex"
+                                      >
+                                        <img
+                                          className="delete-icon"
+                                          src={deleteBlack}
+                                          alt="delete Icon"
+                                        />
+                                      </div>
+                                    </div> */}
                                   </div>
-                                  <div className="pr-3">
-                                    <div
-                                      style={{ cursor: "pointer" }}
-                                      onClick={() => deleteFile(files)}
-                                      className="file-download-title pointer d-flex"
-                                    >
-                                      <img
-                                        className="delete-icon"
-                                        src={deleteBlack}
-                                        alt="delete Icon"
-                                      />
+                                ))
+                              : "No Files To View here"}
+                          </div>
+                        </>
+                      ) : fileList && fileList.length > 0 ? (
+                        fileList.map((file, index) => (
+                          <div className="no-files">
+                            {file && file.Files && file.Files.length > 0
+                              ? file.Files.map((files, index) => (
+                                  <div className="row" key={files.file_id}>
+                                    <div className="col-8 col-sm-4 col-md-4 col-xl-4">
+                                      <div className="file-upload-title file-img-width">
+                                        <img
+                                          src={fileIcon}
+                                          alt="file Icon"
+                                          value={files.file_name}
+                                        />{" "}
+                                        {files.file_name}
+                                      </div>
+                                    </div>
+                                    <div className="col-4 col-sm-8 col-md-8 col-xl-8">
+                                      {currentOpenedTask &&
+                                        currentOpenedTask.task_name !==
+                                          undefined && (
+                                          <a
+                                            href={`data:application/${files.file_name
+                                              .split(".")
+                                              .pop()};base64,${
+                                              files.encoded_string
+                                            }`}
+                                            style={{ textDecoration: "none" }}
+                                            className="file-download-title pointer d-flex"
+                                            download={files.file_name}
+                                          >
+                                            download{" "}
+                                            <span className="d-none d-md-block">
+                                              &nbsp;file
+                                            </span>
+                                          </a>
+                                        )}
                                     </div>
                                   </div>
+                                ))
+                              : "No Files To View here"}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="no-files">No Filess To View here</div>
+                      )}
+
+                      {/* Task Actions (Approval, Rejection, Mark Complete) */}
+                      {currentOpenedTask &&
+                        (currentOpenedTask.status === "Assigned" ||
+                          currentOpenedTask.status === "Rejected") &&
+                        (userDetails.UserType === 3 ||
+                          userDetails.UserType === 5 ||
+                          userDetails.UserType === 4) &&
+                        (currentOpenedTask.assign_to === null ||
+                          currentOpenedTask.assign_to ===
+                            (userDetails.EmailID || userDetails.email)) && (
+                          <button
+                            style={{ marginTop: 10, width: 150 }}
+                            onClick={() => teamMemberMarkComplete()}
+                            className="btn save-details-bnt approve-task"
+                            value="3"
+                          >
+                            Mark Complete
+                          </button>
+                        )}
+                      {currentOpenedTask &&
+                        currentOpenedTask.status === "Approval Pending" &&
+                        (user.UserType === 3 || user.UserType === 5) &&
+                        user.EmailID !== "" && (
+                          <div class="btn-toolbar text-center well">
+                            <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
+                              <button
+                                onClick={(e) =>
+                                  handleAppTask(currentOpenedTask)
+                                }
+                                className="btn save-details-bnt approve-task"
+                              >
+                                approve task
+                              </button>
+                            </div>
+                            <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-45">
+                              <button
+                                className="btn save-details-bnt reject-task"
+                                value="3"
+                                onClick={() => setVisibleRejectTaskModal(true)}
+                              >
+                                reject Task
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                    </div>
+                  )}
+                  {showComments && (
+                    <div className="file-grid-data blank-space-height">
+                      {getCommentsbyId && getCommentsbyId.length > 0 ? (
+                        getCommentsbyId.map((comment, index) => (
+                          <div>
+                            <div className="comment-box">
+                              <div className="name-box">
+                                {getInitials(
+                                  comment && comment.user_name
+                                    ? comment.user_name
+                                    : "No Username"
+                                )}
+                              </div>
+                              <div className="rigt-box-comment">
+                                <div className="d-flex">
+                                  <div className="right-box-text">
+                                    {comment && comment.user_name
+                                      ? comment.user_name
+                                      : "No Username"}
+                                  </div>
+                                  <div className="days-ago">
+                                    {moment(comment.commented_on).format(
+                                      "DD MMM"
+                                    )}
+                                  </div>
                                 </div>
-                              ))
-                            : "No Files To View here"}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="no-files">No Files To View here</div>
-                    )}
-                  </>
-                ) : fileList && fileList.length > 0 ? (
-                  fileList.map((file, index) => (
-                    <div className="no-files">
-                      {file && file.Files && file.Files.length > 0
-                        ? file.Files.map((files, index) => (
-                            <div className="row">
-                              <div className="col-8 col-sm-4 col-md-4 col-xl-4">
-                                <div className="file-upload-title file-img-width">
+                                <div className="comment-desc">
+                                  {comment.content}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="no-comments">No Comments</div>
+                      )}
+                      {currentOpenedTask &&
+                        currentOpenedTask?.status !== "Approved" &&
+                        currentOpenedTask?.status !== "Approval Pending" && (
+                          <div className="comment-box">
+                            <div className="name-box">
+                              {user &&
+                                getInitials(user.full_name || user.email)}
+                            </div>
+                            <div className="rigt-box-comment">
+                              <div className="input-comment-box input-comment-boxLeft">
+                                <TextareaAutosize
+                                  minRows={1.3}
+                                  style={{ overflow: "hidden" }}
+                                  type="text"
+                                  className="form-control textAreaHeight"
+                                  value={inputComment}
+                                  placeholder="Add a comment"
+                                  onChange={(e) => handleChange(e)}
+                                  required
+                                />
+                                <div className="inputIcon">
                                   <img
-                                    src={fileIcon}
-                                    alt="file Icon"
-                                    value={files.TaskFileId}
-                                  />{" "}
-                                  {files.FileName}
+                                    src={inputRightArrow}
+                                    alt=""
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => submitComment()}
+                                  />
                                 </div>
                               </div>
-                              <div className="col-4 col-sm-8 col-md-8 col-xl-8">
-                                {getTaskById &&
-                                  getTaskById.TaskId !== undefined && (
-                                    <a
-                                      target="_blank"
-                                      href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
-                                      style={{ textDecoration: "none" }}
-                                      className="file-download-title pointer d-flex"
-                                    >
-                                      download{" "}
-                                      <span className="d-none d-sm-block">
-                                        &nbsp;file
-                                      </span>
-                                    </a>
-                                  )}
-                              </div>
-                            </div>
-                          ))
-                        : "No Files To View here"}
-                    </div>
-                  ))
-                ) : (
-                  <div className="no-files">No Files To View here</div>
-                )}
-
-                {(getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.Status === "Approved") ||
-                (getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.TaskStatus === 1) ? (
-                  (user && user.UserType && user.UserType === 3) ||
-                  user.UserType === 4 ||
-                  user.UserType === 5
-                ) : getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.Status === "Assigned" &&
-                  getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.TaskStatus === 0 ? (
-                  user && user.UserType && user.UserType === 4 ? (
-                    <button
-                      style={{ marginTop: 10, width: 150 }}
-                      onClick={() => teamMemberMarkComplete()}
-                      className="btn save-details-bnt approve-task"
-                      value="3"
-                    >
-                      Mark Complete
-                    </button>
-                  ) : (
-                    ""
-                  )
-                ) : getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.Status === "Assign" &&
-                  getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.TaskStatus === 0 ? (
-                  ""
-                ) : getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.Status === "Request Rejected" &&
-                  getTaskById &&
-                  getTaskById.Status &&
-                  getTaskById.TaskStatus === 3 ? (
-                  user &&
-                  user.UserType &&
-                  user.UserType === 4 && (
-                    <button
-                      style={{ marginTop: 10, width: 150 }}
-                      onClick={() => teamMemberMarkComplete()}
-                      className="btn save-details-bnt approve-task"
-                      value="3"
-                    >
-                      Mark Complete
-                    </button>
-                  )
-                ) : (getTaskById &&
-                    getTaskById.Status &&
-                    getTaskById.Status === "Completed By User") ||
-                  (getTaskById &&
-                    getTaskById.Status &&
-                    getTaskById.TaskStatus === 4) ? (
-                  (user && user.UserType && user.UserType === 3) ||
-                  (user && user.UserType && user.UserType === 5) ? (
-                    <div class="btn-toolbar text-center well">
-                      <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
-                        <button
-                          onClick={(e) => handleAppTask(getTaskById)}
-                          className="btn save-details-bnt approve-task"
-                        >
-                          approve task
-                        </button>
-                      </div>
-                      <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-45">
-                        <button
-                          className="btn save-details-bnt reject-task"
-                          value="3"
-                          onClick={() => setVisibleRejectTaskModal(true)}
-                        >
-                          reject Task
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )
-                ) : (
-                  ""
-                )}
-              </div>
-            )}
-            {showComments && (
-              <div className="file-grid-data blank-space-height">
-                {getCommentsbyId && getCommentsbyId.length > 0 ? (
-                  getCommentsbyId.map((comment, index) => (
-                    <div>
-                      <div className="comment-box">
-                        <div className="name-box">
-                          {getInitials(
-                            comment &&
-                              comment.B &&
-                              comment.B[0] &&
-                              comment.B[0].UserName &&
-                              comment.B[0].UserName != ""
-                              ? comment.B[0].UserName
-                              : "No Username"
-                          )}
-                        </div>
-                        <div className="rigt-box-comment">
-                          <div className="d-flex">
-                            <div className="right-box-text">
-                              {comment &&
-                              comment.B &&
-                              comment.B[0] &&
-                              comment.B[0].UserName &&
-                              comment.B[0].UserName != ""
-                                ? comment.B[0].UserName
-                                : "No Username"}
-                            </div>
-                            <div className="days-ago">
-                              {moment(comment.CommentOn).format("DD MMM")}
                             </div>
                           </div>
-                          <div className="comment-desc">{comment.Comment}</div>
-                        </div>
-                      </div>
+                        )}
                     </div>
-                  ))
-                ) : (
-                  <div className="no-comments">No Comments</div>
-                )}
-
-                <div className="comment-box">
-                  {/* <div className="d-flex">
-                        <div className="pr-5 w-38">
-                          <div className="file-upload-title file-img-width">
-                          <img
-                          src={fileIcon}
-                          alt="file Icon"
-                          className="file-icon-box"
-                          value="aaaa"/> formTempRCReport.pdf
-                          </div>
-                        </div>
-                        <div className="pr-5 w-62">                           
-                                <a
-                                  href=""
-                                  style={{ textDecoration: "none" }}
-                                  className="file-download-title pointer d-flex"
-                                >
-                                  download
-                                  <span className="d-none d-sm-block">
-                                    &nbsp;file
-                                  </span>
-                                </a>                             
-                          </div>
-                        </div>
-                        <div className="d-flex">
-                        <div className="pr-5 w-38">
-                          <div className="file-upload-title file-img-width" style={{ color: "#6c5dd3" }}>
-                          <img
-                          src={fileIcon}
-                          alt="file Icon"
-                          className="file-icon-box"
-                          value="aaaa" /> https://www.loremipsum.com
-                          </div>
-                        </div>
-                        <div className="pr-5 w-62">                           
-                                <a
-                                  href=""
-                                  style={{ textDecoration: "none" }}
-                                  className="file-download-title pointer d-flex"
-                                >
-                                  view
-                                  
-                                </a>                             
-                          </div>
-                        </div>  */}
-                  <div className="name-box">
-                    {getInitials(user && user.UserName)}
-                  </div>
-                  <div className="rigt-box-comment">
-                    <div className="input-comment-box input-comment-boxLeft">
-                      <TextareaAutosize
-                        minRows={1.3}
-                        style={{ overflow: "hidden" }}
-                        type="text"
-                        className="form-control textAreaHeight"
-                        value={inputComment}
-                        placeholder="Add a comment"
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                      <div className="inputIcon">
-                        <img
-                          src={inputRightArrow}
-                          alt=""
-                          style={{ cursor: "pointer" }}
-                          onClick={() => submitComment()}
-                        />
-                      </div>
+                  )}
+                  {showHtoDoIt && (
+                    <div className="file-grid-data blank-space-height">
+                      <h1>We Don't Know</h1>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
-            )}
-            {showHtoDoIt && (
-              <div className="file-grid-data blank-space-height">
-                <h1>We Don't Know</h1>
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </Modal>
     );
   };
-  const getAllFile = () => {
-    if (getTaskById != undefined) {
-      const taskId = getTaskById.TaskId;
-      const payload = {
-        taskID: taskId,
-        actionFlag: 0,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          let fileData = response.data;
-          setFileList(fileData);
-        })
-        .catch((error) => {
-          console.log("error => ", error);
-        });
-    }
-  };
-
-  const deleteFile = (file) => {
-    if (userDetails.UserType === 4) {
-      const payload = {
-        taskID: 0,
-        TaskFileId: file.TaskFileId,
-        actionFlag: 3,
-      };
-      axios
-        .post(`${BACKEND_BASE_URL}/api/getTaskFile`, payload)
-        .then((response) => {
-          if (
-            response &&
-            response.data &&
-            response.data[0] &&
-            response.data[0].Status === "Deleted"
-          ) {
-            getAllFile();
-            toast.success("File deleted successfully");
-          } else {
-            toast.error("Error in the deleting file !!!");
-          }
-        })
-        .catch((error) => {});
-    }
-  };
-
+  // Submit Reject Task Modal
   const submitModal = () => {
-    let id = getTaskById.TaskId;
     dispatch(
-      taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        userType: 1,
-        email: "",
-        invitee: "",
-        isApproved: 3,
-        loginID: userDetails.UserID,
-        userDetails: userDetails,
+      taskReportActions.changeTaskStatusRequest({
+        task_name: currentOpenedTask.task_name,
+        status: "Rejected",
       })
     );
     dispatch(
       taskReportActions.postTaskCommentByTaskID({
-        actionFlag: 1, //Action Flag
-        taskID: getTaskById.TaskId, //TaskID
-        comment: rejectTaskInput,
-        commentBy: user.UserID, //UserID
+        task_name: currentOpenedTask.task_name,
+        content: rejectTaskInput,
       })
     );
     setRejectTaskInputComment("");
     setVisibleRejectTaskModal(false);
-    toast.success("Task rejected successfully");
   };
 
   const teamMemberMarkComplete = () => {
-    let taskId = getTaskById.TaskId;
     dispatch(
-      taskReportActions.taskAssignByTaskID({
-        taskID: taskId,
-        userType: 1,
-        email: "",
-        invitee: "",
-        isApproved: 4, //Compeleted by user
-        userDetails: userDetails,
-        loginID: userDetails.UserID,
+      taskReportActions.changeTaskStatusRequest({
+        task_name: currentOpenedTask.task_name,
+        status: "Approval Pending",
       })
     );
-    toast.success("Task completed successfully");
   };
 
   const handleChangeRejectTaskComment = (e) => {
@@ -1865,107 +2034,17 @@ function RightSideGrid({
     }
   };
 
-  const _fetchReferenceSectionData = (type) => {
-    let taskID = null;
-    let task_id_bv = state && state.adminMenu && state.adminMenu.taskID;
-    let task_id_cal =
-      state && state.adminMenu && state.adminMenu.taskIDByCalendarView;
-    let task_id =
-      state && state.NotificationRedu && state.NotificationRedu.taskID;
-
-    if (task_id !== null) {
-      taskID = task_id;
-    } else if (task_id_bv !== null) {
-      taskID = task_id_bv;
-    } else if (task_id_cal !== null) {
-      taskID = task_id_cal;
-    } else {
-      taskID = getTaskById && getTaskById.TaskId;
-    }
-    if (taskID !== null) {
-      axios
-        .post(`${BACKEND_BASE_URL}/api/Circular`, {
-          taskID: taskID,
-          taskFileID: 0,
-          actionFlag: 0,
-        })
-        .then((response) => {
-          if (
-            response &&
-            response.data &&
-            response.data[0] &&
-            response.data[0].status !== "False"
-          ) {
-            if (type === "1") {
-              setRecentRegulationData(response.data);
-            } else if (type === "2") {
-              setReferenceSectionData(response.data);
-            } else {
-              setReferenceSectionData([]);
-              setRecentRegulationData([]);
-            }
-          } else {
-            setReferenceSectionData([]);
-            setRecentRegulationData([]);
-          }
-        })
-        .catch((err) => {
-          console.log("error =>  ", err);
-        });
-    }
-  };
-  const getSelectTaskDetails = (e) => {
-    console.log("hello");
-    setShowFiles(true);
-    setShowComments(false);
-    setCurrentDropDown("");
-    // setExpandedFlags([])
-
-    let taskID = null;
-    let task_id_bv = state && state.adminMenu && state.adminMenu.taskID;
-    let task_id_cal =
-      state && state.adminMenu && state.adminMenu.taskIDByCalendarView;
-
-    let task_id =
-      state && state.NotificationRedu && state.NotificationRedu.taskID;
-    console.log(state.NotificationRedu);
-
-    if (task_id !== null && e === undefined) {
-      if (localStorage.expandedFlagss) {
-        let getItem = localStorage.getItem("expandedFlagss");
-        // let getItemAllrow = localStorage.getItem("allRowCount");
-        // var personObject = JSON.parse(getItemAllrow)
-        // setRowCount(personObject)
-        let getItemArr = getItem && getItem.split(",");
-        console.log("getItemArr => ", getItemArr);
-        const nuevo =
-          getItemArr &&
-          getItemArr.length > 0 &&
-          getItemArr.map((i) => Number(i));
-        if (nuevo !== null) {
-          setExpandedFlags([...nuevo]);
-        }
-      }
-
-      taskID = task_id;
-      setIsTaskListOpen(true);
-      setCurrentTaskData(task_id);
-    } else if (task_id_bv !== null && e === undefined) {
-      setIsTaskModalOpen(true);
-      taskID = task_id_bv;
-      setCurrentTaskData(task_id_bv);
-    } else if (task_id_cal !== null && e === undefined) {
-      setIsTaskModalOpen(true);
-      taskID = task_id_cal;
-      setCurrentTaskData(taskID);
-    } else {
-      taskID = e.TaskId;
-      setCurrentTaskData(e);
-      setIsTaskListOpen(true);
-    }
+  const _fetchReferenceSectionData = () => {
     dispatch(
-      taskReportActions.taskReportByIdRequest({
-        taskID: taskID,
+      taskReportActions.taskReferensesByNameRequest({
+        task_name: currentOpenedTask.task_name,
+      })
+    );
+  };
+  const getSelectTaskDetails = (task) => {
+    dispatch(
+      taskReportActions.taskReportByIdRequestSuccess({
+        taskReportById: task,
       })
     );
   };
@@ -1973,9 +2052,8 @@ function RightSideGrid({
   const getApproveUsers = () => {
     dispatch(
       taskReportActions.userByRoleRequest({
-        coUserId: user.UserID,
-        ecoUserId: "",
-        coUserType: 5,
+        company: currentOpenedTask && currentOpenedTask?.customer,
+        role_type: "Approver",
       })
     );
   };
@@ -1983,9 +2061,8 @@ function RightSideGrid({
   const getUserDetail = (e) => {
     dispatch(
       taskReportActions.userByRoleRequest({
-        coUserId: user.UserID,
-        ecoUserId: "",
-        coUserType: 4,
+        company: currentOpenedTask && currentOpenedTask?.customer,
+        role_type: "Team Member",
       })
     );
   };
@@ -1997,10 +2074,8 @@ function RightSideGrid({
   const submitComment = () => {
     dispatch(
       taskReportActions.postTaskCommentByTaskID({
-        actionFlag: 1, //Action Flag
-        taskID: getTaskById.TaskId, //TaskID
-        comment: inputComment,
-        commentBy: user.UserID, //UserID
+        task_name: currentOpenedTask.task_name,
+        content: inputComment,
       })
     );
     setInputComment("");
@@ -2014,38 +2089,83 @@ function RightSideGrid({
 
     dispatch(
       taskReportActions.taskCommentsByTaskIdRequest({
-        taskid: getTaskById.TaskId,
+        task_name: currentOpenedTask.task_name,
       })
     );
   };
 
+  useEffect(() => {
+    if (currentOpenedTask && Object.keys(currentOpenedTask).length !== 0) {
+      dispatch(
+        taskReportActions.taskCommentsByTaskIdRequest({
+          task_name: currentOpenedTask.task_name,
+        })
+      );
+    }
+  }, [currentOpenedTask]);
+
+  const deleteUploadedFile = async (file_id) => {
+    if (file_id && file_id !== "") {
+      try {
+        const { data, status } = await axiosInstance.post(
+          "compliance.api.DeleteFile",
+          { file_id }
+        );
+        if (status === 200 && data.message && data.message.status) {
+          toast.success("File deleted successfully!");
+          // Get task files
+          const _tempFileList = [...fileList];
+          setFileList([
+            ..._tempFileList.filter((file) => file.file_id !== file_id),
+          ]);
+          // dispatch(
+          //   taskReportActions.getTaskFilesById({
+          //     doctype: "Task",
+          //     docname: currentOpenedTask.task_name,
+          //     is_references: 0,
+          //   })
+          // );
+        } else {
+          toast.error(
+            "Something went wrong. Please try again after some time."
+          );
+        }
+      } catch (err) {
+        toast.error("Something went wrong. Please try again after some time.");
+      }
+    }
+  };
+
   const getUpload = (file) => {
     let url = "";
-    if (currentTaskData && currentTaskData.TaskId) {
-      url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData.TaskId}`;
+    if (currentOpenedTask && currentOpenedTask.task_name) {
+      url = `${BACKEND_BASE_URL}compliance.api.UploadFile`;
     } else {
-      url = `${BACKEND_BASE_URL}/api/UploadFile?Taskid=${currentTaskData}`;
+      url = `${BACKEND_BASE_URL}compliance.api.UploadFile`;
     }
     var formData = [];
     formData = new FormData();
+    formData.append("doctype", "Task");
+    formData.append("docname", currentOpenedTask.task_name);
+    formData.append("is_private", 1);
     for (var i = 0; i < file.length; i++) {
-      formData.append("file", file[i]);
+      formData.append("file_details", file[i]);
     }
     const config = {
       headers: {
         "content-type": "multipart/form-data",
       },
     };
-    return post(url, formData, config);
+    return axiosInstance.post(url, formData, config);
   };
 
   const handleSelectUploadFile = (file) => {
-    const _fileList = (fileList && fileList[0] && fileList[0].Files) || [];
+    const _fileList = (fileList && fileList.length > 0 && fileList) || [];
     var isPresent = false;
     let fileArray = [];
     file.forEach((file) => {
       isPresent = _fileList.some(function (el) {
-        return el.FileName === file.name;
+        return el.file_name === file.name;
       });
       if (!isPresent) {
         fileArray.push(file);
@@ -2056,16 +2176,36 @@ function RightSideGrid({
         return "";
       }
     });
-    getUpload(fileArray).then((response) => {
-      toast.success("File Upload Successfully");
-      setUploadFile("");
-      getAllFile();
-    });
+    if (fileArray && fileArray.length !== 0) {
+      try {
+        getUpload(fileArray).then((response) => {
+          const { data, status } = response;
+          if (
+            status === 200 &&
+            data?.message &&
+            data?.message?.status === true
+          ) {
+            toast.success("File Uploaded Successfully");
+            if (currentOpenedTask && currentOpenedTask.task_name !== "") {
+              dispatch(
+                taskReportActions.getTaskFilesById({
+                  doctype: "Task",
+                  docname: currentOpenedTask.task_name,
+                  is_references: 0,
+                })
+              );
+            }
+          }
+        });
+      } catch (error) {
+        toast.error("Something went wrong! Please try again.");
+      }
+    }
   };
 
   const ApprovDisplay = (e) => {
     setApproverDropDown("openapproverdropdown");
-    if (approverDropDown == "") {
+    if (approverDropDown === "") {
       getApproveUsers();
       setEmailAvaliableCheck(false);
       setSelectedUser("");
@@ -2073,7 +2213,6 @@ function RightSideGrid({
   };
 
   const AssignDisplay = () => {
-    // setCurrentDropDown("open")
     if (currentDropDown === "open") {
       setCurrentDropDown("");
     } else {
@@ -2087,85 +2226,83 @@ function RightSideGrid({
     setEmailAvaliableCheck(false);
     setSelectedUser(searchText);
     let temp = [];
-    if (searchText == "") {
+    if (searchText === "") {
       setAllUser(allUserBackup);
     } else {
-      //  if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(searchText)) {
-      // setValidEmail(true)
       allUserBackup &&
         allUserBackup.length > 0 &&
         allUserBackup.filter((item, index) => {
           if (
-            item.EmailID.toLowerCase().includes(searchText.toLowerCase()) ||
-            (item.UserName &&
-              item.UserName.toLowerCase().includes(searchText.toLowerCase()))
+            item.email.toLowerCase().includes(searchText.toLowerCase()) ||
+            (item.full_name &&
+              item.full_name.toLowerCase().includes(searchText.toLowerCase()))
           ) {
             temp.push(item);
           }
         });
       setAllUser(temp);
-      // }else{
-      //   setValidEmail(false)
-      // }
     }
   };
 
-  const handleAppTask = (getTaskById) => {
-    let taskId = getTaskById.TaskId;
+  const handleAppTask = (currentOpenedTask) => {
     dispatch(
-      taskReportActions.taskAssignByTaskID({
-        taskID: taskId,
-        isApproved: 1, //Approve Task
-        userType: 1,
-        email: "",
-        invitee: "",
-        loginID: userDetails.UserID,
-        userDetails: userDetails,
+      taskReportActions.changeTaskStatusRequest({
+        // taskID: taskId,
+        // isApproved: 1, //Approve Task
+        // userType: 1,
+        // email: "",
+        // invitee: "",
+        // loginID: userDetails.UserID,
+        // userDetails: userDetails,
+        task_name: currentOpenedTask.task_name,
+        status: "Approved",
       })
     );
-
-    toast.success("Task approved !!!");
   };
 
   const handleChooseApprove = (data) => {
-    let approvEmail = data.EmailID;
-    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: approvEmail,
-        userType: 5,
-        invitee: user.EmailID,
-        isApproved: 0,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            approver: data.email,
+            assigned_by: user.EmailID || user.email,
+          },
+        ],
       })
     );
+    setApproverDropDown("");
   };
 
   const onAssignTaskClick = (data) => {
-    let assignEmail = data.EmailID;
-    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: assignEmail,
-        userType: 4,
-        invitee: user.EmailID,
-        isApproved: 0,
-        userDetails: userDetails,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            assign_to: data.email,
+            assigned_by: user.EmailID || user.email,
+          },
+        ],
       })
     );
+    setCurrentDropDown("");
   };
 
   const handleCheckEmailAvailability = (event) => {
     axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
+      .post(`${BACKEND_BASE_URL}compliance.api.avabilityCheck`, {
+        // loginID: selectedUser,
+        // loginty: "AdminEmail",
+        email: selectedUser,
       })
       .then((response) => {
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -2179,12 +2316,15 @@ function RightSideGrid({
 
   const handleCheckAssignToEmailAvailability = (event) => {
     axios
-      .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
-        loginID: selectedUser,
-        loginty: "AdminEmail",
+      .post(`${BACKEND_BASE_URL}compliance.api.avabilityCheck`, {
+        email: selectedUser,
       })
       .then((response) => {
-        if (response && response.data && response.data.Status === "True") {
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
           setEmailAvaliableCheck(true);
         } else {
           setEmailAvaliableCheck(false);
@@ -2207,7 +2347,6 @@ function RightSideGrid({
       } else {
         setValidEmail(false);
       }
-      // handleApproveTask(event);
     }
   };
 
@@ -2235,8 +2374,6 @@ function RightSideGrid({
       } else {
         setValidEmail(false);
       }
-
-      // handleAssignToTask(e)
     }
   };
   const handleOnClickAssignBtn = () => {
@@ -2252,46 +2389,45 @@ function RightSideGrid({
     }
   };
   const handleAssignToTask = (e) => {
-    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: selectedUser,
-        userType: 4,
-        invitee: user.EmailID,
-        isApproved: 0,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            assign_to: selectedUser,
+            assigned_by: user.EmailID,
+          },
+        ],
       })
     );
     setSelectedUser("");
   };
 
   const handleApproveTask = (e) => {
-    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: selectedUser,
-        userType: 5,
-        invitee: user.EmailID,
-        isApproved: 0,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            approver: selectedUser,
+            assigned_by: user.EmailID,
+          },
+        ],
       })
     );
     setSelectedUser("");
   };
-
   const AssignTaskToMe = (e) => {
-    let id = getTaskById.TaskId;
+    // dispatch(taskReportActions.setLoader(true));
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: user.EmailID,
-        userType: 4,
-        invitee: user.EmailID,
-        isApproved: 0,
-        userDetails: userDetails,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            assign_to: user.EmailID,
+            assigned_by: user.EmailID,
+          },
+        ],
       })
     );
     setSelectedUser("");
@@ -2308,15 +2444,15 @@ function RightSideGrid({
   };
 
   const approvTaskToMe = (e) => {
-    let id = getTaskById.TaskId;
     dispatch(
       taskReportActions.taskAssignByTaskID({
-        taskID: id,
-        email: user.EmailID,
-        userType: 5,
-        invitee: user.EmailID,
-        isApproved: 0,
-        loginID: userDetails.UserID,
+        task_details: [
+          {
+            name: currentOpenedTask.task_name,
+            approver: user.EmailID,
+            assigned_by: user.EmailID,
+          },
+        ],
       })
     );
   };
@@ -2331,25 +2467,25 @@ function RightSideGrid({
   };
 
   const _handleApproveTaskOnCheckBoxClick = (taskId) => {
-    dispatch(
-      taskReportActions.taskAssignByTaskID({
-        taskID: taskId,
-        isApproved: 1, //Approve Task
-        userType: 1,
-        email: "",
-        invitee: "",
-        loginID: userDetails.UserID,
-      })
-    );
-    setTimeout(() => {
-      dispatch(
-        taskReportActions.taskReportRequest({
-          entityid: "",
-          userID: userDetails.UserID,
-          usertype: userDetails.UserType,
-        })
-      );
-    }, 1000);
+    // dispatch(
+    //   taskReportActions.taskAssignByTaskID({
+    //     taskID: taskId,
+    //     isApproved: 1, //Approve Task
+    //     userType: 1,
+    //     email: "",
+    //     invitee: "",
+    //     loginID: userDetails.UserID,
+    //   })
+    // );
+    // setTimeout(() => {
+    //   dispatch(
+    //     taskReportActions.taskReportRequest({
+    //       entityid: "",
+    //       userID: userDetails.UserID,
+    //       usertype: userDetails.UserType,
+    //     })
+    //   );
+    // }, 1000);
   };
 
   const closeMobileSidebar = () => {
@@ -2382,9 +2518,11 @@ function RightSideGrid({
     var dateObj = new Date(date);
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (dateObj.toLocaleDateString() == today.toLocaleDateString()) {
+    if (dateObj.toLocaleDateString() === today.toLocaleDateString()) {
       return "Today";
-    } else if (dateObj.toLocaleDateString() == yesterday.toLocaleDateString()) {
+    } else if (
+      dateObj.toLocaleDateString() === yesterday.toLocaleDateString()
+    ) {
       return "Yesterday";
     } else {
       return flag === 1
@@ -2396,27 +2534,24 @@ function RightSideGrid({
   const handleSearch = (searchText) => {
     setSearchValue(searchText);
     let tempArr = [];
-    if (searchText != "") {
-      taskList &&
-        taskList.forEach((obj1) => {
-          obj1.Details.forEach((obj2) => {
-            if (obj2.TaskName !== "Norec") {
+    if (searchText !== "") {
+      let searchQuery = searchText.toLowerCase();
+      listTaskData &&
+        listTaskData.length !== 0 &&
+        listTaskData.forEach((tasksByStatus) => {
+          tasksByStatus.tasks.forEach((task) => {
+            if (task.subject !== "" && task.subject !== "Norec") {
               if (
-                obj2.TaskName.toLowerCase().includes(
-                  searchText.toLowerCase()
-                ) ||
-                obj2.EntityName.toLowerCase().includes(
-                  searchText.toLowerCase()
-                ) ||
-                obj2.LicenseCode.toLowerCase().includes(
-                  searchText.toLowerCase()
-                ) ||
-                obj2.AssignedName.toLowerCase().includes(
-                  searchText.toLowerCase()
-                )
+                task?.subject?.toLowerCase().includes(searchQuery) ||
+                task?.customer_name?.toLowerCase().includes(searchQuery) ||
+                task?.license?.toLowerCase().includes(searchQuery) ||
+                task?.assign_to_name?.toLowerCase().includes(searchQuery)
               ) {
-                let task = { Status: obj1.Status, data: obj2 };
-                tempArr.push(task);
+                let searchResults = {
+                  status: tasksByStatus.status,
+                  data: task,
+                };
+                tempArr.push(searchResults);
               }
             }
           });
@@ -2436,9 +2571,12 @@ function RightSideGrid({
             userDetails && userDetails.UserType === 6 ? "none" : "auto"
           }`,
         }}
-        onClick={(e) => getSelectTaskDetails(task)}
+        onClick={(e) => {
+          getSelectTaskDetails(task);
+          // setIsTaskListOpen(true);
+        }}
       >
-        {listType === 1 && Status === "overdue" && (
+        {listType === 1 && Status === "Overdue" && (
           <div className="redWidth">
             <div className="redLine">
               {" "}
@@ -2454,213 +2592,192 @@ function RightSideGrid({
             className="all-companies-sub-title"
             onClick={(e) => getSelectTaskDetails(task)}
           >
-            {/* <img id={task.TaskId} style={{ cursor: "pointer" }}
-              src={task.Status === "Approved" ? completeTaskIcon : sidebarCheckIcon}
-              alt="sidebar Check Icon"
-              onClick={() => _handleApproveTaskOnCheckBoxClick(task.TaskId)} /> */}
             <div
               onClick={(e) => getSelectTaskDetails(task)}
               style={{ cursor: "pointer", display: "flex" }}
             >
               <div class="graybox-left">
-                <span class="all-companies-nse-label">{task.LicenseCode}</span>
+                <span class="all-companies-nse-label">{task.license}</span>
               </div>
               <span className="pink-label-title-right">
                 <div
                   className="overdue-title"
                   onClick={(e) => getSelectTaskDetails(task)}
                 >
-                  {task.TaskName}
+                  {task.subject}
                 </div>
                 <div
                   className={
-                    Status === "overdue"
-                      ? "red-week d-block d-sm-none"
-                      : "black-week d-block d-sm-none"
+                    Status === "Overdue"
+                      ? "red-week d-block d-md-none"
+                      : "black-week d-block d-md-none"
                   }
                   style={{ cursor: "pointer" }}
                   onClick={(e) => getSelectTaskDetails(task)}
                 >
-                  <div className="d-block d-sm-none">
-                    {getDayDate(task.EndDate, 2)}
+                  <div className="d-block d-md-none">
+                    {getDayDate(task.due_date, 2)}
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    {task && task.Status && task.Status !== "Assigned" && (
+                    {/* {task && task.status && task.status !== "Assigned" && (
                       <span
                         className="pink-label-text "
                         style={{
                           backgroundColor:
-                            task && task.Status
-                              ? task.Status === "Assign"
+                            task && task.status
+                              ? task.status === "Not Assigned"
                                 ? "#fcf3cd"
-                                : // task.Status === "Completed By User"  ? "#cdfcd8 " :
-                                task.Status === "Completed By User"
-                                ? // ? task.EndDate < today
-                                  moment(task.ActualTaskEndDate).isBefore(today)
+                                : task.status === "Approval Pending"
+                                ? moment(task.deadline_date).isBefore(today)
                                   ? "#cdfcd8"
                                   : "#ffefea"
-                                : task.Status === "Approved"
+                                : task.status === "Approved"
                                 ? "#cdfcd8"
-                                : task.Status === "Assigned"
+                                : task.status === "Not Assigned"
                                 ? "#ffefea"
-                                : task.Status === "Request Rejected"
+                                : task.status === "Rejected"
                                 ? "#ffefea"
                                 : "#d2fccd"
                               : "#d2fccd",
                           color:
-                            task && task.Status
-                              ? task.Status === "Completed By User"
-                                ? // ? task.EndDate < today
-                                  moment(task.ActualTaskEndDate).isBefore(today)
+                            task && task.status
+                              ? task.status === "Approval Pending"
+                                ? moment(task.deadline_date).isBefore(today)
                                   ? "#7fba7a"
                                   : "#ff5f31"
-                                : // task.Status === "Completed By User" ? "#7fba7a" :
-                                task.Status === "Approved"
+                                : task.status === "Approved"
                                 ? "#7fba7a"
-                                : task.Status === "Assigned"
+                                : task.status === "Assigned"
                                 ? "#f8c102"
-                                : task.Status === "Assign"
+                                : task.status === "Not Assigned"
                                 ? "#f8c102"
-                                : task.Status === "Request Rejected"
+                                : task.status === "Rejected"
                                 ? "#ff5f31"
                                 : ""
                               : "#fcf3cd",
                         }}
                       >
-                        {task.Status && task.Status === "Completed By User"
-                          ? // ? task.EndDate < today
-                            moment(task.ActualTaskEndDate).isBefore(today)
+                        {task.status && task.status === "Approval Pending"
+                          ? moment(task.deadline_date).isBefore(today)
                             ? "Not reviewed"
                             : "Approval Pending"
-                          : task.Status === "Assign"
+                          : task.status === "Not Assigned"
                           ? "Assign Task"
-                          : task.Status === "Assigned"
+                          : task.status === "Assigned"
                           ? "Task Assigned"
-                          : task.Status === "Approved"
+                          : task.status === "Approved"
                           ? "Task Approved"
-                          : task.Status === "Request Rejected"
+                          : task.status === "Rejected"
                           ? "Task Rejected"
                           : ""}
                       </span>
-                    )}
+                    )} */}
                   </div>
                 </div>
-                {task.Status !== "Assigned" && (
+
+                {/* {task.status && (
                   <p
-                    className="pink-label-text d-none d-sm-block"
+                    className="pink-label-text d-none d-md-block"
                     style={{
                       backgroundColor:
-                        task && task.Status
-                          ? task.Status === "Assign"
+                        task && task.status
+                          ? task.status === "Not Assigned"
                             ? "#fcf3cd"
-                            : // task.Status === "Completed By User"  ? "#cdfcd8 " :
-                            task.Status === "Completed By User"
-                            ? moment(task.ActualTaskEndDate).isBefore(today)
-                              ? // ? task.EndDate < today
-                                "#cdfcd8"
+                            : task.status === "Approval Pending"
+                            ? moment(task.deadline_date).isBefore(today)
+                              ? "#cdfcd8"
                               : "#ffefea"
-                            : task.Status === "Approved"
+                            : task.status === "Approved"
                             ? "#cdfcd8"
-                            : task.Status === "Assigned"
+                            : task.status === "Assigned"
                             ? "#ffefea"
-                            : task.Status === "Request Rejected"
+                            : task.status === "Rejected"
                             ? "#ffefea"
                             : "#d2fccd"
                           : "#d2fccd",
                       color:
-                        task && task.Status
-                          ? task.Status === "Completed By User"
-                            ? moment(task.ActualTaskEndDate).isBefore(today)
-                              ? // ? task.EndDate < today
-                                "#7fba7a"
+                        task && task.status
+                          ? task.status === "Approval Pending"
+                            ? moment(task.deadline_date).isBefore(today)
+                              ? "#7fba7a"
                               : "#ff5f31"
-                            : // task.Status === "Completed By User" ? "#7fba7a" :
-                            task.Status === "Approved"
+                            : task.status === "Approved"
                             ? "#7fba7a"
-                            : task.Status === "Assigned"
+                            : task.status === "Assigned"
                             ? "#f8c102"
-                            : task.Status === "Assign"
+                            : task.status === "Not Assigned"
                             ? "#f8c102"
-                            : task.Status === "Request Rejected"
+                            : task.status === "Rejected"
                             ? "#ff5f31"
                             : ""
                           : "#fcf3cd",
                     }}
                   >
-                    {task.Status && task.Status === "Completed By User"
-                      ? moment(task.ActualTaskEndDate).isBefore(today)
+                    {task.status && task.status === "Approval Pending"
+                      ? moment(task.deadline_date).isBefore(today)
                         ? "Not reviewed"
                         : "Approval Pending"
-                      : task.Status === "Assign"
+                      : task.status === "Not Assigned"
                       ? "Assign Task"
-                      : task.Status === "Assigned"
+                      : task.status === "Assigned"
                       ? "Task Assigned"
-                      : task.Status === "Approved"
+                      : task.status === "Approved"
                       ? "Task Approved"
-                      : task.Status === "Request Rejected"
+                      : task.status === "Rejected"
                       ? "Task Rejected"
                       : ""}
                   </p>
-                )}
+                )} */}
+                <TaskStatusBox status={task.status} />
               </span>
             </div>
           </div>
         </div>
-        <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
+        <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-md-block">
           <div
             className="circle-front-text"
             style={{ width: "fit-content", cursor: "pointer" }}
             value={task.TaskId}
             onClick={(e) => getSelectTaskDetails(task)}
           >
-            {task.EntityName}
+            {task.customer_name}
           </div>
         </div>
         <div
-          className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block"
+          className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-md-block"
           style={{ cursor: "pointer" }}
           onClick={(e) => getSelectTaskDetails(task)}
         >
-          {task.AssignedTo != 0 ? (
+          {task.assign_to !== null ? (
             <div className="d-flex">
               {userDetails.UserType === 4 ? (
-                task.ApproverName === "Assign" ? null : (
-                  <div className="circle-name d-none d-sm-block">
+                task.approver_name === null ? null : (
+                  <div className="circle-name d-none d-md-block">
                     <div className="circle-text">
                       {userDetails.UserType === 4 &&
-                        getInitials(task.ApproverName)}
+                        getInitials(task.approver_name)}
                     </div>
                   </div>
                 )
               ) : (
-                <div className="circle-name d-none d-sm-block">
+                <div className="circle-name d-none d-md-block">
                   <div className="circle-text">
-                    {getInitials(task.AssignedName)}
+                    {getInitials(task?.assign_to_name)}
                   </div>
                 </div>
               )}
-              {/* // <div className="circle-name d-none d-sm-block">
-              //   <div className="circle-text">
-              //     {
-              //        userDetails.UserType === 4 ?
-              //        getInitials(task.ApproverName === "Assign" ? "no approver" : task.ApproverName)
-              //        :
-              //         getInitials(task.AssignedName)
-              //     }
-              //   </div>
-              // </div> */}
               {userDetails.UserType === 4 ? (
-                <div className="circle-front-text d-none d-sm-block">
-                  {task.ApproverName === "Assign"
+                <div className="circle-front-text d-none d-md-block">
+                  {task.approver_name === null
                     ? "No Approver"
-                    : task.ApproverName}
+                    : task.approver_name}
                 </div>
               ) : (
-                <div className="circle-front-text d-none d-sm-block">
-                  {_getAssignedName(task.AssignedName)}
+                <div className="circle-front-text d-none d-md-block">
+                  {task.assign_to_name && _getAssignedName(task.assign_to_name)}
                 </div>
               )}
             </div>
-          ) : (
+          ) : userDetails.UserType === 3 ? (
             <div>
               <div
                 className="circle-front-text NoStatus"
@@ -2670,7 +2787,7 @@ function RightSideGrid({
                 <img src={assignIconCircle} alt="" /> ASSIGN
               </div>
             </div>
-          )}
+          ) : null}
         </div>
         <div className="col-2">
           <div className="align-right">
@@ -2678,13 +2795,13 @@ function RightSideGrid({
               <div
                 className={
                   Status === "overdue"
-                    ? "red-week d-none d-sm-block"
-                    : "black-week d-none d-sm-block"
+                    ? "red-week d-none d-md-block"
+                    : "black-week d-none d-md-block"
                 }
                 style={{ cursor: "pointer" }}
                 onClick={(e) => getSelectTaskDetails(task)}
               >
-                {getDayDate(task.EndDate, 1)}
+                {getDayDate(task.due_date, 1)}
               </div>
               <div
                 className="right-arrow-week text-right-grid"
@@ -2693,14 +2810,14 @@ function RightSideGrid({
               >
                 {
                   <img
-                    className="d-none d-sm-block"
+                    className="d-none d-md-block"
                     src={keyboardArrowRightBlack}
                     alt="Right Arrow"
                   />
                 }
-                {task.AssignedTo !== 0 && (
+                {task.assign_to !== 0 && (
                   <img
-                    className="d-block d-sm-none"
+                    className="d-block d-md-none"
                     src={keyboardArrowRightBlack}
                     alt="Right Arrow"
                   />
@@ -2709,31 +2826,28 @@ function RightSideGrid({
                   <div className="toolTip-input">
                     <div className="tooltiptext1 mobDisplaynone">
                       <span className="font-normal-text1">
-                        {_getAssignedName(task.AssignedName)}
+                        {_getAssignedName(task.assign_to_name)}
                       </span>
                     </div>
                   </div>
                 )}
-                {
-                  // task.AssignedTo > 0 &&
-                  task.AssignedTo === 0 && (
-                    <div className="only-mobile-assign-add d-block d-sm-none">
-                      <div
-                        className="assign-user-icon"
-                        onMouseOver={() =>
-                          setShowUserToolTip(`Tooltip${task.TaskId}`)
-                        }
-                        onMouseOut={() => setShowUserToolTip("")}
-                      >
-                        <img
-                          src={assignIconCircle}
-                          className="d-block d-sm-none"
-                          alt="Assign Circle"
-                        />
-                      </div>
+                {task.assign_to === 0 && (
+                  <div className="only-mobile-assign-add d-block d-md-none">
+                    <div
+                      className="assign-user-icon"
+                      onMouseOver={() =>
+                        setShowUserToolTip(`Tooltip${task.TaskId}`)
+                      }
+                      onMouseOut={() => setShowUserToolTip("")}
+                    >
+                      <img
+                        src={assignIconCircle}
+                        className="d-block d-md-none"
+                        alt="Assign Circle"
+                      />
                     </div>
-                  )
-                }
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -2754,35 +2868,30 @@ function RightSideGrid({
     return (
       <div
         className={
-          getTaskById && task.TaskId == getTaskById.TaskId
+          currentOpenedTask && task.task_name === currentOpenedTask.task_name
             ? " row active-action-card-sidebar "
             : "row action-card-sidebar"
         }
-        onClick={(e) => getSelectTaskDetails(task)}
+        onClick={(e) => setCurrentTask(task)}
         style={{ cursor: "pointer" }}
       >
         <div className="col-10">
           <div className="all-companies-sub-title">
-            {/* <img id={task.TaskId} src={task.Status === "Approved" ? completeTaskIcon : sidebarCheckIcon}
-              alt="sidebar Check Icon" onClick={() => _handleApproveTaskOnCheckBoxClick(task.TaskId)} /> */}
-
             <div className="graybox-left">
-              <span className="all-companies-nse-label">
-                {task.LicenseCode}
-              </span>{" "}
+              <span className="all-companies-nse-label">{task.license}</span>{" "}
             </div>
             <div
               className="pink-label-title-right"
-              onClick={(e) => getSelectTaskDetails(task)}
+              onClick={(e) => setCurrentTask(task)}
             >
               <div className="overdue-title-sidebar-title pl-1">
-                {task.TaskName}
+                {task.subject}
               </div>
               <div
                 className="red-week  date-font pl-1"
                 style={{ cursor: "pointer" }}
               >
-                {getDayDate(task.EndDate, 2)}
+                {getDayDate(task.due_date, 2)}
               </div>
             </div>
           </div>
@@ -2793,7 +2902,7 @@ function RightSideGrid({
               <div
                 className="right-arrow-week text-right-grid"
                 style={{ cursor: "pointer" }}
-                onClick={(e) => getSelectTaskDetails(task)}
+                onClick={(e) => setCurrentTask(task)}
               >
                 <img
                   className=""
@@ -2834,26 +2943,23 @@ function RightSideGrid({
   };
 
   const fetchMothTaskOnTrack = () => {
-    const payload = {
-      entityid: "0",
-      userID: userDetails.UserID,
-      usertype: userDetails.UserType,
-    };
-    axios
-      .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
-      .then((response) => {
-        if (response && response.data && response.data.length > 0) {
-          let completedtask = response.data[0].CompletedTask;
-          setCompletedTask(completedtask);
-          let scheduledTask = response.data[0].SchedulededTask;
-          setScheduledTask(scheduledTask);
-        }
-      })
-      .catch((error) => {});
+    // const payload = {
+    //   entityid: "0",
+    //   userID: userDetails.UserID,
+    //   usertype: userDetails.UserType,
+    // };
+    // axios
+    //   .post(`${BACKEND_BASE_URL}/api/DashBoardAnalytics`, payload)
+    //   .then((response) => {
+    //     if (response && response.data && response.data.length > 0) {
+    //       let completedtask = response.data[0].CompletedTask;
+    //       setCompletedTask(completedtask);
+    //       let scheduledTask = response.data[0].SchedulededTask;
+    //       setScheduledTask(scheduledTask);
+    //     }
+    //   })
+    //   .catch((error) => {});
   };
-
-  // console.log(visibleRejectTaskModal);
-
   function handleFocus() {
     if (isMobile) {
       setsearchBoxShowMobile(true);
@@ -2915,7 +3021,8 @@ function RightSideGrid({
   return (
     <>
       {visibleRejectTaskModal && renderRejectTaskModal()}
-      {isTaskModalOpen && _renderTaskViewModal()}
+      {isTaskModalOpen && TaskViewModal()}
+      <BackDrop isLoading={isLoading} />
       {!isMobile && (
         <div id="drawerParent" className="">
           <div id="drawerChild" className="sideBarFixed right-fix-width">
@@ -3088,14 +3195,14 @@ function RightSideGrid({
             <div id="sideBarParent" className="">
               <div id="sideBarChild" className="leftSideBarFixed">
                 <MobileLeftSidebar
-                  className="d-block d-sm-none"
+                  className="d-block d-md-none"
                   close={() => closeMobileSidebar()}
                 />
               </div>
             </div>
           )}
 
-          <div className="mobile-head d-block d-sm-none">
+          <div className="mobile-head d-block d-md-none">
             <div className="d-flex">
               <div
                 className="w-25"
@@ -3134,10 +3241,9 @@ function RightSideGrid({
                         />
                       </div>
                       <div className="float-left">
-                        <div className="this-Month d-none d-sm-block">
-                          Completed
+                        <div className="this-Month d-none d-md-block">
+                          Approval Pending
                         </div>
-                        {/* <div className="this-Month d-block d-sm-none">Completed</div> */}
                         <div className="count-total">
                           {completedTask !== "Norec" ? completedTask : "0"}
                         </div>
@@ -3154,10 +3260,9 @@ function RightSideGrid({
                         />
                       </div>
                       <div className="float-left">
-                        <div className="this-Month d-none d-sm-block">
+                        <div className="this-Month d-none d-md-block">
                           Scheduled
                         </div>
-                        {/* <div className="this-Month d-block d-sm-none">Scheduled</div> */}
                         <div className="count-total">
                           {scheduledTask !== "Norec" ? scheduledTask : "0"}
                         </div>
@@ -3169,48 +3274,25 @@ function RightSideGrid({
             </div>
           )}
           <div className="d-flex mobile-height-dasboardView">
-            {/*   <div className="companies-sub-title w-25 d-none d-sm-block">
+            <div className="companies-sub-title w-25 d-none d-md-block">
               Tasks
             </div>
-            {!searchBoxShowMobile && (
-              <>
-              <div className="companies-sub-title  d-block d-sm-none" style={{width:"32%",color:"#9999"}}>
-                <Link style={{color:"#9999",textDecoration: "none"}} to="/dashboard-view">Overview</Link>
-              </div>
-              <div className="companies-sub-title w-25 d-block d-sm-none" style={{width:"32%",color:"#2c2738"}}>
-                Tasks
-              </div>
-            </>
-            )} */}
-            <div className="companies-sub-title w-25 d-none d-sm-block">
-              Tasks
-            </div>
-            {/* {!searchBoxShowMobile && ( */}
             {!searchBoxShowMobile && (
               <div className="w-75 d-flex pl-0">
-                {/* {userDetails.UserType===3 &&(<div className="overview-mobile d-block d-sm-none">
-                  <Link style={{color:"rgb(44 39 56 / 50%)",textDecoration: "none"}} to="/dashboard-view" 
-                    onClick={() => onMenuClick("dashboard")}
-                  >Overview</Link>
-                </div>)} */}
-                <div className="companies-sub-title d-block d-sm-none">
+                <div className="companies-sub-title d-block d-md-none">
                   Tasks
                 </div>
               </div>
             )}
 
-            <div className="w-75 d-none d-sm-block">
+            <div className="w-75 d-none d-md-block">
               {!searchBoxShow && (
-                <div
-                  className="only-search-icon"
-                  // onClick={() => setsearchBoxShow(true)}
-                  onClick={() => handleFocus()}
-                >
+                <div className="only-search-icon" onClick={() => handleFocus()}>
                   <img src={searchIcon} alt="sidebar Check Icon" />
                 </div>
               )}
               {searchBoxShow && (
-                <div className="searchBox d-none d-sm-block" ref={innerSearch}>
+                <div className="searchBox d-none d-md-block" ref={innerSearch}>
                   <div className="input-group form-group">
                     <img
                       className="IconGray"
@@ -3245,16 +3327,12 @@ function RightSideGrid({
             <div
               className={
                 searchBoxShowMobile
-                  ? "col-12 d-block d-sm-none"
-                  : "w-25 d-block d-sm-none mobile"
+                  ? "col-12 d-block d-md-none"
+                  : "w-25 d-block d-md-none mobile"
               }
             >
               {!searchBoxShowMobile && (
-                <div
-                  className="only-search-icon"
-                  // onClick={() => setsearchBoxShowMobile(true)}
-                  onClick={() => handleFocus()}
-                >
+                <div className="only-search-icon" onClick={() => handleFocus()}>
                   <img src={searchIcon} alt="sidebar Check Icon" />
                 </div>
               )}
@@ -3294,7 +3372,7 @@ function RightSideGrid({
           </div>
 
           <div className="task-details-file-grid task-details-file-grid-dashboard custimDesignTask">
-            {searchValue != "" && (
+            {searchValue !== "" && (
               <div className="file-title">Search Results: </div>
             )}
             {searchValue === "" && (
@@ -3346,6 +3424,7 @@ function RightSideGrid({
                   onClick={(e) => {
                     setDisplayTask("2");
                     setTaskListDisplay("0");
+                    setCurrentBoardViewBy("status");
                   }}
                 >
                   Board
@@ -3362,8 +3441,8 @@ function RightSideGrid({
               (searchBoxShow === false &&
                 displayTask === "2" &&
                 !isMobile)) && (
-              <span className="take-action d-none d-sm-block">
-                <ul className="pull-right" style={{ float: "right" }}>
+              <span className="take-action d-none d-md-block view-by__status-box">
+                <ul className="pull-right my-2" style={{ float: "right" }}>
                   <span
                     style={{ fontSize: "10px", backgroundColor: "transparent" }}
                   >
@@ -3718,7 +3797,7 @@ function RightSideGrid({
               }
             }}
           >
-            {searchValue != "" && (
+            {searchValue !== "" && (
               <div
                 className="take-action"
                 style={{
@@ -3729,7 +3808,7 @@ function RightSideGrid({
               >
                 {searchData.length > 0 &&
                   searchData.map((task) => {
-                    return <>{renderTaskList(task.data, task.Status, 2)}</>;
+                    return <>{renderTaskList(task.data, task.status, 2)}</>;
                   })}
               </div>
             )}
@@ -3738,13 +3817,15 @@ function RightSideGrid({
               listTaskData &&
               listTaskData.length > 0 &&
               listTaskData.map((item, index) => {
+                if (expandedFlags.includes(index)) {
+                }
                 return (
                   <>
                     <div className="take-action">
                       <div className="task-list-grid">
-                        {item.Status.trim() === "overdue" && (
+                        {item.status.trim() === "Overdue" && (
                           <div
-                            className="action-title upcoming-btn"
+                            className="action-title upcoming-btn mt-3"
                             style={{
                               color: "#f22727",
                               fontWeight: "500",
@@ -3760,14 +3841,9 @@ function RightSideGrid({
                           >
                             {"Overdue"}{" "}
                             <p className="red-circle-overide">
-                              {item.Details.length}
+                              {item.tasks.length}
                             </p>
-                            {/* <img
-                              className="redArrowTop"
-                              src={redArrowTop}
-                              alt="redArrowTop"
-                            /> */}
-                            {!expandedFlags.includes(index) ? (
+                            {expandedFlags.includes(index) ? (
                               <img
                                 src={redArrowTop}
                                 className="redArrowTop arrowDown"
@@ -3795,7 +3871,7 @@ function RightSideGrid({
                             )}
                           </div>
                         )}
-                        {item.Status.trim() === "Pending" && (
+                        {item.status.trim() === "Take Action" && (
                           <div
                             className="upcoming-btn"
                             style={{ cursor: "pointer", width: "fit-content" }}
@@ -3812,7 +3888,7 @@ function RightSideGrid({
                               {"Take Action"}
                               <span className="black-circle">
                                 <p className="black-circle-text">
-                                  {item.Details.length}
+                                  {item.tasks.length}
                                 </p>
                               </span>
                               {!expandedFlags.includes(index) ? (
@@ -3831,8 +3907,8 @@ function RightSideGrid({
                             </div>
                           </div>
                         )}
-                        {(item.Status.trim() === "Upcoming" ||
-                          item.Status.trim() === "Completed") && (
+                        {(item.status.trim() === "Upcoming" ||
+                          item.status.trim() === "Completed") && (
                           <div
                             className="upcoming-btn"
                             style={{ cursor: "pointer", width: "fit-content" }}
@@ -3845,23 +3921,23 @@ function RightSideGrid({
                             <div
                               style={{ cursor: "pointer" }}
                               className={
-                                item.Status.trim() === "Upcoming"
+                                item.status.trim() === "Upcoming"
                                   ? "upcoming-title"
                                   : "complete-title"
                               }
                             >
-                              {item.Status.trim() === "Upcoming"
+                              {item.status.trim() === "Upcoming"
                                 ? "Upcoming"
                                 : "Completed"}
                               <span
                                 className={
-                                  item.Status.trim() === "Upcoming"
+                                  item.status.trim() === "Upcoming"
                                     ? "black-circle"
                                     : "green-circle"
                                 }
                               >
                                 <p className="black-circle-text">
-                                  {item.Details.length}
+                                  {item.tasks.length}
                                 </p>
                               </span>
                               {expandedFlags.includes(index) ? (
@@ -3880,86 +3956,69 @@ function RightSideGrid({
                             </div>
                           </div>
                         )}
-                        {/* {item.Status.trim() === "overdue" &&
-                          item.Details.slice(
-                            0,
-                            rowCount[item.Status.trim()]
-                          ).map((task) => {
-                            return (
-                              <>{renderTaskList(task, item.Status.trim(), 1)}</>
-                            )
-                          })} */}
-                        {
-                          // item.Status.trim() === "overdue" &&
-                          // item.Status.trim() === "Pending"
-                          //   ? true
-                          //   :
-                          (item.Status.trim() === "Upcoming"
-                            ? expandedFlags.includes(index)
-                            : item.Status.trim() === "Completed"
-                            ? expandedFlags.includes(index)
-                            : item.Status.trim() === "overdue"
-                            ? !expandedFlags.includes(index)
-                            : item.Status.trim() === "Pending"
-                            ? !expandedFlags.includes(index)
-                            : expandedFlags.includes(index)) && (
-                            <>
-                              {item.Details.slice(
-                                0,
-                                rowCount[item.Status.trim()]
-                              ).map((task) => {
+                        {(item.status.trim() === "Upcoming"
+                          ? expandedFlags.includes(index)
+                          : item.status.trim() === "Completed"
+                          ? expandedFlags.includes(index)
+                          : item.status.trim() === "Overdue"
+                          ? expandedFlags.includes(index)
+                          : item.status.trim() === "Take Action"
+                          ? !expandedFlags.includes(index)
+                          : expandedFlags.includes(index)) && (
+                          <>
+                            {item.tasks
+                              .slice(0, rowCount[item.status.trim()])
+                              .map((task) => {
                                 return (
                                   <>
                                     {renderTaskList(
                                       task,
-                                      item.Status.trim(),
+                                      item.status.trim(),
                                       1
                                     )}
                                   </>
                                 );
                               })}
-                              <div>
-                                {item.Details.length > 3 && (
-                                  <>
-                                    {rowCount[item.Status.trim()] > 3 && (
-                                      <div
-                                        onClick={() =>
-                                          showLessMore(item.Status, 3)
-                                        }
-                                        className="viewAll showLess"
-                                      >
-                                        Show Less{" "}
-                                        <img
-                                          src={viewAllArowTop}
-                                          alt="Show Less"
-                                        />
-                                      </div>
-                                    )}
-                                    {rowCount[item.Status.trim()] === 3 && (
-                                      <div
-                                        onClick={() =>
-                                          showLessMore(
-                                            item.Status,
-                                            item.Details.length
-                                          )
-                                        }
-                                        className="viewAll"
-                                        style={{ width: "fit-content" }}
-                                      >
-                                        View All ({item.Details.length - 3}{" "}
-                                        MORE)
-                                        <img
-                                          src={viewAllArow}
-                                          alt="view All Arow"
-                                        />
-                                      </div>
-                                    )}
-                                  </>
-                                )}
-                              </div>
-                            </>
-                          )
-                        }
+                            <div>
+                              {item.tasks.length > 3 && (
+                                <>
+                                  {rowCount[item.status.trim()] > 3 && (
+                                    <div
+                                      onClick={() =>
+                                        showLessMore(item.status, 3)
+                                      }
+                                      className="viewAll showLess"
+                                    >
+                                      Show Less{" "}
+                                      <img
+                                        src={viewAllArowTop}
+                                        alt="Show Less"
+                                      />
+                                    </div>
+                                  )}
+                                  {rowCount[item.status.trim()] === 3 && (
+                                    <div
+                                      onClick={() =>
+                                        showLessMore(
+                                          item.status,
+                                          item.tasks.length
+                                        )
+                                      }
+                                      className="viewAll"
+                                      style={{ width: "fit-content" }}
+                                    >
+                                      View All ({item.tasks.length - 3} MORE)
+                                      <img
+                                        src={viewAllArow}
+                                        alt="view All Arow"
+                                      />
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </>
@@ -3967,13 +4026,25 @@ function RightSideGrid({
               })}
 
             {searchValue === "" && taskListDisplay === "2" && (
-              <CompanyTaskList user={user} sideBarTaskList={false} />
+              <CompanyTaskList
+                user={user}
+                sideBarTaskList={false}
+                currentOpenedTask={currentOpenedTask}
+              />
             )}
             {searchValue === "" && taskListDisplay === "3" && (
-              <LicenseTaskList user={user} sideBarTaskList={false} />
+              <LicenseTaskList
+                user={user}
+                sideBarTaskList={false}
+                currentOpenedTask={currentOpenedTask}
+              />
             )}
             {searchValue === "" && taskListDisplay === "4" && (
-              <AssigneList user={user} sideBarTaskList={false} />
+              <AssigneList
+                user={user}
+                sideBarTaskList={false}
+                currentOpenedTask={currentOpenedTask}
+              />
             )}
 
             {displayTask === "2" && searchValue === "" && (
@@ -4054,7 +4125,7 @@ function RightSideGrid({
 
       {isTaskListOpen && (
         <div className="row ">
-          <div className="col-3 new-side-bar d-none d-sm-block">
+          <div className="col-3 new-side-bar d-none d-md-block">
             <div
               id="test"
               className={
@@ -4064,7 +4135,7 @@ function RightSideGrid({
               }
             >
               <div className="all-companies-task-grid-2 inside-padding-sidebar">
-                <div className="all-companies-title-sidebar w-100 d-none d-sm-block">
+                <div className="all-companies-title-sidebar w-100 d-none d-md-block">
                   {user.UserType === 4 && (
                     <div className="right-side-top-new-strip">
                       <div className="w-100 mb-3">
@@ -4083,7 +4154,9 @@ function RightSideGrid({
                                 />
                               </div>
                               <div className="float-left">
-                                <div className="this-Month ">Completed</div>
+                                <div className="this-Month ">
+                                  Approval Pending
+                                </div>
                                 <div className="count-total">
                                   {completedTask !== "Norec"
                                     ? completedTask
@@ -4120,7 +4193,6 @@ function RightSideGrid({
                 {!searchBoxShow && (
                   <div
                     className="only-search-icon"
-                    // onClick={() => setsearchBoxShow(true)}
                     onClick={() => handleFocus()}
                   >
                     <img src={searchIcon} alt="sidebar Check Icon" />
@@ -4172,16 +4244,14 @@ function RightSideGrid({
                 )}
                 {!searchBoxShow && (
                   <>
-                    <div className="all-companies-title-sidebar">
-                      {/* All Companies */}
-                    </div>
+                    <div className="all-companies-title-sidebar"></div>
                     <div className="companies-sub-title-sidebar">Tasks</div>
                   </>
                 )}
                 <div className="task-details-file-grid-sidebar">
                   <div className="row">
                     <div className="col">
-                      {searchValue != "" && (
+                      {searchValue !== "" && (
                         <div className="file-title">Search Results: </div>
                       )}
                       {searchValue === "" && (
@@ -4223,6 +4293,7 @@ function RightSideGrid({
                               setDisplayTask("2");
                               setTaskListDisplay("0");
                               setIsTaskListOpen(false);
+                              setCurrentBoardViewBy("status");
                             }}
                           >
                             Board
@@ -4308,33 +4379,35 @@ function RightSideGrid({
                         >
                           Company
                         </span>
-                        <span
-                          className={
-                            taskListDisplay === "4"
-                              ? "activebuttonListView"
-                              : "inactivebuttonListView"
-                          }
-                          style={{
-                            fontSize: "9px",
-                            marginLeft: "5px",
-                            paddingLeft: "5px",
-                            paddingRight: "5px",
-                            cursor: "pointer",
-                          }}
-                          onClick={(e) => {
-                            setTaskListDisplay("4");
-                            setDisplayTask("1");
-                          }}
-                        >
-                          Team
-                        </span>
+                        {userDetails && userDetails.UserType !== 4 && (
+                          <span
+                            className={
+                              taskListDisplay === "4"
+                                ? "activebuttonListView"
+                                : "inactivebuttonListView"
+                            }
+                            style={{
+                              fontSize: "9px",
+                              marginLeft: "5px",
+                              paddingLeft: "5px",
+                              paddingRight: "5px",
+                              cursor: "pointer",
+                            }}
+                            onClick={(e) => {
+                              setTaskListDisplay("4");
+                              setDisplayTask("1");
+                            }}
+                          >
+                            Team
+                          </span>
+                        )}
                       </ul>
                     </span>
                   </div>
                 )}
 
                 <div className="take-action">
-                  {searchValue != "" && (
+                  {searchValue !== "" && (
                     <div
                       className="take-action"
                       style={{
@@ -4347,7 +4420,7 @@ function RightSideGrid({
                         searchData.map((task) => {
                           return (
                             <>
-                              {renderSidebarTaskList(task.data, task.Status, 2)}
+                              {renderSidebarTaskList(task.data, task.status, 2)}
                             </>
                           );
                         })}
@@ -4355,13 +4428,13 @@ function RightSideGrid({
                   )}
                   {searchValue === "" &&
                     taskListDisplay === "1" &&
-                    taskData &&
-                    taskData.length > 0 &&
-                    taskData.map((item, index) => {
+                    listTaskData &&
+                    listTaskData.length > 0 &&
+                    listTaskData.map((item, index) => {
                       return (
                         <>
                           <div className="task-list-grid">
-                            {item.Status.trim() === "overdue" && (
+                            {item.status.trim() === "Overdue" && (
                               <div
                                 onClick={() => {
                                   expandedFlags.includes(index)
@@ -4378,10 +4451,10 @@ function RightSideGrid({
                                 {"Overdue"}
                                 <span className=" red-circle-overide">
                                   <p className="black-circle-text">
-                                    {item.Details.length}
+                                    {item.tasks.length}
                                   </p>
                                 </span>
-                                {!expandedFlags.includes(index) ? (
+                                {expandedFlags.includes(index) ? (
                                   <img
                                     src={redArrowTop}
                                     className="redArrowTop arrowDown"
@@ -4409,10 +4482,7 @@ function RightSideGrid({
                                 )}
                               </div>
                             )}
-                            {item.Status.trim() === "Pending" && (
-                              // <div className="action-title-sidebar">
-                              //   {"Take Action"}
-                              // </div>
+                            {item.status.trim() === "Take Action" && (
                               <div
                                 className="upcoming-btn sidebar-upcoming"
                                 onClick={() => {
@@ -4428,7 +4498,7 @@ function RightSideGrid({
                                   {"Take Action"}
                                   <span className="black-circle">
                                     <p className="black-circle-text">
-                                      {item.Details.length}
+                                      {item.tasks.length}
                                     </p>
                                   </span>
                                   {expandedFlags.includes(index) ? (
@@ -4447,11 +4517,11 @@ function RightSideGrid({
                                 </div>
                               </div>
                             )}
-                            {(item.Status.trim() === "Upcoming" ||
-                              item.Status.trim() === "Completed") && (
+                            {(item.status.trim() === "Upcoming" ||
+                              item.status.trim() === "Completed") && (
                               <div
                                 className={
-                                  item.Status.trim() === "Upcoming"
+                                  item.status.trim() === "Upcoming"
                                     ? "upcoming-btn sidebar-upcoming"
                                     : "upcoming-btn sidebar-completed"
                                 }
@@ -4464,23 +4534,23 @@ function RightSideGrid({
                                 <div
                                   style={{ cursor: "pointer" }}
                                   className={
-                                    item.Status.trim() === "Upcoming"
+                                    item.status.trim() === "Upcoming"
                                       ? "upcoming-title"
                                       : "complete-title"
                                   }
                                 >
-                                  {item.Status.trim() === "Upcoming"
+                                  {item.status.trim() === "Upcoming"
                                     ? "Upcoming"
                                     : "Completed"}
                                   <span
                                     className={
-                                      item.Status.trim() === "Upcoming"
+                                      item.status.trim() === "Upcoming"
                                         ? "black-circle"
                                         : "green-circle"
                                     }
                                   >
                                     <p className="black-circle-text">
-                                      {item.Details.length}
+                                      {item.tasks.length}
                                     </p>
                                   </span>
                                   {expandedFlags.includes(index) ? (
@@ -4499,95 +4569,70 @@ function RightSideGrid({
                                 </div>
                               </div>
                             )}
-                            {/* {item.Status.trim() === "overdue" &&
-                              item.Details.slice(
-                                0,
-                                rowCount[item.Status.trim()]
-                              ).map((task) => {
-                                return (
-                                  <>
-                                    {renderSidebarTaskList(
-                                      task,
-                                      item.Status.trim(),
-                                      1
-                                    )}
-                                  </>
-                                )
-                              })} */}
-
-                            {
-                              // item.Status.trim() != "overdue" &&
-                              // item.Status.trim() === ""
-                              //   ? true
-                              //   :!expandedFlags.includes(index))
-                              (item.Status.trim() === "Upcoming"
-                                ? expandedFlags.includes(index)
-                                : item.Status.trim() === "Completed"
-                                ? expandedFlags.includes(index)
-                                : item.Status.trim() === "overdue"
-                                ? !expandedFlags.includes(index)
-                                : item.Status.trim() === "Pending"
-                                ? !expandedFlags.includes(index)
-                                : expandedFlags.includes(index)) && (
-                                <>
-                                  {item.Details.slice(
-                                    0,
-                                    rowCount[item.Status.trim()]
-                                  ).map((task) => {
+                            {(item.status.trim() === "Upcoming"
+                              ? expandedFlags.includes(index)
+                              : item.status.trim() === "Approval Pending"
+                              ? expandedFlags.includes(index)
+                              : item.status.trim() === "overdue"
+                              ? !expandedFlags.includes(index)
+                              : item.status.trim() === "Pending"
+                              ? !expandedFlags.includes(index)
+                              : expandedFlags.includes(index)) && (
+                              <>
+                                {item.tasks
+                                  .slice(0, rowCount[item.status.trim()])
+                                  .map((task) => {
                                     return (
                                       <>
                                         {renderSidebarTaskList(
                                           task,
-                                          item.Status.trim(),
+                                          item.status.trim(),
                                           1
                                         )}
                                       </>
                                     );
                                   })}
-                                  <div>
-                                    {item.Details.length > 3 && (
-                                      <>
-                                        <div className="sidebar-btn">
-                                          {rowCount[item.Status.trim()] > 3 && (
-                                            <div
-                                              onClick={() =>
-                                                showLessMore(item.Status, 3)
-                                              }
-                                              className="viewAll showLess"
-                                            >
-                                              Show Less{" "}
-                                              <img
-                                                src={viewAllArowTop}
-                                                alt="Show Less"
-                                              />
-                                            </div>
-                                          )}
-                                          {rowCount[item.Status.trim()] ===
-                                            3 && (
-                                            <div
-                                              onClick={() =>
-                                                showLessMore(
-                                                  item.Status,
-                                                  item.Details.length
-                                                )
-                                              }
-                                              className="viewAll"
-                                            >
-                                              View All (
-                                              {item.Details.length - 3} )
-                                              <img
-                                                src={viewAllArow}
-                                                alt="view All Arrow"
-                                              />
-                                            </div>
-                                          )}
-                                        </div>
-                                      </>
-                                    )}
-                                  </div>
-                                </>
-                              )
-                            }
+                                <div>
+                                  {item.tasks.length > 3 && (
+                                    <>
+                                      <div className="sidebar-btn">
+                                        {rowCount[item.status.trim()] > 3 && (
+                                          <div
+                                            onClick={() =>
+                                              showLessMore(item.status, 3)
+                                            }
+                                            className="viewAll showLess"
+                                          >
+                                            Show Less{" "}
+                                            <img
+                                              src={viewAllArowTop}
+                                              alt="Show Less"
+                                            />
+                                          </div>
+                                        )}
+                                        {rowCount[item.status.trim()] === 3 && (
+                                          <div
+                                            onClick={() =>
+                                              showLessMore(
+                                                item.status,
+                                                item.tasks.length
+                                              )
+                                            }
+                                            className="viewAll"
+                                          >
+                                            View All ({item.tasks.length - 3} )
+                                            <img
+                                              src={viewAllArow}
+                                              alt="view All Arrow"
+                                            />
+                                          </div>
+                                        )}
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              </>
+                            )}
                           </div>
                         </>
                       );
@@ -4597,7 +4642,8 @@ function RightSideGrid({
                       <CompanyTaskList
                         user={user}
                         sideBarTaskList={true}
-                        getTaskById={getTaskById}
+                        currentOpenedTask={currentOpenedTask}
+                        setCurrentTask={setCurrentTask}
                       />
                     </>
                   )}
@@ -4605,14 +4651,16 @@ function RightSideGrid({
                     <LicenseTaskList
                       user={user}
                       sideBarTaskList={true}
-                      getTaskById={getTaskById}
+                      currentOpenedTask={currentOpenedTask}
+                      setCurrentTask={setCurrentTask}
                     />
                   )}
                   {searchValue === "" && taskListDisplay === "4" && (
                     <AssigneList
                       user={user}
                       sideBarTaskList={true}
-                      getTaskById={getTaskById}
+                      currentOpenedTask={currentOpenedTask}
+                      setCurrentTask={setCurrentTask}
                     />
                   )}
                 </div>
@@ -4622,29 +4670,36 @@ function RightSideGrid({
         </div>
       )}
 
-      {isTaskListOpen && (
+      {isTaskListOpen && Object.keys(currentOpenedTask).length !== 0 && (
         <div className="row ">
-          <ReAssignTasksModal
-            openModal={isShowReAssignModalForTeamMember}
-            setShowModal={setIsShowReAssignModalForTeamMember}
-            userId={getTaskById && getTaskById.AssignedTo}
-            taskId={getTaskById && getTaskById.TaskId}
-            isSingleTask
-          />
-          <ReAssignTasksModal
-            openModal={isShowReAssignModalForApprover}
-            setShowModal={setIsShowReAssignModalForApprover}
-            userId={getTaskById && getTaskById.AprovalAssignedToID}
-            taskId={getTaskById && getTaskById.TaskId}
-            isSingleTask
-          />
+          {currentOpenedTask && currentOpenedTask?.status !== "Approved" && (
+            <>
+              <ReAssignTasksModal
+                openModal={isShowReAssignModalForTeamMember}
+                setShowModal={setIsShowReAssignModalForTeamMember}
+                userId={currentOpenedTask && currentOpenedTask.assign_to}
+                taskId={currentOpenedTask && currentOpenedTask.task_name}
+                company={currentOpenedTask && currentOpenedTask.customer}
+                isSingleTask
+                isTeamMember
+              />
+              <ReAssignTasksModal
+                openModal={isShowReAssignModalForApprover}
+                setShowModal={setIsShowReAssignModalForApprover}
+                userId={currentOpenedTask && currentOpenedTask.approver}
+                taskId={currentOpenedTask && currentOpenedTask.task_name}
+                company={currentOpenedTask && currentOpenedTask.customer}
+                isSingleTask
+              />
+            </>
+          )}
           <div className="col-12 right-side-bar">
             <div className="">
               <div className="task-details-veiw scroll-remove-file">
                 <div className="task-details-header">
                   <div className="closing-icon">
                     <div className="task-details-title">
-                      {getTaskById && getTaskById.EntityName}
+                      {currentOpenedTask && currentOpenedTask.customer_name}
                     </div>
                     <div
                       className="task-close-icon"
@@ -4654,7 +4709,8 @@ function RightSideGrid({
                         setShowComments(false);
                         setShowHtoDoIt(false);
                         setShowReference(false);
-                        setExpandedFlags([]);
+                        // setExpandedFlags([]);
+                        setCurrentTask({});
                         dispatch(notificationActions.setTaskID(null));
                       }}
                     >
@@ -4662,35 +4718,35 @@ function RightSideGrid({
                     </div>
                   </div>
                   <div className="task-details-sub-title">
-                    {getTaskById && getTaskById.TaskName}{" "}
-                    <span className="nse-label d-none d-sm-block">
-                      {getTaskById && getTaskById.LicenseCode}
+                    {currentOpenedTask && currentOpenedTask.subject}{" "}
+                    <span className="nse-label d-none d-md-block">
+                      {currentOpenedTask && currentOpenedTask.license_display}
                     </span>
                   </div>
 
-                  <div className="d-flex d-block d-sm-none">
+                  <div className="d-flex d-block d-md-none">
                     <span className="nse-label ml-0">
-                      {getTaskById && getTaskById.LicenseCode}
+                      {currentOpenedTask && currentOpenedTask.license_display}
                     </span>
                     <div
                       className="pink-label-mobile ml-0"
                       style={{
                         backgroundColor:
-                          getTaskById && getTaskById.Status
-                            ? getTaskById.Status === "Assign"
+                          currentOpenedTask && currentOpenedTask.status
+                            ? currentOpenedTask.status === "Not Assigned"
                               ? "#fcf3cd"
-                              : // getTaskById.Status === "Completed By User" ? "#cdfcd8 " :
-                              getTaskById.Status === "Completed By User"
+                              : currentOpenedTask.status === "Approval Pending"
                               ? moment(
-                                  getTaskById && getTaskById.ActualTaskEndDate
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
                                 ).isBefore(today)
                                 ? "#cdfcd8"
                                 : "#ffefea"
-                              : getTaskById.Status === "Approved"
+                              : currentOpenedTask.status === "Approved"
                               ? "#cdfcd8"
-                              : getTaskById.Status === "Assigned"
+                              : currentOpenedTask.status === "Assigned"
                               ? "#ffefea"
-                              : getTaskById.Status === "Request Rejected"
+                              : currentOpenedTask.status === "Rejected"
                               ? "#ffefea"
                               : "#d2fccd"
                             : "#d2fccd",
@@ -4700,73 +4756,72 @@ function RightSideGrid({
                         className="approved-text"
                         style={{
                           color:
-                            getTaskById && getTaskById.Status
-                              ? getTaskById.Status === "Completed By User"
+                            currentOpenedTask && currentOpenedTask.status
+                              ? currentOpenedTask.status === "Approval Pending"
                                 ? moment(
-                                    getTaskById && getTaskById.ActualTaskEndDate
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
                                   ).isBefore(today)
                                   ? "#7fba7a"
                                   : "#ff5f31"
-                                : // task.Status === "Completed By User" ? "#7fba7a" :
-                                getTaskById.Status === "Approved"
+                                : currentOpenedTask.status === "Approved"
                                 ? "#7fba7a"
-                                : getTaskById.Status === "Assigned"
+                                : currentOpenedTask.status === "Assigned"
                                 ? "#f8c102"
-                                : getTaskById.Status === "Assign"
+                                : currentOpenedTask.status === "Not Assigned"
                                 ? "#f8c102"
-                                : getTaskById.Status === "Request Rejected"
+                                : currentOpenedTask.status === "Rejected"
                                 ? "#ff5f31"
                                 : ""
                               : "#fcf3cd",
                         }}
                       >
-                        {getTaskById && getTaskById.Status && (
+                        {currentOpenedTask && currentOpenedTask.status && (
                           <div style={{ textTransform: "uppercase" }}>
-                            {
-                              // getTaskById.Status === "Completed By User" ? "Task Completed" :
-                              getTaskById.Status === "Completed By User"
-                                ? moment(
-                                    getTaskById && getTaskById.ActualTaskEndDate
-                                  ).isBefore(today)
-                                  ? "Not reviewed"
-                                  : "Approval Pending"
-                                : getTaskById.Status === "Assign"
-                                ? "Assign Task"
-                                : getTaskById.Status === "Assigned"
-                                ? "Task Assigned"
-                                : getTaskById.Status === "Approved"
-                                ? "Task Approved"
-                                : getTaskById.Status === "Request Rejected"
-                                ? "Task Rejected"
-                                : null
-                            }
+                            {currentOpenedTask.status === "Approval Pending"
+                              ? moment(
+                                  currentOpenedTask &&
+                                    currentOpenedTask.deadline_date
+                                ).isBefore(today)
+                                ? "Not reviewed"
+                                : "Approval Pending"
+                              : currentOpenedTask.status === "Not Assigned"
+                              ? "Assign Task"
+                              : currentOpenedTask.status === "Assigned"
+                              ? "Task Assigned"
+                              : currentOpenedTask.status === "Approved"
+                              ? "Task Approved"
+                              : currentOpenedTask.status === "Rejected"
+                              ? "Task Rejected"
+                              : null}
                           </div>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  <div className="border-header d-none d-sm-block">
-                    {getTaskById && getTaskById.Status !== "Assigned" && (
+                  <div className="border-header d-none d-md-block">
+                    {currentOpenedTask && currentOpenedTask.status !== "" && (
                       <div
                         className="approved-label"
                         style={{
                           backgroundColor:
-                            getTaskById && getTaskById.Status
-                              ? getTaskById.Status === "Assign"
+                            currentOpenedTask && currentOpenedTask.status
+                              ? currentOpenedTask.status === "Not Assigned"
                                 ? "#fcf3cd"
-                                : getTaskById.Status === "Completed By User"
+                                : currentOpenedTask.status ===
+                                  "Approval Pending"
                                 ? moment(
-                                    getTaskById && getTaskById.ActualTaskEndDate
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
                                   ).isBefore(today)
                                   ? "#cdfcd8"
                                   : "#ffefea"
-                                : // getTaskById.Status === "Completed By User"  ? "#cdfcd8 " :
-                                getTaskById.Status === "Approved"
+                                : currentOpenedTask.status === "Approved"
                                 ? "#cdfcd8"
-                                : getTaskById.Status === "Assigned"
+                                : currentOpenedTask.status === "Assigned"
                                 ? "#ffefea"
-                                : getTaskById.Status === "Request Rejected"
+                                : currentOpenedTask.status === "Rejected"
                                 ? "#ffefea"
                                 : "#d2fccd"
                               : "#d2fccd",
@@ -4776,83 +4831,215 @@ function RightSideGrid({
                           className="approved-text"
                           style={{
                             color:
-                              getTaskById && getTaskById.Status
-                                ? getTaskById.Status === "Completed By User"
-                                  ? // ? getTaskById && getTaskById.EndDate < today
-                                    moment(
-                                      getTaskById && getTaskById.EndDate
+                              currentOpenedTask && currentOpenedTask.status
+                                ? currentOpenedTask.status ===
+                                  "Approval Pending"
+                                  ? moment(
+                                      currentOpenedTask &&
+                                        currentOpenedTask.due_date
                                     ).isBefore(today)
                                     ? "#7fba7a"
                                     : "#ff5f31"
-                                  : // task.Status === "Completed By User" ? "#7fba7a" :
-                                  getTaskById.Status === "Approved"
+                                  : currentOpenedTask.status === "Approved"
                                   ? "#7fba7a"
-                                  : getTaskById.Status === "Assigned"
+                                  : currentOpenedTask.status === "Assigned"
                                   ? "#f8c102"
-                                  : getTaskById.Status === "Assign"
+                                  : currentOpenedTask.status === "Not Assigned"
                                   ? "#f8c102"
-                                  : getTaskById.Status === "Request Rejected"
+                                  : currentOpenedTask.status === "Rejected"
                                   ? "#ff5f31"
                                   : ""
                                 : "#fcf3cd",
                           }}
                         >
-                          {getTaskById && getTaskById.Status && (
+                          {currentOpenedTask && currentOpenedTask.status && (
                             <div style={{ textTransform: "uppercase" }}>
-                              {
-                                // getTaskById.Status === "Completed By User" ? "Task Completed" :
-                                getTaskById.Status === "Completed By User"
-                                  ? // ? getTaskById && getTaskById.EndDate < today
-                                    moment(
-                                      getTaskById &&
-                                        getTaskById.ActualTaskEndDate
-                                    ).isBefore(today)
-                                    ? "Not reviewed"
-                                    : "Approval Pending"
-                                  : getTaskById.Status === "Assign"
-                                  ? "Assign Task"
-                                  : getTaskById.Status === "Assigned"
-                                  ? "Task Assigned"
-                                  : getTaskById.Status === "Approved"
-                                  ? "Task Approved"
-                                  : getTaskById.Status === "Request Rejected"
-                                  ? "Task Rejected"
-                                  : null
-                              }
+                              {currentOpenedTask.status === "Approval Pending"
+                                ? moment(
+                                    currentOpenedTask &&
+                                      currentOpenedTask.deadline_date
+                                  ).isBefore(today)
+                                  ? "Not reviewed"
+                                  : "Approval Pending"
+                                : currentOpenedTask.status === "Not Assigned"
+                                ? "Assign Task"
+                                : currentOpenedTask.status === "Assigned"
+                                ? "Task Assigned"
+                                : currentOpenedTask.status === "Approved"
+                                ? "Task Approved"
+                                : currentOpenedTask.status === "Rejected"
+                                ? "Task Rejected"
+                                : null}
                             </div>
                           )}
                         </div>
                       </div>
                     )}
+                    {currentOpenedTask && currentOpenedTask.ExReview === 1 && (
+                      <div className="d-flex align-items-center labels-container">
+                        {/* Approver Status */}
+                        {currentOpenedTask && currentOpenedTask.AprStatus && (
+                          <div
+                            className="er-approved-label mr-3"
+                            style={{
+                              backgroundColor:
+                                currentOpenedTask && currentOpenedTask.AprStatus
+                                  ? currentOpenedTask.AprStatus ===
+                                    "Not Assigned"
+                                    ? "#ffefea"
+                                    : currentOpenedTask.AprStatus ===
+                                      "Approved by Approver"
+                                    ? "#cdfcd8"
+                                    : currentOpenedTask.AprStatus ===
+                                      "Rejected by Approver"
+                                    ? "#ffefea"
+                                    : "#d2fccd"
+                                  : "#d2fccd",
+                            }}
+                          >
+                            <div
+                              className="approved-text"
+                              style={{
+                                color:
+                                  currentOpenedTask &&
+                                  currentOpenedTask.AprStatus
+                                    ? currentOpenedTask.AprStatus ===
+                                      "Not Assigned"
+                                      ? "#f8c102"
+                                      : currentOpenedTask.AprStatus ===
+                                        "Approved by Approver"
+                                      ? "#7fba7a"
+                                      : currentOpenedTask.AprStatus ===
+                                        "Reject by Approver"
+                                      ? "#ff5f31"
+                                      : "#fcf3cd"
+                                    : "#fcf3cd",
+                              }}
+                            >
+                              {currentOpenedTask &&
+                                currentOpenedTask.AprStatus && (
+                                  <div style={{ textTransform: "uppercase" }}>
+                                    {currentOpenedTask &&
+                                    currentOpenedTask.AprStatus
+                                      ? currentOpenedTask.AprStatus ===
+                                        "Not Assigned"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Not Started"
+                                              : "Approver Not Started Task"
+                                          }`
+                                        : currentOpenedTask.AprStatus ===
+                                          "Approved by Approver"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Task Approved"
+                                              : "Approved By Approver"
+                                          }`
+                                        : currentOpenedTask.AprStatus ===
+                                          "Rejected by Approver"
+                                        ? `${
+                                            userDetails.UserType === 5
+                                              ? "Task Rejected"
+                                              : "Rejected By Approver"
+                                          }`
+                                        : null
+                                      : null}
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        )}
+                        {/* Expert Reviewer Status */}
+                        {currentOpenedTask && currentOpenedTask.ExStatus && (
+                          <div
+                            className="er-approved-label"
+                            style={{
+                              backgroundColor:
+                                currentOpenedTask && currentOpenedTask.ExStatus
+                                  ? currentOpenedTask.ExStatus === "Not Started"
+                                    ? "#ffefea"
+                                    : currentOpenedTask.ExStatus ===
+                                      "Approved by Expert"
+                                    ? "#cdfcd8"
+                                    : currentOpenedTask.ExStatus ===
+                                      "Rejected by Expert"
+                                    ? "#ffefea"
+                                    : "#d2fccd"
+                                  : "#d2fccd",
+                            }}
+                          >
+                            <div
+                              className="approved-text"
+                              style={{
+                                color:
+                                  currentOpenedTask &&
+                                  currentOpenedTask.ExStatus
+                                    ? currentOpenedTask.ExStatus ===
+                                      "Not Started"
+                                      ? "#f8c102"
+                                      : currentOpenedTask.ExStatus ===
+                                        "Approved by Expert"
+                                      ? "#7fba7a"
+                                      : currentOpenedTask.ExStatus ===
+                                        "Rejected by Expert"
+                                      ? "#ff5f31"
+                                      : "#fcf3cd"
+                                    : "#fcf3cd",
+                              }}
+                            >
+                              {currentOpenedTask &&
+                                currentOpenedTask.ExStatus && (
+                                  <div style={{ textTransform: "uppercase" }}>
+                                    {currentOpenedTask &&
+                                    currentOpenedTask.ExStatus
+                                      ? currentOpenedTask.ExStatus ===
+                                        "Not Started"
+                                        ? "Expert Not Started Task"
+                                        : currentOpenedTask.ExStatus ===
+                                          "Approved by Expert"
+                                        ? "Approved By Expert"
+                                        : currentOpenedTask.ExStatus ===
+                                          "Rejected by Expert"
+                                        ? "Rejected By Expert"
+                                        : null
+                                      : null}
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div className="task-detail-data">
-                    {getTaskById && getTaskById.RegulatoryUpdates === 1 && (
-                      <div className="row">
-                        <div className="col-12">
-                          <div className="regulation-changes">
-                            <div className="float-left">
-                              <img
-                                src={redCircle}
-                                alt="account Circle Purple"
-                              />
-                              <div className="recent-title-circle">
-                                Recent Regulation Changes
+                    {currentOpenedTask &&
+                      currentOpenedTask.RegulatoryUpdates === 1 && (
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="regulation-changes">
+                              <div className="float-left">
+                                <img
+                                  src={redCircle}
+                                  alt="account Circle Purple"
+                                />
+                                <div className="recent-title-circle">
+                                  Recent Regulation Changes
+                                </div>
                               </div>
-                            </div>
-                            <div className="float-right">
-                              <div
-                                style={{ cursor: "pointer" }}
-                                onClick={() => onRCViewDetailClick()}
-                                className="red-circle-detail"
-                              >
-                                View details
+                              <div className="float-right">
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => onRCViewDetailClick()}
+                                  className="red-circle-detail"
+                                >
+                                  View details
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                    {userDetails.UserType != 4 && (
+                      )}
+                    {userDetails.UserType !== 4 && (
                       <div className="row">
                         <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                           <div className="holding-list-normal-title">
@@ -4860,30 +5047,34 @@ function RightSideGrid({
                           </div>
                         </div>
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          {getTaskById && getTaskById.AssignedTo != 0 ? (
+                          {currentOpenedTask &&
+                          currentOpenedTask.assign_to !== null ? (
                             <div
                               className="holding-list-bold-title"
                               style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                setIsShowReAssignModalForTeamMember(true)
-                              }
+                              onClick={() => {
+                                if (
+                                  currentOpenedTask &&
+                                  currentOpenedTask.status !== "Approved"
+                                ) {
+                                  setIsShowReAssignModalForTeamMember(true);
+                                }
+                              }}
                             >
-                              {getTaskById &&
-                              getTaskById.AssignedToUserName == "" ? null : (
-                                <span className="cicrcle-name">
-                                  {getInitials(
-                                    getTaskById &&
-                                      getTaskById.AssignedToUserName
-                                  )}
-                                </span>
-                              )}
-                              {getTaskById && getTaskById.AssignedToUserName}
+                              {currentOpenedTask &&
+                                currentOpenedTask.assign_to_name !== null && (
+                                  <span className="cicrcle-name">
+                                    {getInitials(
+                                      currentOpenedTask &&
+                                        currentOpenedTask.assign_to_name
+                                    )}
+                                  </span>
+                                )}
+                              {currentOpenedTask.assign_to_name ||
+                                "Not Assigned"}
                             </div>
                           ) : (
-                            <div
-                              className="holding-list-bold-title AssinTo"
-                              // onClick={getUserDetail}
-                            >
+                            <div className="holding-list-bold-title AssinTo">
                               <div className="col-9 pl-0">
                                 <div
                                   className="dashboard-assign"
@@ -4919,7 +5110,6 @@ function RightSideGrid({
                                           <div className="add-Email border-bottom">
                                             <div class="form-group">
                                               <input
-                                                // style={{width:"100%"}}
                                                 type="text"
                                                 class="form-control"
                                                 placeholder="Enter name or email"
@@ -4946,7 +5136,7 @@ function RightSideGrid({
                                                 </div>
                                               )}
                                               {emailAvaliableCheck &&
-                                                selectedUser != "" && (
+                                                selectedUser !== "" && (
                                                   <div
                                                     className=""
                                                     style={{
@@ -4980,7 +5170,10 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            allUser.map((user, index) => (
+                                            getUserLlistByUserType(
+                                              allUser,
+                                              4
+                                            ).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -4990,21 +5183,20 @@ function RightSideGrid({
                                                 }
                                               >
                                                 <span class="name-circle">
-                                                  {getInitials(
-                                                    user.UserName
-                                                      ? user.UserName
-                                                      : user.EmailID
-                                                      ? user.EmailID
-                                                      : null
-                                                  )}
+                                                  {user?.full_name &&
+                                                    getInitials(
+                                                      user.full_name
+                                                        ? user.full_name
+                                                        : user.email
+                                                    )}
                                                 </span>
                                                 <span className="name-of-emailer">
-                                                  {user.UserName
-                                                    ? user.UserName
+                                                  {user.full_name
+                                                    ? user.full_name
                                                     : ""}
                                                 </span>
                                                 <span className="last-email-box">
-                                                  {user.EmailID}
+                                                  {user.email}
                                                 </span>
                                               </div>
                                             ))
@@ -5028,7 +5220,6 @@ function RightSideGrid({
                                                   />
                                                   {selectedUser !== "" &&
                                                     `Invite '${selectedUser}' via email`}
-                                                  {/* { ` Invite '${selectedUser}' via email` } */}
                                                 </div>
                                               )}
 
@@ -5048,30 +5239,33 @@ function RightSideGrid({
                         </div>
                       </div>
                     )}
-                    {userDetails.UserType !== 3 && (
-                      <div className="row">
-                        <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                          <div className="holding-list-normal-title">
-                            Assigned by
+                    {userDetails.UserType !== 3 &&
+                      currentOpenedTask?.assigned_by && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Assigned by
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {currentOpenedTask &&
+                              currentOpenedTask?.assigned_by_name ===
+                                null ? null : (
+                                <span className="cicrcle-name">
+                                  {getInitials(
+                                    currentOpenedTask &&
+                                      currentOpenedTask?.assigned_by_name
+                                  )}
+                                </span>
+                              )}
+                              {currentOpenedTask &&
+                                currentOpenedTask?.assigned_by_name}
+                            </div>
                           </div>
                         </div>
-                        <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          <div className="holding-list-bold-title">
-                            {getTaskById &&
-                            getTaskById.AssignedFromUserName == "" ? null : (
-                              <span className="cicrcle-name">
-                                {getInitials(
-                                  getTaskById &&
-                                    getTaskById.AssignedFromUserName
-                                )}
-                              </span>
-                            )}
-                            {getTaskById && getTaskById.AssignedFromUserName}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    {userDetails.UserType != 5 && (
+                      )}
+                    {userDetails.UserType !== 5 && (
                       <div className="row">
                         <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                           <div className="holding-list-normal-title">
@@ -5079,30 +5273,34 @@ function RightSideGrid({
                           </div>
                         </div>
                         <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                          {getTaskById &&
-                          getTaskById.ApproverName != "Assign" ? (
+                          {currentOpenedTask &&
+                          currentOpenedTask.approver_name !== null ? (
                             <div
                               className="holding-list-bold-title"
                               style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                setIsShowReAssignModalForApprover(true)
-                              }
+                              onClick={() => {
+                                if (
+                                  currentOpenedTask &&
+                                  currentOpenedTask.status !== "Approved"
+                                ) {
+                                  setIsShowReAssignModalForApprover(true);
+                                }
+                              }}
                             >
-                              {getTaskById &&
-                              getTaskById.ApproverName == "" ? null : (
+                              {currentOpenedTask &&
+                              currentOpenedTask.approver_name === "" ? null : (
                                 <span className="cicrcle-name">
                                   {getInitials(
-                                    getTaskById && getTaskById.ApproverName
+                                    currentOpenedTask &&
+                                      currentOpenedTask.approver_name
                                   )}
                                 </span>
                               )}
-                              {getTaskById && getTaskById.ApproverName}
+                              {currentOpenedTask &&
+                                currentOpenedTask.approver_name}
                             </div>
                           ) : (
-                            <div
-                              className="holding-list-bold-title"
-                              // onClick={getApproveUsers}
-                            >
+                            <div className="holding-list-bold-title">
                               <div className="col-9 pl-0">
                                 {user && user.UserType === 4 ? (
                                   <div className="holding-list-bold-title">
@@ -5144,7 +5342,6 @@ function RightSideGrid({
                                           <div className="add-Email border-bottom">
                                             <div class="form-group">
                                               <input
-                                                // style={{width:"100%"}}
                                                 type="text"
                                                 class="form-control"
                                                 placeholder="Enter name or email"
@@ -5159,7 +5356,7 @@ function RightSideGrid({
                                                 }
                                               />
                                               {emailAvaliableCheck &&
-                                                selectedUser != "" && (
+                                                selectedUser !== "" && (
                                                   <div
                                                     className=""
                                                     style={{
@@ -5206,7 +5403,10 @@ function RightSideGrid({
                                           }}
                                         >
                                           {allUser && allUser.length > 0 ? (
-                                            allUser.map((user, index) => (
+                                            getUserLlistByUserType(
+                                              allUser,
+                                              5
+                                            ).map((user, index) => (
                                               <div
                                                 className="email-list-row"
                                                 key={index}
@@ -5216,21 +5416,21 @@ function RightSideGrid({
                                                 }
                                               >
                                                 <span class="name-circle">
-                                                  {getInitials(
-                                                    user.UserName
-                                                      ? user.UserName
-                                                      : user.EmailID
-                                                      ? user.EmailID
-                                                      : null
-                                                  )}
+                                                  {(user?.full_name ||
+                                                    user?.email) &&
+                                                    getInitials(
+                                                      user?.full_name
+                                                        ? user.full_name
+                                                        : user.email
+                                                    )}
                                                 </span>
                                                 <span className="name-of-emailer">
-                                                  {user.UserName
-                                                    ? user.UserName
-                                                    : ""}
+                                                  {user.full_name
+                                                    ? user?.full_name
+                                                    : user?.email}
                                                 </span>
                                                 <span className="last-email-box">
-                                                  {user.EmailID}
+                                                  {user.email}
                                                 </span>
                                               </div>
                                             ))
@@ -5254,23 +5454,13 @@ function RightSideGrid({
                                                   />
                                                   {selectedUser !== "" &&
                                                     `Invite '${selectedUser}' via email`}
-                                                  {/* { ` Invite '${selectedUser}' via email` } */}
                                                 </div>
                                               )}
 
                                               {noRecords === true &&
                                                 selectedUser === "" &&
                                                 "No records Available"}
-                                              {/* {selectedUser === "" && "No records Available"} */}
                                             </span>
-                                            // <span
-                                            //   className="last-email-box email-list-row"
-                                            //   style={{ textAlign: "center" }}
-                                            //   onClick={()=> handleOnClickApproverBtn()}
-                                            // >
-                                            //   {selectedUser === "" && "No records Available"}
-                                            //   {selectedUser !== "" && `+ Invite '${selectedUser}' via email`}
-                                            // </span>
                                           )}
                                         </div>
                                       </div>
@@ -5291,13 +5481,12 @@ function RightSideGrid({
                       </div>
                       <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                         <div className="holding-list-bold-title">
-                          {moment(getTaskById && getTaskById.EndDate).format(
-                            "DD MMM"
-                          )}
+                          {moment(
+                            currentOpenedTask && currentOpenedTask.due_date
+                          ).format("DD MMM")}
                         </div>
                       </div>
                     </div>
-                    {/* {userDetails.UserType != 4 && ( */}
                     <div className="row">
                       <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                         <div className="holding-list-normal-title">
@@ -5307,15 +5496,34 @@ function RightSideGrid({
                       <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                         <div className="holding-list-bold-title">
                           {moment(
-                            getTaskById && getTaskById.ActualTaskEndDate
+                            currentOpenedTask && currentOpenedTask.deadline_date
                           ).format("DD MMM")}
                         </div>
                       </div>
                     </div>
-                    {/* )} */}
-                    {userDetails.UserType != 4 && (
+                    {currentOpenedTask &&
+                      currentOpenedTask.date_of_approval &&
+                      currentOpenedTask.status === "Approved" &&
+                      userDetails.UserType !== 4 && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Approval Pending on
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {moment(currentOpenedTask.DateOfApproval).format(
+                                "DD MMM  h:mm a"
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    {userDetails.UserType !== 4 && (
                       <div className="row">
-                        {getTaskById && getTaskById.Status !== "Assigned" ? (
+                        {currentOpenedTask &&
+                        currentOpenedTask.status !== "Assigned" ? (
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
                               Status
@@ -5324,24 +5532,26 @@ function RightSideGrid({
                         ) : (
                           ""
                         )}
-                        {getTaskById && getTaskById.Status !== "Assigned" ? (
+                        {currentOpenedTask &&
+                        currentOpenedTask.status !== "Assigned" ? (
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                             <div className="holding-list-bold-title">
-                              {getTaskById && getTaskById.Status
-                                ? getTaskById.Status === "Completed By User"
+                              {currentOpenedTask && currentOpenedTask.status
+                                ? currentOpenedTask.status ===
+                                  "Approval Pending"
                                   ? moment(
-                                      getTaskById &&
-                                        getTaskById.ActualTaskEndDate
+                                      currentOpenedTask &&
+                                        currentOpenedTask.deadline_date
                                     ).isBefore(today)
                                     ? "Not reviewed"
                                     : "Approval Pending"
-                                  : getTaskById.Status === "Assign"
-                                  ? "Assign Task"
-                                  : getTaskById.Status === "Assigned"
+                                  : currentOpenedTask.status === "Not Assigned"
+                                  ? currentOpenedTask.status
+                                  : currentOpenedTask.status === "Assigned"
                                   ? "Task Assigned"
-                                  : getTaskById.Status === "Approved"
+                                  : currentOpenedTask.status === "Approved"
                                   ? "Task Approved"
-                                  : getTaskById.Status === "Request Rejected"
+                                  : currentOpenedTask.status === "Rejected"
                                   ? "Task Rejected"
                                   : null
                                 : ""}
@@ -5352,29 +5562,30 @@ function RightSideGrid({
                         )}
                       </div>
                     )}
-                    {userDetails.UserType != 4 &&
-                      getTaskById &&
-                      getTaskById.ExStatus == 1 && (
+                    {/* {userDetails.UserType !== 4 &&
+                      currentOpenedTask &&
+                      currentOpenedTask.ExReview === 1 && (
                         <div className="row">
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
-                              Expert Review
+                              Expert Review Status
                             </div>
                           </div>
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                             <div className="holding-list-bold-title">
-                              Pending
+                              {currentOpenedTask.ExStatus}
                             </div>
                           </div>
                         </div>
-                      )}
-                    {completedDate &&
+                      )} */}
+
+                    {/* {completedDate &&
                       isTaskApproved &&
-                      userDetails.UserType != 4 && (
+                      userDetails.UserType !== 4 && (
                         <div className="row">
                           <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                             <div className="holding-list-normal-title">
-                              Completed on
+                              Approval Pending on
                             </div>
                           </div>
                           <div className="col-8 col-sm-9 col-md-9 col-xl-9">
@@ -5383,27 +5594,26 @@ function RightSideGrid({
                             </div>
                           </div>
                         </div>
+                      )} */}
+                    {userDetails.UserType !== 4 &&
+                      currentOpenedTask &&
+                      currentOpenedTask.ExReview === 1 &&
+                      currentOpenedTask.ReviewerEmailID !== "" &&
+                      currentOpenedTask.ReviewerName !== "" &&
+                      currentOpenedTask.ReviewerMobile && (
+                        <div className="row">
+                          <div className="col-4 col-sm-3 col-md-3 col-xl-3">
+                            <div className="holding-list-normal-title">
+                              Contact Details
+                            </div>
+                          </div>
+                          <div className="col-8 col-sm-9 col-md-9 col-xl-9">
+                            <div className="holding-list-bold-title">
+                              {`${currentOpenedTask.ReviewerMobile} | ${currentOpenedTask.ReviewerEmailID}`}
+                            </div>
+                          </div>
+                        </div>
                       )}
-                    {/* <div className="row">
-                      <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                        <div className="holding-list-normal-title">License</div>
-                      </div>
-                      <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                        <div className="holding-list-bold-title">
-                          {getTaskById && getTaskById.LicenseCode}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-4 col-sm-3 col-md-3 col-xl-3">
-                        <div className="holding-list-normal-title">Company</div>
-                      </div>
-                      <div className="col-8 col-sm-9 col-md-9 col-xl-9">
-                        <div className="holding-list-bold-title">
-                          {getTaskById && getTaskById.EntityName}
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                 </div>
                 <div className="task-details-file-grid1">
@@ -5489,12 +5699,6 @@ function RightSideGrid({
                       {referenceShow && (
                         <div className="file-title-progress comments-progress-width"></div>
                       )}
-
-                      {/* <div
-                          className="file-title unActiveText-color"
-                        >
-                          How to do it?
-                        </div> */}
                     </div>
                   </div>
                 </div>
@@ -5532,7 +5736,7 @@ function RightSideGrid({
                                 className="file-download-title pointer d-flex"
                               >
                                 download
-                                <span className="d-none d-sm-block">
+                                <span className="d-none d-md-block">
                                   &nbsp;file
                                 </span>
                               </a>
@@ -5585,24 +5789,28 @@ function RightSideGrid({
                 {showFiles && (
                   <div className="file-grid-data">
                     {(user && user.UserType && user.UserType === 4) ||
-                    (user &&
-                      user.UserType &&
-                      (userDetails.UserType === 3 ||
-                        userDetails.UserType === 5)) ? (
+                    (user && user.UserType && userDetails.UserType === 3) ||
+                    (user && user.UserType && userDetails.UserType === 5) ? (
                       <>
-                        {getTaskById &&
-                        getTaskById.Status &&
-                        (getTaskById.Status === "Assigned" ||
-                          getTaskById.Status === "Request Rejected") &&
-                        getTaskById &&
-                        getTaskById.Status &&
-                        (getTaskById.TaskStatus === 0 ||
-                          getTaskById.TaskStatus === 3) ? (
-                          (user && user.UserType && user.UserType === 4) ||
+                        {/* check here */}
+                        {currentOpenedTask &&
+                        currentOpenedTask.status &&
+                        currentOpenedTask.status !== "Approved" &&
+                        currentOpenedTask.status !== "Not Assigned" &&
+                        currentOpenedTask.status !== "Approval Pending" &&
+                        (currentOpenedTask.assign_to === null ||
+                          currentOpenedTask.assign_to ===
+                            (userDetails.EmailID || userDetails.email)) ? (
                           (user &&
                             user.UserType &&
-                            (userDetails.UserType === 3 ||
-                              userDetails.UserType === 5)) ? (
+                            user.UserType &&
+                            userDetails.UserType === 4) ||
+                          (user &&
+                            user.UserType &&
+                            userDetails.UserType === 3) ||
+                          (user &&
+                            user.UserType &&
+                            userDetails.UserType === 5) ? (
                             <>
                               {" "}
                               <div className="row">
@@ -5662,43 +5870,50 @@ function RightSideGrid({
                           ) : null
                         ) : null}
 
-                        {fileList && fileList.length > 0 ? (
-                          fileList.map((file, index) => (
-                            <div className="no-files">
-                              {file && file.Files && file.Files.length > 0
-                                ? file.Files.map((files, index) => (
-                                    <div className="d-flex">
-                                      <div className="pr-3">
-                                        <div className="file-upload-title file-img-width">
-                                          <img
-                                            src={fileIcon}
-                                            alt="file Icon"
-                                            className="file-icon-box"
-                                            value={files.TaskFileId}
-                                          />{" "}
-                                          {files.FileName}
-                                        </div>
-                                      </div>
-                                      <div className="pr-3">
-                                        {getTaskById &&
-                                          getTaskById.TaskId !== undefined && (
-                                            <a
-                                              target="_blank"
-                                              href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
-                                              style={{ textDecoration: "none" }}
-                                              className="file-download-title pointer d-flex"
-                                            >
-                                              download{" "}
-                                              <span className="d-none d-sm-block">
-                                                &nbsp;file
-                                              </span>
-                                            </a>
-                                          )}
-                                      </div>
+                        <div className="no-files">
+                          {fileList && fileList.length > 0
+                            ? fileList.map((files, index) => (
+                                <div className="d-flex">
+                                  <div className="pr-3">
+                                    <div className="file-upload-title file-img-width">
+                                      <img
+                                        src={fileIcon}
+                                        alt="file Icon"
+                                        className="file-icon-box"
+                                        value={files.file_name}
+                                      />{" "}
+                                      {files.file_name}
+                                    </div>
+                                  </div>
+                                  <div className="pr-3">
+                                    {currentOpenedTask &&
+                                      currentOpenedTask.task_name !==
+                                        undefined && (
+                                        <a
+                                          href={`data:application/${files.file_name
+                                            .split(".")
+                                            .pop()};base64,${
+                                            files.encoded_string
+                                          }`}
+                                          style={{ textDecoration: "none" }}
+                                          className="file-download-title pointer d-flex"
+                                          download={files.file_name}
+                                        >
+                                          download{" "}
+                                          <span className="d-none d-md-block">
+                                            &nbsp;file
+                                          </span>
+                                        </a>
+                                      )}
+                                  </div>
+                                  {currentOpenedTask &&
+                                    currentOpenedTask.status !== "Approved" && (
                                       <div className="pr-3">
                                         <div
                                           style={{ cursor: "pointer" }}
-                                          onClick={() => deleteFile(files)}
+                                          onClick={() =>
+                                            deleteUploadedFile(files.file_id)
+                                          }
                                           className="file-download-title pointer d-flex"
                                         >
                                           <img
@@ -5708,41 +5923,44 @@ function RightSideGrid({
                                           />
                                         </div>
                                       </div>
-                                    </div>
-                                  ))
-                                : "No Files To View here"}
-                            </div>
-                          ))
-                        ) : (
-                          <div className="no-files">No Files To View here</div>
-                        )}
+                                    )}
+                                </div>
+                              ))
+                            : "No Files To View here"}
+                        </div>
                       </>
                     ) : fileList && fileList.length > 0 ? (
-                      fileList.map((file, index) => (
+                      fileList.map((file) => (
                         <div className="no-files">
                           {file && file.Files && file.Files.length > 0
-                            ? file.Files.map((files, index) => (
-                                <div className="row">
+                            ? file.Files.map((files) => (
+                                <div className="row" key={files.file_id}>
                                   <div className="col-8 col-sm-4 col-md-4 col-xl-4">
                                     <div className="file-upload-title file-img-width">
                                       <img
                                         src={fileIcon}
                                         alt="file Icon"
-                                        value={files.TaskFileId}
+                                        value={files.file_name}
                                       />{" "}
-                                      {files.FileName}
+                                      {files.file_name}
                                     </div>
                                   </div>
                                   <div className="col-4 col-sm-8 col-md-8 col-xl-8">
-                                    {getTaskById &&
-                                      getTaskById.TaskId !== undefined && (
+                                    {currentOpenedTask &&
+                                      currentOpenedTask.task_name !==
+                                        undefined && (
                                         <a
-                                          href={`${BACKEND_BASE_URL}/viewfiles.ashx?id=${getTaskById.TaskId}&flag=downloadtaskfiles&file=${files.FileName}`}
+                                          href={`data:application/${files.file_name
+                                            .split(".")
+                                            .pop()};base64,${
+                                            files.encoded_string
+                                          }`}
                                           style={{ textDecoration: "none" }}
                                           className="file-download-title pointer d-flex"
+                                          download={files.file_name}
                                         >
                                           download{" "}
-                                          <span className="d-none d-sm-block">
+                                          <span className="d-none d-md-block">
                                             &nbsp;file
                                           </span>
                                         </a>
@@ -5754,34 +5972,19 @@ function RightSideGrid({
                         </div>
                       ))
                     ) : (
-                      <div className="no-files">No Files To View here</div>
+                      <div className="no-files">No Filess To View here</div>
                     )}
 
-                    {user.UserType !== 4 &&
-                    moment(
-                      getTaskById && getTaskById.ActualTaskEndDate
-                    ).isBefore(today) === true ? (
-                      ""
-                    ) : (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.Status === "Approved") ||
-                      (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.TaskStatus === 1) ? (
-                      (user &&
-                        user.UserType &&
-                        (userDetails.UserType === 3 ||
-                          userDetails.UserType === 5)) ||
-                      user.UserType === 4 ||
-                      (user.UserType === 5 && " ")
-                    ) : getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Assigned" &&
-                      getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 0 ? (
-                      (user && user.UserType && user.UserType === 4) ||
-                      (user && user.UserType && user.UserType === 3) ? (
+                    {/* Task Actions (Approval, Rejection, Mark Complete) */}
+                    {currentOpenedTask &&
+                      (currentOpenedTask.status === "Assigned" ||
+                        currentOpenedTask.status === "Rejected") &&
+                      // (userDetails.UserType === 3 ||
+                      //   userDetails.UserType === 5 ||
+                      //   userDetails.UserType === 4) &&
+                      (currentOpenedTask?.assign_to === null ||
+                        currentOpenedTask?.assign_to ===
+                          (userDetails.EmailID || userDetails.email)) && (
                         <button
                           style={{ marginTop: 10, width: 150 }}
                           onClick={() => teamMemberMarkComplete()}
@@ -5790,46 +5993,15 @@ function RightSideGrid({
                         >
                           Mark Complete
                         </button>
-                      ) : (
-                        ""
-                      )
-                    ) : getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Assign" &&
-                      getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 0 ? (
-                      ""
-                    ) : getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.Status === "Request Rejected" &&
-                      getTaskById &&
-                      getTaskById.Status &&
-                      getTaskById.TaskStatus === 3 ? (
-                      user &&
-                      user.UserType &&
-                      user.UserType === 4 && (
-                        <button
-                          style={{ marginTop: 10, width: 150 }}
-                          onClick={() => teamMemberMarkComplete()}
-                          className="btn save-details-bnt approve-task"
-                          value="3"
-                        >
-                          Mark Complete
-                        </button>
-                      )
-                    ) : (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.Status === "Completed By User") ||
-                      (getTaskById &&
-                        getTaskById.Status &&
-                        getTaskById.TaskStatus === 4) ? (
-                      (user && user.UserType && user.UserType === 3) ||
-                      (user && user.UserType && user.UserType === 5) ? (
+                      )}
+                    {currentOpenedTask &&
+                      currentOpenedTask.status === "Approval Pending" &&
+                      (user.UserType === 3 || user.UserType === 5) &&
+                      user.EmailID !== "" && (
                         <div class="btn-toolbar text-center well">
                           <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
                             <button
-                              onClick={(e) => handleAppTask(getTaskById)}
+                              onClick={(e) => handleAppTask(currentOpenedTask)}
                               className="btn save-details-bnt approve-task"
                             >
                               approve task
@@ -5845,12 +6017,7 @@ function RightSideGrid({
                             </button>
                           </div>
                         </div>
-                      ) : (
-                        ""
-                      )
-                    ) : (
-                      ""
-                    )}
+                      )}
                   </div>
                 )}
                 {showComments && (
@@ -5861,32 +6028,26 @@ function RightSideGrid({
                           <div className="comment-box">
                             <div className="name-box">
                               {getInitials(
-                                comment &&
-                                  comment.B &&
-                                  comment.B[0] &&
-                                  comment.B[0].UserName &&
-                                  comment.B[0].UserName != ""
-                                  ? comment.B[0].UserName
+                                comment && comment.user_name
+                                  ? comment.user_name
                                   : "No Username"
                               )}
                             </div>
                             <div className="rigt-box-comment">
                               <div className="d-flex">
                                 <div className="right-box-text">
-                                  {comment &&
-                                  comment.B &&
-                                  comment.B[0] &&
-                                  comment.B[0].UserName &&
-                                  comment.B[0].UserName != ""
-                                    ? comment.B[0].UserName
+                                  {comment && comment.user_name
+                                    ? comment.user_name
                                     : "No Username"}
                                 </div>
                                 <div className="days-ago">
-                                  {moment(comment.CommentOn).format("DD MMM")}
+                                  {moment(comment.commented_on).format(
+                                    "DD MMM"
+                                  )}
                                 </div>
                               </div>
                               <div className="comment-desc">
-                                {comment.Comment}
+                                {comment.content}
                               </div>
                             </div>
                           </div>
@@ -5895,78 +6056,37 @@ function RightSideGrid({
                     ) : (
                       <div className="no-comments">No Comments</div>
                     )}
-
-                    <div className="comment-box">
-                      {/* <div className="d-flex">
-                        <div className="pr-5 w-38">
-                          <div className="file-upload-title file-img-width">
-                          <img
-                          src={fileIcon}
-                          alt="file Icon"
-                          className="file-icon-box"
-                          value="aaaa"/> formTempRCReport.pdf
+                    {currentOpenedTask &&
+                      currentOpenedTask?.status !== "Approved" &&
+                      currentOpenedTask?.status !== "Approval Pending" && (
+                        <div className="comment-box">
+                          <div className="name-box">
+                            {user && getInitials(user.full_name || user.email)}
+                          </div>
+                          <div className="rigt-box-comment">
+                            <div className="input-comment-box input-comment-boxLeft">
+                              <TextareaAutosize
+                                minRows={1.3}
+                                style={{ overflow: "hidden" }}
+                                type="text"
+                                className="form-control textAreaHeight"
+                                value={inputComment}
+                                placeholder="Add a comment"
+                                onChange={(e) => handleChange(e)}
+                                required
+                              />
+                              <div className="inputIcon">
+                                <img
+                                  src={inputRightArrow}
+                                  alt=""
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => submitComment()}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div className="pr-5 w-62">                           
-                                <a
-                                  href=""
-                                  style={{ textDecoration: "none" }}
-                                  className="file-download-title pointer d-flex"
-                                >
-                                  download
-                                  <span className="d-none d-sm-block">
-                                    &nbsp;file
-                                  </span>
-                                </a>                             
-                          </div>
-                        </div>
-                        <div className="d-flex">
-                        <div className="pr-5 w-38">
-                          <div className="file-upload-title file-img-width" style={{ color: "#6c5dd3" }}>
-                          <img
-                          src={fileIcon}
-                          alt="file Icon"
-                          className="file-icon-box"
-                          value="aaaa" /> https://www.loremipsum.com
-                          </div>
-                        </div>
-                        <div className="pr-5 w-62">                           
-                                <a
-                                  href=""
-                                  style={{ textDecoration: "none" }}
-                                  className="file-download-title pointer d-flex"
-                                >
-                                  view
-                                  
-                                </a>                             
-                          </div>
-                        </div> */}
-                      <div className="name-box">
-                        {getInitials(user && user.UserName)}
-                      </div>
-                      <div className="rigt-box-comment">
-                        <div className="input-comment-box input-comment-boxLeft">
-                          <TextareaAutosize
-                            minRows={1.3}
-                            style={{ overflow: "hidden" }}
-                            type="text"
-                            className="form-control textAreaHeight"
-                            value={inputComment}
-                            placeholder="Add a comment"
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
-                          <div className="inputIcon">
-                            <img
-                              src={inputRightArrow}
-                              alt=""
-                              style={{ cursor: "pointer" }}
-                              onClick={() => submitComment()}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                      )}
                   </div>
                 )}
                 {showHtoDoIt && (

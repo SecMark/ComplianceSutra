@@ -3,18 +3,24 @@ import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadig
 import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmail, checkPersonalDetailsForm } from "../utility.js";
+import { checkPersonalDetailsForm } from "../utility.js";
 import { actions as personalDetailsAction } from "../../redux/actions";
 import { withRouter } from "react-router-dom";
 import SideBarInputControl from "../WebStepper.js";
 import api from "../../../../apiServices";
-import { toast } from "react-toastify";
 import "./style.css";
 import MobileStepper from "../MobileStepper.js";
+import { useLocation } from "react-router-dom";
 
-function PersonalDetails({ history }) {
+function PersonalDetails({ history, location }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const search = useLocation().search;
+  const email = new URLSearchParams(search).get("email").replace(" ", "+");
+  const key = new URLSearchParams(search).get("key");
+  localStorage.setItem("coemail", email);
+  localStorage.setItem("accessToken", key);
 
   const [isValidate, setIsValidate] = useState(false);
   const [values, setValues] = useState({
@@ -26,7 +32,13 @@ function PersonalDetails({ history }) {
     password: "",
     confirmPassword: "",
   });
-  const [mobileNumberValid, setMobileNumberValid] = useState("true");
+  const options = [
+    { value: "NSE", label: "NSE" },
+    { value: "BSE", label: "BSE" },
+    { value: "CDS", label: "CDS" },
+  ];
+
+  const [mobileNumberValid, setMobileNumberValid] = useState(true);
 
   const [errors, setErrors] = useState({
     passwordErr: "",
@@ -36,7 +48,9 @@ function PersonalDetails({ history }) {
     designationErr: "",
   });
   const [whatappFlag, setWhatappFlag] = useState(false);
-  const [isCompanyNameValid, setIsCompanyNameValid] = useState(true);
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   const [passwordState, setPasswordState] = useState({
     minlength: false,
     uppercaseandlowercase: false,
@@ -46,24 +60,30 @@ function PersonalDetails({ history }) {
 
   const checkNumberAvailable = () => {
     let payload = {
-      countrycode: values.countryCode.replace("+", ""),
-      loginID: values.mobileNumber,
-      loginty: "AdminMobile",
+      mobile_no: values.mobileNumber,
     };
     api
-      .post("/api/availabilityCheck", payload)
+      .post("compliance.api.avabilityCheck", payload)
       .then((result) => {
-        console.log(result.data.Status);
-        setMobileNumberValid(result.data.Status);
+        if (
+          result &&
+          result.data &&
+          result.data.message &&
+          result.data.message.status === true
+        ) {
+          setMobileNumberValid(false);
+        } else {
+          setMobileNumberValid(true);
+        }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
     if (values.mobileNumber.length >= 10) {
       checkNumberAvailable();
+    } else {
+      setMobileNumberValid(true);
     }
   }, [values.mobileNumber]);
 
@@ -95,7 +115,7 @@ function PersonalDetails({ history }) {
     const mobileNumberReg = /^[0-9]{0,10}$/;
     let passwordRE =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-]{8,16}$/;
-    // let passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
+
     if (name === "mobileNumber") {
       if (!mobileNumberReg.test(event.target.value)) {
         return "";
@@ -109,6 +129,15 @@ function PersonalDetails({ history }) {
       if (!passwordRE.test(event.target.value)) {
         setErrors({ ...errors, [inputKey]: "Password is invalid" });
       } else {
+        if (
+          event.target.value !== "" &&
+          values?.confirmPassword === event.target.value
+        ) {
+          setErrors({
+            ...errors,
+            confirmPasswordErr: "Confirm Password should be same as Password",
+          });
+        }
         setErrors({ ...errors, [inputKey]: "" });
       }
       if (event.target.value.length < 8) {
@@ -173,7 +202,14 @@ function PersonalDetails({ history }) {
       if (!passwordRE.test(event.target.value)) {
         setErrors({ ...errors, [inputKey]: "Confirm password is invalid" });
       } else {
-        setErrors({ ...errors, [inputKey]: "" });
+        if (values?.password !== event.target.value) {
+          setErrors({
+            ...errors,
+            [inputKey]: "Confirm Password should be same as Password",
+          });
+        } else {
+          setErrors({ ...errors, [inputKey]: "" });
+        }
       }
     }
     setValues({ ...values, [name]: event.target.value });
@@ -184,63 +220,35 @@ function PersonalDetails({ history }) {
   };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onSubmit();
+      // onSubmit();
     }
   };
-  const errorMessage =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.message;
 
   const onSubmit = () => {
-    if (mobileNumberValid == "true") {
-      toast.error("Mobile number already registered.");
-      return;
-    }
-    let location = window.location.href;
-    let data = location.split("=");
-    let splitEmailAndType = data && data[1].split("&");
-    let emailFromLink = splitEmailAndType[0];
-    let typeFromLink = data[2];
-    setIsValidate(true);
-    if (checkPersonalDetailsForm(values)) {
-      return;
-    }
     if (
-      errors.passwordErr !== "" ||
-      errors.confirmPasswordErr !== "" ||
-      errors.countryCodeErr === "true"
+      values.fullName !== "" &&
+      values.mobileNumber !== "" &&
+      values.mobileNumber !== "" &&
+      values.designation !== "" &&
+      values.password !== "" &&
+      values.confirmPassword !== "" &&
+      values.countryCode !== ""
     ) {
-      return "";
-    }
-    setIsValidate(false);
-    if (emailFromLink !== "" && typeFromLink !== "") {
-      let countryCode;
-      let strr = values.countryCode;
-      // countryCode = strr.replace(/\D/g, '');
-      countryCode = strr;
       dispatch(
         personalDetailsAction.userDataSaveRequest({
-          adminName: values.fullName,
-          adminEmail: emailFromLink,
-          adminMobile: values.mobileNumber,
-          adminPWD: values.password,
-          isClientTypeUser: 0,
-          userType: parseInt(typeFromLink),
-          actionFlag: 2,
+          email: email,
+          token: key,
+          full_name: values.fullName,
+          mobile_number: values.mobileNumber,
           designation: values.designation,
-          userID: "",
+          password: values.password,
+          confirm_password: values.confirmPassword,
+          countrycode: values.countryCode || "+91",
           history,
-          from: "personal-details-co",
-          countrycode:
-            countryCode === "" || countryCode === "+" ? "+91" : countryCode,
-          whatsupFlag: whatappFlag ? 1 : 0,
         })
       );
     } else {
-      toast.error("Please verify your email");
-      return "";
+      setIsValidate(true);
     }
   };
 
@@ -248,37 +256,14 @@ function PersonalDetails({ history }) {
     let strr = e.target.value;
     let str = strr.replace(/\D/g, "");
     if (str === "") {
-      str = "91";
+      str = "+91";
     }
-    //
-    let payload = {
-      cntryCode: str,
-    };
-    api
-      .post("/api/CountryCodeCheck", payload)
-      .then(function (response) {
-        // handle success
-        if (response && response.data && response.data.Status === "True") {
-          setCountryCode(true);
-          let inputKey = "countryCodeErr";
-          setErrors({ ...errors, [inputKey]: "" });
-        } else {
-          setCountryCode(false);
-          // setErrors(errors);
-          let inputKey = "countryCodeErr";
-          setErrors({ ...errors, [inputKey]: "true" });
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-        }
-      });
+    setCountryCode(true);
   };
   return (
     <div className="row">
       <div className="col-3 col-sm-4 col-md-4 col-xl-3 left-fixed">
         <div className="on-boarding">
-          {/* <SideBar /> */}
           <SideBarInputControl currentStep={1} />
         </div>
       </div>
@@ -295,14 +280,12 @@ function PersonalDetails({ history }) {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="header_logo">
-                      {/* <a href="#" style={{'cursor': 'auto'}}> */}
                       <img
                         src={comtech}
                         alt="COMPLIANCE SUTRA"
                         title="COMPLIANCE SUTRA"
                       />
                       <span className="camp">COMPLIANCE SUTRA</span>
-                      {/* </a> */}
                     </div>
                   </div>
                 </div>
@@ -391,23 +374,15 @@ function PersonalDetails({ history }) {
                               onKeyPress={(e) => handleKeyDown(e)}
                             />
                           </div>
-                          {/* {
-                        values.mobileNumber === "" && values.countryCode !== "" && 
-                         errors.countryCodeErr === "true" && (
-                          <p className="input-error-message">
-                             Country code is invalid
-                          </p>
-                        )
-                      } */}
-                          {values.countryCode !== "" &&
-                            errors.countryCodeErr === "true" && (
-                              <p className="input-error-message">
-                                Country code is invalid
-                              </p>
-                            )}
+
                           {isValidate && values.mobileNumber === "" && (
                             <p className="input-error-message">
                               Mobile number is required
+                            </p>
+                          )}
+                          {!mobileNumberValid && (
+                            <p className="input-error-message mb-3">
+                              Mobile number already exists
                             </p>
                           )}
                           {values.mobileNumber !== "" &&
@@ -416,43 +391,39 @@ function PersonalDetails({ history }) {
                                 Mobile number is invalid
                               </p>
                             )}
-                          {values.mobileNumber.length >= 10 &&
-                            mobileNumberValid == "true" && (
-                              <p className="input-error-message">
-                                Mobile number already registered.
-                              </p>
-                            )}
                         </div>
                       </div>
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Designation</label>
-                          <input
-                            type="text"
-                            className={
-                              "form-control " +
-                              (isValidate && values.designation === ""
-                                ? "input-error"
-                                : "") +
-                              (values.designation === ""
-                                ? " "
-                                : " success-input-form-control")
-                              // +(values.designation !== "" ? " success-input-form-control" : "")
-                            }
-                            id="Designation"
-                            placeholder="Eg. Compliance Officer, Team Leader"
-                            value={values.designation}
-                            onChange={onChangeHandler("designation")}
-                            onKeyPress={(e) => handleKeyDown(e)}
-                          />
-                          {isValidate && values.designation === "" && (
-                            <p className="input-error-message">
-                              Designation is required
-                            </p>
-                          )}
+
+                          <div>
+                            <input
+                              type="text"
+                              className={
+                                "form-control " +
+                                (isValidate && values.designation === ""
+                                  ? "input-error"
+                                  : "") +
+                                (values.designation === ""
+                                  ? " "
+                                  : " success-input-form-control")
+                              }
+                              id="Designation"
+                              placeholder="Eg. Compliance Officer, Team Leader"
+                              value={values.designation}
+                              onChange={onChangeHandler("designation")}
+                              onKeyPress={(e) => handleKeyDown(e)}
+                            />
+                            {isValidate && values.designation === "" && (
+                              <p className="input-error-message">
+                                Designation is required
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div className="col-md-6 col-xs-12">&nbsp;</div>
+
                       <div className="col-md-6 col-xs-12">
                         <div className="form-group">
                           <label htmlFor="Company Email">Password</label>
@@ -599,12 +570,40 @@ function PersonalDetails({ history }) {
                     <button
                       onClick={() => onSubmit()}
                       className="btn save-details common-button btn-width"
+                      // disabled={
+                      // values?.fullName === "" ||
+                      // values?.designation === "" ||
+                      // values?.countryCode === "" ||
+                      // values?.companyName === "" ||
+                      // values.password === "" ||
+                      // values.confirmPassword === ""
+                      // errors.passwordErr !== "" ||
+                      // errors.confirmPasswordErr !== "" ||
+                      // errors.countryCodeErr === "true" ||
+                      // values.mobileNumber.length < 10 ||
+                      // values.mobileNumber.length > 10
+                      // }
+                      disabled={
+                        values?.fullName === "" ||
+                        values?.designation === "" ||
+                        values?.countryCode === "" ||
+                        values?.password === "" ||
+                        values?.confirmPassword === "" ||
+                        values?.mobileNumber === "" ||
+                        values?.mobileNumber?.length < 10 ||
+                        values?.mobileNumber?.length > 10 ||
+                        !mobileNumberValid ||
+                        errors?.passwordErr !== "" ||
+                        errors?.confirmPasswordErr !== "" ||
+                        errors?.designationErr !== "" ||
+                        errors?.countryCodeErr !== "" ||
+                        errors?.mobileNumErr !== ""
+                      }
                     >
                       SAVE DETAILS
                     </button>
                   </div>
                   <div className="col-6 text-right d-none d-sm-block">
-                    {/* <a href="#" style={{'cursor': 'auto'}}> */}
                     <span className="powerBy">Powered by</span>
                     <img
                       className="header_logo footer-logo-secmark"
@@ -612,7 +611,6 @@ function PersonalDetails({ history }) {
                       alt="SECMARK"
                       title="SECMARK"
                     />
-                    {/* </a> */}
                   </div>
                 </div>
               </div>

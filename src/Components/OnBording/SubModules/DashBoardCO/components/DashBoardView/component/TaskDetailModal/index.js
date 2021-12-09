@@ -1,18 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
-import Modal from "react-awesome-modal";
 import closeBlack from "../../../../../../../../assets/Icons/closeBlack.png";
 import fileIcon from "../../../../../../../../assets/Icons/fileIcon.png";
-import keyboardArrowRightBlack from "../../../../../../../../assets/Icons/keyboardArrowRightBlack.png";
 import inputRightArrow from "../../../../../../../../assets/Icons/inputRightArrow.png";
-import RedLine from "../../../../../../../../assets/Icons/RedLine.png";
-import { isMobile } from "react-device-detect";
 import assignIconCircle from "../../../../../../../../assets/Icons/assignIconCircle.png";
-import sidebarCheckIcon from "../../../../../../../../assets/Icons/sidebarCheckIcon.png";
-import closeIconGray from "../../../../../../../../assets/Icons/closeIconGray.png";
-import searchIcon from "../../../../../../../../assets/Icons/searchIcon.png";
 import fileUploadIcon from "../../../../../../../../assets/Icons/fileUploadIcon.png";
-import completeTaskIcon from "../../../../../../../../assets/Icons/emailVerify.png";
 import { toast } from "react-toastify";
 import moment from "moment";
 import Dropzone from "react-dropzone";
@@ -56,18 +48,11 @@ function RightSideGrid({
   const [searchBoxShow, setsearchBoxShow] = useState(false);
 
   const [searchBoxShowMobile, setsearchBoxShowMobile] = useState(false);
-  const [navigationHideShow, setNavigationHideShow] = useState(false);
-  const [taskData, setTaskData] = useState([]);
-  const [taskDataBackup, setTaskDataBackup] = useState([]);
   const [expandedFlags, setExpandedFlags] = useState([]);
   const [rowCount, setRowCount] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [searchData, setSearchData] = useState([]);
-  const [showUserToolTip, setShowUserToolTip] = useState("");
   const [today, setToday] = useState(new Date());
   const [emailAvaliableCheck, setEmailAvaliableCheck] = useState(false);
-  const [taskListDisplay, setTaskListDisplay] = useState("1");
-  const [displayTask, setDisplayTask] = useState("1");
   const user = state && state.auth && state.auth.loginInfo;
   const getTaskById =
     state &&
@@ -157,7 +142,7 @@ function RightSideGrid({
   const innerRef = useOuterClick((e) => {
     if (
       (currentDropDown !== "open" && !e.target.id.includes("assignBtn")) ||
-      (currentDropDown === "open" && e.target.id == "")
+      (currentDropDown === "open" && e.target.id === "")
     ) {
       setCurrentDropDown("");
       setSelectedUser("");
@@ -204,9 +189,7 @@ function RightSideGrid({
           let fileData = response.data;
           setFileList(fileData);
         })
-        .catch((error) => {
-          console.log("error => ", error);
-        });
+        .catch((error) => {});
     }
   };
 
@@ -403,7 +386,7 @@ function RightSideGrid({
 
   const ApprovDisplay = (e) => {
     setApproverDropDown("openapproverdropdown");
-    if (approverDropDown == "") {
+    if (approverDropDown === "") {
       getApproveUsers();
       setEmailAvaliableCheck(false);
       setSelectedUser("");
@@ -424,7 +407,7 @@ function RightSideGrid({
     setEmailAvaliableCheck(false);
     setSelectedUser(searchText);
     let temp = [];
-    if (searchText == "") {
+    if (searchText === "") {
       setAllUser(allUserBackup);
     } else {
       allUserBackup &&
@@ -531,14 +514,12 @@ function RightSideGrid({
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleCheckEmailAvailability(event);
-      // handleApproveTask(event);
     }
   };
 
   const handleAssignKeyDown = (e) => {
     if (e.key === "Enter") {
       handleCheckAssignToEmailAvailability(e);
-      // handleAssignToTask(e)
     }
   };
   const handleAssignToTask = (e) => {
@@ -649,9 +630,11 @@ function RightSideGrid({
     var dateObj = new Date(date);
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (dateObj.toLocaleDateString() == today.toLocaleDateString()) {
+    if (dateObj.toLocaleDateString() === today.toLocaleDateString()) {
       return "Today";
-    } else if (dateObj.toLocaleDateString() == yesterday.toLocaleDateString()) {
+    } else if (
+      dateObj.toLocaleDateString() === yesterday.toLocaleDateString()
+    ) {
       return "Yesterday";
     } else {
       return flag === 1
@@ -659,250 +642,6 @@ function RightSideGrid({
         : moment(date).format("DD MMM");
     }
   };
-
-  // const renderTaskList = (task, Status, listType) => {
-  //     return (
-  //         <div
-  //             className="row"
-  //             style={{ marginBottom: "15px", position: "relative" }}
-  //         >
-  //             {listType === 1 && Status === "overdue" && (
-  //                 <div className="redWidth">
-  //                     <div className="redLine">
-  //                         {" "}
-  //                         <img src={RedLine} alt="" />
-  //                     </div>
-  //                 </div>
-  //             )}
-  //             <div className="col-10 col-md-6 col-sm-6 col-xl-6">
-  //                 <div className="all-companies-sub-title">
-  //                     {/* <img id={task.TaskId} style={{ cursor: "pointer" }}
-  //           src={task.Status === "Approved" ? completeTaskIcon : sidebarCheckIcon}
-  //           alt="sidebar Check Icon"
-  //           onClick={() => _handleApproveTaskOnCheckBoxClick(task.TaskId)} /> */}
-  //                     <div
-  //                         onClick={(e) => getSelectTaskDetails(task)}
-  //                         style={{ cursor: "pointer" }}
-  //                     >
-  //                         <div class="graybox-left">
-  //                             <span class="all-companies-nse-label">{task.LicenseCode}</span>
-  //                         </div>
-  //                         <span className="pink-label-title-right">
-  //                             <div className="overdue-title">{task.TaskName}</div>
-  //                             <div
-  //                                 className={
-  //                                     Status === "overdue"
-  //                                         ? "red-week d-block d-sm-none"
-  //                                         : "black-week d-block d-sm-none"
-  //                                 }
-  //                                 style={{ cursor: "pointer" }}
-  //                                 onClick={(e) => getSelectTaskDetails(task)}
-  //                             >
-  //                                 <div className="d-block d-sm-none">
-  //                                     {getDayDate(task.EndDate, 2)}
-  //                                 </div>
-  //                             </div>
-  //                             <p
-  //                                 className="pink-label-text d-none d-sm-block"
-  //                                 style={{
-  //                                     backgroundColor:
-  //                                         task && task.Status
-  //                                             ? task.Status === "Assign"
-  //                                                 ? "#fcf3cd"
-  //                                                 : // task.Status === "Completed By User"  ? "#cdfcd8 " :
-  //                                                 task.Status === "Completed By User"
-  //                                                     ? task.EndDate < today
-  //                                                         ? "#cdfcd8"
-  //                                                         : "#ffefea"
-  //                                                     : task.Status === "Approved"
-  //                                                         ? "#cdfcd8"
-  //                                                         : task.Status === "Assigned"
-  //                                                             ? "#ffefea"
-  //                                                             : task.Status === "Request Rejected"
-  //                                                                 ? "#ffefea"
-  //                                                                 : "#d2fccd"
-  //                                             : "#d2fccd",
-  //                                     color:
-  //                                         task && task.Status
-  //                                             ? task.Status === "Completed By User"
-  //                                                 ? task.EndDate < today
-  //                                                     ? "#7fba7a"
-  //                                                     : "#ff5f31"
-  //                                                 : // task.Status === "Completed By User" ? "#7fba7a" :
-  //                                                 task.Status === "Approved"
-  //                                                     ? "#7fba7a"
-  //                                                     : task.Status === "Assigned"
-  //                                                         ? "#f8c102"
-  //                                                         : task.Status === "Assign"
-  //                                                             ? "#f8c102"
-  //                                                             : task.Status === "Request Rejected"
-  //                                                                 ? "#ff5f31"
-  //                                                                 : ""
-  //                                             : "#fcf3cd",
-  //                                 }}
-  //                             >
-  //                                 {task.Status && task.Status === "Completed By User"
-  //                                     ? task.EndDate < today
-  //                                         ? "Task Completed"
-  //                                         : "Approval Pending"
-  //                                     : task.Status === "Assign"
-  //                                         ? "Assign Task"
-  //                                         : task.Status === "Assigned"
-  //                                             ? "Task Assigned"
-  //                                             : task.Status === "Approved"
-  //                                                 ? "Task Approved"
-  //                                                 : task.Status === "Request Rejected"
-  //                                                     ? "Task Rejected"
-  //                                                     : ""}
-  //                             </p>
-  //                         </span>
-  //                     </div>
-  //                 </div>
-  //             </div>
-  //             <div className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block">
-  //                 <div
-  //                     className="circle-front-text"
-  //                     style={{ width: "fit-content", cursor: "pointer" }}
-  //                     value={task.TaskId}
-  //                     onClick={(e) => getSelectTaskDetails(task)}
-  //                 >
-  //                     {task.EntityName}
-  //                 </div>
-  //             </div>
-  //             <div
-  //                 className="col-2 col-md-2 col-sm-2 col-xl-2 d-none d-sm-block"
-  //                 style={{ cursor: "pointer" }}
-  //                 onClick={(e) => getSelectTaskDetails(task)}
-  //             >
-  //                 {task.AssignedTo != 0 ? (
-  //                     <div className="d-flex">
-  //                         {userDetails.UserType === 4 ? (
-  //                             task.ApproverName === "Assign" ? null : (
-  //                                 <div className="circle-name d-none d-sm-block">
-  //                                     <div className="circle-text">
-  //                                         {userDetails.UserType === 4 &&
-  //                                             getInitials(task.ApproverName)}
-  //                                     </div>
-  //                                 </div>
-  //                             )
-  //                         ) : (
-  //                             <div className="circle-name d-none d-sm-block">
-  //                                 <div className="circle-text">
-  //                                     {getInitials(task.AssignedName)}
-  //                                 </div>
-  //                             </div>
-  //                         )}
-  //                         {/* // <div className="circle-name d-none d-sm-block">
-  //           //   <div className="circle-text">
-  //           //     {
-  //           //        userDetails.UserType === 4 ?
-  //           //        getInitials(task.ApproverName === "Assign" ? "no approver" : task.ApproverName)
-  //           //        :
-  //           //         getInitials(task.AssignedName)
-  //           //     }
-  //           //   </div>
-  //           // </div> */}
-  //                         {userDetails.UserType === 4 ? (
-  //                             <div className="circle-front-text d-none d-sm-block">
-  //                                 {task.ApproverName === "Assign"
-  //                                     ? "No Approver"
-  //                                     : task.ApproverName}
-  //                             </div>
-  //                         ) : (
-  //                             <div className="circle-front-text d-none d-sm-block">
-  //                                 {task.AssignedName}
-  //                             </div>
-  //                         )}
-  //                     </div>
-  //                 ) : (
-  //                     <div>
-  //                         <div
-  //                             className="circle-front-text NoStatus"
-  //                             style={{ color: "#6c5dd3" }}
-  //                         >
-  //                             {" "}
-  //                             <img src={assignIconCircle} alt="" /> ASSIGN
-  //           </div>
-  //                     </div>
-  //                 )}
-  //             </div>
-  //             <div className="col-2">
-  //                 <div className="align-right">
-  //                     <div className="d-flex">
-  //                         <div
-  //                             className={
-  //                                 Status === "overdue"
-  //                                     ? "red-week d-none d-sm-block"
-  //                                     : "black-week d-none d-sm-block"
-  //                             }
-  //                             style={{ cursor: "pointer" }}
-  //                             onClick={(e) => getSelectTaskDetails(task)}
-  //                         >
-  //                             {getDayDate(task.EndDate, 1)}
-  //                         </div>
-  //                         <div
-  //                             className="right-arrow-week text-right-grid"
-  //                             style={{ cursor: "pointer" }}
-  //                             onClick={(e) => getSelectTaskDetails(task)}
-  //                         >
-  //                             {
-  //                                 <img
-  //                                     className="d-none d-sm-block"
-  //                                     src={keyboardArrowRightBlack}
-  //                                     alt="Right Arrow"
-  //                                 />
-  //                             }
-  //                             {task.AssignedTo !== 0 && (
-  //                                 <img
-  //                                     className="d-block d-sm-none"
-  //                                     src={keyboardArrowRightBlack}
-  //                                     alt="Right Arrow"
-  //                                 />
-  //                             )}
-  //                             {showUserToolTip === `Tooltip${task.TaskId}` && (
-  //                                 <div className="toolTip-input">
-  //                                     <div className="tooltiptext1 mobDisplaynone">
-  //                                         <span className="font-normal-text1">
-  //                                             {task.AssignedName}
-  //                                         </span>
-  //                                     </div>
-  //                                 </div>
-  //                             )}
-  //                             {
-  //                                 // task.AssignedTo > 0 &&
-  //                                 task.AssignedTo === 0 && (
-  //                                     <div className="only-mobile-assign-add d-block d-sm-none">
-  //                                         <div
-  //                                             className="assign-user-icon"
-  //                                             onMouseOver={() =>
-  //                                                 setShowUserToolTip(`Tooltip${task.TaskId}`)
-  //                                             }
-  //                                             onMouseOut={() => setShowUserToolTip("")}
-  //                                         >
-  //                                             <img
-  //                                                 src={assignIconCircle}
-  //                                                 className="d-block d-sm-none"
-  //                                                 alt="Assign Circle"
-  //                                             />
-  //                                         </div>
-  //                                     </div>
-  //                                 )
-  //                             }
-  //                         </div>
-  //                     </div>
-  //                 </div>
-  //             </div>
-  //             {Status === "overdue" && (
-  //                 <div className="redWidth-bottom">
-  //                     <div className="redLine">
-  //                         {" "}
-  //                         <img src={RedLine} alt="" />
-  //                     </div>
-  //                 </div>
-  //             )}
-  //         </div>
-  //     )
-  // }
 
   const onHBMenu = () => {
     const drawerParent = document.getElementById("sideBarParent");
@@ -944,8 +683,7 @@ function RightSideGrid({
                     getTaskById && getTaskById.Status
                       ? getTaskById.Status === "Assign"
                         ? "#fcf3cd"
-                        : // getTaskById.Status === "Completed By User" ? "#cdfcd8 " :
-                        getTaskById.Status === "Completed By User"
+                        : getTaskById.Status === "Completed By User"
                         ? getTaskById && getTaskById.EndDate < today
                           ? "#cdfcd8"
                           : "#ffefea"
@@ -968,8 +706,7 @@ function RightSideGrid({
                           ? getTaskById && getTaskById.EndDate < today
                             ? "#7fba7a"
                             : "#ff5f31"
-                          : // task.Status === "Completed By User" ? "#7fba7a" :
-                          getTaskById.Status === "Approved"
+                          : getTaskById.Status === "Approved"
                           ? "#7fba7a"
                           : getTaskById.Status === "Assigned"
                           ? "#f8c102"
@@ -983,22 +720,19 @@ function RightSideGrid({
                 >
                   {getTaskById && getTaskById.Status && (
                     <div style={{ textTransform: "uppercase" }}>
-                      {
-                        // getTaskById.Status === "Completed By User" ? "Task Completed" :
-                        getTaskById.Status === "Completed By User"
-                          ? getTaskById && getTaskById.EndDate < today
-                            ? "Task Completed"
-                            : "Approval Pending"
-                          : getTaskById.Status === "Assign"
-                          ? "Assign Task"
-                          : getTaskById.Status === "Assigned"
-                          ? "Task Assigned"
-                          : getTaskById.Status === "Approved"
-                          ? "Task Approved"
-                          : getTaskById.Status === "Request Rejected"
-                          ? "Task Rejected"
-                          : null
-                      }
+                      {getTaskById.Status === "Completed By User"
+                        ? getTaskById && getTaskById.EndDate < today
+                          ? "Task Completed"
+                          : "Approval Pending"
+                        : getTaskById.Status === "Assign"
+                        ? "Assign Task"
+                        : getTaskById.Status === "Assigned"
+                        ? "Task Assigned"
+                        : getTaskById.Status === "Approved"
+                        ? "Task Approved"
+                        : getTaskById.Status === "Request Rejected"
+                        ? "Task Rejected"
+                        : null}
                     </div>
                   )}
                 </div>
@@ -1017,8 +751,7 @@ function RightSideGrid({
                         ? getTaskById && getTaskById.EndDate < today
                           ? "#cdfcd8"
                           : "#ffefea"
-                        : // getTaskById.Status === "Completed By User"  ? "#cdfcd8 " :
-                        getTaskById.Status === "Approved"
+                        : getTaskById.Status === "Approved"
                         ? "#cdfcd8"
                         : getTaskById.Status === "Assigned"
                         ? "#ffefea"
@@ -1037,8 +770,7 @@ function RightSideGrid({
                           ? getTaskById && getTaskById.EndDate < today
                             ? "#7fba7a"
                             : "#ff5f31"
-                          : // task.Status === "Completed By User" ? "#7fba7a" :
-                          getTaskById.Status === "Approved"
+                          : getTaskById.Status === "Approved"
                           ? "#7fba7a"
                           : getTaskById.Status === "Assigned"
                           ? "#f8c102"
@@ -1052,22 +784,19 @@ function RightSideGrid({
                 >
                   {getTaskById && getTaskById.Status && (
                     <div style={{ textTransform: "uppercase" }}>
-                      {
-                        // getTaskById.Status === "Completed By User" ? "Task Completed" :
-                        getTaskById.Status === "Completed By User"
-                          ? getTaskById && getTaskById.EndDate < today
-                            ? "Task Completed"
-                            : "Approval Pending"
-                          : getTaskById.Status === "Assign"
-                          ? "Assign Task"
-                          : getTaskById.Status === "Assigned"
-                          ? "Task Assigned"
-                          : getTaskById.Status === "Approved"
-                          ? "Task Approved"
-                          : getTaskById.Status === "Request Rejected"
-                          ? "Task Rejected"
-                          : null
-                      }
+                      {getTaskById.Status === "Completed By User"
+                        ? getTaskById && getTaskById.EndDate < today
+                          ? "Task Completed"
+                          : "Approval Pending"
+                        : getTaskById.Status === "Assign"
+                        ? "Assign Task"
+                        : getTaskById.Status === "Assigned"
+                        ? "Task Assigned"
+                        : getTaskById.Status === "Approved"
+                        ? "Task Approved"
+                        : getTaskById.Status === "Request Rejected"
+                        ? "Task Rejected"
+                        : null}
                     </div>
                   )}
                 </div>
@@ -1083,7 +812,7 @@ function RightSideGrid({
                     {getTaskById && getTaskById.AssignedTo != 0 ? (
                       <div className="holding-list-bold-title">
                         {getTaskById &&
-                        getTaskById.AssignedToUserName == "" ? null : (
+                        getTaskById.AssignedToUserName === "" ? null : (
                           <span className="cicrcle-name">
                             {getInitials(
                               getTaskById && getTaskById.AssignedToUserName
@@ -1093,10 +822,7 @@ function RightSideGrid({
                         {getTaskById && getTaskById.AssignedToUserName}
                       </div>
                     ) : (
-                      <div
-                        className="holding-list-bold-title AssinTo"
-                        // onClick={getUserDetail}
-                      >
+                      <div className="holding-list-bold-title AssinTo">
                         <div className="col-9 pl-0">
                           <div
                             className="dashboard-assign"
@@ -1239,7 +965,7 @@ function RightSideGrid({
                   <div className="col-8 col-sm-9 col-md-9 col-xl-9">
                     <div className="holding-list-bold-title">
                       {getTaskById &&
-                      getTaskById.AssignedFromUserName == "" ? null : (
+                      getTaskById.AssignedFromUserName === "" ? null : (
                         <span className="cicrcle-name">
                           {getInitials(
                             getTaskById && getTaskById.AssignedFromUserName
@@ -1260,7 +986,7 @@ function RightSideGrid({
                     {getTaskById && getTaskById.ApproverName != "Assign" ? (
                       <div className="holding-list-bold-title">
                         {getTaskById &&
-                        getTaskById.ApproverName == "" ? null : (
+                        getTaskById.ApproverName === "" ? null : (
                           <span className="cicrcle-name">
                             {getInitials(
                               getTaskById && getTaskById.ApproverName
@@ -1270,10 +996,7 @@ function RightSideGrid({
                         {getTaskById && getTaskById.ApproverName}
                       </div>
                     ) : (
-                      <div
-                        className="holding-list-bold-title"
-                        // onClick={getApproveUsers}
-                      >
+                      <div className="holding-list-bold-title">
                         <div className="col-9 pl-0">
                           {user && user.UserType === 4 ? (
                             <div className="holding-list-bold-title">

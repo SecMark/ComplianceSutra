@@ -1,9 +1,8 @@
 import React from "react";
-import './sideBar.css';
+import "./sideBar.css";
 import SideBarBg from "../../../../assets/Images/Onboarding/side-bar-bg.png";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
-
+import { Carousel } from "react-responsive-carousel";
 
 function SideBar() {
   return (
@@ -16,50 +15,48 @@ function SideBar() {
         </span>
       </div>
       <div className="sidbarBottom-grid">
-        {/* get started page text */}
-        {/* <div className="big-title">
-          Never miss a<br /> deadline
-        </div>
-        <div className="small-title">
-          Track and complete your <br />
-          compliance activities on time
-        </div> */}
-
         <div className="">
-        <Carousel className="css-crousel" showArrows={true} autoPlay={true}
+          <Carousel
+            className="css-crousel"
+            showArrows={true}
+            autoPlay={true}
             interval={5000}
-            infiniteLoop={true}>
-          <div>
-             <div className="big-title">
+            infiniteLoop={true}
+          >
+            <div>
+              <div className="big-title">
                 Never miss a<br /> deadline
               </div>
               <div className="small-title">
                 Track and complete your <br />
                 compliance activities on time
               </div>
-            {/* <img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50" />
-                    <p className="legend">Legend 1</p> */}
-          </div>
-          <div>
-             <div className="big-title">
-             Completion & <br /> performance<br />tracked
+            </div>
+            <div>
+              <div className="big-title">
+                Completion & <br /> performance
+                <br />
+                tracked
               </div>
               <div className="small-title">
-              Keep track of task completion and <br />team performance both via<br /> dashboard and regular reports
+                Keep track of task completion and <br />
+                team performance both via
+                <br /> dashboard and regular reports
               </div>
-          </div>
-          <div>
-            <div className="big-title">
-            Anticipate risks <br /> & be agile
+            </div>
+            <div>
+              <div className="big-title">
+                Anticipate risks <br /> & be agile
               </div>
               <div className="small-title">
-              Anticipate risks and manage<br /> unexpected delays by taking<br /> corrective actions
+                Anticipate risks and manage
+                <br /> unexpected delays by taking
+                <br /> corrective actions
               </div>
-          </div>
-        </Carousel>
+            </div>
+          </Carousel>
+        </div>
       </div>
-      </div>
-      {/* <div> <img src={SideBarBg} alt="" /></div> */}
     </div>
   );
 }

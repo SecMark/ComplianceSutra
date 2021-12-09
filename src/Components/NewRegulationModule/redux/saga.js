@@ -19,21 +19,19 @@ import {
 
 function* fetchUpdates(action) {
   try {
-    console.log("hello function call");
     yield put(setLoading(true));
-    //  yield put(setSuccess(false));
-    const { data, status } = yield call(api.getUpdates, action.payload);
-    if (status === 200 && data) {
+    const { data } = yield call(api.getUpdates, action.payload);
+    if (data.message.status) {
       yield put(setLoading(false));
-      // yield put(setSuccess(true));
-      yield put(setUpdates(data));
+      yield put(setUpdates(data.message.data));
     } else {
+      yield put(setUpdates([]));
       yield put(setLoading(false));
       yield put(setSuccess(false));
     }
   } catch (error) {
     yield put(setLoading(false));
-    // yield put(setSuccess(false));
+    yield put(setUpdates([]));
     console.log(error.message);
   }
 }
@@ -41,18 +39,20 @@ function* fetchUpdates(action) {
 function* fetchIndustryList(action) {
   try {
     yield put(setLoading(true));
-    const { data, status } = yield call(api.getUpdates, action.payload);
-    if (status === 200) {
+    const { data } = yield call(api.getFilters);
+    console.log(data.message.industry_list);
+
+    if (data.message.status) {
       yield put(setLoading(false));
-      //  yield put(setSuccess(true));
-      yield put(setIndustryList(data));
+      yield put(setIssuerList(data.message.issuer_list));
+      yield put(setIndustryList(data.message.industry_list));
+      yield put(setTopicList(data.message.topic_list));
     } else {
       yield put(setLoading(false));
       yield put(setSuccess(false));
     }
   } catch (error) {
     yield put(setLoading(false));
-    //  yield put(setSuccess(false));
     console.log(error.message);
   }
 }
@@ -63,15 +63,12 @@ function* fetchIssuerList(action) {
     const { data, status } = yield call(api.getUpdates, action.payload);
     if (status === 200) {
       yield put(setLoading(false));
-      // yield put(setSuccess(true));
       yield put(setIssuerList(data));
     } else {
       yield put(setLoading(false));
-      //  yield put(setSuccess(false));
     }
   } catch (error) {
     yield put(setLoading(false));
-    // yield put(setSuccess(false));
     console.log(error.message);
   }
 }
@@ -82,11 +79,9 @@ function* fetchTopicList(action) {
     const { data, status } = yield call(api.getUpdates, action.payload);
     if (status === 200) {
       yield put(setLoading(false));
-      // yield put(setSuccess(true));
       yield put(setTopicList(data));
     } else {
       yield put(setLoading(false));
-      //yield put(setSuccess(false));
     }
   } catch (error) {
     yield put(setLoading(false));
@@ -97,14 +92,12 @@ function* fetchTopicList(action) {
 
 function* fetchFilterIndustryList(action) {
   try {
-    const { data, status } = yield call(api.getUpdates, action.payload);
-    if (status === 200) {
+    const { data } = yield call(api.getUpdates, action.payload);
+    if (data.message) {
       yield put(setLoading(false));
-      // yield put(setSuccess(true));
-      yield put(setUpdates(data));
+      yield put(setUpdates(data.message));
     } else {
       yield put(setLoading(false));
-      //   yield put(setSuccess(false));
     }
   } catch (error) {
     yield put(setLoading(false));
@@ -138,7 +131,7 @@ function* updatesSaga() {
   yield takeLatest(GET_INDUSTRY_LIST, fetchIndustryList);
   yield takeLatest(GET_ISSUER_LIST, fetchIssuerList);
   yield takeLatest(GET_TOPIC_LIST, fetchTopicList);
-  yield takeLatest(SET_FILTER_PAYLOAD, fetchFilterIndustryList);
+  yield takeLatest(SET_FILTER_PAYLOAD, fetchUpdates);
   yield takeLatest(SET_SEARCH, setSearchTextAndFetchIndustryList);
 }
 

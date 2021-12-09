@@ -14,15 +14,18 @@ const Datepicker = ({
 }) => {
   const onChangeHandler = (date, dateString) => {
     const months = date?._locale?._months;
-    const dateArr = dateString.split(" ").map((n, index) => {
-      if (index === 1) {
-        return months.indexOf(n) + 1;
-      } else {
-        return parseInt(n);
-      }
-    });
-    dispatch({ type: actionType, payload: dateArr });
-    console.log("hello there");
+    if (dateString) {
+      const dateArr = dateString.split(" ").map((n, index) => {
+        if (index === 1) {
+          return months.indexOf(n) + 1;
+        } else {
+          return parseInt(n);
+        }
+      });
+      dispatch({ type: actionType, payload: dateArr });
+    } else {
+      dispatch({ type: actionType, payload: [] });
+    }
   };
   return (
     <div className="form-group">
@@ -32,7 +35,9 @@ const Datepicker = ({
           style={{ width: "100%", color: "#000", border: "1px solid #ced4da" }}
           format="DD MMMM Y"
           name={name}
-          className={pageName === "newRegulation" ? "date-picker" : ""}
+          className={
+            pageName === "newRegulation" ? "date-picker" : "taskhistoryfilter"
+          }
           onChange={onChangeHandler}
         />
       ) : (

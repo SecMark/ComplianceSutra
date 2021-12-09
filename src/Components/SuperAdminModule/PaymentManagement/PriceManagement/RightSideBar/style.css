@@ -1,0 +1,49 @@
+.PriceManagement-profile-options {
+    padding: 50px 0px 0px 40px;
+    width: 300px;
+  }
+  
+  .PriceManagement-profile-options .options-list {
+    list-style: none;
+    margin-top: 50px;
+    padding: 0;
+  }
+  
+  .PriceManagement-profile-options .options-list li {
+    margin-top: 10px;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.56;
+    letter-spacing: normal;
+    text-align: left;
+    color: #6c5dd3;
+    padding: 10px 0px 10px 8px;
+  }
+  
+  .PriceManagement-profile-options .options-list li:hover {
+    background: #cccafe;
+    color: #575757 !important;
+    cursor: pointer;
+  }
+  
+  .PriceManagement-profile-options .active {
+    background: #cccafe;
+    color: #575757 !important;
+    border-right: 3px solid #7a73ff;
+  }
+  .LogoutButton {
+    margin: 8vh 1vw 1vw -1vw;
+  }
+  .LogoutButton > button {
+    width: 10vw;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: white;
+    padding: 2vh;
+    color: #ef5d5d;
+  }
+  

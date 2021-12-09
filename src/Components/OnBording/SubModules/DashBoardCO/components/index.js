@@ -5,7 +5,6 @@ import SideBarInputControl from "../components/LeftSideBar";
 import RighSider from "../components/RightSideGrid";
 import Cobg from "../../../../../assets/Images/Onboarding/co-bg.png";
 import { actions as taskReportActions } from "../redux/actions";
-import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import ComplianceOfficerSetting from "../components/CoSetting";
 import Notifications from "../components/notification";
@@ -16,12 +15,13 @@ import HelpSection from "../../../../HelpSection/Help";
 import SingleNotification from "../../../../../CustomNotification/SingleNotification";
 import api from "../../../../../../src/apiServices";
 import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
+import ProjectManagement from "../../../../ProjectManagement";
+import ProjectTrash from "../../../../ProjectManagement/Trash";
 // import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const toastId = React.useRef(null);
 
   const [isTaskListOpen, setIsTaskListOpen] = useState(false);
   const [isTaskApproved, setIsTaskApproved] = useState(false);
@@ -33,30 +33,11 @@ function Dashboard({ history }) {
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
 
-  const entityID =
+  const userEmail =
     state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].EntityID;
-
-  const userData =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0];
-
-  const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
+    state?.auth &&
+    state?.auth?.loginInfo &&
+    (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
 
   const userDetails = state && state.auth && state.auth.loginInfo;
 
@@ -71,32 +52,36 @@ function Dashboard({ history }) {
     setIsTaskListOpen(false);
   }, []);
 
-  useEffect(() => {
-    if (userID === undefined) {
-      history.push("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userID === undefined) {
+  //     history.push("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (state.adminMenu.currentMenu !== "taskList") setIsTaskListOpen(false);
   }, []);
 
-  useEffect(() => {
-    dispatch(
-      taskReportActions.taskReportRequest({
-        entityid: "",
-        userID: userDetails.UserID,
-        usertype: userDetails.UserType,
-      })
-    );
-  }, [state.adminMenu.currentMenu]);
+  // useEffect(() => {
+  //   if (
+  //     userEmail &&
+  //     userDetails?.status_response === "Authentication success"
+  //   ) {
+  //     dispatch(taskReportActions.taskReportRequest());
 
+  // const refreshInterval = setInterval(() => {
+  //   dispatch(taskReportActions.taskReportRequest());
+  // }, 30000);
+  // return () => clearInterval(refreshInterval);
+  // } else {
+  //history.push("/login");
+  // }
+  // }, []);
   useEffect(() => {
     if (
       window.location.href.includes("dashboard") &&
       state.adminMenu.currentMenu !== "taskList"
     ) {
-      console.log(isTaskListOpen);
       if (isTaskListOpen) {
         setIsTaskListOpen(false);
       }
@@ -109,10 +94,17 @@ function Dashboard({ history }) {
       dispatch(adminMenuActions.setCurrentMenu("history"));
       return;
     } else if (
+      window.location.href.includes("new-regulation-quiz") &&
+      state.adminMenu.currentMenu !== "new-regulation-quiz"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("new-regulation-quiz"));
+      return;
+    } else if (
       window.location.href.includes("new-regulations") &&
       state.adminMenu.currentMenu !== "new-regulations"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("new-regulations"));
+      return;
     } else if (
       window.location.href.includes("help") &&
       state.adminMenu.currentMenu !== "help"
@@ -123,79 +115,18 @@ function Dashboard({ history }) {
       state.adminMenu.currentMenu !== "notfications"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("notfications"));
+    } else if (
+      window.location.href.includes("project-management") &&
+      state.adminMenu.currentMenu !== "project-management"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("project-management"));
+    } else if (
+      window.location.href.includes("project-trash") &&
+      state?.adminMenu.currentMenu !== "project-trash"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("project-trash"));
     }
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      try {
-        if (userID) {
-          notificationAPICall();
-        }
-      } catch (err) {}
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const notificationAPICall = () => {
-    try {
-      let notificationArr = [];
-      const payload = {
-        userID: userID,
-      };
-      api
-        .post("/api/Notifications", payload)
-        .then(function (response) {
-          console.log(response);
-          var date1 = new Date(); //current time
-          if (response && response.data && response.data.length > 0) {
-            let notification = response && response.data;
-            var notificationDateTime;
-            var date2;
-            var timeDiff;
-            notification &&
-              notification.length > 0 &&
-              notification.map((item, index) => {
-                notificationDateTime = item.date;
-                date2 = new Date(notificationDateTime);
-                timeDiff = Math.abs(date2.getTime() - date1.getTime()); // in miliseconds
-                if (timeDiff < 60000) {
-                  notificationArr.push(item);
-                }
-              });
-            if (notificationArr && notificationArr.length > 0) {
-              if (notificationArr.length === 1) {
-                toast.success(
-                  <SingleNotification
-                    id={toastId.current}
-                    toast={toast}
-                    notification={notificationArr[0]}
-                  />
-                );
-              } else {
-                toast.success(
-                  <MultipleNotification
-                    id={toastId.current}
-                    toast={toast}
-                    notificationCount={notificationArr.length}
-                  />
-                );
-              }
-            } else {
-            }
-          } else {
-          }
-        })
-        .catch(function (error) {
-          if (error) {
-            console.log(error);
-          }
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [window.location.href]);
 
   return (
     <div className="row co-dashboard fix-top">
@@ -242,7 +173,16 @@ function Dashboard({ history }) {
         {state && state.adminMenu.currentMenu === "new-regulations" && (
           <NewRegulations />
         )}
+        {/* {state && state.adminMenu.currentMenu === "new-regulation-quiz" && (
+          <NewRegulationsQuiz />
+        )} */}
         {state && state.adminMenu.currentMenu === "help" && <HelpSection />}
+        {state && state.adminMenu.currentMenu === "project-management" && (
+          <ProjectManagement />
+        )}
+        {state && state.adminMenu.currentMenu === "project-trash" && (
+          <ProjectTrash />
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,48 @@
+.compliance-first-section-heading1 {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.11;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1b1d21;
+}
+
+.compliance-first-section-heading2 {
+  opacity: 0.73;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1b1d21;
+}
+
+.compliance-first-section {
+  background-image: url("../../../assets//Images//ComplianceLanding//background1.png");
+  background-repeat: no-repeat;
+  object-fit: cover;
+}
+
+.first-section-main-heading {
+  /* margin-top: 130px; */
+  padding-bottom: 342px;
+  padding-top: 170px;
+}
+
+.first-section-main-heading > h1 {
+  font-family: Poppins;
+  font-size: 48px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.17;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1b1d21;
+}

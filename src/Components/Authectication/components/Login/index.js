@@ -8,10 +8,21 @@ import RightImageBg from "../../../../assets/Images/Onboarding/RectangleOnboadig
 import SideBar from "../../../../Components/OnBording/SubModules/SideBar";
 import { actions as signInSignUpActions } from "../../redux/actions";
 import validator from "validator";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ToastContainer } from "react-toastify";
 
 function Login({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const [visible, setVisibility] = useState(false);
+
+  const Icon = (
+    <FontAwesomeIcon
+      icon={visible ? "eye-slash" : "eye"}
+      onClick={() => setVisibility((visiblity) => !visiblity)}
+    />
+  );
+  const InputType = visible ? "text" : "password";
 
   const [values, setValues] = useState({
     LoginId: "",
@@ -29,11 +40,12 @@ function Login({ history }) {
     passwordErr: "",
   });
   const [isValidate, setIsValidate] = useState(false);
-
-  const userID =
-    state && state.auth && state.auth.loginInfo && state.auth.loginInfo.UserID;
-
-  const userDetails = state && state.auth && state.auth.loginInfo;
+  const userEmail =
+    state &&
+    state?.auth &&
+    state?.auth?.loginInfo &&
+    (state?.auth?.loginInfo?.email || state?.auth?.loginInfo?.EmailID);
+  const userDetails = state && state?.auth && state?.auth?.loginInfo;
   const onChangeHandler = (name) => (event) => {
     let passwordReg =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
@@ -49,16 +61,6 @@ function Login({ history }) {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  // useEffect(() => {
-  //   if (userID) {
-  //     if (userDetails.UserType === 4) {
-  //       history.push("/dashboard")
-  //     }else{
-  //       history.push("/dashboard-view")
-  //     }
-  //   }
-  // }, [])
-
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
       onSubmit();
@@ -71,13 +73,12 @@ function Login({ history }) {
     }
     dispatch(
       signInSignUpActions.signInRequest({
-        LoginId: values.LoginId,
-        Pwd: values.Pwd,
-        rememberme: values.rememberme ? 1 : 0,
-        Loginty: "AdminEmail",
+        email: values.LoginId,
+        password: values.Pwd,
         history: history,
       })
     );
+    dispatch(signInSignUpActions.signInRequestSuccess({ loginSuccess: true }));
 
     setTimeout(() => {
       let status = state.auth.loginSuccess;
@@ -93,10 +94,24 @@ function Login({ history }) {
     return history.push("/forgot-password");
   };
   const redirectToSignupScreen = () => {
-    return history.push("/");
+    return history.push("/sign-up");
   };
+
+  useEffect(() => {
+    localStorage.setItem("basicToken", "");
+    if (
+      userDetails?.status_response === "Authentication success" &&
+      (userDetails?.email || userDetails?.EmailID) &&
+      userDetails?.token
+    ) {
+      localStorage.setItem("basicToken", userDetails?.token);
+      if (userDetails?.UserType === 3) history.push("/dashboard-view");
+      else history.push("/dashboard");
+    }
+  }, []);
   return (
     <div className="row get-login-mobile">
+      <ToastContainer />
       <div className="col-3 left-fixed">
         <div className="on-boarding">
           <SideBar />
@@ -134,23 +149,25 @@ function Login({ history }) {
                 <div className="comtech_form_wrapper">
                   <div className="form-group">
                     <label htmlFor="Company Email">Company Email</label>
-                    <input
-                      type="text"
-                      className={
-                        "form-control" +
-                        (errors && errors.emailErr !== ""
-                          ? " input-error error-msg-border"
-                          : " ") +
-                        // ( values && values.LoginId !== "" ? "  succes-input-borde" : " 11-1succes-input-border")
-                        (values && values.LoginId === ""
-                          ? ""
-                          : " countryCode-sucess   ") +
-                        (errors.emailErr == "" && " activeForm-control")
-                      }
-                      placeholder="Enter your company email"
-                      value={values.LoginId}
-                      onChange={onChangeHandler("LoginId")}
-                    />
+                    <div className="input-wrapper">
+                      <input
+                        type="text"
+                        className={
+                          "form-control" +
+                          (errors && errors.emailErr !== ""
+                            ? " input-error error-msg-border"
+                            : " ") +
+                          // ( values && values.LoginId !== "" ? "  succes-input-borde" : " 11-1succes-input-border")
+                          (values && values.LoginId === ""
+                            ? ""
+                            : " countryCode-sucess   ") +
+                          (errors.emailErr == "" && " activeForm-control")
+                        }
+                        placeholder="Enter your company email"
+                        value={values.LoginId}
+                        onChange={onChangeHandler("LoginId")}
+                      />
+                    </div>
                     {errors && errors.emailErr !== "" && (
                       <p className="input-error-message">Email is invalid</p>
                     )}
@@ -160,9 +177,9 @@ function Login({ history }) {
                   </div>
                   <div className="form-group">
                     <label htmlFor="Company Email">Password</label>
-                    <div className="">
+                    <div className="input-wrapper">
                       <input
-                        type="password"
+                        type={InputType}
                         className={
                           "form-control" +
                           (errors && errors.passwordErr !== ""
@@ -177,35 +194,10 @@ function Login({ history }) {
                         onChange={onChangeHandler("Pwd")}
                         onKeyPress={handleKeyPress}
                       />
-                      {/* {errors && errors.passwordErr !== "" && <p className="input-error-message">
-                                                Password is invalid
-                                     </p>} */}
-                      {/* {values && values.Pwd === "" && <p className="input-error-message">
-                                                Password is required
-                                     </p>} */}
-                      {/* <ul className="Instruction">
-                                                <li>
-                                                    <div className={passwordState.minlength === false ? "error" : "green-dot"} ></div>At least 8 characters—the more characters, the better
-                    </li>
-                                                <li>
-                                                    <div className={passwordState.uppercaseandlowercase === false ? "error" : "green-dot"}></div>A mixture of both uppercase and lowercase
-                      letters
-                    </li>
-                                                <li>
-                                                    <div className={passwordState.alphabetsandigit === false ? "error" : "green-dot"}></div>A mixture of letters and numbers
-                    </li>
-                                            </ul> */}
+                      <span className="password-toggle-ico">{Icon}</span>
                     </div>
                   </div>
-                  {/* <div className="custom-control custom-checkbox">
-                                        <input type="checkbox"
-                                            className="custom-control-input"
-                                            id="customCheck"
-                                            value={values.rememberme}
-                                            onChange={onChangeHandler('rememberme')}
-                                            name="example1" />
-                                        <label className="custom-control-label" htmlFor="customCheck">Keep me signed in</label>
-                                    </div> */}
+
                   <div className="d-flex login-forgot">
                     <button
                       style={{ cursor: "pointer" }}

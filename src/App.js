@@ -1,41 +1,65 @@
-import React, { useEffect } from "react";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import AppRouter from "./router";
-import { useDispatch, useSelector } from "react-redux";
-import { createHashHistory } from "history";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import api from "../src/apiServices";
-import { actions as notificationActions } from "./Components/OnBording/SubModules/DashBoardCO/redux/actions";
-import CoSetting from "./Components/OnBording/SubModules/DashBoardCO/components/CoSetting";
-import MultipleNotification from "../src/CustomNotification/MultipleNotification";
-import SingleNotification from "../src/CustomNotification/SingleNotification";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import DisplayNotification from "./CommonModules/Notification/Display";
+import Notifications from "./CommonModules/Notification";
+import { onMessageListener } from "./firebaseConfig/firebaseInit";
+import { useSelector, useDispatch } from "react-redux";
+import { actions as taskReportActions } from "../src/Components/OnBording/SubModules/DashBoardCO/redux/actions";
 function App() {
   return <MainApp />;
 }
 
 function MainApp() {
-  // eslint-disable-next-line
-  const toastId = React.useRef(null);
-  const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  console.warn = (message, ...args) => {};
-  console.warn = () => {};
-  console.error = () => {};
-  const browserHistory = createHashHistory();
+  library.add(faEye, faEyeSlash);
+  const [show, setShow] = useState(false);
+  const [notification, setNotification] = useState({
+    title: "",
+    body: "",
+    data: "",
+  });
+  useEffect(() => {
+    setShow(false);
+  }, []);
+
+  onMessageListener()
+    .then((payload) => {
+      setShow(true);
+      setNotification({
+        title: payload.notification.title,
+        body: payload.notification.body,
+        data: payload.data,
+      });
+      dispatch(taskReportActions.taskReportRequest());
+    })
+    .catch((err) => console.log("failed: ", err));
 
   return (
     <>
-      <Router history={browserHistory}>
+      <Router>
         <ToastContainer
           autoClose={5000}
           closeOnClick={false}
           draggable={false}
           hideProgressBar={true}
         />
-        <Switch>
-          <Route component={AppRouter} />
-        </Switch>
+
+        <Notifications />
+
+        {show && (
+          <DisplayNotification
+            title={notification.title}
+            body={notification.body}
+            data={notification.data}
+          />
+        )}
+
+        <Route component={AppRouter} />
       </Router>
     </>
   );

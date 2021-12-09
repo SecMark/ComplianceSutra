@@ -5,10 +5,19 @@
   align-items: center;
   background: #fafafa;
 }
+
+.taskhistory{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+  border: 0px  !important;
+}
 .dropdown-container {
   position: relative;
 }
-.dropdown {
+.dropdown-multi {
   background-color: white;
   width: 100%;
   position: absolute;

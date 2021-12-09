@@ -35,7 +35,7 @@ const actionHandler = {
     isVerifiedEmail: true,
     emailInfo: payload,
     personalInfo: payload,
-    userData: payload.userInfo,
+    userData: payload,
   }),
   [types.COMPANY_TYPE_REQUEST]: (state) => ({
     ...state,
@@ -165,6 +165,19 @@ const actionHandler = {
     ...state,
     emailAlreadExist: payload,
   }),
+  [types.SET_LICENSE_LIST]: (state, { payload }) => ({
+    ...state,
+    licencedata: { industry_type: payload.category, country: payload.country },
+  }),
+  [types.SET_LICENSE_LIST]: (state, { payload }) => ({
+    ...state,
+    licenseList: payload,
+  }),
+
+  [types.SET_LOADER]: (state, { payload }) => ({
+    ...state,
+    loader: payload,
+  }),
 };
 
 export default handleActions(actionHandler, {
@@ -189,4 +202,6 @@ export default handleActions(actionHandler, {
   userInfo: {},
   userData: {},
   goveranceData: {},
+  licenseList: {},
+  licencedata: {},
 });

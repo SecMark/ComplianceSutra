@@ -33,7 +33,7 @@
   top: 0;
   z-index: 10;
   background-color: white;
-  transition: all 500ms ease;
+  transition: all 100ms ease;
   overflow-y: scroll;
 }
 
@@ -344,15 +344,15 @@ p.description-text-search-active {
   border-radius: 4px;
   background-color: #6c5dd3;
   font-family: Poppins;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   font-stretch: normal;
   font-style: normal;
-  line-height: normal;
+  line-height: 12px;
   letter-spacing: 0.01px;
-  text-align: right;
+  text-align: center;
   color: #ffffff;
-  padding: 4px 6px;
+  padding: 0.5rem 1rem;
 }
 
 .regulation-details-download-button-mobile {
@@ -387,7 +387,7 @@ p.description-text-search-active {
   padding: 0;
 }
 .detail-popup .container > h3 {
-  margin: 2.5rem 0 2rem 0;
+  margin: 3.5rem 0 2rem 0;
 }
 
 .SidebarFooter {
@@ -397,10 +397,11 @@ p.description-text-search-active {
 .detail-popup .container .detail-popup-main-content {
   height: 50vh;
   overflow-y: auto;
+  padding-right: 1rem;
 }
 .detail-popup-main-footer {
   position: absolute;
-  bottom: 0;
+  bottom: 5vh;
   left: 0;
   width: 100%;
   display: flex;
@@ -413,6 +414,7 @@ p.description-text-search-active {
   display: flex;
   flex-wrap: row;
   flex: 0.7;
+  align-items: center;
 }
 .download-button-container {
   flex: 0.3;
@@ -440,7 +442,7 @@ p.description-text-search-active {
 .mobile-header-buttons-group {
   display: flex;
   align-items: center;
-  flex: 0.35;
+  flex: 0.28;
   justify-content: space-between;
 }
 .filter-counter {
@@ -529,6 +531,10 @@ p.description-text-search-active {
   .regulation-details-popup-mobile--wrapper {
     width: 85%;
     margin: auto;
+  }
+  .mobile-header-buttons-group {
+    flex: 0.2;
+    justify-content: space-between;
   }
 }
 

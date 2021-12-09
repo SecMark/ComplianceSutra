@@ -1,0 +1,33 @@
+.task-status__container {
+  /* position: absolute; */
+  /* bottom: -8px; */
+  z-index: 1;
+  width: fit-content;
+}
+.task-status__text--task-detail {
+  width: fit-content;
+  padding: 0.25rem;
+  border-radius: 2px;
+  height: 20px;
+  margin: 0;
+  line-height: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  text-transform: capitalize;
+}
+.task-status__text--task-list {
+  width: fit-content;
+  padding: 0.25rem;
+  border-radius: 2px;
+  height: 20px;
+  margin: 0;
+  line-height: 12px;
+  font-size: 10px;
+  font-weight: normal;
+  text-align: left;
+  text-transform: capitalize;
+}
+.task-status__container:nth-child(1) {
+  margin-right: 0.5rem;
+}

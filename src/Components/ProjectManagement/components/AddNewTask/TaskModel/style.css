@@ -1,0 +1,148 @@
+.add-edit-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-edit-project-content {
+  width: 900px;
+  height: 80%;
+  background-color: #ffffff;
+  box-shadow: 0px 3px 36px rgba(67, 0, 255, 0.05);
+  border-radius: 20px;
+  overflow: auto;
+  padding: 20px;
+}
+/* .add-edit-main-container {
+  padding: 20px 20px 20px 20px;
+  overflow-y: auto;
+  height: 644px;
+} */
+
+.add-edit-project-labels {
+  display: block;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #2c2738;
+}
+
+.add-edit-project-inputs {
+  width: 100%;
+  height: 50px;
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.add-edit-project-inputs-task-duretion {
+  width: 50%;
+  height: 50px;
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.add-edit-project-submit-btn {
+  width: 180px;
+  height: 44px;
+  background: #7a73ff;
+  border-radius: 8px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  text-align: center;
+  border: 0;
+  color: #ffffff;
+}
+.add-edit-project-cancel-btn {
+  width: 180px;
+  height: 44px;
+  background: #ffffff;
+  border-radius: 8px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  text-align: center;
+  border: 1px solid #7a73ff;
+  color: #7a73ff;
+}
+
+.add-new-subtask-fileDropZone {
+  border: 1px dashed #2c2738;
+  box-sizing: border-box;
+  border-radius: 10px;
+  height: 50px;
+}
+
+.add-new-subtask-fileDropZone-text {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  text-align: center;
+  padding: 10px;
+}
+
+.add-new-task-radio-btn {
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  box-sizing: border-box;
+  border-radius: 10px;
+  /* padding-left: 35px; */
+}
+
+.add-new-task-radio-weekly-btn {
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  box-sizing: border-box;
+  border-radius: 10px;
+  /* padding-left: 35px; */
+}
+
+.add-new-task-radio-weekly-btn h1 {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  color: #2c2738;
+  padding: 20px;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: all 0.3s ease;
+}
+.add-task-weekly-day-selection {
+  background: #7a73ff;
+  border-radius: 6px;
+  /* margin-top: 5px; */
+  color: white !important;
+}
+
+@media (max-width: 767.98px) {
+  .add-edit-project-content {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: 0px 3px 36px rgba(67, 0, 255, 0.05);
+    border-radius: 20px;
+    overflow: auto;
+    padding: 20px;
+  }
+}
+.add-project-err-msg {
+  font-size: 0.8rem;
+  color: rgba(255, 0, 0, 0.781);
+  font-weight: normal;
+}

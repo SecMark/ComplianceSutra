@@ -1,0 +1,133 @@
+.fifth-section-heading {
+}
+
+.fifth-section-heading1 {
+  font-family: Poppins;
+  font-size: 36px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: center;
+  color: #1b1d21;
+}
+
+.fifth-section-heading2 {
+  font-family: Poppins;
+  font-size: 52px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.23;
+  letter-spacing: 0.08px;
+  text-align: center;
+  color: #333;
+}
+
+.fifth-section-heading3 {
+  font-family: Poppins;
+  font-size: 52px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.23;
+  letter-spacing: 0.08px;
+  text-align: center;
+  color: #6c5dd3;
+}
+
+.fifth-section-getstarted-button {
+  width: 128px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #6c5dd3;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+  border: 0;
+  text-align: center;
+}
+
+.fifth-section-viewdemo-button {
+  width: 118px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: transparent;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: left;
+  color: #6c5dd3;
+  border: 0;
+}
+
+.fifth-section-linebreaker {
+  height: 1px;
+  object-fit: contain;
+  border-bottom: 1px solid #c8c8c8;
+  background-color: #c8c8c8;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.fifth-section-Connectwith {
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: 0.03px;
+  text-align: left;
+  color: #333;
+}
+
+.fith-section-para {
+  opacity: 0.59;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.57;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1d293f;
+}
+
+.fifth-section-sidepadding-left {
+  padding-left: 9rem !important;
+}
+.fifth-section-sidepadding-right {
+  padding-right: 9rem !important;
+}
+
+.fifth-section-contact-and-pricing {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: left;
+  color: #6c5dd3;
+  cursor: pointer;
+}
+.fifth-section-contact-and-pricing .fifth-section-hover-popup{
+  display: none;
+}
+.fifth-section-contact-and-pricing:hover .fifth-section-hover-popup{
+  display: block;
+}

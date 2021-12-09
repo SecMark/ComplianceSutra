@@ -134,7 +134,7 @@ function CoNotification({ settingData, handleClose }) {
                   <div className="col-9">
                      <div className="notification-div">
                         <p className="bolder-text">Email Notifications</p>
-                        <p className="normal-text">You'll receive all CAPMTech notifications on your registered email</p>
+                        <p className="normal-text">You'll receive all Compliance Sutra notifications on your registered email</p>
                      </div>
                   </div>
                   <div className="col-3">
@@ -154,7 +154,7 @@ function CoNotification({ settingData, handleClose }) {
                   <div className="col-9">
                      <div className="notification-div">
                         <p className="bolder-text">WhatsApp Notifications</p>
-                        <p className="normal-text">You'll receive all CAPMTech notifications on your registered mobile number</p>
+                        <p className="normal-text">You'll receive all Compliance Sutra notifications on your registered mobile number</p>
                      </div>
                   </div>
                   <div className="col-3">
@@ -170,7 +170,7 @@ function CoNotification({ settingData, handleClose }) {
                   <div className="col-9">
                      <div className="notification-div">
                         <p className="bolder-text">SMS Notifications</p>
-                        <p className="normal-text">You'll receive all CAPMTech notifications via sms on your registered mobile number</p>
+                        <p className="normal-text">You'll receive all Compliance Sutra notifications via sms on your registered mobile number</p>
                      </div>
                   </div>
                   <div className="col-3">

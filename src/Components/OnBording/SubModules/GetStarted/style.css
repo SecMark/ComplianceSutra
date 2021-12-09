@@ -32,7 +32,6 @@
 }
 .get-main-get-start .wrapper_login {
   margin-top: 40px;
-  /* height: calc(100% - 0px); */
 }
 .get-main-get-start .text-right {
   float: right;
@@ -66,7 +65,6 @@
 /* header css  end*/
 .wrapper_login {
   margin-top: 64px;
-  /* height: calc(100% - 0px); */
 }
 .wrapper_login .login_title {
   font-size: 33px;
@@ -212,7 +210,6 @@ label.custom-control-label.btn-top-label {
   color: rgb(44 39 56 / 80%);
 }
 .get-started-btn .form-group {
-  /* min-height: 91px !important; */
   min-height: 102px !important;
   margin-bottom: 0px;
 }
@@ -299,7 +296,6 @@ label.custom-control-label.btn-top-label {
 }
 
 .activeForm-control {
-  /* border: solid 2px #7FBA7A !important; */
   background-color: #ffffff;
   font-family: Poppins;
   font-size: 13px;
@@ -324,9 +320,6 @@ label.custom-control-label.btn-top-label {
   text-decoration: none !important;
 }
 
-/* .custom-control-input:checked~.custom-control-label::before{
-  background-color: red !important; 
-} */
 .get-main-get-start
   .custom-control-input:checked
   ~ .custom-control-label::before {

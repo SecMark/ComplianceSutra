@@ -14,20 +14,16 @@ export default {
     errorDueToMoreThanOneYearDateFromToday:
       "Date should be less than 1 year from today's date.",
     errorDueToBeforeDate: "Date should not be prior to today's date.",
+    errorDueToPriorDate: "Date should not be prior to date of registration.",
+    errorDueToPreviousDate: "Date should be after today's date.",
+    errorDueToMoreThanOneYearDateFromToday:
+      "Date should be less than 1 year from today's date.",
   },
   filterFlag: "A",
   status: "status",
   license: "license",
   company: "company",
   team: "team",
-  list: "list",
-  calender: "calender",
-  board: "board",
-  day: "day",
-  month: "month",
-  week: "week",
-  increment: "increment",
-  decrement: "decrement",
   ReAssignFilterTypes: {
     migrateAllTasksInDateRange: "MIGRATE_ALL_TASKS_IN_DATE_RANGE",
     migrateAllTasksOfParticularDate: "MIGRATE_ALL_TASKS_OF_PARTICULAR_DATE",
@@ -48,5 +44,99 @@ export default {
     "Friday",
     "Saturday",
     "Sunday",
+  ],
+
+  ExpertUser: "8",
+  ExpertReviewerBaseUrl: "/expert-review",
+  MigrateTaskMessages: {
+    success: "Migration Request has been submitted successfully!",
+    MembershipDetails: {
+      recommendedText: "RECOMMENDED",
+      plans: [
+        {
+          id: 1,
+          name: "Monthly",
+          users: 5,
+          isRecommended: false,
+          isDefaultSelected: false,
+        },
+        {
+          id: 2,
+          name: "Annual",
+          users: 10,
+          isRecommended: true,
+          isDefaultSelected: true,
+        },
+      ],
+    },
+    MembershipDetails: {
+      recommendedText: "RECOMMENDED",
+      plans: [
+        {
+          id: 1,
+          name: "Monthly",
+          users: 5,
+          isRecommended: false,
+          isDefaultSelected: false,
+        },
+        {
+          id: 2,
+          name: "Annual",
+          users: 10,
+          isRecommended: true,
+          isDefaultSelected: true,
+        },
+      ],
+    },
+  },
+
+  expertReview: "exp",
+  complianceOfficer: "compl",
+  day: "day",
+  month: "month",
+  week: "week",
+  increment: "increment",
+  decrement: "decrement",
+  list: "list",
+  calender: "calender",
+  board: "board",
+  notification_types: [
+    {
+      value: "All Notifications",
+      label: "All Notifications",
+    },
+    {
+      value: "accepted",
+      label: "Accepted",
+    },
+    {
+      value: "Approved",
+      label: "Approved",
+    },
+    {
+      value: "Assigned",
+      label: "Assigned",
+    },
+    {
+      value: "close-by-owner",
+      label: "Close By Owner",
+    },
+    {
+      value: "Approval Pending",
+      label: "Completed By User",
+    },
+    {
+      value: "migrated",
+      label: "Migrated",
+    },
+    {
+      value: "Rejected",
+      label: "Request Rejected",
+    },
+
+    {
+      value: "sent-to-expert-approval",
+      label: "Sent To SecMark For Approval",
+    },
   ],
 };

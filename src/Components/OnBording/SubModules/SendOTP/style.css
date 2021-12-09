@@ -68,8 +68,7 @@
 .verify-otp .form-control {
   width: 261px;
   height: 40px;
-  /* margin: 24px 20px 24px 0; */
-  /* padding: 11px 133px 10px 24px; */
+
   border-radius: 8px;
   border: solid 1px #e4e4e4;
   background-color: #ffffff;

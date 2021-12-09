@@ -38,8 +38,8 @@ const initailState = {
     industry: "",
     issuer: "",
     topic: "",
-    fromDate: "",
-    toDate: "",
+    from: "",
+    to: "",
   },
 };
 
@@ -93,6 +93,7 @@ const reducer = (state = initailState, { type, payload }) => {
         isSearch: false,
         isLoading: false,
         isSuccess: false,
+        updateList: [],
         badges: {
           fromAndToDate: "",
           industry: "",

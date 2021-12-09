@@ -1,140 +1,161 @@
-import React, { useEffect, useState } from "react"
-import "./style.css"
-import api from "../../../../../../../apiServices"
-import eyeIcon from "../../../../../../../assets/Icons/eye.png"
-import closeBlack from "../../../../../../../assets/Icons/closeBlack.png"
-import { toast } from "react-toastify"
-import { useDispatch, useSelector } from "react-redux"
+import React, { useEffect, useState } from "react";
+import "./style.css";
+import api from "../../../../../../../apiServices";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
 function CoSetting({ handleClose }) {
   const [values, setValues] = useState({
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
-  })
+  });
 
-  const state = useSelector((state) => state)
-  const dispatch = useDispatch()
-  const auth = state && state.auth
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const auth = state && state.auth;
 
   const [errors, setErrors] = useState({
     currentPasswordErr: "",
     newPasswordErr: "",
     confirmPasswordErr: "",
-  })
-  const [isValidate, setIsValidate] = useState(false)
-  const [showPassword, setShowPassowrd] = useState("password")
+  });
+  const [isValidate, setIsValidate] = useState(false);
+  const [showPassword, setShowPassowrd] = useState("password");
   const [passwordState, setPasswordState] = useState({
     minlength: false,
     uppercaseandlowercase: false,
     alphabetsandigit: false,
-  })
-  const loggedUser = state && state.auth && state.auth.loginInfo
-  const [showSectionTitle, setShowSectionTitle] = useState("Security")
-  const [section, setSection] = useState("security")
-  const [twoFactortAuth, setTwoFactorAuth] = useState(false)
-  const [close, setClose] = useState(false)
+  });
+  const loggedUser = state && state.auth && state.auth.loginInfo;
+  const [showSectionTitle, setShowSectionTitle] = useState("Security");
+  const [section, setSection] = useState("security");
+  const [twoFactortAuth, setTwoFactorAuth] = useState(false);
+  const [close, setClose] = useState(false);
+  const [visiblePassword, setVisiblePassword] = useState({
+    currentPassword: false,
+    newPassowrd: false,
+    confirmPassword: false,
+  });
 
   useEffect(() => {
-    getSettingData()
-  }, [])
-
+    getSettingData();
+  }, []);
+  useEffect(() => {
+    console.log(visiblePassword);
+  }, [visiblePassword]);
   const onChanePasswordClick = () => {
-    setShowSectionTitle("Change Password")
-    setSection("change-password")
-    setClose(true)
-  }
+    setShowSectionTitle("Change Password");
+    setSection("change-password");
+    setClose(true);
+  };
 
   const onShowPasswordClick = () => {
     if (showPassword === "password") {
-      setShowPassowrd("text")
+      setShowPassowrd("text");
     } else {
-      setShowPassowrd("password")
+      setShowPassowrd("password");
     }
-  }
+  };
 
   const getSettingData = () => {
-    const payload = {
-      gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
-      settingType: 5,
-      actionFlag: 0,
-      entityID: 0,
-      licID: 0,
-      uUserID: 0,
-      utype: 0,
-      notificationList: "",
-      pwd: "",
-      fullName: "",
-      emailID: "",
-      mobile: "",
-    }
-    api
-      .post("/api/CoSettings", payload)
-      .then(function (response) {
-        if (response && response.data && response.data.length > 0) {
-          setTwoFactorAuth(response.data[0].TwoWayAuth === 0 ? false : true)
-        } else {
-          setTwoFactorAuth(false)
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-        }
-      })
-  }
+    // const payload = {
+    //   gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
+    //   settingType: 5,
+    //   actionFlag: 0,
+    //   entityID: 0,
+    //   licID: 0,
+    //   uUserID: 0,
+    //   utype: 0,
+    //   notificationList: "",
+    //   pwd: "",
+    //   fullName: "",
+    //   emailID: "",
+    //   mobile: "",
+    // };
+    // api
+    //   .post("/api/CoSettings", payload)
+    //   .then(function (response) {
+    //     if (response && response.data && response.data.length > 0) {
+    //       setTwoFactorAuth(response.data[0].TwoWayAuth === 0 ? false : true);
+    //     } else {
+    //       setTwoFactorAuth(false);
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     if (error) {
+    //     }
+    //   });
+  };
 
   const onCancelButtonClick = () => {
-    setShowSectionTitle("Security")
-    setSection("security")
-    setClose(false)
-  }
+    setPasswordState({
+      minlength: false,
+      uppercaseandlowercase: false,
+      alphabetsandigit: false,
+    });
+    setErrors({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+    setValues({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+    setShowSectionTitle("Security");
+    setSection("security");
+    setClose(false);
+  };
 
   const onChangeHandler = (name) => (event) => {
     let passwordRE =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-]{8,16}$/
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-]{8,16}$/;
 
     if (name === "newPassword") {
-      let minlength = "minlength"
-      let alphabetsandigit = "alphabetsandigit"
-      let uppercaseandlowercase = "uppercaseandlowercase"
-      let inputKey = "newPasswordErr"
+      let minlength = "minlength";
+      let alphabetsandigit = "alphabetsandigit";
+      let uppercaseandlowercase = "uppercaseandlowercase";
+      let inputKey = "newPasswordErr";
       if (!passwordRE.test(event.target.value)) {
-        setErrors({ ...errors, [inputKey]: "Password is invalid" })
+        setErrors({ ...errors, [inputKey]: "Password is invalid" });
       } else {
-        setErrors({ ...errors, [inputKey]: "" })
+        setErrors({ ...errors, [inputKey]: "" });
       }
       if (event.target.value.length < 8) {
-        setPasswordState((prevState) => ({ ...prevState, [minlength]: false }))
+        setPasswordState((prevState) => ({ ...prevState, [minlength]: false }));
       } else {
-        setPasswordState((prevState) => ({ ...prevState, [minlength]: true }))
+        setPasswordState((prevState) => ({ ...prevState, [minlength]: true }));
       }
 
       let uppercaseandlowercaseRE =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
       if (uppercaseandlowercaseRE.test(event.target.value)) {
         setPasswordState((prevState) => ({
           ...prevState,
           [alphabetsandigit]: true,
           [uppercaseandlowercase]: true,
-        }))
+        }));
       } else {
         if (/^[a-z]*$/.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: false,
             [uppercaseandlowercase]: false,
-          }))
+          }));
         } else if (
           /^[a-zA-Z]*$/.test(event.target.value) &&
           /(?=.*?[A-Z])(?=.*?[a-z])./.test(event.target.value)
         ) {
-          // else if (/(?=.*?[A-Z])(?=.*?[a-z])./.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: false,
             [uppercaseandlowercase]: true,
-          }))
+          }));
         } else if (
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]/.test(event.target.value)
         ) {
@@ -142,50 +163,36 @@ function CoSetting({ handleClose }) {
             ...prevState,
             [alphabetsandigit]: true,
             [uppercaseandlowercase]: true,
-          }))
+          }));
         } else if (/(?=.*?[A-Za-z])(?=.*?[0-9])/.test(event.target.value)) {
-          // else if (/(?=.*?[A-Za-z])(?=.*?[0-9])./.test(event.target.value)) {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: true,
             [uppercaseandlowercase]: false,
-          }))
-        }
-        // else if (/^[A-Z0-9]*$/.test(event.target.value)) {
-        //   setPasswordState(prevState => ({
-        //     ...prevState, [alphabetsandigit]: true, [uppercaseandlowercase]: false
-        //   }));
-        // }
-        else {
+          }));
+        } else {
           setPasswordState((prevState) => ({
             ...prevState,
             [alphabetsandigit]: false,
             [uppercaseandlowercase]: false,
-          }))
+          }));
         }
       }
     }
-    // if (name === "currentPassword") {
-    //   let inputKey = "currentPasswordErr"
-    //   if (!passwordRE.test(event.target.value)) {
-    //     setErrors({ ...errors, [inputKey]: "Password is invalid" })
-    //   } else {
-    //     setErrors({ ...errors, [inputKey]: "" });
-    //   }
-    // }
+
     if (name === "confirmPassword") {
-      let inputKey = "confirmPasswordErr"
+      let inputKey = "confirmPasswordErr";
       if (!passwordRE.test(event.target.value)) {
-        setErrors({ ...errors, [inputKey]: "Password is invalid" })
+        setErrors({ ...errors, [inputKey]: "Password is invalid" });
       } else {
-        setErrors({ ...errors, [inputKey]: "" })
+        setErrors({ ...errors, [inputKey]: "" });
       }
     }
-    setValues({ ...values, [name]: event.target.value })
-  }
+    setValues({ ...values, [name]: event.target.value });
+  };
 
   const onSavePassword = () => {
-    setIsValidate(true)
+    setIsValidate(true);
     if (
       values.currentPassword === "" ||
       values.newPassword === "" ||
@@ -193,38 +200,42 @@ function CoSetting({ handleClose }) {
       errors.currentPasswordErr !== "" ||
       errors.newPasswordErr !== "" ||
       errors.confirmPasswordErr !== "" ||
-      values.newPassword !== values.confirmPassword
+      values.newPassword !== values.confirmPassword ||
+      values.currentPassword === values.confirmPassword
     ) {
-      return ""
+      if (values.currentPassword === values.confirmPassword) {
+        toast.error("New Password can't be same as current password.");
+      }
+      return "";
     }
-    setIsValidate(false)
+    setIsValidate(false);
     const payload = {
-      settingType: 5,
-      actionFlag: 2,
-      emailID: auth && auth.loginInfo && auth.loginInfo.EmailID,
-      pwd: values.confirmPassword,
-    }
+      user:
+        auth &&
+        auth.loginInfo &&
+        (auth.loginInfo.EmailID || auth.loginInfo.email),
+      new_password: values.newPassword,
+      old_password: values.currentPassword,
+      logout_all_sessions: 1,
+    };
     api
-      .post("/api/CoSettings", payload)
+      .post("compliance.api.changePassword", payload)
       .then(function (response) {
-        if (response && response.data &&  response.data.data[0]) {
-          if (response.data.data[0].Status === "Sucess") {
-            toast.success("Password changed sucessfully")
+        if (response && response.data && response.data.message) {
+          if (response.data.message.status === true) {
+            toast.success(response.data.message.status_response);
             setValues({
               currentPassword: "",
               newPassword: "",
               confirmPassword: "",
-            })
+            });
             setTimeout(() => {
-              setShowSectionTitle("Security")
-              setSection("security")
-            }, 1000)
-          }
-          else {
-            if (response && response.data && response.data.data[0] && response.data.data[0].Status === "Fail") {
-              let message = ""
-              message = response.data.data[0].Message;
-              toast.error(message && message)
+              setShowSectionTitle("Security");
+              setSection("security");
+            }, 1000);
+          } else {
+            if (response.data.message.status === false) {
+              toast.error(response.data.message.status_response);
             }
           }
         }
@@ -232,8 +243,8 @@ function CoSetting({ handleClose }) {
       .catch(function (error) {
         if (error) {
         }
-      })
-  }
+      });
+  };
   const changeSettingFlagAPICall = (type) => {
     const payload = {
       gUserID: auth && auth.loginInfo && auth.loginInfo.UserID,
@@ -248,64 +259,28 @@ function CoSetting({ handleClose }) {
       fullName: "",
       emailID: "",
       mobile: "",
-    }
+    };
     api
       .post("/api/CoSettings", payload)
       .then(function (response) {
         if (response && response.data && response.data[0]) {
           setTimeout(() => {
-            getSettingData()
-          }, 3000)
+            getSettingData();
+          }, 3000);
         } else {
         }
       })
       .catch(function (error) {
         if (error) {
         }
-      })
-  }
+      });
+  };
   const onSliderChange = (e, text) => {
     if (e.target.checked) {
-      setTwoFactorAuth(e.target.checked)
+      setTwoFactorAuth(e.target.checked);
     }
-    changeSettingFlagAPICall(text)
-  }
-
-  const handleVerifyModalAction = (flag) => {
-    let payload = { loginID: loggedUser.EmailID, pwd: values.currentPassword }
-    api
-      .post("/api/Loginsuccess", payload)
-      .then(function (response) {
-        if (
-          response &&
-          response.data &&
-          response.data.StatusCode === 200 &&
-          response.data.Message === "SUCCESS"
-        ) {
-          setErrors({ ...errors, ["currentPasswordErr"]: "" })
-        } else if (
-          response &&
-          response.data &&
-          response.data.StatusCode === 200 &&
-          response.data.Message === "FAIL"
-        ) {
-          setErrors({ ...errors, ["currentPasswordErr"]: "invalid" })
-        } else {
-          toast.error("Something went to wrong, Please try after sometime", {
-            autoClose: 5000,
-          })
-        }
-      })
-      .catch(function (error) {
-        if (error) {
-          toast.error("Something went to wrong, Please try after sometime", {
-            autoClose: 5000,
-          })
-        }
-      })
-  }
-  console.log(errors)
-
+    changeSettingFlagAPICall(text);
+  };
   const handleKeyPress = (e, name) => {
     if (e.charCode === 13) {
       if (
@@ -314,12 +289,12 @@ function CoSetting({ handleClose }) {
         (errors.currentPasswordErr !== "invalid" &&
           values.currentPassword !== "")
       ) {
-        onSavePassword()
+        onSavePassword();
       } else {
-        handleVerifyModalAction()
+        // handleVerifyModalAction();
       }
     }
-  }
+  };
 
   return (
     <div className="co-security">
@@ -333,10 +308,9 @@ function CoSetting({ handleClose }) {
             src={closeBlack}
             alt="close Black"
             onClick={() => {
-              close === false ? handleClose(true) : onCancelButtonClick()
+              close === false ? handleClose(true) : onCancelButtonClick();
             }}
           />
-
         </div>
       </div>
       {/* <div className="personal-mgt-title">{showSectionTitle}</div> */}
@@ -405,20 +379,20 @@ function CoSetting({ handleClose }) {
       {section === "change-password" && (
         <div className="channel-div">
           <div className="row mar-bottom change-pass-Co-setting">
-          <div className="col-12 d-block d-sm-none">
-            <div className="account-password-title">Account Password</div>
-          </div>
+            <div className="col-12 d-block d-sm-none">
+              <div className="account-password-title">Account Password</div>
+            </div>
             <div className="col-12 col-sm-6 col-md-6 col-xl-6">
               <div className="notification-div-flex">
                 <p className="password-text">Current Password</p>
 
                 <div className="form-group" style={{ height: "45px" }}>
                   <input
-                    type="password"
+                    type={visiblePassword.currentPassword ? "text" : "password"}
                     value={values.currentPassword}
                     autoComplete="off"
                     placeholder="Enter  password"
-                    onBlur={(e) => handleVerifyModalAction(e)}
+                    // onBlur={(e) => handleVerifyModalAction(e)}
                     onChange={onChangeHandler("currentPassword")}
                     className={
                       "form-control " +
@@ -445,6 +419,23 @@ function CoSetting({ handleClose }) {
                       Please enter current password
                     </p>
                   )}
+                  {values.currentPassword && values.currentPassword !== "" && (
+                    <span
+                      className="position-absolute visible-password__icon"
+                      onClick={() =>
+                        setVisiblePassword((value) => ({
+                          ...value,
+                          currentPassword: !value.currentPassword,
+                        }))
+                      }
+                    >
+                      {visiblePassword.currentPassword ? (
+                        <AiFillEyeInvisible />
+                      ) : (
+                        <AiFillEye />
+                      )}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -459,7 +450,7 @@ function CoSetting({ handleClose }) {
                       values.currentPassword === "" ||
                       errors.currentPasswordErr !== ""
                     }
-                    type="password"
+                    type={visiblePassword.newPassowrd ? "text" : "password"}
                     autoComplete="off"
                     placeholder="Enter password"
                     onChange={onChangeHandler("newPassword")}
@@ -470,22 +461,42 @@ function CoSetting({ handleClose }) {
                         values.confirmPassword !== values.newPassword &&
                         " input-error") +
                       (values.confirmPassword === "" ||
-                        (values.confirmPassword !== "" &&
-                          errors.confirmPasswordErr !== "")
+                      (values.confirmPassword !== "" &&
+                        errors.confirmPasswordErr !== "")
                         ? "input-error" +
-                        (values.confirmPassword !== values.newPassword &&
-                          " input-error ")
+                          (values.confirmPassword !== values.newPassword &&
+                            " input-error ")
                         : "") +
                       "" +
                       (values.confirmPassword !== ""
                         ? " input-not-blank"
                         : " ") +
                       (values.newPassword !== "" &&
-                        values.confirmPassword === values.newPassword
+                      values.confirmPassword === values.newPassword
                         ? " password-success "
                         : "")
                     }
                   />
+                  {values.newPassword && values.newPassword !== "" && (
+                    <span
+                      className="position-absolute visible-password__icon"
+                      onClick={() =>
+                        setVisiblePassword((value) => ({
+                          ...value,
+                          newPassowrd: !value.newPassowrd,
+                        }))
+                      }
+                      style={{
+                        marginTop: "-4px",
+                      }}
+                    >
+                      {visiblePassword.newPassowrd ? (
+                        <AiFillEyeInvisible />
+                      ) : (
+                        <AiFillEye />
+                      )}
+                    </span>
+                  )}
                   {values.newPassword !== "" &&
                     errors &&
                     errors.newPasswordErr !== "" && (
@@ -549,7 +560,7 @@ function CoSetting({ handleClose }) {
                     placeholder="Enter password"
                     onChange={onChangeHandler("confirmPassword")}
                     value={values.confirmPassword}
-                    type="password"
+                    type={visiblePassword.confirmPassword ? "text" : "password"}
                     onKeyPress={handleKeyPress}
                     className={
                       "form-control " +
@@ -557,22 +568,39 @@ function CoSetting({ handleClose }) {
                         values.confirmPassword !== values.newPassword &&
                         " input-error") +
                       (values.confirmPassword === "" ||
-                        (values.confirmPassword !== "" &&
-                          errors.confirmPasswordErr !== "")
+                      (values.confirmPassword !== "" &&
+                        errors.confirmPasswordErr !== "")
                         ? "input-error" +
-                        (values.confirmPassword !== values.newPassword &&
-                          " input-error ")
+                          (values.confirmPassword !== values.newPassword &&
+                            " input-error ")
                         : "") +
                       "" +
                       (values.confirmPassword !== ""
                         ? " input-not-blank"
                         : " ") +
                       (values.confirmPassword !== "" &&
-                        values.confirmPassword === values.newPassword
+                      values.confirmPassword === values.newPassword
                         ? " password-success "
                         : "")
                     }
                   />
+                  {values.confirmPassword && values.confirmPassword !== "" && (
+                    <span
+                      className="position-absolute visible-password__icon"
+                      onClick={() =>
+                        setVisiblePassword((value) => ({
+                          ...value,
+                          confirmPassword: !value.confirmPassword,
+                        }))
+                      }
+                    >
+                      {visiblePassword.confirmPassword ? (
+                        <AiFillEyeInvisible />
+                      ) : (
+                        <AiFillEye />
+                      )}
+                    </span>
+                  )}
                   {/* {values.confirmPassword !== "" && errors && errors.confirmPasswordErr !== "" && <p className="input-error-message">
                     Password is invalid
                 </p>} */}
@@ -606,21 +634,21 @@ function CoSetting({ handleClose }) {
                     onClick={() => onSavePassword()}
                     className={
                       values.newPassword === "" ||
-                        values.confirmPassword === "" ||
-                        values.newPassword !== values.confirmPassword
+                      values.confirmPassword === "" ||
+                      values.newPassword !== values.confirmPassword
                         ? "btn save-changes-btn"
                         : "btn save-changes-blue-btn"
                     }
                   >
                     Save Password
-                </button>
+                  </button>
                   <div
                     style={{ paddingTop: 10, paddingLeft: 30 }}
                     onClick={() => onCancelButtonClick()}
                     className="discard-label-link"
                   >
                     Cancel
-                </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -637,8 +665,8 @@ function CoSetting({ handleClose }) {
                   onClick={() => onSavePassword()}
                   className={
                     values.newPassword === "" ||
-                      values.confirmPassword === "" ||
-                      values.newPassword !== values.confirmPassword
+                    values.confirmPassword === "" ||
+                    values.newPassword !== values.confirmPassword
                       ? "btn save-changes-btn"
                       : "btn save-changes-blue-btn"
                   }
@@ -661,6 +689,6 @@ function CoSetting({ handleClose }) {
         </div>
       )}
     </div>
-  )
+  );
 }
-export default CoSetting
+export default CoSetting;

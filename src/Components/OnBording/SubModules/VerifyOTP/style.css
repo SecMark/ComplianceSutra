@@ -50,7 +50,6 @@
 /* header css  end*/
 .wrapper_login {
   margin-top: 64px;
-  /* height: calc(100% - 0px); */
 }
 .Resend-OTP-in {
   margin: 2px 12px 2px 0;
@@ -66,7 +65,7 @@
   text-align: left;
   color: #1b1d21;
 }
-.second{
+.second {
   margin: 0 0 0 12px;
   font-family: Poppins;
   font-size: 13px;
@@ -79,7 +78,7 @@
   text-align: left;
   color: #1b1d21;
 }
-.mobile-change{
+.mobile-change {
   font-family: Poppins;
   font-size: 10px;
   font-weight: 500;
@@ -111,14 +110,12 @@
 .smallBtn .form-control {
   width: 261px;
   height: 40px;
-  /* margin: 24px 20px 24px 0; */
-  /* padding: 11px 133px 10px 24px; */
+
   border-radius: 8px;
   border: solid 1px #e4e4e4;
   background-color: #ffffff;
-  /* margin-bottom: 48px; */
 }
-.smallBtn .form-control::placeholder{
+.smallBtn .form-control::placeholder {
   font-family: Poppins;
   font-size: 13px;
   font-weight: 300;
@@ -270,7 +267,7 @@
   text-align: left;
   color: #aeaeae;
 }
-.count-text-sec{
+.count-text-sec {
   font-family: Poppins;
   font-size: 13px;
   font-weight: 500;
@@ -280,34 +277,60 @@
   letter-spacing: 0px;
   text-align: left;
   color: #1b1d21;
-  margin-bottom:0px;
+  margin-bottom: 0px;
 }
 /* bottom logo */
 
 .get-main .mobile-steper-stripe {
   top: 0px;
 }
-.input-mobile-box-otp{
+.input-mobile-box-otp {
   font-weight: 400;
-    font-size: 13px;
-    border-left: 0px !important;
-    border-top-left-radius: 0px !important;
-    border-bottom-left-radius: 0px !important;
+  font-size: 13px;
+  border-left: 0px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
 @media screen and (max-width: 767px) {
   .send-otp .disc-text {
     width: 100%;
   }
-  .otp-mobile-py .container{
+  .otp-mobile-py .container {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
-  
+
   .send-otp .change {
     padding-left: 0px;
   }
-  .space-mobile{
-    height:5px;
+  .space-mobile {
+    height: 5px;
   }
+}
 
+.resend {
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  text-align: left;
+  color: #6c5dd3;
+  padding-left: 15px;
+  cursor: pointer;
+  opacity: 1;
+}
+.resend-text {
+  opacity: 0.6;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #1b1d21;
 }
