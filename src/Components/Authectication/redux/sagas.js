@@ -53,7 +53,7 @@ const loginReq = function* loginReq({ payload }) {
               type: "mobile-validation",
             },
           });
-        } else if (userType === 3) {
+        } else if (userType === 3 || userType === 5) {
           payload.history.push("/dashboard-view");
         } else {
           payload.history.push("/dashboard");

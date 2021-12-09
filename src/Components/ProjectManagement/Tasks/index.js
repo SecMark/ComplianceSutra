@@ -11,7 +11,10 @@ import {
 import NewTaskModel from "../components/AddNewTask/TaskModel";
 import { SmallIconButton } from "../components/Buttons";
 import DeactivateAndDeleteModal from "../components/Modals/DeactivateAndDeleteModal";
-import { ProjectSubTask } from "../ProjectDesktop";
+import {
+  getDateValidationsFromProject,
+  ProjectSubTask,
+} from "../ProjectDesktop";
 import {
   clearDeleteModalSatate,
   clearTaskModalState,
@@ -133,6 +136,10 @@ const Tasks = () => {
             type="primary"
             className="mr-2"
             onClick={() => {
+              const dateValidations = getDateValidationsFromProject(
+                project_id,
+                projectData
+              );
               dispatch(
                 setTaskModalState({
                   ...modalsStatus?.taskModal,
@@ -143,6 +150,7 @@ const Tasks = () => {
                     milestone_id,
                     task_list_id,
                   },
+                  dateValidations,
                 })
               );
             }}

@@ -3,19 +3,16 @@ import "./style.css";
 import { DatePicker } from "antd";
 import ProjectManagementModal from "../../ProjectManagementModal";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addUpdateMilestoneRequest,
-  addUpdateTaskListRequest,
-} from "../../../redux/actions";
+import { addUpdateMilestoneRequest } from "../../../redux/actions";
 import CreatableSelect from "react-select/creatable";
 import moment from "moment";
 import {
   getProjectDateFormat,
   isAfter,
-  isAfterToday,
   isBefore,
   isBeforeToday,
 } from "../../date.helpers";
+import { MdError } from "react-icons/md";
 // Initial State
 const initialState = {
   milestone_id: null,
@@ -74,21 +71,24 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
     // if (title !== "" || start_date !== "" || end_date !== "") {
     setFieldErrors({
       isValidate:
+        (title === "" && isEdit) ||
         title === "" ||
         // Start Date Validation
-        start_date === "" ||
-        isBefore(dateValiations?.start_date, start_date) ||
-        isAfter(dateValiations?.end_date, start_date) ||
-        isBeforeToday(start_date) ||
-        (end_date !== "" && isAfter(end_date, start_date)) ||
+        (!isEdit &&
+          (start_date === "" ||
+            isBefore(dateValiations?.start_date, start_date) ||
+            isAfter(dateValiations?.end_date, start_date) ||
+            isBeforeToday(start_date) ||
+            (end_date !== "" && isAfter(end_date, start_date)))) ||
         // End Date Validation
-        end_date === "" ||
-        isAfter(dateValiations?.end_date, end_date) ||
-        isBefore(dateValiations?.start_date, end_date) ||
-        isBeforeToday(end_date) ||
-        (start_date !== "" && isBefore(start_date, end_date)),
+        (!isEdit &&
+          (end_date === "" ||
+            isAfter(dateValiations?.end_date, end_date) ||
+            isBefore(dateValiations?.start_date, end_date) ||
+            isBeforeToday(end_date) ||
+            (start_date !== "" && isBefore(start_date, end_date)))),
       start_date:
-        start_date !== ""
+        start_date !== "" && !isEdit
           ? isBeforeToday(start_date)
             ? "Start date should not be prior to today date."
             : isBefore(dateValiations?.start_date, start_date) ||
@@ -102,7 +102,7 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
             : ""
           : "",
       end_date:
-        end_date !== ""
+        end_date !== "" && !isEdit
           ? isBeforeToday(end_date)
             ? "End date should not be prior to today date."
             : isAfter(dateValiations?.end_date, end_date) ||
@@ -145,12 +145,19 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
           {fieldErrors?.title !== "" && (
             <p className="add-project-err-msg">{fieldErrors?.title}</p>
           )}
+          {isEdit && fieldValues?.title === "" && (
+            <p className="add-project-err-msg my-0">
+              <MdError />
+              &nbsp;Title is required
+            </p>
+          )}
         </div>
 
         <div className="w-100 milestone-modal__date-inputs d-flex align-items-start justify-content-between">
           <div className="from-group">
             <label className="modal__label">Start Date</label>
             <DatePicker
+              disabled={isEdit}
               className="modal-input"
               format="DD MMMM Y"
               value={
@@ -166,13 +173,17 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
               }
             />
             {fieldErrors?.start_date !== "" && (
-              <p className="add-project-err-msg">{fieldErrors?.start_date}</p>
+              <p className="add-project-err-msg">
+                <MdError />
+                &nbsp;{fieldErrors?.start_date}
+              </p>
             )}
           </div>
           <div className="from-group">
             <label className="modal__label">End Date</label>
             <DatePicker
               // disabled={isEdit && isBeforeToday(dateValiations?.end_date)}
+              disabled={isEdit}
               className="modal-input"
               format="DD MMMM Y"
               value={
@@ -187,8 +198,11 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
                 })
               }
             />
-            {fieldErrors?.end_date !== "" && (
-              <p className="add-project-err-msg">{fieldErrors?.end_date}</p>
+            {!isEdit && fieldErrors?.end_date !== "" && (
+              <p className="add-project-err-msg">
+                <MdError />
+                &nbsp;{fieldErrors?.end_date}
+              </p>
             )}
           </div>
         </div>

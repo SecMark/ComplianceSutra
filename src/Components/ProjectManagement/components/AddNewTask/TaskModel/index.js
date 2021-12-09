@@ -12,6 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { MdError } from "react-icons/md";
 import { addAndUpdateTaskRequest } from "../../../redux/actions";
+import {
+  getProjectDateFormat,
+  isAfter,
+  isBefore,
+  isBeforeToday,
+} from "../../date.helpers";
 // custom style for dropdown
 const customStyle = {
   control: (styles) => ({
@@ -43,11 +49,19 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
   const [fileList, setFileList] = useState([]);
   const [fieldInputs, setFieldInputs] = useState(editData || initialState);
   const [fieldErrors, setFieldErrors] = useState({
-    isValidate: false,
+    isValidate: true,
     start_date: "",
     end_date: "",
+    subject: "",
   });
   const [weeklyDay, setWeeklyDay] = useState("Monday");
+  const dateValidations = useSelector(
+    (state) =>
+      state?.ProjectManagementReducer?.modalsStatus?.taskModal?.dateValidations
+  );
+  // useEffect(() => {
+  //   console.log({ dateValidations });
+  // }, [dateValidations]);
   const dispatch = useDispatch();
   // to change the frequency
   const FrequencyChange = (e) => {
@@ -68,6 +82,8 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
   const usersList = useSelector(
     (state) => state?.ProjectManagementReducer?.usersList
   );
+
+  // handle file upload
   const handleSelectUploadFile = () => {
     if (acceptedFiles && acceptedFiles.length > 0) {
       const _fileList = (fileList && fileList.length > 0 && fileList) || [];
@@ -89,6 +105,8 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
       }
     }
   };
+
+  // handle submit
   const onSubmit = () => {
     let formData = new FormData();
     const allInputs = Object.keys(fieldInputs);
@@ -114,29 +132,65 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
   useEffect(() => {
     handleSelectUploadFile();
   }, [acceptedFiles]);
+
   useEffect(() => {
     setFieldInputs({ ...editData });
   }, [editData]);
+
   useEffect(() => {
-    if (fieldInputs?.start_date !== "" || fieldInputs?.end_date !== "") {
-      setFieldErrors({
-        ...fieldErrors,
-        isValidate:
-          isBeforeToday(fieldInputs?.start_date) ||
-          isBeforeToday(fieldInputs?.end_date)
-            ? true
-            : false,
-        start_date: isBeforeToday(fieldInputs?.start_date)
-          ? "Please select today date or after " +
-            moment(fieldInputs?.start_date).format("DD MMMM Y")
+    const { start_date, end_date, subject, project_id } = fieldInputs;
+    setFieldErrors({
+      isValidate:
+        (subject === "" && isEdit) ||
+        subject === "" ||
+        // Start Date Validation
+        (!isEdit &&
+          (start_date === "" ||
+            (project_id &&
+              (isBefore(dateValidations?.start_date, start_date) ||
+                isAfter(dateValidations?.end_date, start_date))) ||
+            isBeforeToday(start_date) ||
+            (end_date !== "" && isAfter(end_date, start_date)))) ||
+        // End Date Validation
+        (!isEdit &&
+          (end_date === "" ||
+            (project_id &&
+              (isAfter(dateValidations?.end_date, end_date) ||
+                isBefore(dateValidations?.start_date, end_date))) ||
+            isBeforeToday(end_date) ||
+            (start_date !== "" && isBefore(start_date, end_date)))),
+      start_date:
+        start_date !== "" && !isEdit
+          ? isBeforeToday(start_date)
+            ? "Start date should not be prior to today date."
+            : project_id &&
+              (isBefore(dateValidations?.start_date, start_date) ||
+                isAfter(dateValidations?.end_date, start_date))
+            ? "Start Date should be between " +
+              getProjectDateFormat(dateValidations?.start_date) +
+              " to " +
+              getProjectDateFormat(dateValidations?.end_date)
+            : end_date !== "" && isAfter(end_date, start_date)
+            ? "Start date should not be later to end date"
+            : ""
           : "",
-        end_date: isBeforeToday(fieldInputs?.end_date)
-          ? "Please select today date or after " +
-            moment(fieldInputs?.end_date).format("DD MMMM Y")
+      end_date:
+        end_date !== "" && !isEdit
+          ? isBeforeToday(end_date)
+            ? "End date should not be prior to today date."
+            : project_id &&
+              (isAfter(dateValidations?.end_date, end_date) ||
+                isBefore(dateValidations?.start_date, end_date))
+            ? "End Date should be between " +
+              getProjectDateFormat(dateValidations?.start_date) +
+              " to " +
+              getProjectDateFormat(dateValidations?.end_date)
+            : start_date !== "" && isBefore(start_date, end_date)
+            ? "End date should not be prior to start date"
+            : ""
           : "",
-      });
-    }
-  }, [fieldInputs.end_date, fieldInputs.start_date]);
+    });
+  }, [fieldInputs?.end_date, fieldInputs?.start_date, fieldInputs?.subject]);
   return !showTask ? null : (
     <div className="add-edit-modal">
       <div
@@ -146,7 +200,7 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
         <div className="add-edit-main-container">
           <label className="add-edit-project-labels">Task Name</label>
           <input
-            className="add-edit-project-inputs"
+            className="modal-input"
             name="project_name"
             value={fieldInputs?.subject}
             onChange={(e) =>
@@ -158,7 +212,8 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
               <label className="add-edit-project-labels">Start Date</label>
 
               <DatePicker
-                className="add-edit-project-inputs"
+                disabled={isEdit}
+                className="modal-input"
                 name="start_date"
                 format="DD MMMM Y"
                 suffixIcon={calanderimg}
@@ -185,7 +240,8 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
             <div className="col-md-6 col-lg-6 col-sm-6">
               <label className="add-edit-project-labels">End Date</label>
               <DatePicker
-                className="add-edit-project-inputs"
+                disabled={isEdit}
+                className="modal-input"
                 suffixIcon={calanderimg}
                 format="DD MMMM Y"
                 value={
@@ -215,7 +271,7 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
                 Task Description
               </label>
               <input
-                className="add-edit-project-inputs"
+                className="modal-input"
                 onChange={(e) =>
                   setFieldInputs({
                     ...fieldInputs,
@@ -257,12 +313,9 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">Assign To</label>
               <CreatableSelect
-                // isMulti
-                styles={customStyle}
                 onChange={(option) => {
                   setFieldInputs({ ...fieldInputs, assign_to: option?.value });
                 }}
-                // options={userLilst}
                 options={usersList || []}
                 defaultValue={
                   (usersList &&
@@ -277,7 +330,7 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">Comments</label>
               <input
-                className="add-edit-project-inputs"
+                className="modal-input"
                 onChange={(e) =>
                   setFieldInputs({ ...fieldInputs, comments: e.target.value })
                 }
@@ -424,7 +477,7 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
                   Please enter month day
                 </label>
                 <input
-                  className="add-edit-project-inputs"
+                  className="modal-input"
                   value={fieldInputs?.repeat_on_day || ""}
                   onChange={(event) =>
                     setFieldInputs({
@@ -441,6 +494,10 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
               <button
                 className="add-edit-project-submit-btn"
                 onClick={onSubmit}
+                disabled={fieldErrors?.isValidate}
+                style={{
+                  ...(fieldErrors?.isValidate && { opacity: "0.7" }),
+                }}
               >
                 {!isEdit ? "Submit" : "Update"}
               </button>
@@ -465,9 +522,9 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
   );
 }
 
-const isBeforeToday = (date) => {
-  const todayDate = moment().format("YYYY-MM-DD");
-  return moment(todayDate).isAfter(date);
-};
+// const isBeforeToday = (date) => {
+//   const todayDate = moment().format("YYYY-MM-DD");
+//   return moment(todayDate).isAfter(date);
+// };
 
 export default NewTaskModel;

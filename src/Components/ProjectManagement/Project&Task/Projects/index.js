@@ -22,7 +22,6 @@ const Projects = () => {
     if (projectsData && projectsData?.length > 0) {
       setProjects(projectsData);
     }
-    console.log({ projectsData, isLoading, isError });
   }, [projectsData, isLoading, isError]);
   return (
     <>
