@@ -60,7 +60,7 @@ function DashBoardView({ history }) {
       userEmail &&
       userDetails?.status_response === "Authentication success"
     ) {
-      if (userDetails?.UserType === 3) {
+      if (userDetails?.UserType === 3 || userDetails?.UserType === 5) {
         dispatch(taskReportActions.taskReportRequest());
         const refresh_taskList = setInterval(() => {
           dispatch(taskReportActions.taskReportRequest());

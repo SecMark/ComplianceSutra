@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import calanderIcon from "../../../../../assets/Icons/calanderIcon.svg";
 import CreatableSelect from "react-select/creatable";
 import moment from "moment";
-import { isBefore, isBeforeToday } from "../../date.helpers";
+import { isBefore, isBeforeToday, isAfter } from "../../date.helpers";
 import { MdError } from "react-icons/md";
 
 // Initial state
@@ -19,11 +19,12 @@ const initailState = {
   project_overview: "",
   assign_user: [],
 };
-function AddProject({ show, onClose, editData }) {
-  const state = useSelector((state) => state);
+function AddProject({ show, onClose, editData, isEdit }) {
   const dispatch = useDispatch();
   const [userList, setUserList] = useState([]);
-  const [values, setValues] = useState(editData || initailState);
+  const [values, setValues] = useState(
+    Object?.keys(editData).length > 0 ? editData : initailState
+  );
   const allUsersList = useSelector(
     (state) => state?.ProjectManagementReducer?.usersList
   );
@@ -31,7 +32,9 @@ function AddProject({ show, onClose, editData }) {
     isValidate: true,
     start_date: "",
     end_date: "",
+    title: "",
   });
+
   useEffect(() => {
     // Get all users list
     if (allUsersList && allUsersList.length > 0) {
@@ -46,45 +49,44 @@ function AddProject({ show, onClose, editData }) {
   useEffect(() => {
     dispatch(getUsersListRequest());
   }, []);
+
   useEffect(() => {
-    const start_date = values?.start_date;
-    const end_date = values?.end_date;
-    if (start_date !== "" || end_date !== "") {
-      setFieldErrors({
-        ...fieldErrors,
-        isValidate:
-          isBeforeToday(start_date) || isBeforeToday(end_date) ? true : false,
-        start_date: isBeforeToday(start_date)
-          ? "Please select today date or after " +
-            moment(start_date).format("DD MMM Y")
+    const { project_name, start_date, end_date } = values;
+    setFieldErrors({
+      // validation falg
+      isValidate:
+        (!project_name && isEdit) ||
+        !project_name ||
+        // start-date validation
+        (!isEdit &&
+          (start_date === "" ||
+            isBeforeToday(start_date) ||
+            (end_date !== "" && isAfter(end_date, start_date)))) ||
+        // end-date validation
+        (!isEdit &&
+          (end_date === "" ||
+            isBeforeToday(end_date) ||
+            (start_date !== "" && isBefore(start_date, end_date)))),
+
+      // error messages
+      start_date:
+        start_date !== "" && !isEdit
+          ? isBeforeToday(start_date)
+            ? "Start date should not be prior to today's date."
+            : end_date !== "" && isAfter(end_date, start_date)
+            ? "Start date should not be later to end date"
+            : ""
           : "",
-        end_date: isBeforeToday(end_date)
-          ? "Please select today date or after " +
-            moment(end_date).format("DD MMM Y")
+      end_date:
+        end_date !== "" && !isEdit
+          ? isBeforeToday(end_date)
+            ? "End date should not be prior to today's date"
+            : start_date !== "" && isBefore(start_date, end_date)
+            ? "End date should not be prior to start date"
+            : ""
           : "",
-      });
-      if (
-        start_date !== "" &&
-        end_date !== "" &&
-        isBefore(start_date, end_date)
-      ) {
-        setFieldErrors({
-          ...fieldErrors,
-          isValidate: true,
-          end_date:
-            "End Date should be after Start Date (" +
-            moment(start_date).format("DD MMM Y") +
-            ")",
-        });
-      }
-    } else {
-      setFieldErrors({
-        isValidate: true,
-        start_date: "",
-        end_date: "",
-      });
-    }
-  }, [values?.start_date, values?.end_date]);
+    });
+  }, [values?.start_date, values?.end_date, values?.project_name]);
   // custom style for dropdown
   const customStyle = {
     control: (styles) => ({
@@ -133,18 +135,24 @@ function AddProject({ show, onClose, editData }) {
         <div className="add-edit-main-container">
           <label className="add-edit-project-labels">Project Name</label>
           <input
-            className="add-edit-project-inputs"
+            // className="modal-input"
+            class="modal-input"
             name="project_name"
             onChange={onHandleChange}
             value={values.project_name}
             required
           />
+          {isEdit && values?.project_name === "" && (
+            <p className="add-project-err-msg mt-2 mb-3">
+              <MdError />
+              &nbsp;Project title is required
+            </p>
+          )}
           <div className="row mt-3">
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels">User</label>
               <CreatableSelect
                 isMulti
-                styles={customStyle}
                 onChange={handleDropDownChange}
                 options={userList}
                 defaultValue={
@@ -162,7 +170,7 @@ function AddProject({ show, onClose, editData }) {
               <label className="add-edit-project-labels">Start Date</label>
 
               <DatePicker
-                className="add-edit-project-inputs"
+                className="modal-input"
                 name="start_date"
                 suffixIcon={calanderimg}
                 onChange={(date, dateString) => {
@@ -175,6 +183,7 @@ function AddProject({ show, onClose, editData }) {
                   values?.start_date && moment(values?.start_date, "YYYY-MM-DD")
                 }
                 format="DD MMM YYYY"
+                disabled={isEdit}
               />
               {fieldErrors?.start_date !== "" && (
                 <p className="add-project-err-msg">
@@ -187,7 +196,7 @@ function AddProject({ show, onClose, editData }) {
             <div className="col-sm-6 col-lg-3">
               <label className="add-edit-project-labels">End Date</label>
               <DatePicker
-                className="add-edit-project-inputs"
+                className="modal-input"
                 suffixIcon={calanderimg}
                 onChange={(date, dateString) => {
                   setValues({
@@ -201,6 +210,7 @@ function AddProject({ show, onClose, editData }) {
                   null
                 }
                 format="DD MMM YYYY"
+                disabled={isEdit}
               />
               {fieldErrors?.end_date !== "" && (
                 <p className="add-project-err-msg">
@@ -225,11 +235,23 @@ function AddProject({ show, onClose, editData }) {
                   ...(fieldErrors?.isValidate && { opacity: "0.7" }),
                 }}
               >
-                Submit
+                {isEdit ? "Update" : "Submit"}
               </button>
             </div>
             <div className="p-2">
-              <button className="add-edit-project-cancel-btn" onClick={onClose}>
+              <button
+                className="add-edit-project-cancel-btn"
+                onClick={() => {
+                  setValues(initailState);
+                  setFieldErrors({
+                    isValidate: true,
+                    start_date: "",
+                    end_date: "",
+                    title: "",
+                  });
+                  onClose();
+                }}
+              >
                 Cancel
               </button>
             </div>

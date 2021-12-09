@@ -30,8 +30,8 @@
   font-family: Poppins;
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 13px;
+  line-height: 20px;
   color: #2c2738;
 }
 
@@ -142,7 +142,9 @@
   }
 }
 .add-project-err-msg {
-  font-size: 0.8rem;
-  color: rgba(255, 0, 0, 0.781);
+  font-size: 0.6rem;
+  color: rgba(255, 30, 30, 0.801);
   font-weight: normal;
+  line-height: 0.8rem;
+  margin-top: 0.5rem;
 }

@@ -731,6 +731,10 @@ const DesktopTaskListComponent = ({ data }) => {
             );
           }}
           onAddClick={() => {
+            const dateValidations = getDateValidationsFromProject(
+              taskListData?.project,
+              projectData
+            );
             dispatch(
               setTaskModalState({
                 ...modalsStatus?.taskModal,
@@ -742,6 +746,7 @@ const DesktopTaskListComponent = ({ data }) => {
                   project_id: taskListData?.project,
                   task_list_id: taskListData?.task_list_id,
                 },
+                dateValidations,
               })
             );
           }}
@@ -1833,5 +1838,18 @@ const differenceInDays = (start_date, end_date) => {
 };
 const getProjectDateFormat = (date, format = "D MMM YYYY") => {
   return (date && moment(date).format(format)) || "-";
+};
+
+export const getDateValidationsFromProject = (projectId, projects) => {
+  if (projectId && projects && projects?.length > 0) {
+    const project = projects?.find((item) => item?.project_id === projectId);
+    if (project) {
+      return {
+        start_date: project?.project_start_date,
+        end_date: project?.project_end_date,
+      };
+    }
+  }
+  return {};
 };
 export default Project;

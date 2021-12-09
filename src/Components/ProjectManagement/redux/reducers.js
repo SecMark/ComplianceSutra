@@ -190,7 +190,14 @@ const actionHandlers = {
       projectModal: {
         isVisible: false,
         isEdit: false,
-        editData: {},
+        editData: {
+          project_id: null,
+          project_name: "",
+          start_date: "",
+          end_date: "",
+          project_overview: "",
+          assign_user: [],
+        },
         projectId: null,
       },
     },
@@ -262,6 +269,7 @@ const actionHandlers = {
           description: "",
         },
         task_list: [],
+        dateValidations: {},
       },
     },
   }),
@@ -537,6 +545,7 @@ export default handleActions(actionHandlers, {
         description: "",
       },
       task_list: [],
+      dateValidations: {},
     },
   },
   deactivateModalAndStatus: {
