@@ -94,3 +94,61 @@
   border-radius: 5px;
   background-color: $color_primary;
 }
+
+.removeIcon{
+  background: $color_transparent;
+  border: none;
+  color: $color_warning_text;
+  min-width: em(250px);
+}
+.addIcon{
+  background: $color_transparent;
+  border: none;
+  color: $color_blue;
+  min-width: em(250px);
+}
+
+.removeIcon:focus{
+  cursor: pointer;
+}
+.addIcon:focus{
+  cursor: pointer;
+}
+
+
+.backIcon{
+  background-color: $color_transparent;
+  color: $color_black_text;
+  border: none;
+  min-width: em(250px);
+  cursor: pointer;
+}
+
+.stepperSaveBtn {
+  background: $color_blue;
+  border: none;
+  color: $color_white;
+  min-width: em(250px) !important;
+  font-size: 10px !important;
+  cursor: pointer;
+}
+
+.stepperExitBtn {
+  background: $color_transparent;
+  border: none;
+  color: $color_blue;
+  min-width: em(250px) !important;
+  border: 1px solid $color_blue;
+  font-size: 10px !important;
+  cursor: pointer;
+}
+
+.edit {
+  background :$color_transparent;
+  border: none;
+  color: $color_blue;
+  font-size: 12px !important;
+  cursor: pointer;
+}
+
+
