@@ -16,6 +16,8 @@ import PaymentReducer from "../Components/ExpertReviewModule/Redux/reducers";
 import { addAndEditProjectReducer } from "../Components/ProjectManagement/redux/reducers";
 import ProjectManagementReducer from "../Components/ProjectManagement/redux/reducers";
 import NewRegulationsQuizReducer from "../Components/NewRegulationsQuiz/redux/reducers";
+import AuditReducer from "../Components/Audit/redux/reducers";
+
 const createRootReducer = (history) =>
   combineReducers({
     auth,
@@ -33,6 +35,7 @@ const createRootReducer = (history) =>
     addAndEditProjectReducer,
     ProjectManagementReducer,
     NewRegulationsQuizReducer,
+    AuditReducer,
   });
 
 export default createRootReducer;

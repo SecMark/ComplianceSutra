@@ -1,0 +1,101 @@
+@import "../../../assets/styles/colors";
+
+.heading {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: $color_black_text;
+  padding: 5px 0px 1px 25px;
+}
+
+.checkListMainContainer {
+  background-color: $color_light_grey;
+  padding: 20px;
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar {
+    height: 4px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: $color_blue;
+    border-radius: 10px;
+    height: 2px;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  .checkListContainer {
+    width: 100%;
+    border: 1px solid $color_dark_skyblue;
+    border-radius: 10px;
+    padding: 20px 30px;
+    margin-top: 25px;
+    background-color: $color_white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 400px;
+    .sectionName {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 20px;
+      svg {
+        font-size: 15px;
+      }
+    }
+    .checkListInputContainer {
+      padding-bottom: 20px;
+
+      .checkListInputs {
+        margin-top: 20px;
+        padding-bottom: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        border-bottom: 2px dashed $color_light_grey;
+        .inputField {
+          padding-right: 10px;
+        }
+        .addFileButton {
+          padding-right: 10px;
+          margin-top: 2px;
+        }
+        .inputCount {
+          margin-top: 25px;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .addNewContainer {
+      margin-top: 20px;
+      margin-left: 10px;
+      display: flex;
+
+      .addNew {
+        cursor: pointer;
+        span {
+          padding-right: 10px;
+        }
+      }
+    }
+  }
+
+  .addNewCheckList {
+    margin-top: 20px;
+    display: flex;
+    background-color: $color_white;
+    border-radius: 10px;
+    padding: 8px 10px 6px 21px;
+    p {
+      margin: 5px;
+    }
+
+    svg {
+      font-size: 25px;
+      color: $color_primary;
+      cursor: pointer;
+    }
+  }
+}

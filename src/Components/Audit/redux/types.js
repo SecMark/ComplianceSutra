@@ -1,0 +1,3 @@
+export const ADD_NEW_SECTION = "ADD_NEW_SECTION";
+export const SET_SECTION_NAME = "SET_SECTION_NAME";
+export const GET_SECTION_NAME = "GET_SECTION_NAME";

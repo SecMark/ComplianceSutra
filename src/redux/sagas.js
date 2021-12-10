@@ -12,6 +12,8 @@ import calenderViewSaga from "../Components/CalenderView/redux/saga";
 import paymentSaga from "../Components/ExpertReviewModule/Redux/saga";
 import projectSaga from "../Components/ProjectManagement/redux/sagas";
 import newRegulaitonsQuizSaga from "../Components/NewRegulationsQuiz/redux/saga";
+import auditSaga from "../Components/Audit/redux/saga";
+
 function* watchAndLog() {
   yield takeEvery("*", function* logger(action) {
     const state = yield select();
@@ -33,5 +35,6 @@ export default function* root() {
     fork(paymentSaga),
     fork(projectSaga),
     fork(newRegulaitonsQuizSaga),
+    fork(auditSaga),
   ]);
 }

@@ -1,0 +1,44 @@
+@import "../../assets/styles/colors";
+
+.bar {
+  height: 100vh;
+  max-width: 60px;
+  width: 100%;
+  overflow: hidden;
+  .menuslist {
+    padding: 0px 4px 0px 10px;
+  }
+  .logo {
+    margin-top: 3rem;
+    cursor: pointer;
+  }
+  .menus {
+    margin-top: 4rem;
+    cursor: pointer;
+    text-align: center;
+    .menusitem {
+      padding-top: 20px;
+    }
+  }
+
+  .settingmenus {
+    margin-top: 4rem;
+    .dividerline {
+      border-bottom: 2px solid;
+    }
+    .menusitem {
+      cursor: pointer;
+      text-align: center;
+      padding-top: 20px;
+    }
+  }
+
+  .usermenus {
+    .menusitem {
+      cursor: pointer;
+      position: absolute;
+      bottom: 20px;
+      left: 15px;
+    }
+  }
+}

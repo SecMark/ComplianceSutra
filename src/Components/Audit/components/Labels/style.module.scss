@@ -1,0 +1,14 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/fonts";
+
+.small {
+  font-size: 10px;
+  font-family: $font_sans_serif;
+  color: $color_grey;
+}
+
+.medium {
+  font-size: 15px;
+  font-family: $font_sans_serif;
+  color: $color_grey;
+}

@@ -1,0 +1,57 @@
+@import "../../assets/styles/colors";
+.default {
+  width: 250px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid $color_light_grey;
+  background-color: $color_white;
+  font-family: Poppins;
+  font-weight: 300;
+  line-height: normal;
+}
+.small {
+  width: 150px;
+  height: 40px;
+
+  border-radius: 8px;
+  border: 1px solid $color_light_grey;
+  background-color: $color_white;
+  font-family: Poppins;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.medium {
+  width: 358px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid $color_light_grey;
+  background-color: $color_white;
+  font-family: Poppins;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.larger {
+  width: 500px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid $color_light_grey;
+  background-color: $color_white;
+  font-family: Poppins;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.labelContainer {
+  margin-top: 2px;
+  .labelSmall {
+    font-size: 10px;
+    color: $color_grey;
+  }
+
+  .labelMedium {
+    font-size: 15px;
+    color: $color_grey;
+  }
+}

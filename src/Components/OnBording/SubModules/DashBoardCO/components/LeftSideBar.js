@@ -174,6 +174,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/project-management");
     } else if (currentActiveMenu === "project-trash") {
       history.push("/project-trash");
+    } else if (currentActiveMenu === "create-template") {
+      history.push("/create-template");
     }
   };
 
@@ -330,6 +332,30 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                 !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "new-regulations"
+                  ? updateActive
+                  : updateActive
+              }
+              alt="sidebar Bell"
+            />
+          </div>
+
+          <div
+            className={
+              !openProfile &&
+              state &&
+              state.adminMenu.currentMenu === "create-template"
+                ? "taskIcon-active"
+                : "taskIcon"
+            }
+          >
+            <img
+              style={{ cursor: "pointer" }}
+              title="Create Template"
+              onClick={() => onMenuClick("create-template")}
+              src={
+                !openProfile &&
+                state &&
+                state.adminMenu.currentMenu === "create-template"
                   ? updateActive
                   : updateActive
               }

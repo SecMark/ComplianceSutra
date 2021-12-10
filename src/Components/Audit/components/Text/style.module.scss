@@ -1,0 +1,30 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/fonts";
+
+.default {
+  color: $color_black_text;
+  margin: 0px;
+  padding: 0px;
+}
+.primary {
+  color: $color_blue;
+}
+.grey {
+  color: $color_grey;
+}
+.white {
+  color: $color_white;
+}
+
+.default {
+  font-size: 20px;
+  font-weight: 600;
+  font-style: normal;
+  font-family: $font_sans_serif;
+}
+
+.small {
+  font-size: 12px;
+  font-style: normal;
+  font-family: $font_sans_serif;
+}

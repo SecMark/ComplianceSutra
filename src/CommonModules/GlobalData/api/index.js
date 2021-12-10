@@ -13,6 +13,8 @@ const getFilters = () => api.get("compliance.api.getRegulationFilters");
 
 const getPayments = (payload) => api.post("api/PaymentDetails", payload);
 
+const addSection = (payload) => api.post("audit.api.AddQuestionnaireSection");
+
 export default {
   getCountryCodeList,
   getTaskReport,
@@ -20,4 +22,5 @@ export default {
   getPayments,
   getHisotry,
   getFilters,
+  addSection,
 };

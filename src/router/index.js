@@ -47,6 +47,7 @@ import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/compon
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
+import FormBuilder from "../Components/Audit/pages/FormBuilder";
 export default function AppRouter() {
   return (
     <div>
@@ -170,6 +171,9 @@ export default function AppRouter() {
           <Route path="/new-regulations" component={DashBoardCO} />
           <Route path="/project-management" component={DashBoardCO} />
           <Route path="/project-trash" component={DashBoardCO} />
+
+          <Route path="/create-template" component={DashBoardCO} />
+
           <Route exact path="/help" component={DashBoardCO} />
 
           {/* Expert Review */}

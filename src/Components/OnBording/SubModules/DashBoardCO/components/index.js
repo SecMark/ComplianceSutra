@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import SideBarInputControl from "../components/LeftSideBar";
 import RighSider from "../components/RightSideGrid";
 import Cobg from "../../../../../assets/Images/Onboarding/co-bg.png";
-import { actions as taskReportActions } from "../redux/actions";
 import { withRouter } from "react-router-dom";
 import ComplianceOfficerSetting from "../components/CoSetting";
 import Notifications from "../components/notification";
@@ -12,12 +11,11 @@ import { actions as adminMenuActions } from "../MenuRedux/actions";
 import NewRegulations from "../../../../NewRegulationModule/NewRegulations";
 import HistoryList from "../../../../HistoryModule/HistoryList";
 import HelpSection from "../../../../HelpSection/Help";
-import SingleNotification from "../../../../../CustomNotification/SingleNotification";
-import api from "../../../../../../src/apiServices";
-import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
 import ProjectManagement from "../../../../ProjectManagement";
 import ProjectTrash from "../../../../ProjectManagement/Trash";
-// import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
+import FormBuilder from "../../../../Audit/pages/FormBuilder";
+
+import "./style.css";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
@@ -182,6 +180,12 @@ function Dashboard({ history }) {
         )}
         {state && state.adminMenu.currentMenu === "project-trash" && (
           <ProjectTrash />
+        )}
+
+        {state && state.adminMenu.currentMenu === "create-template" && (
+          <div className="create-template">
+            <FormBuilder />
+          </div>
         )}
       </div>
     </div>
