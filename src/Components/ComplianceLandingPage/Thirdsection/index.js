@@ -17,7 +17,7 @@ function ThirdSection() {
             <div className="col col-xl-4 mb-5">
               <div className="compliance-third-section-cards">
                 <img src={Mangment} alt="exteam" />
-                <h1 className="compliance-third-section-cards-heading">Brokrage Firms</h1>
+                <h1 className="compliance-third-section-cards-heading">Brokerage Firms</h1>
                 <p className="compliance-third-section-cards-para">
                   Dealing with multiple compliances at once, need a smart
                   solution

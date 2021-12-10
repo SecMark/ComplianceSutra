@@ -28,10 +28,10 @@ export default function Footer() {
       <div className="container">
         <div class="row">
           <div class="col-lg-4 col-md-4 text-left">
-            <a href="#">
+            <Link to="/">
               <img className="header-logo" src={headerLogo} alt="logoaa" />
               <span className="capmtech-text">COMPLIANCE SUTRA</span>
-            </a>
+            </Link>
             <Link to="/sign-up">
               {" "}
               <button className="get-started">GET STARTED</button>{" "}
@@ -42,19 +42,19 @@ export default function Footer() {
             <div className="footer-title">Our Products</div>
             <div className="links-grid">
               <p>
-                <a href="#!" class="footer-link">
+                <Link to="/" class="footer-link">
                   Compliance
-                </a>
+                </Link>
               </p>
               <p>
-                <a href="#!" class="footer-link">
+                <Link to="/" class="footer-link">
                   Audit
-                </a>
+                </Link>
               </p>
               <p>
-                <a href="#!" class="footer-link">
+                <Link to="/" class="footer-link">
                   Process
-                </a>
+                </Link>
               </p>
             </div>
           </div>
@@ -64,19 +64,19 @@ export default function Footer() {
 
             <ul class="list-unstyled mb-0 text-left">
               <li>
-                <a href="#!" class="footer-link">
+                <Link to="/" class="footer-link">
                   Meet the Team
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#!" class="footer-link">
+                <Link to="/" class="footer-link">
                   Our Story
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#!" class="footer-link">
+                <Link to="/" class="footer-link">
                   Career
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

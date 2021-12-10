@@ -22,7 +22,7 @@ function ThirdSection() {
         <div className="container">
           <div className="row d-flex justify-content-center third-section-breakline-border-top">
             <div className="col p-3">
-              <h1 className="third-section-services">BROKRAGE HOUSES</h1>
+              <h1 className="third-section-services">Brokerage HOUSES</h1>
             </div>
             <div className="col p-3">
               <h1 className="third-section-services"> NBFCs </h1>
@@ -80,9 +80,9 @@ function ThirdSection() {
             alt="financialServices"
           />
           <h1 className="third-section-add-on-service">
-            Add on services with the tool
-          </h1>
-          <div className="container">
+              Built for financial services
+            </h1>
+          {/* <div className="container">
             <div className="row d-flex justify-content-center">
               <div className="col p-5">
                 <h1 className="third-section-tools">MOCK INSPECTIONS</h1>
@@ -103,12 +103,7 @@ function ThirdSection() {
                 </p>
               </div>
             </div>
-          </div>
-          <div>
-            <h1 className="third-section-add-on-service">
-              Built for financial services
-            </h1>
-          </div>
+          </div> */}    
         </div>
         <div className="container">
           <div className="row d-flex flex-wrap justify-content-center">

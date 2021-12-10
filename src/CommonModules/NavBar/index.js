@@ -7,9 +7,9 @@ function NavBar() {
     <div className="navbar-position">
       <div className="container navbar-bottom-border">
         <nav className="navbar navbar-expand-lg navbar-light">
-          <a className="navbar-brand navbar-heading" href="#!">
+         <Link  className="navbar-brand navbar-heading" to="/">
            <img src={Logo} alt="Logo"/> COMPLIANCE SUTRA
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"

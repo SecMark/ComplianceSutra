@@ -7,9 +7,9 @@ function NavBar() {
     <div>
       <div className="container navbar-bottom-border">
         <nav className="navbar navbar-expand-lg">
-          <a className="navbar-brand navbar-heading" href="fake_page">
+          <Link className="navbar-brand navbar-heading" to="/">
            <img src={Logo} alt="Logo"/> COMPLIANCE SUTRA
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"

@@ -13,7 +13,7 @@ function SecondSection() {
         <ul className="title ">
           <li className="active">Compliance</li>
           {/* <li>Audit</li> */}
-          <li>Process</li>
+          {/* <li>Process</li> */}
         </ul>
       </div>
       <div>
