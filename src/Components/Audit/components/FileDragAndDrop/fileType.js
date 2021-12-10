@@ -1,0 +1,2 @@
+export const  fileType = 
+".png,.jpg,application/pdf,application/rtf,application/msword,image/bmp,application/vnd.ms-excel,image/tiff,image/tif,image/jpeg,application/ms-excel,.tiff,.pdf,.doc,.docx,.XLS,.xlsx,.CSV,.zip,.rar,.txt";
