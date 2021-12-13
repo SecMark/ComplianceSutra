@@ -4,20 +4,6 @@
 ::placeholder {
   font-family: $font_poppins;
 }
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
-  background-repeat: no-repeat;
-  background-position-x: 97%;
-  background-position-y: 50%;
-  text-transform: none;
-  padding: 0.5rem;
-}
-select::-ms-expand {
-  display: none;
-}
 .default {
   width: 250px;
   height: 40px;
@@ -73,30 +59,6 @@ select::-ms-expand {
   line-height: normal;
 }
 
-.auditAssignmentInput {
-  min-width: 240px;
-  width: 100%;
-  font-size: 14px;
-  font-weight: 500;
-  color: $color_light_text;
-  line-height: normal;
-  background-color: $color_light_grey;
-  border: none;
-  outline: none;
-  padding: 0.6rem 0.5rem;
-  border-radius: 4px;
-
-  &:focus {
-    outline: 2px solid $color_blue;
-    box-shadow: 0 0 4px rgba(165, 165, 165, 0.705);
-  }
-  &::placeholder {
-    color: rgb(196, 196, 196);
-    font-weight: normal;
-    text-transform: none;
-  }
-}
-
 .outline {
   width: 250px;
   height: 40px;
@@ -116,18 +78,12 @@ select::-ms-expand {
 }
 
 .labelContainer {
-  margin-bottom: 3px;
+  margin-bottom: 5px;
   .labelSmall {
     font-size: 12px;
     color: $color_black_text;
   }
-  .labelGreyMini {
-    font-size: 12px;
-    color: rgb(156, 156, 156);
-    font-weight: 400;
-    font-family: $font_poppins;
-    text-transform: capitalize;
-  }
+
   .labelMedium {
     font-size: 15px;
     color: $color_black_text;
