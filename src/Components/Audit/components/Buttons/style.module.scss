@@ -1,5 +1,5 @@
 @import "../../assets/styles/colors";
-
+@import "../../assets/styles/mixins.scss";
 .default {
   background: $color_blue;
   border: none;
@@ -93,4 +93,23 @@
   font-weight: 500;
   border-radius: 5px;
   background-color: $color_primary;
+}
+
+.iconButtonRound {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  @include alignBoxWithFlex(center, center);
+  transition: background 0.3s ease;
+  &:hover {
+    background-color: rgb(247, 247, 247);
+  }
+  &:active,
+  &:focus {
+    outline: 1px solid rgb(85, 85, 85);
+    background-color: rgb(236, 236, 236);
+  }
 }
