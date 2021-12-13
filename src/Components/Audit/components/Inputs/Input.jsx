@@ -35,12 +35,15 @@ export const Input = ({
               className={styles[variant]}
             >
               <option disabled value="default" selected>
-                Select
+                {placeholder}
               </option>
               {valueForDropDown?.map((element) => {
                 return (
-                  <option key={element} value={element}>
-                    {element.name}
+                  <option
+                    key={element.id || element.value || element}
+                    value={element?.value ? element?.value : element}
+                  >
+                    {element?.label || element?.name}
                   </option>
                 );
               })}
@@ -53,19 +56,36 @@ export const Input = ({
             <label className={styles[labelVariant]}>{labelText}</label>
           </div>
           <div>
-            <input
-              onChange={onChange}
-              type={type}
-              placeholder={placeholder}
-              name={name}
-              disabled={disabled}
-              max={max}
-              min={min}
-              pattern={pattern}
-              className={styles[variant]}
-              value={value}
-              id={id}
-            />
+            {type === "textarea" ? (
+              <textarea
+                onChange={onChange}
+                type={type}
+                placeholder={placeholder}
+                name={name}
+                disabled={disabled}
+                max={max}
+                min={min}
+                pattern={pattern}
+                className={styles[variant]}
+                value={value}
+                id={id}
+              />
+            ) : (
+              <input
+                onChange={onChange}
+                type={type}
+                placeholder={placeholder}
+                name={name}
+                disabled={disabled}
+                max={max}
+                min={min}
+                pattern={pattern}
+                className={styles[variant]}
+                value={value}
+                id={id}
+              />
+            )}
+
             {error && <p>{errorText}</p>}
           </div>
         </>
