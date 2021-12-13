@@ -48,6 +48,7 @@ import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardC
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import FormBuilder from "../Components/Audit/pages/FormBuilder";
+import AuditLandingPages from "../Components/Audit/pages/AuditLandingPages";
 export default function AppRouter() {
   return (
     <div>
@@ -181,8 +182,12 @@ export default function AppRouter() {
           <Route path="/expert-review" component={ExperReview}></Route>
           <Route exact path="/thankyou" component={Thankyou} />
           <Route exact path="/settings" component={CoSetting} />
+          
           {/* User */}
           {/* <Route path="/user-task" component={UserTask}></Route> */}
+
+
+          <Route exact path="/land" component={AuditLandingPages}/>
         </div>
       </>
     </div>

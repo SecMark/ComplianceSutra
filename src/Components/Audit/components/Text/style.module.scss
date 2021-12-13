@@ -37,3 +37,45 @@
 .reviewDetailsLeft {
   color: $color_grey;
 }
+
+//Audit Template List
+.templateMainHeading{
+  margin-top: 20px;
+  margin-left: 15px;
+}
+.createNewTemplate{
+  color: $color_blue;
+  margin-left: 825px;
+  margin-top: -24px;
+  cursor: pointer;
+}
+.sortBy{
+  color: $color_black_text;
+  margin-left: 1000px;
+  margin-top: -26px;
+  cursor: pointer;
+}
+.name{
+  color: $color_white;
+  margin-left: 8px;
+  margin-top: -24px;
+  cursor: pointer;
+}
+.createdBy{
+  color: $color_black_text;
+  margin-left: 1110px;
+  margin-top: -24px;
+  cursor: pointer;
+}
+.auditType{
+  color: $color_black_text;
+  margin-left: 1188px;
+  margin-top: -24px;
+  cursor: pointer;
+}
+.completeTemplates{
+  color: $color_blue;
+}
+.startAudit{
+  color: $color_blue;
+}
