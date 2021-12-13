@@ -49,6 +49,7 @@ import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import FormBuilder from "../Components/Audit/pages/FormBuilder";
 import AuditLandingPages from "../Components/Audit/pages/AuditLandingPages";
+import AuditTemplateList from "../Components/Audit/pages/AuditTemplateList";
 export default function AppRouter() {
   return (
     <div>
@@ -188,6 +189,7 @@ export default function AppRouter() {
 
 
           <Route exact path="/land" component={AuditLandingPages}/>
+          <Route exact path="/temp" component={AuditTemplateList}/>
         </div>
       </>
     </div>
