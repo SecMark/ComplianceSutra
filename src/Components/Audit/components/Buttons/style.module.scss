@@ -25,6 +25,7 @@
 .preview {
   background: $color_white;
   border-color: $color_blue;
+  border: 1px solid;
   color: $color_blue;
   min-width: em(250px);
 }

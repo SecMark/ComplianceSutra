@@ -53,10 +53,144 @@
   .questionnaireFormHeader {
     @include alignBoxWithFlex(center, space-between);
     background-color: $color_primary_background;
-    min-height: 30px;
+    padding: 0.5rem 1rem;
     width: 100%;
+
     & > p {
       margin-bottom: 0;
+      font-weight: 500;
+    }
+    .questionnaireFormHeaderOptions {
+      @include alignBoxWithFlex(center, end);
+      flex: 1;
+      & label {
+        margin-bottom: 0;
+        margin-left: 0.75rem;
+      }
+      & input[type="checkbox"] {
+        min-width: 20px;
+        width: 17px;
+        height: 17px;
+        cursor: pointer;
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+      & button {
+        border-width: 1px;
+        border-style: solid;
+        min-width: fit-content;
+        text-transform: uppercase;
+        font-size: 13px;
+        line-height: 13px;
+        height: auto;
+        font-weight: normal;
+        padding: 0.3rem 0.5rem;
+      }
     }
   }
+  .questionnaireFormMain {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    padding: 1rem;
+    background-color: $color_secondary_background;
+
+    // .questionnaireFormInputGroup {
+    //   @include alignBoxWithFlex(center, start);
+    //   padding: 0.25rem 0;
+    //   .questionnaireFormSectionName {
+    //     flex: 0.25;
+    //   }
+    //   .questionnaireFormCheckPoint {
+    //     flex: 0.2;
+    //   }
+    //   .questionnaireFormDeadline {
+    //     flex: 0.2;
+    //     & select {
+    //       min-width: 80%;
+    //       width: 80%;
+    //       margin-right: auto;
+    //     }
+    //   }
+    //   .questionnaireFormAssignTo {
+    //     flex: 0.5;
+    //     @include alignBoxWithFlex(center, start);
+    //   }
+    // }
+  }
+}
+.questionnaireFormTable {
+  width: 100%;
+  .questionnaireFormSectionName {
+    // width: 200px;
+    min-width: 120px;
+    max-width: 240px;
+    @include alignBoxWithFlex(start, start);
+    & > p {
+      margin-bottom: 0;
+      margin-right: 0.5rem;
+    }
+  }
+  .questionnaireFormDeadline {
+    width: 160px;
+    margin-right: 2rem;
+    & select {
+      min-width: 80%;
+      width: 80%;
+      margin-right: auto;
+    }
+  }
+}
+td {
+  padding: 1rem 0;
+}
+// table,
+// th,
+// td {
+//   border: 1px solid black;
+//   border-collapse: collapse;
+// }
+.questionnaireFormAssignTo {
+  @include alignBoxWithFlex(center, start);
+}
+.userTag {
+  border: none;
+  background-color: $color_white;
+  border-radius: 2.5rem;
+  width: fit-content;
+  padding: 0.1rem 0.5rem;
+  margin-right: 0.75rem;
+  cursor: pointer;
+  & p {
+    color: $color_primary;
+    font-weight: 600;
+  }
+}
+.userTagSelected {
+  border: 1.75px solid $color_primary;
+  background-color: $color_primary_background;
+}
+.inputGroupRowReverse {
+  @include alignBoxWithFlex(center, center, row-reverse);
+  margin-right: 1.5rem;
+}
+.divider {
+  width: 100%;
+  border-bottom: 2px dotted rgba(0, 0, 0, 0.1);
+  margin: 0.5rem 0;
+}
+
+.flex1 {
+  flex: 0.25;
+}
+.flex2 {
+  flex: 0.5;
+}
+.flex3 {
+  flex: 0.75;
+}
+.flex4 {
+  flex: 1;
 }

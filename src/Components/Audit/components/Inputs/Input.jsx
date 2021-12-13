@@ -25,9 +25,11 @@ export const Input = ({
     <>
       {type === "select" ? (
         <>
-          <div className={styles.labelContainer}>
-            <label className={styles[labelVariant]}>{labelText}</label>
-          </div>
+          {labelText && (
+            <div className={styles.labelContainer}>
+              <label className={styles[labelVariant]}>{labelText}</label>
+            </div>
+          )}
           <div>
             <select
               value={value}
@@ -55,7 +57,7 @@ export const Input = ({
           <div className={styles.labelContainer}>
             <label className={styles[labelVariant]}>{labelText}</label>
           </div>
-          <div>
+          <div className={styles.inputWrapper}>
             {type === "textarea" ? (
               <textarea
                 onChange={onChange}
