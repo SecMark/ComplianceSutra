@@ -29,11 +29,16 @@
   font-family: $font_sans_serif;
 }
 
-
-.label_variant{
+.label_variant {
   color: $color_grey;
 }
 
 .reviewDetailsLeft {
   color: $color_grey;
+}
+.error {
+  font-size: 12px;
+  font-style: normal;
+  font-family: $font_sans_serif;
+  color: $color_warning_text;
 }
