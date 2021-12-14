@@ -19,6 +19,7 @@ export const Input = ({
   disabled,
   selected,
   value,
+  rows = "6",
   id,
 }) => {
   return (
@@ -50,6 +51,27 @@ export const Input = ({
                 );
               })}
             </select>
+          </div>
+        </>
+      ) : type === "textArea" ? (
+        <>
+          <div className={styles.labelContainer}>
+            <label>{labelText}</label>
+          </div>
+          <div>
+            <textarea
+              onChange={onChange}
+              type={type}
+              placeholder={placeholder}
+              name={name}
+              disabled={disabled}
+              max={max}
+              min={min}
+              rows={rows}
+              pattern={pattern}
+              className={styles[variant]}
+              value={value}
+            />
           </div>
         </>
       ) : (

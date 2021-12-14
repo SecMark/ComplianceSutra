@@ -28,6 +28,9 @@ const Text = ({ heading, text, variant = "default", size = "none" }) => {
       {heading === "span" && (
         <span className={`${styles[variant]} ${styles[size]}`}>{text}</span>
       )}
+      {heading === "label" && (
+        <label className={`${styles[variant]} ${styles[size]}`}>{text}</label>
+      )}
     </>
   );
 };

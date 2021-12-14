@@ -150,3 +150,24 @@ select::-ms-expand {
     color: $color_black_text;
   }
 }
+
+
+.textArea {
+  border-radius: 5px;
+  width: 100%;
+  border: 0px;
+  background-color: $color_gery_background;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.auditTemplate {
+  width: 250px;
+  height: 40px;
+  border-radius: 8px;
+  border: 0px;
+  background-color: $color_gery_background;
+  font-family: Poppins;
+  font-weight: 300;
+  line-height: normal;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
