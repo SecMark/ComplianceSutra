@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import FormBuilder from "../../pages/FormBuilder";
 import CheckList from "../../pages/FormBuilder/CheckList";
 import { ToastContainer } from "react-toastify";
+import AuditAssignment from "../../pages/AuditAssignment";
 
 const Layout = () => {
   return (
@@ -19,6 +20,7 @@ const Layout = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/questionaire" element={<FormBuilder />} />
           <Route path="/checklist" element={<CheckList />} />
+          <Route exact path="/audit-assignment" element={<AuditAssignment />} />
         </Routes>
       </div>
     </div>
