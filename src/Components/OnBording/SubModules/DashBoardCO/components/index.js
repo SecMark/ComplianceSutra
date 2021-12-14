@@ -52,6 +52,10 @@ function Dashboard({ history }) {
     setIsTaskListOpen(false);
   }, []);
 
+  useEffect(() => {
+    dispatch(taskReportActions.taskReportRequest());
+  }, []);
+
   // useEffect(() => {
   //   if (userID === undefined) {
   //     history.push("/login");
