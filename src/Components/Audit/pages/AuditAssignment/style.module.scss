@@ -10,6 +10,21 @@
       @include alignBoxWithFlex(center, space-between);
       margin-bottom: 0.5rem;
     }
+    .stepperContainer {
+      & > div {
+        margin-bottom: 1.5rem !important;
+        margin-right: 1.5rem;
+
+        & > div > p {
+          font-size: 10px;
+          // width: 150px;
+          background-color: #fff;
+        }
+        & > div > img {
+          height: 18px;
+        }
+      }
+    }
     .auditHeaderBorder {
       height: 2px;
       width: 100%;
@@ -175,7 +190,9 @@ td {
   @include alignBoxWithFlex(center, space-between);
   width: 100%;
 }
-
+.rightAlign {
+  justify-content: flex-end !important;
+}
 .flex1 {
   flex: 0.25;
 }
