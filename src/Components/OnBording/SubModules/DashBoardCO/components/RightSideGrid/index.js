@@ -838,7 +838,7 @@ function RightSideGrid({
                           </div>
                         </div>
                       )}
-                    {userDetails.UserType !== 4 && (
+                    {(userDetails.UserType !== 4 || userDetails?.email === currentOpenedTask?.task_owner) && (
                       <div className="row">
                         <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                           <div className="holding-list-normal-title">
@@ -1817,7 +1817,7 @@ function RightSideGrid({
                         )}
                       {currentOpenedTask &&
                         currentOpenedTask.status === "Approval Pending" &&
-                        (user.UserType === 3 || user.UserType === 5) &&
+                        (user.UserType === 3 || user.UserType === 5 || user.email === currentOpenedTask.approver) &&
                         user.EmailID !== "" && (
                           <div class="btn-toolbar text-center well">
                             <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
@@ -5039,7 +5039,8 @@ function RightSideGrid({
                           </div>
                         </div>
                       )}
-                    {userDetails.UserType !== 4 && (
+                    {(userDetails.UserType !== 4 ||
+                      userDetails?.email === currentOpenedTask.task_owner) && (
                       <div className="row">
                         <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                           <div className="holding-list-normal-title">
@@ -5996,7 +5997,9 @@ function RightSideGrid({
                       )}
                     {currentOpenedTask &&
                       currentOpenedTask.status === "Approval Pending" &&
-                      (user.UserType === 3 || user.UserType === 5) &&
+                      (user.UserType === 3 ||
+                        user.UserType === 5 ||
+                        user.email === currentOpenedTask.approver) &&
                       user.EmailID !== "" && (
                         <div class="btn-toolbar text-center well">
                           <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
