@@ -112,7 +112,8 @@ const actionHandlers = {
       ...state?.quizResult,
       isLoading: false,
       isError: false,
-      status_response: payload,
+      // status_response: payload,
+      ...payload,
     },
   }),
   [SET_QUIZ_RESULT_FAILED]: (state) => ({
