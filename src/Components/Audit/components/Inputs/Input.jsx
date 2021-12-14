@@ -34,13 +34,15 @@ export const Input = ({
               value={value}
               onChange={onChange}
               className={styles[variant]}
+              name={name}
+              id={id}
             >
               <option disabled value="default" selected>
                 Select
               </option>
               {valueForDropDown?.map((element) => {
                 return (
-                  <option key={element} value={element}>
+                  <option key={element} value={element.name}>
                     {element.name}
                   </option>
                 );

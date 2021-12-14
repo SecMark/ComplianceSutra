@@ -5,10 +5,12 @@ import styles from "./style.module.scss";
 import { Route, Routes } from "react-router-dom";
 import FormBuilder from "../../pages/FormBuilder";
 import CheckList from "../../pages/FormBuilder/CheckList";
+import { ToastContainer } from "react-toastify";
 
 const Layout = () => {
   return (
     <div className={styles.maincontainer}>
+      <ToastContainer />
       <div className={styles.leftsidebar}>
         <SideBar />
       </div>
