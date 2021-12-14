@@ -75,7 +75,7 @@
       padding: 0px 30px 15px 30px;
       overflow-y: auto;
       overflow-x: hidden;
-      height: 400px;
+      height: 450px;
 
       .formPreview {
         float: right;
@@ -83,10 +83,15 @@
       }
       .sectionName {
         display: flex;
-        padding-top: 20px;
+        padding-top: 50px;
+        flex-wrap: wrap;
+        justify-content: space-between;
         svg {
           margin: 40px 5px;
           font-size: 20px;
+          cursor: pointer;
+          background: $color_delete_light_gray;
+          color: $color_delete_gray;
         }
       }
       .inputSection {
@@ -97,15 +102,19 @@
         .deleteRequirement {
           svg {
             float: right;
-            margin: 5px 10px;
+            font-size: 20px;
+            padding: 2px;
+            margin: 10px 10px 5px 10px;
             cursor: pointer;
+            background: $color_delete_light_gray;
+            color: $color_delete_gray;
           }
         }
         .inputBody {
           display: flex;
           flex-wrap: wrap;
           width: 100%;
-          border-bottom: 1px dashed $color_light_grey;
+          border-bottom: 1px solid $color_light_border;
           min-height: 100px;
           height: auto;
         }
@@ -113,7 +122,7 @@
           padding: 20px;
         }
         .dateRange {
-          margin-top: 24px;
+          padding: 5px 0px 15px 20px;
         }
       }
 
