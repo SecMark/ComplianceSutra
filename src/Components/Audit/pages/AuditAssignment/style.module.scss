@@ -96,35 +96,11 @@
     overflow: auto;
     padding: 1rem;
     background-color: $color_secondary_background;
-
-    // .questionnaireFormInputGroup {
-    //   @include alignBoxWithFlex(center, start);
-    //   padding: 0.25rem 0;
-    //   .questionnaireFormSectionName {
-    //     flex: 0.25;
-    //   }
-    //   .questionnaireFormCheckPoint {
-    //     flex: 0.2;
-    //   }
-    //   .questionnaireFormDeadline {
-    //     flex: 0.2;
-    //     & select {
-    //       min-width: 80%;
-    //       width: 80%;
-    //       margin-right: auto;
-    //     }
-    //   }
-    //   .questionnaireFormAssignTo {
-    //     flex: 0.5;
-    //     @include alignBoxWithFlex(center, start);
-    //   }
-    // }
   }
 }
 .questionnaireFormTable {
   width: 100%;
   .questionnaireFormSectionName {
-    // width: 200px;
     min-width: 120px;
     max-width: 240px;
     @include alignBoxWithFlex(start, start);
@@ -146,12 +122,6 @@
 td {
   padding: 1rem 0;
 }
-// table,
-// th,
-// td {
-//   border: 1px solid black;
-//   border-collapse: collapse;
-// }
 .questionnaireFormAssignTo {
   @include alignBoxWithFlex(center, start);
 }
@@ -180,6 +150,30 @@ td {
   width: 100%;
   border-bottom: 2px dotted rgba(0, 0, 0, 0.1);
   margin: 0.5rem 0;
+}
+
+.dataRow {
+  @include alignBoxWithFlex(center, space-between);
+  width: 100%;
+  margin: 0.75rem 0;
+  .keyBox {
+    flex: 0.3;
+  }
+  .valueBox {
+    flex: 1;
+    & > p {
+      color: rgba(0, 0, 0, 0.781);
+    }
+  }
+  & p {
+    text-transform: capitalize;
+    font-weight: normal;
+    font-size: 13px;
+  }
+}
+.reviewDetailsHeadingContainer {
+  @include alignBoxWithFlex(center, space-between);
+  width: 100%;
 }
 
 .flex1 {

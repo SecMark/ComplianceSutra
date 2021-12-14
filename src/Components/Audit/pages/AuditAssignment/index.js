@@ -161,300 +161,78 @@ const AuditAssignment = () => {
             />
           </div>
         </div> */}
-
-        <div className={styles.questionnaireForm}>
-          <div className={styles.questionnaireFormHeader}>
+        <div className={styles.reviewDetailsHeadingContainer}>
+          <Text
+            heading="p"
+            text="basic audit details"
+            variant="stepperSubHeading"
+          />
+          <Button variant="stroke" description="Edit" size="none" />
+        </div>
+        <div className={styles.dataRow}>
+          <div className={styles.keyBox}>
             <Text
               heading="p"
-              text="Questionnaire Form"
-              variant="stepperSubHeading"
+              text="audit template"
+              variant="smallTableHeading"
             />
-            <div className={styles.questionnaireFormHeaderOptions}>
-              <div className={styles.inputGroupRowReverse}>
-                <Input
-                  type="checkbox"
-                  variant="auditAssignmentInput"
-                  labelText="Assign all tasks to Ashu Kumar"
-                  labelVariant="labelPrimary"
-                />
-              </div>
-              <Button description="preveiw allocation" variant="preview" />
-            </div>
           </div>
-          <div className={styles.questionnaireFormMain}>
-            <table className={styles.questionnaireFormTable}>
-              <thead>
-                <th>
-                  <Text
-                    heading="p"
-                    text="section name"
-                    variant="smallTableHeading"
-                  />
-                </th>
-                <th>
-                  <Text
-                    heading="p"
-                    text="Deadline Starts from"
-                    variant="smallTableHeading"
-                  />
-                </th>
-                <th>
-                  <Text
-                    heading="p"
-                    text="Assign to"
-                    variant="smallTableHeading"
-                  />
-                </th>
-              </thead>
-              <tbody>
-                {/* General Details */}
-                <tr>
-                  <td className={styles.questionnaireFormSectionName}>
-                    <Text
-                      heading="p"
-                      text="General Details"
-                      variant="stepperSubHeadingBold"
-                    />
-                    <IconButton
-                      variant="iconButtonRound"
-                      icon={<MdExpandMore />}
-                      size="none"
-                    />
-                  </td>
-                  <td className={styles.questionnaireFormDeadline}>
-                    <Input
-                      type="select"
-                      variant="auditAssignmentInputWhite"
-                      placeholder="Select"
-                      valueForDropDown={[
-                        { label: "7 days", value: 4 },
-                        { label: "14 days", value: 3 },
-                        { label: "21 days", value: 5 },
-                      ]}
-                    />
-                  </td>
-                  <td>
-                    <div className={styles.questionnaireFormAssignTo}>
-                      <div className={styles.userTag}>
-                        <Text
-                          heading="p"
-                          text="Ashu Kumar"
-                          variant="smallTableHeading"
-                        />
-                      </div>
-                      <div
-                        className={`${styles.userTag} ${styles.userTagSelected}`}
-                      >
-                        <Text
-                          heading="p"
-                          text="Pooja K"
-                          variant="smallTableHeading"
-                        />
-                      </div>
-                      <div className={styles.userTag}>
-                        <Text
-                          heading="p"
-                          text="Ashu Kumar"
-                          variant="smallTableHeading"
-                        />
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td colSpan="2">
-                    <table className={styles.questionnaireFormTable}>
-                      <thead>
-                        <th>
-                          <Text
-                            heading="p"
-                            text="checkpoint"
-                            variant="smallTableHeading"
-                          />
-                        </th>
-                        <th>
-                          <Text
-                            heading="p"
-                            text="Deadline Starts from"
-                            variant="smallTableHeading"
-                          />
-                        </th>
-                        <th>
-                          <Text
-                            heading="p"
-                            text="Assign to"
-                            variant="smallTableHeading"
-                          />
-                        </th>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className={styles.questionnaireFormSectionName}>
-                            <Text
-                              heading="p"
-                              text="Send us your SEBI Registered License Number"
-                              variant="stepperSubHeadingBold"
-                            />
-                          </td>
-                          <td className={styles.questionnaireFormDeadline}>
-                            <Input
-                              type="select"
-                              variant="auditAssignmentInputWhite"
-                              placeholder="Select"
-                              valueForDropDown={[
-                                { label: "7 days", value: 4 },
-                                { label: "14 days", value: 3 },
-                                { label: "21 days", value: 5 },
-                              ]}
-                            />
-                          </td>
-                          <td>
-                            <div className={styles.questionnaireFormAssignTo}>
-                              <div className={styles.userTag}>
-                                <Text
-                                  heading="p"
-                                  text="Ashu Kumar"
-                                  variant="smallTableHeading"
-                                />
-                              </div>
-                              <div
-                                className={`${styles.userTag} ${styles.userTagSelected}`}
-                              >
-                                <Text
-                                  heading="p"
-                                  text="Pooja K"
-                                  variant="smallTableHeading"
-                                />
-                              </div>
-                              <div className={styles.userTag}>
-                                <Text
-                                  heading="p"
-                                  text="Ashu Kumar"
-                                  variant="smallTableHeading"
-                                />
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                {/* Invoice Details */}
-                <tr>
-                  <td className={styles.questionnaireFormSectionName}>
-                    <Text
-                      heading="p"
-                      text="Invoice Details"
-                      variant="stepperSubHeadingBold"
-                    />
-                    <IconButton
-                      variant="iconButtonRound"
-                      icon={<MdExpandMore />}
-                      size="none"
-                    />
-                  </td>
-                  <td className={styles.questionnaireFormDeadline}>
-                    <Input
-                      type="select"
-                      variant="auditAssignmentInputWhite"
-                      placeholder="Select"
-                      valueForDropDown={[
-                        { label: "7 days", value: 4 },
-                        { label: "14 days", value: 3 },
-                        { label: "21 days", value: 5 },
-                      ]}
-                    />
-                  </td>
-                  <td>
-                    <div className={styles.questionnaireFormAssignTo}>
-                      <div className={styles.userTag}>
-                        <Text
-                          heading="p"
-                          text="Ashu Kumar"
-                          variant="smallTableHeading"
-                        />
-                      </div>
-                      <div
-                        className={`${styles.userTag} ${styles.userTagSelected}`}
-                      >
-                        <Text
-                          heading="p"
-                          text="Pooja K"
-                          variant="smallTableHeading"
-                        />
-                      </div>
-                      <div className={styles.userTag}>
-                        <Text
-                          heading="p"
-                          text="Ashu Kumar"
-                          variant="smallTableHeading"
-                        />
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                {/* Tax Licenses */}
-                <tr>
-                  <td className={styles.questionnaireFormSectionName}>
-                    <Text
-                      heading="p"
-                      text="Tax Licenses"
-                      variant="stepperSubHeadingBold"
-                    />
-                    <IconButton
-                      variant="iconButtonRound"
-                      icon={<MdExpandMore />}
-                      size="none"
-                    />
-                  </td>
-                  <td className={styles.questionnaireFormDeadline}>
-                    <Input
-                      type="select"
-                      variant="auditAssignmentInputWhite"
-                      placeholder="Select"
-                      valueForDropDown={[
-                        { label: "7 days", value: 4 },
-                        { label: "14 days", value: 3 },
-                        { label: "21 days", value: 5 },
-                      ]}
-                    />
-                  </td>
-                  <td>
-                    <div className={styles.questionnaireFormAssignTo}>
-                      <div className={styles.userTag}>
-                        <Text
-                          heading="p"
-                          text="Ashu Kumar"
-                          variant="smallTableHeading"
-                        />
-                      </div>
-                      <div
-                        className={`${styles.userTag} ${styles.userTagSelected}`}
-                      >
-                        <Text
-                          heading="p"
-                          text="Pooja K"
-                          variant="smallTableHeading"
-                        />
-                      </div>
-                      <div className={styles.userTag}>
-                        <Text
-                          heading="p"
-                          text="Ashu Kumar"
-                          variant="smallTableHeading"
-                        />
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            {/* <div className={styles.divider}></div> */}
+          <div className={styles.valueBox}>
+            <Text heading="p" text="tax audit" variant="smallTableHeading" />
           </div>
         </div>
-
+        <div className={styles.dataRow}>
+          <div className={styles.keyBox}>
+            <Text
+              heading="p"
+              text="assignment name"
+              variant="smallTableHeading"
+            />
+          </div>
+          <div className={styles.valueBox}>
+            <Text heading="p" text="tax audit" variant="smallTableHeading" />
+          </div>
+        </div>
+        <div className={styles.dataRow}>
+          <div className={styles.keyBox}>
+            <Text
+              heading="p"
+              text="company's name"
+              variant="smallTableHeading"
+            />
+          </div>
+          <div className={styles.valueBox}>
+            <Text
+              heading="p"
+              text="BK securities"
+              variant="smallTableHeading"
+            />
+          </div>
+        </div>
+        <div className={styles.dataRow}>
+          <div className={styles.keyBox}>
+            <Text heading="p" text="Audit scope" variant="smallTableHeading" />
+          </div>
+          <div className={styles.valueBox}>
+            <Text
+              heading="p"
+              text="Local branch audit"
+              variant="smallTableHeading"
+            />
+          </div>
+        </div>
+        <div className={styles.dataRow}>
+          <div className={styles.keyBox}>
+            <Text
+              heading="p"
+              text="audit deadline"
+              variant="smallTableHeading"
+            />
+          </div>
+          <div className={styles.valueBox}>
+            <Text heading="p" text="Nov 21, 2021" variant="smallTableHeading" />
+          </div>
+        </div>
         {/* auditAssignmentMain ends here */}
       </div>
       <div className={styles.buttonContainer}>

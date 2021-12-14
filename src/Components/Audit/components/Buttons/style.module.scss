@@ -10,6 +10,16 @@
 .default:hover {
   cursor: pointer;
 }
+.stroke {
+  background-color: transparent;
+  border: none;
+  color: $color_primary;
+  padding: 0.3rem 0.5rem;
+  text-transform: uppercase;
+  width: fit-content;
+  font-size: 12px;
+  font-weight: 500;
+}
 
 .item {
   background: $color_white;
