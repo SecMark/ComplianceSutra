@@ -63,7 +63,11 @@ const NewRegulationsQuiz = () => {
   }, [history]);
   useEffect(() => {
     const { isAllSubmited, completedSlides, skipedSlides } = stepperStatus;
-    if (isAllSubmited && completedSlides?.length === questions?.length) {
+    if (
+      questions?.length > 0 &&
+      isAllSubmited &&
+      completedSlides?.length === questions?.length
+    ) {
       let correctAnswers = completedSlides?.filter(
         (element) => element?.currentStatus?.isCorrectAnswer === true
       ).length;
@@ -488,9 +492,9 @@ const NewRegulationsQuiz = () => {
               Object.keys(quizResult).length > 0 && (
                 <div className="quiz__stepper-slide-container my-0">
                   <p className="quiz__result-message mt-5 mb-3">
-                    {quizResult?.correctAnswers === questions.length
+                    {quizResult?.processInPercentage === 100
                       ? quiz_messages.greet
-                      : quizResult?.wrongAnswers === questions.length
+                      : quizResult?.processInPercentage === 0
                       ? quiz_messages.all_wrong
                       : quiz_messages.greet}
                   </p>
@@ -539,19 +543,21 @@ const NewRegulationsQuiz = () => {
                       </div>
                       <div
                         className={`quiz__result-button-container d-flex justify-content-${
-                          quizResult.processInPercentage === 0
+                          quizResult.processInPercentage === 0 &&
+                          questions?.length > 0
                             ? "between"
                             : "center"
                         } align-items-center w-100 mt-5`}
                       >
-                        {quizResult.processInPercentage === 0 && (
-                          <button
-                            onClick={() => clearAllStates()}
-                            className="quiz-button quiz-button--primary"
-                          >
-                            play agin
-                          </button>
-                        )}
+                        {quizResult.processInPercentage === 0 &&
+                          questions?.length > 0 && (
+                            <button
+                              onClick={() => clearAllStates()}
+                              className="quiz-button quiz-button--primary"
+                            >
+                              play agin
+                            </button>
+                          )}
                         <button
                           onClick={() => clearAllStates(true)}
                           className="quiz-button quiz-button--primary"
@@ -563,11 +569,17 @@ const NewRegulationsQuiz = () => {
                   </div>
                 </div>
               )}
-            {!isQuizDataError && !isQuizDataLoading && questions?.length === 0 && (
-              <p className="quiz__header-title mb-0" style={{ opacity: "0.7" }}>
-                No Quiz found for this circular
-              </p>
-            )}
+            {!stepperStatus?.isAllSubmited &&
+              !isQuizDataError &&
+              !isQuizDataLoading &&
+              questions?.length === 0 && (
+                <p
+                  className="quiz__header-title mb-0"
+                  style={{ opacity: "0.7" }}
+                >
+                  No Quiz found for this circular
+                </p>
+              )}
             {!isQuizDataLoading && isQuizDataError && questions?.length === 0 && (
               <p className="quiz__header-title mb-0" style={{ opacity: "0.7" }}>
                 Something went wrong. Please try again.
