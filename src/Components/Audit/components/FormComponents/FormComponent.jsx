@@ -22,6 +22,9 @@ const FormComponents = () => {
     {
       id: uuidv4(),
       sectionName: "",
+      completionDuration: "",
+      bufferPeriod: "",
+      questionSectionId: "",
       inputs: [
         {
           questionnaire_section: "",
@@ -60,6 +63,9 @@ const FormComponents = () => {
     temp.push({
       id: uuidv4(),
       sectionName: "",
+      completionDuration: "",
+      bufferPeriod: "",
+      isError: false,
       inputs: [
         {
           questionnaire_section: "",
@@ -67,6 +73,7 @@ const FormComponents = () => {
           how_get_this_data: "",
           answer_option: "",
           field_type: "text",
+          reference_document: "",
         },
       ],
     });
@@ -120,23 +127,58 @@ const FormComponents = () => {
 
   const addSectionName = async (event) => {
     let temp = [...inputFieldList];
-    const { value, id } = event.target;
-    temp[id].sectionName = value;
+    const { value, id, name } = event.target;
+    temp[id].isError = false;
+    if (name === "sectionName") {
+      temp[id].sectionName = value;
+    } else if (name === "duration") {
+      temp[id].completionDuration = value;
+    } else if (name === "buffer") {
+      temp[id].bufferPeriod = value;
+    }
+
     setInputFieldList(temp);
+  };
 
-    const payload = {
-      audit_template_name: "testing Api12",
-      questionnaire_section: temp[id].sectionName,
-      duration_of_completion: 10,
-      buffer_period: 3,
-    };
+  const submitSection = async (event) => {
+    let temp = [...inputFieldList];
+    const { id } = event.target;
+    const { sectionName, completionDuration, bufferPeriod } = temp[id];
 
-    const addSectionResponse = await axiosInstance.post(
-      `${BACKEND_BASE_URL}/audit.api.AddQuestionnaireSection`,
-      payload
-    );
+    if (
+      sectionName &&
+      sectionName !== "" &&
+      completionDuration &&
+      completionDuration !== "" &&
+      bufferPeriod &&
+      bufferPeriod !== ""
+    ) {
+      const payload = {
+        audit_template_name: "testing Api12",
+        questionnaire_section: temp[id].sectionName,
+        duration_of_completion: parseInt(temp[id].completionDuration),
+        buffer_period: parseInt(temp[id].bufferPeriod),
+        question_section_id: temp[id].questionSectionId
+          ? temp[id].questionSectionId
+          : "",
+      };
 
-    console.log(addSectionResponse);
+      const addSectionResponse = await axiosInstance.post(
+        `${BACKEND_BASE_URL}audit.api.AddQuestionnaireSection`,
+        payload
+      );
+      if (addSectionResponse) {
+        const { message } = addSectionResponse.data;
+        if (message.status) {
+          temp[id].questionSectionId = message.question_section_id;
+          temp[id].isError = false;
+          setInputFieldList(temp);
+        } else {
+          temp[id].isError = true;
+          setInputFieldList(temp);
+        }
+      }
+    }
   };
 
   return (
@@ -194,10 +236,44 @@ const FormComponents = () => {
                         type="text"
                         labelText="Section Name"
                         value={listItem.sectionName}
+                        name="sectionName"
                         id={Iindex}
                         onChange={addSectionName}
+                        onBlur={submitSection}
+                      />
+                      {listItem.isError && (
+                        <Text
+                          heading="span"
+                          text={`${listItem.sectionName} is already exists`}
+                          variant="error"
+                        />
+                      )}
+                    </div>
+                    <div>
+                      <Input
+                        type="number"
+                        labelText="Duration"
+                        value={listItem.duration}
+                        id={Iindex}
+                        name="duration"
+                        onChange={addSectionName}
+                        onBlur={submitSection}
+                        variant="small"
                       />
                     </div>
+                    <div>
+                      <Input
+                        type="number"
+                        labelText="Buffer Peroid"
+                        value={listItem.buffer}
+                        id={Iindex}
+                        name="buffer"
+                        onChange={addSectionName}
+                        onBlur={submitSection}
+                        variant="small"
+                      />
+                    </div>
+
                     <BsTrashFill onClick={() => deleteSection(listItem.id)} />
                   </div>
                   <div className={styles.inputSection}>
@@ -254,6 +330,22 @@ const FormComponents = () => {
                                       />
                                     </div>
                                   )}
+
+                                <div className={styles.inputField}>
+                                  <Input
+                                    type="text"
+                                    labelText="How get this data"
+                                    variant="small"
+                                  />
+                                </div>
+
+                                <div className={styles.inputField}>
+                                  <Input
+                                    type="file"
+                                    labelText="Reference Document"
+                                    variant="small"
+                                  />
+                                </div>
                               </>
                             )}
                             {fieldName.field_type === "file" && (
@@ -276,10 +368,8 @@ const FormComponents = () => {
                             )}
 
                             {fieldName.field_type === "date" && (
-                              <div>
-                                <div className={styles.dateRange}>
-                                  <Datepicker labelText="Date Range for Records" />
-                                </div>
+                              <div className={styles.dateRange}>
+                                <Datepicker labelText="Date Range for Records" />
                               </div>
                             )}
                           </div>

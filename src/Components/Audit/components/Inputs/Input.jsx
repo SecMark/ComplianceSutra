@@ -87,6 +87,7 @@ export const Input = ({
               className={styles[variant]}
               value={value}
               id={id}
+              onBlur={onBlur}
             />
             {error && <p>{errorText}</p>}
           </div>
