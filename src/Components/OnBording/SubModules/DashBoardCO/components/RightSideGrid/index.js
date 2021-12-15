@@ -838,7 +838,8 @@ function RightSideGrid({
                           </div>
                         </div>
                       )}
-                    {(userDetails.UserType !== 4 || userDetails?.email === currentOpenedTask?.task_owner) && (
+                    {(userDetails.UserType !== 4 ||
+                      userDetails?.email === currentOpenedTask?.task_owner) && (
                       <div className="row">
                         <div className="col-4 col-sm-3 col-md-3 col-xl-3">
                           <div className="holding-list-normal-title">
@@ -1805,6 +1806,8 @@ function RightSideGrid({
                           userDetails.UserType === 4) &&
                         (currentOpenedTask.assign_to === null ||
                           currentOpenedTask.assign_to ===
+                            (userDetails.EmailID || userDetails.email) ||
+                          currentOpenedTask.approver ===
                             (userDetails.EmailID || userDetails.email)) && (
                           <button
                             style={{ marginTop: 10, width: 150 }}
@@ -1817,7 +1820,9 @@ function RightSideGrid({
                         )}
                       {currentOpenedTask &&
                         currentOpenedTask.status === "Approval Pending" &&
-                        (user.UserType === 3 || user.UserType === 5 || user.email === currentOpenedTask.approver) &&
+                        (user.UserType === 3 ||
+                          user.UserType === 5 ||
+                          user.email === currentOpenedTask.approver) &&
                         user.EmailID !== "" && (
                           <div class="btn-toolbar text-center well">
                             <div class="col-6 col-sm-2 col-md-2 col-xl-2 text-left pl-0">
@@ -5980,16 +5985,17 @@ function RightSideGrid({
                     {currentOpenedTask &&
                       (currentOpenedTask.status === "Assigned" ||
                         currentOpenedTask.status === "Rejected") &&
-                      // (userDetails.UserType === 3 ||
-                      //   userDetails.UserType === 5 ||
-                      //   userDetails.UserType === 4) &&
-                      (currentOpenedTask?.assign_to === null ||
-                        currentOpenedTask?.assign_to ===
+                      (userDetails.UserType === 3 ||
+                        userDetails.UserType === 5 ||
+                        userDetails.UserType === 4) &&
+                      (currentOpenedTask?.assign_to ===
+                        (userDetails.EmailID || userDetails.email) ||
+                        currentOpenedTask.approver ===
                           (userDetails.EmailID || userDetails.email)) && (
                         <button
                           style={{ marginTop: 10, width: 150 }}
                           onClick={() => teamMemberMarkComplete()}
-                          className="btn save-details-bnt approve-task"
+                          className="btn save-details-bnt approve-task mt-5"
                           value="3"
                         >
                           Mark Complete
