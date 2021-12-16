@@ -53,9 +53,13 @@ function* createProject(action) {
       });
       yield put(getProjectDataRequest());
     } else {
-      toast.warning("Somthing went wrong. Please try again.");
+      toast.success(data?.message?.status_response, {
+        toastId: new Date().getTime(),
+      });
     }
-  } catch (error) {}
+  } catch (error) {
+    toast.warning("Somthing went wrong. Please try again.");
+  }
 }
 
 function* getProjectData(action) {
