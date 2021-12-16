@@ -32,13 +32,14 @@ export default function Footer() {
               <img className="header-logo" src={headerLogo} alt="logoaa" />
               <span className="capmtech-text">COMPLIANCE SUTRA</span>
             </Link>
-            <Link to="/sign-up">
+            <Link to="/sign-up" >
               {" "}
-              <button className="get-started">GET STARTED</button>{" "}
+              <h1 className="footer-getStartedBtn">
+              <button className="get-started">GET STARTED</button>{" "}</h1>
             </Link>
           </div>
 
-          <div class="col-lg-2 offset-lg-2 col-md-6 mb-4 mb-md-0">
+          <div class="col-lg-3 offset-lg-2 col-md-6 mb-4 mb-md-0">
             <div className="footer-title">Our Products</div>
             <div className="links-grid">
               <p>
@@ -59,7 +60,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+          {/* <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
             <div className="footer-title">About us</div>
 
             <ul class="list-unstyled mb-0 text-left">
@@ -79,9 +80,9 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
 
-          <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
             <div className="footer-title">Contact Us</div>
 
             <ul class="list-unstyled mb-0 text-left">
