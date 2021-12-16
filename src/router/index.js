@@ -50,6 +50,7 @@ import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import FormBuilder from "../Components/Audit/pages/FormBuilder";
 import AuditLandingPages from "../Components/Audit/pages/AuditLandingPages";
 import AuditTemplates from "../Components/Audit/pages/AuditTemplates";
+import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
 export default function AppRouter() {
   return (
     <div>
@@ -184,6 +185,7 @@ export default function AppRouter() {
           <Route exact path="/thankyou" component={Thankyou} />
           <Route exact path="/settings" component={CoSetting} />
           
+          <Route exact path="/audit-assignment" component={AuditAssignment} />
           {/* User */}
           {/* <Route path="/user-task" component={UserTask}></Route> */}
 

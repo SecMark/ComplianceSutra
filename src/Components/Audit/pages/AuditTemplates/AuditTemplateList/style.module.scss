@@ -2,8 +2,11 @@
 
 table, th, td {
     border:25px solid $color_white;
-    padding: 6px;
+    padding: 12px;
   }
+  td {
+    padding: 0rem 0 !important;
+}
 .completedRed{
     color: $color_red;
     background-color: $color_light_red;

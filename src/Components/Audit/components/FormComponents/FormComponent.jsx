@@ -16,6 +16,7 @@ import { dataTypes } from "../../constants/DateTypes";
 import { fileTypes } from "../../constants/DateTypes/fileType";
 import axiosInstance from "../../../../apiServices";
 import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
+import { toast, ToastContainer } from "react-toastify";
 
 const FormComponents = () => {
   const [inputFieldList, setInputFieldList] = useState([
@@ -25,6 +26,7 @@ const FormComponents = () => {
       completionDuration: "",
       bufferPeriod: "",
       questionSectionId: "",
+      questionnaireSection: "",
       inputs: [
         {
           questionnaire_section: "",
@@ -66,6 +68,8 @@ const FormComponents = () => {
       completionDuration: "",
       bufferPeriod: "",
       isError: false,
+      questionSectionId: "",
+      questionnaireSection: "",
       inputs: [
         {
           questionnaire_section: "",
@@ -81,10 +85,25 @@ const FormComponents = () => {
     setInputFieldList(temp);
   };
 
-  const deleteSection = (id) => {
+  const deleteSection = async (id, index) => {
     let temp = [...inputFieldList];
-    let removeSection = temp.filter((item) => item.id !== id);
 
+    const payload = { question_section_id: temp[index]?.questionSectionId };
+
+    const deleteSectionName = await axiosInstance.post(
+      `${BACKEND_BASE_URL}audit.api.DeleteQuestionnaireSection`,
+      payload
+    );
+
+    if (deleteSectionName) {
+      const { message } = deleteSectionName.data;
+      if (message.status) {
+      } else {
+        toast({ type: "error", message: message.status_response });
+      }
+    }
+
+    let removeSection = temp.filter((item) => item.id !== id);
     setInputFieldList(removeSection);
   };
 
@@ -95,6 +114,7 @@ const FormComponents = () => {
       questionnaire_section: "",
       question: "",
       how_get_this_data: "",
+      reference_document: "",
       answer_option: "",
       field_type: "text",
       id: uuidv4(),
@@ -105,8 +125,8 @@ const FormComponents = () => {
 
   const deleteRequirement = (index, id) => {
     let temp = [...inputFieldList];
-    temp[index].inputs = temp[index].inputs.filter((item) => item.id !== id);
 
+    temp[index].inputs = temp[index].inputs.filter((item) => item.id !== id);
     setInputFieldList(temp);
   };
 
@@ -117,6 +137,7 @@ const FormComponents = () => {
       questionnaire_section: "",
       question: "",
       how_get_this_data: "",
+      reference_document: "",
       answer_option: "",
       field_type: "none",
       id: uuidv4(),
@@ -153,24 +174,35 @@ const FormComponents = () => {
       bufferPeriod &&
       bufferPeriod !== ""
     ) {
-      const payload = {
+      let payload = {
         audit_template_name: "testing Api12",
         questionnaire_section: temp[id].sectionName,
         duration_of_completion: parseInt(temp[id].completionDuration),
         buffer_period: parseInt(temp[id].bufferPeriod),
-        question_section_id: temp[id].questionSectionId
-          ? temp[id].questionSectionId
-          : "",
       };
+      let addSectionResponse = "";
 
-      const addSectionResponse = await axiosInstance.post(
-        `${BACKEND_BASE_URL}audit.api.AddQuestionnaireSection`,
-        payload
-      );
+      if (temp[id].questionSectionId === "") {
+        addSectionResponse = await axiosInstance.post(
+          `${BACKEND_BASE_URL}audit.api.AddQuestionnaireSection`,
+          payload
+        );
+      } else {
+        payload.question_section_id = temp[id].questionSectionId
+          ? temp[id].questionSectionId
+          : "";
+
+        addSectionResponse = await axiosInstance.post(
+          `${BACKEND_BASE_URL}audit.api.UpdateQuestionnaireSection`,
+          payload
+        );
+      }
+
       if (addSectionResponse) {
         const { message } = addSectionResponse.data;
         if (message.status) {
-          temp[id].questionSectionId = message.question_section_id;
+          temp[id].questionSectionId = message?.question_section_id;
+          temp[id].questionnaireSection = message?.questionnaire_section;
           temp[id].isError = false;
           setInputFieldList(temp);
         } else {
@@ -181,8 +213,28 @@ const FormComponents = () => {
     }
   };
 
+  const createRequirement = async (event) => {
+    let temp = [...inputFieldList];
+
+    const { name, value, id } = event.target;
+    const splitId = id.split(",");
+
+    if (name === "questionnaire_section") {
+      temp[splitId[1]].inputs[splitId[0]].questionnaire_section = value;
+    } else if (name === "answer_option") {
+      temp[splitId[1]].inputs[splitId[0]].answer_option = value;
+    } else if (name === "how_get_this_data") {
+      temp[splitId[1]].inputs[splitId[0]].how_get_this_data = value;
+    } else if (name === "reference_document") {
+      temp[splitId[1]].inputs[splitId[0]].reference_document =
+        event.target.files[0];
+    }
+    setInputFieldList(temp);
+  };
+
   return (
     <>
+      <ToastContainer />
       <div className={styles.formComponetsContainer}>
         <div className={styles.formBuilderCompoents}>
           <Text heading="h2" text="Form Components" />
@@ -224,12 +276,9 @@ const FormComponents = () => {
             />
           </div>
           <div className={styles.inputContainer}>
-            <div className={styles.formPreview}>
-              <Button description="FORM PREVIEW" variant="preview" />
-            </div>
             {inputFieldList.map((listItem, Iindex) => {
               return (
-                <div key={listItem.id}>
+                <>
                   <div className={styles.sectionName}>
                     <div>
                       <Input
@@ -273,8 +322,11 @@ const FormComponents = () => {
                         variant="small"
                       />
                     </div>
-
-                    <BsTrashFill onClick={() => deleteSection(listItem.id)} />
+                    <div>
+                      <BsTrashFill
+                        onClick={() => deleteSection(listItem.id, Iindex)}
+                      />
+                    </div>
                   </div>
                   <div className={styles.inputSection}>
                     {listItem?.inputs.map((fieldName, index) => {
@@ -299,6 +351,10 @@ const FormComponents = () => {
                                     type="text"
                                     labelText="Requirement"
                                     variant="medium"
+                                    id={`${index},${Iindex}`}
+                                    name="questionnaire_section"
+                                    value={fieldName.questionnaire_section}
+                                    onChange={createRequirement}
                                   />
                                 </div>
                                 <div className={styles.inputField}>
@@ -307,7 +363,10 @@ const FormComponents = () => {
                                       type="select"
                                       labelText="Data Type"
                                       variant="small"
+                                      id={`${index},${Iindex}}`}
+                                      name="field_type"
                                       valueForDropDown={dataTypes}
+                                      onChange={createRequirement}
                                     />
                                   ) : (
                                     <Input
@@ -327,6 +386,10 @@ const FormComponents = () => {
                                         type="text"
                                         labelText="value"
                                         variant="small"
+                                        value={fieldName.answer_option}
+                                        id={`${index},${Iindex}`}
+                                        name="answer_option"
+                                        onChange={createRequirement}
                                       />
                                     </div>
                                   )}
@@ -336,6 +399,10 @@ const FormComponents = () => {
                                     type="text"
                                     labelText="How get this data"
                                     variant="small"
+                                    id={`${index},${Iindex}`}
+                                    name="how_get_this_data"
+                                    value={fieldName.how_get_this_data}
+                                    onChange={createRequirement}
                                   />
                                 </div>
 
@@ -343,7 +410,9 @@ const FormComponents = () => {
                                   <Input
                                     type="file"
                                     labelText="Reference Document"
-                                    variant="small"
+                                    name="reference_document"
+                                    onChange={createRequirement}
+                                    id={`${index},${Iindex}`}
                                   />
                                 </div>
                               </>
@@ -398,10 +467,9 @@ const FormComponents = () => {
                       />
                     </div>
                   </div>
-                </div>
+                </>
               );
             })}
-
             <div className={styles.addNewSection} onClick={addNewSection}>
               <BsPlusSquareFill />
               <Text

@@ -1,5 +1,5 @@
 @import "../../assets/styles/colors";
-
+@import "../../assets/styles/mixins.scss";
 .default {
   background: $color_blue;
   border: none;
@@ -9,6 +9,16 @@
 
 .default:hover {
   cursor: pointer;
+}
+.stroke {
+  background-color: transparent;
+  border: none;
+  color: $color_primary;
+  padding: 0.3rem 0.5rem;
+  text-transform: uppercase;
+  width: fit-content;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .item {
@@ -25,6 +35,7 @@
 .preview {
   background: $color_white;
   border-color: $color_blue;
+  border: 1px solid;
   color: $color_blue;
   min-width: em(250px);
 }
@@ -95,28 +106,45 @@
   background-color: $color_primary;
 }
 
-.removeIcon{
+.iconButtonRound {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  @include alignBoxWithFlex(center, center);
+  transition: background 0.3s ease;
+  &:hover {
+    background-color: rgb(247, 247, 247);
+  }
+  &:active,
+  &:focus {
+    outline: 1px solid rgb(85, 85, 85);
+    background-color: rgb(236, 236, 236);
+  }
+}
+.removeIcon {
   background: $color_transparent;
   border: none;
   color: $color_warning_text;
   min-width: em(250px);
 }
-.addIcon{
+.addIcon {
   background: $color_transparent;
   border: none;
   color: $color_blue;
   min-width: em(250px);
 }
 
-.removeIcon:focus{
+.removeIcon:focus {
   cursor: pointer;
 }
-.addIcon:focus{
+.addIcon:focus {
   cursor: pointer;
 }
 
-
-.backIcon{
+.backIcon {
   background-color: $color_transparent;
   color: $color_black_text;
   border: none;
@@ -144,7 +172,7 @@
 }
 
 .edit {
-  background :$color_transparent;
+  background: $color_transparent;
   border: none;
   color: $color_blue;
   font-size: 12px !important;
@@ -177,12 +205,12 @@
 
 //Audit Template List
 .auditTemplateSearchIconButton{
-  background-color: $color_white;
+  background-color: #ffffff;
   border: none !important;
   width: 1%;
   height: 32px;
-  margin-left: 1004px;
-  margin-top: 1px;
+  margin-left: 1097px;
+  margin-top: 2px;
 }
 .auditTemplatePlusIconButton{
   background-color: $color_white;
