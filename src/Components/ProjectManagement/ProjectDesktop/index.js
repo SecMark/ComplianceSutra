@@ -38,6 +38,7 @@ import {
   setTaskModalState,
 } from "../redux/actions";
 import moment from "moment";
+import { getTaskProgressByStatus } from "../components/utils";
 const Project = ({ data }) => {
   const [expandMoreLevel, setExpandMoreLevel] = useState(0);
   const [milestoneExpandMoreIds, setMilestoneExpandMoreIds] = useState([]);
@@ -504,8 +505,7 @@ const Project = ({ data }) => {
                 </div>
               </div>
             </div>
-            <div className="project-container-mobile__progress px-3">
-              {/* Progress Bar */}
+            {/* <div className="project-container-mobile__progress px-3">
               <Progress
                 trailColor="tranparent"
                 type="circle"
@@ -514,7 +514,7 @@ const Project = ({ data }) => {
                 strokeColor="#7A73FF"
                 strokeWidth={11}
               />
-            </div>
+            </div> */}
           </div>
           {/* Bottom Data */}
           <div className="d-flex justify-content-between align-items-center mt-3">
@@ -643,9 +643,9 @@ export const DesktopTask = ({ data }) => {
           {taskData?.task_status === "Not Assigned" && !taskData?.assign_to && (
             <IoCheckmarkCircleOutline className="icon__small" />
           )}
-          {taskData?.task_status === "Assigned" && taskData?.assign_to && (
-            <MdCheckCircle className="icon__small" />
-          )}
+          {(taskData?.task_status === "Assigned" ||
+            taskData?.task_status === "Approval Pending") &&
+            taskData?.assign_to && <MdCheckCircle className="icon__small" />}
           {taskData?.task_status === "Approved" && taskData?.assign_to && (
             <FaUserCheck className="icon__small" />
           )}
@@ -806,15 +806,7 @@ const DesktopTaskListComponent = ({ data }) => {
   );
 };
 export const ProjectMilestone = ({ data, projectName }) => {
-  // const {
-  //   milestone_end_date,
-  //   milestone_id,
-  //   milestone_owner,
-  //   milestone_start_date,
-  //   milestone_title,
-  //   milestone_assign_users,
-  // } = milestone;
-  const { url, path } = useRouteMatch();
+  const { url } = useRouteMatch();
   const usersList = useSelector(
     (state) => state?.ProjectManagementReducer?.usersList
   );
@@ -905,8 +897,8 @@ export const ProjectMilestone = ({ data, projectName }) => {
               </p>
             </div>
           </div>
-          <div className="project-container-mobile__progress px-3">
-            {/* Progress Bar */}
+          {/* Progress Bar */}
+          {/* <div className="project-container-mobile__progress px-3">
             <Progress
               trailColor="tranparent"
               type="circle"
@@ -915,7 +907,7 @@ export const ProjectMilestone = ({ data, projectName }) => {
               strokeColor="#7A73FF"
               strokeWidth={11}
             />
-          </div>
+          </div> */}
         </div>
         {/* Bottom Data */}
         <div className="d-flex justify-content-between align-items-center mt-3">
@@ -981,6 +973,7 @@ export const ProjectSubTask = ({ data }) => {
   const task_start_date = getProjectDateFormat(data?.task_start_date);
   const task_end_date = getProjectDateFormat(data?.task_end_date);
   const task_owner = getUserName(usersList, data?.task_owner);
+  const task_progress = getTaskProgressByStatus(data?.task_status);
   return (
     <div
       key={data?.task_id}
@@ -992,10 +985,29 @@ export const ProjectSubTask = ({ data }) => {
           <p className="project-container-mobile__data-title flex-grow-1 mb-0">
             {data?.task_subject}
           </p>
-          <SmallIconButton type="grey" className="mx-2">
+          {/* <SmallIconButton type="grey" className="mx-2">
             <IoCheckmarkCircleOutline />
+          </SmallIconButton> */}
+          <SmallIconButton
+            type={data?.task_status === "Approved" ? "primary" : "grey"}
+            className={`mx-2 ${data?.task_status === "Approved" && "p-1"}`}
+            title={data?.task_status}
+          >
+            {data?.task_status === "Not Assigned" && !data?.assign_to && (
+              <IoCheckmarkCircleOutline />
+            )}
+            {(data?.task_status === "Assigned" ||
+              data?.task_status === "Approval Pending") &&
+              data?.assign_to && <MdCheckCircle />}
+            {data?.task_status === "Approved" && data?.assign_to && (
+              <FaUserCheck className="icon__small" />
+            )}
           </SmallIconButton>
           <SmallIconButton
+            className={`${
+              data?.task_status === "Approved" &&
+              "project-management__button--disabled"
+            }`}
             type="grey"
             onClick={() =>
               dispatch(
@@ -1059,7 +1071,7 @@ export const ProjectSubTask = ({ data }) => {
             <Progress
               trailColor="tranparent"
               type="circle"
-              percent={66}
+              percent={task_progress}
               width={70}
               strokeColor="#7A73FF"
               strokeWidth={11}
