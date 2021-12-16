@@ -186,13 +186,13 @@ const Project = ({ data }) => {
           >
             {project_owner_name}
           </p>
-          <p className="project-data-container__item">
+          {/* <p className="project-data-container__item">
             {(data?.task_data &&
               data?.task_data?.length > 0 &&
               data?.task_data?.length) ||
               0}
-          </p>
-          <p className="project-data-container__item">
+          </p> */}
+          <p className="project-data-container__item wide-flex-2">
             {(data?.milestone_data &&
               data?.milestone_data?.length > 0 &&
               data?.milestone_data?.length) ||
@@ -208,7 +208,7 @@ const Project = ({ data }) => {
             {formatted_project_end_date}
           </p>
           <p
-            className="project-data-container__item"
+            className="project-data-container__item "
             title={project_assign_users?.join(", ")}
           >
             {getUsers(usersList, project_assign_users) || "-"}
@@ -1130,8 +1130,8 @@ export const ProjectHeader = ({ isTasksHeader }) => {
       <p className="project-data-container__item wide">Owner</p>
       {!isTasksHeader && (
         <>
-          <p className="project-data-container__item">Task</p>
-          <p className="project-data-container__item">Milestone</p>
+          {/* <p className="project-data-container__item">Task</p> */}
+          <p className="project-data-container__item wide-flex-2">Milestone</p>
         </>
       )}
       {isTasksHeader && (
@@ -1334,7 +1334,7 @@ export const TrashProject = ({ data }) => {
         <p className="project-data-container__item wide">{project_end_date}</p>
         <p
           className="project-data-container__item"
-          title={data?.project_assign_users.join(", ")}
+          title={data?.project_assign_users?.join(", ")}
         >
           {project_assign_users}
         </p>
