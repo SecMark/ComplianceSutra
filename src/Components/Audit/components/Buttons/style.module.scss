@@ -154,7 +154,7 @@
 //Audit card component
 .auditButton{
   background: $color_blue;
-  margin-top: 90px;
+  margin-top: 107px;
   font-size:small;
   margin-left: -140px;
   color: $color_white;
@@ -163,14 +163,16 @@
   height: 45px;
 }
 .auditIconButton{
-background-color: $color_light_sky;
-margin-top: 85px;
-font-size:small;
-margin-left: -95px;
-border: none !important;
-margin-right: 60px;
-font-size: large;
-cursor: pointer;
+  background-color: $color_light_sky;
+  margin-top: 122px;
+  font-size: small;
+  margin-left: -203px;
+  border: none !important;
+  margin-right: 60px;
+  font-size: large;
+  width: 29px;
+  height: 40%;
+  cursor: pointer;
 }
 
 //Audit Template List

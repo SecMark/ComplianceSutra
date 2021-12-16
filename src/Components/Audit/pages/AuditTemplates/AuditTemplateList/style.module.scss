@@ -1,7 +1,8 @@
-@import "../../assets/styles/colors";
+@import "../../../assets/styles/colors";
 
 table, th, td {
     border:25px solid $color_white;
+    padding: 6px;
   }
 .completedRed{
     color: $color_red;

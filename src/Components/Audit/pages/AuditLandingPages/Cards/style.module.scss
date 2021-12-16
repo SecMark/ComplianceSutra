@@ -1,4 +1,4 @@
-@import "../../assets/styles/colors";
+@import "../../../assets/styles/colors";
 
 .auditCard {
     width: 307px;
@@ -12,20 +12,21 @@
 }
 .wrap{
     display: inline-flex;
-    // display: flex;
-    // flex-wrap: wrap;
+    padding: 4px;
+    border-radius: 30px;
+    
  }
 .title{
         font-size: x-large;
         font-weight:bold;
         margin-top: 25px;
-        margin-left: 20px;        
+        margin-left: 3px;        
 }       
 .text{
     font-size: small;
     margin-top: 43px;
     font-weight: lighter;
     color: $color_blue;
-    margin-left: 18px;
+    margin-left: 25px;
     padding-right: 50px;
 }
