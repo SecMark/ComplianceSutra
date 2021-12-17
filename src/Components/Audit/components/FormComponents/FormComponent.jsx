@@ -17,8 +17,9 @@ import { fileTypes } from "../../constants/DateTypes/fileType";
 import axiosInstance from "../../../../apiServices";
 import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
 import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
-const FormComponents = () => {
+const FormComponents = ({ next, back }) => {
   const [inputFieldList, setInputFieldList] = useState([
     {
       id: uuidv4(),
@@ -35,6 +36,11 @@ const FormComponents = () => {
           answer_option: "",
           field_type: "text",
           id: uuidv4(),
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
         },
       ],
     },
@@ -78,6 +84,11 @@ const FormComponents = () => {
           answer_option: "",
           field_type: "text",
           reference_document: "",
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
         },
       ],
     });
@@ -118,6 +129,11 @@ const FormComponents = () => {
       answer_option: "",
       field_type: "text",
       id: uuidv4(),
+      error: {
+        isError: false,
+        type: "",
+        message: "",
+      },
     });
 
     setInputFieldList(temp);
@@ -141,6 +157,11 @@ const FormComponents = () => {
       answer_option: "",
       field_type: "none",
       id: uuidv4(),
+      error: {
+        isError: false,
+        type: "",
+        message: "",
+      },
     });
 
     setInputFieldList(temp);
@@ -229,7 +250,56 @@ const FormComponents = () => {
       temp[splitId[1]].inputs[splitId[0]].reference_document =
         event.target.files[0];
     }
+
     setInputFieldList(temp);
+  };
+
+  const submitRequirement = async (event) => {
+    let temp = [...inputFieldList];
+    const { id } = event.target;
+    const splitId = id.split(",");
+    const { questionnaire_section, field_type, answer_option } =
+      temp[splitId[1]].inputs[splitId[0]];
+    if (questionnaire_section !== "") {
+      if (field_type !== "text" && answer_option === "") {
+        temp[splitId[1]].inputs[splitId[0]].error = {
+          isError: true,
+          type: "value",
+          message: "Value is required",
+        };
+        setInputFieldList(temp);
+      } else {
+        const {
+          questionnaire_section,
+          field_type,
+          answer_option,
+          how_get_this_data,
+          reference_document,
+        } = temp[splitId[1]].inputs[splitId[0]];
+
+        const { sectionName } = temp[splitId[1]];
+
+        let formData = new FormData();
+        formData.append("questionnaire_section", sectionName);
+        formData.append("question", questionnaire_section);
+        formData.append("reference_document", reference_document);
+        formData.append("how_get_this_data", how_get_this_data);
+        formData.append("answer_option", answer_option);
+        formData.append("field_type", field_type);
+
+        const addRequirement = await axiosInstance.post(
+          "audit.api.AddQuestionQuestionnaire",
+          formData
+        );
+      }
+    } else {
+      temp[splitId[1]].inputs[splitId[0]].error = {
+        isError: true,
+        type: "questionLabel",
+        message: "Requirment is required",
+      };
+      setInputFieldList(temp);
+    }
   };
 
   return (
@@ -245,11 +315,11 @@ const FormComponents = () => {
           />
           <div className={styles.itemList}>
             <IconButton
-              description="Add New Question"
+              description="New Question"
               onDragStart={(event) => ondragstart(event, uuidv4())}
               draggable={true}
               variant="item"
-              icon={<BsPlusCircleFill />}
+              icon={<BsPlusSquareFill />}
               size="medium"
             />
             <div className={styles.inputButtons}>
@@ -355,7 +425,17 @@ const FormComponents = () => {
                                     name="questionnaire_section"
                                     value={fieldName.questionnaire_section}
                                     onChange={createRequirement}
+                                    onBlur={submitRequirement}
                                   />
+                                  {fieldName.error?.isError &&
+                                    fieldName.error?.type ===
+                                      "questionLabel" && (
+                                      <Text
+                                        heading="span"
+                                        text={fieldName.error.message}
+                                        variant="error"
+                                      />
+                                    )}
                                 </div>
                                 <div className={styles.inputField}>
                                   {fieldName.field_type === "text" ? (
@@ -367,6 +447,7 @@ const FormComponents = () => {
                                       name="field_type"
                                       valueForDropDown={dataTypes}
                                       onChange={createRequirement}
+                                      onBlur={submitRequirement}
                                     />
                                   ) : (
                                     <Input
@@ -390,7 +471,16 @@ const FormComponents = () => {
                                         id={`${index},${Iindex}`}
                                         name="answer_option"
                                         onChange={createRequirement}
+                                        onBlur={submitRequirement}
                                       />
+                                      {fieldName.error?.isError &&
+                                        fieldName.error?.type === "value" && (
+                                          <Text
+                                            heading="span"
+                                            text={fieldName.error.message}
+                                            variant="error"
+                                          />
+                                        )}
                                     </div>
                                   )}
 
@@ -403,6 +493,7 @@ const FormComponents = () => {
                                     name="how_get_this_data"
                                     value={fieldName.how_get_this_data}
                                     onChange={createRequirement}
+                                    onBlur={submitRequirement}
                                   />
                                 </div>
 
@@ -412,6 +503,7 @@ const FormComponents = () => {
                                     labelText="Reference Document"
                                     name="reference_document"
                                     onChange={createRequirement}
+                                    onBlur={submitRequirement}
                                     id={`${index},${Iindex}`}
                                   />
                                 </div>
@@ -438,7 +530,13 @@ const FormComponents = () => {
 
                             {fieldName.field_type === "date" && (
                               <div className={styles.dateRange}>
-                                <Datepicker labelText="Date Range for Records" />
+                                <Datepicker
+                                  labelText="Date Range for Records"
+                                  name="answer_option"
+                                  onChange={createRequirement}
+                                  onBlur={submitRequirement}
+                                  id={`${index},${Iindex}`}
+                                />
                               </div>
                             )}
                           </div>
@@ -480,19 +578,6 @@ const FormComponents = () => {
               />
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className={styles.saveTemplate}>
-        <div>
-          <Button
-            description="SAVE TEMPLATE & QUIT"
-            variant="preview"
-            size="medium"
-          />
-        </div>
-        <div>
-          <Button description="NEXT" size="small" variant="default" />
         </div>
       </div>
     </>

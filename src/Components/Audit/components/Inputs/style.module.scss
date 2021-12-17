@@ -19,6 +19,16 @@ select::-ms-expand {
   display: none;
 }
 
+input[type="file"]::file-selector-button {
+  padding: 0.2em 0.4em;
+  border-radius: 0.2em;
+  background-color: $color_primary;
+  transition: 1s;
+  height: 35px;
+  color: $color_white;
+  border: none;
+}
+
 .inputWrapper {
   @include alignBoxWithFlex(center, center);
 }

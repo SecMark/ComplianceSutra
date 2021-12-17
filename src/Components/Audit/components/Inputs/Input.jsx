@@ -73,6 +73,7 @@ export const Input = ({
               pattern={pattern}
               className={styles[variant]}
               value={value}
+              onBlur={onBlur}
             />
           </div>
         </>
@@ -95,6 +96,7 @@ export const Input = ({
                 className={styles[variant]}
                 value={value}
                 id={id}
+                onBlur={onBlur}
               />
             ) : (
               <input
@@ -109,6 +111,7 @@ export const Input = ({
                 className={styles[variant]}
                 value={value}
                 id={id}
+                onBlur={onBlur}
               />
             )}
 

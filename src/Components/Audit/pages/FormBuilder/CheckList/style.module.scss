@@ -36,6 +36,12 @@
     overflow-y: auto;
     overflow-x: hidden;
     height: 400px;
+    .sectionContainer {
+      background: $color_light_grey;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
     .sectionName {
       display: flex;
       justify-content: space-between;
@@ -53,7 +59,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        border-bottom: 2px dashed $color_light_grey;
+        border-bottom: 2px dashed $color_white;
         .inputField {
           padding-right: 10px;
         }

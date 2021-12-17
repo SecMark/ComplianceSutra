@@ -1,13 +1,44 @@
 @import "../../assets//styles//colors.scss";
+@import "../../assets/styles/mixins.scss";
 
 .maincontainer {
-  display: flex;
+  .auditHeader {
+    padding: 0.75rem 1.5rem 1.5rem;
+    .auditHeaderButtonContainer {
+      @include alignBoxWithFlex(center, space-between);
+      margin-bottom: 0.5rem;
+    }
+    .stepperContainer {
+      & > div {
+        margin-bottom: 1.5rem !important;
+        margin-right: 1.5rem;
+
+        & > div > p {
+          font-size: 10px;
+        }
+        & > div > img {
+          height: 18px;
+        }
+      }
+    }
+    .auditHeaderBorder {
+      height: 2px;
+      width: 100%;
+      background-color: $color_light_grey;
+    }
+  }
   .container {
-    box-shadow: 0 3px 36px 0 rgba(67, 0 ,255 , 0.08);
+    box-shadow: 0 3px 36px 0 rgba(67, 0, 255, 0.08);
     background-color: $color_white;
     padding: 20px;
     margin: 20px;
     border-radius: 30px;
     width: 100%;
+  }
+
+  .saveTemplate {
+    button {
+      margin-top: 20px;
+    }
   }
 }

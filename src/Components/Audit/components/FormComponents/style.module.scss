@@ -48,6 +48,12 @@
       button {
         margin: 10px 0 0;
       }
+      svg {
+        font-size: 20px;
+        cursor: pointer;
+        background: $color_delete_light_gray;
+        color: $color_delete_gray;
+      }
     }
   }
 
