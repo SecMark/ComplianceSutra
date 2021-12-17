@@ -138,7 +138,7 @@ function RightSideGrid({
   const [displayTask, setDisplayTask] = useState("1");
   const [validEmail, setValidEmail] = useState(true);
   const [mobileViewBy, setMobileViewBy] = useState(false);
-  const [completedTask, setCompletedTask] = useState("0");
+  const [approvalPendingTask, setApprovalPendingTask] = useState("0");
   const [scheduledTask, setScheduledTask] = useState("0");
   const [noRecords, setNoRecords] = useState(false);
   const [
@@ -185,7 +185,15 @@ function RightSideGrid({
   useEffect(() => {
     if (taskList && taskList.length !== 0) {
       const allTasks = getAllTasks(taskList);
+      const approvalPending =
+        [...allTasks].filter((item) => item?.status === "Approval Pending")
+          ?.length || 0;
+      const scheduled =
+        [...allTasks].filter((item) => item?.status === "Assigned")?.length ||
+        0;
       setAllTaskList(allTasks);
+      setApprovalPendingTask(approvalPending);
+      setScheduledTask(scheduled);
     }
   }, [taskList]);
   useEffect(() => {
@@ -3237,7 +3245,7 @@ function RightSideGrid({
                 </div>
                 <div className="col-12 col-sm-9 col-md-9 col-xl-9 d-flex">
                   <div className="col-5 col-sm-3 col-md-3 col-xl-3">
-                    <div className="row">
+                    <div className="row align-items-center">
                       <div className="float-left">
                         <img
                           className="mr-1"
@@ -3250,13 +3258,15 @@ function RightSideGrid({
                           Approval Pending
                         </div>
                         <div className="count-total">
-                          {completedTask !== "Norec" ? completedTask : "0"}
+                          {approvalPendingTask !== "Norec"
+                            ? approvalPendingTask
+                            : "0"}
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="col-5 col-sm-3 col-md-3 col-xl-3">
-                    <div className="row">
+                    <div className="row align-items-center">
                       <div className="float-left">
                         <img
                           className="mr-1"
@@ -4163,8 +4173,8 @@ function RightSideGrid({
                                   Approval Pending
                                 </div>
                                 <div className="count-total">
-                                  {completedTask !== "Norec"
-                                    ? completedTask
+                                  {approvalPendingTask !== "Norec"
+                                    ? approvalPendingTask
                                     : "0"}
                                 </div>
                               </div>
