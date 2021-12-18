@@ -78,6 +78,7 @@ const Project = ({ data }) => {
     project_assign_users,
     project_overview,
     task_list_data,
+    any_task_completed,
   } = data;
   const addMilestoneHandler = () =>
     dispatch(
@@ -167,6 +168,7 @@ const Project = ({ data }) => {
                 })
               );
             }}
+            isDeleteDisabled={any_task_completed}
           />
         )}
         <div className="project-management__project-data-container d-flex align-items-center w-100 justify-content-between">
@@ -186,17 +188,11 @@ const Project = ({ data }) => {
           >
             {project_owner_name}
           </p>
-          {/* <p className="project-data-container__item">
-            {(data?.task_data &&
-              data?.task_data?.length > 0 &&
-              data?.task_data?.length) ||
-              0}
-          </p> */}
-          <p className="project-data-container__item wide-flex-2">
-            {(data?.milestone_data &&
-              data?.milestone_data?.length > 0 &&
-              data?.milestone_data?.length) ||
-              0}
+          <p className="project-data-container__item">
+            {data?.task_count || 0}
+          </p>
+          <p className="project-data-container__item">
+            {data?.milestone_count || 0}
           </p>
           <p className="project-data-container__item wide-2">
             {project_duration}
@@ -230,7 +226,7 @@ const Project = ({ data }) => {
               }}
               className={
                 data &&
-                (!data?.milestone_data || data?.milestone_data?.length <= 0) &&
+                data?.milestone_count <= 0 &&
                 (!task_list_data || task_list_data?.length <= 0) &&
                 "project-management__button--disabled"
               }
@@ -548,6 +544,9 @@ const Project = ({ data }) => {
               }}
             />
             <DeleteIconButton
+              className={`${
+                any_task_completed && "project-management__button--disabled"
+              }`}
               onClickHandler={() => {
                 dispatch(
                   setDeleteModalState({
@@ -1130,8 +1129,8 @@ export const ProjectHeader = ({ isTasksHeader }) => {
       <p className="project-data-container__item wide">Owner</p>
       {!isTasksHeader && (
         <>
-          {/* <p className="project-data-container__item">Task</p> */}
-          <p className="project-data-container__item wide-flex-2">Milestone</p>
+          <p className="project-data-container__item">Task</p>
+          <p className="project-data-container__item">Milestone</p>
         </>
       )}
       {isTasksHeader && (
@@ -1250,12 +1249,18 @@ export const ProjectAndTaskContextMenu = ({
   onAddMilestoneClick,
   onAddTaskListClick,
   isMobileTaskListContextMenu,
+  isDeleteDisabled,
 }) => {
   return (
     <div className="project-three-dot-popup" ref={containerRef}>
       <div className="d-flex align-items-center justify-content-between">
         <EditIconButton className="mr-2" onClickHandler={onEditClick} />
-        <DeleteIconButton className="mr-2" onClickHandler={onDeleteClick} />
+        <DeleteIconButton
+          className={`mr-2 ${
+            isDeleteDisabled && "project-management__button--disabled"
+          }`}
+          onClickHandler={onDeleteClick}
+        />
         {(!isProjectContextMenu || !isMobileTaskListContextMenu) && onAddClick && (
           <SmallIconButton title="Add Task" type="primary" onClick={onAddClick}>
             <MdAdd />
@@ -1323,8 +1328,12 @@ export const TrashProject = ({ data }) => {
         >
           {project_owner}
         </p>
-        <p className="project-data-container__item">3</p>
-        <p className="project-data-container__item">4</p>
+        <p className="project-data-container__item">
+          {data?.task_count || "-"}
+        </p>
+        <p className="project-data-container__item">
+          {data?.milestone_count || "-"}
+        </p>
         <p className="project-data-container__item wide-2">
           {project_duration}
         </p>
@@ -1397,8 +1406,8 @@ export const TrashProject = ({ data }) => {
                 </div>
               </div>
             </div>
-            <div className="project-container-mobile__progress px-3">
-              {/* Progress Bar */}
+            {/* Progress Bar */}
+            {/* <div className="project-container-mobile__progress px-3">
               <Progress
                 trailColor="tranparent"
                 type="circle"
@@ -1407,7 +1416,7 @@ export const TrashProject = ({ data }) => {
                 strokeColor="#7A73FF"
                 strokeWidth={11}
               />
-            </div>
+            </div> */}
           </div>
           {/* Bottom Data */}
           <div className="d-flex justify-content-between align-items-center mt-3">
@@ -1576,8 +1585,8 @@ export const TrashMilestone = ({ data }) => {
                 </p>
               </div> */}
             </div>
-            <div className="project-container-mobile__progress px-3">
-              {/* Progress Bar */}
+            {/* Progress Bar */}
+            {/* <div className="project-container-mobile__progress px-3">
               <Progress
                 trailColor="tranparent"
                 type="circle"
@@ -1586,7 +1595,7 @@ export const TrashMilestone = ({ data }) => {
                 strokeColor="#7A73FF"
                 strokeWidth={11}
               />
-            </div>
+            </div> */}
           </div>
           {/* Bottom Data */}
           <div className="d-flex justify-content-between align-items-center mt-3">
@@ -1763,7 +1772,7 @@ export const TrashTask = ({ data }) => {
               <Progress
                 trailColor="tranparent"
                 type="circle"
-                percent={66}
+                percent={getTaskProgressByStatus(data?.task_status)}
                 width={70}
                 strokeColor="#7A73FF"
                 strokeWidth={11}

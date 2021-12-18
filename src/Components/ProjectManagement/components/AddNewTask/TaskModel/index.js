@@ -18,15 +18,6 @@ import {
   isBefore,
   isBeforeToday,
 } from "../../date.helpers";
-// custom style for dropdown
-const customStyle = {
-  control: (styles) => ({
-    ...styles,
-    width: "100%",
-    height: "50px",
-    borderRadius: "10px",
-  }),
-};
 
 const initialState = {
   task_id: null,
@@ -59,13 +50,9 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
     (state) =>
       state?.ProjectManagementReducer?.modalsStatus?.taskModal?.dateValidations
   );
-  // useEffect(() => {
-  //   console.log({ dateValidations });
-  // }, [dateValidations]);
   const dispatch = useDispatch();
   // to change the frequency
   const FrequencyChange = (e) => {
-    // setFrequency(e.target.value);
     setFieldInputs({ ...fieldInputs, frequency: e.target.value });
   };
 
@@ -116,7 +103,7 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
     allInputs.forEach((key) => {
       if (
         fieldInputs[key] !== null &&
-        fieldInputs[key] !== "" &&
+        // fieldInputs[key] !== "" &&
         fieldInputs[key] !== [] &&
         fieldInputs[key] !== undefined
       ) {
@@ -314,8 +301,12 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
               <label className="add-edit-project-labels mt-3">Assign To</label>
               <CreatableSelect
                 onChange={(option) => {
-                  setFieldInputs({ ...fieldInputs, assign_to: option?.value });
+                  setFieldInputs({
+                    ...fieldInputs,
+                    assign_to: option?.value || "",
+                  });
                 }}
+                isClearable={true}
                 options={usersList || []}
                 defaultValue={
                   (usersList &&
