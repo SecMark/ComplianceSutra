@@ -40,7 +40,7 @@ export const Input = ({
               </option>
               {valueForDropDown?.map((element) => {
                 return (
-                  <option key={element} value={element}>
+                  <option key={element.name} value={element}>
                     {element.name}
                   </option>
                 );
@@ -51,7 +51,7 @@ export const Input = ({
       ) : type === "textArea" ? (
         <>
           <div className={styles.labelContainer}>
-            <label>{labelText}</label>
+            <label className={styles[labelVariant]}>{labelText}</label>
           </div>
           <div>
             <textarea

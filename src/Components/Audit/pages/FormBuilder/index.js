@@ -40,6 +40,7 @@ const FormBuilder = () => {
     }
   };
 
+
   return (
     <div className={styles.maincontainer}>
       <div className={styles.container}>
@@ -66,7 +67,7 @@ const FormBuilder = () => {
         </div>
         {/* All Audit component will render here  --start-- */}
         <div className={styles.mainContent}>
-          {stepper.stepperAcitveSlide === 1 && <CreateAuditTemplate />}
+          {stepper.stepperAcitveSlide === 1 && <CreateAuditTemplate/>}
           {stepper.stepperAcitveSlide === 2 && (
             <FormComponents
               sectionName={sectionName}
