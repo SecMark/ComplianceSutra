@@ -16,6 +16,7 @@ import ProjectTrash from "../../../../ProjectManagement/Trash";
 import FormBuilder from "../../../../Audit/pages/FormBuilder";
 
 import "./style.css";
+import SectionList from "../../../../Audit/pages/List/SectionList";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
@@ -184,7 +185,13 @@ function Dashboard({ history }) {
 
         {state && state.adminMenu.currentMenu === "create-template" && (
           <div className="create-template">
-            <FormBuilder />
+            <SectionList />
+          </div>
+        )}
+
+        {state && state.adminMenu.currentMenu === "section-list" && (
+          <div className="create-template">
+            <SectionList />
           </div>
         )}
       </div>

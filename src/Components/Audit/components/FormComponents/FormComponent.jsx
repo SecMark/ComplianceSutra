@@ -256,6 +256,8 @@ const FormComponents = ({ next, back }) => {
 
   const submitRequirement = async (event) => {
     let temp = [...inputFieldList];
+
+    console.log(temp);
     const { id } = event.target;
     const splitId = id.split(",");
     const { questionnaire_section, field_type, answer_option } =
