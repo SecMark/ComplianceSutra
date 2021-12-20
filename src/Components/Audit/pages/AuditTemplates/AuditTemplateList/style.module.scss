@@ -1,0 +1,42 @@
+@import "../../../assets/styles/colors";
+
+table, th, td {
+    border:25px solid $color_white;
+    padding: 12px;
+  }
+  td {
+    padding: 0rem 0 !important;
+}
+.completedRed{
+    color: $color_red;
+    background-color: $color_light_red;
+    font-size: smaller;
+    font-weight: bold;
+}
+.completedGreen{
+    color:$color_green;
+    background-color: $color_light_green;
+    font-size: smaller;
+    font-weight: bold;
+}
+.statusOfTemplate{
+    margin-left: 920px;
+    margin-top: -164px;
+}
+.statusOfViewTemplate{
+    margin-top: 29px;
+}
+.statusOfAudit{
+    margin-left: 1000px;
+    margin-top: -164px;
+}
+.templateStatus{
+    color: $color_blue;
+    font-size: smaller;
+    font-weight: bold;
+}
+.auditStatus{
+    color: $color_blue;
+    font-size: smaller;
+    font-weight: bold;
+}

@@ -1,0 +1,115 @@
+@import "../../assets/styles/colors";
+
+.container{
+    box-shadow: 0 5px 36px 5px ;
+    background-color: $color_white;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 30px;
+    width: 98%;
+    height: 640px;
+}
+
+ .inputForSearchTemplate .searchIcon{
+    width: 250px;
+    height: 50px;
+    position: absolute;
+    margin-left: 1000px;
+    display: flex;
+    margin-top: -50px;
+    border: 2px;
+    border: 1px solid #000 
+}
+.createTemplate{
+    color:$color_blue;
+    border-radius: 8px;
+}
+// .backgroundColorName{
+//     background: $color_grey;
+//     width: 4%;
+//     border-radius: 8px;
+//     margin-left: 1015px; 
+// }
+
+// .sortBy{
+//     color: $color_black_text;
+//     margin-left: 950px;
+//     margin-top: -24px;
+//     cursor: pointer;
+//     font-size: small;
+//     font-weight: bold;
+//     opacity: 0.7;
+//   }
+
+.name{
+    color: $color_black_text;
+    margin-left: 1036px;
+    margin-top: -24px;
+    cursor: pointer;
+    font-size: small;
+    font-weight: bold;
+    opacity: 0.7;
+  }
+  .createdBy{
+    color: $color_black_text;
+    margin-left: 1120px;
+    margin-top: -20px;
+    cursor: pointer;
+    font-size: small;
+    font-weight: bold;
+    opacity: 0.7;
+  }
+  .auditType{
+    color: $color_black_text;
+    margin-left: 1225px;
+    margin-top: -20px;
+    cursor: pointer;
+    font-size: small;
+    font-weight: bold;
+    opacity: 0.7;
+  }
+
+  .activation .backgroundColorName .name{
+    background: $color_grey;
+    color: $color_white;
+    width: 3.5%;
+    border-radius: 8px;
+    margin-left: 1036px; 
+}
+.activations .backgroundCreatedBy .createdBy{
+    background: $color_grey;
+    color: $color_white;
+    width: 5.5%;
+    border-radius: 8px;
+    margin-left: 1120px;
+}
+
+ .inputForSearchTemplate{
+    margin-left: 1000px;
+    margin-top: -30px; 
+      
+}
+::-webkit-input-placeholder {
+    text-align: left;
+ }
+ .searchIcon{
+     margin-top: -30px;
+     margin-left: -30px;
+ }
+
+.horizontalLine{
+    border:none;
+    border-top:0.5px solid;
+    margin:1em auto; 
+    width: 98%;
+}
+.horizontalDarkLine{
+    border:none;
+    border-top:2.5px solid;
+    margin:1em auto; 
+    width: 28%;
+    margin-left: 0px;
+    margin-top: -3px;
+    color: $color_blue;
+}
+
