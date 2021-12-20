@@ -16,12 +16,18 @@ import { dataTypes } from "../../constants/DateTypes";
 import { fileTypes } from "../../constants/DateTypes/fileType";
 import axiosInstance from "../../../../apiServices";
 import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
-const FormComponents = () => {
+const FormComponents = ({ next, back }) => {
   const [inputFieldList, setInputFieldList] = useState([
     {
       id: uuidv4(),
       sectionName: "",
+      completionDuration: "",
+      bufferPeriod: "",
+      questionSectionId: "",
+      questionnaireSection: "",
       inputs: [
         {
           questionnaire_section: "",
@@ -30,6 +36,11 @@ const FormComponents = () => {
           answer_option: "",
           field_type: "text",
           id: uuidv4(),
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
         },
       ],
     },
@@ -60,6 +71,11 @@ const FormComponents = () => {
     temp.push({
       id: uuidv4(),
       sectionName: "",
+      completionDuration: "",
+      bufferPeriod: "",
+      isError: false,
+      questionSectionId: "",
+      questionnaireSection: "",
       inputs: [
         {
           questionnaire_section: "",
@@ -67,6 +83,12 @@ const FormComponents = () => {
           how_get_this_data: "",
           answer_option: "",
           field_type: "text",
+          reference_document: "",
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
         },
       ],
     });
@@ -74,10 +96,25 @@ const FormComponents = () => {
     setInputFieldList(temp);
   };
 
-  const deleteSection = (id) => {
+  const deleteSection = async (id, index) => {
     let temp = [...inputFieldList];
-    let removeSection = temp.filter((item) => item.id !== id);
 
+    const payload = { question_section_id: temp[index]?.questionSectionId };
+
+    const deleteSectionName = await axiosInstance.post(
+      `${BACKEND_BASE_URL}audit.api.DeleteQuestionnaireSection`,
+      payload
+    );
+
+    if (deleteSectionName) {
+      const { message } = deleteSectionName.data;
+      if (message.status) {
+      } else {
+        toast({ type: "error", message: message.status_response });
+      }
+    }
+
+    let removeSection = temp.filter((item) => item.id !== id);
     setInputFieldList(removeSection);
   };
 
@@ -88,9 +125,15 @@ const FormComponents = () => {
       questionnaire_section: "",
       question: "",
       how_get_this_data: "",
+      reference_document: "",
       answer_option: "",
       field_type: "text",
       id: uuidv4(),
+      error: {
+        isError: false,
+        type: "",
+        message: "",
+      },
     });
 
     setInputFieldList(temp);
@@ -98,8 +141,8 @@ const FormComponents = () => {
 
   const deleteRequirement = (index, id) => {
     let temp = [...inputFieldList];
-    temp[index].inputs = temp[index].inputs.filter((item) => item.id !== id);
 
+    temp[index].inputs = temp[index].inputs.filter((item) => item.id !== id);
     setInputFieldList(temp);
   };
 
@@ -110,9 +153,15 @@ const FormComponents = () => {
       questionnaire_section: "",
       question: "",
       how_get_this_data: "",
+      reference_document: "",
       answer_option: "",
       field_type: "none",
       id: uuidv4(),
+      error: {
+        isError: false,
+        type: "",
+        message: "",
+      },
     });
 
     setInputFieldList(temp);
@@ -120,27 +169,144 @@ const FormComponents = () => {
 
   const addSectionName = async (event) => {
     let temp = [...inputFieldList];
-    const { value, id } = event.target;
-    temp[id].sectionName = value;
+    const { value, id, name } = event.target;
+    temp[id].isError = false;
+    if (name === "sectionName") {
+      temp[id].sectionName = value;
+    } else if (name === "duration") {
+      temp[id].completionDuration = value;
+    } else if (name === "buffer") {
+      temp[id].bufferPeriod = value;
+    }
+
     setInputFieldList(temp);
+  };
 
-    const payload = {
-      audit_template_name: "testing Api12",
-      questionnaire_section: temp[id].sectionName,
-      duration_of_completion: 10,
-      buffer_period: 3,
-    };
+  const submitSection = async (event) => {
+    let temp = [...inputFieldList];
+    const { id } = event.target;
+    const { sectionName, completionDuration, bufferPeriod } = temp[id];
 
-    const addSectionResponse = await axiosInstance.post(
-      `${BACKEND_BASE_URL}/audit.api.AddQuestionnaireSection`,
-      payload
-    );
+    if (
+      sectionName &&
+      sectionName !== "" &&
+      completionDuration &&
+      completionDuration !== "" &&
+      bufferPeriod &&
+      bufferPeriod !== ""
+    ) {
+      let payload = {
+        audit_template_name: "testing Api12",
+        questionnaire_section: temp[id].sectionName,
+        duration_of_completion: parseInt(temp[id].completionDuration),
+        buffer_period: parseInt(temp[id].bufferPeriod),
+      };
+      let addSectionResponse = "";
 
-    console.log(addSectionResponse);
+      if (temp[id].questionSectionId === "") {
+        addSectionResponse = await axiosInstance.post(
+          `${BACKEND_BASE_URL}audit.api.AddQuestionnaireSection`,
+          payload
+        );
+      } else {
+        payload.question_section_id = temp[id].questionSectionId
+          ? temp[id].questionSectionId
+          : "";
+
+        addSectionResponse = await axiosInstance.post(
+          `${BACKEND_BASE_URL}audit.api.UpdateQuestionnaireSection`,
+          payload
+        );
+      }
+
+      if (addSectionResponse) {
+        const { message } = addSectionResponse.data;
+        if (message.status) {
+          temp[id].questionSectionId = message?.question_section_id;
+          temp[id].questionnaireSection = message?.questionnaire_section;
+          temp[id].isError = false;
+          setInputFieldList(temp);
+        } else {
+          temp[id].isError = true;
+          setInputFieldList(temp);
+        }
+      }
+    }
+  };
+
+  const createRequirement = async (event) => {
+    let temp = [...inputFieldList];
+
+    const { name, value, id } = event.target;
+    const splitId = id.split(",");
+
+    if (name === "questionnaire_section") {
+      temp[splitId[1]].inputs[splitId[0]].questionnaire_section = value;
+    } else if (name === "answer_option") {
+      temp[splitId[1]].inputs[splitId[0]].answer_option = value;
+    } else if (name === "how_get_this_data") {
+      temp[splitId[1]].inputs[splitId[0]].how_get_this_data = value;
+    } else if (name === "reference_document") {
+      temp[splitId[1]].inputs[splitId[0]].reference_document =
+        event.target.files[0];
+    }
+
+    setInputFieldList(temp);
+  };
+
+  const submitRequirement = async (event) => {
+    let temp = [...inputFieldList];
+
+    console.log(temp);
+    const { id } = event.target;
+    const splitId = id.split(",");
+    const { questionnaire_section, field_type, answer_option } =
+      temp[splitId[1]].inputs[splitId[0]];
+    if (questionnaire_section !== "") {
+      if (field_type !== "text" && answer_option === "") {
+        temp[splitId[1]].inputs[splitId[0]].error = {
+          isError: true,
+          type: "value",
+          message: "Value is required",
+        };
+        setInputFieldList(temp);
+      } else {
+        const {
+          questionnaire_section,
+          field_type,
+          answer_option,
+          how_get_this_data,
+          reference_document,
+        } = temp[splitId[1]].inputs[splitId[0]];
+
+        const { sectionName } = temp[splitId[1]];
+
+        let formData = new FormData();
+        formData.append("questionnaire_section", sectionName);
+        formData.append("question", questionnaire_section);
+        formData.append("reference_document", reference_document);
+        formData.append("how_get_this_data", how_get_this_data);
+        formData.append("answer_option", answer_option);
+        formData.append("field_type", field_type);
+
+        const addRequirement = await axiosInstance.post(
+          "audit.api.AddQuestionQuestionnaire",
+          formData
+        );
+      }
+    } else {
+      temp[splitId[1]].inputs[splitId[0]].error = {
+        isError: true,
+        type: "questionLabel",
+        message: "Requirment is required",
+      };
+      setInputFieldList(temp);
+    }
   };
 
   return (
     <>
+      <ToastContainer />
       <div className={styles.formComponetsContainer}>
         <div className={styles.formBuilderCompoents}>
           <Text heading="h2" text="Form Components" />
@@ -151,11 +317,11 @@ const FormComponents = () => {
           />
           <div className={styles.itemList}>
             <IconButton
-              description="Add New Question"
+              description="New Question"
               onDragStart={(event) => ondragstart(event, uuidv4())}
               draggable={true}
               variant="item"
-              icon={<BsPlusCircleFill />}
+              icon={<BsPlusSquareFill />}
               size="medium"
             />
             <div className={styles.inputButtons}>
@@ -182,23 +348,57 @@ const FormComponents = () => {
             />
           </div>
           <div className={styles.inputContainer}>
-            <div className={styles.formPreview}>
-              <Button description="FORM PREVIEW" variant="preview" />
-            </div>
             {inputFieldList.map((listItem, Iindex) => {
               return (
-                <div key={listItem.id}>
+                <>
                   <div className={styles.sectionName}>
                     <div>
                       <Input
                         type="text"
                         labelText="Section Name"
                         value={listItem.sectionName}
+                        name="sectionName"
                         id={Iindex}
                         onChange={addSectionName}
+                        onBlur={submitSection}
+                      />
+                      {listItem.isError && (
+                        <Text
+                          heading="span"
+                          text={`${listItem.sectionName} is already exists`}
+                          variant="error"
+                        />
+                      )}
+                    </div>
+                    <div>
+                      <Input
+                        type="number"
+                        labelText="Duration"
+                        value={listItem.duration}
+                        id={Iindex}
+                        name="duration"
+                        onChange={addSectionName}
+                        onBlur={submitSection}
+                        variant="small"
                       />
                     </div>
-                    <BsTrashFill onClick={() => deleteSection(listItem.id)} />
+                    <div>
+                      <Input
+                        type="number"
+                        labelText="Buffer Peroid"
+                        value={listItem.buffer}
+                        id={Iindex}
+                        name="buffer"
+                        onChange={addSectionName}
+                        onBlur={submitSection}
+                        variant="small"
+                      />
+                    </div>
+                    <div>
+                      <BsTrashFill
+                        onClick={() => deleteSection(listItem.id, Iindex)}
+                      />
+                    </div>
                   </div>
                   <div className={styles.inputSection}>
                     {listItem?.inputs.map((fieldName, index) => {
@@ -223,7 +423,21 @@ const FormComponents = () => {
                                     type="text"
                                     labelText="Requirement"
                                     variant="medium"
+                                    id={`${index},${Iindex}`}
+                                    name="questionnaire_section"
+                                    value={fieldName.questionnaire_section}
+                                    onChange={createRequirement}
+                                    onBlur={submitRequirement}
                                   />
+                                  {fieldName.error?.isError &&
+                                    fieldName.error?.type ===
+                                      "questionLabel" && (
+                                      <Text
+                                        heading="span"
+                                        text={fieldName.error.message}
+                                        variant="error"
+                                      />
+                                    )}
                                 </div>
                                 <div className={styles.inputField}>
                                   {fieldName.field_type === "text" ? (
@@ -231,7 +445,11 @@ const FormComponents = () => {
                                       type="select"
                                       labelText="Data Type"
                                       variant="small"
+                                      id={`${index},${Iindex}}`}
+                                      name="field_type"
                                       valueForDropDown={dataTypes}
+                                      onChange={createRequirement}
+                                      onBlur={submitRequirement}
                                     />
                                   ) : (
                                     <Input
@@ -251,9 +469,46 @@ const FormComponents = () => {
                                         type="text"
                                         labelText="value"
                                         variant="small"
+                                        value={fieldName.answer_option}
+                                        id={`${index},${Iindex}`}
+                                        name="answer_option"
+                                        onChange={createRequirement}
+                                        onBlur={submitRequirement}
                                       />
+                                      {fieldName.error?.isError &&
+                                        fieldName.error?.type === "value" && (
+                                          <Text
+                                            heading="span"
+                                            text={fieldName.error.message}
+                                            variant="error"
+                                          />
+                                        )}
                                     </div>
                                   )}
+
+                                <div className={styles.inputField}>
+                                  <Input
+                                    type="text"
+                                    labelText="How get this data"
+                                    variant="small"
+                                    id={`${index},${Iindex}`}
+                                    name="how_get_this_data"
+                                    value={fieldName.how_get_this_data}
+                                    onChange={createRequirement}
+                                    onBlur={submitRequirement}
+                                  />
+                                </div>
+
+                                <div className={styles.inputField}>
+                                  <Input
+                                    type="file"
+                                    labelText="Reference Document"
+                                    name="reference_document"
+                                    onChange={createRequirement}
+                                    onBlur={submitRequirement}
+                                    id={`${index},${Iindex}`}
+                                  />
+                                </div>
                               </>
                             )}
                             {fieldName.field_type === "file" && (
@@ -276,10 +531,14 @@ const FormComponents = () => {
                             )}
 
                             {fieldName.field_type === "date" && (
-                              <div>
-                                <div className={styles.dateRange}>
-                                  <Datepicker labelText="Date Range for Records" />
-                                </div>
+                              <div className={styles.dateRange}>
+                                <Datepicker
+                                  labelText="Date Range for Records"
+                                  name="answer_option"
+                                  onChange={createRequirement}
+                                  onBlur={submitRequirement}
+                                  id={`${index},${Iindex}`}
+                                />
                               </div>
                             )}
                           </div>
@@ -308,10 +567,9 @@ const FormComponents = () => {
                       />
                     </div>
                   </div>
-                </div>
+                </>
               );
             })}
-
             <div className={styles.addNewSection} onClick={addNewSection}>
               <BsPlusSquareFill />
               <Text
@@ -322,19 +580,6 @@ const FormComponents = () => {
               />
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className={styles.saveTemplate}>
-        <div>
-          <Button
-            description="SAVE TEMPLATE & QUIT"
-            variant="preview"
-            size="medium"
-          />
-        </div>
-        <div>
-          <Button description="NEXT" size="small" variant="default" />
         </div>
       </div>
     </>

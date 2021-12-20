@@ -23,17 +23,59 @@
   font-family: $font_sans_serif;
 }
 
+.stepperMainHeading {
+  text-transform: capitalize;
+  font-size: 20px;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-family: $font_poppins;
+}
+.stepperSubHeading {
+  text-transform: capitalize;
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+  font-weight: normal;
+  color: $color_light_text;
+  font-family: $font_poppins;
+  line-height: normal;
+}
+
+.stepperSubHeadingBold {
+  text-transform: capitalize;
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: $color_light_text;
+  font-family: $font_poppins;
+  line-height: normal;
+}
+
+.smallTableHeading {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #797979;
+  margin-bottom: 0;
+}
+
 .small {
   font-size: 12px;
   font-style: normal;
   font-family: $font_sans_serif;
 }
 
-
-.label_variant{
+.label_variant {
   color: $color_grey;
 }
 
 .reviewDetailsLeft {
   color: $color_grey;
+}
+.error {
+  font-size: 12px;
+  font-style: normal;
+  font-family: $font_sans_serif;
+  color: $color_warning_text;
 }

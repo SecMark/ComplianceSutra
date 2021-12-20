@@ -1,0 +1,207 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins.scss";
+
+.auditAssignment {
+  width: 100%;
+  min-height: 100vh;
+  .auditHeader {
+    padding: 0.75rem 1.5rem 1.5rem;
+    .auditHeaderButtonContainer {
+      @include alignBoxWithFlex(center, space-between);
+      margin-bottom: 0.5rem;
+    }
+    .stepperContainer {
+      & > div {
+        margin-bottom: 1.5rem !important;
+        margin-right: 1.5rem;
+
+        & > div > p {
+          font-size: 10px;
+          // width: 150px;
+          background-color: #fff;
+        }
+        & > div > img {
+          height: 18px;
+        }
+      }
+    }
+    .auditHeaderBorder {
+      height: 2px;
+      width: 100%;
+      background-color: $color_light_grey;
+    }
+  }
+  .auditAssignmentMain {
+    width: 100%;
+    overflow: hidden auto;
+    padding: 0 1.5rem 1.5rem;
+  }
+}
+
+.inputRow {
+  @include alignBoxWithFlex(center, space-between);
+  width: 50%;
+  flex-wrap: wrap;
+  .flex6 {
+    flex: 0.48;
+    margin-bottom: 1.5rem;
+  }
+  .flex12 {
+    flex: 1;
+    margin-bottom: 1.5rem;
+  }
+}
+.inputRowSpacing {
+  margin-bottom: 2rem;
+}
+
+.buttonContainer {
+  padding: 1.5rem;
+}
+.questionnaireForm {
+  border: none;
+  height: 100%;
+  width: 100%;
+  overflow: auto hidden;
+  border-radius: 8px;
+
+  .questionnaireFormHeader {
+    @include alignBoxWithFlex(center, space-between);
+    background-color: $color_primary_background;
+    padding: 0.5rem 1rem;
+    width: 100%;
+
+    & > p {
+      margin-bottom: 0;
+      font-weight: 500;
+    }
+    .questionnaireFormHeaderOptions {
+      @include alignBoxWithFlex(center, end);
+      flex: 1;
+      & label {
+        margin-bottom: 0;
+        margin-left: 0.75rem;
+      }
+      & input[type="checkbox"] {
+        min-width: 20px;
+        width: 17px;
+        height: 17px;
+        cursor: pointer;
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+      & button {
+        border-width: 1px;
+        border-style: solid;
+        min-width: fit-content;
+        text-transform: uppercase;
+        font-size: 13px;
+        line-height: 13px;
+        height: auto;
+        font-weight: normal;
+        padding: 0.3rem 0.5rem;
+      }
+    }
+  }
+  .questionnaireFormMain {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    padding: 1rem;
+    background-color: $color_secondary_background;
+  }
+}
+.questionnaireFormTable {
+  width: 100%;
+  .questionnaireFormSectionName {
+    min-width: 120px;
+    max-width: 240px;
+    @include alignBoxWithFlex(start, start);
+    & > p {
+      margin-bottom: 0;
+      margin-right: 0.5rem;
+    }
+  }
+  .questionnaireFormDeadline {
+    width: 160px;
+    margin-right: 2rem;
+    & select {
+      min-width: 80%;
+      width: 80%;
+      margin-right: auto;
+    }
+  }
+}
+td {
+  padding: 1rem 0;
+}
+.questionnaireFormAssignTo {
+  @include alignBoxWithFlex(center, start);
+}
+.userTag {
+  border: none;
+  background-color: $color_white;
+  border-radius: 2.5rem;
+  width: fit-content;
+  padding: 0.1rem 0.5rem;
+  margin-right: 0.75rem;
+  cursor: pointer;
+  & p {
+    color: $color_primary;
+    font-weight: 600;
+  }
+}
+.userTagSelected {
+  border: 1.75px solid $color_primary;
+  background-color: $color_primary_background;
+}
+.inputGroupRowReverse {
+  @include alignBoxWithFlex(center, center, row-reverse);
+  margin-right: 1.5rem;
+}
+.divider {
+  width: 100%;
+  border-bottom: 2px dotted rgba(0, 0, 0, 0.1);
+  margin: 0.5rem 0;
+}
+
+.dataRow {
+  @include alignBoxWithFlex(center, space-between);
+  width: 100%;
+  margin: 0.75rem 0;
+  .keyBox {
+    flex: 0.3;
+  }
+  .valueBox {
+    flex: 1;
+    & > p {
+      color: rgba(0, 0, 0, 0.781);
+    }
+  }
+  & p {
+    text-transform: capitalize;
+    font-weight: normal;
+    font-size: 13px;
+  }
+}
+.reviewDetailsHeadingContainer {
+  @include alignBoxWithFlex(center, space-between);
+  width: 100%;
+}
+.rightAlign {
+  justify-content: flex-end !important;
+}
+.flex1 {
+  flex: 0.25;
+}
+.flex2 {
+  flex: 0.5;
+}
+.flex3 {
+  flex: 0.75;
+}
+.flex4 {
+  flex: 1;
+}

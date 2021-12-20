@@ -1,23 +1,38 @@
 import React, { useState } from "react";
 import FormComponents from "../../components/FormComponents/FormComponent";
-import styles from "./style.module.scss";
+import CheckList from "./CheckList/";
 import Stepper from "../../../../CommonModules/sharedComponents/Stepper";
-import { steps } from "../../constants/StepperSteps/steps";
-import { AiOutlineArrowLeft } from "react-icons/ai";
-import IconButton from "../../components/Buttons/IconButton";
 import Text from "../../components/Text/Text";
+import styles from "./style.module.scss";
+import IconButton from "../../components/Buttons/IconButton";
+import { MdArrowBack, MdClose, MdExpandMore } from "react-icons/md";
 import Button from "../../components/Buttons/Button";
-import CreateAuditTemplate from "../createAuditTemplate";
+
+const auditAssignmentSteps = [
+  { id: 1, text: "Add Audit Scope", heading: "Buid Template Questionarie" },
+  { id: 2, text: "Create Questionarie", heading: "Buid Template Questionarie" },
+  {
+    id: 3,
+    text: "Create CheckList",
+    heading: "Create CheckList For Template",
+  },
+  {
+    id: 4,
+    text: "Review & Create",
+    heading: "Review Template Details",
+  },
+];
 
 const FormBuilder = () => {
   const [sectionName, setSectionName] = useState("");
+
   const [stepper, setStepper] = useState({
-    stepperAcitveSlide: 1,
+    stepperAcitveSlide: 2,
     stepperCompletedSlides: [],
   });
 
-  // ---Stepper  Function for next click
-  const nextClick = (step) => {
+  // --- Function for next click
+  const handleNextClick = (step) => {
     if (step) {
       setStepper({
         ...stepper,
@@ -26,9 +41,8 @@ const FormBuilder = () => {
       });
     }
   };
-
-  // ---  Stepper Function for back click
-  const backClick = (step) => {
+  // --- Function for back click
+  const handleBackClick = (step) => {
     if (step) {
       setStepper({
         ...stepper,
@@ -44,23 +58,27 @@ const FormBuilder = () => {
   return (
     <div className={styles.maincontainer}>
       <div className={styles.container}>
-        <div className={styles.subContainer}>
-          <IconButton
-            icon={<AiOutlineArrowLeft />}
-            variant="backIcon"
-            onClick={() => {
-              backClick(stepper.stepperAcitveSlide);
-            }}
-          />
-        </div>
-        <div className={styles.borderBox}>
-          <div className={styles.subContainer}>
-            <Text
-              heading="h1"
-              text={steps[stepper.stepperAcitveSlide - 1].heading}
-              variant="default"
+        <div className={styles.auditHeader}>
+          <div
+            className={`${styles.auditHeaderButtonContainer} ${
+              stepper?.stepperAcitveSlide < 2 ? styles.rightAlign : ""
+            }`}
+          >
+            {stepper?.stepperAcitveSlide > 1 && (
+              <IconButton
+                onClick={() => handleBackClick(stepper?.stepperAcitveSlide)}
+                variant="iconButtonRound"
+                icon={<MdArrowBack />}
+                size="none"
+              />
+            )}
+            <IconButton
+              variant="iconButtonRound"
+              icon={<MdClose />}
+              size="none"
             />
           </div>
+
           <div className={styles.stepper}>
             <Stepper steps={steps} stepper={stepper} setStepper={setStepper} />
           </div>
@@ -72,39 +90,56 @@ const FormBuilder = () => {
             <FormComponents
               sectionName={sectionName}
               setSectionName={setSectionName}
-            />
-          )}
-        </div>
-        {/* All Audit component will render here --end--  */}
 
-        {stepper.stepperAcitveSlide !== 4 ? (
-          <div className={styles.buttonContainer}>
-            <div className={styles.saveButton}>
-              <Button
-                onClick={() => {
-                  nextClick(stepper.stepperAcitveSlide);
-                }}
-                variant="default"
-                description="NEXT"
-                size="small"
-              />
-            </div>
-            <div className={styles.exitButton}>
-              <Button
-                variant="preview"
-                description="SAVE TEMPLATE AND EXIT"
-                size="medium"
-              />
-            </div>
+          <div
+            className={`${styles.auditHeaderButtonContainer} ${styles?.stepperContainer}`}
+          >
+            <Text
+              heading="p"
+              text={
+                auditAssignmentSteps[stepper?.stepperAcitveSlide - 1]?.heading
+              }
+              variant="stepperMainHeading"
+            />
+            <Stepper
+              steps={auditAssignmentSteps}
+              setStepper={setStepper}
+              stepper={stepper}
+
+            />
           </div>
-        ) : (
-          <div className={styles.buttonContainer}>
-            <div>
-              <Button variant="stepperSaveBtn" description="CREATE TEMPLATE" />
-            </div>
-          </div>
+          <div className={styles.auditHeaderBorder}></div>
+        </div>
+
+        {stepper?.stepperAcitveSlide === 2 && (
+          <FormComponents
+            sectionName={sectionName}
+            setSectionName={setSectionName}
+            next={handleNextClick}
+            back={handleBackClick}
+          />
         )}
-        {/* <FormComponents sectionName={sectionName} setSectionName={setSectionName} /> */}
+        {stepper?.stepperAcitveSlide === 3 && (
+          <CheckList next={handleNextClick} back={handleBackClick} />
+        )}
+
+        <div className={styles.saveTemplate}>
+          <div>
+            <Button
+              description="SAVE TEMPLATE & QUIT"
+              variant="preview"
+              size="medium"
+            />
+          </div>
+          <div>
+            <Button
+              description="NEXT"
+              size="small"
+              variant="default"
+              onClick={() => handleNextClick(stepper?.stepperAcitveSlide)}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

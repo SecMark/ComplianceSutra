@@ -26,22 +26,29 @@ export const Input = ({
     <>
       {type === "select" ? (
         <>
-          <div className={styles.labelContainer}>
-            <label className={styles[labelVariant]}>{labelText}</label>
-          </div>
+          {labelText && (
+            <div className={styles.labelContainer}>
+              <label className={styles[labelVariant]}>{labelText}</label>
+            </div>
+          )}
           <div>
             <select
               value={value}
               onChange={onChange}
               className={styles[variant]}
+              name={name}
+              id={id}
             >
               <option disabled value="default" selected>
-                Select
+                {placeholder}
               </option>
               {valueForDropDown?.map((element) => {
                 return (
-                  <option key={element.name} value={element}>
-                    {element.name}
+                  <option
+                    key={element.id || element.value || element}
+                    value={element?.value ? element?.value : element}
+                  >
+                    {element?.label || element?.name}
                   </option>
                 );
               })}
@@ -66,6 +73,7 @@ export const Input = ({
               pattern={pattern}
               className={styles[variant]}
               value={value}
+              onBlur={onBlur}
             />
           </div>
         </>
@@ -74,20 +82,39 @@ export const Input = ({
           <div className={styles.labelContainer}>
             <label className={styles[labelVariant]}>{labelText}</label>
           </div>
-          <div>
-            <input
-              onChange={onChange}
-              type={type}
-              placeholder={placeholder}
-              name={name}
-              disabled={disabled}
-              max={max}
-              min={min}
-              pattern={pattern}
-              className={styles[variant]}
-              value={value}
-              id={id}
-            />
+          <div className={styles.inputWrapper}>
+            {type === "textarea" ? (
+              <textarea
+                onChange={onChange}
+                type={type}
+                placeholder={placeholder}
+                name={name}
+                disabled={disabled}
+                max={max}
+                min={min}
+                pattern={pattern}
+                className={styles[variant]}
+                value={value}
+                id={id}
+                onBlur={onBlur}
+              />
+            ) : (
+              <input
+                onChange={onChange}
+                type={type}
+                placeholder={placeholder}
+                name={name}
+                disabled={disabled}
+                max={max}
+                min={min}
+                pattern={pattern}
+                className={styles[variant]}
+                value={value}
+                id={id}
+                onBlur={onBlur}
+              />
+            )}
+
             {error && <p>{errorText}</p>}
           </div>
         </>

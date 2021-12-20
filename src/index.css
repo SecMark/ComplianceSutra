@@ -194,3 +194,13 @@ input::-webkit-inner-spin-button {
 .Toastify__toast--info {
   background: #eae8ff !important;
 }
+
+#dataGrid {
+  height: auto;
+  overflow: auto;
+  padding-bottom: 20px;
+}
+
+.dx-datagrid-header-panel .dx-toolbar {
+  padding: 20px;
+}

@@ -9,6 +9,8 @@ const Datepicker = ({
   labelText,
   variant = "medium",
   labelVariant = "labelMedium",
+  name,
+  id,
 }) => {
   const { RangePicker } = DatePicker;
   return (
@@ -21,6 +23,9 @@ const Datepicker = ({
           onChange={onChange}
           format="DD MMMM Y"
           className={styles[variant]}
+          name={name}
+          onChange={onChange}
+          id={id}
         />
       </div>
     </>

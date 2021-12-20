@@ -7,6 +7,8 @@ import { BsTrashFill, BsPlusSquareFill } from "react-icons/bs";
 import { fileTypes } from "../../../constants/DateTypes/fileType";
 import styles from "./style.module.scss";
 import Label from "../../../components/Labels/Label";
+import axiosInstance from "../../../../../apiServices";
+import { BACKEND_BASE_URL } from "../../../../../apiServices/baseurl";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,6 +17,11 @@ const CheckList = () => {
     {
       id: uuidv4(),
       sectionName: "",
+      completionDuration: "",
+      bufferPeriod: "",
+      isError: false,
+      questionSectionId: "",
+      questionnaireSection: "",
       checkListInput: [
         {
           areaForVerfication: "",
@@ -32,6 +39,11 @@ const CheckList = () => {
     temp.push({
       id: uuidv4(),
       sectionName: "",
+      completionDuration: "",
+      bufferPeriod: "",
+      isError: false,
+      questionSectionId: "",
+      questionnaireSection: "",
       checkListInput: [
         {
           id: uuidv4(),
@@ -82,6 +94,73 @@ const CheckList = () => {
     setCheckList(temp);
   };
 
+  const addCheckListSectionName = async (event) => {
+    let temp = [...checkList];
+    const { value, id, name } = event.target;
+    temp[id].isError = false;
+    if (name === "sectionName") {
+      temp[id].sectionName = value;
+    } else if (name === "duration") {
+      temp[id].completionDuration = value;
+    } else if (name === "buffer") {
+      temp[id].bufferPeriod = value;
+    }
+
+    setCheckList(temp);
+  };
+
+  const submitChecklistSection = async (event) => {
+    let temp = [...checkList];
+    const { id } = event.target;
+    const { sectionName, completionDuration, bufferPeriod } = temp[id];
+
+    if (
+      sectionName &&
+      sectionName !== "" &&
+      completionDuration &&
+      completionDuration !== "" &&
+      bufferPeriod &&
+      bufferPeriod !== ""
+    ) {
+      let payload = {
+        audit_template_name: "testing Api12",
+        questionnaire_section: temp[id].sectionName,
+        duration_of_completion: parseInt(temp[id].completionDuration),
+        buffer_period: parseInt(temp[id].bufferPeriod),
+      };
+      let addSectionResponse = "";
+
+      if (temp[id].questionSectionId === "") {
+        addSectionResponse = await axiosInstance.post(
+          `${BACKEND_BASE_URL}audit.api.AddQuestionnaireSection`,
+          payload
+        );
+      } else {
+        payload.question_section_id = temp[id].questionSectionId
+          ? temp[id].questionSectionId
+          : "";
+
+        addSectionResponse = await axiosInstance.post(
+          `${BACKEND_BASE_URL}audit.api.UpdateQuestionnaireSection`,
+          payload
+        );
+      }
+
+      if (addSectionResponse) {
+        const { message } = addSectionResponse.data;
+        if (message.status) {
+          temp[id].questionSectionId = message?.question_section_id;
+          temp[id].questionnaireSection = message?.questionnaire_section;
+          temp[id].isError = false;
+          setCheckList(temp);
+        } else {
+          temp[id].isError = true;
+          setCheckList(temp);
+        }
+      }
+    }
+  };
+
   return (
     <>
       <div className={styles.heading}>
@@ -92,16 +171,46 @@ const CheckList = () => {
         <div className={styles.checkListContainer}>
           {checkList.map((checkItem, Iindex) => {
             return (
-              <>
+              <div className={styles.sectionContainer}>
                 <div className={styles.sectionName}>
                   <div>
                     <Input
                       type="text"
-                      placeholder="Section Name"
-                      variant="outline"
+                      labelText="Section Name"
+                      name="section"
+                      id={Iindex}
+                      value={checkItem.duration}
+                      onChange={addCheckListSectionName}
+                      onBlur={submitChecklistSection}
                     />
                   </div>
-                  <BsTrashFill />
+                  <div>
+                    <Input
+                      type="number"
+                      labelText="Duration"
+                      value={checkItem.duration}
+                      id={Iindex}
+                      name="duration"
+                      onChange={addCheckListSectionName}
+                      onBlur={submitChecklistSection}
+                      variant="small"
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      type="number"
+                      labelText="Buffer Peroid"
+                      value={checkItem.buffer}
+                      id={Iindex}
+                      name="buffer"
+                      onChange={addCheckListSectionName}
+                      onBlur={submitChecklistSection}
+                      variant="small"
+                    />
+                  </div>
+                  <div>
+                    <BsTrashFill />
+                  </div>
                 </div>
 
                 {checkItem.checkListInput.map((checkInputs, index) => {
@@ -151,20 +260,17 @@ const CheckList = () => {
                     </div>
                   );
                 })}
-                <div className={styles.addNewContainer}>
-                  <div
-                    className={styles.addNew}
-                    onClick={() => addNewCheckList(Iindex)}
-                  >
-                    <Text
-                      heading="span"
-                      text="ADD NEW CHECKPOINT"
-                      variant="primary"
-                      size="small"
-                    />
-                  </div>
+
+                <div className={styles.addNewCheckList}>
+                  <BsPlusSquareFill onClick={() => addNewCheckList(Iindex)} />
+                  <Text
+                    heading="p"
+                    text="NEW CHECKLIST"
+                    size="small"
+                    variant="primary"
+                  />
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
