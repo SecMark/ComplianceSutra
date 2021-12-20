@@ -1,0 +1,3 @@
+User-agent: *
+
+sitemap: https://www.compliancesutra.com/sitemap.xml

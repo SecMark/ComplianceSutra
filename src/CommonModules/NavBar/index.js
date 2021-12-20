@@ -110,12 +110,12 @@ function NavBar() {
                 </div>
               </li> 
               <li className="nav-item">
-                <Link className="nav-link nav-link-fonts" to="/login">
+                <Link className="nav-link nav-link-fonts" to="/login" title=" Login">
                   Login
                 </Link>
               </li>
               <li className="nav-item">
-               <Link to="/sign-up"> <button className="navbar-getstarted-button" href="#">
+               <Link to="/sign-up"> <button className="navbar-getstarted-button" href="#" title="Get Started">
                   Get Started 
                 </button></Link>
               </li>
