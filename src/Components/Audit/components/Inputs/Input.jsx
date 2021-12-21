@@ -58,7 +58,7 @@ export const Input = ({
       ) : type === "textArea" ? (
         <>
           <div className={styles.labelContainer}>
-            <label>{labelText}</label>
+            <label className={styles[labelVariant]}>{labelText}</label>
           </div>
           <div>
             <textarea

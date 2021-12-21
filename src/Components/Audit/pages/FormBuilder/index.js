@@ -54,6 +54,7 @@ const FormBuilder = () => {
     }
   };
 
+
   return (
     <div className={styles.maincontainer}>
       <div className={styles.container}>
@@ -77,6 +78,19 @@ const FormBuilder = () => {
               size="none"
             />
           </div>
+
+          <div className={styles.stepper}>
+            <Stepper steps={steps} stepper={stepper} setStepper={setStepper} />
+          </div>
+        </div>
+        {/* All Audit component will render here  --start-- */}
+        <div className={styles.mainContent}>
+          {stepper.stepperAcitveSlide === 1 && <CreateAuditTemplate/>}
+          {stepper.stepperAcitveSlide === 2 && (
+            <FormComponents
+              sectionName={sectionName}
+              setSectionName={setSectionName}
+
           <div
             className={`${styles.auditHeaderButtonContainer} ${styles?.stepperContainer}`}
           >
@@ -91,6 +105,7 @@ const FormBuilder = () => {
               steps={auditAssignmentSteps}
               setStepper={setStepper}
               stepper={stepper}
+
             />
           </div>
           <div className={styles.auditHeaderBorder}></div>

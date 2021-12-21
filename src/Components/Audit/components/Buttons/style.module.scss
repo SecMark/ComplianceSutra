@@ -178,3 +178,23 @@
   font-size: 12px !important;
   cursor: pointer;
 }
+
+
+.viewfilebtn {
+  background :$color_transparent;
+  border: none;
+  color: $color_blue;
+  font-size: 12px !important;
+  cursor: pointer;
+  width: 50px !important;
+}
+
+.extraFileAddBtn {
+  background :$color_transparent;
+  border: none;
+  color: $color_blue;
+  font-size: 12px !important;
+  cursor: pointer;
+  width: 200px !important;
+}
+

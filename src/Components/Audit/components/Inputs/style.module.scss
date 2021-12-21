@@ -159,6 +159,10 @@ input[type="file"]::file-selector-button {
     font-size: 15px;
     color: $color_black_text;
   }
+  .createTemplateLabel{
+    font-size: 12px;
+    color: $color_grey;
+  }
 }
 
 .textArea {
