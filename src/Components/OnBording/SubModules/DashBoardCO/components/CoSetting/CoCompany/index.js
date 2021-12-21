@@ -9,6 +9,11 @@ import smallClose from "../../../../../../../assets/Icons/smallClose.png";
 import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
 import checkIocnSmall from "../../../../../../../assets/Icons/checkIocnSmall.png";
 import { actions as companyAction } from "../../../../../../OnBording/redux/actions";
+import mobileAssignIconSmall from "../../../../../../../assets/Icons/mobileAssignIconSmall.png";
+import grayPlusIcon from "../../../../../../../assets/Icons/grayPlusIcon.png";
+import whiteDeleteIcon from "../../../../../../../assets/Icons/whiteDeleteIcon.png";
+import plusIcon2 from "../../../../../../../assets/Icons/plusIcon3.png";
+
 import { toast } from "react-toastify";
 import { actions as coActions } from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +39,8 @@ function CoManagment({ handleClose }) {
   const [companyDetailsBackup, setCompanyDetailsBackup] = useState([]);
   const [companyTypesBackup, setCompanyTypesBackup] = useState([]);
   const [categoryTypes, setCategoryTypes] = useState([]);
+  const [companyTypes, setCompanyTypes] = useState([]);
+
   const [categoryTypesBackup, setCategoryTypesBackup] = useState([]);
   const [coHoveredIndex, setCoHoveredIndex] = useState(undefined);
   const [licenseModalHideShow, setLicenseModalHideShow] = useState(false);
@@ -89,7 +96,13 @@ function CoManagment({ handleClose }) {
     fetchIndustryCompnayType();
     // dispatch(companyAction.companyTypeRequest());
   }, []);
-
+  const setData = (index) => {
+    var companyList = companyDetails;
+    companyList[index].isEdited = true;
+    setCompanyDetails(companyList);
+    setdoEdit(index);
+    setEditShow(true);
+  };
   const initialDispatch = () => {
     setSelectedIndex(undefined);
     setSelectedCompany(undefined);
@@ -141,7 +154,7 @@ function CoManagment({ handleClose }) {
       state.taskReport &&
       state.taskReport.companyTypeInfo &&
       state.taskReport.companyTypeInfo.CompanyInfo;
-    if (tempUsers != undefined && tempUsers.length > 0) {
+    if (tempUsers != undefined && tempUsers?.length > 0) {
       let users = [];
       tempUsers.forEach((element) => {
         element.compliance_officer.map((item) => {
@@ -241,7 +254,7 @@ function CoManagment({ handleClose }) {
     var tempCompanyData = [...companyDetails];
     tempCompanyData.push(tempNewCompany);
     setCompanyDetails(tempCompanyData);
-    setSelectedIndex(tempCompanyData.length - 1);
+    setSelectedIndex(tempCompanyData?.length - 1);
     setShowAdd(true);
   };
 
@@ -337,11 +350,11 @@ function CoManagment({ handleClose }) {
       pinCodeValidation(value, index);
       setEditShow(true);
       companyList[index].company_pincode = e.target.value;
-    } else if (name == "compliance_officer") {
+    } else if (name === "compliance_officer") {
       setEditShow(true);
       companyList[index].compliance_officer = [
         {
-          email: e.userEmail,
+          email: e.userEmail || e.email || e.EmailID,
           full_name: e.UserName,
         },
       ];
@@ -522,7 +535,7 @@ function CoManagment({ handleClose }) {
 
   const handleDeleteClick = (item, flag) => {
     if (flag === 1) {
-      if (selectedIndex === undefined && companyDetails.length > 1) {
+      if (selectedIndex === undefined && companyDetails?.length > 1) {
         setSelectedCompany({ ...item });
         setDeleteBoxHideShow(true);
       }
@@ -538,6 +551,428 @@ function CoManagment({ handleClose }) {
       setDeleteBoxHideShow(false);
     }
   };
+  const editCompanymobile = (item, index) => {
+    return (
+      <>
+        {
+          <div className="company-detail-mobile-box">
+            {/* {item.company_name!= "" &&  <div className="brokrage-title">{item.company_name}</div>} */}
+            <div class="">
+              <div class="input-box-mobile">
+                <input
+                  type="text"
+                  className="form-control border-0"
+                  placeholder={"Enter Name"}
+                  id={"nameInputBox" + index}
+                  autoComplete="off"
+                  name="company_name"
+                  disabled={item.isExist ? true : false}
+                  value={item.company_name}
+                  onBlur={(e) => {
+                    !item.isExist
+                      ? validateCompanyName(e, index)
+                      : validateExistingName(e, index);
+                  }}
+                  onChange={(e) =>
+                    selectedIndex === undefined || selectedIndex === index
+                      ? handelChange(e, "company_name", index, item)
+                      : true
+                  }
+                />
+              </div>
+
+              {/* <div className="input-box-mobile">
+                {companyTypes && companyTypes?.length > 0 && (
+                  <Searchable
+                    value={item.selectedCompany}
+                    className="form-control border-0"
+                    placeholder={
+                      item.company_type ? item.company_type : "Select Type"
+                    } // by default "Search"
+                    notFoundText="No result found" // by default "No result found"
+                    options={companyTypes}
+                    onSelect={(e) =>
+                      selectedIndex === undefined || selectedIndex === index
+                        ? handelChange(e, "company_type", index, item)
+                        : true
+                    }
+                    listMaxHeight={200} //by default 140
+                  />
+                )}
+              </div> */}
+
+              <div class="input-box-mobile">
+                {categoryTypes && categoryTypes?.length > 0 && (
+                  <Searchable
+                    value={item.selectedCompany}
+                    className="form-control border-0"
+                    placeholder={
+                      item.business_category
+                        ? item.business_category
+                        : "Select Category"
+                    } // by default "Search"
+                    notFoundText="No result found" // by default "No result found"
+                    options={categoryTypes}
+                    onSelect={(e) =>
+                      selectedIndex === undefined || selectedIndex === index
+                        ? handelChange(e, "companyCategory", index, item)
+                        : true
+                    }
+                    listMaxHeight={200} //by default 140
+                  />
+                )}
+              </div>
+              <div className="input-box-mobile d-flex align-items-center justify-content-start">
+                <div className="assign-co">Type:</div>
+                {companyTypeDropDown(item, index)}
+              </div>
+              <div className="input-box-mobile d-flex align-items-center justify-content-start">
+                <div className="assign-co">Country:</div>
+                <div className="holding-list-bold-title">
+                  <Select
+                    options={options}
+                    value={{
+                      value: item.company_country,
+                      label: item.company_country,
+                    }}
+                    styles={selectStyle}
+                    onChange={(e) =>
+                      selectedIndex === undefined || selectedIndex === index
+                        ? handelChange(e, "company_country", index, item)
+                        : true
+                    }
+                  />
+                </div>
+              </div>
+              <div className="input-box-mobile d-flex align-items-center justify-content-start">
+                <div className="assign-co">Pincode:</div>
+                <div className="bk-Securities">
+                  <input
+                    type="text"
+                    className="form-control border-0"
+                    placeholder="Pincode"
+                    name="company_pincode"
+                    value={item.company_pincode}
+                    onChange={(e) =>
+                      selectedIndex === undefined || selectedIndex === index
+                        ? handelChange(e, "company_pincode", index, item)
+                        : true
+                    }
+                  />
+                  {item.pinCodeError != "" && (
+                    <p className="input-error-message">{item.pinCodeError}</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex mb-3">
+                <div className="col-3 pl-0 pr-0">
+                  <div className="assign-co">Assign CO:</div>
+                </div>
+                <div className="col-9 pr-0 pl-0">
+                  {item.compliance_officer &&
+                    item?.compliance_officer?.length > 0 && (
+                      <div
+                        className="d-flex"
+                        style={{ marginLeft: 15 }}
+                        onClick={() =>
+                          selectedIndex === undefined || selectedIndex === index
+                            ? showBlock()
+                            : true
+                        }
+                      >
+                        <div class="login-assign-count-mobile">
+                          {getNameInitials(
+                            item?.compliance_officer[0].full_name
+                          )}
+                        </div>
+                        <div class="login-assign-title-strip">
+                          {item?.compliance_officer[0].full_name ||
+                            item?.compliance_officer[0].email}
+                        </div>
+                      </div>
+                    )}
+
+                  {!item.isExist && item?.compliance_officer?.length === 0 && (
+                    <div
+                      className="assign-circle-text"
+                      onClick={() =>
+                        selectedIndex === undefined || selectedIndex === index
+                          ? showBlock()
+                          : true
+                      }
+                    >
+                      <img src={mobileAssignIconSmall} alt="close Gray Icon" />{" "}
+                      assign
+                    </div>
+                  )}
+                  {/* <img src={mobileAssignIconSmall} alt="close Gray Icon" /> assign</div> */}
+                  <div id="drawerParent2" className="">
+                    <div
+                      id="drawerChild2"
+                      className="sideBarAssignTaskSettings"
+                    >
+                      <div
+                        className="d-flex"
+                        style={{ padding: 20, paddingLeft: 0 }}
+                      >
+                        <div className="col-2 col-sm-12 col-md-12 col-xl-12 d-block d-sm-none">
+                          <img
+                            className="close-icon-personal"
+                            src={closeBlack}
+                            alt="close Black"
+                            onClick={() => {
+                              hideBlock();
+                            }}
+                          />
+                        </div>
+                        <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
+                          <div className="personal-mgt-title">Assign CO</div>
+                        </div>
+                      </div>
+                      <div className="bottom-tool-tip" style={{ left: 1 }}>
+                        <div className="tool-tip-head">
+                          <div className="add-Email">
+                            <div className="form-group">
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter name or email"
+                                onChange={(e) => handleUserSearch(e)}
+                                value={userSearchText}
+                              />
+                            </div>
+                            <span className="or-devider"> or</span>
+                            <button
+                              className="btn save-details assign-me"
+                              onClick={() =>
+                                handelChange(
+                                  loggedUser,
+                                  "compliance_officer",
+                                  index,
+                                  item
+                                )
+                              }
+                            >
+                              Assign to me
+                            </button>
+                          </div>
+                        </div>
+                        <div className="divide-space">
+                          <div className="space-border-header"></div>
+                        </div>
+                        <div className="email-list-box">
+                          {userData &&
+                            userData?.length > 0 &&
+                            userData.map((user) => {
+                              return (
+                                <>
+                                  <div
+                                    className="email-list-row"
+                                    onClick={() =>
+                                      handelChange(
+                                        user,
+                                        "compliance_officer",
+                                        index,
+                                        item
+                                      )
+                                    }
+                                  >
+                                    <span className="name-circle">
+                                      {getNameInitials(user.UserName)}
+                                    </span>
+                                    <span className="name-of-emailer">
+                                      {user.UserName}
+                                    </span>
+                                    <span className="last-email-box">
+                                      {user.userEmail}
+                                    </span>
+                                  </div>
+                                </>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {item.licenses?.length > 0 && (
+                <div className="flex">
+                  <div className="col-3 pl-0 pr-0">
+                    <div className="liences-mobile">Licenses:</div>
+                  </div>
+                  <div className="col-9 pr-0 pl-0">
+                    <div className="d-flex">
+                      <div
+                        style={{ marginLeft: 15 }}
+                        class="assign-total-count-mobile"
+                        onClick={() => openChooseLicenseModel(2, index, item)}
+                      >
+                        {item.licenses?.length > 0 ? item.licenses?.length : ""}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div class="input-box-mobile mb-0">
+                {item.licenses?.length === 0 && (
+                  <button
+                    onClick={() => openChooseLicenseModel(2, index, item)}
+                    // className={
+                    //   checkButtonDisabledColor(index)
+                    //     ? " btn add-license-mobile "
+                    //     : "btn add-license-mobile-co-company"
+                    // }
+                    disabled={
+                      item.company_name === "" ||
+                      item.company_type === "" ||
+                      item.business_category === "" ||
+                      item.companyNameError !== "" ||
+                      item.company_country === ""
+                    }
+                    className={`${
+                      item.company_name === "" ||
+                      item.company_type === "" ||
+                      item.business_category === "" ||
+                      item.companyNameError !== "" ||
+                      item.company_country === ""
+                        ? "btn add-license-mobile-co-company"
+                        : "btn add-license-mobile"
+                    }`}
+                  >
+                    add licenses
+                    {item.company_name === "" ||
+                    item.company_type === "" ||
+                    item.business_category === "" ||
+                    item.companyNameError !== "" ||
+                    item.company_country === "" ? (
+                      <img src={grayPlusIcon} alt="grayPlusIcon" />
+                    ) : (
+                      <img
+                        src={plusIcon2}
+                        alt="PlusIcon"
+                        className="addLicencePlus2"
+                      />
+                    )}
+                  </button>
+                )}
+              </div>
+            </div>
+            <div class="">
+              <div class="row align-right">
+                <div class="col-12 col-sm-12 col-md-12 col-xl-12 flex">
+                  <div
+                    class="cancel-link-mobile"
+                    onClick={() => handleUndoChanges(index)}
+                  >
+                    CANCEL
+                  </div>
+                  <button
+                    className={
+                      item.business_category !== "" &&
+                      item.company_name !== "" &&
+                      item.company_type !== "" &&
+                      item.licenses?.length !== 0 &&
+                      item.company_pincode !== "" &&
+                      item.company_country !== ""
+                        ? "btn mobile-save-company-blue"
+                        : "btn mobile-save-company"
+                    }
+                    disabled={
+                      item.business_category !== "" &&
+                      item.company_name !== "" &&
+                      item.company_type !== "" &&
+                      item.licenses?.length !== 0 &&
+                      item.company_pincode !== "" &&
+                      item.company_country !== ""
+                        ? false
+                        : true
+                    }
+                    onClick={() => handleSaveChanges(index)}
+                  >
+                    SAVE
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </>
+    );
+  };
+  const addNewCompanymobile = (item, index) => {
+    if (
+      item.company_type === "" ||
+      item.business_category == "" ||
+      item.Licenses?.length === 0 ||
+      item.isEdited ||
+      item.company_name === ""
+    ) {
+      return <>{editCompanymobile(item, index)}</>;
+    } else {
+      return (
+        <>
+          <div class="company-details-mobile-view">
+            <div class="d-flex">
+              <div class="col-10 pl-0">
+                <div className="d-flex">
+                  <div class="bk-seq-title-mobile">{item.company_name}</div>
+                  <div class="license-count-selected-mobile">
+                    {item.selectedLicenseArray?.length}
+                  </div>
+                </div>
+              </div>
+              <div class="col-2 pr-0">
+                <div class="mobile-edit-option" onClick={() => setData(index)}>
+                  edit
+                </div>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="col-12 pl-0 pb-2">
+                <div className="">
+                  <div class="comapany-label-mobile">{item.company_type}</div>
+                  <div class="comapany-label-mobile">
+                    {item.business_category}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="col-10 pl-0">
+                <div className="d-flex">
+                  <div class="license-count-mobile">
+                    {item?.compliance_officer?.length > 0 &&
+                      getNameInitials(item?.compliance_officer[0]?.full_name)}
+                  </div>
+                  <div class="bk-seq-title-bottom-mobile">
+                    {item?.compliance_officer?.length > 0 &&
+                      item?.compliance_officer[0]?.full_name}
+                  </div>
+                </div>
+              </div>
+              <div class="col-2 pr-0">
+                <div class="edit-delete">
+                  <div class="">
+                    {companyDetails?.length > 0 && (
+                      <img
+                        className=""
+                        src={whiteDeleteIcon}
+                        alt="white Delete Icon"
+                        onClick={() => handleDeleteClick(item, 1)}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {companyDetails[index].isEdited && editCompanymobile(item, index)}
+        </>
+      );
+    }
+  };
+
   const renderConfirmationModel = () => {
     const currentCompanyName = selectedCompany.EntityName;
     return (
@@ -587,18 +1022,13 @@ function CoManagment({ handleClose }) {
     setSelectedCompany({ ...item });
     setUndoSelectedCompany({ ...item });
     let tempCoCompany = [...companyDetails];
-    if (tempCoCompany[index].isExist) {
-      tempCoCompany[index].company_name = selectedCompany.company_name;
-      tempCoCompany[index].company_type = selectedCompany.company_type;
-      tempCoCompany[index].company_country = selectedCompany.company_country;
-      tempCoCompany[index].company_pincode = selectedCompany.company_pincode;
-      tempCoCompany[index].business_category =
-        selectedCompany.business_category;
-      tempCoCompany[index].compliance_officer =
-        selectedCompany.compliance_officer;
-      tempCoCompany[index].licenses = selectedCompany.licenses;
-      tempCoCompany[index].pinCodeError = "";
-      tempCoCompany[index].isEdited = false;
+    if (tempCoCompany[index]?.isExist) {
+      tempCoCompany[index] = {
+        ...tempCoCompany[index],
+        ...selectedCompany,
+        isEdited: false,
+        pinCodeError: "",
+      };
     } else {
       tempCoCompany.splice(index, 1);
     }
@@ -681,8 +1111,8 @@ function CoManagment({ handleClose }) {
           if (
             item.company_name === "" ||
             item.business_category === "" ||
-            item.companyNameError != "" ||
-            item.license.length <= 0 ||
+            item.companyNameError !== "" ||
+            item.license?.length === 0 ||
             validEmail
           ) {
             isNext = false;
@@ -791,7 +1221,75 @@ function CoManagment({ handleClose }) {
         </div>
       </div>
       <div className="border-header d-none d-sm-block"></div>
+      <div class="d-block d-sm-none">
+        {/* { companyDetailsBackup && companyDetailsBackup.map((item,index)=>
+                {
+                return (<>
+                <div class="company-details-mobile-view">
+                    <div class="d-flex">
+                        <div class="col-10 pl-0">
+                            <div className="d-flex"> 
+                                <div class="bk-seq-title-mobile">{item.company_name}</div>
+                                <div class="license-count-selected-mobile">{item.selectedLicenseArray?.length}</div>
+                            </div>
+                        </div>
+                        <div class="col-2 pr-0">
+                            <div class="mobile-edit-option" onClick={() => setData(index)}>edit</div>
+                            
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-12 pl-0 pb-2">
+                            <div className="">
+                                <div class="comapany-label-mobile">{item.company_type}</div>
+                                <div class="comapany-label-mobile">{item.business_category}</div>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-10 pl-0">
+                            <div className="d-flex">
+                                <div class="license-count-mobile">{getNameInitials(item.CO)}</div>
+                                <div class="bk-seq-title-bottom-mobile">{item.CO}</div>
+                            </div>
+                        </div>
+                        <div class="col-2 pr-0">
+                            <div class="edit-delete">
+                                <div class="">
+                                    { companyDetailsBackup?.length > 1 && <img className="" src={whiteDeleteIcon} alt="white Delete Icon" onClick={() => handleDeleteClick(item, 1)}/>}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {editShow && doEdit != undefined && doEdit == index && editCompanymobile(item,index)}
+                </>
+                )})} */}
 
+        <div className="col-12 pl-0 pr-0">
+          {companyDetails &&
+            companyDetails.map((item, index) => {
+              return addNewCompanymobile(item, index);
+            })}
+          {/* <div class="col-12 pl-0">
+                            <caption className="add-company-link" onClick={() => (selectedIndex === undefined) ? handleAddCompany() : null} >
+                                Add another company
+                            </caption>
+                    </div>  */}
+        </div>
+
+        <div class="col-12 pl-0">
+          <caption
+            className="add-company-link"
+            onClick={() =>
+              selectedIndex === undefined ? handleAddCompany() : null
+            }
+          >
+            Add another company
+          </caption>
+        </div>
+      </div>
       <div className="scroll-personal-grid d-none d-sm-block table-responsive">
         <table className="settingCompanyTable table co-company-details-tbl table-responsive">
           <caption
@@ -931,7 +1429,7 @@ function CoManagment({ handleClose }) {
                       </div>
                     </td>
                     <td>
-                      {!item.isExist && item?.compliance_officer.length !== 0 && (
+                      {!item.isExist && item?.compliance_officer?.length !== 0 && (
                         <div
                           className={
                             "holding-list-bold-title-background " +
@@ -978,7 +1476,7 @@ function CoManagment({ handleClose }) {
                         </div>
                       )}
 
-                      {!item.isExist && item?.compliance_officer.length === 0 && (
+                      {!item.isExist && item?.compliance_officer?.length === 0 && (
                         <div
                           className="assign-with-icofn"
                           onClick={() =>
@@ -1042,7 +1540,7 @@ function CoManagment({ handleClose }) {
                                 </div>
                                 <div className="email-list-box">
                                   {userData &&
-                                    userData.length > 0 &&
+                                    userData?.length > 0 &&
                                     userData.map((user) => {
                                       return (
                                         <>
@@ -1132,7 +1630,7 @@ function CoManagment({ handleClose }) {
                             edit licenses
                           </button>
                         )}
-                        {item.licenses.length <= 0 && (
+                        {item.licenses?.length <= 0 && (
                           <button
                             id={"addLicense" + index}
                             className={
@@ -1153,7 +1651,7 @@ function CoManagment({ handleClose }) {
                     <td className="deleteIconCheck">
                       {item.isExist &&
                         selectedIndex != index &&
-                        companyDetails.length > 1 && (
+                        companyDetails?.length > 1 && (
                           <img
                             className="delete-Icon-personal"
                             src={blackDeleteIcon}
@@ -1168,7 +1666,7 @@ function CoManagment({ handleClose }) {
                             src={
                               item.company_name !== "" &&
                               item.company_type !== "" &&
-                              item.licenses.length != 0 &&
+                              item.licenses?.length != 0 &&
                               item.pinCodeError === "" &&
                               editShow &&
                               validEmail
@@ -1179,7 +1677,7 @@ function CoManagment({ handleClose }) {
                             onClick={() => {
                               item.company_name !== "" &&
                                 item.company_type !== "" &&
-                                item.licenses.length != 0 &&
+                                item.licenses?.length != 0 &&
                                 item.pinCodeError === "" &&
                                 handleSaveChanges(index);
                             }}
