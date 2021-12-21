@@ -7,6 +7,7 @@ import styles from "./style.module.scss";
 import IconButton from "../../components/Buttons/IconButton";
 import { MdArrowBack, MdClose, MdExpandMore } from "react-icons/md";
 import Button from "../../components/Buttons/Button";
+import CreateAuditTemplate from "../CreateAuditTemplate";
 
 const auditAssignmentSteps = [
   { id: 1, text: "Add Audit Scope", heading: "Buid Template Questionarie" },
@@ -54,7 +55,6 @@ const FormBuilder = () => {
     }
   };
 
-
   return (
     <div className={styles.maincontainer}>
       <div className={styles.container}>
@@ -80,64 +80,41 @@ const FormBuilder = () => {
           </div>
 
           <div className={styles.stepper}>
-            <Stepper steps={steps} stepper={stepper} setStepper={setStepper} />
+            <Stepper stepper={stepper} setStepper={setStepper} />
           </div>
         </div>
         {/* All Audit component will render here  --start-- */}
         <div className={styles.mainContent}>
-          {stepper.stepperAcitveSlide === 1 && <CreateAuditTemplate/>}
-          {stepper.stepperAcitveSlide === 2 && (
+          {stepper.stepperAcitveSlide === 1 && <CreateAuditTemplate />}
+
+          {stepper?.stepperAcitveSlide === 2 && (
             <FormComponents
               sectionName={sectionName}
               setSectionName={setSectionName}
-
-          <div
-            className={`${styles.auditHeaderButtonContainer} ${styles?.stepperContainer}`}
-          >
-            <Text
-              heading="p"
-              text={
-                auditAssignmentSteps[stepper?.stepperAcitveSlide - 1]?.heading
-              }
-              variant="stepperMainHeading"
+              next={handleNextClick}
+              back={handleBackClick}
             />
-            <Stepper
-              steps={auditAssignmentSteps}
-              setStepper={setStepper}
-              stepper={stepper}
+          )}
+          {stepper?.stepperAcitveSlide === 3 && (
+            <CheckList next={handleNextClick} back={handleBackClick} />
+          )}
 
-            />
-          </div>
-          <div className={styles.auditHeaderBorder}></div>
-        </div>
-
-        {stepper?.stepperAcitveSlide === 2 && (
-          <FormComponents
-            sectionName={sectionName}
-            setSectionName={setSectionName}
-            next={handleNextClick}
-            back={handleBackClick}
-          />
-        )}
-        {stepper?.stepperAcitveSlide === 3 && (
-          <CheckList next={handleNextClick} back={handleBackClick} />
-        )}
-
-        <div className={styles.saveTemplate}>
-          <div>
-            <Button
-              description="SAVE TEMPLATE & QUIT"
-              variant="preview"
-              size="medium"
-            />
-          </div>
-          <div>
-            <Button
-              description="NEXT"
-              size="small"
-              variant="default"
-              onClick={() => handleNextClick(stepper?.stepperAcitveSlide)}
-            />
+          <div className={styles.saveTemplate}>
+            <div>
+              <Button
+                description="SAVE TEMPLATE & QUIT"
+                variant="preview"
+                size="medium"
+              />
+            </div>
+            <div>
+              <Button
+                description="NEXT"
+                size="small"
+                variant="default"
+                onClick={() => handleNextClick(stepper?.stepperAcitveSlide)}
+              />
+            </div>
           </div>
         </div>
       </div>
