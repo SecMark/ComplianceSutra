@@ -14,13 +14,19 @@ import left from "../../../../../assets/Icons/EditorIcons/leftalign.png";
 import right from "../../../../../assets/Icons/EditorIcons/rightalign.png";
 import center from "../../../../../assets/Icons/EditorIcons/center.png";
 import justify from "../../../../../assets/Icons/EditorIcons/justifycontet.png";
-import { EditorState, convertToRaw } from "draft-js";
+import {
+  EditorState,
+  convertToRaw,
+  convertFromHTML,
+  ContentState,
+} from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import "./style.css";
-function TextEditor({ values, setValues, editData }) {
-  const [editorState, setEditorState] = React.useState(() =>
-    EditorState.createEmpty()
-  );
+function TextEditor({ values, setValues, project_overview }) {
+  const [editorState, setEditorState] = React.useState(() => {
+    EditorState.createEmpty();
+  });
+
   const [description, setDescription] = useState("");
   const handleChange = (rawDraftContentState) => {
     const data = draftToHtml(
@@ -32,15 +38,21 @@ function TextEditor({ values, setValues, editData }) {
       project_overview: data,
     });
   };
+  useEffect(() => {
+    if (project_overview) {
+      const blocksFromHTML = convertFromHTML(project_overview);
+      const content = ContentState.createFromBlockArray(blocksFromHTML);
+      const e_status = EditorState.createWithContent(content);
+      setEditorState(e_status);
+    }
+  }, [project_overview]);
   return (
     <div>
       <Editor
         editorClassName="add-project-editor-box"
         toolbarClassName="add-project-text-editor"
         wrapperClassName="add-project-tex-editor-wrapper"
-        // editorState={editorState}
-        //  onChange={setEditorState}
-        defaultEditorState={editorState}
+        editorState={editorState}
         onEditorStateChange={(editorState) => {
           setEditorState(editorState);
           handleChange(editorState);

@@ -224,7 +224,11 @@ function AddProject({ show, onClose, editData, isEdit }) {
           <label className="add-edit-project-labels mt-3">
             Project overview
           </label>
-          <TextEditor values={values} setValues={setValues} />
+          <TextEditor
+            values={values}
+            setValues={setValues}
+            project_overview={editData?.project_overview}
+          />
           <div className="d-flex mt-3 justify-content-center">
             <div className="p-2">
               <button
