@@ -7,22 +7,9 @@ import styles from "./style.module.scss";
 import IconButton from "../../components/Buttons/IconButton";
 import { MdArrowBack, MdClose, MdExpandMore } from "react-icons/md";
 import Button from "../../components/Buttons/Button";
-import CreateAuditTemplate from "../CreateAuditTemplate";
+import CreateAuditTemplate from "../createAuditTemplate/index.jsx";
+import { steps } from "../../constants/StepperSteps/steps";
 
-const auditAssignmentSteps = [
-  { id: 1, text: "Add Audit Scope", heading: "Buid Template Questionarie" },
-  { id: 2, text: "Create Questionarie", heading: "Buid Template Questionarie" },
-  {
-    id: 3,
-    text: "Create CheckList",
-    heading: "Create CheckList For Template",
-  },
-  {
-    id: 4,
-    text: "Review & Create",
-    heading: "Review Template Details",
-  },
-];
 
 const FormBuilder = () => {
   const [sectionName, setSectionName] = useState("");
@@ -79,9 +66,18 @@ const FormBuilder = () => {
             />
           </div>
 
-          <div className={styles.stepper}>
-            <Stepper stepper={stepper} setStepper={setStepper} />
+          <div className={styles.borderBox}>
+          <div className={styles.subContainer}>
+            <Text
+              heading="h1"
+              text={steps[stepper.stepperAcitveSlide - 1].heading}
+              variant="default"
+            />
           </div>
+          <div className={styles.stepper}>
+            <Stepper steps={steps} stepper={stepper} setStepper={setStepper} />
+          </div>
+        </div>
         </div>
         {/* All Audit component will render here  --start-- */}
         <div className={styles.mainContent}>

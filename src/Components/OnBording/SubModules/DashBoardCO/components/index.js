@@ -17,6 +17,8 @@ import FormBuilder from "../../../../Audit/pages/FormBuilder";
 
 import "./style.css";
 import SectionList from "../../../../Audit/pages/List/SectionList";
+import Layout from "../../../../Audit/components/Layout/Layout.jsx";
+import Landing from "../../../../Audit/pages/Landing/index.jsx";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
@@ -185,7 +187,7 @@ function Dashboard({ history }) {
 
         {state && state.adminMenu.currentMenu === "create-template" && (
           <div className="create-template">
-            <SectionList />
+            <FormBuilder/>
           </div>
         )}
 
