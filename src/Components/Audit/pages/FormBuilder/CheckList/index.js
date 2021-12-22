@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Text from "../../../components/Text/Text";
 import { Input } from "../../../components/Inputs/Input";
 import Button from "../../../components/Buttons/Button";
@@ -11,8 +11,11 @@ import axiosInstance from "../../../../../apiServices";
 import { BACKEND_BASE_URL } from "../../../../../apiServices/baseurl";
 
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch } from "react-redux";
+import { getQuestionList } from "../../../redux/actions";
 
 const CheckList = () => {
+  const dispatch = useDispatch();
   const [checkList, setCheckList] = useState([
     {
       id: uuidv4(),
@@ -33,6 +36,15 @@ const CheckList = () => {
       ],
     },
   ]);
+
+  useEffect(() => {
+    getQuestions();
+  }, []);
+
+  const getQuestions = () => {
+    const audit_template_name = { audit_template_name: "testing Api12" };
+    dispatch(getQuestionList(audit_template_name));
+  };
 
   const addNewSection = () => {
     let temp = [...checkList];

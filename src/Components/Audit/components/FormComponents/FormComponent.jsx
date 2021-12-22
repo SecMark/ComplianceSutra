@@ -34,7 +34,7 @@ const FormComponents = ({ next, back }) => {
           question: "",
           how_get_this_data: "",
           answer_option: "",
-          field_type: "text",
+          field_type: "Text",
           id: uuidv4(),
           error: {
             isError: false,
@@ -82,7 +82,7 @@ const FormComponents = ({ next, back }) => {
           question: "",
           how_get_this_data: "",
           answer_option: "",
-          field_type: "text",
+          field_type: "Text",
           reference_document: "",
           error: {
             isError: false,
@@ -118,25 +118,58 @@ const FormComponents = ({ next, back }) => {
     setInputFieldList(removeSection);
   };
 
-  const addNewRequirement = (Iindex) => {
+  const addNewRequirement = async (Iindex) => {
     let temp = [...inputFieldList];
+    let inputLength = temp[Iindex].inputs.length - 1;
+    let previousQuestion = temp[Iindex].inputs[inputLength];
+    let section = temp[Iindex];
 
-    temp[Iindex].inputs.push({
-      questionnaire_section: "",
-      question: "",
-      how_get_this_data: "",
-      reference_document: "",
-      answer_option: "",
-      field_type: "text",
-      id: uuidv4(),
-      error: {
-        isError: false,
-        type: "",
-        message: "",
-      },
-    });
+    if (
+      section.sectionName === "" ||
+      section.bufferPeriod === "" ||
+      section.completionDuration === ""
+    ) {
+      toast.error("Please enter section name, Buffer time and Duration.");
+    } else if (previousQuestion.questionnaire_section === "") {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "questionLabel",
+        message: "Requirement is required",
+      };
+      setInputFieldList(temp);
+    } else if (
+      previousQuestion.field_type !== "Text" &&
+      previousQuestion.answer_option === ""
+    ) {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "value",
+        message: "Value is required",
+      };
+      setInputFieldList(temp);
+    } else {
+      const addQuestion = await submitRequirement(section, previousQuestion);
 
-    setInputFieldList(temp);
+      if (addQuestion) {
+        temp[Iindex].inputs.push({
+          questionnaire_section: "",
+          question: "",
+          how_get_this_data: "",
+          reference_document: "",
+          answer_option: "",
+          field_type: "Text",
+          id: uuidv4(),
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
+        });
+        setInputFieldList(temp);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
   };
 
   const deleteRequirement = (index, id) => {
@@ -146,25 +179,58 @@ const FormComponents = ({ next, back }) => {
     setInputFieldList(temp);
   };
 
-  const addCustomRequirement = (Iindex) => {
+  const addCustomRequirement = async (Iindex) => {
     let temp = [...inputFieldList];
+    let inputLength = temp[Iindex].inputs.length - 1;
+    let previousQuestion = temp[Iindex].inputs[inputLength];
+    let section = temp[Iindex];
 
-    temp[Iindex].inputs.push({
-      questionnaire_section: "",
-      question: "",
-      how_get_this_data: "",
-      reference_document: "",
-      answer_option: "",
-      field_type: "none",
-      id: uuidv4(),
-      error: {
-        isError: false,
-        type: "",
-        message: "",
-      },
-    });
+    if (
+      section.sectionName === "" ||
+      section.bufferPeriod === "" ||
+      section.completionDuration === ""
+    ) {
+      toast.error("Please enter section name, Buffer time and Duration.");
+    } else if (previousQuestion.questionnaire_section === "") {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "questionLabel",
+        message: "Requirement is required",
+      };
+      setInputFieldList(temp);
+    } else if (
+      previousQuestion.field_type !== "Text" &&
+      previousQuestion.answer_option !== ""
+    ) {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "value",
+        message: "Value is required",
+      };
+      setInputFieldList(temp);
+    } else {
+      const addQuestion = await submitRequirement(section, previousQuestion);
 
-    setInputFieldList(temp);
+      if (addQuestion) {
+        temp[Iindex].inputs.push({
+          questionnaire_section: "",
+          question: "",
+          how_get_this_data: "",
+          reference_document: "",
+          answer_option: "",
+          field_type: "none",
+          id: uuidv4(),
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
+        });
+        setInputFieldList(temp);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
   };
 
   const addSectionName = async (event) => {
@@ -242,8 +308,18 @@ const FormComponents = ({ next, back }) => {
 
     if (name === "questionnaire_section") {
       temp[splitId[1]].inputs[splitId[0]].questionnaire_section = value;
+      temp[splitId[1]].inputs[splitId[0]].error = {
+        isError: false,
+        type: "",
+        message: "",
+      };
     } else if (name === "answer_option") {
       temp[splitId[1]].inputs[splitId[0]].answer_option = value;
+      temp[splitId[1]].inputs[splitId[0]].error = {
+        isError: false,
+        type: "",
+        message: "",
+      };
     } else if (name === "how_get_this_data") {
       temp[splitId[1]].inputs[splitId[0]].how_get_this_data = value;
     } else if (name === "reference_document") {
@@ -254,53 +330,39 @@ const FormComponents = ({ next, back }) => {
     setInputFieldList(temp);
   };
 
-  const submitRequirement = async (event) => {
-    let temp = [...inputFieldList];
+  const submitRequirement = async (section, question) => {
+    const {
+      questionnaire_section,
+      field_type,
+      answer_option,
+      how_get_this_data,
+      reference_document,
+    } = question;
 
-    console.log(temp);
-    const { id } = event.target;
-    const splitId = id.split(",");
-    const { questionnaire_section, field_type, answer_option } =
-      temp[splitId[1]].inputs[splitId[0]];
-    if (questionnaire_section !== "") {
-      if (field_type !== "text" && answer_option === "") {
-        temp[splitId[1]].inputs[splitId[0]].error = {
-          isError: true,
-          type: "value",
-          message: "Value is required",
-        };
-        setInputFieldList(temp);
-      } else {
-        const {
-          questionnaire_section,
-          field_type,
-          answer_option,
-          how_get_this_data,
-          reference_document,
-        } = temp[splitId[1]].inputs[splitId[0]];
+    const { questionSectionId } = section;
 
-        const { sectionName } = temp[splitId[1]];
+    let formData = new FormData();
+    formData.append("question_section_id", questionSectionId);
+    formData.append("question", questionnaire_section);
+    formData.append(
+      "reference_document",
+      reference_document ? reference_document : ""
+    );
+    formData.append(
+      "how_get_this_data",
+      how_get_this_data ? how_get_this_data : ""
+    );
+    formData.append("answer_option", answer_option ? answer_option : "");
+    formData.append("field_type", field_type);
 
-        let formData = new FormData();
-        formData.append("questionnaire_section", sectionName);
-        formData.append("question", questionnaire_section);
-        formData.append("reference_document", reference_document);
-        formData.append("how_get_this_data", how_get_this_data);
-        formData.append("answer_option", answer_option);
-        formData.append("field_type", field_type);
-
-        const addRequirement = await axiosInstance.post(
-          "audit.api.AddQuestionQuestionnaire",
-          formData
-        );
-      }
+    const addSectionResponse = await axiosInstance.post(
+      `${BACKEND_BASE_URL}audit.api.AddQuestionQuestionnaire`,
+      formData
+    );
+    if (addSectionResponse) {
+      return true;
     } else {
-      temp[splitId[1]].inputs[splitId[0]].error = {
-        isError: true,
-        type: "questionLabel",
-        message: "Requirment is required",
-      };
-      setInputFieldList(temp);
+      return false;
     }
   };
 
@@ -427,7 +489,6 @@ const FormComponents = ({ next, back }) => {
                                     name="questionnaire_section"
                                     value={fieldName.questionnaire_section}
                                     onChange={createRequirement}
-                                    onBlur={submitRequirement}
                                   />
                                   {fieldName.error?.isError &&
                                     fieldName.error?.type ===
@@ -440,7 +501,7 @@ const FormComponents = ({ next, back }) => {
                                     )}
                                 </div>
                                 <div className={styles.inputField}>
-                                  {fieldName.field_type === "text" ? (
+                                  {fieldName.field_type === "Text" ? (
                                     <Input
                                       type="select"
                                       labelText="Data Type"
@@ -449,7 +510,6 @@ const FormComponents = ({ next, back }) => {
                                       name="field_type"
                                       valueForDropDown={dataTypes}
                                       onChange={createRequirement}
-                                      onBlur={submitRequirement}
                                     />
                                   ) : (
                                     <Input
@@ -462,8 +522,8 @@ const FormComponents = ({ next, back }) => {
                                   )}
                                 </div>
 
-                                {fieldName.field_type !== "text" &&
-                                  fieldName.field_type !== "date" && (
+                                {fieldName.field_type !== "Text" &&
+                                  fieldName.field_type !== "Date" && (
                                     <div className={styles.inputField}>
                                       <Input
                                         type="text"
@@ -473,7 +533,6 @@ const FormComponents = ({ next, back }) => {
                                         id={`${index},${Iindex}`}
                                         name="answer_option"
                                         onChange={createRequirement}
-                                        onBlur={submitRequirement}
                                       />
                                       {fieldName.error?.isError &&
                                         fieldName.error?.type === "value" && (
@@ -495,7 +554,6 @@ const FormComponents = ({ next, back }) => {
                                     name="how_get_this_data"
                                     value={fieldName.how_get_this_data}
                                     onChange={createRequirement}
-                                    onBlur={submitRequirement}
                                   />
                                 </div>
 
@@ -505,13 +563,12 @@ const FormComponents = ({ next, back }) => {
                                     labelText="Reference Document"
                                     name="reference_document"
                                     onChange={createRequirement}
-                                    onBlur={submitRequirement}
                                     id={`${index},${Iindex}`}
                                   />
                                 </div>
                               </>
                             )}
-                            {fieldName.field_type === "file" && (
+                            {fieldName.field_type === "Attach" && (
                               <>
                                 <div className={styles.inputField}>
                                   <Input
@@ -530,13 +587,12 @@ const FormComponents = ({ next, back }) => {
                               </>
                             )}
 
-                            {fieldName.field_type === "date" && (
+                            {fieldName.field_type === "Date" && (
                               <div className={styles.dateRange}>
                                 <Datepicker
                                   labelText="Date Range for Records"
                                   name="answer_option"
                                   onChange={createRequirement}
-                                  onBlur={submitRequirement}
                                   id={`${index},${Iindex}`}
                                 />
                               </div>

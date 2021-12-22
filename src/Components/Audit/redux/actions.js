@@ -1,8 +1,29 @@
-import { ADD_NEW_SECTION, SET_SECTION_NAME, SET_TEMPLATE_NAME } from "./types";
+import {
+  ADD_NEW_SECTION,
+  GET_QUESTION_LIST,
+  SET_QUESTION_LIST,
+  SET_SECTION_NAME,
+  SET_TEMPLATE_NAME
+} from "./types";
+
 
 export const setSectionName = (payload) => {
   return {
     type: SET_SECTION_NAME,
+    payload,
+  };
+};
+
+export const getQuestionList = (payload) => {
+  return {
+    type: GET_QUESTION_LIST,
+    payload,
+  };
+};
+
+export const setQuestionList = (payload) => {
+  return {
+    type: SET_QUESTION_LIST,
     payload,
   };
 };

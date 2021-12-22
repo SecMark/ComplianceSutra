@@ -14,6 +14,10 @@ const getFilters = () => api.get("compliance.api.getRegulationFilters");
 const getPayments = (payload) => api.post("api/PaymentDetails", payload);
 
 const addSection = (payload) => api.post("audit.api.AddQuestionnaireSection");
+const getQuestionList = (payload) =>
+  api.get(
+    `audit.api.getQuestionReference?audit_template_name=${payload.audit_template_name}`
+  );
 
 export default {
   getCountryCodeList,
@@ -23,4 +27,5 @@ export default {
   getHisotry,
   getFilters,
   addSection,
+  getQuestionList,
 };
