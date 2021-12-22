@@ -7,7 +7,7 @@ import FormBuilder from "../../pages/FormBuilder";
 import CheckList from "../../pages/FormBuilder/CheckList";
 import { ToastContainer } from "react-toastify";
 import AuditAssignment from "../../pages/AuditAssignment";
-
+import AuditTemplates from "../../pages/AuditTemplates";
 const Layout = () => {
   return (
     <div className={styles.maincontainer}>
@@ -22,6 +22,9 @@ const Layout = () => {
           <Route path="/checklist" element={<CheckList />} />
           <Route exact path="/audit-assignment" element={<AuditAssignment />} />
         </Routes> */}
+
+
+        <AuditTemplates/>
       </div>
     </div>
   );

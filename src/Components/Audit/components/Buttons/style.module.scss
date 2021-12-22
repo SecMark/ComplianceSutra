@@ -179,9 +179,8 @@
   cursor: pointer;
 }
 
-
 .viewfilebtn {
-  background :$color_transparent;
+  background: $color_transparent;
   border: none;
   color: $color_blue;
   font-size: 12px !important;
@@ -190,7 +189,7 @@
 }
 
 .extraFileAddBtn {
-  background :$color_transparent;
+  background: $color_transparent;
   border: none;
   color: $color_blue;
   font-size: 12px !important;
@@ -198,3 +197,32 @@
   width: 200px !important;
 }
 
+.createProject {
+  background-color: $color_transparent;
+  color: $color_blue;
+  border: none;
+  min-width: 185px;
+}
+
+.templatesSortButton {
+  background: $color_light_black;
+  border-radius: 16px;
+  color: $color_white;
+  border: none;
+  margin-top: 5px;
+  min-width: 100px;
+}
+
+.pen{
+  background: $color_transparent;
+  color: $color_black_text;
+  border: none;
+  width: 40px;
+}
+.checkButton{
+  background: $color_primary;
+  border: none;
+  color: $color_white;
+  width: 40px;
+  margin-right: 10px;
+}

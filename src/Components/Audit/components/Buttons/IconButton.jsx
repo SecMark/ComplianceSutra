@@ -9,7 +9,7 @@ const IconButton = ({
   onClick,
   onDragStart,
   size = "small",
-  icon,
+  icon, 
 }) => {
   return (
     <button
