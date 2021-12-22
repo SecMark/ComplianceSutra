@@ -9,6 +9,7 @@ import { MdClose, MdExpandMore } from "react-icons/md";
 import { BsChevronUp, BsChevronDown } from "react-icons/bs";
 
 import "./style.css";
+import { isMobile } from "react-device-detect";
 
 const License = ({ index, addLicense, closeDrawer, fields, setEditShow }) => {
   const state = useSelector((state) => state);
@@ -17,7 +18,6 @@ const License = ({ index, addLicense, closeDrawer, fields, setEditShow }) => {
   const [selectedListOfLicenses, setSelectedListOfLicenses] = useState([]);
   const [headerHight, setHeaderHight] = useState(0);
   const licenseInfo = state?.complianceOfficer?.licenseList?.licenseList;
-  console.log("got this fields", fields.selectedLiecenseIdArray);
   useEffect(() => {
     const newLicenseList = licenseInfo?.map((values) => {
       return {
@@ -37,9 +37,9 @@ const License = ({ index, addLicense, closeDrawer, fields, setEditShow }) => {
                 name: subValue.name,
                 total_task: subValue.total_tasks,
                 show: false,
-                selected:fields.selectedLiecenseIdArray.includes(subValue.name)
-                ? true
-                : false,
+                selected: fields.selectedLiecenseIdArray.includes(subValue.name)
+                  ? true
+                  : false,
               };
             }),
           };
@@ -133,7 +133,6 @@ const License = ({ index, addLicense, closeDrawer, fields, setEditShow }) => {
         }
       }
     }
-    // console.log(selectedList);
     setListOfLicense(temp);
   };
 
@@ -193,12 +192,13 @@ const License = ({ index, addLicense, closeDrawer, fields, setEditShow }) => {
             }}
             className="mb-3 license__close-button"
           />
-          <p className="h1 mb-3">Choose license</p>
+          <p className="d-none d-md-block h1 mb-3">Choose license</p>
+          <p className="d-block d-md-none h3 mb-3">Choose license</p>
         </div>
         <div
           className=" py-4 px-4 license-main license-main__bg--dark"
           style={{
-            height: `calc(85vh - ${headerHight}px)`,
+            height: `calc(${isMobile ? 50 : 85}vh - ${headerHight}px)`,
           }}
         >
           {listOfLicense &&
