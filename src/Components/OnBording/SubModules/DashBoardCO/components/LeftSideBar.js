@@ -385,7 +385,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               alt="sidebar Setting Icon"
             />
           </div>
-          <div
+          {/* <div
             className={
               !openProfile && state && state.adminMenu.currentMenu === "help"
                 ? "taskIcon-active"
@@ -402,7 +402,7 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               }
               alt="taskIcon"
             />
-          </div>
+          </div> */}
 
           <div
             className={
