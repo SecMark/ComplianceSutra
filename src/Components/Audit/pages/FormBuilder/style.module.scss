@@ -42,3 +42,16 @@
     }
   }
 }
+
+.subContainer{
+
+  margin-right: auto;
+  padding: 10px;
+}
+.borderBox{
+  display: flex;
+  border-bottom: 1px solid $color_grey;
+}
+.stepper{
+  padding: 10px;
+}

@@ -184,3 +184,14 @@ input[type="file"]::file-selector-button {
   line-height: normal;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
+
+.searchBox{
+  width: 250px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid $color_medium_grey;
+  background-color: $color_white;
+  font-family: $font_poppins;
+  font-weight: 300;
+  line-height: normal;
+}

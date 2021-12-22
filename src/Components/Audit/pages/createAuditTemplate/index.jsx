@@ -13,8 +13,10 @@ import { AiFillFile } from "react-icons/ai";
 import Button from "../../components/Buttons/Button";
 import Label from "../../components/Labels/Label";
 import Dropzone from "react-dropzone";
+import { setTemplateName } from "../../redux/actions";
+import { useSelector, useDispatch } from "react-redux";
 
-function CreateAuditTemplate() {
+function CreateAuditTemplate({ next, back,stepper }) {
   const [circularfileList, setcirCularFileList] = useState([]);
   const [attchmentfileList, setAttachmentFileList] = useState([]);
   const [questionList, setQuestionList] = useState([
@@ -28,6 +30,7 @@ function CreateAuditTemplate() {
     audit_description: "",
     duration_of_completion: "",
   });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getCatagoryList();
@@ -125,14 +128,19 @@ function CreateAuditTemplate() {
     for (let i = 0; i < fileArray2.length; i++) {
       formData.append("reference_attachment_files", fileArray2[i]);
     }
-    axiosInstance
-      .post("audit.api.UpdateAuditTemplate", formData)
-      .then((response) => {
-        if (response.data.message.status === true) {
-          getFileData();
-          toast.success(response.data.message.status_response);
-        }
-      });
+    try {
+      axiosInstance
+        .post("audit.api.UpdateAuditTemplate", formData)
+        .then((response) => {
+          if (response.data.message.status === true) {
+            getFileData();
+            toast.success(response.data.message.status_response);
+            dispatch(setTemplateName(values.audit_template_name));
+          }
+        });
+    } catch (err) {
+      toast.error("somthing went wrong");
+    }
   };
 
   //function to set question answer state
@@ -204,8 +212,8 @@ function CreateAuditTemplate() {
   //function to submit final data
   const dataSubmit = () => {
     const formData = new FormData();
-    for(const key in values){
-      formData.append(key, values[key])
+    for (const key in values) {
+      formData.append(key, values[key]);
     }
     formData.append("audit_questions", JSON.stringify(questionList));
     axiosInstance
@@ -218,7 +226,11 @@ function CreateAuditTemplate() {
       .catch((err) => {
         toast.error("something went wrong");
       });
+    dispatch(setTemplateName(values.audit_template_name));
   };
+  //  next(()=>{
+  //    dataSubmit();
+  // })
   return (
     <div>
       <div className={styles.container}>
@@ -241,7 +253,10 @@ function CreateAuditTemplate() {
           <Label text="Audit Complaince" variant="createTemplateLabel" />
           <Select
             options={catagoryList}
-            value={{ value: values.audit_category, label: values.audit_category }}
+            value={{
+              value: values.audit_category,
+              label: values.audit_category,
+            }}
             defaultValue={{
               value: "Select Type here",
               label: "Select Type here",
@@ -467,7 +482,28 @@ function CreateAuditTemplate() {
           })}
         </div>
       </div>
-      <button onClick={dataSubmit}>Sumbit</button>
+      {/* <button onClick={dataSubmit}>Sumbit</button> */}
+      <div className={styles.saveTemplate}>
+            <div>
+              <Button
+                description="SAVE TEMPLATE & QUIT"
+                variant="preview"
+                size="medium"
+              />
+            </div>
+            <div>
+              <Button
+                description="NEXT"
+                size="small"
+                variant="default"
+                onClick={() => {
+                  next(stepper?.stepperAcitveSlide)
+                  dataSubmit();
+                }
+                }
+              />
+            </div>
+          </div>
     </div>
   );
 }

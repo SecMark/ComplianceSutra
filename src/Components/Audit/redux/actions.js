@@ -3,7 +3,9 @@ import {
   GET_QUESTION_LIST,
   SET_QUESTION_LIST,
   SET_SECTION_NAME,
+  SET_TEMPLATE_NAME
 } from "./types";
+
 
 export const setSectionName = (payload) => {
   return {
@@ -32,3 +34,10 @@ export const addSectionName = (payload) => {
     payload,
   };
 };
+
+export const setTemplateName = (payload) => {
+  return {
+    type: SET_TEMPLATE_NAME,
+    payload,
+  }
+}

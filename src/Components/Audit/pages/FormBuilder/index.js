@@ -7,28 +7,16 @@ import styles from "./style.module.scss";
 import IconButton from "../../components/Buttons/IconButton";
 import { MdArrowBack, MdClose, MdExpandMore } from "react-icons/md";
 import Button from "../../components/Buttons/Button";
-import CreateAuditTemplate from "../CreateAuditTemplate";
+import CreateAuditTemplate from "../createAuditTemplate/index.jsx";
+import { steps } from "../../constants/StepperSteps/steps";
+import ReviewTemplateDetails from "../ReviewAndConfirm";
 
-const auditAssignmentSteps = [
-  { id: 1, text: "Add Audit Scope", heading: "Buid Template Questionarie" },
-  { id: 2, text: "Create Questionarie", heading: "Buid Template Questionarie" },
-  {
-    id: 3,
-    text: "Create CheckList",
-    heading: "Create CheckList For Template",
-  },
-  {
-    id: 4,
-    text: "Review & Create",
-    heading: "Review Template Details",
-  },
-];
 
 const FormBuilder = () => {
   const [sectionName, setSectionName] = useState("");
 
   const [stepper, setStepper] = useState({
-    stepperAcitveSlide: 2,
+    stepperAcitveSlide: 1,
     stepperCompletedSlides: [],
   });
 
@@ -79,13 +67,22 @@ const FormBuilder = () => {
             />
           </div>
 
-          <div className={styles.stepper}>
-            <Stepper stepper={stepper} setStepper={setStepper} />
+          <div className={styles.borderBox}>
+          <div className={styles.subContainer}>
+            <Text
+              heading="h1"
+              text={steps[stepper.stepperAcitveSlide - 1].heading}
+              variant="default"
+            />
           </div>
+          <div className={styles.stepper}>
+            <Stepper steps={steps} stepper={stepper} setStepper={setStepper} />
+          </div>
+        </div>
         </div>
         {/* All Audit component will render here  --start-- */}
         <div className={styles.mainContent}>
-          {stepper.stepperAcitveSlide === 1 && <CreateAuditTemplate />}
+          {stepper.stepperAcitveSlide === 1 && <CreateAuditTemplate next={handleNextClick} back={handleBackClick} stepper={stepper}/>}
 
           {stepper?.stepperAcitveSlide === 2 && (
             <FormComponents
@@ -98,8 +95,11 @@ const FormBuilder = () => {
           {stepper?.stepperAcitveSlide === 3 && (
             <CheckList next={handleNextClick} back={handleBackClick} />
           )}
+          {stepper?.stepperAcitveSlide === 4 && (
+            <ReviewTemplateDetails/>
+          )}
 
-          <div className={styles.saveTemplate}>
+          {/* <div className={styles.saveTemplate}>
             <div>
               <Button
                 description="SAVE TEMPLATE & QUIT"
@@ -115,7 +115,7 @@ const FormBuilder = () => {
                 onClick={() => handleNextClick(stepper?.stepperAcitveSlide)}
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
