@@ -185,7 +185,7 @@ function Dashboard({ history }) {
 
         {state && state.adminMenu.currentMenu === "create-template" && (
           <div className="create-template">
-            <SectionList />
+            <FormBuilder />
           </div>
         )}
 
