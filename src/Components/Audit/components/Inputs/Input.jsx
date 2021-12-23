@@ -42,10 +42,16 @@ export const Input = ({
               <option disabled value="default" selected>
                 {placeholder}
               </option>
-              {valueForDropDown?.map((element) => {
+              {valueForDropDown?.map((element, index) => {
                 return (
                   <option
-                    key={element.id || element.value || element}
+                    key={
+                      element?.id ||
+                      element?.value ||
+                      element?.name ||
+                      index ||
+                      element
+                    }
                     value={element?.value ? element?.value : element}
                   >
                     {element?.label || element?.name}

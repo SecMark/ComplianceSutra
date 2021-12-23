@@ -16,7 +16,7 @@ import Dropzone from "react-dropzone";
 import { setTemplateName } from "../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
 
-function CreateAuditTemplate({ next, back,stepper }) {
+function CreateAuditTemplate({ next, back, stepper }) {
   const [circularfileList, setcirCularFileList] = useState([]);
   const [attchmentfileList, setAttachmentFileList] = useState([]);
   const [questionList, setQuestionList] = useState([
@@ -84,23 +84,25 @@ function CreateAuditTemplate({ next, back,stepper }) {
         },
       })
       .then((response) => {
-        if (response.data.message.data.reference_files === null) {
+        if (response?.data?.message?.data?.reference_files === null) {
           setAttachmentFileList([]);
-          if (response.data.message.data.file === null) {
+          if (response?.data?.message?.data?.file === null) {
             setcirCularFileList([]);
           } else {
-            setcirCularFileList(response.data.message.data.file);
+            setcirCularFileList(response?.data?.message?.data?.file);
           }
-        } else if (response.data.message.data.file === null) {
+        } else if (response?.data?.message?.data?.file === null) {
           setcirCularFileList([]);
-          if (response.data.message.data.reference_files === null) {
+          if (response?.data?.message?.data?.reference_files === null) {
             setAttachmentFileList([]);
           } else {
-            setAttachmentFileList(response.data.message.data.reference_files);
+            setAttachmentFileList(
+              response?.data?.message?.data?.reference_files
+            );
           }
         } else {
-          setcirCularFileList(response.data.message.data.file);
-          setAttachmentFileList(response.data.message.data.reference_files);
+          setcirCularFileList(response?.data?.message?.data?.file);
+          setAttachmentFileList(response?.data?.message?.data?.reference_files);
         }
       });
   };
@@ -132,10 +134,10 @@ function CreateAuditTemplate({ next, back,stepper }) {
       axiosInstance
         .post("audit.api.UpdateAuditTemplate", formData)
         .then((response) => {
-          if (response.data.message.status === true) {
+          if (response?.data?.message?.status === true) {
             getFileData();
-            toast.success(response.data.message.status_response);
-            dispatch(setTemplateName(values.audit_template_name));
+            toast.success(response?.data?.message?.status_response);
+            dispatch(setTemplateName(values?.audit_template_name));
           }
         });
     } catch (err) {
@@ -234,8 +236,12 @@ function CreateAuditTemplate({ next, back,stepper }) {
   return (
     <div>
       <div className={styles.container}>
-        <div>
-          <Text heading="h1" text="Add Scope & Basic Details" size="medium" />
+        <div className={styles.inputContainer}>
+          <Text
+            heading="p"
+            text="Add Scope & Basic Details"
+            variant="stepperSubHeading"
+          />
         </div>
       </div>
       <div className={styles.container}>
@@ -433,7 +439,11 @@ function CreateAuditTemplate({ next, back,stepper }) {
       </div>
       <div className="mt-3">
         <div>
-          <Text heading="h1" text="Frequently Asked questions" size="medium" />
+          <Text
+            heading="p"
+            text="Frequently Asked questions"
+            variant="stepperSubHeading"
+          />
         </div>
         <div className={styles.container}>
           {questionList.map((item, index) => {
@@ -484,26 +494,25 @@ function CreateAuditTemplate({ next, back,stepper }) {
       </div>
       {/* <button onClick={dataSubmit}>Sumbit</button> */}
       <div className={styles.saveTemplate}>
-            <div>
-              <Button
-                description="SAVE TEMPLATE & QUIT"
-                variant="preview"
-                size="medium"
-              />
-            </div>
-            <div>
-              <Button
-                description="NEXT"
-                size="small"
-                variant="default"
-                onClick={() => {
-                  next(stepper?.stepperAcitveSlide)
-                  dataSubmit();
-                }
-                }
-              />
-            </div>
-          </div>
+        <div>
+          <Button
+            description="SAVE TEMPLATE & QUIT"
+            variant="preview"
+            size="medium"
+          />
+        </div>
+        <div>
+          <Button
+            description="NEXT"
+            size="small"
+            variant="default"
+            onClick={() => {
+              next(stepper?.stepperAcitveSlide);
+              dataSubmit();
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
