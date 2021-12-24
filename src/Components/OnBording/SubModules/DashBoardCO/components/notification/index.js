@@ -14,6 +14,11 @@ function Notification({ history }) {
     state.auth &&
     state.auth.loginInfo &&
     (state.auth.loginInfo.email || state.auth.loginInfo.EmailID);
+  const isMobileVerified =
+    state &&
+    state.auth &&
+    state.auth.loginInfo &&
+    state?.auth?.loginInfo?.mobileVerified;
   useEffect(() => {
     if (
       window.location.href.includes("notifications") &&
@@ -22,11 +27,11 @@ function Notification({ history }) {
       dispatch(adminMenuActions.setCurrentMenu("notfications"));
     }
   }, []);
-  // useEffect(() => {
-  //   if (userID === undefined) {
-  //     history.push("/login");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!userID || !isMobileVerified) {
+      history.push("/login");
+    }
+  }, []);
 
   return (
     <div className="row co-dashboard">

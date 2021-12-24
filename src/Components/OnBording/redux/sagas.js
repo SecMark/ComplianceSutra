@@ -4,7 +4,6 @@ import api from "../api";
 import apiServices from "../../../apiServices";
 
 import { toast } from "react-toastify";
-let temp = [];
 const complianceOfficer = (state) => state && state.complianceOfficer;
 
 const verifyEmailReq = function* verifyEmailReq({ payload }) {
@@ -26,6 +25,8 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
           email: payload.email,
         })
       );
+      console.log(payload);
+      payload?.history?.replace("/email-verification-info-page");
     } else {
       yield put(actions.setLoader(false));
       yield put(
@@ -558,7 +559,6 @@ const taskMailRequest = function* taskMailRequest({ payload }) {
       Body: body,
     })
       .then(function (message) {
-        console.log("message", message);
         if (message === "OK") {
           toast.success("mail sent successfully");
         } else {
@@ -608,7 +608,6 @@ const companyTypeRequest = function* companyTypeRequest({ payload }) {
     const { data, status } = yield call(api.companyType, payload);
 
     if (data) {
-      console.log(data);
       yield put(
         actions.companyTypeRequestSuccess({ companyLicenseData: data.message })
       );
@@ -703,7 +702,6 @@ const insertCerificateRequest = function* insertCerificateRequest({ payload }) {
       let companyName = payload.entityName;
       let obj = { entityID: entityId, companyName: companyName };
       let arr = complianceOfficerData.entityInfo;
-      console.log(arr);
       let index = complianceOfficerData.entityInfo.length
         ? 0
         : complianceOfficerData.entityInfo.length;
@@ -755,7 +753,6 @@ const assignTaskDataReq = function* assignTaskDataReq({ payload }) {
   try {
     const { data } = yield call(api.getAssignedTaskData, payload);
     if (data.message.status) {
-      console.log(data);
       yield put(actions.getAssignTaskDataReuestSuccess(data.message));
       //yield put(push(`/${authData && authData.store_locale}/my-account`));
       toast.success(data && data.Message);
@@ -778,7 +775,6 @@ const governanceDataReq = function* governanceDataReq({ payload }) {
     const { data } = yield call(api.getGovernanceCompanyData, payload);
 
     if (data.message) {
-      console.log(data);
       yield put(actions.governanceAPIRequestSuccess(data.message));
       toast.success(data && data.message.status_response);
     } else {

@@ -95,17 +95,14 @@ function PersonalDetails({ history }) {
 
     if (name === "mobileNumber") {
       // mobileNumber
-      setValues({
-        ...values,
-        mobileNumber: event.target.value,
-      });
-      if (event.target.value.length >= 10) {
-        MobileValidate(event);
-      }
-      let inputKey = "mobileNumErr";
-
-      if (event.target.value > 0 && event.target.value < 9) {
-      } else if (event.target.value == 10) {
+      if (event?.target?.value?.length <= 10) {
+        setValues({
+          ...values,
+          mobileNumber: event.target.value,
+        });
+        if (event.target.value.length === 10) {
+          MobileValidate(event);
+        }
       }
     }
     const mobileNumberReg = /^[0-9]{0,10}$/;
@@ -416,10 +413,9 @@ function PersonalDetails({ history }) {
                               name="countryCode"
                               maxLength="3"
                               value={values.countryCode}
-                              // onChange={onChangeHandler("countryCode")}
+                              onChange={onChangeHandler("countryCode")}
                               // onBlur={(e) => validateCountryCode(e)}
                             />
-
                             <input
                               type="Number"
                               className={

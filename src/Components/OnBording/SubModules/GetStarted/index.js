@@ -38,7 +38,6 @@ function GetStart({ history }) {
   }, []);
 
   useEffect(() => {
-    console.log({ emailAlreadExist, isEmail: isEmail(values.loginID) });
     if (isEmail(values.loginID))
       if (
         emailAlreadExist === false &&
@@ -120,6 +119,7 @@ function GetStart({ history }) {
       dispatch(
         emailActions.verifyEmailRequest({
           email: values.loginID,
+          history,
         })
       );
       dispatch(emailActions.setLoader(true));

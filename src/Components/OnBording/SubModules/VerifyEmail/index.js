@@ -9,7 +9,7 @@ import SideBar from "../SideBar";
 import apiServices from "../../../../apiServices";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-
+import { actions as emailActions } from "../../../OnBording/redux/actions";
 function VerifyEmailErrorPage() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -21,28 +21,11 @@ function VerifyEmailErrorPage() {
     state.complianceOfficer.verifyEmailInfo.email;
 
   const resendEmail = () => {
-    let obj = {
-      email: email,
-      invitation: "V",
-    };
-    apiServices
-      .post("compliance.api.getEmailBody", obj)
-      .then(function (response) {
-        // handle success
-        if (response && response.data.message.status === true) {
-          toast.success(
-            "The verification link has been sent to your email account successfully"
-          );
-        } else {
-          toast.error("The mail not sent successfully");
-        }
+    dispatch(
+      emailActions.verifyEmailRequest({
+        email,
       })
-      .catch(function (error) {
-        if (error) {
-        }
-      });
-
-    setShowSupportText(true);
+    );
   };
 
   return (

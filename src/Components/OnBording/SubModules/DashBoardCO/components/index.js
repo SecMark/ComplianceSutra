@@ -56,11 +56,11 @@ function Dashboard({ history }) {
     dispatch(taskReportActions.taskReportRequest());
   }, []);
 
-  // useEffect(() => {
-  //   if (userID === undefined) {
-  //     history.push("/login");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!userEmail || !userDetails?.mobileVerified) {
+      history.replace("/login");
+    }
+  }, []);
 
   useEffect(() => {
     if (state.adminMenu.currentMenu !== "taskList") setIsTaskListOpen(false);

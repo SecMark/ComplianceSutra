@@ -228,10 +228,11 @@
   height: 55vh;
   overflow-y: scroll;
   padding: 0 20px;
+  scroll-behavior: smooth;
 }
 .calender-mobile-item {
   border-bottom: 1px solid rgb(228, 224, 224);
-  padding: 20px 0;
+  /* padding: 20px 0; */
 }
 .calender-mobile .left {
   width: 20%;
@@ -239,12 +240,20 @@
 .calender-mobile .right {
   width: 80%;
 }
-.current-day {
+.mobile-calandar__list-day {
+  height: 40px;
+  /* font-size: 1.5rem !important; */
+  width: 40px;
+}
+.mobile-calandar__list-day > h5 {
+  font-size: 1.5rem !important;
+}
+.mobile-calandar__list-day.current-day {
   background: #6969ff;
   border-radius: 50%;
-  height: 40px;
-
-  width: 40px;
+}
+.mobile-calandar__list-day.current-day > h5 {
+  font-size: 14px !important;
 }
 .current-day > h5 {
   color: #fff;
@@ -265,11 +274,20 @@
 .left h5 {
   font-size: 14px;
 }
+.left p {
+  font-size: 16px;
+  margin-bottom: 0.45rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
 .small-calender-mobile {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(6, 1fr);
-  box-shadow: 0px 1px 3px grey;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  border-radius: 12px;
+  margin-bottom: 2rem;
 }
 .small-calender-day-name,
 .small-calender-day,
@@ -281,20 +299,60 @@
   margin: 10px 0;
   font-weight: 600;
 }
-.small-calender-inactive-date,
-.small-calender-active-date {
-  font-weight: normal;
-  margin: 0;
-  height: 30px;
-  width: 30px;
-}
 .small-calender-day {
   height: fit-content;
   margin: 0;
 }
+.small-calender-inactive-date,
+.small-calender-active-date {
+  font-weight: normal;
+  margin: 0;
+  font-size: 12px;
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.small-calender-active-date {
+  background-color: #6c5dd3;
+  border-radius: 50%;
+  color: #fff;
+}
+.small-calender-active-date > span {
+  line-height: 5px;
+}
+.small-calander__container-task {
+  position: relative;
+}
+.small-calender-day .small-calander__container-task::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  right: 50%;
+  transform: translateX(50%);
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  background-color: #6c5dd3;
+}
+.small-calender-active-date.small-calander__container-task::after {
+  background-color: #fff;
+}
+
 .small-calender-day-disable .small-calender-inactive-date {
   color: white;
   pointer-events: none;
+}
+.calander-navigation__button {
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  transform: translateX(-25%);
+  /* position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(-25%); */
 }
 @media screen and (max-width: 767px) {
   .calender-container {

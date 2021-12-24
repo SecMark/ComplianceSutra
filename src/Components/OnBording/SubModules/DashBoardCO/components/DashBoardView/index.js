@@ -56,10 +56,7 @@ function DashBoardView({ history }) {
     }
   }, [state.adminMenu.currentMenu]);
   useEffect(() => {
-    if (
-      userEmail &&
-      userDetails?.status_response === "Authentication success"
-    ) {
+    if (userEmail && userDetails?.mobileVerified) {
       if (userDetails?.UserType === 3 || userDetails?.UserType === 5) {
         dispatch(taskReportActions.taskReportRequest());
         const refresh_taskList = setInterval(() => {
@@ -70,7 +67,7 @@ function DashBoardView({ history }) {
         history.push("/dashboard");
       }
     } else {
-      history.push("/login");
+      history.replace("/login");
     }
   }, []);
   useEffect(() => {

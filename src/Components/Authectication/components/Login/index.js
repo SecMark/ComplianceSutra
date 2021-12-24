@@ -102,7 +102,7 @@ function Login({ history }) {
     if (
       userDetails?.status_response === "Authentication success" &&
       (userDetails?.email || userDetails?.EmailID) &&
-      userDetails?.token
+      userDetails?.mobileVerified
     ) {
       localStorage.setItem("basicToken", userDetails?.token);
       if (userDetails?.UserType === 3) history.push("/dashboard-view");

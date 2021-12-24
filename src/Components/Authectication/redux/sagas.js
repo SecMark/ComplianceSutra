@@ -45,7 +45,7 @@ const loginReq = function* loginReq({ payload }) {
         );
         console.log({ isMobileVerified: message.mobileVerified });
         if (message.mobileVerified === 0) {
-          payload.history.push({
+          payload.history.replace({
             pathname: "/otpverification-co",
             state: {
               mobile_number: message.Mobile,

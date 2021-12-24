@@ -4,33 +4,33 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
-.user-title{
-    object-fit: contain;
-    width: 100%;
-    opacity: 0.6;
-    font-family: Poppins;
-    font-size: 10px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0px;
-    text-align: left;
-    color: #2c2738;
+.user-title {
+  object-fit: contain;
+  width: 100%;
+  opacity: 1;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #6c5dd3;
 }
-.bold-title-sidebar{
-    margin: 0px 0px 25px 0px;
-    object-fit: contain;
-    width: 100%;
-    font-family: Poppins;
-    font-size: 20px;
-    font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.2;
-    letter-spacing: 0.01px;
-    text-align: left;
-    color: #2c2738;
+.bold-title-sidebar {
+  margin: 0px 0px 25px 0px;
+  object-fit: contain;
+  width: 100%;
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: 0.01px;
+  text-align: left;
+  color: #2c2738;
 }
 .sidebar-text-right-grid {
   float: right;
@@ -130,7 +130,7 @@
   background-color: #f7f4fe;
   padding: 7px 0px 4px;
   width: 100% !important;
-    position: relative;
+  position: relative;
 }
 .sidebar-last-status-grid {
   margin: 23px 0px 5px;
@@ -204,11 +204,10 @@
 }
 
 .two-btn {
-    margin: 25px 0px 12px;
-    object-fit: contain;
-    border-radius: 12px;
-    background-color: #52d9b4;
-
+  margin: 25px 0px 12px;
+  object-fit: contain;
+  border-radius: 12px;
+  background-color: #52d9b4;
 }
 .btn-data {
   border-radius: 16px;
@@ -216,59 +215,59 @@
   margin-top: 24px;
   padding: 20px 8px 10px;
 }
-.green-box{
-    width: 16px;
-    height: 12px;
-    border-radius: 2px;
-    background-color: #41d290;
+.green-box {
+  width: 16px;
+  height: 12px;
+  border-radius: 2px;
+  background-color: #41d290;
 }
 .compliant-option {
-    width: 100%;
-    display: flex;
-    margin-bottom: 8px;
+  width: 100%;
+  display: flex;
+  margin-bottom: 8px;
 }
 .compliant-option ul {
-    list-style: none;
-    padding-left: 27px;
-    margin-top: 2px;
+  list-style: none;
+  padding-left: 27px;
+  margin-top: 2px;
 }
 .compliant-option ul .green-box {
-    width: 16px;
-    height: 12px !important;
-    border-radius: 2px;
-    background-color: #41d290;
-    margin-right: 2px;
+  width: 16px;
+  height: 12px !important;
+  border-radius: 2px;
+  background-color: #41d290;
+  margin-right: 2px;
 }
 .compliant-option ul .gray-box {
-    width: 16px;
-    height: 12px;
-    opacity: 0.32;
-    margin-right: 2px;
-    border-radius: 2px;
-    background-color:#e6e6e6;
+  width: 16px;
+  height: 12px;
+  opacity: 0.32;
+  margin-right: 2px;
+  border-radius: 2px;
+  background-color: #e6e6e6;
 }
 .compliant-option ul .red-box {
-    width: 16px;
-    height: 12px;
-    /* opacity: 0.32; */
-    border-radius: 2px;
-    margin-right: 2px;
-    background-color:#d25a41;
+  width: 16px;
+  height: 12px;
+  /* opacity: 0.32; */
+  border-radius: 2px;
+  margin-right: 2px;
+  background-color: #d25a41;
 }
-.compliant-title-left{
-    opacity: 0.7;
-    font-family: Poppins;
-    font-size: 12px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 0px;
-    text-align: left;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    color: #2c2738;  
-    width: 20%;
+.compliant-title-left {
+  opacity: 0.7;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  color: #2c2738;
+  width: 20%;
 }
 .second-btn {
   margin-bottom: 0 !important;
@@ -488,12 +487,11 @@
 @media screen and (max-width: 767px) {
   .compliant-option ul .gray-box {
     width: inherit;
+  }
+  .compliant-option ul .red-box {
+    width: inherit;
+  }
+  .compliant-option ul .green-box {
+    width: inherit;
+  }
 }
-.compliant-option ul .red-box {
-  width: inherit;
-}
-.compliant-option ul .green-box {
-  width: inherit;
-}
-}
-

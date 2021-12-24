@@ -61,6 +61,13 @@ function AddEditTaskList({ visible, onClose, isEdit, editData }) {
                 ...(!value?.project_id && { project_id: value?.project_id }),
               });
             }}
+            isDisabled={
+              !isEdit &&
+              fieldValues?.milestone_id &&
+              [...milestone_list].filter(
+                (item) => item?.value?.milestone_id === editData?.milestone_id
+              )[0]?.value?.milestone_id
+            }
           />
         </div>
         <div className="mt-4 w-100 d-flex align-items-center justify-content-center">
