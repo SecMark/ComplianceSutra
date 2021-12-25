@@ -5,20 +5,26 @@ import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
 import { withRouter } from "react-router-dom";
 import emailVerify from "../../../../assets/Icons/emailVerify.png";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import SideBar from "../SideBar";
 import { useLocation } from "react-router-dom";
+import { actions } from "../../redux/actions";
 
 function EmailVerify({ history }) {
-  const location = window.location.href.split("?");
   const search = useLocation().search;
   const email = new URLSearchParams(search).get("email");
   const key = new URLSearchParams(search).get("key");
-
-  localStorage.setItem("coemail", email);
-  localStorage.setItem("accessToken", key);
+  const dispatch = useDispatch();
+  // localStorage.setItem("coemail", email);
+  // localStorage.setItem("accessToken", key);
 
   useEffect(() => {
+    dispatch(actions.setEmailVerificationData({ email, key }));
+    dispatch(actions.setGovernanceDataFailed({}));
+    dispatch(actions.insertCerificateDetailsRequestSuccess([]));
+    dispatch(actions.insUpdateDeletAPIRequestSuccess({}));
+    dispatch(actions.getAssignTaskDataReuestSuccess({}));
+    dispatch(actions.governanceAPIRequestSuccess({}));
     setTimeout(() => {
       history.push("/personal-details");
     }, 3000);

@@ -26,25 +26,30 @@ import { toast } from "react-toastify";
 
 function CompanyDetails({ history }) {
   const state = useSelector((state) => state);
+  const personalInfo = state?.complianceOfficer?.personalInfo;
+  const certificateInfo = state?.complianceOfficer?.cerificateInfo;
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [companyInfo, setCompanyInfo] = useState([]);
   const [showEdit, setshowEdit] = useState(true);
-  const [fields, setFields] = useState([
-    {
-      company_name: localStorage.getItem("companyName"),
-      company_country: "",
-      company_pincode: "",
-      company_type: "",
-      business_category: "",
-      countShow: false,
-      licenses: [],
-    },
-  ]);
+  const [fields, setFields] = useState(
+    (certificateInfo &&
+      certificateInfo?.length > 0 && [...certificateInfo]) || [
+      {
+        company_name: personalInfo?.company_name,
+        company_country: "",
+        company_pincode: "",
+        company_type: "",
+        business_category: "",
+        countShow: false,
+        licenses: [],
+      },
+    ]
+  );
   const [errors, setErrors] = useState([
     {
       companyNameError: "",
-      pinCodeError:"",
+      pinCodeError: "",
       companyTypeError: "",
       categoryErr: "",
       countShow: false,
@@ -68,7 +73,7 @@ function CompanyDetails({ history }) {
   const [value, setValue] = useState("");
   const [currentIndex, setCurrentIndex] = useState();
   const options = useMemo(() => countryList().getData(), []);
-  
+
   const changeHandler = (value) => {
     setValue(value);
   };
@@ -126,16 +131,19 @@ function CompanyDetails({ history }) {
     list[0].companyName = companyName;
   }, []);
 
-  const updateEnityName = ( entityName, index) => {
+  const updateEnityName = (entityName, index) => {
     const payload = {
-      
       company_name: entityName,
     };
     api
       .post("compliance.api.avabilityCheck", payload)
       .then(function (response) {
         // handle success
-        if (response && response.data && response.data.message.status === true) {
+        if (
+          response &&
+          response.data &&
+          response.data.message.status === true
+        ) {
           let list = [...errors];
           list[index].companyNameError = "Company name already exists";
           setErrors(list);
@@ -208,15 +216,12 @@ function CompanyDetails({ history }) {
         .post("compliance.api.checkPincode", payload)
         .then((response) => {
           if (response.data.message.status === !true) {
-
-            console.log("Invalid pincode",response.data.message.status)
+            console.log("Invalid pincode", response.data.message.status);
             let list = [...errors];
-          list[index].pinCodeError = "Invalid Pincode";
-          setErrors(list);
-
-          } else if(response.data.message.status === true) {
-            
-            console.log("valid pincode",response.data.message.status)
+            list[index].pinCodeError = "Invalid Pincode";
+            setErrors(list);
+          } else if (response.data.message.status === true) {
+            console.log("valid pincode", response.data.message.status);
 
             let list = [...errors];
             list[index].pinCodeError = "";
@@ -230,8 +235,8 @@ function CompanyDetails({ history }) {
 
   const validateCompanyName = (e, index) => {
     let payload = {
-       company_name: e.target.value.trim(),
-    }
+      company_name: e.target.value.trim(),
+    };
     if (e.target.value != "") {
       const companyNameErr = () => {
         let list = [...errors];
@@ -245,7 +250,7 @@ function CompanyDetails({ history }) {
             info.map((data, key) => {
               if (key === index && data.countShow === true) {
                 updateEnityName(
-                 fields && fields[currentSelectedIndex].company_name,
+                  fields && fields[currentSelectedIndex].company_name,
                   key
                 );
               }
@@ -280,24 +285,6 @@ function CompanyDetails({ history }) {
   };
 
   const onDeletePress = (index) => {
-    const licenseIDgrpStr =
-      fields &&
-      fields[index] &&
-      fields[index].liecenseData &&
-      fields[index] &&
-      fields[index].liecenseData.join(",");
-    dispatch(
-      companyActions.insertCerificateDetailsRequest({
-        licenseSubID: 0,
-        entityId: 0,
-        userId: userID,
-        entityName: fields && fields[index].companyName,
-        status: 1,
-        licenseIDgrp: licenseIDgrpStr,
-        from: "delete",
-      })
-    );
-
     let list = [...fields];
     list.splice(index, 1);
     setFields(list);
@@ -361,7 +348,7 @@ function CompanyDetails({ history }) {
               item.company_type === "" ||
               item.business_category === "" ||
               error.companyNameError !== "" ||
-              error.pinCodeError !==""
+              error.pinCodeError !== ""
             ) {
               isNext = false;
               return isNext;
@@ -383,8 +370,8 @@ function CompanyDetails({ history }) {
             item.business_category === "" ||
             item.company_country === "" ||
             item.company_pincode === "" ||
-            (errors && errors[index] && errors[index].companyNameError != "") || (errors && errors[index] && errors[index].pinCodeError != "")
-            
+            (errors && errors[index] && errors[index].companyNameError != "") ||
+            (errors && errors[index] && errors[index].pinCodeError != "")
           ) {
             isNext = false;
             return isNext;
@@ -426,7 +413,6 @@ function CompanyDetails({ history }) {
   };
 
   const addLicense = (index, licenseList) => {
-    
     var temp = [...fields];
     temp[index].licenses = licenseList;
     setFields(temp);
@@ -472,8 +458,8 @@ function CompanyDetails({ history }) {
     handelChange("", index, "", "");
   };
 
-  // to Add Another Company 
-  const AddAnotherCompany = () =>{
+  // to Add Another Company
+  const AddAnotherCompany = () => {
     const values = [...fields];
     values.push({
       company_name: "",
@@ -491,7 +477,7 @@ function CompanyDetails({ history }) {
       categoryErr: "",
     });
     setErrors(errorInfo);
-  }
+  };
 
   const generateDropdown = (
     data,
@@ -595,7 +581,6 @@ function CompanyDetails({ history }) {
               {errors[index].companyNameError}
             </p>
           )}
-          
         </td>
         <td className="slectCatgory">
           <Searchable
@@ -668,9 +653,7 @@ function CompanyDetails({ history }) {
                 (errors &&
                   errors[index] &&
                   errors[index].companyNameError !== "") ||
-                  (errors &&
-                    errors[index] &&
-                    errors[index].pinCodeError !== "")
+                (errors && errors[index] && errors[index].pinCodeError !== "")
               }
             >
               add licenses
@@ -708,41 +691,29 @@ function CompanyDetails({ history }) {
   };
 
   const redirectToAssignTaskScreen = async () => {
-    try {
-      const { data } = await axiosInstance.post(
-        "compliance.api.setCompanyDetails",
-        {
-          details: fields,
-        }
-      );
-      if (data.message.status) {
-        history.push("/governance");
-      } else if(!data.message.status){
-         toast.error(data.message.status_response)
-      }
-    } catch (error) {
-      toast.error(error.message || "Something wrong");
-    }
+    dispatch(
+      companyActions.insertCerificateDetailsRequest({
+        fields,
+        history,
+      })
+    );
   };
 
-  const companyChecking = (e,i) =>{
-    
-    let err = [...errors]
-      fields.map((item,index)=>{
-        if(item.company_name == e){
-          console.log("company Checking",item,i)
-          
-          // let list = [...errors]
-          // list[i].companyNameError = "Company name already existssssssssss";
-          // setErrors(list)
-          err[i].companyNameError ="Company name already existssssssssss";
-        }
-        else{
-        
-        }
-      })
-      setErrors(err)
-  }
+  const companyChecking = (e, i) => {
+    let err = [...errors];
+    fields.map((item, index) => {
+      if (item.company_name == e) {
+        console.log("company Checking", item, i);
+
+        // let list = [...errors]
+        // list[i].companyNameError = "Company name already existssssssssss";
+        // setErrors(list)
+        err[i].companyNameError = "Company name already existssssssssss";
+      } else {
+      }
+    });
+    setErrors(err);
+  };
   const handelChange = (e, i, item, dropDownId) => {
     const values = [...fields];
     const check = [...fields];
@@ -752,7 +723,7 @@ function CompanyDetails({ history }) {
     if (e != "") {
       const { value, name } = e.target;
       validateCompanyName(e, i);
-     // companyChecking(value,i);
+      // companyChecking(value,i);
       // validateCompanyName(e, i);
 
       const re = /^(?=.*\S).+$/;
@@ -762,11 +733,11 @@ function CompanyDetails({ history }) {
         name === "company_name"
       ) {
         validateCompanyName(e, i);
-        companyChecking(e.target.value,i);
+        companyChecking(e.target.value, i);
         return "";
       }
-      if(name === "company_pincode"){
-        pinCodeValidation(e.target.value,i);
+      if (name === "company_pincode") {
+        pinCodeValidation(e.target.value, i);
       }
 
       values[i][name] = value;
@@ -822,7 +793,11 @@ function CompanyDetails({ history }) {
               <Searchable
                 value={item.business_category}
                 className="form-control border-0"
-                placeholder={item.business_category ? item.business_category : "Select Category"} // by default "Search"
+                placeholder={
+                  item.business_category
+                    ? item.business_category
+                    : "Select Category"
+                } // by default "Search"
                 notFoundText="No result found" // by default "No result found"
                 // options={categoryo}
                 options={mobCategoryo}
@@ -863,9 +838,9 @@ function CompanyDetails({ history }) {
                     (errors &&
                       errors[index] &&
                       errors[index].companyNameError !== "") ||
-                      (errors &&
-                        errors[index] &&
-                        errors[index].pinCodeError !== "")
+                    (errors &&
+                      errors[index] &&
+                      errors[index].pinCodeError !== "")
                   }
                 >
                   add licenses
@@ -954,7 +929,9 @@ function CompanyDetails({ history }) {
               </div>
               <div className="d-flex">
                 <div className="col-10 pl-0">
-                  <div className="firm-name-mobile">{item.business_category}</div>
+                  <div className="firm-name-mobile">
+                    {item.business_category}
+                  </div>
                   <div className="firm-name-mobile">{item.company_type}</div>
                 </div>
                 <div className="col-2 pr-0">
@@ -1114,14 +1091,20 @@ function CompanyDetails({ history }) {
                         ? "btn mb-2 save-details common-button-next"
                         : "btn mb-2 save-details common-button-next-disabled"
                     }
-                    onClick={() => redirectToAssignTaskScreen()}
+                    onClick={() => {
+                      if (certificateInfo?.length > 0) {
+                        history.push("/governance");
+                      } else {
+                        redirectToAssignTaskScreen();
+                      }
+                    }}
                     style={{
                       backgroundColor:
                         checkButtonDisabled() === true ? "#6c5dd3" : "#e4e4e4",
                       color: checkButtonDisabled() !== true && "#aeaeae",
                     }}
                   >
-                    Next
+                    {certificateInfo?.length > 0 ? "Next" : "Done"}
                   </button>
                 </div>
                 <div className="col-6">

@@ -6,6 +6,7 @@ import Cobg from "../../../../../../assets/Images/Onboarding/co-bg.png";
 import RighSideGrid from "../notification/SubModules/RightSideNotification";
 import { withRouter } from "react-router-dom";
 import { actions as adminMenuActions } from "../../MenuRedux/actions";
+import Auth from "../../../../../Authectication/components/Auth";
 function Notification({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -27,14 +28,9 @@ function Notification({ history }) {
       dispatch(adminMenuActions.setCurrentMenu("notfications"));
     }
   }, []);
-  useEffect(() => {
-    if (!userID || !isMobileVerified) {
-      history.push("/login");
-    }
-  }, []);
-
   return (
     <div className="row co-dashboard">
+      <Auth />
       <div className=" left-fixed ">
         <div className="on-boarding">
           <SideBarInputControl />

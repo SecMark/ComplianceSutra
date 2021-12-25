@@ -17,6 +17,7 @@ import HelpSection from "../../../../HelpSection/Help";
 // import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
 import ProjectManagement from "../../../../ProjectManagement";
 import ProjectTrash from "../../../../ProjectManagement/Trash";
+import Auth from "../../../../Authectication/components/Auth";
 // import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
 
 function Dashboard({ history }) {
@@ -56,11 +57,11 @@ function Dashboard({ history }) {
     dispatch(taskReportActions.taskReportRequest());
   }, []);
 
-  useEffect(() => {
-    if (!userEmail || !userDetails?.mobileVerified) {
-      history.replace("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!userEmail || !userDetails?.mobileVerified) {
+  //     history.replace("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (state.adminMenu.currentMenu !== "taskList") setIsTaskListOpen(false);
@@ -134,6 +135,7 @@ function Dashboard({ history }) {
 
   return (
     <div className="row co-dashboard fix-top">
+      <Auth />
       <div className=" left-fixed ">
         <div className="on-boarding">
           {/* <SideBar /> */}

@@ -13,6 +13,7 @@ import QuickOverViewSection from "./quickOverview";
 import { actions as adminMenuActions } from "../../MenuRedux/actions";
 import { actions as notificationActions } from ".././notification/Redux/actions.js";
 import TaskListViewMobile from "./TaskListViewMobile";
+import Auth from "../../../../../Authectication/components/Auth";
 function DashBoardView({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -63,11 +64,7 @@ function DashBoardView({ history }) {
           dispatch(taskReportActions.taskReportRequest());
         }, 30000);
         return () => clearInterval(refresh_taskList);
-      } else {
-        history.push("/dashboard");
       }
-    } else {
-      history.replace("/login");
     }
   }, []);
   useEffect(() => {
@@ -97,6 +94,7 @@ function DashBoardView({ history }) {
 
   return (
     <div>
+      <Auth />
       <div className="row dashboard-view-mobile-top">
         <div className="mobile-head d-block d-md-none">
           <div className="d-flex">

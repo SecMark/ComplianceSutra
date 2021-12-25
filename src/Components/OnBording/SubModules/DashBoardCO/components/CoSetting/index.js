@@ -18,6 +18,7 @@ import { actions as adminMenuActions } from "../../MenuRedux/actions";
 import SettingSideBar from "./SettingSideBar";
 import MobileLeftSidebar from "../MobileLeftSidebar";
 import { isMobile } from "react-device-detect";
+import Auth from "../../../../../Authectication/components/Auth";
 const settingJson = [
   { type: 1, isEnable: true },
   { type: 2, isEnable: false },
@@ -45,16 +46,6 @@ function CoSetting({ history }) {
       state.adminMenu.currentMenu !== "settings"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("settings"));
-    }
-  }, []);
-  // useEffect(() => {
-  //   if (userID === undefined) {
-  //     history.push("/login");
-  //   }
-  // }, []);
-  useEffect(() => {
-    if (userID === undefined) {
-      // history.push("/login");
     }
   }, []);
   const handleTabChange = (key) => {
@@ -85,6 +76,7 @@ function CoSetting({ history }) {
 
   return (
     <div className="row co-setting">
+      <Auth />
       {isMobile && (
         <div id="sideBarParent" className="">
           <div id="sideBarChild" className="leftSideBarFixed">

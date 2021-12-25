@@ -2576,6 +2576,7 @@ function RightSideGrid({
   const renderTaskList = (task, Status, listType) => {
     return (
       <div
+        key={task?.task_name}
         className="row"
         style={{
           marginBottom: "15px",

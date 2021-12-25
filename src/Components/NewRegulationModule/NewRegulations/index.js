@@ -34,6 +34,7 @@ import axiosInstance from "../../../apiServices";
 import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
 import { toast } from "react-toastify";
 import BackDrop from "../../../CommonModules/sharedComponents/Loader/BackDrop";
+import Auth from "../../Authectication/components/Auth";
 
 const NewRegulations = (props) => {
   const [isShowFilter, setIsShowFilter] = useState(false);
@@ -192,6 +193,7 @@ const NewRegulations = (props) => {
 
   return (
     <>
+      <Auth />
       <Switch>
         <Route exact path={path + "/quiz"}>
           <NewRegulationsQuiz key="new-regulations-quiz" />
