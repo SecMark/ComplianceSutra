@@ -47,9 +47,9 @@ import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/compon
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
-import FormBuilder from "../Components/Audit/pages/FormBuilder";
+// import FormBuilder from "../Components/Audit/pages/FormBuilder";
 import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
-import SectionList from "../Components/Audit/pages/List/SectionList";
+// import SectionList from "../Components/Audit/pages/List/SectionList";
 export default function AppRouter() {
   return (
     <div>

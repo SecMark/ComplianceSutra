@@ -410,6 +410,51 @@ const FormComponents = ({ next, back, stepper }) => {
     }
   };
 
+  const onNextClick = async () => {
+    let temp = [...inputFieldList];
+    console.log("onNextClick Called");
+    temp.map(async (sectionData, index) => {
+      let inputsLength = sectionData?.inputs.length;
+      if (sectionData?.inputs?.length > 0) {
+        console.log("onNextClick Executed");
+        let previousQuestion = sectionData?.inputs[inputsLength - 1];
+        console.log({ previousQuestion });
+        if (
+          sectionData.sectionName === "" ||
+          sectionData.bufferPeriod === "" ||
+          sectionData.completionDuration === ""
+        ) {
+          toast.error("Please enter section name, Buffer time and Duration.");
+        } else if (previousQuestion?.questionnaire_section === "") {
+          temp[index].inputs[inputsLength - 1].error = {
+            isError: true,
+            type: "questionLabel",
+            message: "Requirement is required",
+          };
+          setInputFieldList(temp);
+        } else if (
+          previousQuestion?.field_type !== "Text" &&
+          previousQuestion?.answer_option === ""
+        ) {
+          temp[index].inputs[inputsLength].error = {
+            isError: true,
+            type: "value",
+            message: "Value is required",
+          };
+          setInputFieldList(temp);
+        } else {
+          const addQuestion = await submitRequirement(
+            sectionData,
+            previousQuestion
+          );
+          if (!addQuestion) {
+            toast.error("Something went wrong");
+          }
+        }
+      }
+    });
+  };
+
   return (
     <>
       <ToastContainer />
