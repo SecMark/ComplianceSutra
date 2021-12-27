@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Text from "../Text/Text";
 import Button from "../Buttons/Button";
 import styles from "./style.module.scss";
@@ -19,7 +19,7 @@ import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 
-const FormComponents = ({ next, back }) => {
+const FormComponents = ({ next, back, stepper }) => {
   const [inputFieldList, setInputFieldList] = useState([
     {
       id: uuidv4(),
@@ -46,6 +46,9 @@ const FormComponents = ({ next, back }) => {
     },
   ]);
 
+  useEffect(() => {
+    console.log(inputFieldList);
+  }, [inputFieldList]);
   const ondragstart = (event, id) => {
     event.dataTransfer.setData("id", id);
   };
@@ -130,7 +133,7 @@ const FormComponents = ({ next, back }) => {
       section.completionDuration === ""
     ) {
       toast.error("Please enter section name, Buffer time and Duration.");
-    } else if (previousQuestion.questionnaire_section === "") {
+    } else if (previousQuestion?.questionnaire_section === "") {
       temp[Iindex].inputs[inputLength].error = {
         isError: true,
         type: "questionLabel",
@@ -138,8 +141,8 @@ const FormComponents = ({ next, back }) => {
       };
       setInputFieldList(temp);
     } else if (
-      previousQuestion.field_type !== "Text" &&
-      previousQuestion.answer_option === ""
+      previousQuestion?.field_type !== "Text" &&
+      previousQuestion?.answer_option === ""
     ) {
       temp[Iindex].inputs[inputLength].error = {
         isError: true,
@@ -172,6 +175,52 @@ const FormComponents = ({ next, back }) => {
     }
   };
 
+  const onNextClick = async () => {
+    let temp = [...inputFieldList];
+    console.log("onNextClick Called");
+    temp.map(async (sectionData, index) => {
+      let inputsLength = sectionData?.inputs.length;
+      if (sectionData?.inputs?.length > 0) {
+        console.log("onNextClick Executed");
+        let previousQuestion = sectionData?.inputs[inputsLength - 1];
+        console.log({ previousQuestion });
+        if (
+          sectionData.sectionName === "" ||
+          sectionData.bufferPeriod === "" ||
+          sectionData.completionDuration === ""
+        ) {
+          toast.error("Please enter section name, Buffer time and Duration.");
+        } else if (previousQuestion?.questionnaire_section === "") {
+          temp[index].inputs[inputsLength - 1].error = {
+            isError: true,
+            type: "questionLabel",
+            message: "Requirement is required",
+          };
+          setInputFieldList(temp);
+        } else if (
+          previousQuestion?.field_type !== "Text" &&
+          previousQuestion?.answer_option === ""
+        ) {
+          temp[index].inputs[inputsLength].error = {
+            isError: true,
+            type: "value",
+            message: "Value is required",
+          };
+          setInputFieldList(temp);
+        } else {
+          const addQuestion = await submitRequirement(
+            sectionData,
+            previousQuestion
+          );
+
+          if (!addQuestion) {
+            toast.error("Something went wrong");
+          }
+        }
+      }
+    });
+  };
+
   const deleteRequirement = (index, id) => {
     let temp = [...inputFieldList];
 
@@ -191,7 +240,7 @@ const FormComponents = ({ next, back }) => {
       section.completionDuration === ""
     ) {
       toast.error("Please enter section name, Buffer time and Duration.");
-    } else if (previousQuestion.questionnaire_section === "") {
+    } else if (previousQuestion?.questionnaire_section === "") {
       temp[Iindex].inputs[inputLength].error = {
         isError: true,
         type: "questionLabel",
@@ -199,8 +248,8 @@ const FormComponents = ({ next, back }) => {
       };
       setInputFieldList(temp);
     } else if (
-      previousQuestion.field_type !== "Text" &&
-      previousQuestion.answer_option !== ""
+      previousQuestion?.field_type !== "Text" &&
+      previousQuestion?.answer_option !== ""
     ) {
       temp[Iindex].inputs[inputLength].error = {
         isError: true,
@@ -397,6 +446,22 @@ const FormComponents = ({ next, back }) => {
                   id={item.id}
                 />
               ))}
+            </div>
+            <div className={styles.bottomButtonContainer}>
+              <Button
+                description="SAVE TEMPLATE & QUIT"
+                variant="preview"
+                size="medium"
+              />
+              <Button
+                description="NEXT"
+                size="small"
+                variant="default"
+                onClick={() => {
+                  next(stepper?.stepperAcitveSlide);
+                  onNextClick();
+                }}
+              />
             </div>
           </div>
         </div>

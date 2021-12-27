@@ -55,6 +55,12 @@
         color: $color_delete_gray;
       }
     }
+    .bottomButtonContainer {
+      margin-top: 18vh;
+      button {
+        margin-bottom: 0.5rem;
+      }
+    }
   }
 
   .formInputs {
