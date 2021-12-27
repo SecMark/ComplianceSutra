@@ -271,7 +271,7 @@ const CheckList = ({ next, stepper }) => {
     formData.append("check_point", areaForVerfication);
     formData.append(
       "documents_relied_upon",
-      documentReliedUpon ? documentReliedUpon : ""
+      documentReliedUpon ? JSON.stringify(documentReliedUpon) : ""
     );
 
     formData.append(
