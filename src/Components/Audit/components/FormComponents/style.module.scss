@@ -33,7 +33,6 @@
     background-color: $color_dark_skyblue;
     border-radius: 10px;
     height: 500px;
-    max-height: 350px;
   }
 
   .itemList {
@@ -47,6 +46,18 @@
       flex-flow: row wrap;
       button {
         margin: 10px 0 0;
+      }
+      svg {
+        font-size: 20px;
+        cursor: pointer;
+        background: $color_delete_light_gray;
+        color: $color_delete_gray;
+      }
+    }
+    .bottomButtonContainer {
+      margin-top: 18vh;
+      button {
+        margin-bottom: 0.5rem;
       }
     }
   }

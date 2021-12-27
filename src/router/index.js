@@ -51,6 +51,7 @@ import FormBuilder from "../Components/Audit/pages/FormBuilder";
 import AuditLandingPages from "../Components/Audit/pages/AuditLandingPages";
 import AuditTemplates from "../Components/Audit/pages/AuditTemplates";
 import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
+import SectionList from "../Components/Audit/pages/List/SectionList";
 export default function AppRouter() {
   return (
     <div>
@@ -175,7 +176,7 @@ export default function AppRouter() {
           <Route path="/project-management" component={DashBoardCO} />
           <Route path="/project-trash" component={DashBoardCO} />
 
-          <Route path="/create-template" component={DashBoardCO} />
+          {/* <Route path="/create-template" component={DashBoardCO} /> */}
 
           <Route exact path="/help" component={DashBoardCO} />
 
@@ -186,6 +187,8 @@ export default function AppRouter() {
           <Route exact path="/settings" component={CoSetting} />
           
           <Route exact path="/audit-assignment" component={AuditAssignment} />
+          <Route path="/audit" component={DashBoardCO} />
+
           {/* User */}
           {/* <Route path="/user-task" component={UserTask}></Route> */}
 

@@ -10,6 +10,8 @@ import Notifications from "./CommonModules/Notification";
 import { onMessageListener } from "./firebaseConfig/firebaseInit";
 import { useSelector, useDispatch } from "react-redux";
 import { actions as taskReportActions } from "../src/Components/OnBording/SubModules/DashBoardCO/redux/actions";
+import "devextreme/dist/css/dx.light.css";
+
 function App() {
   return <MainApp />;
 }

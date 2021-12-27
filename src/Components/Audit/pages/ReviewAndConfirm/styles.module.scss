@@ -1,0 +1,25 @@
+.headingContainer{
+    display: flex;
+
+}
+
+.heading{
+    margin-right: auto;
+}
+
+.createTemplateFields{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-top: 15px;
+    
+}
+
+.outputValues{
+    //  padding-left: 60px;
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+    padding-bottom: 5px;
+
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Text from "../Text/Text";
 import Button from "../Buttons/Button";
 import styles from "./style.module.scss";
@@ -17,8 +17,9 @@ import { fileTypes } from "../../constants/DateTypes/fileType";
 import axiosInstance from "../../../../apiServices";
 import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
 import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
-const FormComponents = () => {
+const FormComponents = ({ next, back, stepper }) => {
   const [inputFieldList, setInputFieldList] = useState([
     {
       id: uuidv4(),
@@ -33,13 +34,21 @@ const FormComponents = () => {
           question: "",
           how_get_this_data: "",
           answer_option: "",
-          field_type: "text",
+          field_type: "Text",
           id: uuidv4(),
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
         },
       ],
     },
   ]);
 
+  useEffect(() => {
+    console.log(inputFieldList);
+  }, [inputFieldList]);
   const ondragstart = (event, id) => {
     event.dataTransfer.setData("id", id);
   };
@@ -76,8 +85,13 @@ const FormComponents = () => {
           question: "",
           how_get_this_data: "",
           answer_option: "",
-          field_type: "text",
+          field_type: "Text",
           reference_document: "",
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
         },
       ],
     });
@@ -107,20 +121,99 @@ const FormComponents = () => {
     setInputFieldList(removeSection);
   };
 
-  const addNewRequirement = (Iindex) => {
+  const addNewRequirement = async (Iindex) => {
     let temp = [...inputFieldList];
+    let inputLength = temp[Iindex].inputs.length - 1;
+    let previousQuestion = temp[Iindex].inputs[inputLength];
+    let section = temp[Iindex];
 
-    temp[Iindex].inputs.push({
-      questionnaire_section: "",
-      question: "",
-      how_get_this_data: "",
-      reference_document: "",
-      answer_option: "",
-      field_type: "text",
-      id: uuidv4(),
-    });
+    if (
+      section.sectionName === "" ||
+      section.bufferPeriod === "" ||
+      section.completionDuration === ""
+    ) {
+      toast.error("Please enter section name, Buffer time and Duration.");
+    } else if (previousQuestion?.questionnaire_section === "") {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "questionLabel",
+        message: "Requirement is required",
+      };
+      setInputFieldList(temp);
+    } else if (
+      previousQuestion?.field_type !== "Text" &&
+      previousQuestion?.answer_option === ""
+    ) {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "value",
+        message: "Value is required",
+      };
+      setInputFieldList(temp);
+    } else {
+      const addQuestion = await submitRequirement(section, previousQuestion);
 
-    setInputFieldList(temp);
+      if (addQuestion) {
+        temp[Iindex].inputs.push({
+          questionnaire_section: "",
+          question: "",
+          how_get_this_data: "",
+          reference_document: "",
+          answer_option: "",
+          field_type: "Text",
+          id: uuidv4(),
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
+        });
+        setInputFieldList(temp);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
+  };
+
+  const saveRequirementOnNext = async () => {
+    let temp = [...inputFieldList];
+    let totalLenth = temp.length - 1;
+    let inputLength = temp[totalLenth].inputs.length - 1;
+    let previousQuestion = temp[totalLenth].inputs[inputLength];
+    let section = temp[totalLenth];
+
+    if (
+      section.sectionName === "" ||
+      section.bufferPeriod === "" ||
+      section.completionDuration === ""
+    ) {
+      toast.error("Please enter section name, Buffer time and Duration.");
+    } else if (previousQuestion.questionnaire_section === "") {
+      temp[totalLenth].inputs[inputLength].error = {
+        isError: true,
+        type: "questionLabel",
+        message: "Requirement is required",
+      };
+      setInputFieldList(temp);
+    } else if (
+      previousQuestion.field_type !== "Text" &&
+      previousQuestion.answer_option === ""
+    ) {
+      temp[totalLenth].inputs[inputLength].error = {
+        isError: true,
+        type: "value",
+        message: "Value is required",
+      };
+      setInputFieldList(temp);
+    } else {
+      const addQuestion = await submitRequirement(section, previousQuestion);
+
+      if (addQuestion) {
+        setInputFieldList(temp);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
   };
 
   const deleteRequirement = (index, id) => {
@@ -130,20 +223,58 @@ const FormComponents = () => {
     setInputFieldList(temp);
   };
 
-  const addCustomRequirement = (Iindex) => {
+  const addCustomRequirement = async (Iindex) => {
     let temp = [...inputFieldList];
+    let inputLength = temp[Iindex].inputs.length - 1;
+    let previousQuestion = temp[Iindex].inputs[inputLength];
+    let section = temp[Iindex];
 
-    temp[Iindex].inputs.push({
-      questionnaire_section: "",
-      question: "",
-      how_get_this_data: "",
-      reference_document: "",
-      answer_option: "",
-      field_type: "none",
-      id: uuidv4(),
-    });
+    if (
+      section.sectionName === "" ||
+      section.bufferPeriod === "" ||
+      section.completionDuration === ""
+    ) {
+      toast.error("Please enter section name, Buffer time and Duration.");
+    } else if (previousQuestion?.questionnaire_section === "") {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "questionLabel",
+        message: "Requirement is required",
+      };
+      setInputFieldList(temp);
+    } else if (
+      previousQuestion?.field_type !== "Text" &&
+      previousQuestion?.answer_option !== ""
+    ) {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "value",
+        message: "Value is required",
+      };
+      setInputFieldList(temp);
+    } else {
+      const addQuestion = await submitRequirement(section, previousQuestion);
 
-    setInputFieldList(temp);
+      if (addQuestion) {
+        temp[Iindex].inputs.push({
+          questionnaire_section: "",
+          question: "",
+          how_get_this_data: "",
+          reference_document: "",
+          answer_option: "",
+          field_type: "none",
+          id: uuidv4(),
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
+        });
+        setInputFieldList(temp);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
   };
 
   const addSectionName = async (event) => {
@@ -221,15 +352,62 @@ const FormComponents = () => {
 
     if (name === "questionnaire_section") {
       temp[splitId[1]].inputs[splitId[0]].questionnaire_section = value;
+      temp[splitId[1]].inputs[splitId[0]].error = {
+        isError: false,
+        type: "",
+        message: "",
+      };
     } else if (name === "answer_option") {
       temp[splitId[1]].inputs[splitId[0]].answer_option = value;
+      temp[splitId[1]].inputs[splitId[0]].error = {
+        isError: false,
+        type: "",
+        message: "",
+      };
     } else if (name === "how_get_this_data") {
       temp[splitId[1]].inputs[splitId[0]].how_get_this_data = value;
     } else if (name === "reference_document") {
       temp[splitId[1]].inputs[splitId[0]].reference_document =
         event.target.files[0];
     }
+
     setInputFieldList(temp);
+  };
+
+  const submitRequirement = async (section, question) => {
+    const {
+      questionnaire_section,
+      field_type,
+      answer_option,
+      how_get_this_data,
+      reference_document,
+    } = question;
+
+    const { questionSectionId } = section;
+
+    let formData = new FormData();
+    formData.append("question_section_id", questionSectionId);
+    formData.append("question", questionnaire_section);
+    formData.append(
+      "reference_document",
+      reference_document ? reference_document : ""
+    );
+    formData.append(
+      "how_get_this_data",
+      how_get_this_data ? how_get_this_data : ""
+    );
+    formData.append("answer_option", answer_option ? answer_option : "");
+    formData.append("field_type", field_type);
+
+    const addSectionResponse = await axiosInstance.post(
+      `${BACKEND_BASE_URL}audit.api.AddQuestionQuestionnaire`,
+      formData
+    );
+    if (addSectionResponse) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -245,11 +423,11 @@ const FormComponents = () => {
           />
           <div className={styles.itemList}>
             <IconButton
-              description="Add New Question"
+              description="New Question"
               onDragStart={(event) => ondragstart(event, uuidv4())}
               draggable={true}
               variant="item"
-              icon={<BsPlusCircleFill />}
+              icon={<BsPlusSquareFill />}
               size="medium"
             />
             <div className={styles.inputButtons}>
@@ -263,6 +441,22 @@ const FormComponents = () => {
                   id={item.id}
                 />
               ))}
+            </div>
+            <div className={styles.bottomButtonContainer}>
+              <Button
+                description="SAVE TEMPLATE & QUIT"
+                variant="preview"
+                size="medium"
+              />
+              <Button
+                description="NEXT"
+                size="small"
+                variant="default"
+                onClick={() => {
+                  next(stepper?.stepperAcitveSlide);
+                  onNextClick();
+                }}
+              />
             </div>
           </div>
         </div>
@@ -356,9 +550,18 @@ const FormComponents = () => {
                                     value={fieldName.questionnaire_section}
                                     onChange={createRequirement}
                                   />
+                                  {fieldName.error?.isError &&
+                                    fieldName.error?.type ===
+                                      "questionLabel" && (
+                                      <Text
+                                        heading="span"
+                                        text={fieldName.error.message}
+                                        variant="error"
+                                      />
+                                    )}
                                 </div>
                                 <div className={styles.inputField}>
-                                  {fieldName.field_type === "text" ? (
+                                  {fieldName.field_type === "Text" ? (
                                     <Input
                                       type="select"
                                       labelText="Data Type"
@@ -379,8 +582,8 @@ const FormComponents = () => {
                                   )}
                                 </div>
 
-                                {fieldName.field_type !== "text" &&
-                                  fieldName.field_type !== "date" && (
+                                {fieldName.field_type !== "Text" &&
+                                  fieldName.field_type !== "Date" && (
                                     <div className={styles.inputField}>
                                       <Input
                                         type="text"
@@ -391,6 +594,14 @@ const FormComponents = () => {
                                         name="answer_option"
                                         onChange={createRequirement}
                                       />
+                                      {fieldName.error?.isError &&
+                                        fieldName.error?.type === "value" && (
+                                          <Text
+                                            heading="span"
+                                            text={fieldName.error.message}
+                                            variant="error"
+                                          />
+                                        )}
                                     </div>
                                   )}
 
@@ -417,7 +628,7 @@ const FormComponents = () => {
                                 </div>
                               </>
                             )}
-                            {fieldName.field_type === "file" && (
+                            {fieldName.field_type === "Attach" && (
                               <>
                                 <div className={styles.inputField}>
                                   <Input
@@ -436,9 +647,14 @@ const FormComponents = () => {
                               </>
                             )}
 
-                            {fieldName.field_type === "date" && (
+                            {fieldName.field_type === "Date" && (
                               <div className={styles.dateRange}>
-                                <Datepicker labelText="Date Range for Records" />
+                                <Datepicker
+                                  labelText="Date Range for Records"
+                                  name="answer_option"
+                                  onChange={createRequirement}
+                                  id={`${index},${Iindex}`}
+                                />
                               </div>
                             )}
                           </div>
@@ -480,19 +696,6 @@ const FormComponents = () => {
               />
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className={styles.saveTemplate}>
-        <div>
-          <Button
-            description="SAVE TEMPLATE & QUIT"
-            variant="preview"
-            size="medium"
-          />
-        </div>
-        <div>
-          <Button description="NEXT" size="small" variant="default" />
         </div>
       </div>
     </>

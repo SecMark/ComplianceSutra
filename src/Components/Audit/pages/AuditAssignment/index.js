@@ -99,7 +99,7 @@ const AuditAssignment = () => {
       <div
         className={styles.auditAssignmentMain}
         style={{
-          height: `calc( 100vh - ${headerHeight + 94}px )`,
+          height: `calc( 100vh - ${headerHeight + 116}px )`,
         }}
       >
         {stepper?.stepperAcitveSlide === 1 && (

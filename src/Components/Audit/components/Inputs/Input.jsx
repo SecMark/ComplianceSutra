@@ -42,10 +42,16 @@ export const Input = ({
               <option disabled value="default" selected>
                 {placeholder}
               </option>
-              {valueForDropDown?.map((element) => {
+              {valueForDropDown?.map((element, index) => {
                 return (
                   <option
-                    key={element.id || element.value || element}
+                    key={
+                      element?.id ||
+                      element?.value ||
+                      element?.name ||
+                      index ||
+                      element
+                    }
                     value={element?.value ? element?.value : element}
                   >
                     {element?.label || element?.name}
@@ -58,7 +64,7 @@ export const Input = ({
       ) : type === "textArea" ? (
         <>
           <div className={styles.labelContainer}>
-            <label>{labelText}</label>
+            <label className={styles[labelVariant]}>{labelText}</label>
           </div>
           <div>
             <textarea
@@ -73,6 +79,7 @@ export const Input = ({
               pattern={pattern}
               className={styles[variant]}
               value={value}
+              onBlur={onBlur}
             />
           </div>
         </>
@@ -95,6 +102,7 @@ export const Input = ({
                 className={styles[variant]}
                 value={value}
                 id={id}
+                onBlur={onBlur}
               />
             ) : (
               <input
@@ -109,6 +117,7 @@ export const Input = ({
                 className={styles[variant]}
                 value={value}
                 id={id}
+                onBlur={onBlur}
               />
             )}
 

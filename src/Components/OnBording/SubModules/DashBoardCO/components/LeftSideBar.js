@@ -174,8 +174,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
       history.push("/project-management");
     } else if (currentActiveMenu === "project-trash") {
       history.push("/project-trash");
-    } else if (currentActiveMenu === "create-template") {
-      history.push("/create-template");
+    } else if (currentActiveMenu === "audit") {
+      history.push("/audit");
     }
   };
 
@@ -351,11 +351,9 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
             <img
               style={{ cursor: "pointer" }}
               title="Create Template"
-              onClick={() => onMenuClick("create-template")}
+              onClick={() => onMenuClick("audit")}
               src={
-                !openProfile &&
-                state &&
-                state.adminMenu.currentMenu === "create-template"
+                !openProfile && state && state.adminMenu.currentMenu === "audit"
                   ? updateActive
                   : updateActive
               }

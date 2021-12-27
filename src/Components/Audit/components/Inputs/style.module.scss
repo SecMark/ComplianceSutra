@@ -19,6 +19,16 @@ select::-ms-expand {
   display: none;
 }
 
+input[type="file"]::file-selector-button {
+  padding: 0.2em 0.4em;
+  border-radius: 0.2em;
+  background-color: $color_primary;
+  transition: 1s;
+  height: 35px;
+  color: $color_white;
+  border: none;
+}
+
 .inputWrapper {
   @include alignBoxWithFlex(center, center);
 }
@@ -149,6 +159,10 @@ select::-ms-expand {
     font-size: 15px;
     color: $color_black_text;
   }
+  .createTemplateLabel{
+    font-size: 12px;
+    color: $color_grey;
+  }
 }
 
 .textArea {
@@ -176,4 +190,14 @@ select::-ms-expand {
   outline: none;
   margin-top: 0px;
   color: $color_black_text;
+}
+.searchBox{
+  width: 250px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid $color_medium_grey;
+  background-color: $color_white;
+  font-family: $font_poppins;
+  font-weight: 300;
+  line-height: normal;
 }
