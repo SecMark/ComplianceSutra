@@ -454,7 +454,7 @@ const FormComponents = ({ next, back, stepper }) => {
                 variant="default"
                 onClick={() => {
                   next(stepper?.stepperAcitveSlide);
-                  onNextClick();
+                  // onNextClick();
                 }}
               />
             </div>
