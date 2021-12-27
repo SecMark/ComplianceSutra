@@ -209,17 +209,21 @@
   border-radius: 16px;
   color: $color_white;
   border: none;
-  margin-top: 5px;
-  min-width: 100px;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 10px;
+  height: auto;
+  width: fit-content;
+  text-transform: capitalize;
 }
 
-.pen{
+.pen {
   background: $color_transparent;
   color: $color_black_text;
   border: none;
   width: 40px;
 }
-.checkButton{
+.checkButton {
   background: $color_primary;
   border: none;
   color: $color_white;

@@ -1,93 +1,244 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Text from "../../components/Text/Text";
-import { Input } from "../../components/Inputs/Input";
-import { style } from "@mui/system";
 import IconButton from "../../components/Buttons/IconButton";
-import { MdAddBox } from "react-icons/md";
-import { FaPen } from "react-icons/fa";
+import { MdAddBox, MdKeyboardArrowRight } from "react-icons/md";
 import Button from "../../components/Buttons/Button";
-import { BsCheckCircle, BsFillPlayFill } from "react-icons/bs";
 import { useHistory, useRouteMatch } from "react-router";
+
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.css";
+
+import {
+  DataGrid,
+  ColumnFixing,
+  Column,
+  RequiredRule,
+  FilterRow,
+  SearchPanel,
+  Export,
+  Toolbar,
+  Item,
+} from "devextreme-react/data-grid";
+import { Workbook } from "exceljs";
+import saveAs from "file-saver";
+import { exportDataGrid } from "devextreme/excel_exporter";
+import { MdModeEdit } from "react-icons/md";
 import Container from "../../components/Containers";
+
+import axiosInstance from "../../../../apiServices/";
+
 function AuditTemplates() {
+  const [selectedEmployee, setSelectedEmployee] = useState();
+  const [auditTemplatesData, setAuditTemplatesData] = useState([]);
   const history = useHistory();
   const { path } = useRouteMatch();
-  console.log({ history: history.location });
+
+  const getAuditTemplatesData = async () => {
+    try {
+      const { data, status } = await axiosInstance.get(
+        "audit.api.AuditTemplateDeshBoard"
+      );
+      if (status === 200 && data && data.message && data.message.status) {
+        const templates = data?.message?.data;
+        setAuditTemplatesData(templates);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  const selectEmployee = (e) => {
+    e.component.byKey(e.currentSelectedRowKeys[0]).done((employee) => {
+      setSelectedEmployee(employee);
+    });
+  };
+  const CheckPointCell = (data) => {
+    return (
+      <div className="d-flex justify-content-between align-items-center">
+        <span>{data.data.total_checklist} Checks</span>
+        <IconButton
+          variant="iconButtonRound"
+          description={<MdModeEdit />}
+          size="none"
+        />
+      </div>
+    );
+  };
+  const TemplateNameCell = (data) => {
+    const value = data?.data?.audit_template_name;
+    return <span title={value}>{getSubstring(value)}</span>;
+  };
+  const AuditTypeCell = (data) => {
+    const value = data?.data?.audit_category;
+    return <span title={value}>{getSubstring(value)}</span>;
+  };
+  const MadeByCell = (data) => {
+    return (
+      <p title={data?.data?.user_id} className={styles.madeBy}>
+        {data?.data?.user || data?.data?.user_id}
+      </p>
+    );
+  };
+  const renderTitleHeader = (data) => {
+    return <p className={styles.columnHeaderTitle}>{data.column.caption}</p>;
+  };
+
+  const CompletionCell = (data) => {
+    const value = data?.data?.completion;
+    return (
+      <p
+        title={value}
+        className={`${styles.completion} ${value === 100 && styles.success}`}
+      >
+        {value + "% Complete"}
+      </p>
+    );
+  };
+  const TemplateActions = (data) => {
+    const completion = data?.data?.completion;
+    return (
+      <div className="d-flex justify-content-between align-items-center">
+        <Button
+          variant="stroke"
+          description={completion < 100 ? "complete" : "view"}
+          size="none"
+        />
+        <Button variant="stroke" description="start audit" size="none" />
+        <IconButton
+          variant="iconButtonRound"
+          description={<MdKeyboardArrowRight />}
+          size="none"
+        />
+      </div>
+    );
+  };
+
+  const RequiredDataCell = (data) => {
+    return <span>{data?.data?.total_question}&nbsp;Questions</span>;
+  };
+
+  function exportGrid(e) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet("Main sheet");
+    exportDataGrid({
+      worksheet: worksheet,
+      component: e.component,
+    }).then(function () {
+      workbook.xlsx.writeBuffer().then(function (buffer) {
+        saveAs(
+          new Blob([buffer], { type: "application/octet-stream" }),
+          "DataGrid.xlsx"
+        );
+      });
+    });
+    e.cancel = true;
+  }
+  useEffect(() => {
+    getAuditTemplatesData();
+  }, []);
   return (
     <Container variant="content">
-      <div className={styles.top}>
-        <div className={styles.heading}>
-          <Text heading="h1" size="large" text="Audit Templates" />
-        </div>
-        <div className={styles.searchBox}>
-          <Input type="text" placeholder="Search" variant="searchBox" />
-        </div>
-      </div>
-      <div className={styles.subMenu}>
-        <div></div>
-        <div className={styles.subMenuList}>
-          <IconButton
-            description="Create Template"
-            variant="createProject"
-            icon={<MdAddBox />}
-            onClick={() => history.push(`${path}/create-template`)}
-          />
-          Sort By <Button description="Names" variant="templatesSortButton" />
-          <Button description="created By" variant="templatesSortButton" />
-          <Button description="Audit by" variant="templatesSortButton" />
-        </div>
-      </div>
-      <div className={styles.auditTemplateList}>
-        <div
-          className={`d-none d-md-flex mt-md-3 mb-md-2 ${styles.tableHeader} ${styles.dataContainer} align-items-center justify-content-between`}
+      {auditTemplatesData && auditTemplatesData?.length > 0 && (
+        <DataGrid
+          id="dataGrid"
+          dataSource={auditTemplatesData}
+          keyExpr="audit_template_name"
+          allowColumnResizing={true}
+          columnAutoWidth={true}
+          allowColumnReordering={true}
+          onSelectionChanged={selectEmployee}
+          onExporting={exportGrid}
+          showColumnLines={false}
+          paging={{ pageSize: 6 }}
         >
-          <p
-            className={`${styles.tableContainerName} ${styles.tableDataContainerItem}`}
+          <Toolbar>
+            <Item location="before">
+              <Text
+                heading="p"
+                variant="stepperMainHeading"
+                text="Audit Templates"
+              />
+            </Item>
+            <Item location="after">
+              <IconButton
+                description="Create Template"
+                variant="createProject"
+                icon={<MdAddBox />}
+                onClick={() => history.push(`${path}/create-template`)}
+              />
+            </Item>
+            <Item name="exportButton" />
+            <Item name="searchPanel" />
+          </Toolbar>
+          <Column
+            dataField="audit_template_name"
+            caption="Template Name"
+            headerCellRender={renderTitleHeader}
+            cellRender={TemplateNameCell}
           >
-            Template Name
-          </p>
-          {/* <p className="project-data-container__item">Completed</p> */}
-          <p className={`${styles.tableDataContainerItem} wide`}>Completion</p>
-          <p className={`${styles.tableDataContainerItem} wide-2`}>Made by</p>
-          <p className={`${styles.tableDataContainerItem} wide`}>Audit Type</p>
-          <p className={`${styles.tableDataContainerItem} wide-2`}>
-            Required Data Points
-          </p>
-          <p className={styles.tableDataContainerItem}>CheckPoints</p>
-          <div className={styles.dataContainersButtons}></div>
-        </div>
-        <div className={styles.tableBody}>
-          <div
-            className={`d-none d-md-flex mt-md-3 mb-md-2 ${styles.tableHeader} ${styles.dataContainerBody} align-items-center justify-content-between`}
+            <RequiredRule />
+          </Column>
+          <Column
+            dataField="completion"
+            caption="% Completion"
+            cellRender={CompletionCell}
+            headerCellRender={renderTitleHeader}
+            alignment="left"
           >
-            <p
-              className={`${styles.tableContainerName} ${styles.tableDataContainerItemBody}`}
-            >
-              Tax Audit
-            </p>
+            <RequiredRule />
+          </Column>
+          <Column
+            dataField="made_by"
+            caption="Made by"
+            cellRender={MadeByCell}
+            headerCellRender={renderTitleHeader}
+          >
+            <RequiredRule />
+          </Column>
+          <Column
+            dataField="audit_category"
+            caption="audit type"
+            headerCellRender={renderTitleHeader}
+            cellRender={AuditTypeCell}
+          >
+            <RequiredRule />
+          </Column>
+          <Column
+            dataField="total_question"
+            caption="data points"
+            headerCellRender={renderTitleHeader}
+            cellRender={RequiredDataCell}
+            alignment="left"
+          />
+          <Column
+            dataField="total_checklist"
+            caption="Checkpoints"
+            headerCellRender={renderTitleHeader}
+            cellRender={CheckPointCell}
+            alignment="left"
+          >
+            <RequiredRule />
+          </Column>
+          <Column cellRender={TemplateActions}>
+            <RequiredRule />
+          </Column>
 
-            <p className={`${styles.tableDataContainerItemBody} wide`}>30%</p>
-            <p className={`${styles.tableDataContainerItemBody} wide-2`}>
-              Ramesh
-            </p>
-            <p className={`${styles.tableDataContainerItemBody} wide`}>
-              Internal & Mandatory
-            </p>
-            <p className={`${styles.tableDataContainerItemBody} wide-2`}>
-              8 Question
-            </p>
-            <p className={styles.tableDataContainerItemBody}>4 Checks</p>
-            <div className={styles.dataContainersButtons}>
-              <IconButton icon={<FaPen />} variant="pen" />
-              <IconButton icon={<BsCheckCircle />} variant="checkButton" />
-              <IconButton icon={<BsFillPlayFill />} variant="checkButton" />
-            </div>
-          </div>
-        </div>
-      </div>
+          <ColumnFixing enabled={true} />
+          <FilterRow visible={true} />
+          <SearchPanel visible={true} />
+
+          <Export enabled={true} />
+        </DataGrid>
+      )}
     </Container>
   );
 }
+
+const getSubstring = (str, n = 15) => {
+  if (str) {
+    return str?.length > n ? str?.substring(0, n) + "..." : str;
+  }
+  return "";
+};
 
 export default AuditTemplates;
