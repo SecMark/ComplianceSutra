@@ -121,8 +121,30 @@
   color: $color_blue;
 }
 
-.large{
-  font-size: 30px;
-  font-style: normal;
-  font-family: $font_poppins;
+//Create Audit Forms
+
+//Add New Audits
+.auditNames{
+  margin-left: 10px;
+}
+.expterties{
+  margin-top: 20px;
+ 
+}
+.mobileNo{
+  margin-top: 20px;
+  
+}
+.emailAddress{
+  margin-top: 20px;
+  
+}
+.allow-sub{
+  margin-top: 24px;
+  
+}
+.auditheading{
+  margin-left: 400px;
+  height: 20px;
+  margin-top: 20px;
 }

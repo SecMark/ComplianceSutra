@@ -201,3 +201,22 @@ input[type="file"]::file-selector-button {
   font-weight: 300;
   line-height: normal;
 }
+
+//Create Audit Forms
+
+//Add New Audit Forms
+.dropdownInput{
+  background-color: $color_white;
+  min-width: 240px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1b1b1b;
+  line-height: normal;
+  padding: 0.9rem 0.5rem;
+  border-radius: 8px;
+  border: 2px solid $color_hex_color;
+ }
+.dropdownInput:focus{
+  border: 3px solid $color_blue;
+}

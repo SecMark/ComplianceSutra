@@ -52,6 +52,10 @@ import AuditLandingPages from "../Components/Audit/pages/AuditLandingPages";
 import AuditTemplates from "../Components/Audit/pages/AuditTemplates";
 import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
 import SectionList from "../Components/Audit/pages/List/SectionList";
+import AddNewAuditer from "../Components/Audit/pages/CreateAuditForms/AddNewAuditer";
+import AddNewSubUser from "../Components/Audit/pages/CreateAuditForms/AddNewSubUser";
+import CommonAuditFormPage from "../Components/Audit/pages/CreateAuditForms";
+
 export default function AppRouter() {
   return (
     <div>
@@ -195,6 +199,9 @@ export default function AppRouter() {
 
           <Route exact path="/land" component={AuditLandingPages}/>
           <Route exact path="/temp" component={AuditTemplates}/>
+          {/* <Route exact path="/addNewAudit" component={AddNewAuditer}/>
+          <Route exact path="/addNewSubUser" component={AddNewSubUser}/> */}
+          <Route exact path="/commonPage" component={CommonAuditFormPage}/>
         </div>
       </>
     </div>
