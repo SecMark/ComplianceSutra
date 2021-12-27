@@ -103,6 +103,7 @@ export const Input = ({
                 value={value}
                 id={id}
                 onBlur={onBlur}
+                rows={rows}
               />
             ) : (
               <input

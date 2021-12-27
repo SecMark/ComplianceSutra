@@ -15,8 +15,10 @@ import Label from "../../components/Labels/Label";
 import Dropzone from "react-dropzone";
 import { setTemplateName } from "../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
 function CreateAuditTemplate({ next, back, stepper }) {
+  const history = useHistory();
   const [circularfileList, setcirCularFileList] = useState([]);
   const [attchmentfileList, setAttachmentFileList] = useState([]);
   const [questionList, setQuestionList] = useState([
@@ -212,7 +214,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
   };
 
   //function to submit final data
-  const dataSubmit = () => {
+  const dataSubmit = (type) => {
     const formData = new FormData();
     for (const key in values) {
       formData.append(key, values[key]);
@@ -223,6 +225,14 @@ function CreateAuditTemplate({ next, back, stepper }) {
       .then((response) => {
         if (response.data.message.status === true) {
           toast.success(response.data.message.status_response);
+          if (type === "next") {
+            next(stepper?.stepperAcitveSlide);
+          } else {
+            history.push("/audit");
+          }
+          next(stepper?.stepperAcitveSlide);
+        } else {
+          toast.error(response.data.message.status_response);
         }
       })
       .catch((err) => {
@@ -499,6 +509,9 @@ function CreateAuditTemplate({ next, back, stepper }) {
             description="SAVE TEMPLATE & QUIT"
             variant="preview"
             size="medium"
+            onClick={() => {
+              dataSubmit("exist");
+            }}
           />
         </div>
         <div>
@@ -507,8 +520,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
             size="small"
             variant="default"
             onClick={() => {
-              next(stepper?.stepperAcitveSlide);
-              dataSubmit();
+              dataSubmit("next");
             }}
           />
         </div>
