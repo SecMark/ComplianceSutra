@@ -314,14 +314,24 @@ const CheckList = ({ next, stepper }) => {
         ) {
           toast.error("Please enter section name, Buffer time and Duration.");
         } else if (previousQuestion?.areaForVerfication === "") {
-          temp[index].checkListInput[inputsLength].error = {
+          console.log("template",temp[index].checkListInput[inputsLength-1]);
+          
+          temp[index].checkListInput[inputsLength-1].error = {
             isError: true,
             type: "areaForVerfication",
             message: "Area for verfication is required",
           };
           toast.error("Area of verfication is required");
           setCheckList(temp);
-        } else {
+        }else if(previousQuestion?.documentReliedUpon === ""){
+          temp[index].checkListInput[inputsLength-1].error={
+            isError:true,
+            type:"documentReliedUpon",
+            message: "document relied upon is required"
+          }
+          setCheckList(temp);
+        } 
+        else {
           const addQuestion = await submitRequirement(
             sectionData,
             previousQuestion
