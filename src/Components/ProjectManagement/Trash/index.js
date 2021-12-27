@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch, useRouteMatch } from "react-router";
 import BackDrop from "../../../CommonModules/sharedComponents/Loader/BackDrop";
 import MobileLeftSideBar from "../../../CommonModules/sharedComponents/MobileLeftSideBar";
+import Auth from "../../Authectication/components/Auth";
 import {
   ProjectManagementHeader,
   ProjectManagementMain,
@@ -11,9 +11,8 @@ import {
 import ProjectManagementNavigation, {
   ProjectTrashPages,
 } from "../components/ProjectManagementNavigation";
-import Milestone from "../Milestone";
-import ProjectAndTask from "../Project&Task";
-import Project, {
+
+import {
   ProjectHeader,
   TrashMilestone,
   TrashProject,
@@ -63,6 +62,7 @@ const Trash = () => {
         }
       />
       <div className="project-management p-0 p-md-4">
+        <Auth />
         <div className="project-management__container">
           <MobileLeftSideBar />
           <ProjectManagementHeader>

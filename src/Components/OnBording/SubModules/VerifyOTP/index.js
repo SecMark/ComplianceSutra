@@ -62,17 +62,6 @@ function VeryOTP({ history, currentStep }) {
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo?.countrycode;
 
-  const userID =
-    state &&
-    state.complianceOfficer &&
-    state.complianceOfficer.personalInfo &&
-    state.complianceOfficer.personalInfo.data &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0] &&
-    state.complianceOfficer.personalInfo.data[0][0].UserDetails[0].UserID;
-
   const validateCountryCode = (e) => {
     let strr = e.target.value;
     let str = strr.replace(/\D/g, "");
@@ -153,7 +142,9 @@ function VeryOTP({ history, currentStep }) {
       }
     }
     if (name === "phoneNumber") {
-      MobileValidate(e);
+      if (e.target.value?.length === 10) {
+        MobileValidate(e);
+      }
       if (!mobileNumberReg.test(value)) {
         return "";
       } else {
@@ -186,7 +177,7 @@ function VeryOTP({ history, currentStep }) {
         ? history.location?.state?.mobile_number
         : phoneNumber !== ""
         ? phoneNumber
-        : cntryCode && mobileNumber && cntryCode + mobileNumber,
+        : mobileNumber && (cntryCode || "") + mobileNumber,
     };
 
     api
@@ -234,7 +225,7 @@ function VeryOTP({ history, currentStep }) {
         ? history.location?.state?.mobile_number
         : phoneNumber !== ""
         ? phoneNumber
-        : cntryCode && mobileNumber && cntryCode + mobileNumber,
+        : mobileNumber && (cntryCode || "") + mobileNumber,
     };
     if (text === "test") {
       payload.mobile_number = phoneNumber;
@@ -447,9 +438,7 @@ function VeryOTP({ history, currentStep }) {
                           ? history.location?.state?.mobile_number
                           : showChangeMobileSection
                           ? phoneNumber
-                          : cntryCode &&
-                            mobileNumber &&
-                            cntryCode + mobileNumber}
+                          : mobileNumber && (cntryCode || "") + mobileNumber}
                         <span className="space-mobile d-block d-sm-none">
                           <br />
                         </span>
@@ -548,11 +537,11 @@ function VeryOTP({ history, currentStep }) {
                       Please enter the verification code sent to your phone no.
                     </p>
                     <p className="will-send-text">
-                      {!showChangeMobileSection
-                        ? phoneNumber
-                        : history.location?.state?.mobile_number
+                      {history.location?.state?.mobile_number
                         ? history.location?.state?.mobile_number
-                        : cntryCode && mobileNumber && cntryCode + mobileNumber}
+                        : showChangeMobileSection
+                        ? phoneNumber
+                        : mobileNumber && (cntryCode || "") + mobileNumber}
                       <span
                         style={{ cursor: "pointer" }}
                         onClick={() => updateMobileNumber()}

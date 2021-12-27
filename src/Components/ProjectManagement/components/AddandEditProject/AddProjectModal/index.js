@@ -87,15 +87,6 @@ function AddProject({ show, onClose, editData, isEdit }) {
           : "",
     });
   }, [values?.start_date, values?.end_date, values?.project_name]);
-  // custom style for dropdown
-  const customStyle = {
-    control: (styles) => ({
-      ...styles,
-      width: "100%",
-      height: "50px",
-      borderRadius: "10px",
-    }),
-  };
 
   const onHandleChange = (evt) => {
     const value = evt.target.value;
@@ -124,10 +115,26 @@ function AddProject({ show, onClose, editData, isEdit }) {
     onClose();
   };
 
+  const createSelectStyles = {
+    menu: (provided) => {
+      return {
+        ...provided,
+        backgroundColor: "#fff",
+        zIndex: "9999999",
+      };
+    },
+    control: (provided) => ({
+      ...provided,
+      border: "2px solid #e2e2e2",
+      borderRadius: "6px",
+    }),
+  };
+
   const calanderimg = <img src={calanderIcon} alt="calender" />;
 
   return !show ? null : (
-    <div className="add-edit-modal" onClick={onClose}>
+    // <div className="add-edit-modal" onClick={onClose}>
+    <div className="add-edit-modal">
       <div
         className="add-edit-project-content"
         onClick={(e) => e.stopPropagation()}
@@ -164,6 +171,7 @@ function AddProject({ show, onClose, editData, isEdit }) {
                     })[0];
                   }) || []
                 }
+                styles={createSelectStyles}
               />
             </div>
             <div className="col-sm-6 col-lg-3">

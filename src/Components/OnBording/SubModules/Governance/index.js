@@ -12,7 +12,10 @@ import { isEmail } from "../AssignTask/utils";
 import { withRouter } from "react-router-dom";
 import modelSquare from "../../../../assets/Icons/modelSquare.png";
 import modelBox from "../../../../assets/Icons/modelBox.png";
-import { actions as governanceActions } from "../../../OnBording/redux/actions";
+import {
+  actions,
+  actions as governanceActions,
+} from "../../../OnBording/redux/actions";
 import MobileStepper from "../mobileStepper";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
@@ -60,6 +63,10 @@ function Governance({ history }) {
     state &&
     state?.complianceOfficer &&
     state?.complianceOfficer?.goveranceData;
+  const setGovernanceDataPayload =
+    state &&
+    state?.complianceOfficer &&
+    state?.complianceOfficer?.governanceDataPayload;
 
   const handleKeyDown1 = (e) => {
     if (e.key === "Enter") {
@@ -158,23 +165,14 @@ function Governance({ history }) {
   };
 
   const onDoneButtonClick = async () => {
-    try {
-      const { data } = await axiosInstance.post(
-        "compliance.api.setGovernanceOfficerCompany",
-        {
-          details: companyData,
-          expert_review: enableSecmarkReview,
-          status_report: [emailApproval, statusEmail],
-        }
-      );
-
-      if (data.message.success) {
-        localStorage.setItem("expertReview", enableSecmarkReview);
-        history.push("/assign-task");
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
+    dispatch(
+      actions.setGovernanceDataRequest({
+        details: companyData,
+        expert_review: enableSecmarkReview,
+        status_report: [emailApproval, statusEmail],
+        history,
+      })
+    );
   };
 
   const handleApprovalTaskEmail = (e) => {
@@ -416,10 +414,15 @@ function Governance({ history }) {
 
   useEffect(() => {
     let tempArr = [];
-    console.log(state?.complianceOfficer);
     setCompanyData(companyInfo);
     setAssignTaskEmail(tempArr);
-  }, [companyInfo]);
+    if (
+      setGovernanceDataPayload &&
+      setGovernanceDataPayload?.details?.length > 0
+    ) {
+      setCompanyData(setGovernanceDataPayload?.details);
+    }
+  }, [companyInfo, setGovernanceDataPayload]);
 
   return (
     <div className="row">

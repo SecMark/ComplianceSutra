@@ -17,7 +17,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function PersonalDetails({ history }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
+  const emailVerificationData = state?.complianceOfficer?.emailVerificationData;
+  const personalInfo = state?.complianceOfficer?.personalInfo;
+  const email = emailVerificationData?.email;
+  const key = emailVerificationData?.key;
   const [visible, setVisibility] = useState(false);
   const [visibal, setVisibiliti] = useState(false);
 
@@ -37,16 +40,16 @@ function PersonalDetails({ history }) {
   );
   const ConfirmInputType = visibal ? "text" : "password";
 
-  const quote_id = state && state.auth && state.auth.quote_id;
+  // const quote_id = state && state.auth && state.auth.quote_id;
   const [isValidate, setIsValidate] = useState(false);
   const [values, setValues] = useState({
-    fullName: "",
-    mobileNumber: "",
-    countryCode: "+91",
-    companyName: "",
-    designation: "",
-    password: "",
-    confirmPassword: "",
+    fullName: personalInfo?.full_name || "",
+    mobileNumber: personalInfo?.mobile_number || "",
+    countryCode: personalInfo?.countrycode || "+91",
+    companyName: personalInfo?.company_name || "",
+    designation: personalInfo?.designation || "",
+    password: personalInfo?.password || "",
+    confirmPassword: personalInfo?.confirm_password || "",
   });
   const [errors, setErrors] = useState({
     passwordErr: "",
@@ -95,17 +98,14 @@ function PersonalDetails({ history }) {
 
     if (name === "mobileNumber") {
       // mobileNumber
-      setValues({
-        ...values,
-        mobileNumber: event.target.value,
-      });
-      if (event.target.value.length >= 10) {
-        MobileValidate(event);
-      }
-      let inputKey = "mobileNumErr";
-
-      if (event.target.value > 0 && event.target.value < 9) {
-      } else if (event.target.value == 10) {
+      if (event?.target?.value?.length <= 10) {
+        setValues({
+          ...values,
+          mobileNumber: event.target.value,
+        });
+        if (event.target.value.length === 10) {
+          MobileValidate(event);
+        }
       }
     }
     const mobileNumberReg = /^[0-9]{0,10}$/;
@@ -205,7 +205,6 @@ function PersonalDetails({ history }) {
     state.complianceOfficer &&
     state.complianceOfficer.personalInfo &&
     state.complianceOfficer.personalInfo.message;
-  const email = localStorage.getItem("coemail");
   const onSubmit = () => {
     setIsValidate(true);
     if (checkPersonalDetailsForm(values)) {
@@ -220,16 +219,12 @@ function PersonalDetails({ history }) {
     }
     setIsValidate(false);
     if (email) {
-      let countryCode;
-      let strr = values.countryCode;
-
-      countryCode = strr;
       localStorage.setItem("mobileNumber", values.mobileNumber);
       localStorage.setItem("companyName", values.companyName);
       dispatch(
         personalDetailsAction.insUpdateDeletAPIRequest({
           email: email.replace(/ /g, "+"),
-          token: localStorage.getItem("accessToken"),
+          token: key,
           full_name: values.fullName,
           company_name: values.companyName,
           mobile_number: values.mobileNumber,
@@ -416,10 +411,9 @@ function PersonalDetails({ history }) {
                               name="countryCode"
                               maxLength="3"
                               value={values.countryCode}
-                              // onChange={onChangeHandler("countryCode")}
+                              onChange={onChangeHandler("countryCode")}
                               // onBlur={(e) => validateCountryCode(e)}
                             />
-
                             <input
                               type="Number"
                               className={
@@ -728,7 +722,16 @@ function PersonalDetails({ history }) {
                   <div className="col-12"></div>
                   <div className="col-6">
                     <button
-                      onClick={() => onSubmit()}
+                      onClick={() => {
+                        if (
+                          personalInfo &&
+                          Object?.keys(personalInfo)?.length > 0
+                        ) {
+                          history.push("/company-details");
+                        } else {
+                          onSubmit();
+                        }
+                      }}
                       className="btn save-details common-button btn-width"
                       disabled={
                         values.fullName === "" ||
@@ -748,7 +751,9 @@ function PersonalDetails({ history }) {
                       }
                       style={{ width: 134 }}
                     >
-                      SAVE DETAILS
+                      {personalInfo && Object?.keys(personalInfo)?.length > 0
+                        ? "Next"
+                        : "SAVE DETAILS"}
                     </button>
                   </div>
                   <div className="col-6 text-right d-none d-sm-block">

@@ -3,11 +3,11 @@ import "./style.css";
 import { DatePicker } from "antd";
 import calanderIcon from "../../../../../assets/Icons/calanderIcon.svg";
 import CreatableSelect from "react-select/creatable";
-import { useDropzone } from "react-dropzone";
+// import { useDropzone } from "react-dropzone";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { MdError } from "react-icons/md";
@@ -33,10 +33,11 @@ const initialState = {
   weekly_repeat_day: "",
   repeat_on_day: "",
   file_details: [],
+  description: "",
 };
 
 function NewTaskModel({ showTask, onClose, editData, isEdit }) {
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  // const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const [fileList, setFileList] = useState([]);
   const [fieldInputs, setFieldInputs] = useState(editData || initialState);
   const [fieldErrors, setFieldErrors] = useState({
@@ -71,27 +72,27 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
   );
 
   // handle file upload
-  const handleSelectUploadFile = () => {
-    if (acceptedFiles && acceptedFiles.length > 0) {
-      const _fileList = (fileList && fileList.length > 0 && fileList) || [];
-      let isPresent = false;
-      let fileArray = [];
-      acceptedFiles.forEach((file) => {
-        isPresent = _fileList.some((element) => element?.name === file?.name);
-        if (!isPresent) {
-          fileArray.push(file);
-        } else {
-          toast.error(
-            `File ${file.name} is already uploaded. Please rename it and upload again.`
-          );
-          return "";
-        }
-      });
-      if (fileArray && fileArray.length > 0) {
-        setFileList([..._fileList, ...fileArray]);
-      }
-    }
-  };
+  // const handleSelectUploadFile = () => {
+  //   if (acceptedFiles && acceptedFiles.length > 0) {
+  //     const _fileList = (fileList && fileList.length > 0 && fileList) || [];
+  //     let isPresent = false;
+  //     let fileArray = [];
+  //     acceptedFiles.forEach((file) => {
+  //       isPresent = _fileList.some((element) => element?.name === file?.name);
+  //       if (!isPresent) {
+  //         fileArray.push(file);
+  //       } else {
+  //         toast.error(
+  //           `File ${file.name} is already uploaded. Please rename it and upload again.`
+  //         );
+  //         return "";
+  //       }
+  //     });
+  //     if (fileArray && fileArray.length > 0) {
+  //       setFileList([..._fileList, ...fileArray]);
+  //     }
+  //   }
+  // };
 
   // handle submit
   const onSubmit = () => {
@@ -116,9 +117,9 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
     setFileList([]);
     onClose();
   };
-  useEffect(() => {
-    handleSelectUploadFile();
-  }, [acceptedFiles]);
+  // useEffect(() => {
+  //   handleSelectUploadFile();
+  // }, [acceptedFiles]);
 
   useEffect(() => {
     setFieldInputs({ ...editData });
@@ -265,9 +266,11 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
                     description: e.target.value,
                   })
                 }
+                value={fieldInputs?.description}
               />
             </div>
-            <div className="col-sm-12 col-lg-6">
+            {/* Attach Files */}
+            {/* <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">
                 Attach Files
               </label>
@@ -294,9 +297,7 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
                     </p>
                   );
                 })}
-            </div>
-          </div>
-          <div className="row">
+            </div> */}
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">Assign To</label>
               <CreatableSelect
@@ -306,6 +307,7 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
                     assign_to: option?.value || "",
                   });
                 }}
+                styles
                 isClearable={true}
                 options={usersList || []}
                 defaultValue={
@@ -318,6 +320,8 @@ function NewTaskModel({ showTask, onClose, editData, isEdit }) {
                 }
               />
             </div>
+          </div>
+          <div className="row">
             <div className="col-sm-12 col-lg-6">
               <label className="add-edit-project-labels mt-3">Comments</label>
               <input

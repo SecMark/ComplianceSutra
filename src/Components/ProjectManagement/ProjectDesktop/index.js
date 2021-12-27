@@ -362,6 +362,7 @@ const Project = ({ data }) => {
                                 editData: {
                                   ...modalsStatus?.taskListModal?.editData,
                                   project_id,
+                                  milestone_id,
                                 },
                                 milestonesList: _project_milestones || [],
                               })
@@ -605,9 +606,9 @@ export const DesktopTask = ({ data }) => {
         {trimString(task_assign_to)}
       </p>
       <div className="project-data-container__buttons d-flex justify-content-end align-items-center">
-        <SmallIconButton title="Comments" type="grey" className="p-2 mr-2">
+        {/* <SmallIconButton title="Comments" type="grey" className="p-2 mr-2">
           <MdTextsms className="icon__small" />
-        </SmallIconButton>
+        </SmallIconButton> */}
         <EditIconButton
           className="mr-2 p-1"
           onClickHandler={() => {

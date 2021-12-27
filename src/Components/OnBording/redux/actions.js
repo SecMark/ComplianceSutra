@@ -147,8 +147,29 @@ const setLicenseList = createAction(SET_LICENSE_LIST);
 
 const setLoader = createAction(SET_LOADER);
 
+const SET_EMAIL_VERIFICATION_DATA = "SET_EMAIL_VERIFICATION_DATA";
+const CLEAR_EMAIL_VERIFICATION_DATA = "CLEAR_EMAIL_VERIFICATION_DATA";
+
+const setEmailVerificationData = createAction(SET_EMAIL_VERIFICATION_DATA);
+const clearEmailVerificationData = createAction(CLEAR_EMAIL_VERIFICATION_DATA);
+
+const SET_GOVERNANCE_DATA_REQUEST = "SET_GOVERNANCE_DATA_REQUES";
+const SET_GOVERNANCE_DATA_SUCCESS = "SET_GOVERNANCE_DATA_SUCCESS";
+const SET_GOVERNANCE_DATA_FAILED = "SET_GOVERNANCE_DATA_FAILED";
+
+const setGovernanceDataRequest = createAction(SET_GOVERNANCE_DATA_REQUEST);
+const setGovernanceDataSuccess = createAction(SET_GOVERNANCE_DATA_SUCCESS);
+const setGovernanceDataFailed = createAction(SET_GOVERNANCE_DATA_FAILED);
+
 export const actions = {
+  setEmailVerificationData,
+  clearEmailVerificationData,
   storeEnityIDwithCompaName,
+
+  setGovernanceDataRequest,
+  setGovernanceDataSuccess,
+  setGovernanceDataFailed,
+
   governanceAPIRequest,
   governanceAPIRequestSuccess,
   governanceAPIRequestFailed,
@@ -199,6 +220,13 @@ export const actions = {
 
 export const types = {
   STORE_ENTITYID,
+
+  SET_EMAIL_VERIFICATION_DATA,
+  CLEAR_EMAIL_VERIFICATION_DATA,
+
+  SET_GOVERNANCE_DATA_REQUEST,
+  SET_GOVERNANCE_DATA_SUCCESS,
+  SET_GOVERNANCE_DATA_FAILED,
 
   GOVERNANCEDATA_REQUEST,
   GOVERNANCEDATA_REQUEST_FAILED,

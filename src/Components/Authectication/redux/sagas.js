@@ -4,15 +4,17 @@ import { actions, types } from "./actions";
 import api from "../api";
 import { toast } from "react-toastify";
 import { actions as menuActions } from "../../OnBording/SubModules/DashBoardCO/MenuRedux/actions";
+import { actions as onBoardingActions } from "../../OnBording/redux/actions";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../../apiServices/baseurl";
+import { getUserType } from "../components/Auth";
 
 const loginReq = function* loginReq({ payload }) {
   try {
     const { data } = yield call(api.loginAccount, payload);
     const { message } = data;
     if (message.status) {
-      const { token, UserType } = message;
+      const { token, UserType, signup_done, details, route, page } = message;
       localStorage.setItem("basicToken", token);
       if (data) {
         const deviceToken = localStorage.getItem("deviceToken");
@@ -25,38 +27,45 @@ const loginReq = function* loginReq({ payload }) {
           }
         );
 
-        let complainceOfficer, approver;
-        let teamMember;
-        let userType = 0;
-        complainceOfficer = UserType.filter(
-          (userType) => userType.User_type_no === 3
-        );
-        approver = UserType.filter((userType) => userType.User_type_no === 5);
-        teamMember = UserType.filter((userType) => userType.User_type_no === 4);
-
-        if (complainceOfficer.length !== 0) userType = 3;
-        else if (teamMember.length !== 0) userType = 4;
-        else if (approver.length !== 0) userType = 5;
-        else userType = 4;
+        let userType = getUserType(UserType);
         message.UserType = userType;
         message.full_name = data.full_name;
         yield put(
           actions.signInRequestSuccess({ loginSuccess: false, data: message })
         );
-        console.log({ isMobileVerified: message.mobileVerified });
-        if (message.mobileVerified === 0) {
-          payload.history.push({
-            pathname: "/otpverification-co",
-            state: {
-              mobile_number: message.Mobile,
-              token: message.token,
-              type: "mobile-validation",
-            },
-          });
-        } else if (userType === 3 || userType === 5) {
-          payload.history.push("/dashboard-view");
+        if (signup_done) {
+          if (userType === 3 || userType === 5) {
+            payload.history.push("/dashboard-view");
+          } else {
+            payload.history.push("/dashboard");
+          }
         } else {
-          payload.history.push("/dashboard");
+          console.log({ route, details });
+          if (route && details && page) {
+            if (message.mobileVerified === 0 && page === "otpverification-co") {
+              payload.history.replace({
+                pathname: "/otpverification-co",
+                state: {
+                  mobile_number: message.Mobile,
+                  token: message.token,
+                  type: "mobile-validation",
+                },
+              });
+            } else if (page === "company details") {
+              yield put(
+                onBoardingActions.insUpdateDeletAPIRequestSuccess({
+                  ...details,
+                  email: message?.email,
+                  full_name: message?.full_name,
+                  token: message?.token,
+                  mobile_number: message?.Mobile,
+                })
+              );
+              payload.history?.replace(route);
+            } else {
+              payload.history?.replace(route);
+            }
+          }
         }
       }
     } else {

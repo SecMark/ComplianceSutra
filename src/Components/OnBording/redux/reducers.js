@@ -178,6 +178,29 @@ const actionHandler = {
     ...state,
     loader: payload,
   }),
+  [types.SET_EMAIL_VERIFICATION_DATA]: (state, { payload }) => ({
+    ...state,
+    emailVerificationData: {
+      ...payload,
+    },
+  }),
+  [types.CLEAR_EMAIL_VERIFICATION_DATA]: (state) => ({
+    ...state,
+    emailVerificationData: {},
+  }),
+
+  [types.SET_GOVERNANCE_DATA_REQUEST]: (state) => ({
+    ...state,
+    governanceDataPayload: {},
+  }),
+  [types.SET_GOVERNANCE_DATA_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    governanceDataPayload: { ...payload },
+  }),
+  [types.SET_GOVERNANCE_DATA_FAILED]: (state) => ({
+    ...state,
+    governanceDataPayload: {},
+  }),
 };
 
 export default handleActions(actionHandler, {
@@ -204,4 +227,6 @@ export default handleActions(actionHandler, {
   goveranceData: {},
   licenseList: {},
   licencedata: {},
+  emailVerificationData: {},
+  governanceDataPayload: {},
 });

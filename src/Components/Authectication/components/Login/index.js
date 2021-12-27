@@ -10,6 +10,7 @@ import { actions as signInSignUpActions } from "../../redux/actions";
 import validator from "validator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ToastContainer } from "react-toastify";
+import Auth from "../Auth";
 
 function Login({ history }) {
   const state = useSelector((state) => state);
@@ -96,21 +97,9 @@ function Login({ history }) {
   const redirectToSignupScreen = () => {
     return history.push("/sign-up");
   };
-
-  useEffect(() => {
-    localStorage.setItem("basicToken", "");
-    if (
-      userDetails?.status_response === "Authentication success" &&
-      (userDetails?.email || userDetails?.EmailID) &&
-      userDetails?.token
-    ) {
-      localStorage.setItem("basicToken", userDetails?.token);
-      if (userDetails?.UserType === 3) history.push("/dashboard-view");
-      else history.push("/dashboard");
-    }
-  }, []);
   return (
     <div className="row get-login-mobile">
+      <Auth />
       <ToastContainer />
       <div className="col-3 left-fixed">
         <div className="on-boarding">

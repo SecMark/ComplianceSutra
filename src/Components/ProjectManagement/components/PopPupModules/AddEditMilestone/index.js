@@ -4,7 +4,7 @@ import { DatePicker } from "antd";
 import ProjectManagementModal from "../../ProjectManagementModal";
 import { useDispatch, useSelector } from "react-redux";
 import { addUpdateMilestoneRequest } from "../../../redux/actions";
-import CreatableSelect from "react-select/creatable";
+// import CreatableSelect from "react-select/creatable";
 import moment from "moment";
 import {
   getProjectDateFormat,
@@ -25,7 +25,7 @@ const initialState = {
 
 function AddEditMilestone({ visible, onClose, isEdit, editData }) {
   const [fieldValues, setFieldValues] = useState(editData || initialState);
-  const [userList, setUserList] = useState([]);
+  // const [userList, setUserList] = useState([]);
   const [fieldErrors, setFieldErrors] = useState({
     isValidate: true,
     start_date: "",
@@ -36,21 +36,22 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
   const modalsStatus = useSelector(
     (state) => state?.ProjectManagementReducer?.modalsStatus
   );
-  const allUsersList = useSelector(
-    (state) => state?.ProjectManagementReducer?.usersList
-  );
   const dateValiations = modalsStatus?.milestoneModal?.dateValidations;
-  const handleDropDownChange = (option) => {
-    setFieldValues({
-      ...fieldValues,
-      assign_user: [...option.map((label) => label?.value)],
-    });
-  };
-  useEffect(() => {
-    if (allUsersList && allUsersList.length > 0) {
-      setUserList(allUsersList);
-    }
-  }, [allUsersList]);
+
+  // const allUsersList = useSelector(
+  //   (state) => state?.ProjectManagementReducer?.usersList
+  // );
+  // const handleDropDownChange = (option) => {
+  //   setFieldValues({
+  //     ...fieldValues,
+  //     assign_user: [...option.map((label) => label?.value)],
+  //   });
+  // };
+  // useEffect(() => {
+  //   if (allUsersList && allUsersList.length > 0) {
+  //     setUserList(allUsersList);
+  //   }
+  // }, [allUsersList]);
   useEffect(() => {
     setFieldValues({ ...editData });
   }, [editData]);
@@ -68,7 +69,6 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
 
   useEffect(() => {
     const { title, start_date, end_date } = fieldValues;
-    // if (title !== "" || start_date !== "" || end_date !== "") {
     setFieldErrors({
       isValidate:
         (title === "" && isEdit) ||
@@ -116,7 +116,6 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
             : ""
           : "",
     });
-    // }
   }, [fieldValues]);
   return (
     <ProjectManagementModal
@@ -206,7 +205,7 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
             )}
           </div>
         </div>
-        <div className="mt-3 w-100 form-group">
+        {/* <div className="mt-3 w-100 form-group">
           <label htmlFor="" className="modal__label">
             Assign Users
           </label>
@@ -225,7 +224,7 @@ function AddEditMilestone({ visible, onClose, isEdit, editData }) {
               }) || []
             }
           />
-        </div>
+        </div> */}
         <div className="mt-5 w-100 d-flex align-items-center justify-content-center">
           <button
             onClick={() => {

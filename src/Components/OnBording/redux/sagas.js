@@ -4,7 +4,6 @@ import api from "../api";
 import apiServices from "../../../apiServices";
 
 import { toast } from "react-toastify";
-let temp = [];
 const complianceOfficer = (state) => state && state.complianceOfficer;
 
 const verifyEmailReq = function* verifyEmailReq({ payload }) {
@@ -26,6 +25,8 @@ const verifyEmailReq = function* verifyEmailReq({ payload }) {
           email: payload.email,
         })
       );
+      console.log(payload);
+      payload?.history?.replace("/email-verification-info-page");
     } else {
       yield put(actions.setLoader(false));
       yield put(
@@ -558,7 +559,6 @@ const taskMailRequest = function* taskMailRequest({ payload }) {
       Body: body,
     })
       .then(function (message) {
-        console.log("message", message);
         if (message === "OK") {
           toast.success("mail sent successfully");
         } else {
@@ -608,7 +608,6 @@ const companyTypeRequest = function* companyTypeRequest({ payload }) {
     const { data, status } = yield call(api.companyType, payload);
 
     if (data) {
-      console.log(data);
       yield put(
         actions.companyTypeRequestSuccess({ companyLicenseData: data.message })
       );
@@ -693,42 +692,20 @@ const insertCerificateRequest = function* insertCerificateRequest({ payload }) {
   try {
     const { data, status } = yield call(
       api.insertCerificateDetailsService,
-      payload
+      payload?.fields
     );
-
-    if (status === 200) {
-      const complianceOfficerData = yield select(complianceOfficer);
-      let entityId =
-        data && data.table && data.table[0] && data.table[0].entityID;
-      let companyName = payload.entityName;
-      let obj = { entityID: entityId, companyName: companyName };
-      let arr = complianceOfficerData.entityInfo;
-      console.log(arr);
-      let index = complianceOfficerData.entityInfo.length
-        ? 0
-        : complianceOfficerData.entityInfo.length;
-      arr.push(obj);
-      yield put(actions.storeEnityIDwithCompaName(arr));
-      yield put(actions.insertCerificateDetailsRequestSuccess(data));
-      //yield put(push(`/${authData && authData.store_locale}/my-account`));
-      if (payload.from === "delete") {
-        toast.success("Company Deleted");
-      } else if (payload.from === "saved") {
-        toast.success("Company added successfully");
-      }
+    if (data && data.message && data?.message?.status && status === 200) {
+      yield put(actions.insertCerificateDetailsRequestSuccess(payload?.fields));
+      payload?.history.push("/governance");
     } else {
-      toast.success(data && data.Message);
-      yield put(actions.insertCerificateDetailsRequestFailed({}));
+      toast.error(data?.message?.status_response);
+      yield put(actions.insertCerificateDetailsRequestFailed([]));
     }
-  } catch (err) {
-    // toast.error(
-    //     (err && err.response && err.response.data && err.response.data.message) ||
-    //         'Something went to wrong, Please try after sometime',
-    // );
-    yield put(actions.insertCerificateDetailsRequestFailed({}));
+  } catch (error) {
+    toast.error("Something went wrong! Please try again.");
+    yield put(actions.insertCerificateDetailsRequestFailed([]));
+    console.log(error);
   }
-
-  //payload.history.push("/assign-task")
 };
 
 const insertTaskListReq = function* insertTaskListReq({ payload }) {
@@ -750,12 +727,31 @@ const insertTaskListReq = function* insertTaskListReq({ payload }) {
     );
   }
 };
-
+const setGovernanceData = function* setGovernanceData({ payload }) {
+  try {
+    let history = payload.history;
+    delete payload.history;
+    const { data, status } = yield call(
+      api.setGovernanceOfficerCompany,
+      payload
+    );
+    if (data?.message?.success && status === 200) {
+      yield put(actions.setGovernanceDataSuccess(payload));
+      history.push("/assign-task");
+    } else {
+      toast.error(data?.message?.status_response);
+      yield put(actions.setGovernanceDataFailed());
+    }
+  } catch (error) {
+    toast.error("Something went wrong!");
+    console.log(error);
+    yield put(actions.setGovernanceDataFailed());
+  }
+};
 const assignTaskDataReq = function* assignTaskDataReq({ payload }) {
   try {
     const { data } = yield call(api.getAssignedTaskData, payload);
     if (data.message.status) {
-      console.log(data);
       yield put(actions.getAssignTaskDataReuestSuccess(data.message));
       //yield put(push(`/${authData && authData.store_locale}/my-account`));
       toast.success(data && data.Message);
@@ -778,7 +774,6 @@ const governanceDataReq = function* governanceDataReq({ payload }) {
     const { data } = yield call(api.getGovernanceCompanyData, payload);
 
     if (data.message) {
-      console.log(data);
       yield put(actions.governanceAPIRequestSuccess(data.message));
       toast.success(data && data.message.status_response);
     } else {
@@ -864,4 +859,5 @@ export default function* sagas() {
   yield takeLatest(types.GET_ASSIGN_TASK_DATA_REQUEST, assignTaskDataReq);
   yield takeLatest(types.GOVERNANCEDATA_REQUEST, governanceDataReq);
   yield takeLatest(types.GET_LICENSE_LIST, getLicenseList);
+  yield takeLatest(types.SET_GOVERNANCE_DATA_REQUEST, setGovernanceData);
 }

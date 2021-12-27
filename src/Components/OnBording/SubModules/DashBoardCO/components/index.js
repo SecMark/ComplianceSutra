@@ -17,6 +17,7 @@ import HelpSection from "../../../../HelpSection/Help";
 // import MultipleNotification from "../../../../../CustomNotification/MultipleNotification";
 import ProjectManagement from "../../../../ProjectManagement";
 import ProjectTrash from "../../../../ProjectManagement/Trash";
+import Auth from "../../../../Authectication/components/Auth";
 // import HistoryFilter from "../../../../HistoryModule/HistoryFilter";
 
 function Dashboard({ history }) {
@@ -57,8 +58,8 @@ function Dashboard({ history }) {
   }, []);
 
   // useEffect(() => {
-  //   if (userID === undefined) {
-  //     history.push("/login");
+  //   if (!userEmail || !userDetails?.mobileVerified) {
+  //     history.replace("/login");
   //   }
   // }, []);
 
@@ -134,6 +135,7 @@ function Dashboard({ history }) {
 
   return (
     <div className="row co-dashboard fix-top">
+      <Auth />
       <div className=" left-fixed ">
         <div className="on-boarding">
           {/* <SideBar /> */}
