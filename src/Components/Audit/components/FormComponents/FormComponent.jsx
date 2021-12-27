@@ -172,6 +172,47 @@ const FormComponents = ({ next, back }) => {
     }
   };
 
+  const saveRequirementOnNext = async () => {
+    let temp = [...inputFieldList];
+    let totalLenth = temp.length - 1;
+    let inputLength = temp[totalLenth].inputs.length - 1;
+    let previousQuestion = temp[totalLenth].inputs[inputLength];
+    let section = temp[totalLenth];
+
+    if (
+      section.sectionName === "" ||
+      section.bufferPeriod === "" ||
+      section.completionDuration === ""
+    ) {
+      toast.error("Please enter section name, Buffer time and Duration.");
+    } else if (previousQuestion.questionnaire_section === "") {
+      temp[totalLenth].inputs[inputLength].error = {
+        isError: true,
+        type: "questionLabel",
+        message: "Requirement is required",
+      };
+      setInputFieldList(temp);
+    } else if (
+      previousQuestion.field_type !== "Text" &&
+      previousQuestion.answer_option === ""
+    ) {
+      temp[totalLenth].inputs[inputLength].error = {
+        isError: true,
+        type: "value",
+        message: "Value is required",
+      };
+      setInputFieldList(temp);
+    } else {
+      const addQuestion = await submitRequirement(section, previousQuestion);
+
+      if (addQuestion) {
+        setInputFieldList(temp);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
+  };
+
   const deleteRequirement = (index, id) => {
     let temp = [...inputFieldList];
 

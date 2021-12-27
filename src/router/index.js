@@ -174,8 +174,6 @@ export default function AppRouter() {
           <Route path="/project-management" component={DashBoardCO} />
           <Route path="/project-trash" component={DashBoardCO} />
 
-          <Route path="/create-template" component={DashBoardCO} />
-
           <Route exact path="/help" component={DashBoardCO} />
 
           {/* Expert Review */}
@@ -184,7 +182,7 @@ export default function AppRouter() {
           <Route exact path="/thankyou" component={Thankyou} />
           <Route exact path="/settings" component={CoSetting} />
           <Route exact path="/audit-assignment" component={AuditAssignment} />
-          <Route exact path="/section-list" component={DashBoardCO} />
+          <Route path="/audit" component={DashBoardCO} />
 
           {/* User */}
           {/* <Route path="/user-task" component={UserTask}></Route> */}

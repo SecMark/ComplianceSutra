@@ -576,5 +576,8 @@
 }
 
 .create-template {
-  padding: 0vw 5vw;
+  overflow: hidden;
+  height: 100vh;
+  width: 95vw;
+  margin-left: auto;
 }

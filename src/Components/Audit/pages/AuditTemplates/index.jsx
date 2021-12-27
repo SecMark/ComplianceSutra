@@ -5,10 +5,15 @@ import { Input } from "../../components/Inputs/Input";
 import { style } from "@mui/system";
 import IconButton from "../../components/Buttons/IconButton";
 import { MdAddBox } from "react-icons/md";
-import {FaPen} from "react-icons/fa"
+import { FaPen } from "react-icons/fa";
 import Button from "../../components/Buttons/Button";
-import {BsCheckCircle,BsFillPlayFill} from "react-icons/bs"
+import { BsCheckCircle, BsFillPlayFill } from "react-icons/bs";
+import { useHistory } from "react-router";
 function AuditTemplates() {
+  const history = useHistory();
+  const navigateTo = (url) => {
+    history.push(url);
+  };
   return (
     <div className={styles.mainContainer}>
       <div className={styles.top}>
@@ -23,12 +28,12 @@ function AuditTemplates() {
         <div></div>
         <div className={styles.subMenuList}>
           <IconButton
-            description="Create Project"
+            description="Create Template"
             variant="createProject"
             icon={<MdAddBox />}
+            onClick={() => navigateTo("/audit/questionaire")}
           />
-          Sort By {" "}
-          <Button description="Names" variant="templatesSortButton" />
+          Sort By <Button description="Names" variant="templatesSortButton" />
           <Button description="created By" variant="templatesSortButton" />
           <Button description="Audit by" variant="templatesSortButton" />
         </div>
@@ -74,9 +79,9 @@ function AuditTemplates() {
             </p>
             <p className={styles.tableDataContainerItemBody}>4 Checks</p>
             <div className={styles.dataContainersButtons}>
-                <IconButton icon={<FaPen/>} variant="pen"/>
-                <IconButton icon={<BsCheckCircle/>} variant="checkButton"/>
-                <IconButton icon={<BsFillPlayFill/>} variant="checkButton"/>
+              <IconButton icon={<FaPen />} variant="pen" />
+              <IconButton icon={<BsCheckCircle />} variant="checkButton" />
+              <IconButton icon={<BsFillPlayFill />} variant="checkButton" />
             </div>
           </div>
         </div>

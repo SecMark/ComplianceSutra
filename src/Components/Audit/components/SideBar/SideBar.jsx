@@ -1,7 +1,12 @@
 import React from "react";
+import { useHistory } from "react-router";
 import styles from "./style.module.scss";
 
 const SideBar = () => {
+  const history = useHistory();
+  const navigateTo = (url) => {
+    history.push(url);
+  };
   return (
     <div className={styles.bar}>
       <div className={styles.heading}>
@@ -9,7 +14,10 @@ const SideBar = () => {
       </div>
       <div className={styles.navigationMenu}>
         <ul>
-          <li className={styles.activeClass}>
+          <li
+            className={styles.activeClass}
+            onClick={() => navigateTo("/audit")}
+          >
             <span>Templates</span>
           </li>
           <li>

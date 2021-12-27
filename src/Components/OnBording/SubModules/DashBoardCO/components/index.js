@@ -185,15 +185,9 @@ function Dashboard({ history }) {
           <ProjectTrash />
         )}
 
-        {state && state.adminMenu.currentMenu === "create-template" && (
+        {state && state.adminMenu.currentMenu === "audit" && (
           <div className="create-template">
-            <FormBuilder/>
-          </div>
-        )}
-
-        {state && state.adminMenu.currentMenu === "section-list" && (
-          <div className="create-template">
-            <SectionList />
+            <Layout />
           </div>
         )}
       </div>
