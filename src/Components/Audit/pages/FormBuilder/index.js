@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormComponents from "../../components/FormComponents/FormComponent";
 import CheckList from "./CheckList/";
 import Stepper from "../../../../CommonModules/sharedComponents/Stepper";
@@ -10,10 +10,11 @@ import Button from "../../components/Buttons/Button";
 import CreateAuditTemplate from "../createAuditTemplate/index.jsx";
 import { steps } from "../../constants/StepperSteps/steps";
 import ReviewTemplateDetails from "../ReviewAndConfirm";
+import Container from "../../components/Containers";
 
 const FormBuilder = () => {
   const [sectionName, setSectionName] = useState("");
-
+  const [headerHeight, setHeaderHeight] = useState(0);
   const [stepper, setStepper] = useState({
     stepperAcitveSlide: 1,
     stepperCompletedSlides: [],
@@ -42,8 +43,15 @@ const FormBuilder = () => {
     }
   };
 
+  useEffect(() => {
+    const _headerHeight = document
+      .querySelector("." + styles.auditHeader)
+      .getClientRects()[0].height;
+    setHeaderHeight(_headerHeight);
+  }, [stepper]);
+
   return (
-    <div className={styles.container}>
+    <Container variant="content" className={styles.maincontainer}>
       <div className={styles.auditHeader}>
         <div
           className={`${styles.auditHeaderButtonContainer} ${
@@ -65,21 +73,25 @@ const FormBuilder = () => {
           />
         </div>
 
-        <div className={styles.borderBox}>
-          <div className={styles.subContainer}>
-            <Text
-              heading="h1"
-              text={steps[stepper.stepperAcitveSlide - 1].heading}
-              variant="default"
-            />
-          </div>
-          <div className={styles.stepper}>
-            <Stepper steps={steps} stepper={stepper} setStepper={setStepper} />
-          </div>
+        <div
+          className={`${styles.auditHeaderButtonContainer} ${styles?.stepperContainer}`}
+        >
+          <Text
+            heading="p"
+            text={steps[stepper.stepperAcitveSlide - 1].heading}
+            variant="stepperMainHeading"
+          />
+          <Stepper steps={steps} stepper={stepper} setStepper={setStepper} />
         </div>
+        <div className={styles.auditHeaderBorder}></div>
       </div>
       {/* All Audit component will render here  --start-- */}
-      <div className={styles.mainContent}>
+      <div
+        className={styles.auditAssignmentMain}
+        style={{
+          height: `calc( 100vh - ${headerHeight + 94}px )`,
+        }}
+      >
         {stepper.stepperAcitveSlide === 1 && (
           <CreateAuditTemplate
             next={handleNextClick}
@@ -94,32 +106,37 @@ const FormBuilder = () => {
             setSectionName={setSectionName}
             next={handleNextClick}
             back={handleBackClick}
+            stepper={stepper}
           />
         )}
         {stepper?.stepperAcitveSlide === 3 && (
-          <CheckList next={handleNextClick} back={handleBackClick} />
+          <CheckList
+            next={handleNextClick}
+            back={handleBackClick}
+            stepper={stepper}
+          />
         )}
         {stepper?.stepperAcitveSlide === 4 && <ReviewTemplateDetails />}
 
-        <div className={styles.saveTemplate}>
-          <div>
-            <Button
-              description="SAVE TEMPLATE & QUIT"
-              variant="preview"
-              size="medium"
-            />
-          </div>
-          <div>
-            <Button
-              description="NEXT"
-              size="small"
-              variant="default"
-              onClick={() => handleNextClick(stepper?.stepperAcitveSlide)}
-            />
-          </div>
-        </div>
+        {/* <div className={styles.saveTemplate}>
+            <div>
+              <Button
+                description="SAVE TEMPLATE & QUIT"
+                variant="preview"
+                size="medium"
+              />
+            </div>
+            <div>
+              <Button
+                description="NEXT"
+                size="small"
+                variant="default"
+                onClick={() => handleNextClick(stepper?.stepperAcitveSlide)}
+              />
+            </div>
+          </div> */}
       </div>
-    </div>
+    </Container>
   );
 };
 

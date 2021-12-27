@@ -1,11 +1,11 @@
 import React from "react";
-import { useHistory } from "react-router";
+import { Link, useHistory } from "react-router-dom";
 import styles from "./style.module.scss";
 
 const SideBar = () => {
   const history = useHistory();
-  const navigateTo = (url) => {
-    history.push(url);
+  const redirectTo = (route) => {
+    history.push(route);
   };
   return (
     <div className={styles.bar}>
@@ -35,7 +35,7 @@ const SideBar = () => {
           <li>
             <span>Audit Template</span>
           </li>
-          <li>
+          <li onClick={() => redirectTo("audit-assignment")}>
             <span>Audit Assignmet</span>
           </li>
         </ul>

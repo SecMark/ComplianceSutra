@@ -1,35 +1,33 @@
-import React, { useEffect ,useState} from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import Text from "../../components/Text/Text";
 import Button from "../../components/Buttons/Button";
 import { AiFillFile } from "react-icons/ai";
-import{ v4 as uuidv4 } from "uuid";
-import {useSelector,useDispatch} from "react-redux"
+import { v4 as uuidv4 } from "uuid";
+import { useSelector, useDispatch } from "react-redux";
 import axiosInstance from "../../../../apiServices";
 import { toast } from "react-toastify";
 
- 
-
-
 function ReviewTemplateDetails() {
   const state = useSelector((state) => state);
-  const [templateData,setTemplateData] = useState([])
-  console.log("review and conform details template data",templateData);
-  useEffect(()=>{
-    try{
-     axiosInstance.get("audit.api.getAuditTemplate", {
-      params: {
-        audit_template_name: state.AuditReducer.templateName,
-      },
-    }).then((res)=>{
-        setTemplateData(res.data.message.data)
-    })
-  }catch(err){
-    toast.error("somthing went wrong")
-  }
-  },[
-  ])
-  
+  const [templateData, setTemplateData] = useState([]);
+  console.log("review and conform details template data", templateData);
+  useEffect(() => {
+    try {
+      axiosInstance
+        .get("audit.api.getAuditTemplate", {
+          params: {
+            audit_template_name: state?.AuditReducer?.templateName || "",
+          },
+        })
+        .then((res) => {
+          setTemplateData(res.data.message.data);
+        });
+    } catch (err) {
+      toast.error("somthing went wrong");
+    }
+  }, []);
+
   return (
     <div>
       <div className={styles.headingContainer}>
@@ -49,7 +47,9 @@ function ReviewTemplateDetails() {
             text="Audit Name"
           />
         </div>
-        <div className={styles.outputValues}>{templateData.audit_template_name}</div>
+        <div className={styles.outputValues}>
+          {templateData?.audit_template_name || ""}
+        </div>
       </div>
       <div className={styles.createTemplateFields}>
         <div className={styles.outputValues}>
@@ -60,7 +60,9 @@ function ReviewTemplateDetails() {
             text="Audit Category"
           />
         </div>
-        <div className={styles.outputValues}>{templateData.audit_category}</div>
+        <div className={styles.outputValues}>
+          {templateData?.audit_category}
+        </div>
       </div>
       <div className={styles.createTemplateFields}>
         <div className={styles.outputValues}>
@@ -71,7 +73,9 @@ function ReviewTemplateDetails() {
             text="Possible Complition duration"
           />
         </div>
-        <div className={styles.outputValues}>{templateData.duration_of_completion}</div>
+        <div className={styles.outputValues}>
+          {templateData?.duration_of_completion}
+        </div>
       </div>
       <div className={styles.createTemplateFields}>
         <div className={styles.outputValues}>
@@ -82,7 +86,7 @@ function ReviewTemplateDetails() {
             text="Buffer Time"
           />
         </div>
-        <div className={styles.outputValues}>{templateData.buffer_period}</div>
+        <div className={styles.outputValues}>{templateData?.buffer_period}</div>
       </div>
       <div className={styles.createTemplateFields}>
         <div className={styles.outputValues}>
@@ -94,7 +98,7 @@ function ReviewTemplateDetails() {
           />
         </div>
         <div className={styles.outputValues}>
-        {templateData.audit_description}
+          {templateData?.audit_description}
         </div>
       </div>
       <div className={styles.createTemplateFields}>
@@ -107,11 +111,12 @@ function ReviewTemplateDetails() {
           />
         </div>
         <div className={styles.outputValues}>
-          {templateData.length > 0 && templateData.file.map((item)=>(
-            <div>
-            <AiFillFile /> {item}
-            </div>
-          ))}
+          {templateData?.length > 0 &&
+            templateData?.file.map((item) => (
+              <div>
+                <AiFillFile /> {item}
+              </div>
+            ))}
         </div>
       </div>
       <div className={styles.headingContainer}>

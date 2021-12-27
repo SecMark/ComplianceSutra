@@ -8,14 +8,14 @@ import { MdAddBox } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
 import Button from "../../components/Buttons/Button";
 import { BsCheckCircle, BsFillPlayFill } from "react-icons/bs";
-import { useHistory } from "react-router";
+import { useHistory, useRouteMatch } from "react-router";
+import Container from "../../components/Containers";
 function AuditTemplates() {
   const history = useHistory();
-  const navigateTo = (url) => {
-    history.push(url);
-  };
+  const { path } = useRouteMatch();
+  console.log({ history: history.location });
   return (
-    <div className={styles.mainContainer}>
+    <Container variant="content">
       <div className={styles.top}>
         <div className={styles.heading}>
           <Text heading="h1" size="large" text="Audit Templates" />
@@ -31,7 +31,7 @@ function AuditTemplates() {
             description="Create Template"
             variant="createProject"
             icon={<MdAddBox />}
-            onClick={() => navigateTo("/audit/questionaire")}
+            onClick={() => history.push(`${path}/create-template`)}
           />
           Sort By <Button description="Names" variant="templatesSortButton" />
           <Button description="created By" variant="templatesSortButton" />
@@ -86,7 +86,7 @@ function AuditTemplates() {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 

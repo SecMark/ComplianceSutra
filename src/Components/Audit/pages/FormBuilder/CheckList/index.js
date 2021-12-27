@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { getQuestionList } from "../../../redux/actions";
 
-const CheckList = () => {
+const CheckList = ({ next, stepper }) => {
   const dispatch = useDispatch();
   const [checkList, setCheckList] = useState([
     {
@@ -58,7 +58,7 @@ const CheckList = () => {
       questionnaireSection: "",
       checkListInput: [
         {
-          id: uuidv4(),
+          id: uuidv4() + 1,
           sectionName: "",
           checkListInput: [
             {
@@ -66,7 +66,7 @@ const CheckList = () => {
               documentReliedUpon: "",
               regulatoryRef: "",
               dateRange: "",
-              id: uuidv4(),
+              id: uuidv4() + 2,
             },
           ],
         },
@@ -291,6 +291,14 @@ const CheckList = () => {
           <BsPlusSquareFill onClick={addNewSection} />
           <Text heading="p" text="NEW SECTION" size="small" variant="primary" />
         </div>
+      </div>
+      <div className="mt-5">
+        <Button
+          description="NEXT"
+          size="small"
+          variant="default"
+          onClick={() => next(stepper?.stepperAcitveSlide)}
+        />
       </div>
     </>
   );

@@ -126,6 +126,11 @@ function Dashboard({ history }) {
       state?.adminMenu.currentMenu !== "project-trash"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("project-trash"));
+    } else if (
+      window.location.href.includes("audit") &&
+      state?.adminMenu?.currentMenu !== "audit"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("audit"));
     }
   }, [window.location.href]);
 
@@ -187,9 +192,16 @@ function Dashboard({ history }) {
 
         {state && state.adminMenu.currentMenu === "audit" && (
           <div className="create-template">
+            {/* <FormBuilder/> */}
             <Layout />
           </div>
         )}
+
+        {/* {state && state.adminMenu.currentMenu === "section-list" && (
+          <div className="create-template">
+            <SectionList />
+          </div>
+        )} */}
       </div>
     </div>
   );

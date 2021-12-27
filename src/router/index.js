@@ -174,6 +174,8 @@ export default function AppRouter() {
           <Route path="/project-management" component={DashBoardCO} />
           <Route path="/project-trash" component={DashBoardCO} />
 
+          {/* <Route path="/create-template" component={DashBoardCO} /> */}
+
           <Route exact path="/help" component={DashBoardCO} />
 
           {/* Expert Review */}
