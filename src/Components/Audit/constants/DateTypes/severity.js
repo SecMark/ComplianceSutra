@@ -1,14 +1,14 @@
 export const severity = [
   {
-    value: "low",
+    value: "Low",
     name: "Low",
   },
   {
-    value: "medium",
+    value: "Medium",
     name: "Medium",
   },
   {
-    value: "high",
+    value: "High",
     name: "High",
   },
 ];
