@@ -19,6 +19,9 @@ import {
   Export,
   Toolbar,
   Item,
+  GroupPanel,
+  Selection,
+  Grouping,
 } from "devextreme-react/data-grid";
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
@@ -142,16 +145,13 @@ function AuditTemplates() {
         <DataGrid
           id="dataGrid"
           dataSource={auditTemplatesData}
-          keyExpr="audit_template_name"
-          allowColumnResizing={true}
           columnAutoWidth={true}
           allowColumnReordering={true}
           onSelectionChanged={selectEmployee}
           onExporting={exportGrid}
-          showColumnLines={false}
           paging={{ pageSize: 6 }}
         >
-          <Toolbar>
+          {/* <Toolbar>
             <Item location="before">
               <Text
                 heading="p"
@@ -169,7 +169,7 @@ function AuditTemplates() {
             </Item>
             <Item name="exportButton" />
             <Item name="searchPanel" />
-          </Toolbar>
+          </Toolbar> */}
           <Column
             dataField="audit_template_name"
             caption="Template Name"
@@ -226,8 +226,11 @@ function AuditTemplates() {
           <ColumnFixing enabled={true} />
           <FilterRow visible={true} />
           <SearchPanel visible={true} />
+          <Grouping contextMenuEnabled={true} />
 
+          <GroupPanel visible={true} allowColumnDragging={true} />
           <Export enabled={true} />
+          <Selection mode="single" />
         </DataGrid>
       )}
     </Container>
