@@ -16,7 +16,7 @@ const SideBar = () => {
         <ul>
           <li
             className={styles.activeClass}
-            onClick={() => navigateTo("/audit")}
+            onClick={() => redirectTo("/audit")}
           >
             <span>Templates</span>
           </li>

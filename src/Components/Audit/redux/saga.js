@@ -18,7 +18,11 @@ function* getQuestionList(action) {
     const { data } = yield call(api.getQuestionList, action.payload);
     if (data.message.status) {
       console.log(data.message.Question_reference_options);
-      yield put(setQuestionList(data.message.Question_reference_options));
+      yield put(
+        setQuestionList({
+          questionList: data.message.Question_reference_options,
+        })
+      );
     } else {
     }
   } catch (error) {}
