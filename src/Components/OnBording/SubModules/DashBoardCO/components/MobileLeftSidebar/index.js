@@ -324,7 +324,7 @@ function MobileLeftSidebar({ history, close }) {
               style={{ cursor: "pointer", width: "18px" }}
             />{" "}
             Modules
-          </div>
+          </div> */}
           <div
             onClick={() => setOpenProfile(true)}
             style={{ cursor: "pointer" }}

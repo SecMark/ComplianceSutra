@@ -1243,4 +1243,7 @@ button.btn.-new:focus {
   .scroll-btm {
     max-height: calc(100vh - 40px) !important;
   }
+  .board-tab-design .risk-pink-grid {
+    width: 82%;
+  }
 }
