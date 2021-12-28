@@ -32,6 +32,8 @@ import { actions as notficationActions } from "./notification/Redux/actions";
 import historyListActive from "../../../../../assets/Icons/history_active.png";
 import historyListInActive from "../../../../../assets/Icons/history_unactive.png";
 
+import Audit1 from "../../../../../assets/Icons/audit1.png";
+import Audit2 from  "../../../../../assets/Icons/audit2.png";
 import updateActive from "../../../../../assets/Icons/update_active.png";
 import SingleNotification from "../../../../../CustomNotification/SingleNotification";
 import api from "../../../../../apiServices";
@@ -41,7 +43,7 @@ import axiosInstance from "../../../../../apiServices";
 import { BACKEND_BASE_URL } from "../../../../../apiServices/baseurl";
 import trashIcon from "../../../../../assets/Icons/trashIcon.svg";
 import trashIconActive from "../../../../../assets/Icons/trashIconActive.svg";
-
+import {AiOutlineAudit} from "react-icons/ai";
 function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -354,8 +356,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
               onClick={() => onMenuClick("audit")}
               src={
                 !openProfile && state && state.adminMenu.currentMenu === "audit"
-                  ? updateActive
-                  : updateActive
+                  ? Audit1
+                  : Audit2
               }
               alt="sidebar Bell"
             />
