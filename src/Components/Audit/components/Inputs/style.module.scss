@@ -3,6 +3,7 @@
 @import "../../assets/styles/mixins.scss";
 ::placeholder {
   font-family: $font_poppins;
+  padding: 10px;
 }
 select {
   -webkit-appearance: none;
@@ -30,7 +31,7 @@ input[type="file"]::file-selector-button {
 }
 
 .inputWrapper {
-  // @include alignBoxWithFlex(center, center);
+  @include alignBoxWithFlex(center, start);
 }
 
 .default {
@@ -170,6 +171,8 @@ input[type="file"]::file-selector-button {
   width: 100%;
   border: 0px;
   background-color: $color_gery_background;
+  color: $color_black_text;
+  font-weight: 500;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
@@ -182,6 +185,8 @@ input[type="file"]::file-selector-button {
   font-family: Poppins;
   font-weight: 300;
   line-height: normal;
+  color: $color_black_text;
+  font-weight: 500;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 

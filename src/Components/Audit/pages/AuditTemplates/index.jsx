@@ -141,7 +141,10 @@ function AuditTemplates() {
   }, []);
   return (
     <Container variant="content">
-      <Text heading="p" variant="stepperMainHeading" text="Audit Templates" />
+      <div className={styles.topHeading}>
+        <Text heading="p" variant="stepperMainHeading" text="Audit Templates" />
+      </div>
+
       {auditTemplatesData && auditTemplatesData?.length > 0 && (
         <DataGrid
           id="dataGrid"
