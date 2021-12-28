@@ -12,13 +12,13 @@ function ReviewTemplateDetails() {
   const state = useSelector((state) => state);
   const [templateData, setTemplateData] = useState([]);
   const [questionaryDetails,setQuestionaryDetails] = useState([]);
-  console.log("review and conform details template data", templateData);
+
   useEffect(() => {
     fetchCreateTemplateDetails();
     fetchQuestionaryDetails();
   }, []);
 
- console.log("qytetd",questionaryDetails);
+
   const fetchCreateTemplateDetails = () =>{
     try {
       axiosInstance

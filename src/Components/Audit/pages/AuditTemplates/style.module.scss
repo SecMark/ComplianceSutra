@@ -13,7 +13,9 @@
     font-size: 24px;
   }
 }
-
+.topHeading{
+  border-bottom: 1px solid $color_light_black;
+}
 p.tableDataContainerItem {
   margin-bottom: 0;
   flex: 0.1;
