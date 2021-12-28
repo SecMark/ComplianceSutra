@@ -30,7 +30,7 @@ input[type="file"]::file-selector-button {
 }
 
 .inputWrapper {
-  @include alignBoxWithFlex(center, center);
+  // @include alignBoxWithFlex(center, center);
 }
 
 .default {

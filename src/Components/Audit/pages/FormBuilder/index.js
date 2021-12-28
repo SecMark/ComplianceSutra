@@ -11,8 +11,10 @@ import CreateAuditTemplate from "../createAuditTemplate/index.jsx";
 import { steps } from "../../constants/StepperSteps/steps";
 import ReviewTemplateDetails from "../ReviewAndConfirm";
 import Container from "../../components/Containers";
+import { useHistory } from "react-router";
 
 const FormBuilder = () => {
+  const history =useHistory();
   const [sectionName, setSectionName] = useState("");
   const [headerHeight, setHeaderHeight] = useState(0);
   const [stepper, setStepper] = useState({
@@ -50,6 +52,10 @@ const FormBuilder = () => {
     setHeaderHeight(_headerHeight);
   }, [stepper]);
 
+
+  const navigateToHome = () =>{
+    history.push("/audit")
+  }
   return (
     <Container variant="content" className={styles.maincontainer}>
       <div className={styles.auditHeader}>
@@ -70,6 +76,7 @@ const FormBuilder = () => {
             variant="iconButtonRound"
             icon={<MdClose />}
             size="none"
+            onClick={navigateToHome}
           />
         </div>
 
