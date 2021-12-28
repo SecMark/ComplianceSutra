@@ -297,7 +297,7 @@ function MobileLeftSidebar({ history, close }) {
             />{" "}
             Settings
           </div>
-          {/* <div
+           {/* <div
             onClick={() => onMenuClick("help")}
             style={{ cursor: "pointer" }}
             className={
@@ -316,7 +316,7 @@ function MobileLeftSidebar({ history, close }) {
               alt="sideBarlogo"
             />{" "}
             Help & Support
-          </div> */}
+          </div> 
           <div style={{ cursor: "pointer" }} className="inactiveMobile">
             <img
               src={listIcon}
