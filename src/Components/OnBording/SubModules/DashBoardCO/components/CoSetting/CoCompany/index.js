@@ -940,12 +940,12 @@ function CoManagment({ handleClose }) {
             </div>
             <div class="d-flex">
               <div class="col-10 pl-0">
-                <div className="d-flex">
+                <div className="d-flex w-100">
                   <div class="license-count-mobile">
                     {item?.compliance_officer?.length > 0 &&
                       getNameInitials(item?.compliance_officer[0]?.full_name)}
                   </div>
-                  <div class="bk-seq-title-bottom-mobile">
+                  <div class="bk-seq-title-bottom-mobile flex-grow-1">
                     {item?.compliance_officer?.length > 0 &&
                       item?.compliance_officer[0]?.full_name}
                   </div>

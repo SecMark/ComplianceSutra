@@ -317,14 +317,14 @@ function MobileLeftSidebar({ history, close }) {
             />{" "}
             Help & Support
           </div> */}
-          <div style={{ cursor: "pointer" }} className="inactiveMobile">
+          {/* <div style={{ cursor: "pointer" }} className="inactiveMobile">
             <img
               src={listIcon}
               alt="sideBarlogo"
               style={{ cursor: "pointer", width: "18px" }}
             />{" "}
             Modules
-          </div>
+          </div> */}
           <div
             onClick={() => setOpenProfile(true)}
             style={{ cursor: "pointer" }}
@@ -346,7 +346,6 @@ function MobileLeftSidebar({ history, close }) {
                   <div
                     style={{ cursor: "pointer" }}
                     onClick={() => onEditProfileClick()}
-                    style={{ cursor: "pointer" }}
                     className="edit-label-option"
                   >
                     <img src={editpen} alt="edit" /> Edit Profile

@@ -1086,9 +1086,9 @@ export const ProjectSubTask = ({ data }) => {
             &nbsp;{task_start_date + " To " + task_end_date}
           </p>
           {/* Message and Edit Button */}
-          <SmallIconButton type="grey" className="mx-2 icon__small p-1">
+          {/* <SmallIconButton type="grey" className="mx-2 icon__small p-1">
             <RiMessage2Fill />
-          </SmallIconButton>
+          </SmallIconButton> */}
           <EditIconButton
             onClickHandler={() => {
               dispatch(

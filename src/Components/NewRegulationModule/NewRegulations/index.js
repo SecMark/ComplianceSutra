@@ -9,7 +9,7 @@ import filterImage from "../../../assets/Icons/filter_background.png";
 import { withRouter } from "react-router";
 import { ImSearch } from "react-icons/im";
 import { useRouteMatch } from "react-router";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearFilter,
@@ -51,7 +51,7 @@ const NewRegulations = (props) => {
     useState(false);
   const { path } = useRouteMatch();
   const [loading, setLoading] = useState(false);
-
+  const [numberOfFilters, setNumberOfFilters] = useState(0);
   const [filters, setFilters] = useState({
     issuer: [],
     industry: [],
@@ -66,7 +66,13 @@ const NewRegulations = (props) => {
   //deconstruct updates reducer state values.
   const { isSuccess, isLoading, updateList, isFilterApplied, isSearch } =
     state.UpdatesReducer;
-
+  const { industry, issuer, topic, from, to } = state.UpdatesReducer?.badges;
+  useEffect(() => {
+    const listOfFilters = [industry, issuer, topic, from, to].filter(
+      (element) => element
+    );
+    setNumberOfFilters(listOfFilters?.length || 0);
+  }, [industry, issuer, topic, from, to]);
   const onHBMenu = () => {
     setNavigationHideShow(true);
     const drawerParent = sideBarParent;
@@ -138,6 +144,7 @@ const NewRegulations = (props) => {
           setNewRegulationDetail(circular_details);
           setLoading(false);
           setIsShowRegulationDetail(!isShowRegulationDetail);
+          setIsShowRegulationDetailMobile(!isShowRegulationDetailMobile);
         }
         setLoading(false);
       }
@@ -248,57 +255,78 @@ const NewRegulations = (props) => {
                 className={`regulation-details-popup-mobile ${
                   isShowRegulationDetailMobile &&
                   newRegulationDetail &&
-                  newRegulationDetail?.getNewRegulationDetailById &&
+                  newRegulationDetail?.name &&
                   "d-block"
-                } d-lg-none`}
+                } d-lg-none `}
               >
-                <div className="regulation-details-popup-mobile--container">
+                <div className=" regulation-details-popup-mobile--container">
                   <img
                     src={closeIcon}
                     alt="close-icon"
                     className="close--regulation-details-popup-mobile"
                     onClick={() => setIsShowRegulationDetailMobile(false)}
                   />
-                  <div className="regulation-details-popup-mobile--wrapper">
+                  <div className=" regulation-details-popup-mobile--wrapper">
                     <div style={{ marginBottom: "1rem", width: "90%" }}>
                       <div className="tags" style={{ marginBottom: "1rem" }}>
                         <div className="tag-buttons">
-                          <buton className="tags-button">
-                            {
-                              newRegulationDetail?.getNewRegulationDetailById
-                                ?.Industry
-                            }
-                          </buton>
-                          <buton className="tags-button">
-                            {
-                              newRegulationDetail?.getNewRegulationDetailById
-                                ?.Topic
-                            }
-                          </buton>
-                          <buton className="tags-button">
-                            {
-                              newRegulationDetail?.getNewRegulationDetailById
-                                ?.Regbodies
-                            }
-                          </buton>
+                          {newRegulationDetail?.tags &&
+                            newRegulationDetail?.tags.map((item) => (
+                              <button className="tags-button">{item}</button>
+                            ))}
                         </div>
                       </div>
-                      <h5>
-                        {newRegulationDetail?.getNewRegulationDetailById?.Title}
-                      </h5>
+                      <h5>{newRegulationDetail?.title}</h5>
                     </div>
-                    <div className="regulation-details-wrapper-mobile">
+                    <div className="regulation-details-wrapper-mobile pr-2">
                       <div
                         className="regulation-details-html-mobile"
                         dangerouslySetInnerHTML={{
-                          __html:
-                            newRegulationDetail?.getNewRegulationDetailById
-                              ?.Gist,
+                          __html: newRegulationDetail?.description,
                         }}
                       />
+                      <div className="regulation-details-html-mobile">
+                        For more information click this link{" "}
+                        <a
+                          href={newRegulationDetail?.circular_link}
+                          target="blank"
+                        >
+                          {newRegulationDetail?.circular_link}
+                        </a>
+                      </div>
                     </div>
-                    <div className="regulation-details-download-button-mobile">
-                      <button className="download-file">Download File</button>
+                    <div className=" mt-3 d-flex align-items-center justify-content-between">
+                      <a
+                        href={`data:application/${
+                          newRegulationDetail?.file_details &&
+                          newRegulationDetail?.file_details[0].file_name
+                            .split(".")
+                            .pop()
+                        };base64,${
+                          newRegulationDetail?.file_details &&
+                          newRegulationDetail?.file_details[0].encoded_string
+                        }`}
+                        className="download-file"
+                        download={
+                          newRegulationDetail?.file_details &&
+                          newRegulationDetail?.file_details[0].file_name
+                        }
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Download File
+                      </a>
+                      <Link
+                        to={{
+                          pathname: path + "/quiz",
+                          state: {
+                            circular_no: newRegulationDetail?.name,
+                          },
+                        }}
+                        className="download-file"
+                      >
+                        Quiz
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -366,7 +394,9 @@ const NewRegulations = (props) => {
                           <ImSearch />
                         </div>
                         <div className="filter-counter">
-                          <span className="black-background">0</span>
+                          <span className="black-background">
+                            {numberOfFilters}
+                          </span>
                           <img
                             src={filter}
                             alt="filter"

@@ -148,22 +148,23 @@ function RightSideGrid({
     state.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
+
   useEffect(() => {
-    if (taskList && taskList.length > 0) {
-      const tempRowCount = {};
-      const taskByStatus = getDataByStatus(taskList);
-      [...taskByStatus].forEach((item) => {
-        if (item.tasks.length > 0) {
-          tempRowCount[item.status.trim()] = 3;
-        }
-      });
-      setRowCount(tempRowCount);
-      setTaskData(taskByStatus);
-      setTaskDataBackup(taskByStatus);
-    } else {
-      dispatch(taskReportActions.taskReportRequest());
+    if (taskListDisplay === "1") {
+      if (taskList && taskList.length > 0) {
+        const tempRowCount = {};
+        const taskByStatus = getDataByStatus(taskList);
+        [...taskByStatus].forEach((item) => {
+          if (item.tasks.length > 0) {
+            tempRowCount[item.status.trim()] = 3;
+          }
+        });
+        setRowCount(tempRowCount);
+        setTaskData(taskByStatus);
+        setTaskDataBackup(taskByStatus);
+      }
     }
-  }, [taskList]);
+  }, [taskList, taskListDisplay]);
 
   useEffect(() => {
     const ApproverUsers =
@@ -236,14 +237,14 @@ function RightSideGrid({
   }, [getTaskById]);
 
   const innerSearch = useOuterClick((e) => {
-    if (searchBoxShow) {
+    if (searchBoxShow && searchData?.length === 0) {
       setsearchBoxShow(false);
       setSearchValue("");
     }
   });
 
   const innerSearchMobile = useOuterClick((e) => {
-    if (searchBoxShowMobile) {
+    if (searchBoxShowMobile && searchData?.length === 0) {
       setsearchBoxShowMobile(false);
       setSearchValue("");
     }
@@ -623,7 +624,6 @@ function RightSideGrid({
         loginty: "AdminEmail",
       })
       .then((response) => {
-        console.log("inside resposnse => ", response);
         if (response && response.data && response.data.Status === "True") {
           setEmailAvaliableCheck(true);
         } else {
@@ -637,14 +637,12 @@ function RightSideGrid({
   };
 
   const handleCheckAssignToEmailAvailability = (event) => {
-    console.log("selectedUser => ", selectedUser);
     axios
       .post(`${BACKEND_BASE_URL}/api/availabilityCheck`, {
         loginID: selectedUser,
         loginty: "AdminEmail",
       })
       .then((response) => {
-        console.log("inside resposnse => ", response);
         if (response && response.data && response.data.Status === "True") {
           setEmailAvaliableCheck(true);
         } else {
@@ -804,22 +802,25 @@ function RightSideGrid({
   const handleSearch = (searchText) => {
     setSearchValue(searchText);
     let tempArr = [];
-    if (searchText != "") {
-      taskList &&
-        taskList.forEach((obj1) => {
-          obj1.Details.forEach((obj2) => {
-            if (
-              obj2.TaskName.toLowerCase().includes(searchText.toLowerCase()) ||
-              obj2.EntityName.toLowerCase().includes(
-                searchText.toLowerCase()
-              ) ||
-              obj2.LicenseCode.toLowerCase().includes(
-                searchText.toLowerCase()
-              ) ||
-              obj2.AssignedName.toLowerCase().includes(searchText.toLowerCase())
-            ) {
-              let task = { Status: obj1.Status, data: obj2 };
-              tempArr.push(task);
+    if (searchText !== "") {
+      let searchQuery = searchText.toLowerCase();
+      taskData &&
+        taskData.length !== 0 &&
+        taskData.forEach((tasksByStatus) => {
+          tasksByStatus.tasks.forEach((task) => {
+            if (task.subject !== "" && task.subject !== "Norec") {
+              if (
+                task?.subject?.toLowerCase().includes(searchQuery) ||
+                task?.customer_name?.toLowerCase().includes(searchQuery) ||
+                task?.license?.toLowerCase().includes(searchQuery) ||
+                task?.assign_to_name?.toLowerCase().includes(searchQuery)
+              ) {
+                let searchResults = {
+                  status: tasksByStatus.status,
+                  data: task,
+                };
+                tempArr.push(searchResults);
+              }
             }
           });
         });

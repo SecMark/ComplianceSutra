@@ -4,6 +4,7 @@ import { GrFormClose } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import constant from "../../../CommonModules/sharedComponents/constants/constant";
 import {
+  clearFilter,
   getUpdates,
   removeBadge,
   setFilterPayload,
@@ -29,7 +30,7 @@ const NewRegulationSearchBadge = (props) => {
 
   const clearFilterPayload = () => {
     dispatch(setIsFilter(false));
-
+    dispatch(clearFilter());
     dispatch(getUpdates(filters));
   };
 
@@ -38,7 +39,6 @@ const NewRegulationSearchBadge = (props) => {
       key: badgeName,
       value: "",
     };
-    console.log(badgeName);
     if (badgeName === "fromAndToDate") {
       removeBadgePayload = {
         key: "from",

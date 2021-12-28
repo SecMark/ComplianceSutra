@@ -200,7 +200,7 @@ function RightSideGrid({
   });
 
   const innerSearchMobile = useOuterClick((e) => {
-    if (searchBoxShowMobile) {
+    if (searchBoxShowMobile && searchData?.length === 0) {
       setsearchBoxShowMobile(false);
       setSearchValue("");
     }

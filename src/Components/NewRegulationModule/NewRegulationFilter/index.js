@@ -16,7 +16,6 @@ import moment from "moment";
 import {
   isDifferenceIsMoreThanOneYear,
   isSameOrBeforeToday,
-  isMoreThanOneYearFromToday,
   isToDateBeforeFromDate,
 } from "../../ReAssignTasks/utilties";
 import "./style.css";
@@ -26,7 +25,7 @@ const NewRegulationFilter = (props) => {
   const [listOfIndustries, setListOfIndustry] = useState([]);
   const [listOfIssuers, setListOfIssuers] = useState([]);
   const [listOfTopic, setListOfTopic] = useState([]);
-
+  const [filterInputs, setFilterInputs] = useState({});
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -96,7 +95,7 @@ const NewRegulationFilter = (props) => {
     }
   }, [state.UpdatesReducer]);
 
-  const getResultByFilter = () => {
+  useEffect(() => {
     const filterRequestPayload = {
       industry:
         state.UpdatesReducer.industry.length > 0
@@ -127,7 +126,16 @@ const NewRegulationFilter = (props) => {
           )) ||
         "",
     };
+    setFilterInputs(filterRequestPayload);
+  }, [
+    state.UpdatesReducer.from,
+    state.UpdatesReducer.industry,
+    state.UpdatesReducer.issuer,
+    state.UpdatesReducer.to,
+    state.UpdatesReducer.topic,
+  ]);
 
+  const getResultByFilter = () => {
     const setBagdesPayload = {
       industry: state.UpdatesReducer.industry,
       topic: state.UpdatesReducer.topic,
@@ -169,6 +177,7 @@ const NewRegulationFilter = (props) => {
           options={listOfIssuers}
           onSelect={(event) => dispatch(setIssuer(event.toString()))}
           multiple={true}
+          value={filterInputs?.issuer || []}
         />
       </div>
       <div>
@@ -181,6 +190,7 @@ const NewRegulationFilter = (props) => {
           options={listOfIndustries}
           onSelect={(event) => dispatch(setIndustry(event.toString()))}
           multiple={true}
+          value={filterInputs?.industry || []}
         />
       </div>
       <div>
@@ -193,6 +203,7 @@ const NewRegulationFilter = (props) => {
           options={listOfTopic}
           onSelect={(event) => dispatch(setTopic(event.toString()))}
           multiple={true}
+          value={filterInputs?.topic || []}
         />
       </div>
       <div>

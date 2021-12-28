@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./style.css";
+// import "./style.css";
 import styled from "styled-components";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -24,7 +24,6 @@ function BoardView({ setCurrentBoardViewBy, currentBoardViewBy, isRedirect }) {
     state.taskReport.taskReport.taskReport &&
     state.taskReport.taskReport.taskReport;
   const userDetails = state && state.auth && state.auth.loginInfo;
-
   useEffect(() => {
     if (taskList && taskList.length > 0) {
       let data = [];
