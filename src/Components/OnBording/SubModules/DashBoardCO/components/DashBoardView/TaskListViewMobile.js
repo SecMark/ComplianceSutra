@@ -1760,6 +1760,7 @@ function RightSideGrid({
                           <BoardView
                             setCurrentBoardViewBy={setCurrentBoardViewBy}
                             currentBoardViewBy={currentBoardViewBy}
+                            isRedirect
                           />
                         </div>
                       )}

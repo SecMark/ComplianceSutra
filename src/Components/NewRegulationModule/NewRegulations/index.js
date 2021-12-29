@@ -186,11 +186,15 @@ const NewRegulations = (props) => {
       </span>
     );
   };
-  const getNewRegulationFilterList = async () => {
+  const getNewRegulationFilterList = async (isMobile) => {
     getAndSetIndustryList();
     setTimeout(() => {
-      setIsShowFilter(!isShowFilter);
-    }, 2000);
+      if (!isMobile) {
+        setIsShowFilter(!isShowFilter);
+      } else {
+        setIsShowMobileFilter(!isShowMobileFilter);
+      }
+    }, 1000);
   };
 
   const getAndSetIndustryList = () => {
@@ -400,9 +404,7 @@ const NewRegulations = (props) => {
                           <img
                             src={filter}
                             alt="filter"
-                            onClick={() =>
-                              setIsShowMobileFilter(!isShowMobileFilter)
-                            }
+                            onClick={() => getNewRegulationFilterList(true)}
                           />
                         </div>
                       </div>
@@ -550,7 +552,7 @@ const NewRegulations = (props) => {
                         src={filter}
                         alt="Filter"
                         className="filter-image"
-                        onClick={() => getNewRegulationFilterList()}
+                        onClick={() => getNewRegulationFilterList(false)}
                       />
                     </h2>
 
