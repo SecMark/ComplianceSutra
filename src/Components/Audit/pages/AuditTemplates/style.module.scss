@@ -13,13 +13,14 @@
     font-size: 24px;
   }
 }
-.topHeading{
-  border-bottom: 1px solid $color_light_black;
+.topHeading {
+  border-bottom: 2px solid $color_light_black;
 }
-.borderBottom{
-  border: 1px solid $color_blue;
-  width: 180px;
-}
+// .borderBottom {
+//   width: 180px;
+//   background: $color_blue;
+//   height: 1px;
+// }
 p.tableDataContainerItem {
   margin-bottom: 0;
   flex: 0.1;

@@ -143,9 +143,6 @@ function AuditTemplates() {
     <Container variant="content">
       <div className={styles.topHeading}>
         <Text heading="p" variant="stepperMainHeading" text="Audit Templates" />
-        <div className={styles.borderBottom}>
-
-        </div>
       </div>
 
       {auditTemplatesData && auditTemplatesData?.length > 0 && (
