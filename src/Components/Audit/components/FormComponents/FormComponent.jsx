@@ -436,14 +436,14 @@ const FormComponents = ({ next, back, stepper }) => {
             variant="grey"
           />
           <div className={styles.itemList}>
-            <IconButton
+            {/* <IconButton
               description="New Question"
               onDragStart={(event) => ondragstart(event, uuidv4())}
               draggable={true}
               variant="item"
               icon={<BsPlusSquareFill />}
               size="medium"
-            />
+            /> */}
             <div className={styles.inputButtons}>
               {inputItem.map((item, index) => (
                 <Button

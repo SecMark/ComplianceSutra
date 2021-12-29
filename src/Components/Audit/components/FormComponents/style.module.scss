@@ -32,11 +32,10 @@
     width: 100%;
     background-color: $color_dark_skyblue;
     border-radius: 10px;
-    height: 500px;
+    height: 400px;
   }
 
   .itemList {
-    margin-top: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -45,7 +44,7 @@
       justify-content: space-between;
       flex-flow: row wrap;
       button {
-        margin: 10px 0 0;
+        margin: 8px 0 0;
       }
       svg {
         font-size: 20px;
