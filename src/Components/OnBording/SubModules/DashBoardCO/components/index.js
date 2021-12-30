@@ -19,6 +19,7 @@ import "./style.css";
 import SectionList from "../../../../Audit/pages/List/SectionList";
 import Layout from "../../../../Audit/components/Layout/Layout.jsx";
 import Landing from "../../../../Audit/pages/Landing/index.jsx";
+import TaxAudit from "../../../../Audit/pages/AuditTemplates/TaxAudit";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
@@ -131,6 +132,11 @@ function Dashboard({ history }) {
       state?.adminMenu?.currentMenu !== "audit"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("audit"));
+    } else if (
+      window.location.href.includes("tax-audit") &&
+      state?.adminMenu?.currentMenu !== "tax-audit"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("tax-audit"));
     }
   }, [window.location.href]);
 
@@ -192,8 +198,12 @@ function Dashboard({ history }) {
 
         {state && state.adminMenu.currentMenu === "audit" && (
           <div className="create-template">
-            {/* <FormBuilder/> */}
             <Layout />
+          </div>
+        )}
+        {state && state.adminMenu.currentMenu === "tax-audit" && (
+          <div className="create-template">
+            <TaxAudit />
           </div>
         )}
 

@@ -125,6 +125,9 @@ function AuditTemplates() {
           size="none"
         />
         <IconButton
+          onClick={() => {
+            history.push("/tax-audit");
+          }}
           variant="iconButtonRound"
           description={<MdKeyboardArrowRight />}
           size="none"

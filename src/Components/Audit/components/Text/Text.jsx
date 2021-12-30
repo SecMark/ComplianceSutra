@@ -41,7 +41,10 @@ const Text = ({
         </h6>
       )}
       {heading === "p" && (
-        <p className={`${styles[variant]} ${styles[size]}`} rest>
+        <p
+          className={`${styles[variant]} ${styles[size]} ${rest.className}`}
+          rest
+        >
           {text}
         </p>
       )}
