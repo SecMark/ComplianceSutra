@@ -10,11 +10,16 @@ const Auth = () => {
   const isSignupDone = authInfo?.signup_done;
   const userType = authInfo?.UserType;
   useEffect(() => {
+    const { pathname } = history.location;
+    console.log({ pathname });
     if (!(email && isMobileVerified && isSignupDone && userType)) {
-      if (!history.location.pathname.includes("login"))
+      if (pathname.includes("sign-up")) {
+        history.replace("/sign-up");
+      } else if (!pathname.includes("login")) {
         history.replace("/login");
+      }
     } else {
-      if (history.location.pathname.includes("login")) {
+      if (pathname.includes("login") || pathname.includes("sign-up")) {
         if (userType === 3) history.push("/dashboard-view");
         else history.push("/dashboard");
       }

@@ -13,7 +13,6 @@ const actionHandler = {
     loginInfo: {},
   }),
   [types.LOGOUT_REQUEST]: (state) => {
-    console.log("Logout");
     return {
       ...state,
       loginSuccess: false,

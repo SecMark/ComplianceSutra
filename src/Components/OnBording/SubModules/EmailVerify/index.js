@@ -9,25 +9,39 @@ import { useDispatch } from "react-redux";
 import SideBar from "../SideBar";
 import { useLocation } from "react-router-dom";
 import { actions } from "../../redux/actions";
+import { actions as loginActions } from "../../../Authectication/redux/actions";
+import axiosInstance from "../../../../apiServices";
+import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
+import { toast } from "react-toastify";
 
 function EmailVerify({ history }) {
   const search = useLocation().search;
   const email = new URLSearchParams(search).get("email");
   const key = new URLSearchParams(search).get("key");
   const dispatch = useDispatch();
-  // localStorage.setItem("coemail", email);
-  // localStorage.setItem("accessToken", key);
 
   useEffect(() => {
-    dispatch(actions.setEmailVerificationData({ email, key }));
-    dispatch(actions.setGovernanceDataFailed({}));
-    dispatch(actions.insertCerificateDetailsRequestSuccess([]));
-    dispatch(actions.insUpdateDeletAPIRequestSuccess({}));
-    dispatch(actions.getAssignTaskDataReuestSuccess({}));
-    dispatch(actions.governanceAPIRequestSuccess({}));
-    setTimeout(() => {
-      history.push("/personal-details");
-    }, 3000);
+    if (email && key) {
+      dispatch(actions.setEmailVerificationData({ email, key }));
+      dispatch(actions.setGovernanceDataFailed({}));
+      dispatch(actions.insertCerificateDetailsRequestSuccess([]));
+      dispatch(actions.insUpdateDeletAPIRequestSuccess({}));
+      dispatch(actions.getAssignTaskDataReuestSuccess({}));
+      dispatch(actions.governanceAPIRequestSuccess({}));
+      dispatch(loginActions.createLogoutAction());
+      const deviceToken = localStorage.getItem("deviceToken");
+      if (deviceToken) {
+        axiosInstance.post(`${BACKEND_BASE_URL}compliance.api.removeFCMToken`, {
+          token: deviceToken,
+        });
+      }
+      setTimeout(() => {
+        history.push("/personal-details");
+      }, 3000);
+    } else {
+      history.replace("/sign-up");
+      toast.error("Invalid Verification Link");
+    }
   }, []);
 
   return (

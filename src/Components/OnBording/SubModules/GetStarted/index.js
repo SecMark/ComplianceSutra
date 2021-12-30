@@ -14,6 +14,7 @@ import comtech from "../../../../assets/Images/CapmTech.png";
 import secmark from "../../../../assets/Images/secmark.png";
 import BackDrop from "../../../../CommonModules/sharedComponents/Loader/BackDrop";
 import axiosInstance from "../../../../apiServices";
+import Auth from "../../../Authectication/components/Auth";
 
 function GetStart({ history }) {
   const dispatch = useDispatch();
@@ -133,6 +134,7 @@ function GetStart({ history }) {
 
   return (
     <div className="row getStartMobile">
+      <Auth />
       <Modal>
         <Terms
           show={show}

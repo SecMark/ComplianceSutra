@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import MobileStepper from "../mobileStepper";
 import render from "htmlparser2/node_modules/dom-serializer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Auth from "../../../Authectication/components/Auth";
 
 function PersonalDetails({ history }) {
   const dispatch = useDispatch();
