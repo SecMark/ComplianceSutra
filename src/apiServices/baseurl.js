@@ -7,7 +7,7 @@ if (window.location.href.includes("localhost")) {
 } else if (
   window.location.href.includes("https://csutraapp-cdemo.azurewebsites.net")
 ) {
-  url = "https://20.198.68.148/api/method/"; //For demo
+  url = "http://20.198.68.148/api/method/"; //For demo
 } else {
   url = "https://prd.compliancesutra.com/api/method/"; // For Production
 }
