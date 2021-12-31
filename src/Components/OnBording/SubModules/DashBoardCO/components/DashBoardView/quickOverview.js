@@ -125,7 +125,6 @@ function QuickOverView({ click, setClick, setListView, listView }) {
         });
 
         setTeamStats(teamList);
-
         setDashboardStats(companyList);
       }
     } catch (error) {}
@@ -160,21 +159,21 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   const monthlyBoxView = (item, index) => {
     return (
       <>
-        <div class="compliant-option">
+        <div key={index} class="compliant-option">
           <p className="compliant-title-left">{item.name}</p>
           <ul className="list-group list-group-horizontal">
-            <li className={item && calculateColorCode(item.status.m1)}></li>
-            <li className={item && calculateColorCode(item.status.m2)}></li>
-            <li className={item && calculateColorCode(item.status.m3)}></li>
-            <li className={item && calculateColorCode(item.status.m4)}></li>
-            <li className={item && calculateColorCode(item.status.m5)}></li>
-            <li className={item && calculateColorCode(item.status.m6)}></li>
-            <li className={item && calculateColorCode(item.status.m7)}></li>
-            <li className={item && calculateColorCode(item.status.m8)}></li>
-            <li className={item && calculateColorCode(item.status.m9)}></li>
-            <li className={item && calculateColorCode(item.status.m10)}></li>
-            <li className={item && calculateColorCode(item.status.m11)}></li>
-            <li className={item && calculateColorCode(item.status.m12)}></li>
+            <li className={item && calculateColorCode(item.status?.m1)}></li>
+            <li className={item && calculateColorCode(item.status?.m2)}></li>
+            <li className={item && calculateColorCode(item.status?.m3)}></li>
+            <li className={item && calculateColorCode(item.status?.m4)}></li>
+            <li className={item && calculateColorCode(item.status?.m5)}></li>
+            <li className={item && calculateColorCode(item.status?.m6)}></li>
+            <li className={item && calculateColorCode(item.status?.m7)}></li>
+            <li className={item && calculateColorCode(item.status?.m8)}></li>
+            <li className={item && calculateColorCode(item.status?.m9)}></li>
+            <li className={item && calculateColorCode(item.status?.m10)}></li>
+            <li className={item && calculateColorCode(item.status?.m11)}></li>
+            <li className={item && calculateColorCode(item.status?.m12)}></li>
           </ul>
         </div>
       </>
@@ -204,7 +203,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
         "border-top-left-radius": index === length - 1,
       });
       return (
-        <button className={btnClass}>
+        <button key={data?.companyName} className={btnClass}>
           <div className="d-flex">
             <div className="two-btn-img">
               <img
@@ -213,7 +212,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                     ? { width: "auto", height: "auto" }
                     : {}
                 }
-                src={percentage && percentage > 60 ? btnicon : btnicon}
+                src={percentage && percentage > 60 ? btnicon : percentageless60}
                 alt="btn-icon"
               />{" "}
             </div>
@@ -272,9 +271,10 @@ function QuickOverView({ click, setClick, setListView, listView }) {
               />{" "}
             </div>
             <div className="icon-right-text-new">
-              <div className="small-text-new">{data && data.EntityName}</div>
+              <div className="small-text-new">{data && data.companyName}</div>
               <div className="big-text-new">
-                Compliant ({data && data.CompliedTask}/{data && data.TotalTask}){" "}
+                Compliant ({data && data.completed_task}/
+                {data && data.total_task}){" "}
                 <img
                   style={{ cursor: "pointer" }}
                   onClick={() => openCloseCollapsible(index)}
@@ -296,9 +296,9 @@ function QuickOverView({ click, setClick, setListView, listView }) {
           >
             <div>
               {data &&
-                data.MonthlyAnalytics &&
-                data.MonthlyAnalytics.length > 0 &&
-                renderCollapsibleMonthView(data.MonthlyAnalytics)}
+                data.licenseCodeList &&
+                data.licenseCodeList.length > 0 &&
+                renderCollapsibleMonthView(data.licenseCodeList)}
             </div>
           </Collapsible>
         </button>
@@ -332,10 +332,10 @@ function QuickOverView({ click, setClick, setListView, listView }) {
                 />{" "}
               </div>
               <div className="icon-right-text-new">
-                <div className="small-text-new">{data && data.EntityName}</div>
+                <div className="small-text-new">{data && data.companyName}</div>
                 <div className="big-text-new">
-                  Compliant ({data && data.CompliedTask}/
-                  {data && data.TotalTask}){" "}
+                  Compliant ({data && data.completed_task}/
+                  {data && data.total_task}){" "}
                   <img
                     style={{ cursor: "pointer" }}
                     onClick={() => openCloseCollapsible(index)}
@@ -353,7 +353,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
               overflowWhenOpen="inherit"
               open={collapse && collapse[index] && collapse[index].open}
             >
-              <div>{renderCollapsibleMonthView(dashboardStats)}</div>
+              <div>{renderCollapsibleMonthView(data.licenseCodeList)}</div>
             </Collapsible>
           </button>
         </>
@@ -384,7 +384,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   };
 
   const calculateColorCode = (item) => {
-    const value = item.completed_percentage;
+    const value = item?.completed_percentage;
     let str = "";
     if (parseInt(value) === -1) {
       str = "gray-box";
@@ -399,7 +399,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
   };
   const _renderteamStats = (item, index) => {
     return (
-      <div class="compliant-option-new">
+      <div key={index} class="compliant-option-new">
         {item && item.user_name && (
           <>
             <p className="compliant-title-left-new">
@@ -412,36 +412,36 @@ function QuickOverView({ click, setClick, setListView, listView }) {
               <li
                 className={
                   item &&
-                  item.week_status.w1 &&
-                  calculateColorCode(item.week_status.w1)
+                  item?.week_status?.w1 &&
+                  calculateColorCode(item?.week_status?.w1)
                 }
               ></li>
               <li
                 className={
                   item &&
-                  item.week_status.w2 &&
-                  calculateColorCode(item.week_status.w2)
+                  item?.week_status?.w2 &&
+                  calculateColorCode(item?.week_status?.w2)
                 }
               ></li>
               <li
                 className={
                   item &&
-                  item.week_status.w3 &&
-                  calculateColorCode(item.week_status.w3)
+                  item?.week_status?.w3 &&
+                  calculateColorCode(item?.week_status?.w3)
                 }
               ></li>
               <li
                 className={
                   item &&
-                  item.week_status.w4 &&
-                  calculateColorCode(item.week_status.w4)
+                  item?.week_status?.w4 &&
+                  calculateColorCode(item?.week_status?.w4)
                 }
               ></li>
               <li
                 className={
                   item &&
-                  item.week_status.w5 &&
-                  calculateColorCode(item.week_status.w5)
+                  item?.week_status?.w5 &&
+                  calculateColorCode(item?.week_status?.w5)
                 }
               ></li>
             </ul>
