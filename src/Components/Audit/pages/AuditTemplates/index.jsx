@@ -141,6 +141,13 @@ function AuditTemplates() {
   }, []);
   return (
     <Container variant="content">
+      <div className={styles.topHeading}>
+        <Text heading="p" variant="stepperMainHeading" text="Audit Templates" />
+        <div className={styles.borderBottom}>
+
+        </div>
+      </div>
+
       {auditTemplatesData && auditTemplatesData?.length > 0 && (
         <DataGrid
           id="dataGrid"
@@ -150,15 +157,18 @@ function AuditTemplates() {
           onSelectionChanged={selectEmployee}
           onExporting={exportGrid}
           paging={{ pageSize: 6 }}
+          showColumnLines={false}
+          showBorders={false}
+          showRowLines={false}
         >
-          {/* <Toolbar>
-            <Item location="before">
+          <Toolbar>
+            {/* <Item location="before">
               <Text
                 heading="p"
                 variant="stepperMainHeading"
                 text="Audit Templates"
               />
-            </Item>
+            </Item> */}
             <Item location="after">
               <IconButton
                 description="Create Template"
@@ -169,7 +179,8 @@ function AuditTemplates() {
             </Item>
             <Item name="exportButton" />
             <Item name="searchPanel" />
-          </Toolbar> */}
+            <Item name="groupPanel" location="before" />
+          </Toolbar>
           <Column
             dataField="audit_template_name"
             caption="Template Name"

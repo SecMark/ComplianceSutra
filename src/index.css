@@ -204,3 +204,7 @@ input::-webkit-inner-spin-button {
 .dx-datagrid-header-panel .dx-toolbar {
   padding: 20px;
 }
+
+.dx-datagrid-group-panel .dx-group-panel-message {
+  margin-left: -26px;
+}
