@@ -56,7 +56,7 @@ input[type="text"]:focus {
   position: absolute;
   cursor: pointer;
   top: -3px;
-  left: 52px;
+  left: 66px;
   right: 16px;
   bottom: 0;
   background-color: $color_light_slide_gray;
@@ -103,10 +103,14 @@ input[type="checkbox"] {
   margin-left: 350px;
   margin-top: -25px;
 }
-.btnContainer {
-  padding: 12px;
-  margin-top: 30px;
-  margin-left: 25px;
+.btnSubmit {
+  margin-left: 80px;
+  margin-top: 40px;
+}
+.btnCancel {
+  margin-left: 175px;
+  margin-top: -36px;
+  margin-bottom: 50px;
 }
 .closeButton {
   margin-left: 1px;
@@ -118,20 +122,39 @@ input[type="checkbox"] {
   background-color: $color_white;
   justify-content: flex-end;
 }
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .mainContainer {
-    margin-left: 50px;
-    width: 75%;
+    width: 100%;
   }
-  .mainContainer input {
+  .Container {
+    width: 50%;
+  }
+  .Container .closeButton{
+    margin-left: -310px;
+  }
+  .Container input{
     margin-left: 200px;
+    width: 45%;
   }
   .mainContainer .sliderRound {
     margin-left: 40px;
+    width: 110px;
+  }
+  .btnSubmit {
+    margin-left: 2px;
+    margin-top: 10px;
+  }
+  .btnCancel {
+    margin-left: -55px;
+    margin-top: 5px;
+  }
+  .mainContainer .auditdropInput{
+    margin-left: -10px; 
+    width: 20% !important;
   }
 }
 
-//Add New Subordinate Forms
+//Add New Subordinate Forms & Auditee
 .subMainContainer {
   border-radius: 10px;
   position: fixed; /* Positioning and size */
@@ -142,17 +165,14 @@ input[type="checkbox"] {
   background-color: rgba(128, 128, 128, 0.5); /* color */
 }
 
-@media (max-width: 500px) {
-  .subMainContainer {
-    margin-left: 50px;
-    width: 75%;
-  }
-}
-
 //commonAuditFormPage css
 .auditUserButton {
   float: left;
 }
 .subUserButton {
   margin-left: 200px;
+}
+.auditee{
+  margin-left: 400px;
+  margin-top: -38px;
 }

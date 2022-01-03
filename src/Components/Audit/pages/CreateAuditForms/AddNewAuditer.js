@@ -107,8 +107,10 @@ function AddNewAuditer({ closeModal }) {
                 </div>
               </div>
             </div>
-            <div className={styles.btnContainer}>
+            <div className={styles.btnSubmit}>
               <Button description="Submit" onClick={handleSubmit} />
+            </div>
+            <div className={styles.btnCancel}>
               <Button
                 description="Cancel"
                 variant="cancelButton"

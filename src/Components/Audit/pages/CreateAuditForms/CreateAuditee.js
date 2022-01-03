@@ -6,7 +6,7 @@ import styles from "./style.module.scss";
 import IconButton from "../../components/Buttons/IconButton";
 import { AiOutlineClose } from "react-icons/ai";
 
-function AddNewSubUser({ closeSubModal }) {
+function CreateAuditee({ closeAuditeModal }) {
   return (
     <>
       {/* <Text heading="h5" text="Add New Sub User" variant="auditheading" /> */}
@@ -16,10 +16,10 @@ function AddNewSubUser({ closeSubModal }) {
             <IconButton
               icon={<AiOutlineClose />}
               variant="closeBtn"
-              onClick={() => closeSubModal(false)}
+              onClick={() => closeAuditeModal(false)}
             />
           </div>
-          <Text heading="h6" text="User Name" variant="auditNames" />
+          <Text heading="h6" text="Subordinate Name" variant="auditNames" />
           <div className={styles.auditInput}>
             <Input
               variant="AddNewAuditInput"
@@ -28,7 +28,7 @@ function AddNewSubUser({ closeSubModal }) {
               //   onChange={handleChange}
             />
           </div>
-          <Text heading="h6" text="Category" variant="expterties" />
+          <Text heading="h6" text="Experties" variant="expterties" />
           <Input
             type="select"
             variant="dropdownInput"
@@ -60,21 +60,6 @@ function AddNewSubUser({ closeSubModal }) {
               //   onChange={handleChange}
             />
           </div>
-          <Text
-              heading="h6"
-              text="Allowed to add User"
-              variant="allow-sub"
-            />
-            <div className={styles.sliderRound}>
-              <div className="col-12 pr-0">
-                <div className={styles.switchbtn}>
-                  <label className={styles.switch}>
-                    <input type="checkbox" />
-                    <span className={styles.slider}></span>
-                  </label>
-                </div>
-              </div>
-            </div>
           <div className={styles.btnSubmit}>
             <Button description="Submit" />
           </div>
@@ -82,7 +67,7 @@ function AddNewSubUser({ closeSubModal }) {
             <Button
               description="Cancel"
               variant="cancelButton"
-              onClick={() => closeSubModal(false)}
+              onClick={() => closeAuditeModal(false)}
             />
           </div>
         </div>
@@ -91,4 +76,4 @@ function AddNewSubUser({ closeSubModal }) {
   );
 }
 
-export default AddNewSubUser;
+export default CreateAuditee;
