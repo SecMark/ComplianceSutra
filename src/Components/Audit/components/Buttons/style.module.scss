@@ -179,6 +179,77 @@
   cursor: pointer;
 }
 
+//Audit card component
+.auditButton{
+  background: $color_blue;
+  margin-top: 107px;
+  font-size:small;
+  margin-left: -140px;
+  color: $color_white;
+  cursor: pointer;
+  width: 110px;
+  height: 45px;
+}
+.auditIconButton{
+  background-color: $color_light_sky;
+  margin-top: 122px;
+  font-size: small;
+  margin-left: -203px;
+  border: none !important;
+  margin-right: 60px;
+  font-size: large;
+  width: 29px;
+  height: 40%;
+  cursor: pointer;
+}
+
+//Audit Template List
+.auditTemplateSearchIconButton{
+  background-color:$color-white;
+  border: none !important;
+  width: 1%;
+  height: 32px;
+  margin-left: 1097px;
+  margin-top: 2px;
+}
+.auditTemplatePlusIconButton{
+  background-color: $color_white;
+  border: none !important;
+  width: 2%;
+  height: 20px;
+  margin: 5px 700px;
+}
+.editIcon{
+  background-color: $color_white;
+  border: none !important;
+  width: 4%;
+  height: 6%;
+}
+.rightIcon{
+  background-color: $color_white;
+  border: none !important;
+  width: 100%;
+  height: 6%;
+}
+
+//Create New Audit Form
+
+//Add New Audit Forms
+.cancelButton{
+  margin-left: 60px;
+  background-color: $color-white;
+  border-color: $color_blue;
+  color: $color_blue;
+}
+.closeBtn{
+  width: 26px;
+  height: 30px;
+  font-size:x-large;
+  margin-left: 440px;
+  margin-top: -15px;
+  border: none !important;
+  background-color: $color_white;
+}
 .viewfilebtn {
   background: $color_transparent;
   border: none;

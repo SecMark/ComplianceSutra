@@ -6,7 +6,7 @@ import Task from "./Components/Task";
 
 const Trash =()=> {
        const [options, setOptions] = useState("list");
-    const selectProfileOption = (option) => {
+       const selectProfileOption = (option) => {
         setOptions(option);
       };
     return (

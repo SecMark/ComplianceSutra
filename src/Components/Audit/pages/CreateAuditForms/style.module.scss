@@ -1,0 +1,178 @@
+@import "../../assets/styles/colors";
+
+//Add New Audit Forms
+.body {
+  background-color: $color_light_slide_gray;
+}
+.mainContainer {
+  border-radius: 10px;
+  position: fixed; /* Positioning and size */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(128, 128, 128, 0.5); /* color */
+}
+.Container {
+  padding: 25px 16px;
+  margin-top: -26px;
+  position: fixed; /* positioning in center of page */
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  height: 580px; /* size */
+  width: 30%;
+  background-color: $color_white; /* background color */
+  border-radius: 10px;
+}
+.auditInput {
+  margin-left: -208px;
+  margin-top: -22px;
+  border-radius: 10px;
+}
+input {
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  width: 70%;
+  padding: 11px;
+  margin-left: 207px;
+  border-radius: 10px;
+  border: 2px solid $color_hex_color;
+}
+input[type="text"]:focus {
+  border: 3px solid $color_primary;
+}
+
+//slider button
+.switchbtn .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.switchbtn .slider {
+  position: absolute;
+  cursor: pointer;
+  top: -3px;
+  left: 66px;
+  right: 16px;
+  bottom: 0;
+  background-color: $color_light_slide_gray;
+  transition: 0.4s;
+  border-radius: 8px;
+}
+.switchbtn .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 2px;
+  background-color: $color_white;
+  transition: 0.4s;
+  border-radius: 10px;
+}
+
+.switchbtn input:checked + .slider {
+  background-color: $color_blue;
+}
+
+.switchbtn input:focus + .slider {
+  box-shadow: 0 0 1px $color_blue;
+}
+.switchbtn input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+.switchbtn .slider.round {
+  border-radius: 34px;
+}
+.switchbtn .slider.round:before {
+  border-radius: 50%;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+  display: none;
+}
+.sliderRound {
+  margin-left: 350px;
+  margin-top: -25px;
+}
+.btnSubmit {
+  margin-left: 80px;
+  margin-top: 40px;
+}
+.btnCancel {
+  margin-left: 175px;
+  margin-top: -36px;
+  margin-bottom: 50px;
+}
+.closeButton {
+  margin-left: 1px;
+  width: 0px;
+  height: 30px;
+  font-size: x-large;
+  margin-top: -15px;
+  border: none !important;
+  background-color: $color_white;
+  justify-content: flex-end;
+}
+@media (max-width: 700px) {
+  .mainContainer {
+    width: 100%;
+  }
+  .Container {
+    width: 50%;
+  }
+  .Container .closeButton{
+    margin-left: -310px;
+  }
+  .Container input{
+    margin-left: 200px;
+    width: 45%;
+  }
+  .mainContainer .sliderRound {
+    margin-left: 40px;
+    width: 110px;
+  }
+  .btnSubmit {
+    margin-left: 2px;
+    margin-top: 10px;
+  }
+  .btnCancel {
+    margin-left: -55px;
+    margin-top: 5px;
+  }
+  .mainContainer .auditdropInput{
+    margin-left: -10px; 
+    width: 20% !important;
+  }
+}
+
+//Add New Subordinate Forms & Auditee
+.subMainContainer {
+  border-radius: 10px;
+  position: fixed; /* Positioning and size */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(128, 128, 128, 0.5); /* color */
+}
+
+//commonAuditFormPage css
+.auditUserButton {
+  float: left;
+}
+.subUserButton {
+  margin-left: 200px;
+}
+.auditee{
+  margin-left: 400px;
+  margin-top: -38px;
+}

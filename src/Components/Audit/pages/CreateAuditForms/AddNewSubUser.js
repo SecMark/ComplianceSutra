@@ -1,0 +1,94 @@
+import React from "react";
+import Text from "../../components/Text/Text";
+import { Input } from "../../components/Inputs/Input";
+import Button from "../../components/Buttons/Button";
+import styles from "./style.module.scss";
+import IconButton from "../../components/Buttons/IconButton";
+import { AiOutlineClose } from "react-icons/ai";
+
+function AddNewSubUser({ closeSubModal }) {
+  return (
+    <>
+      {/* <Text heading="h5" text="Add New Sub User" variant="auditheading" /> */}
+      <div className={styles.subMainContainer}>
+        <div className={styles.Container}>
+          <div className={styles.closeButton}>
+            <IconButton
+              icon={<AiOutlineClose />}
+              variant="closeBtn"
+              onClick={() => closeSubModal(false)}
+            />
+          </div>
+          <Text heading="h6" text="User Name" variant="auditNames" />
+          <div className={styles.auditInput}>
+            <Input
+              variant="AddNewAuditInput"
+              name="AuditName"
+              //   value={newAuditor.AuditName}
+              //   onChange={handleChange}
+            />
+          </div>
+          <Text heading="h6" text="Category" variant="expterties" />
+          <Input
+            type="select"
+            variant="dropdownInput"
+            placeholder="Select"
+            name="SelectName"
+            // value={newAuditor.SelectName}
+            // onChange={handleChange}
+            valueForDropDown={[
+              { label: "Team Member", value: 4 },
+              { label: "Compliance Officer", value: 3 },
+              { label: "Approver", value: 5 },
+            ]}
+          />
+          <Text heading="h6" text="Mobile No." variant="mobileNo" />
+          <div className={styles.auditInput}>
+            <Input
+              variant="mobileNum"
+              name="MobileNo"
+              //   value={newAuditor.MobileNo}
+              //   onChange={handleChange}
+            />
+          </div>
+          <Text heading="h6" text="Emai Address" variant="emailAddress" />
+          <div className={styles.auditInput}>
+            <Input
+              variant="mobileNum"
+              name="Email"
+              //   value={newAuditor.Email}
+              //   onChange={handleChange}
+            />
+          </div>
+          <Text
+              heading="h6"
+              text="Allowed to add User"
+              variant="allow-sub"
+            />
+            <div className={styles.sliderRound}>
+              <div className="col-12 pr-0">
+                <div className={styles.switchbtn}>
+                  <label className={styles.switch}>
+                    <input type="checkbox" />
+                    <span className={styles.slider}></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          <div className={styles.btnSubmit}>
+            <Button description="Submit" />
+          </div>
+          <div className={styles.btnCancel}>
+            <Button
+              description="Cancel"
+              variant="cancelButton"
+              onClick={() => closeSubModal(false)}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default AddNewSubUser;

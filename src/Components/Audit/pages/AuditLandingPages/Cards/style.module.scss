@@ -1,0 +1,32 @@
+@import "../../../assets/styles/colors";
+
+.auditCard {
+    width: 307px;
+    height: 350px;
+    box-shadow: 0 4px 8px 0 $color_grey;
+    text-align: center;
+    border-radius: 8px;
+    background-color: $color_light_sky;
+    margin: 8px ;
+    float: left; 
+}
+.wrap{
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 30px;
+    
+ }
+.title{
+        font-size: x-large;
+        font-weight:bold;
+        margin-top: 25px;
+        margin-left: 3px;        
+}       
+.text{
+    font-size: small;
+    margin-top: 43px;
+    font-weight: lighter;
+    color: $color_blue;
+    margin-left: 25px;
+    padding-right: 50px;
+}
