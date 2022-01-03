@@ -39,11 +39,25 @@ const getAllTasks = (task_details) => {
       tasks = [...tasks, ...item.taskList];
     });
   });
+  tasks = [...tasks].map((task) => {
+    const deadline_date = task.deadline_date || task.due_date;
+    const userType = localStorage.getItem("userType");
+
+    if (
+      task.status === "Approval Pending" &&
+      new Date(deadline_date) < new Date() &&
+      userType === "4"
+    ) {
+      return { ...task, status: "Approved" };
+    }
+    return task;
+  });
   return sortByDate(tasks);
 };
 // get Data by Status
 const getDataByStatus = (task_details) => {
   let tasks = getAllTasks(task_details);
+  const userType = localStorage.getItem("userType");
   const getDataByStatus = [];
   const status = ["Overdue", "Take Action", "Upcoming", "Completed"];
   status.forEach((filter) => {
@@ -52,47 +66,82 @@ const getDataByStatus = (task_details) => {
     switch (filter) {
       case "Overdue":
         tasksByStatus = [...tasks].filter((task) => {
+          const task_deadline_date = task?.deadline_date || task?.due_date;
           if (task.status !== "Approved") {
-            const taskDueDate = moment(
-              task.due_date || task.deadline_date,
-              "YYYY-MM-DD"
-            );
-            const diffrenceInDays = taskDueDate.diff(todayDate, "days");
-            if (diffrenceInDays < 0) {
-              return task;
+            if (
+              !(
+                new Date(task_deadline_date) < new Date() &&
+                task.status === "Approval Pending" &&
+                userType === "4"
+              )
+            ) {
+              const taskDueDate = moment(
+                task.due_date || task.deadline_date,
+                "YYYY-MM-DD"
+              );
+              const diffrenceInDays = taskDueDate.diff(todayDate, "days");
+              if (diffrenceInDays < 0) {
+                return task;
+              }
             }
           }
         });
         break;
       case "Upcoming":
         tasksByStatus = [...tasks].filter((task) => {
+          const task_deadline_date = task?.deadline_date || task?.due_date;
           if (task.status !== "Approved") {
-            const taskDueDate = moment(
-              task.due_date || task.deadline_date,
-              "YYYY-MM-DD"
-            );
-            const diffrenceInDays = taskDueDate.diff(todayDate, "days");
-            if (diffrenceInDays > 0 && diffrenceInDays >= 7) {
-              return task;
+            if (
+              !(
+                new Date(task_deadline_date) < new Date() &&
+                task.status === "Approval Pending" &&
+                userType === "4"
+              )
+            ) {
+              const taskDueDate = moment(
+                task.due_date || task.deadline_date,
+                "YYYY-MM-DD"
+              );
+              const diffrenceInDays = taskDueDate.diff(todayDate, "days");
+              if (diffrenceInDays > 0 && diffrenceInDays >= 7) {
+                return task;
+              }
             }
           }
         });
         break;
       case "Take Action":
         tasksByStatus = [...tasks].filter((task) => {
+          const task_deadline_date = task?.deadline_date || task?.due_date;
           if (task.status !== "Approved") {
-            const due_date = task.due_date || task.deadline_date;
-            const taskDueDate = moment(due_date, "YYYY-MM-DD");
-            const diffrenceInDays = taskDueDate.diff(todayDate, "days");
-            if (diffrenceInDays >= 0 && diffrenceInDays <= 7) {
-              return task;
+            if (
+              !(
+                new Date(task_deadline_date) < new Date() &&
+                task.status === "Approval Pending" &&
+                userType === "4"
+              )
+            ) {
+              const due_date = task.due_date || task.deadline_date;
+              const taskDueDate = moment(due_date, "YYYY-MM-DD");
+              const diffrenceInDays = taskDueDate.diff(todayDate, "days");
+              if (diffrenceInDays >= 0 && diffrenceInDays <= 7) {
+                return task;
+              }
             }
           }
         });
         break;
       case "Completed":
         tasksByStatus = [...tasks].filter((task) => {
+          const due_date = task.deadline_date || task.due_date;
           if (task.status === "Approved") {
+            return task;
+          }
+          if (
+            task.status === "Approval Pending" &&
+            new Date(due_date) < new Date() &&
+            userType === "4"
+          ) {
             return task;
           }
         });
