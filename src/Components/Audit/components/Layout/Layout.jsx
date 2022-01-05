@@ -8,6 +8,7 @@ import AuditAssignment from "../../pages/AuditAssignment";
 import AuditTemplates from "../../pages/AuditTemplates";
 import { useRouteMatch, Route, Switch } from "react-router";
 import Container from "../Containers";
+import SectionList from "../../pages/List/SectionList";
 const Layout = () => {
   const { path, url } = useRouteMatch();
   return (
@@ -19,7 +20,7 @@ const Layout = () => {
       <Container variant="container">
         <Switch>
           <Route exact path={`${path}`}>
-            <AuditTemplates />
+            <SectionList />
           </Route>
           <Route exact path={`/${path}/questionaire`}>
             <FormBuilder />

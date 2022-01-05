@@ -24,6 +24,12 @@ const SideBar = () => {
             <span>Assignments</span>
           </li>
           <li>
+            <span>Users</span>
+          </li>
+          <li>
+            <span>Company</span>
+          </li>
+          <li>
             <span>Clients</span>
           </li>
           <li>
