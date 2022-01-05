@@ -208,3 +208,8 @@ input::-webkit-inner-spin-button {
 .dx-datagrid-group-panel .dx-group-panel-message {
   margin-left: -26px;
 }
+.dx-row.dx-header-row {
+  background-color: #7a73ff !important;
+  border-radius: 8px;
+  color: #fff;
+}
