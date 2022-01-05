@@ -34,6 +34,10 @@ import historyListInActive from "../../../../../assets/Icons/history_unactive.pn
 
 import Audit1 from "../../../../../assets/Icons/audit1.png";
 import Audit2 from  "../../../../../assets/Icons/audit2.png";
+
+import Regulation1 from "../../../../../assets/Icons/regulation1.png";
+import Regulation2 from "../../../../../assets/Icons/regulation2.png";
+
 import updateActive from "../../../../../assets/Icons/update_active.png";
 import SingleNotification from "../../../../../CustomNotification/SingleNotification";
 import api from "../../../../../apiServices";
@@ -334,8 +338,8 @@ function LeftSideBar({ history, isTaskListOpen, setIsTaskListOpen }) {
                 !openProfile &&
                 state &&
                 state.adminMenu.currentMenu === "new-regulations"
-                  ? updateActive
-                  : updateActive
+                  ? Regulation1
+                  : Regulation2
               }
               alt="sidebar Bell"
             />
