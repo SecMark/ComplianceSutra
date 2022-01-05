@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Text from "../../components/Text/Text";
 import IconButton from "../../components/Buttons/IconButton";
-import { MdAddBox, MdKeyboardArrowRight } from "react-icons/md";
+import {
+  MdAddBox,
+  MdKeyboardArrowRight,
+  MdOutlineCheckCircle,
+  MdPlayArrow,
+} from "react-icons/md";
 import Button from "../../components/Buttons/Button";
 import { useHistory, useRouteMatch } from "react-router";
 
@@ -68,17 +73,18 @@ function AuditTemplates() {
     );
   };
   const TemplateNameCell = (data) => {
-    const value = data?.data?.audit_template_name;
-    return <span title={value}>{getSubstring(value)}</span>;
-  };
-  const AuditTypeCell = (data) => {
-    const value = data?.data?.audit_category;
-    return <span title={value}>{getSubstring(value)}</span>;
+    const value = data?.value;
+    return (
+      <span className={styles.balckTextCell} title={value}>
+        {getSubstring(value)}
+      </span>
+    );
   };
   const MadeByCell = (data) => {
     return (
       <p title={data?.data?.user_id} className={styles.madeBy}>
-        {data?.data?.user || data?.data?.user_id}
+        {(data?.data?.user || data?.data?.user_id).split(" ")[0] ||
+          data?.data?.user}
       </p>
     );
   };
@@ -93,7 +99,7 @@ function AuditTemplates() {
         title={value}
         className={`${styles.completion} ${value === 100 && styles.success}`}
       >
-        {value + "% Complete"}
+        {value + "%"}
       </p>
     );
   };
@@ -101,13 +107,27 @@ function AuditTemplates() {
     const completion = data?.data?.completion;
     return (
       <div className="d-flex justify-content-between align-items-center">
-        <Button
-          variant="stroke"
-          description={completion < 100 ? "complete" : "view"}
+        <IconButton
+          variant="iconButtonRound"
+          description={<MdModeEdit />}
           size="none"
         />
-        <Button variant="stroke" description="start audit" size="none" />
         <IconButton
+          variant="iconButtonPrimary"
+          description={<MdOutlineCheckCircle />}
+          size="none"
+          disabled={completion === 100}
+          disabledVariant="iconButtonPrimaryDisabled"
+        />
+        <IconButton
+          variant="iconButtonPrimary"
+          description={<MdPlayArrow />}
+          size="none"
+        />
+        <IconButton
+          onClick={() => {
+            history.push("/tax-audit");
+          }}
           variant="iconButtonRound"
           description={<MdKeyboardArrowRight />}
           size="none"
@@ -117,7 +137,18 @@ function AuditTemplates() {
   };
 
   const RequiredDataCell = (data) => {
-    return <span>{data?.data?.total_question}&nbsp;Questions</span>;
+    const value = data?.value;
+    const columnName = data?.column?.name;
+    return (
+      <span className={styles.textBlueDataCell}>
+        {value}&nbsp;
+        {columnName === "total_question"
+          ? "Questions"
+          : columnName === "total_checklist"
+          ? "Checkpoints"
+          : ""}
+      </span>
+    );
   };
 
   function exportGrid(e) {
@@ -143,9 +174,6 @@ function AuditTemplates() {
     <Container variant="content">
       <div className={styles.topHeading}>
         <Text heading="p" variant="stepperMainHeading" text="Audit Templates" />
-        <div className={styles.borderBottom}>
-
-        </div>
       </div>
 
       {auditTemplatesData && auditTemplatesData?.length > 0 && (
@@ -160,18 +188,28 @@ function AuditTemplates() {
           showColumnLines={false}
           showBorders={false}
           showRowLines={false}
+          wordWrapEnabled={true}
+          width="100%"
+          selection={{
+            mode: "multiple",
+            showCheckBoxesMode: "always",
+          }}
+          scrolling={{
+            columnRenderingMode: "standard",
+            mode: "standard",
+            preloadEnabled: false,
+            renderAsync: undefined,
+            rowRenderingMode: "virtual",
+            scrollByContent: true,
+            scrollByThumb: true,
+            showScrollbar: "onHover",
+            useNative: "auto",
+          }}
         >
           <Toolbar>
-            {/* <Item location="before">
-              <Text
-                heading="p"
-                variant="stepperMainHeading"
-                text="Audit Templates"
-              />
-            </Item> */}
             <Item location="after">
               <IconButton
-                description="Create Template"
+                description="New Template"
                 variant="createProject"
                 icon={<MdAddBox />}
                 onClick={() => history.push(`${path}/create-template`)}
@@ -191,7 +229,7 @@ function AuditTemplates() {
           </Column>
           <Column
             dataField="completion"
-            caption="% Completion"
+            caption="Completion"
             cellRender={CompletionCell}
             headerCellRender={renderTitleHeader}
             alignment="left"
@@ -199,8 +237,8 @@ function AuditTemplates() {
             <RequiredRule />
           </Column>
           <Column
-            dataField="made_by"
-            caption="Made by"
+            dataField="user"
+            caption="Created by"
             cellRender={MadeByCell}
             headerCellRender={renderTitleHeader}
           >
@@ -210,7 +248,7 @@ function AuditTemplates() {
             dataField="audit_category"
             caption="audit type"
             headerCellRender={renderTitleHeader}
-            cellRender={AuditTypeCell}
+            cellRender={TemplateNameCell}
           >
             <RequiredRule />
           </Column>
@@ -225,7 +263,7 @@ function AuditTemplates() {
             dataField="total_checklist"
             caption="Checkpoints"
             headerCellRender={renderTitleHeader}
-            cellRender={CheckPointCell}
+            cellRender={RequiredDataCell}
             alignment="left"
           >
             <RequiredRule />
