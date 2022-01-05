@@ -1,24 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Text from "../../components/Text/Text";
 import Button from "../../components/Buttons/Button";
 import IconButton from "../../components/Buttons/IconButton";
-import { MdArrowBack, MdClose} from "react-icons/md";
+import { MdArrowBack, MdClose } from "react-icons/md";
 import Stepper from "../../../../CommonModules/sharedComponents/Stepper";
 import QuestionnaireForm from "./QuestionnaireForm";
 import AssignmentBasicDetails from "./AssignmentBasicDetails";
 import AddressDetails from "./AddressDetails";
 import ReviewDetails from "./ReviewDetails";
-import {auditAssignmentSteps} from "./StepperSteps";
-
+import { auditAssignmentSteps } from "./StepperSteps";
+import Loading from "../../../../CommonModules/sharedComponents/Loader";
 
 const AuditAssignment = () => {
+  const [values, setValues] = useState({
+    audit_template_name: "",
+    audit_name: "",
+    company_name: "",
+    audit_scope: "",
+    audit_description: "",
+    start_date: "",
+    audit_deadline: "",
+    buffer_duration: "",
+    auditor_firm_name: "",
+    auditor_name: "",
+    auditor_email: "",
+    auditor_designation: "",
+    auditor_mobile_no: "",
+  });
+  const [auditTeamDetails, setAuditTeamDetails] = useState([
+    {
+      team_member: "",
+      team_member_email: "",
+      designation: "",
+    },
+  ]);
+  const [branchData, setBranchData] = useState({
+    address_title: "",
+    address_line1: "",
+    pincode: "",
+    state: "",
+    city: "",
+    branch_auditor_incharge: "",
+    auditor_incharge_email: "",
+  });
   const [headerHeight, setHeaderHeight] = useState(0);
+
   const [stepper, setStepper] = useState({
     stepperAcitveSlide: 1,
     stepperCompletedSlides: [],
   });
-
 
   // --- Function for next click
   const handleNextClick = (step) => {
@@ -30,7 +61,6 @@ const AuditAssignment = () => {
       });
     }
   };
-
 
   // --- Function for back click
   const handleBackClick = (step) => {
@@ -45,7 +75,6 @@ const AuditAssignment = () => {
     }
   };
 
-
   useEffect(() => {
     const _headerHeight = document
       .querySelector("." + styles.auditHeader)
@@ -53,7 +82,6 @@ const AuditAssignment = () => {
     setHeaderHeight(_headerHeight);
   }, [stepper]);
 
-  
   return (
     <div className={styles.auditAssignment}>
       <div className={styles.auditHeader}>
@@ -100,20 +128,44 @@ const AuditAssignment = () => {
           height: `calc( 100vh - ${headerHeight + 116}px )`,
         }}
       >
-        {stepper?.stepperAcitveSlide === 1 && <AssignmentBasicDetails />}
-        {stepper?.stepperAcitveSlide === 2 && <AddressDetails />}
-        {stepper?.stepperAcitveSlide === 3 && <QuestionnaireForm />}
+        {stepper?.stepperAcitveSlide === 1 && (
+          <AssignmentBasicDetails
+            next={handleNextClick}
+            stepper={stepper}
+            values={values}
+            setValues={setValues}
+          />
+        )}
+        {stepper?.stepperAcitveSlide === 2 && (
+          <AddressDetails
+            next={handleNextClick}
+            stepper={stepper}
+            auditTeamDetails={auditTeamDetails}
+            setAuditTeamDetails={setAuditTeamDetails}
+            branchData={branchData}
+            setBranchData={setBranchData}
+          />
+        )}
+        {stepper?.stepperAcitveSlide === 3 &&
+        
+            <QuestionnaireForm/>
+      
+        
+        
+        }
         {stepper?.stepperAcitveSlide === 4 && <ReviewDetails />}
 
         {/* auditAssignmentMain ends here */}
       </div>
-      <div className={styles.buttonContainer}>
+
+      {/* <div className={styles.buttonContainer}>
         <Button
           description="Next"
-          onClick={() => handleNextClick(stepper?.stepperAcitveSlide)}
+          onClick={() => {
+            handleNextClick(stepper?.stepperAcitveSlide);
+          }}
         />
-      </div>
-
+      </div> */}
       {/* auditAssignment ends here */}
     </div>
   );
