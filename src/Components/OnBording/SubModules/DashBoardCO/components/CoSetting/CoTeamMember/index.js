@@ -33,12 +33,14 @@ function CoManagment({ handleClose }) {
     { value: "4", label: "Team Member" },
     { value: "3", label: "Compliance Officer" },
     { value: "5", label: "Approver" },
+    { value: "10", label: "Head Audit" },
   ];
 
   const filterOptions = [
     { value: "0", label: "None" },
     { value: "4", label: "Team Members" },
     { value: "5", label: "Approvers" },
+    { value: "10", label: "Head Audit" },
     { value: "3", label: "CO" },
     { value: "az", label: "A > Z" },
     { value: "za", label: "Z > A" },
@@ -48,12 +50,14 @@ function CoManagment({ handleClose }) {
     { value: 4, label: "Team Member" },
     { value: 3, label: "Compliance Officer" },
     { value: 5, label: "Approver" },
+    { value: 10, label: "Head Audit" },
   ];
 
   const roleOptionMobile = [
     { value: "4", label: "Team Member" },
     { value: "3", label: "Compliance Officer" },
     { value: "5", label: "Approver" },
+    { value: "10", label: "Head Audit" },
   ];
 
   let defaultFilterOptions = filterOptions[0];
@@ -417,6 +421,11 @@ function CoManagment({ handleClose }) {
           return item.UserType.includes(parseInt(filterOption.value));
         });
         setFields(data);
+      } else if (filterOption.value === "10") {
+        data = fieldArray.filter(function (item) {
+          return item.UserType.includes(parseInt(filterOption.value));
+        });
+        setFields(data);
       }
     } else {
       setShowMobileFilter(false);
@@ -444,6 +453,11 @@ function CoManagment({ handleClose }) {
         });
         setFields(data);
       } else if (filterOption === "5") {
+        data = fieldArray.filter(function (item) {
+          return item.UserType === parseInt(filterOption);
+        });
+        setFields(data);
+      } else if (filterOption === "10") {
         data = fieldArray.filter(function (item) {
           return item.UserType === parseInt(filterOption);
         });
@@ -729,6 +743,8 @@ function CoManagment({ handleClose }) {
                 ? 5
                 : roles?.includes("Team Member")
                 ? 4
+                : roles?.includes("Head Audit")
+                ? 10
                 : ""
             ).filter((item) => item.email !== user)
           );
@@ -896,6 +912,12 @@ function CoManagment({ handleClose }) {
                             className="change-role"
                           >
                             Approver
+                          </div>
+                          <div
+                            onClick={() => _filterBy("10", "mobileFilter")}
+                            className="change-role"
+                          >
+                            Head Audit
                           </div>
                           <div
                             onClick={() => _filterBy("3", "mobileFilter")}
