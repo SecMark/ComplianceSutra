@@ -54,7 +54,7 @@ export const Input = ({
                     }
                     value={element?.value ? element?.value : element}
                   >
-                    {element?.label || element?.name}
+                    {element?.label || element?.name || element}
                   </option>
                 );
               })}

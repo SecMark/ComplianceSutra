@@ -11,6 +11,7 @@ const IconButton = ({
   size = "small",
   icon,
   disabledVariant,
+  className,
 }) => {
   return (
     <button
@@ -20,8 +21,10 @@ const IconButton = ({
       draggable={draggable}
       className={
         disabled
-          ? `${styles[variant]} ${styles[disabledVariant || "disabled"]}`
-          : `${styles[variant]} ${styles[size]}`
+          ? `${styles[variant]} ${styles[disabledVariant || "disabled"]} ${
+              className || ""
+            }`
+          : `${styles[variant]} ${styles[size]} ${className || ""}`
       }
     >
       {icon} {description}

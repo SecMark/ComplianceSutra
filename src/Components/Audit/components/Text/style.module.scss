@@ -31,19 +31,17 @@
   font-weight: 500;
   font-family: $font_poppins;
   position: relative;
-  padding: 10px;
-
 }
 
-.stepperMainHeading::after{
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  height: 3px;
-  background-color: #7a73ff;
-  width: 175px;
-}
+// .stepperMainHeading::after{
+//   content: "";
+//   position: absolute;
+//   left: 0;
+//   bottom: -3px;
+//   height: 3px;
+//   background-color: #7a73ff;
+//   width: 175px;
+// }
 .stepperSubHeading {
   text-transform: capitalize;
   font-size: 16px;
@@ -93,7 +91,7 @@
   color: $color_warning_text;
 }
 
-.large{
+.large {
   font-size: 30px;
   font-style: normal;
   font-family: $font_poppins;
