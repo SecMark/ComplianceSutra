@@ -20,7 +20,7 @@ const Layout = () => {
       <Container variant="container">
         <Switch>
           <Route exact path={`${path}`}>
-            <SectionList />
+            <AuditTemplates />
           </Route>
           <Route exact path={`/${path}/questionaire`}>
             <FormBuilder />
