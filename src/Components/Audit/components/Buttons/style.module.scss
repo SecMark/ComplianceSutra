@@ -114,7 +114,7 @@
   width: 30px;
   border-radius: 50%;
   @include alignBoxWithFlex(center, center);
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   &:hover {
     background-color: rgb(247, 247, 247);
   }

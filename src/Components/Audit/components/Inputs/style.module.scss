@@ -118,6 +118,21 @@ input[type="file"]::file-selector-button {
 .auditAssignmentInputWhite {
   background-color: #fff;
 }
+
+.tableDataSelectInput {
+  max-width: 140px;
+  width: 120px;
+  font-size: 12px;
+  font-weight: 400;
+  color: $color_primary;
+  line-height: normal;
+  background-color: #e9e8ff;
+  border: none;
+  outline: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
 .outline {
   width: 250px;
   height: 40px;
@@ -160,7 +175,7 @@ input[type="file"]::file-selector-button {
     font-size: 15px;
     color: $color_black_text;
   }
-  .createTemplateLabel{
+  .createTemplateLabel {
     font-size: 12px;
     color: $color_grey;
   }
@@ -190,7 +205,7 @@ input[type="file"]::file-selector-button {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.searchBox{
+.searchBox {
   width: 250px;
   height: 40px;
   border-radius: 8px;
