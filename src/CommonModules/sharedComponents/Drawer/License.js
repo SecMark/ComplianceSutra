@@ -16,14 +16,20 @@ import {
   getPayment,
 } from "../../../Components/ExpertReviewModule/Redux/actions";
 
-function ChooseLicenses({ fields, close, paymentDrawer, isMainPayment }) {
+function ChooseLicenses({
+  fields,
+  close,
+  paymentDrawer,
+  isMainPayment,
+  isPurchasePlan = false,
+}) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const [licenseList, setLicenseList] = useState({});
   const [selectedLiecenseIdArray, setSelectedLicenseIdArray] = useState([]);
   const loggedUser =
     state && state.auth && state.auth.loginInfo && state.auth.loginInfo;
-    
+
   useEffect(() => {
     dispatch(
       coActions.getCoAccountLicensesRequest({
@@ -298,32 +304,36 @@ function ChooseLicenses({ fields, close, paymentDrawer, isMainPayment }) {
         </div>
         <div className="choose-licenses">
           <div className="choose-licenses-title">
-            <div className="d-flex">
-              <div className="col-6 pl-0">
-                <img
-                  className="closeIcon"
-                  onClick={() => callClose(2)}
-                  src={closeIcon}
-                  alt="closeIcon"
-                />
+            {!isPurchasePlan && (
+              <div className="d-flex">
+                <div className="col-6 pl-0">
+                  <img
+                    className="closeIcon"
+                    onClick={() => callClose(2)}
+                    src={closeIcon}
+                    alt="closeIcon"
+                  />
+                </div>
+                <div className="col-6 pl-0 d-block d-sm-none text-right mt-0">
+                  <button
+                    style={{ zIndex: "99999999" }}
+                    disabled={
+                      selectedLiecenseIdArray &&
+                      selectedLiecenseIdArray.length === 0
+                    }
+                    onClick={() => setCerificateDetailsMobile()}
+                    className="btn mb-2 save-details common-button-next"
+                  >
+                    CONFIRM
+                  </button>
+                </div>
               </div>
-              <div className="col-6 pl-0 d-block d-sm-none text-right mt-0">
-                <button
-                  style={{ zIndex: "99999999" }}
-                  disabled={
-                    selectedLiecenseIdArray &&
-                    selectedLiecenseIdArray.length === 0
-                  }
-                  onClick={() => setCerificateDetailsMobile()}
-                  className="btn mb-2 save-details common-button-next"
-                >
-                  CONFIRM
-                </button>
-              </div>
-            </div>
+            )}
             <p className="licenses-title">
               {" "}
-              Choose Licenses for Expert Review
+              {!isPurchasePlan
+                ? " Choose Licenses for Expert Review"
+                : "Choose Licenses you have"}
               {/* <span className="search-icon"><img onClick={() => setSearchEnable(true)} src={search} alt="search Icon" /></span> */}
             </p>
           </div>

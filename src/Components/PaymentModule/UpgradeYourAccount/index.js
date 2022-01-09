@@ -19,7 +19,8 @@ const UpgradeYourAccount = ({
   setUpgradeYourAccount,
   isSliderCheck,
   onSliderChange,
-  setIsPaidMember,
+  setIsUpgradeYourAccountOpen,
+  isUpgradeYourAccountOpen,
   isShowEditLicense,
   setIsShowEditLicense,
   setIsMainPayment,
@@ -91,17 +92,6 @@ const UpgradeYourAccount = ({
 
   const proceedPayment = () => {
     history.push("/thankyou");
-    // const mainLicense =
-    //   state?.PaymentReducer?.mainPaymentLicenseDetail?.selectedLicense;
-    // const expertLicense =
-    //   state?.PaymentReducer?.expertReviewLicenseDetail?.selectedLicense;
-    // // console.log([...mainLicense, ...expertLicense]);
-    // const paymentPayload = {
-    //   flag: 2,
-    //   cntrolid: choosedPlan.cntrlid,
-    //   plan: choosedPlan.Plans === "Monthly" ? 0 : 1,
-    // };
-    // dispatch(makePayment(paymentPayload));
   };
 
   return (
@@ -116,7 +106,12 @@ const UpgradeYourAccount = ({
         <div className="d-flex">
           <div className="col-10 col-sm-12 col-md-12 col-xl-12 pl-0">
             <div className="personal-mgt-title">
-              <span className="arrow-left cursor-pointer" onClick={setStatus}>
+              <span
+                className="arrow-left cursor-pointer"
+                onClick={() =>
+                  setIsUpgradeYourAccountOpen(!isUpgradeYourAccountOpen)
+                }
+              >
                 <BiLeftArrowAlt />
               </span>
               Upgrade Your Account
@@ -135,28 +130,31 @@ const UpgradeYourAccount = ({
         </div>
         <div class="border-header d-none d-sm-block"></div>
         <div className="scroll-section pr-5">
-          <div className="channel-div">
-            <div className="row pl-0">
-              <div className="col-12 plans-container d-flex justify-content-center">
-                <div className="plans-toggle">
-                  <h3 className="mb-0">Months</h3>
-                  <div className="check-box-acc mx-3">
-                    <label class="switch" id="licenses">
-                      <input
-                        htmlFor="licenses"
-                        id="licenseSetting"
-                        type="checkbox"
-                        checked={isPlanSliderCheck}
-                        onClick={() => onPlanSliderClick()}
-                      />
-                      <span class="plan-slider round"></span>
-                    </label>
+          <div>
+            <div className="channel-div">
+              <div className="row pl-0">
+                <div className="col-12 plans-container d-flex justify-content-center">
+                  <div className="plans-toggle">
+                    <h3 className="mb-0">Months</h3>
+                    <div className="check-box-acc mx-3">
+                      <label class="switch" id="licenses">
+                        <input
+                          htmlFor="licenses"
+                          id="licenseSetting"
+                          type="checkbox"
+                          checked={isPlanSliderCheck}
+                          onClick={() => onPlanSliderClick()}
+                        />
+                        <span class="plan-slider round"></span>
+                      </label>
+                    </div>
+                    <h3 className="mb-0">Annual</h3>
                   </div>
-                  <h3 className="mb-0">Annual</h3>
                 </div>
               </div>
-
-              <div className="col-12 payment-detail-plan mt-4">
+            </div>
+            <div className="payment-total">
+              <div className="payment-detail-plan mt-4">
                 <div className="edit-container d-flex flex-column flex-md-row">
                   <h2 className="payment-type">Licences</h2>
                   <button
@@ -170,7 +168,7 @@ const UpgradeYourAccount = ({
                 </div>
                 <h2 className="payment-trail">₹ {choosedPlan?.TotalAmt}</h2>
               </div>
-              <div className="col-12 payment-detail-plan">
+              <div className="payment-detail-plan">
                 <h2 className="payment-type">
                   Discount ({choosedPlan?.Discamt}%)
                 </h2>
@@ -178,64 +176,66 @@ const UpgradeYourAccount = ({
                   ₹ {choosedPlan?.Discamt == 0 ? "0" : choosedPlan?.Discamt}
                 </h2>
               </div>
-              <div className="col-12 payment-detail-plan">
+              <div className="payment-detail-plan">
                 <h2 className="payment-type">Taxes (GST 15%)</h2>
                 <h2 className="payment-trail">₹ {choosedPlan?.TaxAmt}</h2>
               </div>
-            </div>
-          </div>
-          <div className="payment-detail-plan">
-            <div className="">
-              <p className="highlighted mb-0">
-                {addUserCount === 0 ? "Free" : addUserCount} Users{" "}
-                <small className="unselected">(You get 5 free users)</small>
-              </p>
-              <button
-                className="edit-button m-0"
-                onClick={() => setAddUser(true)}
-              >
-                ADD USERS
-              </button>
-            </div>
-            <h2 className="payment-trail green">
-              {addUserCount === 0 ? "Free" : `₹${addUserCount * 1000}`}
-            </h2>
-          </div>
-          <div className="payment-detail-plan">
-            <div className="acc-div">
-              <div className="licences-toggle d-flex align-items-center">
-                <p className="highlighted mb-0 d-inline d-md-block">
-                  Enable Expert Review
-                </p>
-                <div className="check-box-acc mx-3 ">
-                  <label class="switch" id="licenses">
-                    <input
-                      htmlFor="licenses"
-                      id="licenseSetting"
-                      type="checkbox"
-                      checked={isSliderCheck ? true : false}
-                      onClick={() => onSliderChange()}
-                    />
-                    <span class="slider round"></span>
-                  </label>
+              <div className="payment-detail-plan">
+                <div className="">
+                  <p className="highlighted mb-0">
+                    {addUserCount === 0 ? "Free" : addUserCount} Users{" "}
+                    <small className="unselected">(You get 5 free users)</small>
+                  </p>
+                  <button
+                    className="edit-button m-0"
+                    onClick={() => setAddUser(true)}
+                  >
+                    ADD USERS
+                  </button>
                 </div>
+                <h2 className="payment-trail green">
+                  {addUserCount === 0 ? "Free" : `₹${addUserCount * 1000}`}
+                </h2>
               </div>
-              <button className="edit-button m-0">KNOW MORE</button>
+              <div className="payment-detail-plan">
+                <div className="acc-div">
+                  <div className="licences-toggle d-flex align-items-center">
+                    <p className="highlighted mb-0 d-inline d-md-block">
+                      Enable Expert Review
+                    </p>
+                    <div className="check-box-acc mx-3 ">
+                      <label class="switch" id="licenses">
+                        <input
+                          htmlFor="licenses"
+                          id="licenseSetting"
+                          type="checkbox"
+                          checked={isSliderCheck ? true : false}
+                          onClick={() => onSliderChange()}
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <button className="edit-button m-0">KNOW MORE</button>
+                </div>
+                <h2 className="payment-trail">
+                  {isSliderCheck ? totalAmount?.TotalAmt : "N/A"}
+                </h2>
+              </div>
+              <div class="border-header d-block mb-0 mt-md-0"></div>
+              <div className="payment-detail-plan my-3">
+                <p className="highlighted mb-0">Total Amount</p>
+                <h4>
+                  ₹{" "}
+                  {parseInt(totalAmount?.TotalAmt ? totalAmount?.TotalAmt : 0) +
+                    parseInt(
+                      choosedPlan?.TotalAmt ? choosedPlan?.TotalAmt : 0
+                    ) +
+                    parseInt(choosedPlan?.TaxAmt ? choosedPlan?.TaxAmt : 0) +
+                    parseInt(addUserCount * 1000)}
+                </h4>
+              </div>
             </div>
-            <h2 className="payment-trail">
-              {isSliderCheck ? totalAmount?.TotalAmt : "N/A"}
-            </h2>
-          </div>
-          <div class="border-header d-block mb-0 mt-md-0"></div>
-          <div className="payment-detail-plan my-3">
-            <p className="highlighted mb-0">Total Amount</p>
-            <h4>
-              ₹{" "}
-              {parseInt(totalAmount?.TotalAmt ? totalAmount?.TotalAmt : 0) +
-                parseInt(choosedPlan?.TotalAmt ? choosedPlan?.TotalAmt : 0) +
-                parseInt(choosedPlan?.TaxAmt ? choosedPlan?.TaxAmt : 0) +
-                parseInt(addUserCount * 1000)}
-            </h4>
           </div>
           <div className="col-12 col-md-3 payment-detail plan mt-5 mt-md-0">
             <button

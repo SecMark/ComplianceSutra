@@ -9,7 +9,7 @@ import sideBarlogo from "../../../../../../assets/Icons/sideBarlogo.png";
 import CoCompany from "./CoCompany";
 import togglemobile from "../../../../../../assets/Icons/togglemobile.png";
 import CoNotification from "./CoNotification";
-import CoAccount from "./CoAccount";
+import CoAccount from "./CoAccount/PurhcasePlan";
 import CoSecurity from "./CoSecurity";
 import MobileSettingSideBar from "../CoSetting/MobileSettingSideBar";
 import CoChangePassword from "./CoChangePassword";

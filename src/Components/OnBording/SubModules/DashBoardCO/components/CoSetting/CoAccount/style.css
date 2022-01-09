@@ -8,6 +8,7 @@
   margin: 20px 20px 20px 0px;
   padding-left: 48px;
   padding-top: 40px;
+  padding-right: 48px;
   /* background-color: rgb(255 255 255 / 55%); */
 }
 .co-account .personal-mgt-title {
@@ -23,7 +24,6 @@
 }
 .co-account .scroll-sction {
   height: calc(100vh - 200px);
-
 }
 .co-account .border-header {
   width: 100%;
@@ -1213,4 +1213,181 @@ div#contentGeneral:last-child {
 p.grey-text {
   margin-bottom: 0.5rem;
   font-size: 1rem;
+}
+
+.deactivate-account {
+  border: 1px solid #7a73ff;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  background: #fff;
+  width: 209px;
+  height: 30px;
+  color: #7a73ff;
+}
+
+.payment-container {
+  background: #ffffff;
+  box-shadow: 0px 3px 20px rgba(44, 39, 56, 0.06);
+  border-radius: 10px;
+}
+
+.payment-container .payment-plan-header {
+  padding: 15px;
+}
+
+.payment-plan-header .payment-plan {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 15px;
+  border-radius: 10px;
+  background-color: #efeeff;
+  opacity: unset;
+  height: 53px;
+}
+
+.payment-plan-header .payment-plan p {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 33px;
+  color: #7a73ff;
+  margin: 0px;
+  text-decoration: #7a73ff !important ;
+}
+
+.payment-plan-header .payment-plan .history-anchor {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 33px;
+  color: #7a73ff;
+  margin: 0px;
+}
+
+.payment-plan-header button {
+  background: #7a73ff;
+  border-radius: 10px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  /* identical to box height */
+
+  text-align: center;
+  border: none;
+  color: #ffffff;
+  padding: 10px;
+  width: 200px;
+  height: 53px;
+}
+
+.payment-plan-body {
+  padding: 5px;
+}
+
+.payment-plan-body p {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 30px;
+  color: #b3abc4;
+}
+
+.payment-plan-body span {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: right;
+  color: #2c2738;
+}
+
+.license-container {
+  background: #ffffff;
+  box-shadow: 0px 3px 20px rgba(44, 39, 56, 0.06);
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+.license-container .license-plan-header {
+  padding: 15px 15px 0px;
+}
+.border-class {
+  padding: 0px 25px;
+}
+.license-plan-header button {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  text-align: center;
+  color: #ffffff;
+  background: #7a73ff;
+  border-radius: 10px;
+  border: none;
+  width: 200px;
+  height: 45px;
+}
+
+.license-plan-body {
+  padding: 0px 25px;
+}
+
+.license-plan-body table {
+  border-radius: 10px;
+}
+
+.license-plan-body table thead {
+  background: #efeeff;
+  border-radius: 10px;
+  width: 1345px;
+  height: 40px;
+}
+
+.license-plan-body table thead th {
+  color: #7a73ff;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  border: none !important;
+  border-bottom: none !important;
+}
+
+.license-plan-body table tbody td {
+  padding-top: 10px;
+}
+
+.license-table {
+  width: 100%;
+}
+
+.license-table tbody {
+  margin-top: 15px;
+}
+
+.license-table th:first-child {
+  border-radius: 10px 0 0 10px;
+  padding-left: 20px;
+}
+
+.license-table th:last-child {
+  border-radius: 0 10px 10px 0;
+  text-align: center;
+}
+
+.ant-modal-body {
+  height: 300px !important;
+  /* width: 100px; */
 }

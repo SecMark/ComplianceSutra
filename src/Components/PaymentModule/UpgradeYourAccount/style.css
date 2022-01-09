@@ -147,3 +147,12 @@ span.arrow-left {
     margin-bottom: 5px;
   }
 }
+
+.payment-total {
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  box-sizing: border-box;
+  box-shadow: 0px 3px 20px rgb(44 39 56 / 6%);
+  border-radius: 10px;
+  padding: 10px 20px;
+}

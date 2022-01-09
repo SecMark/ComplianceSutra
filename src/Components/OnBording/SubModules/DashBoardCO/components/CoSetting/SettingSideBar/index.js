@@ -139,7 +139,7 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
               >
                 <span>Company </span>
               </li>
-              {/* <li
+              <li
                 onClick={() => tabChange(2)}
                 className={
                   state.adminMenu.activeTab === "account"
@@ -148,7 +148,7 @@ function SettingSideBar({ activeTabKey, handleTabChange, history }) {
                 }
               >
                 <span>Account </span>
-              </li> */}
+              </li>
               <li
                 onClick={() => tabChange(3)}
                 className={
