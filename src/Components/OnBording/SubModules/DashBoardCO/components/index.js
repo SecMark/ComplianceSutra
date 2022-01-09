@@ -20,7 +20,8 @@ import SectionList from "../../../../Audit/pages/List/SectionList";
 import Layout from "../../../../Audit/components/Layout/Layout.jsx";
 import Landing from "../../../../Audit/pages/Landing/index.jsx";
 import TaxAudit from "../../../../Audit/pages/AuditTemplates/TaxAudit";
-
+import AuditCompanyBranch from "../../../../Audit/pages/AuditCompany/Branches";
+import AuditCompanyWorkStatus from "../../../../Audit/pages/AuditCompany/WorkStatus";
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -137,6 +138,17 @@ function Dashboard({ history }) {
       state?.adminMenu?.currentMenu !== "tax-audit"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("tax-audit"));
+    } else if (
+      window.location.href.includes("audit-company-branch") &&
+      state?.adminMenu?.currentMenu !== "audit-company-branch"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("audit-company-branch"));
+    }
+    else if (
+      window.location.href.includes("Company-workStatus") &&
+      state?.adminMenu?.currentMenu !== "Company-workStatus"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("Company-workStatus"));
     }
   }, [window.location.href]);
 
@@ -206,7 +218,16 @@ function Dashboard({ history }) {
             <TaxAudit />
           </div>
         )}
-
+        {state && state.adminMenu.currentMenu === "audit-company-branch" && (
+          <div className="create-template">
+              <AuditCompanyBranch/>
+          </div>
+        )}
+        {state && state.adminMenu.currentMenu === "Company-workStatus" && (
+          <div className="create-template">
+              <AuditCompanyWorkStatus/>
+          </div>
+        )}
         {/* {state && state.adminMenu.currentMenu === "section-list" && (
           <div className="create-template">
             <SectionList />

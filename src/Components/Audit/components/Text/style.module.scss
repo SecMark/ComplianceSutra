@@ -35,15 +35,15 @@
 
 }
 
-.stepperMainHeading::after{
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  height: 3px;
-  background-color: #7a73ff;
-  width: 175px;
-}
+// .stepperMainHeading::after{
+//   content: "";
+//   position: absolute;
+//   left: 0;
+//   bottom: -3px;
+//   height: 3px;
+//   background-color: #7a73ff;
+//   width: 175px;
+// }
 .stepperSubHeading {
   text-transform: capitalize;
   font-size: 16px;
