@@ -23,7 +23,7 @@ const SideBar = () => {
           <li>
             <span>Assignments</span>
           </li>
-          <li>
+          <li onClick={() => redirectTo("/audit/users")}>
             <span>Users</span>
           </li>
           <li>

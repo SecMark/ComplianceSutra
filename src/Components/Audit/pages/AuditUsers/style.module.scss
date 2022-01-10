@@ -1,0 +1,29 @@
+@import "../../assets//styles//colors.scss";
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.headerBorder {
+  padding-top: 10px;
+  border-bottom: 1px solid $color_light_black;
+}
+.newUser {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px;
+}
+.userDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.columnHeaderTitle {
+  font-size: 12px;
+  margin-bottom: 0;
+  text-align: left !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  color: rgb(255, 255, 255);
+  font-family: Poppins;
+}

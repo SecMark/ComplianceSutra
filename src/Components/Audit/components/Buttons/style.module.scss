@@ -151,6 +151,33 @@
     background-color: #6961ff;
   }
 }
+.iconButtonDanger {
+  background-color: #ff5858;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.25rem;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #fff;
+  @include alignBoxWithFlex(center, center);
+  transition: background 0.3s ease;
+  &.iconButtonPrimaryDisabled {
+    background-color: #e9e8ff;
+    color: #ff5858;
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: #e9e8ff;
+    }
+  }
+  &:hover {
+    background-color: #ff5858;
+  }
+  &:active,
+  &:focus {
+    background-color: #ff5858;
+  }
+}
 .removeIcon {
   background: $color_transparent;
   border: none;
