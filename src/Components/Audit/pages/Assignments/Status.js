@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Text from "../../components/Text/Text";
@@ -36,7 +37,8 @@ import Container from "../../components/Containers";
 
 import axiosInstance from "../../../../apiServices/";
 
-function AuditTemplates() {
+
+function Assignments() {
   const [selectedEmployee, setSelectedEmployee] = useState();
   const [auditTemplatesData, setAuditTemplatesData] = useState([]);
   const history = useHistory();
@@ -119,14 +121,14 @@ function AuditTemplates() {
           disabled={completion === 100}
           disabledVariant="iconButtonPrimaryDisabled"
         />
-        <IconButton
+        {/* <IconButton
           variant="iconButtonPrimary"
           description={<MdPlayArrow />}
           size="none"
-        />
+        /> */}
         <IconButton
           onClick={() => {
-            history.push("/tax-audit");
+            history.push("/tax-audit-assignment");
           }}
           variant="iconButtonRound"
           description={<MdKeyboardArrowRight />}
@@ -170,12 +172,12 @@ function AuditTemplates() {
   useEffect(() => {
     getAuditTemplatesData();
   }, []);
+
   return (
     <Container variant="content">
-      <div className={styles.topHeading}>
-        <Text heading="p" variant="stepperMainHeading" text="Audit Templates" />
-      </div>
-
+      {/* <div className={styles.topHeading}>
+        <Text heading="p" variant="stepperMainHeading" text="Audit Assignments" />
+      </div> */}
       {auditTemplatesData && auditTemplatesData?.length > 0 && (
         <DataGrid
           id="dataGrid"
@@ -208,20 +210,21 @@ function AuditTemplates() {
         >
           <Toolbar>
             <Item location="after">
-              <IconButton
-                description="New Template"
+              {/* <IconButton
+                description=""
                 variant="createProject"
                 icon={<MdAddBox />}
                 onClick={() => history.push(`${path}/create-template`)}
-              />
+              /> */}
             </Item>
-            <Item name="exportButton" />
-            <Item name="searchPanel" />
+            {/* <Item name="exportButton" />
+            <Item name="searchPanel" /> */}
             <Item name="groupPanel" location="before" />
           </Toolbar>
+
           <Column
             dataField="audit_template_name"
-            caption="Template Name"
+            caption="Company Name"
             headerCellRender={renderTitleHeader}
             cellRender={TemplateNameCell}
           >
@@ -229,7 +232,7 @@ function AuditTemplates() {
           </Column>
           <Column
             dataField="completion"
-            caption="Completion"
+            caption="Audit Name"
             cellRender={CompletionCell}
             headerCellRender={renderTitleHeader}
             alignment="left"
@@ -238,7 +241,7 @@ function AuditTemplates() {
           </Column>
           <Column
             dataField="user"
-            caption="Created by"
+            caption="Status"
             cellRender={MadeByCell}
             headerCellRender={renderTitleHeader}
           >
@@ -246,7 +249,7 @@ function AuditTemplates() {
           </Column>
           <Column
             dataField="audit_category"
-            caption="audit type"
+            caption="End Date"
             headerCellRender={renderTitleHeader}
             cellRender={TemplateNameCell}
           >
@@ -254,7 +257,7 @@ function AuditTemplates() {
           </Column>
           <Column
             dataField="total_question"
-            caption="data points"
+            caption="Questionnare"
             headerCellRender={renderTitleHeader}
             cellRender={RequiredDataCell}
             alignment="left"
@@ -283,6 +286,8 @@ function AuditTemplates() {
         </DataGrid>
       )}
     </Container>
+
+
   );
 }
 
@@ -293,4 +298,6 @@ const getSubstring = (str, n = 15) => {
   return "";
 };
 
-export default AuditTemplates;
+export default Assignments;
+
+

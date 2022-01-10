@@ -1,0 +1,188 @@
+@import "../../assets//styles//colors.scss";
+
+.top {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid $color_light_black;
+  & > p {
+    margin-bottom: 0;
+    font-size: 24px;
+  }
+}
+.topHeading {
+  border-bottom: 1px solid $color_light_black;
+}
+.borderBottom{
+  border: 1px solid $color_blue;
+  width: 180px;
+}
+// .borderBottom {
+//   width: 180px;
+//   background: $color_blue;
+//   height: 1px;
+// }
+p.tableDataContainerItem {
+  margin-bottom: 0;
+  flex: 0.1;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  line-height: 14px;
+  font-style: normal;
+  font-weight: normal;
+  color: $color_black_text;
+  cursor: pointer;
+}
+p.tableDataContainerItem.wide {
+  flex: 0.2;
+}
+p.tableDataContainerItem.wide-2 {
+  flex: 0.15;
+}
+p.tableContainerName {
+  flex: 0.12;
+  text-align: left;
+  color: $color_white;
+}
+.tableHeader p.tableDataContainerItem {
+  color: $color_white;
+  padding: 0;
+  font-weight: 500;
+}
+
+.dataContainer {
+  background: $color_primary;
+  border: 1px solid $color_medium_grey;
+  box-sizing: border-box;
+  box-shadow: 0px 3px 20px rgba(44, 39, 56, 0.06);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+}
+.dataContainerBody {
+  background: $color_white;
+  border: 1px solid $color_medium_grey;
+  box-sizing: border-box;
+  box-shadow: 0px 3px 20px rgba(44, 39, 56, 0.06);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+}
+.dataContainersButtons {
+  flex: 0.3;
+  width: 100%;
+}
+
+p.tableDataContainerItemBody {
+  margin-bottom: 0;
+  flex: 0.1;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  line-height: 14px;
+  font-style: normal;
+  font-weight: normal;
+  color: $color_black_text;
+  cursor: pointer;
+}
+p.tableDataContainerItemBody.wide {
+  flex: 0.2;
+}
+p.tableDataContainerItemBody.wide-2 {
+  flex: 0.15;
+}
+p.tableContainerName {
+  flex: 0.12;
+  text-align: left;
+  color: $color_black_text;
+}
+.tableHeader p.tableDataContainerItemBody {
+  color: $color_black_text;
+  padding: 0;
+  font-weight: 500;
+}
+
+.subMenu {
+  display: flex;
+  flex-wrap: nowrap;
+  .subMenuList {
+    margin-left: auto;
+  }
+}
+
+.madeBy,
+.completion {
+  // background-color: rgba(128, 128, 128, 0.096);
+  width: fit-content;
+  margin-bottom: 0;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 0.15rem 0.25rem;
+  border-radius: 2px;
+  letter-spacing: 0.02em;
+  color: #b3abc4;
+}
+.completion {
+  background-color: rgba(255, 88, 88, 0.14);
+  color: rgba(255, 88, 88, 1);
+  font-family: Poppins;
+  font-weight: 500;
+  min-width: 40px;
+  text-align: center;
+
+  &.success {
+    background-color: rgba(65, 210, 144, 0.14);
+    color: rgba(65, 210, 144, 1);
+  }
+}
+.columnHeaderTitle {
+  font-size: 12px;
+  margin-bottom: 0;
+  text-align: left !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  color: rgb(255, 255, 255);
+  font-family: Poppins;
+}
+.textBlueDataCell {
+  color: #0e7bea;
+  font-size: 12px;
+  line-height: normal;
+  font-weight: normal;
+}
+.balckTextCell {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #2c2738;
+  text-transform: capitalize;
+}
+.createAssignments{
+  margin-left: 800px;
+  margin-top: 20px;
+}
+.status{
+  color: $color_black_text;
+  margin-left: 1080px;
+  margin-top: -21px;
+  cursor: pointer;
+  font-size: small;
+}
+.auditType{
+  color: $color_black_text;
+  margin-left: 1150px;
+  margin-top: -29px;
+  cursor: pointer;
+  font-size: small;
+}
+.activation  .status{
+  background: $color_grey;
+  color: $color_white;
+  width: 3.5%;
+  border-radius: 8px;
+  margin-left: 1036px; 
+}

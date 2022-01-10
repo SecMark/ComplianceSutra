@@ -50,6 +50,8 @@ import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 // import FormBuilder from "../Components/Audit/pages/FormBuilder";
 import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
 // import SectionList from "../Components/Audit/pages/List/SectionList";
+import Assignments from "../Components/Audit/pages/Assignments";
+import TaxAuditAssignment from "../Components/Audit/pages/Assignments/TaxAuditAssignment";
 export default function AppRouter() {
   return (
     <div>
@@ -184,8 +186,12 @@ export default function AppRouter() {
           <Route exact path="/thankyou" component={Thankyou} />
           <Route exact path="/settings" component={CoSetting} />
           <Route exact path="/audit-assignment" component={AuditAssignment} />
+
           <Route path="/audit" component={DashBoardCO} />
           <Route exact path="/tax-audit" component={DashBoardCO} />
+
+          <Route exact path="/assignment" component={Assignments} />
+          <Route exact path="/tax-audit-assignment" component={TaxAuditAssignment} />
           {/* User */}
           {/* <Route path="/user-task" component={UserTask}></Route> */}
         </div>
