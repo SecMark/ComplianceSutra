@@ -58,7 +58,7 @@ function QuickOverView({ click, setClick, setListView, listView }) {
       ).length;
 
       const takeAction = taskDetail.filter(
-        (task) => task.status === "Take Action"
+        (task) => task.status === "Overdue"
       )[0];
 
       const pending = getAllTasks(taskList).filter(

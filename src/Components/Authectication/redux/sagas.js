@@ -28,6 +28,7 @@ const loginReq = function* loginReq({ payload }) {
         );
 
         let userType = getUserType(UserType);
+        localStorage.setItem("userType", userType);
         message.UserType = userType;
         message.full_name = data.full_name;
         yield put(

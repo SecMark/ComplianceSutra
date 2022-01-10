@@ -48,8 +48,7 @@ function RiskAndDelayTaskList({ history, click, setClick }) {
     if (taskList && taskList.length > 0) {
       const taskDetail = getDataByStatus(taskList);
       const takeAction =
-        taskDetail?.filter((task) => task.status === "Take Action")[0]?.tasks ||
-        [];
+        taskDetail?.filter((task) => task.status === "Overdue")[0]?.tasks || [];
       setRiskArr([...takeAction]);
     }
   }, []);
