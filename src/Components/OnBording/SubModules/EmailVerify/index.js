@@ -69,6 +69,7 @@ function EmailVerify({ history }) {
                         src={comtech}
                         alt="COMPLIANCE SUTRA"
                         title="COMPLIANCE SUTRA"
+                        alt="Compliance Sutra"
                       />
                       <span className="camp">COMPLIANCE SUTRA</span>
                     </div>
