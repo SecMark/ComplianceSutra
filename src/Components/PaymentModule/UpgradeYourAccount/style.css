@@ -67,10 +67,7 @@ span.arrow-left {
 .unselected > svg > path {
   stroke: gray;
 }
-.highlighted {
-  font-size: 20px;
-  font-weight: 500;
-}
+
 .green {
   color: green;
 }
@@ -141,11 +138,6 @@ span.arrow-left {
   .highlighted {
     font-size: 16px;
   }
-  .edit-button {
-    margin: 0;
-    padding: 0;
-    margin-bottom: 5px;
-  }
 }
 
 .payment-total {
@@ -155,4 +147,94 @@ span.arrow-left {
   box-shadow: 0px 3px 20px rgb(44 39 56 / 6%);
   border-radius: 10px;
   padding: 10px 20px;
+}
+
+.payment-type {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 30px;
+  color: #b3abc4;
+}
+
+.highlighted {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 30px;
+  color: #b3abc4;
+}
+
+.payment-option {
+  background: #efeeff;
+  border-radius: 10px;
+  padding: 10px 40px;
+  text-align: center;
+}
+
+.payment-option .active {
+  background: #7a73ff;
+  backdrop-filter: blur(169.534px);
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  /* identical to box height */
+
+  align-items: center;
+  text-align: center;
+  padding: 1px 30px;
+  color: #ffffff;
+  border-radius: 8px;
+  border: none;
+}
+
+.payment-option .deactive {
+  border-radius: 8px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  align-items: center;
+  text-align: center;
+  color: #7a73ff;
+  border: none;
+}
+
+.upgrade-button {
+  background: #7a73ff;
+  border-radius: 10px;
+}
+
+.edit-icon {
+  background: #efeeff;
+  border-radius: 6px;
+  padding: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.know-more p {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: #2c2738;
+  cursor: pointer;
+}
+
+.know-more span {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration-line: underline;
+  color: #b3abc4;
+  cursor: pointer;
 }

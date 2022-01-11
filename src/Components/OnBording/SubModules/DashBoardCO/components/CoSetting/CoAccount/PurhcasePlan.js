@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
 import Drawer from "./LicenseDrawer";
-import closeBlack from "../../../../../../../assets/Icons/closeBlack.png";
+
 import { useDispatch, useSelector } from "react-redux";
 import { actions as coActions } from "../../../redux/actions";
 import { isMobile } from "react-device-detect";
-import PaymentSection from "../../../../../../PaymentModule/PaymentSection";
+
 import UpgradeYourAccount from "../../../../../../PaymentModule/UpgradeYourAccount";
-import ChooseLicenses from "../../../../../../../CommonModules/sharedComponents/Drawer/License";
+
 import Payment from "../../../../../../../CommonModules/sharedComponents/Drawer/Payment";
-import { BsPencil } from "react-icons/bs";
-import { RiRefreshFill } from "react-icons/ri";
-import EditLicenses from "../../../../../../../CommonModules/sharedComponents/Drawer/EditLicense";
+
 import { clearLicense } from "../../../../../../ExpertReviewModule/Redux/actions";
 import Modal from "antd/lib/modal/Modal";
+import PaymentLicenses from "../ChooseLicenses/PaymentLicenses";
+
+import { actions as companyActions } from "../../../../../../OnBording/redux/actions";
+import HistoryList from "./History";
 
 function PurhcasePlan({ handleClose }) {
   const state = useSelector((state) => state);
@@ -31,9 +33,18 @@ function PurhcasePlan({ handleClose }) {
 
   const [paymentDetail, setPaymentDetail] = useState({});
 
+  const [showHistory, setShowHistory] = useState(false);
+
   useEffect(() => {
     initialDispatch();
     dispatch(clearLicense());
+
+    dispatch(
+      companyActions.getLicenseList({
+        industry_type: "General",
+        country: "India",
+      })
+    );
   }, []);
 
   useEffect(() => {
@@ -225,8 +236,6 @@ function PurhcasePlan({ handleClose }) {
 
   const paymentDrawer = () => {
     setIsShowFilter(false);
-    //setIsSliderCheck(!isSliderCheck);
-    //setIsMainPayment(false);
     setIsShowPayment(!isShowPayment);
   };
   return (
@@ -239,33 +248,21 @@ function PurhcasePlan({ handleClose }) {
         onCancel={() => setIsShowFilter(false)}
       >
         <div className="">
-          <ChooseLicenses
-            fields={fields}
-            close={(data, action) => close(data, action)}
-            paymentDrawer={paymentDrawer}
-            isMainPayment={isMainPayment}
-            isPurchasePlan={true}
-          />
+          <PaymentLicenses />
         </div>
       </Modal>
 
-      {/* Payment Drawer */}
-      <div
-        className={`license-popup ${isShowPayment && "popup-open"}`}
-        style={{
-          boxShadow: isShowPayment
-            ? "1px 1px 9999px 9999px rgba(0,0,0,0.7)"
-            : "none",
-        }}
+      <Modal
+        visible={showHistory}
+        width={1000}
+        footer={null}
+        //onOk={this.handleOk}
+        onCancel={() => setShowHistory(false)}
       >
         <div className="">
-          <Payment
-            paymentDrawer={paymentDrawer}
-            setIsSliderCheck={setIsSliderCheck}
-            isMainPayment={isMainPayment}
-          />
+          <HistoryList />
         </div>
-      </div>
+      </Modal>
 
       <div className="co-account ">
         {!isMobile && (
@@ -308,7 +305,11 @@ function PurhcasePlan({ handleClose }) {
               <div className="d-flex payment-plan-header">
                 <div className="col-10 col-md-10 col-xl-9 payment-plan">
                   <p>Payment</p>
-                  <a href="" className="history-anchor">
+                  <a
+                    href="javascript:void(0)"
+                    className="history-anchor"
+                    onClick={() => setShowHistory(true)}
+                  >
                     History
                   </a>
                 </div>

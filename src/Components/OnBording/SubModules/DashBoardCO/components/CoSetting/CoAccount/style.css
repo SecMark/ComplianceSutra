@@ -1268,6 +1268,7 @@ p.grey-text {
   line-height: 33px;
   color: #7a73ff;
   margin: 0px;
+  text-decoration-line: underline;
 }
 
 .payment-plan-header button {
@@ -1379,7 +1380,6 @@ p.grey-text {
 
 .license-table th:first-child {
   border-radius: 10px 0 0 10px;
-  padding-left: 20px;
 }
 
 .license-table th:last-child {
@@ -1388,6 +1388,28 @@ p.grey-text {
 }
 
 .ant-modal-body {
-  height: 300px !important;
+  height: 80vh !important;
+  overflow-y: scroll;
+  border-radius: 20px;
   /* width: 100px; */
+}
+
+.history {
+  padding: 0px 25px;
+}
+
+.history table thead th {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: #b3abc4;
+  border-bottom: 2px solid #b3abc4;
+}
+
+.history table tbody td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid #ccc8d4;
 }
