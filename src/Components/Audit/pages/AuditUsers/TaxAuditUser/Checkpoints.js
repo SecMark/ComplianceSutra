@@ -1,5 +1,10 @@
-import React, { useState } from "react";
-import { MdKeyboardArrowRight, MdAdd, MdTextsms } from "react-icons/md";
+import React, { useState, useRef, useCallback } from "react";
+import {
+  MdKeyboardArrowUp,
+  MdKeyboardArrowDown,
+  MdAdd,
+  MdTextsms,
+} from "react-icons/md";
 import { useHistory } from "react-router";
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.css";
@@ -122,6 +127,8 @@ const DropdownDetails = (data) => {
 
 function Checkpoints() {
   const history = useHistory();
+  const dataGrid = useRef(null);
+  const [isToggle, setIsToggle] = useState(null);
   const [dataSource, setDataSource] = useState([
     {
       id: 1,
@@ -148,10 +155,16 @@ function Checkpoints() {
       email: "test@gmail.com",
     },
   ]);
-  const selectionChanged = (e) => {
-    e.component.collapseAll(-1);
-    e.component.expandRow(e.currentSelectedRowKeys[0]);
-  };
+  const toggleMasterRow = useCallback((rowKey) => {
+    console.log("rowKey", rowKey);
+    if (dataGrid.current.instance.isRowExpanded(rowKey)) {
+      dataGrid.current.instance.collapseRow(rowKey);
+      setIsToggle(null);
+    } else {
+      dataGrid.current.instance.expandRow(rowKey);
+      setIsToggle(rowKey);
+    }
+  }, []);
   const getSubstring = (str, n = 15) => {
     if (str) {
       return str?.length > n ? str?.substring(0, n) + "..." : str;
@@ -169,16 +182,20 @@ function Checkpoints() {
       </span>
     );
   };
-  const TemplateActions = (data) => {
+  const TemplateActions = (item) => {
     return (
       <div className="d-flex justify-content-center align-items-center">
         <div className="px-1">
           <IconButton
-            onClick={() => {
-              console.log();
-            }}
+            onClick={() => toggleMasterRow(item.data?.id)}
             variant="iconButtonRound"
-            description={<MdKeyboardArrowRight />}
+            description={
+              isToggle === item.data?.id ? (
+                <MdKeyboardArrowUp />
+              ) : (
+                <MdKeyboardArrowDown />
+              )
+            }
             size="none"
           />
         </div>
@@ -188,10 +205,10 @@ function Checkpoints() {
   return (
     <div className="mt-4">
       <DataGrid
+        ref={dataGrid}
         id="dataGrid"
         dataSource={dataSource}
         keyExpr="id"
-        onSelectionChanged={selectionChanged}
         columnAutoWidth={true}
         allowColumnReordering={true}
         paging={{ pageSize: 6 }}
@@ -255,7 +272,7 @@ function Checkpoints() {
         <Column cellRender={TemplateActions}>
           <RequiredRule />
         </Column>
-        <MasterDetail enabled={true} component={DropdownDetails} />
+        <MasterDetail enabled={false} component={DropdownDetails} />
       </DataGrid>
     </div>
   );
