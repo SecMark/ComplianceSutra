@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
+import { MdKeyboardArrowRight } from "react-icons/md";
 import { useHistory } from "react-router";
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.css";
 import { DataGrid, Column, RequiredRule } from "devextreme-react/data-grid";
-import { ImSearch } from "react-icons/im";
-import styles from "./style.module.scss";
-import Text from "../../components/Text/Text";
-import IconButton from "../../components/Buttons/IconButton";
-import Container from "../../components/Containers";
-import HeaderNavigation, { UserManagmentPages } from "./HeaderNavigation";
+import styles from "../style.module.scss";
+import IconButton from "../../../components/Buttons/IconButton";
 
 function CurrentWork() {
   const history = useHistory();
@@ -39,7 +35,6 @@ function CurrentWork() {
       email: "test@gmail.com",
     },
   ]);
-  const [currentPageView, setCurrentPageView] = useState(UserManagmentPages[0]);
   const selectionChanged = (e) => {
     e.component.collapseAll(-1);
     e.component.expandRow(e.currentSelectedRowKeys[0]);
@@ -53,10 +48,34 @@ function CurrentWork() {
   const renderTitleHeader = (data) => {
     return <p className={styles.columnHeaderTitle}>{data.column.caption}</p>;
   };
-  const TemplateNameCell = (data) => {
+  const TemplateNameCellWithBlack = (data) => {
     const value = data?.value;
     return (
       <span className={styles.balckTextCell} title={value}>
+        {getSubstring(value)}
+      </span>
+    );
+  };
+  const TemplateStatusCell = (data) => {
+    const value = data?.value;
+    return (
+      <span className={styles.balckTextCell} title={value}>
+        {getSubstring(value)}
+      </span>
+    );
+  };
+  const TemplateNameCellWithBlue = (data) => {
+    const value = data?.value;
+    return (
+      <span className={styles.blueTextCell} title={value}>
+        {getSubstring(value)}
+      </span>
+    );
+  };
+  const TemplateNameCellWithStatus = (data) => {
+    const value = data?.value;
+    return (
+      <span className={styles.blueTextCell} title={value}>
         {getSubstring(value)}
       </span>
     );
@@ -67,7 +86,7 @@ function CurrentWork() {
         <div className="px-1">
           <IconButton
             onClick={() => {
-              history.push("/tax-audit");
+              history.push("/audit/tax-user");
             }}
             variant="iconButtonRound"
             description={<MdKeyboardArrowRight />}
@@ -78,43 +97,7 @@ function CurrentWork() {
     );
   };
   return (
-    <Container variant="content">
-      <div className={styles.header}>
-        <div style={{ display: "flex" }}>
-          <IconButton
-            variant="iconButtonRound"
-            description={<MdKeyboardArrowLeft />}
-            size="none"
-          />
-          <Text
-            heading="p"
-            variant="stepperMainHeading"
-            text="Amit Shah(Auditor)"
-          />
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <div className="TopSearch">
-            <div className="SearchIcon">
-              <ImSearch />
-            </div>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search"
-              onChange={(e) => console.log(e)}
-            />
-          </div>
-        </div>
-      </div>
-      <div className={styles.headerBorder}></div>
-
-      <HeaderNavigation
-        currentPageView={currentPageView}
-        setCurrentPageView={setCurrentPageView}
-        pages={UserManagmentPages}
-      />
-
+    <div className="mt-4">
       <DataGrid
         id="dataGrid"
         dataSource={dataSource}
@@ -148,49 +131,55 @@ function CurrentWork() {
           dataField="user_name"
           caption="Company Name"
           headerCellRender={renderTitleHeader}
-          cellRender={TemplateNameCell}
+          cellRender={TemplateNameCellWithBlack}
         />
         <Column
           dataField="expertise"
           caption="Audit Type"
           headerCellRender={renderTitleHeader}
-          cellRender={TemplateNameCell}
+          cellRender={TemplateNameCellWithBlack}
         />
         <Column
           dataField="role"
           caption="Start Date"
           headerCellRender={renderTitleHeader}
-          cellRender={TemplateNameCell}
+          cellRender={TemplateNameCellWithBlack}
         />
         <Column
           dataField="mobile_no"
           caption="End Date"
           headerCellRender={renderTitleHeader}
-          cellRender={TemplateNameCell}
+          cellRender={TemplateNameCellWithBlack}
         />
         <Column
           dataField="email"
           caption="Duration"
           headerCellRender={renderTitleHeader}
-          cellRender={TemplateNameCell}
+          cellRender={TemplateNameCellWithBlack}
+        />
+        <Column
+          dataField="email"
+          caption="Status"
+          headerCellRender={renderTitleHeader}
+          cellRender={TemplateStatusCell}
         />
         <Column
           dataField="email"
           caption="Questionnaire"
           headerCellRender={renderTitleHeader}
-          cellRender={TemplateNameCell}
+          cellRender={TemplateNameCellWithBlue}
         />
         <Column
           dataField="email"
           caption="Checkpoints"
           headerCellRender={renderTitleHeader}
-          cellRender={TemplateNameCell}
+          cellRender={TemplateNameCellWithBlue}
         />
         <Column cellRender={TemplateActions}>
           <RequiredRule />
         </Column>
       </DataGrid>
-    </Container>
+    </div>
   );
 }
 

@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styles from "./style.module.scss";
 
 const SideBar = () => {
   const history = useHistory();
+  const [pathName, setPathName] = useState(window?.location?.pathname);
   const redirectTo = (route) => {
+    setPathName(route);
     history.push(route);
   };
   return (
@@ -15,7 +17,7 @@ const SideBar = () => {
       <div className={styles.navigationMenu}>
         <ul>
           <li
-            className={styles.activeClass}
+            className={pathName === "/audit" ? styles.activeClass : ""}
             onClick={() => redirectTo("/audit")}
           >
             <span>Templates</span>
@@ -23,7 +25,10 @@ const SideBar = () => {
           <li>
             <span>Assignments</span>
           </li>
-          <li onClick={() => redirectTo("/audit/users")}>
+          <li
+            className={pathName === "/audit/users" ? styles.activeClass : ""}
+            onClick={() => redirectTo("/audit/users")}
+          >
             <span>Users</span>
           </li>
           <li>

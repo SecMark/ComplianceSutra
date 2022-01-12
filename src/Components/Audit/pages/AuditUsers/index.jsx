@@ -1,49 +1,33 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import styles from "./style.module.scss";
 import Text from "../../components/Text/Text";
 import IconButton from "../../components/Buttons/IconButton";
-import {
-  MdAddBox,
-  MdKeyboardArrowRight,
-  MdOutlineCheckCircle,
-  MdPlayArrow,
-  MdModeEdit,
-  MdDelete,
-} from "react-icons/md";
-import Button from "../../components/Buttons/Button";
-import { useHistory, useRouteMatch } from "react-router";
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.css";
 import {
   DataGrid,
-  ColumnFixing,
   Column,
   RequiredRule,
-  FilterRow,
-  SearchPanel,
-  Export,
-  Toolbar,
-  Item,
-  GroupPanel,
-  Selection,
-  Grouping,
   MasterDetail,
 } from "devextreme-react/data-grid";
+import {
+  MdAddBox,
+  MdKeyboardArrowRight,
+  MdModeEdit,
+  MdDelete,
+  MdPhoneInTalk,
+} from "react-icons/md";
 import { AiFillMessage } from "react-icons/ai";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { MdPhoneInTalk } from "react-icons/md";
-import { Workbook } from "exceljs";
-import saveAs from "file-saver";
-import { exportDataGrid } from "devextreme/excel_exporter";
 import Container from "../../components/Containers";
-import axiosInstance from "../../../../apiServices/";
 import { ImSearch } from "react-icons/im";
 
-const UserDetails = () => {
+const DropdownDetails = () => {
   return (
-    <div className={styles.userDetails}>
+    <div className={styles.toggleList}>
       <div></div>
-      <div>Mr.Amit Shah</div>
+      <div className={styles.blueTextCell}>Mr.Amit Shah</div>
       <div>
         <div className="pb-1">
           <IconButton
@@ -103,7 +87,6 @@ function AuditUsers() {
       email: "test@gmail.com",
     },
   ]);
-  const dataGrid = useRef(null);
 
   const selectionChanged = (e) => {
     e.component.collapseAll(-1);
@@ -146,7 +129,7 @@ function AuditUsers() {
         <div className="px-1">
           <IconButton
             onClick={() => {
-              history.push("/tax-audit");
+              history.push("/audit/work-user");
             }}
             variant="iconButtonRound"
             description={<MdKeyboardArrowRight />}
@@ -158,9 +141,9 @@ function AuditUsers() {
   };
   return (
     <Container variant="content">
-      <div className={styles.header}>
+      <div className="d-flex justify-content-between align-items-center">
         <Text heading="p" variant="stepperMainHeading" text="Users" />
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div className="d-flex justify-content-center">
           <div className="TopSearch">
             <div className="SearchIcon">
               <ImSearch />
@@ -252,7 +235,7 @@ function AuditUsers() {
         <Column cellRender={TemplateActions}>
           <RequiredRule />
         </Column>
-        <MasterDetail enabled={true} component={UserDetails} />
+        <MasterDetail enabled={true} component={DropdownDetails} />
       </DataGrid>
     </Container>
   );

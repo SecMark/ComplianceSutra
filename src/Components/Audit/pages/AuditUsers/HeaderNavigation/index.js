@@ -2,17 +2,28 @@ import React from "react";
 import "./style.css";
 export const UserManagmentPages = [
   {
-    id: "project-management-project",
-    value: "CurrentWork",
-    buttonName: "Current Work",
-  },
-  {
     id: "project-management-task",
     value: "CompleteWork",
     buttonName: "Complete Work",
   },
+  {
+    id: "project-management-project",
+    value: "CurrentWork",
+    buttonName: "Current Work",
+  },
 ];
-
+export const UserWorkManagmentPages = [
+  {
+    id: "project-management-task",
+    value: "Questionnarie",
+    buttonName: "Questionnarie",
+  },
+  {
+    id: "project-management-project",
+    value: "Checkpoints",
+    buttonName: "Checkpoints",
+  },
+];
 const HeaderNavigation = ({
   containerClass,
   buttonClass,

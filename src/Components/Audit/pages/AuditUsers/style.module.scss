@@ -1,9 +1,4 @@
 @import "../../assets//styles//colors.scss";
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 .headerBorder {
   padding-top: 10px;
   border-bottom: 1px solid $color_light_black;
@@ -13,7 +8,7 @@
   justify-content: flex-end;
   margin: 10px;
 }
-.userDetails {
+.toggleList {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,4 +21,20 @@
   text-transform: uppercase;
   color: rgb(255, 255, 255);
   font-family: Poppins;
+}
+.balckTextCell {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #2c2738;
+  text-transform: capitalize;
+}
+.blueTextCell {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #0e7bea;
+  text-transform: capitalize;
 }

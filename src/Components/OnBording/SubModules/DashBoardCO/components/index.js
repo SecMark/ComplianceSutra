@@ -20,6 +20,8 @@ import SectionList from "../../../../Audit/pages/List/SectionList";
 import Layout from "../../../../Audit/components/Layout/Layout.jsx";
 import Landing from "../../../../Audit/pages/Landing/index.jsx";
 import TaxAudit from "../../../../Audit/pages/AuditTemplates/TaxAudit";
+import WorkAuditUser from "../../../../Audit/pages/AuditUsers/WorkAuditUser";
+import TaxAuditUser from "../../../../Audit/pages/AuditUsers/TaxAuditUser";
 
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
@@ -137,7 +139,18 @@ function Dashboard({ history }) {
       state?.adminMenu?.currentMenu !== "tax-audit"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("tax-audit"));
+    } else if (
+      window.location.href.includes("audit/work-user") &&
+      state?.adminMenu?.currentMenu !== "audit/work-user"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("audit/work-user"));
+    } else if (
+      window.location.href.includes("audit/tax-user") &&
+      state?.adminMenu?.currentMenu !== "audit/tax-user"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("audit/tax-user"));
     }
+    console.log('window.location.href', window.location.href)
   }, [window.location.href]);
 
   return (
@@ -204,6 +217,16 @@ function Dashboard({ history }) {
         {state && state.adminMenu.currentMenu === "tax-audit" && (
           <div className="create-template">
             <TaxAudit />
+          </div>
+        )}
+        {state && state.adminMenu.currentMenu === "audit/work-user" && (
+          <div className="create-template">
+            <WorkAuditUser />
+          </div>
+        )}
+        {state && state.adminMenu.currentMenu === "audit/tax-user" && (
+          <div className="create-template">
+            <TaxAuditUser />
           </div>
         )}
 
