@@ -22,72 +22,34 @@ const DropdownDetails = (data) => {
           <th className={styles.w20}>Submited Doc.</th>
           <th></th>
         </tr>
-        <tr className={styles.dataRow}>
-          <td className={styles.w40}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry ?
-          </td>
-          <td className={styles.w20}>PDF | Excel</td>
-          <td className={styles.w20}>3 Checks</td>
-          <td>
-            <div className="d-flex align-items-center justify-content-center">
-              <IconButton
-                variant="iconButtonPrimary"
-                className={`${styles.tableIconButton} mr-2`}
-                description={<MdAdd />}
-              />
-              <IconButton
-                variant="iconButtonPrimary"
-                className={`${styles.tableIconButton} ${styles.messageNotificationDot} mr-2`}
-                description={<MdTextsms />}
-              />
-            </div>
-          </td>
-        </tr>
-        <tr className={styles.dataRow}>
-          <td className={styles.w40}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry ?
-          </td>
-          <td className={styles.w20}>PDF | Excel</td>
-          <td className={styles.w20}>3 Checks</td>
-          <td>
-            <div className="d-flex align-items-center justify-content-center">
-              <IconButton
-                variant="iconButtonPrimary"
-                className={`${styles.tableIconButton} mr-2`}
-                description={<MdAdd />}
-              />
-              <IconButton
-                variant="iconButtonPrimary"
-                className={`${styles.tableIconButton} ${styles.messageNotificationDot} mr-2`}
-                description={<MdTextsms />}
-              />
-            </div>
-          </td>
-        </tr>
-        <tr className={styles.dataRow}>
-          <td className={styles.w40}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry ?
-          </td>
-          <td className={styles.w20}>PDF | Excel</td>
-          <td className={styles.w20}>3 Checks</td>
-          <td>
-            <div className="d-flex align-items-center justify-content-center">
-              <IconButton
-                variant="iconButtonPrimary"
-                className={`${styles.tableIconButton} mr-2`}
-                description={<MdAdd />}
-              />
-              <IconButton
-                variant="iconButtonPrimary"
-                className={`${styles.tableIconButton} ${styles.messageNotificationDot} mr-2`}
-                description={<MdTextsms />}
-              />
-            </div>
-          </td>
-        </tr>
+        {Array(3)
+          .fill(1)
+          .map((item) => {
+            return (
+              <tr className={styles.dataRow} key={item}>
+                <td className={styles.w40}>
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry ?
+                </td>
+                <td className={styles.w20}>PDF | Excel</td>
+                <td className={styles.w20}>3 Checks</td>
+                <td>
+                  <div className="d-flex align-items-center justify-content-center">
+                    <IconButton
+                      variant="iconButtonPrimary"
+                      className={`${styles.tableIconButton} mr-2`}
+                      description={<MdAdd />}
+                    />
+                    <IconButton
+                      variant="iconButtonPrimary"
+                      className={`${styles.tableIconButton} ${styles.messageNotificationDot} mr-2`}
+                      description={<MdTextsms />}
+                    />
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
       </table>
     </div>
   );
@@ -152,11 +114,12 @@ function Questionnaire() {
     );
   };
   const TemplateActions = (data) => {
+    console.log("data", data?.rowIndex);
     return (
       <div className="d-flex justify-content-center align-items-center">
         <div className="px-1">
           <IconButton
-            onClick={toggleMasterRow}
+            onClick={() => console.log("")}
             variant="iconButtonRound"
             description={<MdKeyboardArrowRight />}
             size="none"
@@ -172,7 +135,7 @@ function Questionnaire() {
         id="dataGrid"
         dataSource={dataSource}
         keyExpr="id"
-        onSelectionChanged={selectionChanged}
+        // onSelectionChanged={selectionChanged}
         columnAutoWidth={true}
         allowColumnReordering={true}
         paging={{ pageSize: 6 }}
