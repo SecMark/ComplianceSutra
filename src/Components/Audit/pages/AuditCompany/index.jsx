@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Text from "../../components/Text/Text";
 import IconButton from "../../components/Buttons/IconButton";
-import {
-  MdAddBox,
-  MdKeyboardArrowRight,
-  MdDelete
-} from "react-icons/md";
-import {RiEdit2Fill} from "react-icons/ri"
+import { MdAddBox, MdKeyboardArrowRight, MdDelete } from "react-icons/md";
+import { RiEdit2Fill } from "react-icons/ri";
 import { useHistory, useRouteMatch } from "react-router";
 
 import "devextreme/dist/css/dx.common.css";
@@ -36,42 +32,42 @@ import axiosInstance from "../../../../apiServices/";
 function AuditCompany() {
   const [selectedEmployee, setSelectedEmployee] = useState();
   const [auditTemplatesData, setAuditTemplatesData] = useState([
-      {
-          company_name:"Bk Tradders",
-          registration_no:"123456",
-          company_category:"textile",
-          contact_no:"8764736459",
-          email_id:"amvv@jvh.vfsv",
-          branches:2,
-      },
-      {
-        company_name:"IEX",
-        registration_no:"123456",
-        company_category:"electricity trading platform",
-        contact_no:"8764736459",
-        email_id:"amvv@jvh.vfsv",
-        branches:2,
+    {
+      company_name: "Bk Tradders",
+      registration_no: "123456",
+      company_category: "textile",
+      contact_no: "8764736459",
+      email_id: "amvv@jvh.vfsv",
+      branches: 2,
     },
     {
-        company_name:"sona coms",
-        registration_no:"123456",
-        company_category:"auto parts",
-        contact_no:"8764736459",
-        email_id:"amvv@jvh.vfsv",
-        branches:2,
+      company_name: "IEX",
+      registration_no: "123456",
+      company_category: "electricity trading platform",
+      contact_no: "8764736459",
+      email_id: "amvv@jvh.vfsv",
+      branches: 2,
     },
     {
-        company_name:"Asian paints",
-        registration_no:"123456",
-        company_category:"paints",
-        contact_no:"8764736459",
-        email_id:"amvv@jvh.vfsv",
-        branches:8,
+      company_name: "sona coms",
+      registration_no: "123456",
+      company_category: "auto parts",
+      contact_no: "8764736459",
+      email_id: "amvv@jvh.vfsv",
+      branches: 2,
+    },
+    {
+      company_name: "Asian paints",
+      registration_no: "123456",
+      company_category: "paints",
+      contact_no: "8764736459",
+      email_id: "amvv@jvh.vfsv",
+      branches: 8,
     },
   ]);
   const history = useHistory();
   const { path } = useRouteMatch();
-  console.log("data that i am getting",auditTemplatesData)
+  console.log("data that i am getting", auditTemplatesData);
 
   const getAuditTemplatesData = async () => {
     try {
@@ -94,32 +90,42 @@ function AuditCompany() {
 
   const companyFieldCell = (data) => {
     const value = data?.value;
-     return (
-       <span className={styles.balckTextCell} title={value}>
-         {getSubstring(value)}
-       </span>
-     );
+    return (
+      <span className={styles.balckTextCell} title={value}>
+        {getSubstring(value)}
+      </span>
+    );
   };
   const renderTitleHeader = (data) => {
     return <p className={styles.columnHeaderTitle}>{data.column.caption}</p>;
   };
 
-  
-  const CompanyActions = (data) => {
+  const EditAction = (data) => {
     return (
       <div className="d-flex justify-content-between align-items-center">
-        
         <IconButton
           variant="iconButtonPrimary"
           description={<RiEdit2Fill />}
           size="none"
         />
+      </div>
+    );
+  };
+  const DeleteAction = (data) => {
+    return (
+      <div className="d-flex justify-content-between align-items-center">
         <IconButton
           variant="iconButtonDelete"
           description={<MdDelete />}
           size="none"
         />
+      </div>
+    );
+  };
 
+  const CompanyActions = (data) => {
+    return (
+      <div className="d-flex justify-content-between align-items-center">
         <IconButton
           onClick={() => {
             history.push("/audit-company-branch");
@@ -133,16 +139,13 @@ function AuditCompany() {
   };
 
   const RequiredDataCell = (data) => {
-      console.log("required cell data",data);
+    console.log("required cell data", data);
     const value = data?.value;
-    return (
-      <span className={styles.textBlueDataCell}>
-        {value}&nbsp;
-      </span>
-    );
+    return <span className={styles.textBlueDataCell}>{value}&nbsp;</span>;
   };
 
   function exportGrid(e) {
+    console.log("xcel sheet data",e)
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet("Main sheet");
     exportDataGrid({
@@ -158,9 +161,9 @@ function AuditCompany() {
     });
     e.cancel = true;
   }
-//   useEffect(() => {
-//     getAuditTemplatesData();
-//   }, []);
+  //   useEffect(() => {
+  //     getAuditTemplatesData();
+  //   }, []);
   return (
     <Container variant="content">
       <div className={styles.topHeading}>
@@ -256,6 +259,20 @@ function AuditCompany() {
             headerCellRender={renderTitleHeader}
             cellRender={RequiredDataCell}
             alignment="left"
+          >
+            <RequiredRule />
+          </Column>
+          <Column
+            cellRender={EditAction}
+            caption="Edit"
+            headerCellRender={renderTitleHeader}
+          >
+            <RequiredRule />
+          </Column>
+          <Column
+            cellRender={DeleteAction}
+            caption="Delete"
+            headerCellRender={renderTitleHeader}
           >
             <RequiredRule />
           </Column>

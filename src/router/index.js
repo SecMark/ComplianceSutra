@@ -50,6 +50,11 @@ import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 // import FormBuilder from "../Components/Audit/pages/FormBuilder";
 import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
 // import SectionList from "../Components/Audit/pages/List/SectionList";
+
+
+
+
+
 export default function AppRouter() {
   return (
     <div>
@@ -190,6 +195,10 @@ export default function AppRouter() {
           <Route exact path="/Company-workStatus" component={DashBoardCO}/>
           {/* User */}
           {/* <Route path="/user-task" component={UserTask}></Route> */}
+
+          {/* current work and completed work question and checklist routes */}
+          <Route exact path="/CurrentWork-questionAndCheckPoints" component={DashBoardCO}/>
+          <Route exact path="/CompletedWork-questionAndCheckPoints" component={DashBoardCO}/>
         </div>
       </>
     </div>

@@ -20,12 +20,16 @@ import {
   RequiredRule,
   FilterRow,
   SearchPanel,
+  Export,
   Toolbar,
   Item,
   GroupPanel,
   Selection,
   Grouping,
 } from "devextreme-react/data-grid";
+import { Workbook } from "exceljs";
+import saveAs from "file-saver";
+import { exportDataGrid } from "devextreme/excel_exporter";
 import Container from "../../../components/Containers";
 import axiosInstance from "../../../../../apiServices";
 
@@ -100,22 +104,26 @@ function AuditCompany() {
     return <p className={styles.columnHeaderTitle}>{data.column.caption}</p>;
   };
 
-  
+  function exportGrid(e) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet("Main sheet");
+    exportDataGrid({
+      worksheet: worksheet,
+      component: e.component,
+    }).then(function () {
+      workbook.xlsx.writeBuffer().then(function (buffer) {
+        saveAs(
+          new Blob([buffer], { type: "application/octet-stream" }),
+          "DataGrid.xlsx"
+        );
+      });
+    });
+    e.cancel = true;
+  }
+
   const CompanyActions = (data) => {
     return (
       <div className="d-flex justify-content-between align-items-center">
-        
-        <IconButton
-          variant="iconButtonPrimary"
-          description={<RiEdit2Fill />}
-          size="none"
-        />
-        <IconButton
-          variant="iconButtonDelete"
-          description={<MdDelete />}
-          size="none"
-        />
-
         <IconButton
           onClick={() => {
             history.push("/Company-workStatus");
@@ -138,6 +146,29 @@ function AuditCompany() {
     );
   };
 
+
+  const EditAction = (data) => {
+    return (
+      <div className="d-flex justify-content-between align-items-center">
+        <IconButton
+          variant="iconButtonPrimary"
+          description={<RiEdit2Fill />}
+          size="none"
+        />
+      </div>
+    );
+  };
+  const DeleteAction = (data) => {
+    return (
+      <div className="d-flex justify-content-between align-items-center">
+        <IconButton
+          variant="iconButtonDelete"
+          description={<MdDelete />}
+          size="none"
+        />
+      </div>
+    );
+  };
  
 //   useEffect(() => {
 //     getAuditTemplatesData();
@@ -155,12 +186,17 @@ function AuditCompany() {
           columnAutoWidth={true}
           allowColumnReordering={true}
           onSelectionChanged={selectEmployee}
+          onExporting={exportGrid}
           paging={{ pageSize: 6 }}
           showColumnLines={false}
           showBorders={false}
           showRowLines={false}
           wordWrapEnabled={true}
           width="100%"
+          selection={{
+            mode: "multiple",
+            showCheckBoxesMode: "always",
+          }}
           scrolling={{
             columnRenderingMode: "standard",
             mode: "standard",
@@ -182,6 +218,7 @@ function AuditCompany() {
                 onClick={() => history.push(`${path}/create-template`)}
               />
             </Item>
+            <Item name="exportButton" />
             <Item name="searchPanel" />
             <Item name="groupPanel" location="before" />
           </Toolbar>
@@ -217,6 +254,20 @@ function AuditCompany() {
             cellRender={companyFieldCell}
             alignment="left"
           />
+           <Column
+            cellRender={EditAction}
+            caption="Edit"
+            headerCellRender={renderTitleHeader}
+          >
+            <RequiredRule />
+          </Column>
+          <Column
+            cellRender={DeleteAction}
+            caption="Delete"
+            headerCellRender={renderTitleHeader}
+          >
+            <RequiredRule />
+          </Column>
           <Column cellRender={CompanyActions}>
             <RequiredRule />
           </Column>
@@ -227,6 +278,7 @@ function AuditCompany() {
           <Grouping contextMenuEnabled={true} />
 
           <GroupPanel visible={true} allowColumnDragging={true} />
+          <Export enabled={true} />
           <Selection mode="single" />
         </DataGrid>
       )}

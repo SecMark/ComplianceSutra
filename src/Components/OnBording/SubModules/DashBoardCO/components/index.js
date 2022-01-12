@@ -22,6 +22,8 @@ import Landing from "../../../../Audit/pages/Landing/index.jsx";
 import TaxAudit from "../../../../Audit/pages/AuditTemplates/TaxAudit";
 import AuditCompanyBranch from "../../../../Audit/pages/AuditCompany/Branches";
 import AuditCompanyWorkStatus from "../../../../Audit/pages/AuditCompany/WorkStatus";
+import CurrentWorkQuestionAndCheckPoints from "../../../../Audit/pages/AuditCompany/WorkStatus/CurrentWorkQuestionandCheckPoints";
+import CompletedWorkQuestionAndCheckPoints from "../../../../Audit/pages/AuditCompany/WorkStatus/CompletedWorkQuestionandCheckPoints";
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -150,6 +152,18 @@ function Dashboard({ history }) {
     ) {
       dispatch(adminMenuActions.setCurrentMenu("Company-workStatus"));
     }
+    else if (
+      window.location.href.includes("CurrentWork-questionAndCheckPoints") &&
+      state?.adminMenu?.currentMenu !== "CurrentWork-questionAndCheckPoints"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("CurrentWork-questionAndCheckPoints"));
+    }
+    else if (
+      window.location.href.includes("CompletedWork-questionAndCheckPoints") &&
+      state?.adminMenu?.currentMenu !== "CompletedWork-questionAndCheckPoints"
+    ) {
+      dispatch(adminMenuActions.setCurrentMenu("CompletedWork-questionAndCheckPoints"));
+    }
   }, [window.location.href]);
 
   return (
@@ -226,6 +240,16 @@ function Dashboard({ history }) {
         {state && state.adminMenu.currentMenu === "Company-workStatus" && (
           <div className="create-template">
               <AuditCompanyWorkStatus/>
+          </div>
+        )}
+        {state && state.adminMenu.currentMenu === "CurrentWork-questionAndCheckPoints" && (
+          <div className="create-template">
+              <CurrentWorkQuestionAndCheckPoints/>
+          </div>
+        )}
+        {state && state.adminMenu.currentMenu === "CompletedWork-questionAndCheckPoints" && (
+          <div className="create-template">
+              <CompletedWorkQuestionAndCheckPoints/>
           </div>
         )}
         {/* {state && state.adminMenu.currentMenu === "section-list" && (

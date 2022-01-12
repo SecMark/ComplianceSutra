@@ -21,7 +21,7 @@ const Layout = () => {
       <Container variant="container">
         <Switch>
           <Route exact path={`${path}`}>
-            <AuditCompany />
+            <AuditCompany/>
           </Route>
           <Route exact path={`/${path}/questionaire`}>
             <FormBuilder />

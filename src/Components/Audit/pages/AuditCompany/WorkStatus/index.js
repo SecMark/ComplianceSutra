@@ -5,6 +5,8 @@ import IconButton from "../../../components/Buttons/IconButton";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import {RiEdit2Fill} from "react-icons/ri"
 import { useHistory, useRouteMatch } from "react-router";
+import CurrentWork from "./CurrentWork";
+import CompletedWork from "./CompletedWork";
 
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.css";
@@ -36,7 +38,7 @@ function AuditCompanyWorkStatus() {
             <Text
               heading="p"
               variant="stepperMainHeading"
-              text="Tax Audit"
+              text="Bk Traders"
               className="mb-0 ml-3"
             />
           </div>
@@ -51,10 +53,11 @@ function AuditCompanyWorkStatus() {
             </div>
           ))}
         </div>
+        {currentTab === "Current Work" ? (<CurrentWork/>) :(<CompletedWork/>)}
           </Container>
-    <Container variant="content">
+    
       
-    </Container>
+    
     </Container>
   );
 }

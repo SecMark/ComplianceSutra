@@ -206,3 +206,28 @@ p.tableContainerName {
   color: #2c2738;
   text-transform: capitalize;
 }
+
+
+
+.statusTextProgress {
+  color:  #FF5858;;
+  font-size: 12px;
+  line-height: normal;
+  font-weight: normal;
+  text-decoration-line: underline;
+}
+.statusTextCompleted {
+  color: #41D290;
+  font-size: 12px;
+  line-height: normal;
+  font-weight: normal;
+  text-decoration-line: underline;
+}
+
+.statusTextSubmited {
+  color: #B3ABC4;
+  font-size: 12px;
+  line-height: normal;
+  font-weight: normal;
+  text-decoration-line: underline;
+}
