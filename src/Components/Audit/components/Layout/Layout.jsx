@@ -6,6 +6,7 @@ import CheckList from "../../pages/FormBuilder/CheckList";
 import { ToastContainer } from "react-toastify";
 import AuditAssignment from "../../pages/AuditAssignment";
 import AuditTemplates from "../../pages/AuditTemplates";
+import AuditUsers from "../../pages/AuditUsers";
 import Assignments from "../../pages/Assignments/";
 import { useRouteMatch, Route, Switch } from "react-router";
 import Container from "../Containers";
@@ -25,6 +26,9 @@ const Layout = () => {
           <Route exact path={`${path}`}>
             <AuditTemplates />
           </Route>
+          <Route exact path={`${path}/users`}>
+            <AuditUsers />
+            </Route>
           <Route exact path={`${path}/assignments`}>
             <Assignments />
           </Route>
