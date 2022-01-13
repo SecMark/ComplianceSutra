@@ -150,7 +150,6 @@ function AuditTemplates() {
       </span>
     );
   };
-
   function exportGrid(e) {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet("Main sheet");

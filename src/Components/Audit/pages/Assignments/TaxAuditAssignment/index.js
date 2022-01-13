@@ -9,7 +9,7 @@ import Text from "../../../components/Text/Text";
 import styles from "./style.module.scss";
 import Questionare from "./Questionare";
 import Checkpoint from "./Checkpoint";
-const tabs = ["questionnarie", "checkpoints"];
+const tabs = ["questionnarie", "checklist"];
 
 function TaxAuditAssignment() {
     const history = useHistory();

@@ -1,17 +1,10 @@
-
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Text from "../../components/Text/Text";
 import IconButton from "../../components/Buttons/IconButton";
-import {
-  MdAddBox,
-  MdKeyboardArrowRight,
-  // MdOutlineCheckCircle,
-  MdPlayArrow,
-} from "react-icons/md";
+import { MdKeyboardArrowRight, MdRemoveRedEye,MdPreview } from "react-icons/md";
 import Button from "../../components/Buttons/Button";
 import { useHistory, useRouteMatch } from "react-router";
-
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.css";
 
@@ -36,7 +29,6 @@ import { MdModeEdit } from "react-icons/md";
 import Container from "../../components/Containers";
 
 import axiosInstance from "../../../../apiServices/";
-
 
 function Assignments() {
   const [selectedEmployee, setSelectedEmployee] = useState();
@@ -105,22 +97,42 @@ function Assignments() {
       </p>
     );
   };
-  const TemplateActions = (data) => {
-    const completion = data?.data?.completion;
+
+  const editAction = (data) => {
     return (
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex align-items-center">
         <IconButton
           variant="iconButtonRound"
           description={<MdModeEdit />}
           size="none"
         />
+      </div>
+    );
+  };
+
+  const DoneAction = (data) => {
+    return (
+      <div className="d-flex align-items-center">
         <IconButton
+          variant="iconButtonRound"
+          description={<MdRemoveRedEye />}
+          size="none"
+        />
+      </div>
+    );
+  };
+
+  const TemplateActions = (data) => {
+    const completion = data?.data?.completion;
+    return (
+      <div className="d-flex justify-content-between align-items-center">
+        {/* <IconButton
           variant="iconButtonPrimary"
-          // description={<MdOutlineCheckCircle />}
+          description={<MdOutlineCheckCircle />}
           size="none"
           disabled={completion === 100}
           disabledVariant="iconButtonPrimaryDisabled"
-        />
+        /> */}
         {/* <IconButton
           variant="iconButtonPrimary"
           description={<MdPlayArrow />}
@@ -217,14 +229,14 @@ function Assignments() {
                 onClick={() => history.push(`${path}/create-template`)}
               /> */}
             </Item>
-            {/* <Item name="exportButton" />
-            <Item name="searchPanel" /> */}
+            <Item name="searchPanel" />
+            <Item name="exportButton" />
             <Item name="groupPanel" location="before" />
           </Toolbar>
 
           <Column
             dataField="audit_template_name"
-            caption="Company Name"
+            caption="Template Name"
             headerCellRender={renderTitleHeader}
             cellRender={TemplateNameCell}
           >
@@ -232,7 +244,7 @@ function Assignments() {
           </Column>
           <Column
             dataField="completion"
-            caption="Audit Name"
+            caption="Complition"
             cellRender={CompletionCell}
             headerCellRender={renderTitleHeader}
             alignment="left"
@@ -241,20 +253,20 @@ function Assignments() {
           </Column>
           <Column
             dataField="user"
-            caption="Status"
+            caption="Audite Type"
             cellRender={MadeByCell}
             headerCellRender={renderTitleHeader}
           >
             <RequiredRule />
           </Column>
-          <Column
+          {/* <Column
             dataField="audit_category"
-            caption="End Date"
+            caption="Questionnaire"
             headerCellRender={renderTitleHeader}
             cellRender={TemplateNameCell}
           >
             <RequiredRule />
-          </Column>
+          </Column> */}
           <Column
             dataField="total_question"
             caption="Questionnare"
@@ -271,6 +283,20 @@ function Assignments() {
           >
             <RequiredRule />
           </Column>
+
+          <Column
+            caption="Edit"
+            headerCellRender={renderTitleHeader}
+            cellRender={editAction}
+            alignment="left"
+          />
+          <Column
+            caption="Done"
+            headerCellRender={renderTitleHeader}
+            cellRender={MdPreview}
+            alignment="left"
+          />
+
           <Column cellRender={TemplateActions}>
             <RequiredRule />
           </Column>
@@ -286,8 +312,6 @@ function Assignments() {
         </DataGrid>
       )}
     </Container>
-
-
   );
 }
 
@@ -299,5 +323,3 @@ const getSubstring = (str, n = 15) => {
 };
 
 export default Assignments;
-
-
