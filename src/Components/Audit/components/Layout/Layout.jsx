@@ -13,6 +13,8 @@ import Container from "../Containers";
 import SectionList from "../../pages/List/SectionList";
 import TaxAudit from "../../pages/AuditTemplates/TaxAudit";
 import TaxAuditAssignment from "../../pages/Assignments/TaxAuditAssignment";
+import WorkAuditUser from "../../pages/AuditUsers/WorkAuditUser";
+import TaxAuditUser from "../../pages/AuditUsers/TaxAuditUser";
 const Layout = () => {
   const { path, url } = useRouteMatch();
   return (
@@ -28,7 +30,7 @@ const Layout = () => {
           </Route>
           <Route exact path={`${path}/users`}>
             <AuditUsers />
-            </Route>
+          </Route>
           <Route exact path={`${path}/assignments`}>
             <Assignments />
           </Route>
@@ -51,6 +53,15 @@ const Layout = () => {
           </Route>
           <Route exact path={`${path}/assignments/assignment`}>
             <TaxAuditAssignment />
+          </Route>
+          <Route exact path={`${path}/users/work-user`}>
+            <WorkAuditUser />
+          </Route>
+          <Route exact path={`${path}/users/work-user/complete-work`}>
+            <TaxAuditUser />
+          </Route>
+          <Route exact path={`${path}/users/work-user/current-work`}>
+            <TaxAuditUser />
           </Route>
         </Switch>
       </Container>

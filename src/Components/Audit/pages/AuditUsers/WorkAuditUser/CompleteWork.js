@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { useHistory } from "react-router";
+import { useHistory, useRouteMatch } from "react-router";
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.css";
 import { DataGrid, Column, RequiredRule } from "devextreme-react/data-grid";
@@ -9,6 +9,7 @@ import IconButton from "../../../components/Buttons/IconButton";
 
 function CompleteWork() {
   const history = useHistory();
+  const { path } = useRouteMatch();
   const [dataSource, setDataSource] = useState([
     {
       id: 1,
@@ -70,7 +71,7 @@ function CompleteWork() {
         <div className="px-1">
           <IconButton
             onClick={() => {
-              history.push("/audit/tax-user");
+              history.push(`${path}/complete-work`);
             }}
             variant="iconButtonRound"
             description={<MdKeyboardArrowRight />}
@@ -113,7 +114,7 @@ function CompleteWork() {
       >
         <Column
           dataField="user_name"
-         caption="Company Name"
+          caption="Company Name"
           headerCellRender={renderTitleHeader}
           cellRender={TemplateNameCellWithBlack}
         />
@@ -122,7 +123,7 @@ function CompleteWork() {
           caption="Audit Type"
           headerCellRender={renderTitleHeader}
           cellRender={TemplateNameCellWithBlack}
-        /> 
+        />
         <Column
           dataField="role"
           caption="Start Date"

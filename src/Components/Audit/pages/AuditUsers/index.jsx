@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useRouteMatch } from "react-router";
 import styles from "./style.module.scss";
 import Text from "../../components/Text/Text";
 import IconButton from "../../components/Buttons/IconButton";
@@ -61,6 +61,7 @@ const DropdownDetails = () => {
 
 function AuditUsers() {
   const history = useHistory();
+  const { path } = useRouteMatch();
   const [dataSource, setDataSource] = useState([
     {
       id: 1,
@@ -129,7 +130,7 @@ function AuditUsers() {
         <div className="px-1">
           <IconButton
             onClick={() => {
-              history.push("/audit/work-user");
+              history.push(`${path}/work-user`);
             }}
             variant="iconButtonRound"
             description={<MdKeyboardArrowRight />}

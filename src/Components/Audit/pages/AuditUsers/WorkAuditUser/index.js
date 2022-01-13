@@ -22,64 +22,62 @@ const WorkAuditUser = () => {
     setHeaderHight(Math.trunc(headerRef));
   }, [currentTab]);
   return (
-    <Container variant="container">
-      <Container variant="content">
-        <div className={styles.header}>
-          <div className="d-flex justify-content-between align-items-center">
-            <div className="d-flex mb-3">
-              <IconButton
-                onClick={() => {
-                  history.goBack();
-                }}
-                variant="iconButtonRound"
-                description={<MdKeyboardArrowLeft />}
-                size="none"
-              />
-              <Text
-                heading="p"
-                variant="stepperMainHeading"
-                text="Amit Shah(Auditor)"
-                className="mb-0 ml-3"
-              />
-            </div>
-            <div className="TopSearch">
-              <div className="SearchIcon">
-                <ImSearch />
-              </div>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search"
-                onChange={(e) => console.log(e)}
-              />
-            </div>
+    // <Container variant="container">
+    <Container variant="content">
+      <div className={styles.header}>
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex mb-3">
+            <IconButton
+              onClick={() => {
+                history.goBack();
+              }}
+              variant="iconButtonRound"
+              description={<MdKeyboardArrowLeft />}
+              size="none"
+            />
+            <Text
+              heading="p"
+              variant="stepperMainHeading"
+              text="Amit Shah(Auditor)"
+              className="mb-0 ml-3"
+            />
           </div>
-          {tabs.map((tab, index) => (
-            <div
-              className={`${styles.tab} ${
-                currentTab === tab && styles.tabActive
-              }`}
-              onClick={() => setCurrentTab(tab)}
-              key={index}
-            >
-              {tab}
+          <div className="TopSearch">
+            <div className="SearchIcon">
+              <ImSearch />
             </div>
-          ))}
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search"
+              onChange={(e) => console.log(e)}
+            />
+          </div>
         </div>
-        <div
-          className="mt-1"
-          style={{
-            height: `calc(95vh - ${
-              headerHeight + (isMobile ? 32 : 96) || 26
-            }px)`,
-            overflowY: "auto",
-          }}
-        >
-          {currentTab === tabs[0] && <CompleteWork />}
-          {currentTab === tabs[1] && <CurrentWork />}
-        </div>
-      </Container>
+        {tabs.map((tab, index) => (
+          <div
+            className={`${styles.tab} ${
+              currentTab === tab && styles.tabActive
+            }`}
+            onClick={() => setCurrentTab(tab)}
+            key={index}
+          >
+            {tab}
+          </div>
+        ))}
+      </div>
+      <div
+        className="mt-1"
+        style={{
+          height: `calc(95vh - ${headerHeight + (isMobile ? 32 : 96) || 26}px)`,
+          overflowY: "auto",
+        }}
+      >
+        {currentTab === tabs[0] && <CompleteWork />}
+        {currentTab === tabs[1] && <CurrentWork />}
+      </div>
     </Container>
+    // </Container>
   );
 };
 
