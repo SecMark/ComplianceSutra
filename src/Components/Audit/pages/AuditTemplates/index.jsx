@@ -5,6 +5,7 @@ import IconButton from "../../components/Buttons/IconButton";
 import {
   MdAddBox,
   MdKeyboardArrowRight,
+  MdOutlineCheckCircle,
   // MdOutlineCheckCircle,
   MdPlayArrow,
 } from "react-icons/md";
