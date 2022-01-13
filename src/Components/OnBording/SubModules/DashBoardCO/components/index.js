@@ -132,11 +132,6 @@ function Dashboard({ history }) {
       state?.adminMenu?.currentMenu !== "audit"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("audit"));
-    } else if (
-      window.location.href.includes("tax-audit") &&
-      state?.adminMenu?.currentMenu !== "tax-audit"
-    ) {
-      dispatch(adminMenuActions.setCurrentMenu("tax-audit"));
     }
   }, [window.location.href]);
 
@@ -201,11 +196,11 @@ function Dashboard({ history }) {
             <Layout />
           </div>
         )}
-        {state && state.adminMenu.currentMenu === "tax-audit" && (
+        {/* {state && state.adminMenu.currentMenu === "tax-audit" && (
           <div className="create-template">
             <TaxAudit />
           </div>
-        )}
+        )} */}
 
         {/* {state && state.adminMenu.currentMenu === "section-list" && (
           <div className="create-template">

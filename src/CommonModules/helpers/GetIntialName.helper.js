@@ -8,3 +8,7 @@ export const getIntialName = (name) => {
     return initials.toUpperCase();
   }
 };
+
+export const getShortStr = (str, length = 8) => {
+  return str?.length > length ? str?.substr(0, length) + "..." : str;
+};

@@ -188,10 +188,7 @@ export default function AppRouter() {
           <Route exact path="/audit-assignment" component={AuditAssignment} />
 
           <Route path="/audit" component={DashBoardCO} />
-          <Route exact path="/tax-audit" component={DashBoardCO} />
-
-          <Route exact path="/assignment" component={Assignments} />
-          <Route exact path="/tax-audit-assignment" component={TaxAuditAssignment} />
+          {/* <Route exact path="/tax-audit" component={DashBoardCO} /> */}
           {/* User */}
           {/* <Route path="/user-task" component={UserTask}></Route> */}
         </div>
