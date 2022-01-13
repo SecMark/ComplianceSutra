@@ -31,7 +31,7 @@ import {
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
 import { exportDataGrid } from "devextreme/excel_exporter";
-import { MdModeEdit } from "react-icons/md";
+import { MdModeEdit, MdOutlineNoteAdd } from "react-icons/md";
 import Container from "../../components/Containers";
 
 import axiosInstance from "../../../../apiServices/";
@@ -80,14 +80,6 @@ function AuditTemplates() {
       </span>
     );
   };
-  const MadeByCell = (data) => {
-    return (
-      <p title={data?.data?.user_id} className={styles.madeBy}>
-        {(data?.data?.user || data?.data?.user_id).split(" ")[0] ||
-          data?.data?.user}
-      </p>
-    );
-  };
   const renderTitleHeader = (data) => {
     return <p className={styles.columnHeaderTitle}>{data.column.caption}</p>;
   };
@@ -103,36 +95,54 @@ function AuditTemplates() {
       </p>
     );
   };
-  const TemplateActions = (data) => {
+
+  const EditTemplateAction = (data) => {
+    return (
+      <IconButton
+        variant="iconButtonRound"
+        description={<MdModeEdit />}
+        size="none"
+      />
+    );
+  };
+  const DoneTemplateAction = (data) => {
     const completion = data?.data?.completion;
     return (
-      <div className="d-flex justify-content-between align-items-center">
-        <IconButton
-          variant="iconButtonRound"
-          description={<MdModeEdit />}
-          size="none"
-        />
-        <IconButton
-          variant="iconButtonPrimary"
-          description={<MdOutlineCheckCircle />}
-          size="none"
-          disabled={completion === 100}
-          disabledVariant="iconButtonPrimaryDisabled"
-        />
-        <IconButton
-          variant="iconButtonPrimary"
-          description={<MdPlayArrow />}
-          size="none"
-        />
-        <IconButton
-          onClick={() => {
-            history.push("/tax-audit");
-          }}
-          variant="iconButtonRound"
-          description={<MdKeyboardArrowRight />}
-          size="none"
-        />
-      </div>
+      <IconButton
+        variant="iconButtonPrimary"
+        description={<MdOutlineCheckCircle />}
+        size="none"
+        disabled={completion === 100}
+        disabledVariant="iconButtonPrimaryDisabled"
+      />
+    );
+  };
+  const AssignTemplateAction = (data) => {
+    const { audit_template_name } = data.data;
+    return (
+      <IconButton
+        variant="iconButtonPrimary"
+        description={<MdPlayArrow />}
+        size="none"
+        onClick={() => {
+          history.push({
+            pathname: `${path}/template`,
+            state: {
+              templateName: audit_template_name,
+            },
+          });
+        }}
+      />
+    );
+  };
+
+  const CreateTemplateAction = (data) => {
+    return (
+      <IconButton
+        variant="iconButtonPrimary"
+        description={<MdOutlineNoteAdd />}
+        size="none"
+      />
     );
   };
 
@@ -190,6 +200,15 @@ function AuditTemplates() {
           showRowLines={false}
           wordWrapEnabled={true}
           width="100%"
+          export={{
+            allowExportSelectedData: true,
+            enabled: true,
+            texts: {
+              exportAll: "Export all data",
+              exportSelectedRows: "Export selected rows",
+              exportTo: "Export",
+            },
+          }}
           selection={{
             mode: "multiple",
             showCheckBoxesMode: "always",
@@ -237,14 +256,6 @@ function AuditTemplates() {
             <RequiredRule />
           </Column>
           <Column
-            dataField="user"
-            caption="Created by"
-            cellRender={MadeByCell}
-            headerCellRender={renderTitleHeader}
-          >
-            <RequiredRule />
-          </Column>
-          <Column
             dataField="audit_category"
             caption="audit type"
             headerCellRender={renderTitleHeader}
@@ -254,7 +265,7 @@ function AuditTemplates() {
           </Column>
           <Column
             dataField="total_question"
-            caption="data points"
+            caption="questionnarie"
             headerCellRender={renderTitleHeader}
             cellRender={RequiredDataCell}
             alignment="left"
@@ -268,7 +279,32 @@ function AuditTemplates() {
           >
             <RequiredRule />
           </Column>
-          <Column cellRender={TemplateActions}>
+          <Column
+            caption="Edit"
+            headerCellRender={renderTitleHeader}
+            cellRender={EditTemplateAction}
+          >
+            <RequiredRule />
+          </Column>
+          <Column
+            caption="Done"
+            headerCellRender={renderTitleHeader}
+            cellRender={DoneTemplateAction}
+          >
+            <RequiredRule />
+          </Column>
+          <Column
+            caption="Assign"
+            headerCellRender={renderTitleHeader}
+            cellRender={AssignTemplateAction}
+          >
+            <RequiredRule />
+          </Column>
+          <Column
+            caption="Create"
+            headerCellRender={renderTitleHeader}
+            cellRender={CreateTemplateAction}
+          >
             <RequiredRule />
           </Column>
 

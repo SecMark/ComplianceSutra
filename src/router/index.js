@@ -185,7 +185,7 @@ export default function AppRouter() {
           <Route exact path="/settings" component={CoSetting} />
           <Route exact path="/audit-assignment" component={AuditAssignment} />
           <Route path="/audit" component={DashBoardCO} />
-          <Route exact path="/tax-audit" component={DashBoardCO} />
+          {/* <Route exact path="/tax-audit" component={DashBoardCO} /> */}
           {/* User */}
           {/* <Route path="/user-task" component={UserTask}></Route> */}
         </div>

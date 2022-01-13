@@ -9,6 +9,7 @@ import AuditTemplates from "../../pages/AuditTemplates";
 import { useRouteMatch, Route, Switch } from "react-router";
 import Container from "../Containers";
 import SectionList from "../../pages/List/SectionList";
+import TaxAudit from "../../pages/AuditTemplates/TaxAudit";
 const Layout = () => {
   const { path, url } = useRouteMatch();
   return (
@@ -33,6 +34,11 @@ const Layout = () => {
           </Route>
           <Route exact path={`${path}/create-template`}>
             <FormBuilder />
+          </Route>
+          <Route exact path={`${path}/template`}>
+            {/* <div className="create-template"> */}
+            <TaxAudit />
+            {/* </div> */}
           </Route>
         </Switch>
       </Container>
