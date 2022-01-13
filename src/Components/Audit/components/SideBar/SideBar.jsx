@@ -20,7 +20,8 @@ const SideBar = () => {
           >
             <span>Templates</span>
           </li>
-          <li>
+          <li
+            onClick={() => redirectTo("/assignment")}>
             <span>Assignments</span>
           </li>
           <li>
@@ -41,7 +42,7 @@ const SideBar = () => {
           <li>
             <span>Audit Template</span>
           </li>
-          <li onClick={() => redirectTo("audit-assignment")}>
+          <li>
             <span>Audit Assignmet</span>
           </li>
         </ul>

@@ -215,3 +215,13 @@ input[type="file"]::file-selector-button {
   font-weight: 300;
   line-height: normal;
 }
+
+.inputForSearchAssignment{
+  border: none;
+  outline:none;
+  margin-top: 0px;
+  color: $color_black_text;
+  height: 30px;
+  margin-left: 50px;
+  text-align:500v;
+}
