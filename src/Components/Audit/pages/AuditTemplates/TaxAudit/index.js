@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useHistory } from "react-router";
 import "devextreme/dist/css/dx.light.css";
@@ -9,10 +9,18 @@ import Text from "../../../components/Text/Text";
 import styles from "./style.module.scss";
 import Questionnaire from "./Questionnaire";
 import Checkpoints from "./Checkpoints";
+import { isMobile } from "react-device-detect";
 const tabs = ["questionnarie", "checkpoints"];
 const TaxAudit = () => {
   const history = useHistory();
   const [currentTab, setCurrentTab] = useState(tabs[0]);
+  const [headerHeight, setHeaderHight] = useState(0);
+  useEffect(() => {
+    const headerRef = document
+      ?.querySelector("." + styles.header)
+      ?.getClientRects()[0]?.height;
+    setHeaderHight(Math.trunc(headerRef));
+  }, [currentTab]);
 
   return (
     <Container variant="container">
@@ -45,8 +53,18 @@ const TaxAudit = () => {
             </div>
           ))}
         </div>
-        {currentTab === tabs[0] && <Questionnaire />}
-        {currentTab === tabs[1] && <Checkpoints />}
+        <div
+          className="mt-3"
+          style={{
+            height: `calc(95vh - ${
+              headerHeight + (isMobile ? 32 : 96) || 26
+            }px)`,
+            overflowY: "auto",
+          }}
+        >
+          {currentTab === tabs[0] && <Questionnaire />}
+          {currentTab === tabs[1] && <Checkpoints />}
+        </div>
       </Container>
     </Container>
   );
