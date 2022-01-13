@@ -6,11 +6,13 @@ import check from "../../assets/Icons/check.png";
 import uncheck from "../../assets/Icons/uncheck.png";
 import closeIconGray from "../../assets/Icons/closeIconGray.png";
 import closeIcon from "../../assets/Icons/closeIcon.png";
+import plusIcon from "../../assets/Icons/plusIcon3.png";
 import Datepicker from "../../CommonModules/sharedComponents/Datepicker/index";
 import constants from "../../CommonModules/sharedComponents/constants/constant";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import reducer from "./reducer";
+import validator from "validator";
 import { actions as taskReportActions } from "../OnBording/SubModules/DashBoardCO/redux/actions";
 import {
   getInitials,
@@ -36,6 +38,7 @@ function ReAssignTasksModal({
   user,
   isTeamMember,
   company,
+  inviteUser,
 }) {
   const { getCompanyUsers, getUsersByRole } = apiServices;
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
@@ -47,6 +50,7 @@ function ReAssignTasksModal({
     to: [],
     dueOn: [],
   });
+
   const [searchValue, setSearchValue] = useState("");
   const [assignTo, setAssignTo] = useState({});
   const [filter, setFilter] = useState({});
@@ -84,7 +88,7 @@ function ReAssignTasksModal({
     }
   }, [openModal, isSingleTask]);
 
-  const handleReAssign = async () => {
+  const handleReAssign = async (assignToUser) => {
     let payload = {};
     if (filter.name === "MIGRATE_ALL_TASKS_OF_PARTICULAR_DATE") {
       const due_date = filter.value.dueOn
@@ -106,7 +110,7 @@ function ReAssignTasksModal({
     if (!isSingleTask) {
       payload = {
         user: user,
-        suggested_user: assignTo.email,
+        suggested_user: assignToUser || assignTo.email,
         ...payload,
       };
       try {
@@ -136,8 +140,8 @@ function ReAssignTasksModal({
             name: taskId,
             assign_by: auth.loginInfo.email || auth.loginInfo.EmailID,
             ...(isTeamMember
-              ? { assign_to: assignTo.email }
-              : { approver: assignTo.email }),
+              ? { assign_to: assignToUser || assignTo.email }
+              : { approver: assignToUser || assignTo.email }),
           },
         ],
       };
@@ -316,7 +320,28 @@ function ReAssignTasksModal({
                   }
                 )
               ) : (
-                <p>No members found</p>
+                <>
+                  {!taskId ? (
+                    <p>No members found</p>
+                  ) : (
+                    <span
+                      className="last-email-box email-list-row"
+                      style={{
+                        textAlign: "center",
+                        opacity: "inherit",
+                      }}
+                      onClick={() => handleReAssign(searchValue)}
+                    >
+                      {/* No records Available */}
+                      {searchValue !== "" && validator.isEmail(searchValue) && (
+                        <div className="dropbox-add-line">
+                          <img src={plusIcon} alt="account Circle Purple" />
+                          {`Invite '${searchValue}' via email`}
+                        </div>
+                      )}
+                    </span>
+                  )}
+                </>
               )}
             </div>
           )}

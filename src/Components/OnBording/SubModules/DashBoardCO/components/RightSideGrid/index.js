@@ -478,6 +478,7 @@ function RightSideGrid({
                 company={currentOpenedTask && currentOpenedTask.customer}
                 isSingleTask
                 isTeamMember
+                inviteUser={handleOnClickAssignBtn}
               />
               <ReAssignTasksModal
                 openModal={isShowReAssignModalForApprover}
@@ -486,6 +487,7 @@ function RightSideGrid({
                 taskId={currentOpenedTask && currentOpenedTask.task_name}
                 company={currentOpenedTask && currentOpenedTask.customer}
                 isSingleTask
+                inviteUser={handleOnClickAssignBtn}
               />
             </>
           )}
