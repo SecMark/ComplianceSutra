@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+
+import React from "react";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import styles from "./style.module.scss";
 
 const SideBar = () => {
+  const { path } = useRouteMatch();
   const history = useHistory();
   const [pathName, setPathName] = useState(window?.location?.pathname);
   const redirectTo = (route) => {
@@ -22,7 +24,7 @@ const SideBar = () => {
           >
             <span>Templates</span>
           </li>
-          <li>
+          <li onClick={() => redirectTo(`${path}/assignments`)}>
             <span>Assignments</span>
           </li>
           <li
@@ -46,7 +48,7 @@ const SideBar = () => {
           <li>
             <span>Audit Template</span>
           </li>
-          <li onClick={() => redirectTo("audit-assignment")}>
+          <li>
             <span>Audit Assignmet</span>
           </li>
         </ul>

@@ -13,6 +13,7 @@ import { isMobile } from "react-device-detect";
 const tabs = ["questionnarie", "checkpoints"];
 const TaxAudit = () => {
   const history = useHistory();
+  const templateName = history?.location?.state?.templateName || "";
   const [currentTab, setCurrentTab] = useState(tabs[0]);
   const [headerHeight, setHeaderHight] = useState(0);
   useEffect(() => {
@@ -23,49 +24,47 @@ const TaxAudit = () => {
   }, [currentTab]);
 
   return (
-    <Container variant="container">
-      <Container variant="content">
-        <div className={styles.header}>
-          <div className="d-flex mb-3">
-            <IconButton
-              onClick={() => {
-                history.goBack();
-              }}
-              variant="iconButtonRound"
-              description={<MdKeyboardArrowLeft />}
-              size="none"
-            />
-            <Text
-              heading="p"
-              variant="stepperMainHeading"
-              text="Tax Audit"
-              className="mb-0 ml-3"
-            />
+    <Container variant="content">
+      <div className={styles.header}>
+        <div className="d-flex mb-3">
+          <IconButton
+            onClick={() => {
+              history.goBack();
+            }}
+            variant="iconButtonRound"
+            description={<MdKeyboardArrowLeft />}
+            size="none"
+          />
+          <Text
+            heading="p"
+            variant="stepperMainHeading"
+            text={templateName}
+            className="mb-0 ml-3"
+          />
+        </div>
+        {tabs.map((tab) => (
+          <div
+            className={`${styles.tab} ${
+              currentTab === tab && styles.tabActive
+            }`}
+            onClick={() => setCurrentTab(tab)}
+          >
+            {tab}
           </div>
-          {tabs.map((tab) => (
-            <div
-              className={`${styles.tab} ${
-                currentTab === tab && styles.tabActive
-              }`}
-              onClick={() => setCurrentTab(tab)}
-            >
-              {tab}
-            </div>
-          ))}
-        </div>
-        <div
-          className="mt-3"
-          style={{
-            height: `calc(95vh - ${
-              headerHeight + (isMobile ? 32 : 96) || 26
-            }px)`,
-            overflowY: "auto",
-          }}
-        >
-          {currentTab === tabs[0] && <Questionnaire />}
-          {currentTab === tabs[1] && <Checkpoints />}
-        </div>
-      </Container>
+        ))}
+      </div>
+      <div
+        className="mt-3"
+        style={{
+          height: `calc(95vh - ${headerHeight + (isMobile ? 32 : 96) || 26}px)`,
+          overflowY: "auto",
+        }}
+      >
+        {currentTab === tabs[0] && (
+          <Questionnaire templateName={templateName} />
+        )}
+        {currentTab === tabs[1] && <Checkpoints templateName={templateName} />}
+      </div>
     </Container>
   );
 };

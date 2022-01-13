@@ -3,15 +3,12 @@ import styles from "./style.module.scss";
 import Text from "../../components/Text/Text";
 import IconButton from "../../components/Buttons/IconButton";
 import {
-  MdAddBox,
   MdKeyboardArrowRight,
-  MdOutlineCheckCircle,
-  // MdOutlineCheckCircle,
-  MdPlayArrow,
+  MdRemoveRedEye,
+  MdPreview,
 } from "react-icons/md";
 import Button from "../../components/Buttons/Button";
 import { useHistory, useRouteMatch } from "react-router";
-
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.css";
 
@@ -32,12 +29,12 @@ import {
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
 import { exportDataGrid } from "devextreme/excel_exporter";
-import { MdModeEdit, MdOutlineNoteAdd } from "react-icons/md";
+import { MdModeEdit } from "react-icons/md";
 import Container from "../../components/Containers";
 
 import axiosInstance from "../../../../apiServices/";
 
-function AuditTemplates() {
+function Assignments() {
   const [selectedEmployee, setSelectedEmployee] = useState();
   const [auditTemplatesData, setAuditTemplatesData] = useState([]);
   const history = useHistory();
@@ -81,6 +78,14 @@ function AuditTemplates() {
       </span>
     );
   };
+  const MadeByCell = (data) => {
+    return (
+      <p title={data?.data?.user_id} className={styles.madeBy}>
+        {(data?.data?.user || data?.data?.user_id).split(" ")[0] ||
+          data?.data?.user}
+      </p>
+    );
+  };
   const renderTitleHeader = (data) => {
     return <p className={styles.columnHeaderTitle}>{data.column.caption}</p>;
   };
@@ -97,53 +102,55 @@ function AuditTemplates() {
     );
   };
 
-  const EditTemplateAction = (data) => {
+  const editAction = (data) => {
     return (
-      <IconButton
-        variant="iconButtonRound"
-        description={<MdModeEdit />}
-        size="none"
-      />
-    );
-  };
-  const DoneTemplateAction = (data) => {
-    const completion = data?.data?.completion;
-    return (
-      <IconButton
-        variant="iconButtonPrimary"
-        description={<MdOutlineCheckCircle />}
-        size="none"
-        disabled={completion === 100}
-        disabledVariant="iconButtonPrimaryDisabled"
-      />
-    );
-  };
-  const AssignTemplateAction = (data) => {
-    const { audit_template_name } = data.data;
-    return (
-      <IconButton
-        variant="iconButtonPrimary"
-        description={<MdPlayArrow />}
-        size="none"
-        onClick={() => {
-          history.push({
-            pathname: `${path}/template`,
-            state: {
-              templateName: audit_template_name,
-            },
-          });
-        }}
-      />
+      <div className="d-flex align-items-center">
+        <IconButton
+          variant="iconButtonRound"
+          description={<MdModeEdit />}
+          size="none"
+        />
+      </div>
     );
   };
 
-  const CreateTemplateAction = (data) => {
+  const DoneAction = (data) => {
     return (
-      <IconButton
-        variant="iconButtonPrimary"
-        description={<MdOutlineNoteAdd />}
-        size="none"
-      />
+      <div className="d-flex align-items-center">
+        <IconButton
+          variant="iconButtonRound"
+          description={<MdRemoveRedEye />}
+          size="none"
+        />
+      </div>
+    );
+  };
+
+  const TemplateActions = (data) => {
+    const completion = data?.data?.completion;
+    return (
+      <div className="d-flex justify-content-between align-items-center">
+        {/* <IconButton
+          variant="iconButtonPrimary"
+          description={<MdOutlineCheckCircle />}
+          size="none"
+          disabled={completion === 100}
+          disabledVariant="iconButtonPrimaryDisabled"
+        /> */}
+        {/* <IconButton
+          variant="iconButtonPrimary"
+          description={<MdPlayArrow />}
+          size="none"
+        /> */}
+        <IconButton
+          onClick={() => {
+            history.push(`${path}/assignment`);
+          }}
+          variant="iconButtonRound"
+          description={<MdKeyboardArrowRight />}
+          size="none"
+        />
+      </div>
     );
   };
 
@@ -161,6 +168,7 @@ function AuditTemplates() {
       </span>
     );
   };
+
   function exportGrid(e) {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet("Main sheet");
@@ -180,12 +188,16 @@ function AuditTemplates() {
   useEffect(() => {
     getAuditTemplatesData();
   }, []);
+
   return (
     <Container variant="content">
-      <div className={styles.topHeading}>
-        <Text heading="p" variant="stepperMainHeading" text="Audit Templates" />
+      <div className={`${styles.topHeading} pb-3`}>
+        <Text
+          heading="p"
+          variant="stepperMainHeading"
+          text="Audit Assignments"
+        />
       </div>
-
       {auditTemplatesData && auditTemplatesData?.length > 0 && (
         <DataGrid
           id="dataGrid"
@@ -200,15 +212,6 @@ function AuditTemplates() {
           showRowLines={false}
           wordWrapEnabled={true}
           width="100%"
-          export={{
-            allowExportSelectedData: true,
-            enabled: true,
-            texts: {
-              exportAll: "Export all data",
-              exportSelectedRows: "Export selected rows",
-              exportTo: "Export",
-            },
-          }}
           selection={{
             mode: "multiple",
             showCheckBoxesMode: "always",
@@ -227,17 +230,18 @@ function AuditTemplates() {
         >
           <Toolbar>
             <Item location="after">
-              <IconButton
-                description="New Template"
+              {/* <IconButton
+                description=""
                 variant="createProject"
                 icon={<MdAddBox />}
                 onClick={() => history.push(`${path}/create-template`)}
-              />
+              /> */}
             </Item>
-            <Item name="exportButton" />
             <Item name="searchPanel" />
+            <Item name="exportButton" />
             <Item name="groupPanel" location="before" />
           </Toolbar>
+
           <Column
             dataField="audit_template_name"
             caption="Template Name"
@@ -248,7 +252,7 @@ function AuditTemplates() {
           </Column>
           <Column
             dataField="completion"
-            caption="Completion"
+            caption="Complition"
             cellRender={CompletionCell}
             headerCellRender={renderTitleHeader}
             alignment="left"
@@ -256,16 +260,24 @@ function AuditTemplates() {
             <RequiredRule />
           </Column>
           <Column
+            dataField="user"
+            caption="Audite Type"
+            cellRender={MadeByCell}
+            headerCellRender={renderTitleHeader}
+          >
+            <RequiredRule />
+          </Column>
+          {/* <Column
             dataField="audit_category"
-            caption="audit type"
+            caption="Questionnaire"
             headerCellRender={renderTitleHeader}
             cellRender={TemplateNameCell}
           >
             <RequiredRule />
-          </Column>
+          </Column> */}
           <Column
             dataField="total_question"
-            caption="questionnarie"
+            caption="Questionnare"
             headerCellRender={renderTitleHeader}
             cellRender={RequiredDataCell}
             alignment="left"
@@ -279,32 +291,21 @@ function AuditTemplates() {
           >
             <RequiredRule />
           </Column>
+
           <Column
             caption="Edit"
             headerCellRender={renderTitleHeader}
-            cellRender={EditTemplateAction}
-          >
-            <RequiredRule />
-          </Column>
+            cellRender={editAction}
+            alignment="left"
+          />
           <Column
             caption="Done"
             headerCellRender={renderTitleHeader}
-            cellRender={DoneTemplateAction}
-          >
-            <RequiredRule />
-          </Column>
-          <Column
-            caption="Assign"
-            headerCellRender={renderTitleHeader}
-            cellRender={AssignTemplateAction}
-          >
-            <RequiredRule />
-          </Column>
-          <Column
-            caption="Create"
-            headerCellRender={renderTitleHeader}
-            cellRender={CreateTemplateAction}
-          >
+            cellRender={MdPreview}
+            alignment="left"
+          />
+
+          <Column cellRender={TemplateActions}>
             <RequiredRule />
           </Column>
 
@@ -329,4 +330,4 @@ const getSubstring = (str, n = 15) => {
   return "";
 };
 
-export default AuditTemplates;
+export default Assignments;

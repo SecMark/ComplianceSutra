@@ -134,23 +134,24 @@ function Dashboard({ history }) {
       state?.adminMenu?.currentMenu !== "audit"
     ) {
       dispatch(adminMenuActions.setCurrentMenu("audit"));
-    } else if (
-      window.location.href.includes("tax-audit") &&
-      state?.adminMenu?.currentMenu !== "tax-audit"
-    ) {
-      dispatch(adminMenuActions.setCurrentMenu("tax-audit"));
-    } else if (
-      window.location.href.includes("audit/work-user") &&
-      state?.adminMenu?.currentMenu !== "audit/work-user"
-    ) {
-      dispatch(adminMenuActions.setCurrentMenu("audit/work-user"));
-    } else if (
-      window.location.href.includes("audit/tax-user") &&
-      state?.adminMenu?.currentMenu !== "audit/tax-user"
-    ) {
-      dispatch(adminMenuActions.setCurrentMenu("audit/tax-user"));
-    }
-    console.log('window.location.href', window.location.href)
+    } 
+//     else if (
+//       window.location.href.includes("tax-audit") &&
+//       state?.adminMenu?.currentMenu !== "tax-audit"
+//     ) {
+//       dispatch(adminMenuActions.setCurrentMenu("tax-audit"));
+//     } else if (
+//       window.location.href.includes("audit/work-user") &&
+//       state?.adminMenu?.currentMenu !== "audit/work-user"
+//     ) {
+//       dispatch(adminMenuActions.setCurrentMenu("audit/work-user"));
+//     } else if (
+//       window.location.href.includes("audit/tax-user") &&
+//       state?.adminMenu?.currentMenu !== "audit/tax-user"
+//     ) {
+//       dispatch(adminMenuActions.setCurrentMenu("audit/tax-user"));
+//     }
+//     console.log('window.location.href', window.location.href)
   }, [window.location.href]);
 
   return (
@@ -214,11 +215,12 @@ function Dashboard({ history }) {
             <Layout />
           </div>
         )}
-        {state && state.adminMenu.currentMenu === "tax-audit" && (
+        {/* {state && state.adminMenu.currentMenu === "tax-audit" && (
           <div className="create-template">
             <TaxAudit />
           </div>
         )}
+        
         {state && state.adminMenu.currentMenu === "audit/work-user" && (
           <div className="create-template">
             <WorkAuditUser />
@@ -229,6 +231,7 @@ function Dashboard({ history }) {
             <TaxAuditUser />
           </div>
         )}
+        )} */}
 
         {/* {state && state.adminMenu.currentMenu === "section-list" && (
           <div className="create-template">
