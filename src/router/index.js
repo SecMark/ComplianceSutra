@@ -48,7 +48,7 @@ import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardC
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import FormBuilder from "../Components/Audit/pages/FormBuilder";
-import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
+import AuditAssignment from "../Components/Audit/pages/AuditAssignment/QuestionnaireForm";
 import SectionList from "../Components/Audit/pages/List/SectionList";
 export default function AppRouter() {
   return (
