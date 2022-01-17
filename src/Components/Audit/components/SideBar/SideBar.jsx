@@ -18,6 +18,9 @@ const SideBar = () => {
       <div className={styles.navigationMenu}>
         <ul>
           <li
+
+            className={styles.activeClass}
+            // onClick={() => navigateTo("/audit")}
             className={pathName === "/audit" ? styles.activeClass : ""}
             onClick={() => redirectTo("/audit")}
           >

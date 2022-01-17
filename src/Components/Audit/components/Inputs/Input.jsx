@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./style.module.scss";
+import { DatePicker} from 'antd';
 
 export const Input = ({
   variant = "default",
@@ -19,6 +20,7 @@ export const Input = ({
   disabled,
   selected,
   value,
+  defaultValue,
   rows = "6",
   id,
 }) => {
@@ -61,7 +63,20 @@ export const Input = ({
             </select>
           </div>
         </>
-      ) : type === "textArea" ? (
+      ) : type === "date" ? (
+        <>
+          <div className={styles.labelContainer} >
+             <label className={styles[labelVariant]}>{labelText}</label>
+          </div>
+          <div>
+          <DatePicker onChange={onChange}
+           className={styles[variant]}
+           value={value}
+          />
+          </div>
+        </>
+      ):
+      type === "textArea" ? (
         <>
           <div className={styles.labelContainer}>
             <label className={styles[labelVariant]}>{labelText}</label>
