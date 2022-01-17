@@ -100,6 +100,49 @@ const UpgradeYourAccount = ({
     history.push("/thankyou");
   };
 
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
+  useEffect(() => {
+    loadScript("https://checkout.razorpay.com/v1/checkout.js");
+  });
+
+  const pay = () => {
+    const options = {
+      key: "rzp_test_LgEXXqR3sPSgQX",
+      currency: "INR",
+      amount: 10,
+      name: "Learning To Code Online",
+      description: "Test Wallet Transaction",
+      image: "http://localhost:1337/logo.png",
+      order_id: "order_Iio3zbN38JPI7g",
+      handler: function (response) {
+        console.log(response);
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature);
+      },
+      prefill: {
+        name: "Jatin Mehta",
+        email: "jatinm@trakiot.in",
+        contact: "9877262909",
+      },
+    };
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
+
   return (
     <>
       <div className="upgrade-your-account">
@@ -283,10 +326,7 @@ const UpgradeYourAccount = ({
             </div>
 
             <div className="d-flex justify-content-center mt-3">
-              <button
-                className="upgrade-button "
-                onClick={() => proceedPayment()}
-              >
+              <button className="upgrade-button " onClick={() => pay()}>
                 proceed to payment
               </button>
             </div>
