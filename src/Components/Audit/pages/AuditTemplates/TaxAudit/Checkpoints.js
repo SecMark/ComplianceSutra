@@ -67,7 +67,8 @@ const Checkpoints = ({ templateName }) => {
     );
   };
   const AddTemplateAction = (data) => {
-    const { checklist_section, checkpoint } = data.data;
+    const { checklist_section_id, check_point } = data.data;
+    console.log({ checklist_section_id, check_point });
     return (
       <div className={styles.fileInput}>
         <label htmlFor="file-upload" className={styles.addIconButton}>
@@ -75,24 +76,26 @@ const Checkpoints = ({ templateName }) => {
             type="file"
             id="file-upload"
             multiple
-            onChange={(e) => handleAddDocs(e, checklist_section, checkpoint)}
+            onChange={(e) =>
+              handleAddDocs(e, checklist_section_id, check_point)
+            }
           />
           <MdAdd />
         </label>
       </div>
     );
   };
-  const handleAddDocs = async (e, checklist_section, checkpoint) => {
+  const handleAddDocs = async (e, checklist_section_id, checkpoint) => {
     const files = e.target.files;
-    if (files && files?.length > 0 && checklist_section && checkpoint) {
+    if (files && files?.length > 0 && checklist_section_id && checkpoint) {
       let formData = new FormData();
-      formData.append("checklist_section", checklist_section);
-      formData.append("checkpoin", checkpoint);
+      formData.append("checklist_section_id", checklist_section_id);
+      formData.append("check_point", checkpoint);
       formData.append("reference_document", files);
 
       try {
         const { data, status } = await axiosInstance.post(
-          "audit.api.UpdateQuestionQuestionnaire",
+          "audit.api.AddChecklist",
           formData,
           {
             headers: {

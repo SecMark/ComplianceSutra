@@ -5,9 +5,10 @@ import IconButton from "../../../components/Buttons/IconButton";
 import {
   MdAddBox,
   MdKeyboardArrowRight,
-  MdDelete
+  MdDelete,
+  MdKeyboardArrowLeft,
 } from "react-icons/md";
-import {RiEdit2Fill} from "react-icons/ri"
+import { RiEdit2Fill } from "react-icons/ri";
 import { useHistory, useRouteMatch } from "react-router";
 
 import "devextreme/dist/css/dx.common.css";
@@ -36,42 +37,42 @@ import axiosInstance from "../../../../../apiServices";
 function AuditCompany() {
   const [selectedEmployee, setSelectedEmployee] = useState();
   const [auditTemplatesData, setAuditTemplatesData] = useState([
-      {
-          company_name:"Bk Tradders",
-          registration_no:"123456",
-          company_category:"textile",
-          contact_no:"8764736459",
-          email_id:"amvv@jvh.vfsv",
-          branches:2,
-      },
-      {
-        company_name:"IEX",
-        registration_no:"123456",
-        company_category:"electricity trading platform",
-        contact_no:"8764736459",
-        email_id:"amvv@jvh.vfsv",
-        branches:2,
+    {
+      company_name: "Bk Tradders",
+      registration_no: "123456",
+      company_category: "textile",
+      contact_no: "8764736459",
+      email_id: "amvv@jvh.vfsv",
+      branches: 2,
     },
     {
-        company_name:"sona coms",
-        registration_no:"123456",
-        company_category:"auto parts",
-        contact_no:"8764736459",
-        email_id:"amvv@jvh.vfsv",
-        branches:2,
+      company_name: "IEX",
+      registration_no: "123456",
+      company_category: "electricity trading platform",
+      contact_no: "8764736459",
+      email_id: "amvv@jvh.vfsv",
+      branches: 2,
     },
     {
-        company_name:"Asian paints",
-        registration_no:"123456",
-        company_category:"paints",
-        contact_no:"8764736459",
-        email_id:"amvv@jvh.vfsv",
-        branches:8,
+      company_name: "sona coms",
+      registration_no: "123456",
+      company_category: "auto parts",
+      contact_no: "8764736459",
+      email_id: "amvv@jvh.vfsv",
+      branches: 2,
+    },
+    {
+      company_name: "Asian paints",
+      registration_no: "123456",
+      company_category: "paints",
+      contact_no: "8764736459",
+      email_id: "amvv@jvh.vfsv",
+      branches: 8,
     },
   ]);
   const history = useHistory();
   const { path } = useRouteMatch();
-  console.log("data that i am getting",auditTemplatesData)
+  console.log("data that i am getting", auditTemplatesData);
 
   const getAuditTemplatesData = async () => {
     try {
@@ -94,11 +95,11 @@ function AuditCompany() {
 
   const companyFieldCell = (data) => {
     const value = data?.value;
-     return (
-       <span className={styles.balckTextCell} title={value}>
-         {getSubstring(value)}
-       </span>
-     );
+    return (
+      <span className={styles.balckTextCell} title={value}>
+        {getSubstring(value)}
+      </span>
+    );
   };
   const renderTitleHeader = (data) => {
     return <p className={styles.columnHeaderTitle}>{data.column.caption}</p>;
@@ -126,7 +127,9 @@ function AuditCompany() {
       <div className="d-flex justify-content-between align-items-center">
         <IconButton
           onClick={() => {
-            history.push("/Company-workStatus");
+            history.push({
+              pathname: `${path}/work-status`,
+            });
           }}
           variant="iconButtonRound"
           description={<MdKeyboardArrowRight />}
@@ -137,15 +140,10 @@ function AuditCompany() {
   };
 
   const RequiredDataCell = (data) => {
-      console.log("required cell data",data);
+    console.log("required cell data", data);
     const value = data?.value;
-    return (
-      <span className={styles.textBlueDataCell}>
-        {value}&nbsp;
-      </span>
-    );
+    return <span className={styles.textBlueDataCell}>{value}&nbsp;</span>;
   };
-
 
   const EditAction = (data) => {
     return (
@@ -169,14 +167,29 @@ function AuditCompany() {
       </div>
     );
   };
- 
-//   useEffect(() => {
-//     getAuditTemplatesData();
-//   }, []);
+
+  //   useEffect(() => {
+  //     getAuditTemplatesData();
+  //   }, []);
   return (
     <Container variant="content">
       <div className={styles.topHeading}>
-        <Text heading="p" variant="stepperMainHeading" text="Bk Trander branches" />
+        <div className="d-flex mb-3">
+          <IconButton
+            onClick={() => {
+              history.goBack();
+            }}
+            variant="iconButtonRound"
+            description={<MdKeyboardArrowLeft />}
+            size="none"
+          />
+          <Text
+            heading="p"
+            variant="stepperMainHeading"
+            text="Bk Trander branches"
+            className="mb-0 ml-3"
+          />
+        </div>
       </div>
 
       {auditTemplatesData && auditTemplatesData?.length > 0 && (
@@ -254,7 +267,7 @@ function AuditCompany() {
             cellRender={companyFieldCell}
             alignment="left"
           />
-           <Column
+          <Column
             cellRender={EditAction}
             caption="Edit"
             headerCellRender={renderTitleHeader}

@@ -47,11 +47,7 @@ import PendingAction from "../Components/OnBording/SubModules/DashBoardCO/compon
 import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardCO/components/DashBoardView/component/RiskAndDelaysTaskList/index";
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
-// import FormBuilder from "../Components/Audit/pages/FormBuilder";
 import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
-// import SectionList from "../Components/Audit/pages/List/SectionList";
-import Assignments from "../Components/Audit/pages/Assignments";
-import TaxAuditAssignment from "../Components/Audit/pages/Assignments/TaxAuditAssignment";
 export default function AppRouter() {
   return (
     <div>
@@ -170,29 +166,16 @@ export default function AppRouter() {
             path="/pending-action-task-list"
             component={PendingAction}
           />
-
           <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route path="/new-regulations" component={DashBoardCO} />
           <Route path="/project-management" component={DashBoardCO} />
           <Route path="/project-trash" component={DashBoardCO} />
-
-          {/* <Route path="/create-template" component={DashBoardCO} /> */}
-
           <Route exact path="/help" component={DashBoardCO} />
-
-          {/* Expert Review */}
-
           <Route path="/expert-review" component={ExperReview}></Route>
           <Route exact path="/thankyou" component={Thankyou} />
           <Route exact path="/settings" component={CoSetting} />
           <Route exact path="/audit-assignment" component={AuditAssignment} />
-
           <Route path="/audit" component={DashBoardCO} />
-
-
-          {/* current work and completed work question and checklist routes */}
-          <Route exact path="/CurrentWork-questionAndCheckPoints" component={DashBoardCO}/>
-          <Route exact path="/CompletedWork-questionAndCheckPoints" component={DashBoardCO}/>
         </div>
       </>
     </div>

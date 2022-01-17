@@ -16,6 +16,8 @@ import TaxAuditAssignment from "../../pages/Assignments/TaxAuditAssignment";
 import WorkAuditUser from "../../pages/AuditUsers/WorkAuditUser";
 import TaxAuditUser from "../../pages/AuditUsers/TaxAuditUser";
 import AuditCompany from "../../pages/AuditCompany";
+import CompanyBranches from "../../pages/AuditCompany/Branches";
+import CompanyWorkStatus from "../../pages/AuditCompany/WorkStatus";
 const Layout = () => {
   const { path, url } = useRouteMatch();
   return (
@@ -27,13 +29,16 @@ const Layout = () => {
       <Container variant="container">
         <Switch>
           <Route exact path={`${path}`}>
-            <AuditCompany/>
+            <AuditTemplates />
           </Route>
           <Route exact path={`${path}/users`}>
             <AuditUsers />
           </Route>
           <Route exact path={`${path}/assignments`}>
             <Assignments />
+          </Route>
+          <Route exact path={`${path}/company`}>
+            <AuditCompany />
           </Route>
           <Route exact path={`/${path}/questionaire`}>
             <FormBuilder />
@@ -48,9 +53,7 @@ const Layout = () => {
             <FormBuilder />
           </Route>
           <Route exact path={`${path}/template`}>
-            {/* <div className="create-template"> */}
             <TaxAudit />
-            {/* </div> */}
           </Route>
           <Route exact path={`${path}/assignments/assignment`}>
             <TaxAuditAssignment />
@@ -63,6 +66,12 @@ const Layout = () => {
           </Route>
           <Route exact path={`${path}/users/work-user/current-work`}>
             <TaxAuditUser />
+          </Route>
+          <Route exact path={`${path}/company/branches`}>
+            <CompanyBranches />
+          </Route>
+          <Route exact path={`${path}/company/branches/work-status`}>
+            <CompanyWorkStatus />
           </Route>
         </Switch>
       </Container>

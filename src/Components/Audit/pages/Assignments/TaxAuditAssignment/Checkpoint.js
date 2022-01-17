@@ -15,7 +15,7 @@ import {
   MdExpandMore,
   MdTextsms,
   MdInfo,
-  MdPictureAsPdf
+  MdPictureAsPdf,
 } from "react-icons/md";
 import IconButton from "../../../components/Buttons/IconButton";
 import Button from "../../../components/Buttons/Button";
@@ -24,7 +24,7 @@ import styles from "./style.module.scss";
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
 import { exportDataGrid } from "devextreme/excel_exporter";
-import {GrDocumentPdf} from "react-icons/gr"
+import { GrDocumentPdf } from "react-icons/gr";
 const Checkpoints = () => {
   const customDataCell = (option) => {
     const { value } = option;
@@ -122,7 +122,7 @@ const Checkpoints = () => {
       </div>
     );
   };
-  
+
   function exportGrid(e) {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet("Main sheet");
@@ -347,186 +347,3 @@ const data = [
     Docs_Relied_Upon: "Trading",
   },
 ];
-
-const CheckpointsDataRow = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  return (
-    <>
-      <div className={styles.checkpointsDataRow}>
-        <div className={`${styles.w30}`}>
-          <p
-            className={`${styles.checkpointsDataText} ${styles.checkpointsDataTextPrimary}`}
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry ?
-          </p>
-        </div>
-        <div className={`${styles.w20}`}>
-          <p
-            className={`${styles.checkpointsDataText} ${styles.checkpointsDataTextPrimary}`}
-          >
-            Amit
-          </p>
-        </div>
-        <div className={`${styles.w20}`}>
-          <p
-            className={`${styles.checkpointsDataText} ${styles.checkpointsDataTextPrimary}`}
-          >
-            PDF|Excel
-          </p>
-        </div>
-
-        {/* <div className={`${styles.w20}`}>
-          <p
-              className={`${styles.checkpointsDataText} ${styles.checkpointsDataTextPrimary}`}
-            >
-              PDF|Excel
-            </p>
-          </div> */}
-
-        <div className={`${styles.w15}`}>
-          <p
-            className={`${styles.checkpointsDataText} ${styles.checkpointsDataTextPrimary}`}
-          >
-            3 Checks
-          </p>
-        </div>
-        <div className={`${styles.w15}`}></div>
-        <div
-          className={`${styles.w20} d-flex align-items-center justify-content-end`}
-        >
-          <IconButton
-            variant="iconButtonRound"
-            className={isExpanded ? styles.dropdownExpanded : ""}
-            description={<MdExpandMore />}
-            onClick={() => setIsExpanded(!isExpanded)}
-          />
-        </div>
-      </div>
-      {/* {isExpanded && ( */}
-      <div
-        className={`${styles.dataRowDropdownContainer} ${
-          !isExpanded && styles.closed
-        }`}
-      >
-        <div
-          className={`${styles.dataDropdownRow} ${styles.checkpointsDataRow}`}
-        >
-          <div className={`${styles.w30}`}>
-            <p className={`${styles.checkpointsDataText} `}>
-              Lorem Ipsum is simply dummy text of the.
-            </p>
-          </div>
-          <div className={`${styles.w20}`}>
-            <p className={`${styles.checkpointsDataText}`}>PDF</p>
-          </div>
-          <div className={`${styles.w15}`}></div>
-          <div className={`${styles.w15}`}>
-            <p
-              className={`${styles.checkpointsDataText} ${styles.checkpointsDataTextPrimary}`}
-            >
-              Trading
-            </p>
-          </div>
-          <div
-            className={`${styles.w20} d-flex align-items-center justify-content-end`}
-          >
-            <IconButton
-              variant="iconButtonPrimary"
-              className={`${styles.tableIconButton} mr-2`}
-              description={<MdAdd />}
-            />
-            <IconButton
-              variant="iconButtonPrimary"
-              className={`${styles.tableIconButton} ${styles.messageNotificationDot} mr-2`}
-              description={<MdTextsms />}
-            />
-            <Input
-              type="select"
-              variant="tableDataSelectInput"
-              valueForDropDown={["Complied", "Not Complied", "Not Applicable"]}
-            />
-          </div>
-        </div>
-        <div
-          className={`${styles.dataDropdownRow} ${styles.checkpointsDataRow}`}
-        >
-          <div className={`${styles.w30}`}>
-            <p className={`${styles.checkpointsDataText} `}>
-              Lorem Ipsum is simply dummy text of the.
-            </p>
-          </div>
-          <div className={`${styles.w20}`}>
-            <p className={`${styles.checkpointsDataText}`}>PDF</p>
-          </div>
-          <div className={`${styles.w15}`}></div>
-          <div className={`${styles.w15}`}>
-            <p
-              className={`${styles.checkpointsDataText} ${styles.checkpointsDataTextPrimary}`}
-            >
-              Trading
-            </p>
-          </div>
-          <div
-            className={`${styles.w20} d-flex align-items-center justify-content-end`}
-          >
-            <IconButton
-              variant="iconButtonPrimary"
-              className={`${styles.tableIconButton} mr-2`}
-              description={<MdAdd />}
-            />
-            <IconButton
-              variant="iconButtonPrimary"
-              className={`${styles.tableIconButton} ${styles.messageNotificationDot} mr-2`}
-              description={<MdTextsms />}
-            />
-            <Input
-              type="select"
-              variant="tableDataSelectInput"
-              valueForDropDown={["Complied", "Not Complied", "Not Applicable"]}
-            />
-          </div>
-        </div>
-        <div
-          className={`${styles.dataDropdownRow} ${styles.checkpointsDataRow}`}
-        >
-          <div className={`${styles.w30}`}>
-            <p className={`${styles.checkpointsDataText} `}>
-              Lorem Ipsum is simply dummy text of the.
-            </p>
-          </div>
-          <div className={`${styles.w20}`}>
-            <p className={`${styles.checkpointsDataText}`}>PDF</p>
-          </div>
-          <div className={`${styles.w15}`}></div>
-          <div className={`${styles.w15}`}>
-            <p
-              className={`${styles.checkpointsDataText} ${styles.checkpointsDataTextPrimary}`}
-            >
-              Trading
-            </p>
-          </div>
-          <div
-            className={`${styles.w20} d-flex align-items-center justify-content-end`}
-          >
-            <IconButton
-              variant="iconButtonPrimary"
-              className={`${styles.tableIconButton} mr-2`}
-              description={<MdAdd />}
-            />
-            <IconButton
-              variant="iconButtonPrimary"
-              className={`${styles.tableIconButton} ${styles.messageNotificationDot} mr-2`}
-              description={<MdTextsms />}
-            />
-            <Input
-              type="select"
-              variant="tableDataSelectInput"
-              valueForDropDown={["Complied", "Not Complied", "Not Applicable"]}
-            />
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};

@@ -67,7 +67,6 @@ function AuditCompany() {
   ]);
   const history = useHistory();
   const { path } = useRouteMatch();
-  console.log("data that i am getting", auditTemplatesData);
 
   const getAuditTemplatesData = async () => {
     try {
@@ -128,7 +127,9 @@ function AuditCompany() {
       <div className="d-flex justify-content-between align-items-center">
         <IconButton
           onClick={() => {
-            history.push("/audit-company-branch");
+            history.push({
+              pathname: `${path}/branches`,
+            });
           }}
           variant="iconButtonRound"
           description={<MdKeyboardArrowRight />}
@@ -145,7 +146,7 @@ function AuditCompany() {
   };
 
   function exportGrid(e) {
-    console.log("xcel sheet data",e)
+    console.log("xcel sheet data", e);
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet("Main sheet");
     exportDataGrid({

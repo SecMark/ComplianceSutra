@@ -32,7 +32,10 @@ const SideBar = () => {
           >
             <span>Users</span>
           </li>
-          <li>
+          <li
+            className={pathName === "/audit/company" ? styles.activeClass : ""}
+            onClick={() => redirectTo("/audit/company")}
+          >
             <span>Company</span>
           </li>
           <li>
