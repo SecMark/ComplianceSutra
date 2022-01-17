@@ -333,7 +333,7 @@ const Questionnaire = () => {
         />
         <Column
           dataField="Required_Doc"
-          cellRender={customCell}
+          cellRender={customDataCell}
           headerCellRender={customHeaderCell}
         />
         <Column

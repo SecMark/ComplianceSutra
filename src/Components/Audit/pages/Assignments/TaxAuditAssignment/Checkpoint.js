@@ -104,7 +104,7 @@ const Checkpoints = () => {
         <IconButton
           variant="iconButtonPrimary"
           className={`${styles.tableIconButton} mr-2 ${styles.messageNotificationDot} mr-2`}
-          description={<GrDocumentPdf />}
+          description="PDF"
           size="none"
         />
       </div>
@@ -240,7 +240,7 @@ const Checkpoints = () => {
         />
         <Column
           dataField="Require_docs"
-          cellRender={pdfAction}
+          cellRender={customDataCell}
           headerCellRender={customHeaderCell}
         />
         <Column

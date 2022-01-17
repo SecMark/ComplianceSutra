@@ -299,7 +299,7 @@ function Assignments() {
             alignment="left"
           />
           <Column
-            caption="Done"
+            caption="Preview"
             headerCellRender={renderTitleHeader}
             cellRender={MdPreview}
             alignment="left"
