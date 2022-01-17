@@ -152,19 +152,19 @@
   }
 }
 
-.iconButtonDelete {
-  background-color: rgba(255, 88, 88, 0.2);;
+.iconButtonDanger {
+  background-color: #ff5858;
   border: none;
   font-size: 1.5rem;
   padding: 0.25rem;
   border-radius: 6px;
   font-size: 16px;
-  color: #FF5858;
+  color: #fff;
   @include alignBoxWithFlex(center, center);
   transition: background 0.3s ease;
-  &.iconButtonDeleteDisabled {
+  &.iconButtonPrimaryDisabled {
     background-color: #e9e8ff;
-    color: #7a73ff;
+    color: #ff5858;
     &:hover,
     &:active,
     &:focus {
@@ -172,11 +172,11 @@
     }
   }
   &:hover {
-    background-color: #e9e8ff;
+    background-color: #ff5858;
   }
   &:active,
   &:focus {
-    background-color: #e9e8ff;
+    background-color: #ff5858;
   }
 }
 .removeIcon {
@@ -284,4 +284,20 @@
   color: $color_white;
   width: 40px;
   margin-right: 10px;
+}
+
+
+.auditAssignmentIconButton{
+  background-color:$color-white;
+  border: none !important;
+  width: 1%;
+  height: 30px;
+  margin-left: 1154px;
+  margin-top: 2px;
+}
+
+.ButtonForTrading{
+  background-color: $color-white;
+  text-decoration: underline;
+  border: none;
 }
