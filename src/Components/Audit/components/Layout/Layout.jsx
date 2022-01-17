@@ -15,6 +15,7 @@ import TaxAudit from "../../pages/AuditTemplates/TaxAudit";
 import TaxAuditAssignment from "../../pages/Assignments/TaxAuditAssignment";
 import WorkAuditUser from "../../pages/AuditUsers/WorkAuditUser";
 import TaxAuditUser from "../../pages/AuditUsers/TaxAuditUser";
+import AuditCompany from "../../pages/AuditCompany";
 const Layout = () => {
   const { path, url } = useRouteMatch();
   return (
@@ -26,7 +27,7 @@ const Layout = () => {
       <Container variant="container">
         <Switch>
           <Route exact path={`${path}`}>
-            <AuditTemplates />
+            <AuditCompany/>
           </Route>
           <Route exact path={`${path}/users`}>
             <AuditUsers />
