@@ -6,7 +6,7 @@ import Button from "../../components/Buttons/Button";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import IconButton from "../../components/Buttons/IconButton";
 import axiosInstance from "../../../../apiServices";
-import Modal from "../../components/Modal/Modal";
+import PreviewAllocation from "./PreviewAllocation/PreviewAllocation";
 const QuestionnaireForm = () => {
   const [data, setData] = useState([]);
   const [open,setOpen] = useState(false);
@@ -154,7 +154,7 @@ const QuestionnaireForm = () => {
            />
         </div>
       </div>
-       <Modal open={open} setOpen={setOpen} handleClose={handleClose}/>
+       <PreviewAllocation open={open} setOpen={setOpen} handleClose={handleClose} data={data}/>
       <div className={styles.questionnaireFormMain}>
         <table className={styles.questionnaireFormTable}>
           <thead>
