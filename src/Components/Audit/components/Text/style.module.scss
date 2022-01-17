@@ -27,10 +27,21 @@
   text-transform: capitalize;
   font-size: 20px;
   font-weight: normal;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0rem;
   font-weight: 500;
   font-family: $font_poppins;
+  position: relative;
 }
+
+// .stepperMainHeading::after{
+//   content: "";
+//   position: absolute;
+//   left: 0;
+//   bottom: -3px;
+//   height: 3px;
+//   background-color: #7a73ff;
+//   width: 175px;
+// }
 .stepperSubHeading {
   text-transform: capitalize;
   font-size: 16px;
@@ -80,8 +91,11 @@
   color: $color_warning_text;
 }
 
-.large{
+.large {
   font-size: 30px;
   font-style: normal;
   font-family: $font_poppins;
+}
+.sortText{
+  font-size: small;
 }

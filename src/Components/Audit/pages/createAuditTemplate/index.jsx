@@ -15,8 +15,10 @@ import Label from "../../components/Labels/Label";
 import Dropzone from "react-dropzone";
 import { setTemplateName } from "../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
 function CreateAuditTemplate({ next, back, stepper }) {
+  const history = useHistory();
   const [circularfileList, setcirCularFileList] = useState([]);
   const [attchmentfileList, setAttachmentFileList] = useState([]);
   const [questionList, setQuestionList] = useState([
@@ -25,7 +27,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
   const [catagoryList, setCatagoryList] = useState([]);
   const [values, setValues] = useState({
     audit_template_name: "",
-    audit_category: "",
+    audit_category: "Select Category",
     buffer_period: "",
     audit_description: "",
     duration_of_completion: "",
@@ -212,7 +214,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
   };
 
   //function to submit final data
-  const dataSubmit = () => {
+  const dataSubmit = (type) => {
     const formData = new FormData();
     for (const key in values) {
       formData.append(key, values[key]);
@@ -222,7 +224,15 @@ function CreateAuditTemplate({ next, back, stepper }) {
       .post("audit.api.UpdateAuditTemplate", formData)
       .then((response) => {
         if (response.data.message.status === true) {
-          toast.success(response.data.message.status_response);
+          // toast.success(response.data.message.status_response);
+          if (type === "next") {
+            next(stepper?.stepperAcitveSlide);
+          } else {
+            history.push("/audit");
+          }
+          next(stepper?.stepperAcitveSlide);
+        } else {
+          toast.error(response.data.message.status_response);
         }
       })
       .catch((err) => {
@@ -248,7 +258,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
         <div className={styles.inputContainer}>
           <Input
             variant="auditTemplate"
-            placeholder="name of the template"
+            placeholder="  Name of the template"
             labelText="Name of the Template"
             labelVariant="createTemplateLabel"
             name="audit_template_name"
@@ -259,13 +269,9 @@ function CreateAuditTemplate({ next, back, stepper }) {
           <Label text="Audit Complaince" variant="createTemplateLabel" />
           <Select
             options={catagoryList}
-            value={{
+            defaultValue={{
               value: values.audit_category,
               label: values.audit_category,
-            }}
-            defaultValue={{
-              value: "Select Type here",
-              label: "Select Type here",
             }}
             styles={customStyle}
             onChange={onDropdownChnage}
@@ -277,7 +283,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
           variant="textArea"
           rows="6"
           type="textArea"
-          labelText="Brief Audit Description"
+          labelText="  Brief Audit Description"
           placeholder="Brief about audit Description"
           labelVariant="createTemplateLabel"
           name="audit_description"
@@ -290,7 +296,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
             uploadFile={(file) => {
               fileUpload(file, "guideliencedoc");
             }}
-            labelText="Add official circular/Guidelines Documents from Regulators"
+            labelText=" Add official circular/Guidelines Documents from Regulators"
           />
         )}
         {circularfileList.length !== 0 &&
@@ -354,7 +360,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
         <div className={styles.inputContainer}>
           <Input
             variant="auditTemplate"
-            placeholder="type the no of days"
+            placeholder="Type the no of days"
             labelText="Possible Duration of Completion"
             labelVariant="createTemplateLabel"
             name="duration_of_completion"
@@ -364,7 +370,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
         <div className={styles.inputContainer}>
           <Input
             variant="auditTemplate"
-            placeholder="enter the extra no of days required"
+            placeholder="Enter the extra no of days required"
             labelText="Buffer period(extra time for audit completion)"
             labelVariant="createTemplateLabel"
             name="buffer_period"
@@ -499,6 +505,9 @@ function CreateAuditTemplate({ next, back, stepper }) {
             description="SAVE TEMPLATE & QUIT"
             variant="preview"
             size="medium"
+            onClick={() => {
+              dataSubmit("exist");
+            }}
           />
         </div>
         <div>
@@ -507,8 +516,7 @@ function CreateAuditTemplate({ next, back, stepper }) {
             size="small"
             variant="default"
             onClick={() => {
-              next(stepper?.stepperAcitveSlide);
-              dataSubmit();
+              dataSubmit("next");
             }}
           />
         </div>

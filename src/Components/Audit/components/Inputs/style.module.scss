@@ -3,6 +3,7 @@
 @import "../../assets/styles/mixins.scss";
 ::placeholder {
   font-family: $font_poppins;
+  padding: 10px;
 }
 select {
   -webkit-appearance: none;
@@ -30,7 +31,7 @@ input[type="file"]::file-selector-button {
 }
 
 .inputWrapper {
-  @include alignBoxWithFlex(center, center);
+  @include alignBoxWithFlex(center, start);
 }
 
 .default {
@@ -117,6 +118,21 @@ input[type="file"]::file-selector-button {
 .auditAssignmentInputWhite {
   background-color: #fff;
 }
+
+.tableDataSelectInput {
+  max-width: 140px;
+  width: 120px;
+  font-size: 12px;
+  font-weight: 400;
+  color: $color_primary;
+  line-height: normal;
+  background-color: #e9e8ff;
+  border: none;
+  outline: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
 .outline {
   width: 250px;
   height: 40px;
@@ -159,7 +175,7 @@ input[type="file"]::file-selector-button {
     font-size: 15px;
     color: $color_black_text;
   }
-  .createTemplateLabel{
+  .createTemplateLabel {
     font-size: 12px;
     color: $color_grey;
   }
@@ -170,6 +186,8 @@ input[type="file"]::file-selector-button {
   width: 100%;
   border: 0px;
   background-color: $color_gery_background;
+  color: $color_black_text;
+  font-weight: 500;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
@@ -182,10 +200,12 @@ input[type="file"]::file-selector-button {
   font-family: Poppins;
   font-weight: 300;
   line-height: normal;
+  color: $color_black_text;
+  font-weight: 500;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.searchBox{
+.searchBox {
   width: 250px;
   height: 40px;
   border-radius: 8px;
@@ -196,6 +216,16 @@ input[type="file"]::file-selector-button {
   line-height: normal;
 }
 
+
 .datePicker{
   border-radius: 15px;
+}
+.inputForSearchAssignment{
+  border: none;
+  outline:none;
+  margin-top: 0px;
+  color: $color_black_text;
+  height: 30px;
+  margin-left: 50px;
+  text-align:500v;
 }

@@ -19,7 +19,13 @@ import "./style.css";
 import SectionList from "../../../../Audit/pages/List/SectionList";
 import Layout from "../../../../Audit/components/Layout/Layout.jsx";
 import Landing from "../../../../Audit/pages/Landing/index.jsx";
-
+import TaxAudit from "../../../../Audit/pages/AuditTemplates/TaxAudit";
+import AuditCompanyBranch from "../../../../Audit/pages/AuditCompany/Branches";
+import AuditCompanyWorkStatus from "../../../../Audit/pages/AuditCompany/WorkStatus";
+import CurrentWorkQuestionAndCheckPoints from "../../../../Audit/pages/AuditCompany/WorkStatus/CurrentWorkQuestionandCheckPoints";
+import CompletedWorkQuestionAndCheckPoints from "../../../../Audit/pages/AuditCompany/WorkStatus/CompletedWorkQuestionandCheckPoints";
+import WorkAuditUser from "../../../../Audit/pages/AuditUsers/WorkAuditUser";
+import TaxAuditUser from "../../../../Audit/pages/AuditUsers/TaxAuditUser";
 function Dashboard({ history }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -132,6 +138,53 @@ function Dashboard({ history }) {
     ) {
       dispatch(adminMenuActions.setCurrentMenu("audit"));
     }
+    //     else if (
+    //       window.location.href.includes("tax-audit") &&
+    //       state?.adminMenu?.currentMenu !== "tax-audit"
+    //     ) {
+    //       dispatch(adminMenuActions.setCurrentMenu("tax-audit"));
+    //     } else if (
+    //       window.location.href.includes("audit-company-branch") &&
+    //       state?.adminMenu?.currentMenu !== "audit-company-branch"
+    //     ) {
+    //       dispatch(adminMenuActions.setCurrentMenu("audit-company-branch"));
+    //     }
+    //     else if (
+    //       window.location.href.includes("Company-workStatus") &&
+    //       state?.adminMenu?.currentMenu !== "Company-workStatus"
+    //     ) {
+    //       dispatch(adminMenuActions.setCurrentMenu("Company-workStatus"));
+    //     }
+    //     else if (
+    //       window.location.href.includes("CurrentWork-questionAndCheckPoints") &&
+    //       state?.adminMenu?.currentMenu !== "CurrentWork-questionAndCheckPoints"
+    //     ) {
+    //       dispatch(adminMenuActions.setCurrentMenu("CurrentWork-questionAndCheckPoints"));
+    //     }
+    //     else if (
+    //       window.location.href.includes("CompletedWork-questionAndCheckPoints") &&
+    //       state?.adminMenu?.currentMenu !== "CompletedWork-questionAndCheckPoints"
+    //     ) {
+    //       dispatch(adminMenuActions.setCurrentMenu("CompletedWork-questionAndCheckPoints"));
+    //     }
+    //     }
+    //     else if (
+    //       window.location.href.includes("tax-audit") &&
+    //       state?.adminMenu?.currentMenu !== "tax-audit"
+    //     ) {
+    //       dispatch(adminMenuActions.setCurrentMenu("tax-audit"));
+    //     } else if (
+    //       window.location.href.includes("audit/work-user") &&
+    //       state?.adminMenu?.currentMenu !== "audit/work-user"
+    //     ) {
+    //       dispatch(adminMenuActions.setCurrentMenu("audit/work-user"));
+    //     } else if (
+    //       window.location.href.includes("audit/tax-user") &&
+    //       state?.adminMenu?.currentMenu !== "audit/tax-user"
+    //     ) {
+    //       dispatch(adminMenuActions.setCurrentMenu("audit/tax-user"));
+    //     }
+    //     console.log('window.location.href', window.location.href)
   }, [window.location.href]);
 
   return (
@@ -192,16 +245,9 @@ function Dashboard({ history }) {
 
         {state && state.adminMenu.currentMenu === "audit" && (
           <div className="create-template">
-            {/* <FormBuilder/> */}
             <Layout />
           </div>
         )}
-
-        {/* {state && state.adminMenu.currentMenu === "section-list" && (
-          <div className="create-template">
-            <SectionList />
-          </div>
-        )} */}
       </div>
     </div>
   );

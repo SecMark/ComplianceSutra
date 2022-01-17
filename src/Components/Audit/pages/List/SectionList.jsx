@@ -40,9 +40,9 @@ function SelectedEmployee(props) {
 function DetailSection(props) {
   const employee = props.data.data;
   return (
-    <Column dataField="CheckPoint">
-      <RequiredRule />
-    </Column>
+    <div>
+      <h1>{employee.TemplateName}</h1>
+    </div>
   );
 }
 

@@ -6,8 +6,18 @@ import CheckList from "../../pages/FormBuilder/CheckList";
 import { ToastContainer } from "react-toastify";
 import AuditAssignment from "../../pages/AuditAssignment";
 import AuditTemplates from "../../pages/AuditTemplates";
+import AuditUsers from "../../pages/AuditUsers";
+import Assignments from "../../pages/Assignments/";
 import { useRouteMatch, Route, Switch } from "react-router";
 import Container from "../Containers";
+import SectionList from "../../pages/List/SectionList";
+import TaxAudit from "../../pages/AuditTemplates/TaxAudit";
+import TaxAuditAssignment from "../../pages/Assignments/TaxAuditAssignment";
+import WorkAuditUser from "../../pages/AuditUsers/WorkAuditUser";
+import TaxAuditUser from "../../pages/AuditUsers/TaxAuditUser";
+import AuditCompany from "../../pages/AuditCompany";
+import CompanyBranches from "../../pages/AuditCompany/Branches";
+import CompanyWorkStatus from "../../pages/AuditCompany/WorkStatus";
 const Layout = () => {
   const { path, url } = useRouteMatch();
   return (
@@ -21,6 +31,15 @@ const Layout = () => {
           <Route exact path={`${path}`}>
             <AuditTemplates />
           </Route>
+          <Route exact path={`${path}/users`}>
+            <AuditUsers />
+          </Route>
+          <Route exact path={`${path}/assignments`}>
+            <Assignments />
+          </Route>
+          <Route exact path={`${path}/company`}>
+            <AuditCompany />
+          </Route>
           <Route exact path={`/${path}/questionaire`}>
             <FormBuilder />
           </Route>
@@ -32,6 +51,27 @@ const Layout = () => {
           </Route>
           <Route exact path={`${path}/create-template`}>
             <FormBuilder />
+          </Route>
+          <Route exact path={`${path}/template`}>
+            <TaxAudit />
+          </Route>
+          <Route exact path={`${path}/assignments/assignment`}>
+            <TaxAuditAssignment />
+          </Route>
+          <Route exact path={`${path}/users/work-user`}>
+            <WorkAuditUser />
+          </Route>
+          <Route exact path={`${path}/users/work-user/complete-work`}>
+            <TaxAuditUser />
+          </Route>
+          <Route exact path={`${path}/users/work-user/current-work`}>
+            <TaxAuditUser />
+          </Route>
+          <Route exact path={`${path}/company/branches`}>
+            <CompanyBranches />
+          </Route>
+          <Route exact path={`${path}/company/branches/work-status`}>
+            <CompanyWorkStatus />
           </Route>
         </Switch>
       </Container>

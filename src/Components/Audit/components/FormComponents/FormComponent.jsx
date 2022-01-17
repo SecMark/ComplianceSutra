@@ -18,8 +18,12 @@ import axiosInstance from "../../../../apiServices";
 import { BACKEND_BASE_URL } from "../../../../apiServices/baseurl";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 
 const FormComponents = ({ next, back, stepper }) => {
+  const state = useSelector((state) => state);
+  const history = useHistory();
   const [inputFieldList, setInputFieldList] = useState([
     {
       id: uuidv4(),
@@ -46,9 +50,8 @@ const FormComponents = ({ next, back, stepper }) => {
     },
   ]);
 
-  useEffect(() => {
-    console.log(inputFieldList);
-  }, [inputFieldList]);
+  useEffect(() => {}, [inputFieldList]);
+
   const ondragstart = (event, id) => {
     event.dataTransfer.setData("id", id);
   };
@@ -119,108 +122,6 @@ const FormComponents = ({ next, back, stepper }) => {
 
     let removeSection = temp.filter((item) => item.id !== id);
     setInputFieldList(removeSection);
-  };
-
-  const addNewRequirement = async (Iindex) => {
-    let temp = [...inputFieldList];
-    let inputLength = temp[Iindex].inputs.length - 1;
-    let previousQuestion = temp[Iindex].inputs[inputLength];
-    let section = temp[Iindex];
-
-    if (
-      section.sectionName === "" ||
-      section.bufferPeriod === "" ||
-      section.completionDuration === ""
-    ) {
-      toast.error("Please enter section name, Buffer time and Duration.");
-    } else if (previousQuestion?.questionnaire_section === "") {
-      temp[Iindex].inputs[inputLength].error = {
-        isError: true,
-        type: "questionLabel",
-        message: "Requirement is required",
-      };
-      setInputFieldList(temp);
-    } else if (
-      previousQuestion?.field_type !== "Text" &&
-      previousQuestion?.answer_option === ""
-    ) {
-      temp[Iindex].inputs[inputLength].error = {
-        isError: true,
-        type: "value",
-        message: "Value is required",
-      };
-      setInputFieldList(temp);
-    } else {
-      const addQuestion = await submitRequirement(section, previousQuestion);
-
-      if (addQuestion) {
-        temp[Iindex].inputs.push({
-          questionnaire_section: "",
-          question: "",
-          how_get_this_data: "",
-          reference_document: "",
-          answer_option: "",
-          field_type: "Text",
-          id: uuidv4(),
-          error: {
-            isError: false,
-            type: "",
-            message: "",
-          },
-        });
-        setInputFieldList(temp);
-      } else {
-        toast.error("Something went wrong");
-      }
-    }
-  };
-
-  const saveRequirementOnNext = async () => {
-    let temp = [...inputFieldList];
-    let totalLenth = temp.length - 1;
-    let inputLength = temp[totalLenth].inputs.length - 1;
-    let previousQuestion = temp[totalLenth].inputs[inputLength];
-    let section = temp[totalLenth];
-
-    if (
-      section.sectionName === "" ||
-      section.bufferPeriod === "" ||
-      section.completionDuration === ""
-    ) {
-      toast.error("Please enter section name, Buffer time and Duration.");
-    } else if (previousQuestion.questionnaire_section === "") {
-      temp[totalLenth].inputs[inputLength].error = {
-        isError: true,
-        type: "questionLabel",
-        message: "Requirement is required",
-      };
-      setInputFieldList(temp);
-    } else if (
-      previousQuestion.field_type !== "Text" &&
-      previousQuestion.answer_option === ""
-    ) {
-      temp[totalLenth].inputs[inputLength].error = {
-        isError: true,
-        type: "value",
-        message: "Value is required",
-      };
-      setInputFieldList(temp);
-    } else {
-      const addQuestion = await submitRequirement(section, previousQuestion);
-
-      if (addQuestion) {
-        setInputFieldList(temp);
-      } else {
-        toast.error("Something went wrong");
-      }
-    }
-  };
-
-  const deleteRequirement = (index, id) => {
-    let temp = [...inputFieldList];
-
-    temp[index].inputs = temp[index].inputs.filter((item) => item.id !== id);
-    setInputFieldList(temp);
   };
 
   const addCustomRequirement = async (Iindex) => {
@@ -306,7 +207,7 @@ const FormComponents = ({ next, back, stepper }) => {
       bufferPeriod !== ""
     ) {
       let payload = {
-        audit_template_name: "testing Api12",
+        audit_template_name: state.AuditReducer.templateName,
         questionnaire_section: temp[id].sectionName,
         duration_of_completion: parseInt(temp[id].completionDuration),
         buffer_period: parseInt(temp[id].bufferPeriod),
@@ -342,6 +243,67 @@ const FormComponents = ({ next, back, stepper }) => {
         }
       }
     }
+  };
+
+  const addNewRequirement = async (Iindex) => {
+    let temp = [...inputFieldList];
+    let inputLength = temp[Iindex].inputs.length - 1;
+    let previousQuestion = temp[Iindex].inputs[inputLength];
+    let section = temp[Iindex];
+
+    if (
+      section.sectionName === "" ||
+      section.bufferPeriod === "" ||
+      section.completionDuration === ""
+    ) {
+      toast.error("Please enter section name, Buffer time and Duration.");
+    } else if (previousQuestion?.questionnaire_section === "") {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "questionLabel",
+        message: "Requirement is required",
+      };
+      setInputFieldList(temp);
+    } else if (
+      previousQuestion?.field_type !== "Text" &&
+      previousQuestion?.answer_option === ""
+    ) {
+      temp[Iindex].inputs[inputLength].error = {
+        isError: true,
+        type: "value",
+        message: "Value is required",
+      };
+      setInputFieldList(temp);
+    } else {
+      const addQuestion = await submitRequirement(section, previousQuestion);
+
+      if (addQuestion) {
+        temp[Iindex].inputs.push({
+          questionnaire_section: "",
+          question: "",
+          how_get_this_data: "",
+          reference_document: "",
+          answer_option: "",
+          field_type: "Text",
+          id: uuidv4(),
+          error: {
+            isError: false,
+            type: "",
+            message: "",
+          },
+        });
+        setInputFieldList(temp);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
+  };
+
+  const deleteRequirement = (index, id) => {
+    let temp = [...inputFieldList];
+
+    temp[index].inputs = temp[index].inputs.filter((item) => item.id !== id);
+    setInputFieldList(temp);
   };
 
   const createRequirement = async (event) => {
@@ -410,6 +372,58 @@ const FormComponents = ({ next, back, stepper }) => {
     }
   };
 
+  const onNextClick = async (type) => {
+    let temp = [...inputFieldList];
+
+    temp.map(async (sectionData, index) => {
+      let inputsLength = sectionData?.inputs.length;
+      if (sectionData?.inputs?.length > 0) {
+        let previousQuestion = sectionData?.inputs[inputsLength - 1];
+
+        if (
+          sectionData.sectionName === "" ||
+          sectionData.bufferPeriod === "" ||
+          sectionData.completionDuration === ""
+        ) {
+          toast.error("Please enter section name, Buffer time and Duration.");
+        } else if (previousQuestion?.questionnaire_section === "") {
+          temp[index].inputs[inputsLength - 1].error = {
+            isError: true,
+            type: "questionLabel",
+            message: "Requirement is required",
+          };
+          toast.error("Please enter Requirement.");
+          setInputFieldList(temp);
+        } else if (
+          previousQuestion?.field_type !== "Text" &&
+          previousQuestion?.answer_option === ""
+        ) {
+          temp[index].inputs[inputsLength].error = {
+            isError: true,
+            type: "value",
+            message: "Value is required",
+          };
+          toast.error("Please enter Value.");
+          setInputFieldList(temp);
+        } else {
+          const addQuestion = await submitRequirement(
+            sectionData,
+            previousQuestion
+          );
+          if (!addQuestion) {
+            toast.error("Something went wrong");
+          } else {
+            if (type === "next") {
+              next(stepper?.stepperAcitveSlide);
+            } else {
+              history.push("/audit");
+            }
+          }
+        }
+      }
+    });
+  };
+
   return (
     <>
       <ToastContainer />
@@ -422,14 +436,14 @@ const FormComponents = ({ next, back, stepper }) => {
             variant="grey"
           />
           <div className={styles.itemList}>
-            <IconButton
+            {/* <IconButton
               description="New Question"
               onDragStart={(event) => ondragstart(event, uuidv4())}
               draggable={true}
               variant="item"
               icon={<BsPlusSquareFill />}
               size="medium"
-            />
+            /> */}
             <div className={styles.inputButtons}>
               {inputItem.map((item, index) => (
                 <Button
@@ -447,6 +461,9 @@ const FormComponents = ({ next, back, stepper }) => {
                 description="SAVE TEMPLATE & QUIT"
                 variant="preview"
                 size="medium"
+                onClick={() => {
+                  onNextClick("exist");
+                }}
               />
               <Button
                 description="NEXT"
@@ -455,6 +472,7 @@ const FormComponents = ({ next, back, stepper }) => {
                 onClick={() => {
                   next(stepper?.stepperAcitveSlide);
                   // onNextClick();
+                  onNextClick("next");
                 }}
               />
             </div>
@@ -534,13 +552,15 @@ const FormComponents = ({ next, back, stepper }) => {
                             />
                           </div>
                           <div
-                            className={styles.inputBody}
+                            className={`${styles.inputBody} row`}
                             onDragOver={(event) => ondragover(event)}
                             onDrop={(event) => drop(event, Iindex, index)}
                           >
                             {fieldName.field_type !== "none" && (
                               <>
-                                <div className={styles.inputField}>
+                                <div
+                                  className={`${styles.inputField} col-md-6`}
+                                >
                                   <Input
                                     type="text"
                                     labelText="Requirement"
@@ -560,7 +580,9 @@ const FormComponents = ({ next, back, stepper }) => {
                                       />
                                     )}
                                 </div>
-                                <div className={styles.inputField}>
+                                <div
+                                  className={`${styles.inputField} col-md-6`}
+                                >
                                   {fieldName.field_type === "Text" ? (
                                     <Input
                                       type="select"
@@ -578,13 +600,16 @@ const FormComponents = ({ next, back, stepper }) => {
                                       variant="small"
                                       value={fieldName.field_type}
                                       disabled={true}
+                                      className={`${styles.inputField} col-md-6`}
                                     />
                                   )}
                                 </div>
 
                                 {fieldName.field_type !== "Text" &&
                                   fieldName.field_type !== "Date" && (
-                                    <div className={styles.inputField}>
+                                    <div
+                                      className={`${styles.inputField} col-md-6`}
+                                    >
                                       <Input
                                         type="text"
                                         labelText="value"
@@ -605,11 +630,13 @@ const FormComponents = ({ next, back, stepper }) => {
                                     </div>
                                   )}
 
-                                <div className={styles.inputField}>
+                                <div
+                                  className={`${styles.inputField} col-md-6`}
+                                >
                                   <Input
                                     type="text"
                                     labelText="How get this data"
-                                    variant="small"
+                                    variant="medium"
                                     id={`${index},${Iindex}`}
                                     name="how_get_this_data"
                                     value={fieldName.how_get_this_data}
@@ -617,7 +644,9 @@ const FormComponents = ({ next, back, stepper }) => {
                                   />
                                 </div>
 
-                                <div className={styles.inputField}>
+                                <div
+                                  className={`${styles.inputField} col-md-6`}
+                                >
                                   <Input
                                     type="file"
                                     labelText="Reference Document"
@@ -630,13 +659,17 @@ const FormComponents = ({ next, back, stepper }) => {
                             )}
                             {fieldName.field_type === "Attach" && (
                               <>
-                                <div className={styles.inputField}>
+                                <div
+                                  className={`${styles.inputField} col-md-6`}
+                                >
                                   <Input
                                     type="text"
                                     labelText="Attachment Details"
                                   />
                                 </div>
-                                <div className={styles.inputField}>
+                                <div
+                                  className={`${styles.inputField} col-md-6`}
+                                >
                                   <Input
                                     type="select"
                                     labelText="Attachment Format"
@@ -648,7 +681,7 @@ const FormComponents = ({ next, back, stepper }) => {
                             )}
 
                             {fieldName.field_type === "Date" && (
-                              <div className={styles.dateRange}>
+                              <div className={`${styles.dateRange} col-md-6`}>
                                 <Datepicker
                                   labelText="Date Range for Records"
                                   name="answer_option"

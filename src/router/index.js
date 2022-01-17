@@ -48,8 +48,9 @@ import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardC
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import FormBuilder from "../Components/Audit/pages/FormBuilder";
-import AuditAssignment from "../Components/Audit/pages/AuditAssignment/QuestionnaireForm";
 import SectionList from "../Components/Audit/pages/List/SectionList";
+import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
+
 export default function AppRouter() {
   return (
     <div>
@@ -168,26 +169,16 @@ export default function AppRouter() {
             path="/pending-action-task-list"
             component={PendingAction}
           />
-
           <Route exact path="/compliance-history" component={DashBoardCO} />
           <Route path="/new-regulations" component={DashBoardCO} />
           <Route path="/project-management" component={DashBoardCO} />
           <Route path="/project-trash" component={DashBoardCO} />
-
-          {/* <Route path="/create-template" component={DashBoardCO} /> */}
-
           <Route exact path="/help" component={DashBoardCO} />
-
-          {/* Expert Review */}
-
           <Route path="/expert-review" component={ExperReview}></Route>
           <Route exact path="/thankyou" component={Thankyou} />
           <Route exact path="/settings" component={CoSetting} />
           <Route exact path="/audit-assignment" component={AuditAssignment} />
           <Route path="/audit" component={DashBoardCO} />
-
-          {/* User */}
-          {/* <Route path="/user-task" component={UserTask}></Route> */}
         </div>
       </>
     </div>
