@@ -1,0 +1,110 @@
+@import "../../assets/styles/colors";
+
+.header {
+  border-bottom: 2px solid rgba(179, 171, 196, 0.4);
+}
+.accordion {
+  padding: 20px;
+}
+.item {
+  margin-bottom: 5px;
+  padding: 10px 20px;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color_back_blue;
+  border-radius: 8px;
+}
+.title h1 {
+  width: 360px;
+  height: 36px;
+  margin-left: 12px;
+  margin-top: 5px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 36px;
+  color: $color_primary;
+}
+.uparrow {
+  cursor: pointer;
+  margin-right: 24px;
+  font-size: xx-large;
+}
+.content {
+  max-height: 0px;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0, 1, 0, 1);
+}
+.show {
+  height: auto;
+  max-height: 9999px;
+  transition: all 0.5s cubic-bezier(0, 1, 0, 1);
+}
+.subTitle_first h2 {
+  width: 440px;
+  height: 27px;
+  margin-left: 22px;
+  margin-top: 10px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+}
+.subTitle_second h2 {
+  width: 440px;
+  height: 27px;
+  margin-left: 22px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+}
+.subTitle_third h2 {
+  width: 440px;
+  height: 27px;
+  margin-left: 22px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+}
+.content_first h3 {
+  width: 1585px;
+  height: 48px;
+  margin-left: 22px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: $color_text_gray;
+}
+.content_second h3 {
+  width: 1585px;
+  height: 48px;
+  margin-left: 22px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: $color_text_gray;
+}
+.content_third h3 {
+  width: 1585px;
+  height: 48px;
+  margin-left: 22px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: $color_text_gray;
+}
