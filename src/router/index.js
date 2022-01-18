@@ -48,6 +48,11 @@ import RiskAndDelaysTaskList from "../Components/OnBording/SubModules/DashBoardC
 import ExperReview from "../Components/ExpertReviewModule";
 import Thankyou from "../CommonModules/sharedComponents/Thankyou";
 import AuditAssignment from "../Components/Audit/pages/AuditAssignment";
+<<<<<<< Updated upstream
+=======
+// import SectionList from "../Components/Audit/pages/List/SectionList";
+import Remark from "../Components/Audit/pages/Remark";
+>>>>>>> Stashed changes
 export default function AppRouter() {
   return (
     <div>
@@ -176,6 +181,13 @@ export default function AppRouter() {
           <Route exact path="/settings" component={CoSetting} />
           <Route exact path="/audit-assignment" component={AuditAssignment} />
           <Route path="/audit" component={DashBoardCO} />
+<<<<<<< Updated upstream
+=======
+          <Route exact path="/tax-audit" component={DashBoardCO} />
+          <Route exact path="/remark" component={Remark} />
+          {/* User */}
+          {/* <Route path="/user-task" component={UserTask}></Route> */}
+>>>>>>> Stashed changes
         </div>
       </>
     </div>
